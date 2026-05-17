@@ -2,6 +2,8 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
+> **Note:** This file is a standalone summary for Codex. The authoritative source is `CLAUDE.md` + `Docs/claude/`. Keep in sync when updating hardware standards or architecture.
+
 ## Project
 
 OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus.

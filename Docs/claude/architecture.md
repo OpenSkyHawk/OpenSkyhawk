@@ -26,8 +26,8 @@ Each folder under `Firmware/` maps to one STM32 MCU board. Controllers communica
 | 2 | SCL |
 | 3 | GND |
 | 4 | GND |
-| 5 | 12 V (LED backlight, PWM) |
-| 6 | 3.3 V or 5 V (chip power — TBD per board) |
+| 5 | 12 V switched (LED backlight — MOSFET on MCU board, PWM-controlled) |
+| 6 | 3.3 V (chip power) |
 
 **Gauges:** X27.589 Switec stepper motors mounted shaft-through-PCB on the controller board.
 

@@ -86,7 +86,7 @@ Standard intra-group harness (6-pin JST-XH):
 | 2 | SCL |
 | 3 | GND |
 | 4 | GND |
-| 5 | 12 V (LED backlight, PWM) |
+| 5 | 12 V switched (LED backlight — MOSFET output from MCU board) |
 | 6 | 3.3 V (chip power) |
 
 Breakout boards with analog outputs use an 8-pin variant (pins 7 = analog signal, pin 8 = spare).
@@ -95,14 +95,55 @@ Breakout boards with analog outputs use an 8-pin variant (pins 7 = analog signal
 
 - Toggle switches: 12 mm (standard), ~6 mm (ECM modules)
 
+## CAN Transceiver
+
+**Selected: SN65HVD230** — SOIC-8, 3.3V logic.
+
+- One per MCU board; connects STM32F103 CAN controller (PA11/PA12) to the physical bus
+- Runs directly from 3.3V rail — no level shifter required
+- CANH/CANL route to Molex Mini-Fit Jr main bus connector
+- **Bus termination:** 120Ω resistor across CANH/CANL on each end node; omit on intermediate nodes
+- Compatible 3.3V clones (e.g. VP230) acceptable for JLCPCB assembly
+
 ## LED Backlighting
 
-- Type: 5050 SMD, red
-- Placement: PCB front face; all other components on back face
-- Grouping: arrays of 5 LEDs
-- Drive current: ~30 mA per LED (60 mA max rated)
-- Power: 12 V PWM line from inter-board harness
-- PCB trace width: 0.3 mm minimum for LED array feeds
+**Architecture: 5-LED series strings, MOSFET-switched per zone, resistor current limiting.**
+
+Confirmed from bench testing. Estimated ~500 LEDs total across full cockpit (~100 strings of 5).
+
+### String design
+
+- 5 × 5050 SMD red LEDs in series per string
+- Measured Vf: 1.95–2.1 V per LED → ~10 V total per string at 12 V supply → ~2 V headroom for resistor
+- One current-limiting resistor per string (back face of PCB)
+
+### Resistor values (bench-tested)
+
+| Resistor | Measured current | Use |
+|---|---|---|
+| 47Ω | 42–55 mA | **Rejected** — resistor overheated |
+| 100Ω | 19–23 mA | Bright panels / gauges |
+| 120Ω | ~17–20 mA | **Balanced default** |
+| 150Ω | 14–17 mA | Standard |
+| 180Ω | ~11–13 mA | Low brightness / night-friendly |
+| 200Ω | 10–12 mA | Dimmest |
+
+**Default: 120Ω.** Choose at assembly time per zone; 100Ω for bright panels, 180Ω for dimmer zones.
+
+**Resistor package:** 0805 minimum, 1206 preferred where board space allows. Dissipation ≈ 39 mW at 120Ω/18 mA — either package is thermally fine; 1206 is easier to hand-solder and rework.
+
+### Zone dimming (MOSFET)
+
+- One **IRLML2502** N-channel MOSFET per panel/lighting zone (SOT-23, 20V, 4A, Vgs(th) 0.3–0.7V)
+- Gate driven by STM32 PWM output (3.3V fully enhances the IRLML2502)
+- MOSFET switches the 12V LED rail; harness pin 5 carries the switched 12V output
+- Resistors set per-string current at full on; PWM controls average brightness across the zone
+
+### Other
+
+- Placement: LEDs on PCB front face; resistors, MOSFETs, and all other components on back face
+- PCB trace width: 0.3 mm minimum for LED string feeds
+- 5-LED strings preferred over 3-LED: fewer parallel paths, lower wiring current (1.8A total at 120Ω vs ~3A for 3-LED strings across same ~500 LEDs)
 
 ## Gauges
 

@@ -8,37 +8,39 @@
 
 | Component | Details |
 |---|---|
-| MCU | STM32 (TBD variant) |
+| MCU | STM32F103CBT6 (LQFP48, 128 KB flash, 20 KB RAM) |
+| CAN transceiver | SN65HVD230 (SOIC-8, 3.3V logic) |
 | CAN node ID | TBD |
-| CAN transceiver | TBD |
-| Voltage regulation | 5 V + 3.3 V (TBD regulators) |
+| Voltage regulation | AP63205WU (12V → 5V buck) + AMS1117-3.3 (5V → 3.3V LDO) |
 | Stepper | X27.589 — Cabin Pressure gauge, shaft-through-PCB |
 
 ## I²C Devices
 
 | Address | Device | Notes |
 |---|---|---|
-| TBD | MCP23017 #1 | Switch inputs |
-| TBD | MCP23017 #2 (optional) | Lamp/output expansion |
-| TBD | ADS1115 (AWRS breakout) | AWRS QTY, DROP INTVL, MODE SEL |
-| TBD | MCP23017 (Misc Switch breakout) | 12 digital inputs (switches 720–727); see Misc_Switch_Panel.md |
+| 0x20 | MCP23017 #1 | Armament Panel switch inputs (A0=A1=A2=LOW) |
+| 0x21 | MCP23017 #2 (optional) | Lamp/output expansion (A0=HIGH, A1=A2=LOW) |
+| 0x22 | MCP23017 | Misc Switch Panel breakout — 12 digital inputs (A1=HIGH, A0=A2=LOW) |
+| 0x48 | ADS1115 | AWRS Panel breakout — QTY, DROP INTVL, MODE SEL (ADDR tied to GND) |
 
 ## ADC Inputs (on Armament_MCU board)
 
-| Channel | Input | Type |
+| STM32 Pin | Input | Type |
 |---|---|---|
-| TBD | EMER SEL rotary | Resistor ladder |
-| TBD | MODE SEL lever (bombing mode) | Resistor ladder |
-| TBD | MISSILE_VOL pot (726, via J2 pin 7) | Analog (pot wiper, −1 to +1 V range) |
+| PA0 | EMER SEL rotary | Resistor ladder |
+| PA1 | MODE SEL lever (bombing mode) | Resistor ladder |
+| PA2 | MISSILE_VOL pot (726, via J2 pin 7) | Analog (pot wiper, −1 to +1 V range) |
 
 ## Harness Connectors
 
 | Connector | To | Pins |
 |---|---|---|
-| J1 | AWRS_Panel | 6-pin JST-XH (SDA, SCL, GND, GND, 12V, 3.3V) |
-| J2 | Misc_Switch_Panel | 8-pin JST-XH (SDA, SCL, GND, GND, 12V, 3.3V, ANALOG, spare) |
+| J1 | AWRS_Panel | 6-pin JST-XH (SDA, SCL, GND, GND, 12V switched, 3.3V) |
+| J2 | Misc_Switch_Panel | 8-pin JST-XH (SDA, SCL, GND, GND, 12V switched, 3.3V, ANALOG, spare) |
 
-J2 pin 7 carries the MISSILE_VOL pot wiper from the Misc Switch Panel back to the STM32 ADC.
+J2 pin 7 carries the MISSILE_VOL pot wiper from the Misc Switch Panel back to the STM32 ADC (PA2).
+
+Harness pin 5 (12V) is the MOSFET-switched output — the IRLML2502 LED zone MOSFET lives on this board and its drain drives pin 5 of each harness.
 
 ## DCS-BIOS Mappings (Armament Panel)
 

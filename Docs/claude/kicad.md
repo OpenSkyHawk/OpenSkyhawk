@@ -28,18 +28,29 @@ PCB/
 
 `PCB/Libraries/OpenSkyhawk.kicad_sym` + `PCB/Libraries/OpenSkyhawk.pretty/`
 
+### Custom library (`OpenSkyhawk.kicad_sym` + `OpenSkyhawk.pretty/`)
+
 | Symbol | Footprint | Status | Notes |
 |--------|-----------|--------|-------|
 | `OpenSkyhawk:LED_5050_Red` | `OpenSkyhawk:LED_5050_Red` | Ready | 6-pad RGB 5050 package, all R/G/B tied together as single colour. K=pad1 (right, x=2.4), A=pad2 (left, x=-2.4). 3D model from KiCad default lib. |
 | `OpenSkyhawk:X27.589_Stepper` | `OpenSkyhawk:X27.589_Stepper` | Ready | From MH_Motors:X27-589. Polygon body outline. Shaft NPTH 4.6 mm at (0,−6), 4 NPTH mounts. 3D model: `OS_3DModels/x27168.step`. |
 | `OpenSkyhawk:X27.168_Stepper` | `OpenSkyhawk:X27.168_Stepper` | Ready | From MH_Motors:X27-168. Circle body outline. Shaft clearance 4 mm at (0,−10.2), 1 NPTH mount. Same 3D model: `OS_3DModels/x27168.step`. |
 | `OpenSkyhawk:DRV8835` | `OpenSkyhawk:DRV8835` | Pending | Dual H-bridge stepper driver, HTSSOP-16. Add symbol + footprint from TI KiCad library or hand-edit. |
+| `OpenSkyhawk:AP63205WU` | `OpenSkyhawk:AP63205WU` | Pending | 12V→5V switching buck, SOT-23-6. Add symbol + footprint. |
+| `OpenSkyhawk:SN65HVD230` | `OpenSkyhawk:SN65HVD230` | Pending | CAN transceiver, SOIC-8, 3.3V. Add symbol + footprint (or use TI KiCad lib). |
+| `OpenSkyhawk:IRLML2502` | `OpenSkyhawk:IRLML2502` | Pending | N-MOSFET LED zone switch, SOT-23, 20V/4A, logic-level. Add symbol + footprint. |
 
-Components **not** in the custom library (use KiCad defaults):
-- MCP23017 → `Interface_Expander:MCP23017_I2C`
-- ADS1115 → `Analog_ADC:ADS1115`
-- JST-XH connectors → `Connector_JST:JST_XH_*`
-- Molex Mini-Fit Jr → `Connector_Molex:Molex_Minifit_*`
+### KiCad built-in libraries (no custom entry needed)
+
+| Component | Library reference |
+|-----------|------------------|
+| STM32F103CBT6 | `MCU_ST_STM32F1:STM32F103CBTx` |
+| AMS1117-3.3 | `Regulator_Linear:AMS1117-3.3_SOT223` |
+| MCP23017 | `Interface_Expander:MCP23017_I2C` |
+| ADS1115 | `Analog_ADC:ADS1115` |
+| Crystal 8 MHz | `Device:Crystal` |
+| JST-XH connectors | `Connector_JST:JST_XH_*` |
+| Molex Mini-Fit Jr | `Connector_Molex:Molex_Minifit_*` |
 
 ## Adding new components
 

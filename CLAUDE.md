@@ -2,9 +2,9 @@
 
 OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus. Project notes and panel status are tracked in Notion under the "A-4E Home Cockpit" workspace.
 
-@docs/claude/architecture.md
-@docs/claude/hardware-standards.md
-@docs/claude/kicad.md
+@Docs/claude/architecture.md
+@Docs/claude/hardware-standards.md
+@Docs/claude/kicad.md
 
 ## Licensing
 
