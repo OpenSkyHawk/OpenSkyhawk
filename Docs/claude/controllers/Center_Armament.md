@@ -35,13 +35,38 @@
 
 ## Harness Connectors
 
-| Connector | To | Pins |
-|---|---|---|
-| J1 | AWRS_Panel | 6-pin JST-XH (SDA, SCL, GND, GND, 12V switched, 3.3V) |
-| J2 | Misc_Switch_Panel | 8-pin JST-XH (SDA, SCL, GND, 3.3V, NC, MISSILE_VOL, MISC_SWITCH_INT, SHRIKE_VOL_INT) |
-| J2_LED | Misc_Switch_Panel LED | 2-pin Mini-Fit Jr (+12V_BACKLIGHT, BACKLIGHT_SW_RETURN) |
+### J1 → AWRS_Panel — 6-pin JST-XH
 
-J2 pin 6 carries the MISSILE_VOL pot wiper from the Misc Switch Panel back to the STM32 ADC (PA2).
+| Pin | Signal |
+|---|---|
+| 1 | SDA |
+| 2 | SCL |
+| 3 | GND |
+| 4 | GND |
+| 5 | 3.3 V (chip power) |
+| 6 | spare |
+
+### J2 → Misc_Switch_Panel — 8-pin JST-XH
+
+Pinout defined in the Misc_Switch_Panel schematic (source of truth). Reproduced here for reference:
+
+| Pin | Signal |
+|---|---|
+| 1 | SDA |
+| 2 | SCL |
+| 3 | GND |
+| 4 | GND |
+| 5 | 12 V switched (LED PWM — MOSFET on MCU board) |
+| 6 | 3.3 V |
+| 7 | MISSILE_VOL (pot wiper → STM32 PA2) |
+| 8 | spare |
+
+### J2_LED → Misc_Switch_Panel LED power — 2-pin Mini-Fit Jr
+
+| Pin | Signal |
+|---|---|
+| 1 | BACKLIGHT_SW_RETURN (MOSFET drain) |
+| 2 | +12V_BACKLIGHT |
 
 LED zone MOSFET (IRLML2502 N-ch, low-side) lives on this board. Gate driven directly by STM32 PWM (3.3V). Drain → BACKLIGHT_SW_RETURN (J2_LED pin 1); source → GND. LED strings: +12V_BACKLIGHT (J2_LED pin 2) → 120Ω resistor → 5× LEDs series → BACKLIGHT_SW_RETURN. J2 pin 5 is NC.
 
