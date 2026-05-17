@@ -1,3 +1,55 @@
+# KiCad Libraries
+
+## Shared library setup
+
+All projects use `PCB/Libraries/` as the single source of truth for custom components.
+Library tables use `${KIPRJMOD}` — a built-in KiCad variable that always resolves to the project folder. **No global KiCad configuration required.** Anyone who clones the repo and opens a project gets the library automatically.
+
+**For each new KiCad project — copy the template lib tables:**
+
+```bash
+cp PCB/Libraries/project-template/sym-lib-table PCB/<Console>/<Group>/<Board>/
+cp PCB/Libraries/project-template/fp-lib-table  PCB/<Console>/<Group>/<Board>/
+```
+
+The tables resolve to `${KIPRJMOD}/../../../Libraries/` — always 3 levels up from the board folder to `PCB/Libraries/`. This matches the fixed project structure:
+
+```
+PCB/
+├── Libraries/          ← shared library root
+└── <Console>/
+    └── <Group>/
+        └── <Board>/   ← ${KIPRJMOD} (3 levels below Libraries)
+            ├── sym-lib-table
+            └── fp-lib-table
+```
+
+## Library contents
+
+`PCB/Libraries/OpenSkyhawk.kicad_sym` + `PCB/Libraries/OpenSkyhawk.pretty/`
+
+| Symbol | Footprint | Status | Notes |
+|--------|-----------|--------|-------|
+| `OpenSkyhawk:LED_5050_Red` | `OpenSkyhawk:LED_5050_Red` | Ready | 6-pad RGB 5050 package, all R/G/B tied together as single colour. K=pad1 (right, x=2.4), A=pad2 (left, x=-2.4). 3D model from KiCad default lib. |
+| `OpenSkyhawk:X27.589_Stepper` | `OpenSkyhawk:X27.589_Stepper` | Ready | From MH_Motors:X27-589. Polygon body outline. Shaft NPTH 4.6 mm at (0,−6), 4 NPTH mounts. 3D model: `OS_3DModels/x27168.step`. |
+| `OpenSkyhawk:X27.168_Stepper` | `OpenSkyhawk:X27.168_Stepper` | Ready | From MH_Motors:X27-168. Circle body outline. Shaft clearance 4 mm at (0,−10.2), 1 NPTH mount. Same 3D model: `OS_3DModels/x27168.step`. |
+| `OpenSkyhawk:DRV8835` | `OpenSkyhawk:DRV8835` | Pending | Dual H-bridge stepper driver, HTSSOP-16. Add symbol + footprint from TI KiCad library or hand-edit. |
+
+Components **not** in the custom library (use KiCad defaults):
+- MCP23017 → `Interface_Expander:MCP23017_I2C`
+- ADS1115 → `Analog_ADC:ADS1115`
+- JST-XH connectors → `Connector_JST:JST_XH_*`
+- Molex Mini-Fit Jr → `Connector_Molex:Molex_Minifit_*`
+
+## Adding new components
+
+1. Open `PCB/Libraries/OpenSkyhawk.kicad_sym` in the Symbol Editor
+2. Add the symbol; set Footprint to `OpenSkyhawk:<name>`
+3. Create the matching `.kicad_mod` in `PCB/Libraries/OpenSkyhawk.pretty/`
+4. Commit both files — no duplication across projects needed
+
+---
+
 # KiCad CLI
 
 Path: `/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli` (v10.0.1)

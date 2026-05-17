@@ -1,5 +1,49 @@
 # Hardware Standards
 
+## Component Package Rules
+
+**Constraint: all packages must be visually inspectable after reflow.** T962 reflow oven is available; the limitation is inspection, not soldering.
+
+| Acceptable | Not acceptable |
+|------------|---------------|
+| SOIC, SSOP, TSSOP, HTSSOP | QFN, DFN, WSON |
+| LQFP | BGA, LGA |
+| SOT-23, SOT-223 | Any fully-bottom-terminated package |
+| Through-hole | |
+
+HTSSOP (exposed thermal pad on underside) is acceptable — side leads are the critical joints; the GND pad is verified by continuity check.
+
+## MCU
+
+**Selected: STM32F103CBT6** — LQFP48, 128 KB flash, 20 KB RAM.
+
+- Requires **external 8 MHz crystal** for reliable CAN bus timing (internal RC oscillator is not accurate enough for CAN bit-rate lock)
+- **PA11/PA12** are shared between USB and CAN — the two peripherals cannot be used simultaneously; pick one at firmware init
+- CAN bus is the primary inter-board protocol; USB used only for initial flashing/debug
+- Use the bare die (not Blue Pill module) on MCU boards — fewer passive conflicts, smaller footprint
+
+## Power Supply
+
+**Architecture: 12 V → AP63205 (buck) → 5 V → AMS1117-3.3 (LDO) → 3.3 V**
+
+| Stage | Part | Package | Notes |
+|-------|------|---------|-------|
+| 12 V → 5 V | AP63205WU | SOT-23-6 | Switching buck; typical BOM: C_in 10 µF, C_bypass 100 nF, L 4.7 µH, C_out 2×22 µF |
+| 5 V → 3.3 V | AMS1117-3.3 | SOT-223 | LDO; 5→3.3 V drop (1.7 V) is acceptable; 12→5 V via LDO would dissipate ~1.4 W — not acceptable |
+| 5 V rail | also feeds | — | DRV8835 VM (stepper driver motor supply) |
+
+LDO is correct for the 5 V → 3.3 V stage only. Never use a linear regulator for 12 V → 5 V.
+
+## Stepper Driver
+
+**Selected: DRV8835 (TI)** — dual H-bridge, HTSSOP-16.
+
+- Drives one X27.589 Switec stepper (bipolar, ~600 steps/315°, 180–300 Ω coils, ~15–30 mA at 5 V)
+- VM supply: 5 V; VCC logic: 3.3 V
+- **nSLEEP pin**: held LOW by MCU at power-on, driven HIGH only after DCS-BIOS sim connection is established — prevents startup needle twitch
+- No current-regulation passives needed; X27.589 coil resistance limits current naturally at 5 V
+- Firmware: use **SwitecX25** library (handles homing/reset); AccelStepper does not implement homing
+
 ## Screws
 
 | Screw | Use |
