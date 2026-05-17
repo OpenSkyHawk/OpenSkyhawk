@@ -35,8 +35,8 @@
 
 | Connector | To | Pins |
 |---|---|---|
-| J1 | AWRS_Panel | 6-pin MicroFit 3.0 (SDA, SCL, GND, GND, 12V, 3.3V) |
-| J2 | Misc_Switch_Panel | 7-pin MicroFit 3.0 (SDA, SCL, GND, GND, 12V, 3.3V, ANALOG) |
+| J1 | AWRS_Panel | 6-pin JST-XH (SDA, SCL, GND, GND, 12V, 3.3V) |
+| J2 | Misc_Switch_Panel | 8-pin JST-XH (SDA, SCL, GND, GND, 12V, 3.3V, ANALOG, spare) |
 
 J2 pin 7 carries the MISSILE_VOL pot wiper from the Misc Switch Panel back to the STM32 ADC.
 

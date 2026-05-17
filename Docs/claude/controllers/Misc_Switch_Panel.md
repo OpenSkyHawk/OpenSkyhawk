@@ -39,7 +39,7 @@
 
 ## Harness Connector (to MCU board)
 
-**J2 — 7-pin Molex MicroFit 3.0**
+**J2 — 8-pin JST-XH**
 
 | Pin | Signal |
 |---|---|
@@ -50,6 +50,7 @@
 | 5 | 12 V (LED PWM) |
 | 6 | 3.3 V |
 | 7 | ANALOG (MISSILE_VOL wiper) |
+| 8 | — (spare) |
 
 ## Switch-to-PCB Connectors
 

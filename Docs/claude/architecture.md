@@ -18,7 +18,7 @@ Each folder under `Firmware/` maps to one STM32 MCU board. Controllers communica
 
 **Analog inputs:** Resistor-ladder rotary selectors and pots read via STM32 ADC or I²C ADC (ADS1115) on breakout boards.
 
-**Inter-board harness:** Breakout panel boards connect to their parent controller via a standardised 6-pin Molex MicroFit 3.0 harness:
+**Inter-board harness:** Breakout panel boards connect to their parent controller via a standardised 6-pin JST-XH harness:
 
 | Pin | Signal |
 |---|---|
