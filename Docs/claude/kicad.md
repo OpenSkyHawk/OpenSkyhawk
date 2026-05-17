@@ -76,7 +76,9 @@ They are pre-loaded into every new project via `template.kicad_pro` (board desig
 
 ## Scaffolding new projects
 
-Use the `/new-kicad-project` skill to create a new project with library tables, `.kicad_pro`, and minimal root schematic in one step:
+**Whenever a new PCB board needs to be created, always invoke the `/new-kicad-project` skill. Do not manually create project files.** This is the required method — not optional.
+
+Triggers: user asks to "create", "add", or "scaffold" a new board, panel, or KiCad project.
 
 ```
 /new-kicad-project <Console> <Group> <BoardName> [mcu|breakout]
@@ -84,10 +86,11 @@ Use the `/new-kicad-project` skill to create a new project with library tables, 
 
 Example: `/new-kicad-project Center_Console Center_Armament AWRS_Panel breakout`
 
-The skill creates:
+The skill creates and then updates Notion:
 - `PCB/<Console>/<Group>/<BoardName>/sym-lib-table` + `fp-lib-table` (copied from template)
 - `<BoardName>.kicad_pro` (with OpenSkyhawk libs pinned, correct ERC severities)
 - `<BoardName>.kicad_sch` (minimal root sheet with title block)
+- Finds the existing Notion Panels page (or creates one) and adds the repo path to the page body
 
 ---
 

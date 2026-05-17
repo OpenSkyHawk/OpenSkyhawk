@@ -104,7 +104,19 @@ mkdir -p "PCB/Libraries/sheets"
 
 List `.kicad_sch` files in `PCB/Libraries/sheets/`. These are the available standard block templates.
 
-### 9. Report
+### 9. Update Notion Panels database
+
+Search the Panels database (`collection://301575ac-53b1-80c1-be2d-000b57d99f55`) for an existing page matching `<BoardName>` or a close variant (e.g. "AWRS Panel" for `AWRS_Panel`).
+
+- **If found:** update the page body using `notion-update-page` with `command: update_content`. Replace the placeholder task description with the repo path and scaffolding status. Do NOT create a new page.
+- **If not found:** create a new page in the database with `Task name`, `Status: Not started`, `Console Position`, `Controller: <Group>`.
+
+Body note to add (substitute actual values):
+```
+PCB: `PCB/<Console>/<Group>/<BoardName>/` — KiCad scaffolded, schematic not yet started.
+```
+
+### 10. Report
 
 Print a clean summary with these sections:
 
@@ -117,7 +129,7 @@ List each file created with its full relative path.
 - Shared sheet templates: `PCB/Libraries/sheets/` — list .kicad_sch files found, or "none yet"
 
 **Design rules loaded**
-- Min trace: 0.127mm | Min clearance: 0.127mm | Min via drill: 0.3mm / pad: 0.56mm | Copper-to-edge: 0.3mm
+- Min trace: 0.2mm | Min clearance: 0.2mm | Min via drill: 0.3mm / pad: 0.56mm | Copper-to-edge: 0.3mm
 - Predefined track widths: 0.2mm (signal), 0.3mm (LED feeds), 0.5mm (power), 1.0mm (12V)
 - Predefined via sizes: 0.3mm/0.6mm (standard), 0.4mm/0.8mm (power)
 - Custom DRC rules: `jlcpcb-standard.kicad_dru` (activate via Board Setup → Custom Rules)
