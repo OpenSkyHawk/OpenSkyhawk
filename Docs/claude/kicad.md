@@ -32,7 +32,7 @@ PCB/
 
 | Symbol | Footprint | Status | Notes |
 |--------|-----------|--------|-------|
-| `OpenSkyhawk:LED_5050_Red` | `OpenSkyhawk:LED_5050_Red` | Ready | 6-pad RGB 5050 package, all R/G/B tied together as single colour. K=pad1 (right, x=2.4), A=pad2 (left, x=-2.4). 3D model from KiCad default lib. |
+| `OpenSkyhawk:LED_5050_Red` | `OpenSkyhawk:LED_5050_Red` | Ready | 6-pad RGB 5050 package, all R/G/B tied together as single colour. K=pad1 (right, x=2.4), A=pad2 (left, x=-2.4). Symbol matches standard `Device:LED` convention (K=pin1, A=pin2). Polarity marker (silkscreen triangle) is on the pad2/anode side — **the notched/chamfered corner of this specific LED is the anode** (verified with multimeter). Place LED with notch at the marker. 3D model from KiCad default lib. |
 | `OpenSkyhawk:X27.589_Stepper` | `OpenSkyhawk:X27.589_Stepper` | Ready | From MH_Motors:X27-589. Polygon body outline. Shaft NPTH 4.6 mm at (0,−6), 4 NPTH mounts. 3D model: `OS_3DModels/x27168.step`. |
 | `OpenSkyhawk:X27.168_Stepper` | `OpenSkyhawk:X27.168_Stepper` | Ready | From MH_Motors:X27-168. Circle body outline. Shaft clearance 4 mm at (0,−10.2), 1 NPTH mount. Same 3D model: `OS_3DModels/x27168.step`. |
 | `OpenSkyhawk:DRV8835` | `OpenSkyhawk:DRV8835` | Pending | Dual H-bridge stepper driver, HTSSOP-16. Add symbol + footprint from TI KiCad library or hand-edit. |
