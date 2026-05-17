@@ -35,10 +35,10 @@ PCB/
 | `OpenSkyhawk:LED_5050_Red` | `OpenSkyhawk:LED_5050_Red` | Ready | 6-pad RGB 5050 package, all R/G/B tied together as single colour. K=pad1 (right, x=2.4), A=pad2 (left, x=-2.4). Symbol matches standard `Device:LED` convention (K=pin1, A=pin2). Polarity marker (silkscreen triangle) is on the pad2/anode side — **the notched/chamfered corner of this specific LED is the anode** (verified with multimeter). Place LED with notch at the marker. 3D model from KiCad default lib. |
 | `OpenSkyhawk:X27.589_Stepper` | `OpenSkyhawk:X27.589_Stepper` | Ready | From MH_Motors:X27-589. Polygon body outline. Shaft NPTH 4.6 mm at (0,−6), 4 NPTH mounts. 3D model: `OS_3DModels/x27168.step`. |
 | `OpenSkyhawk:X27.168_Stepper` | `OpenSkyhawk:X27.168_Stepper` | Ready | From MH_Motors:X27-168. Circle body outline. Shaft clearance 4 mm at (0,−10.2), 1 NPTH mount. Same 3D model: `OS_3DModels/x27168.step`. |
-| `OpenSkyhawk:DRV8835` | `OpenSkyhawk:DRV8835` | Pending | Dual H-bridge stepper driver, HTSSOP-16. Add symbol + footprint from TI KiCad library or hand-edit. |
-| `OpenSkyhawk:AP63205WU` | `OpenSkyhawk:AP63205WU` | Pending | 12V→5V switching buck, SOT-23-6. Add symbol + footprint. |
-| `OpenSkyhawk:SN65HVD230` | `OpenSkyhawk:SN65HVD230` | Pending | CAN transceiver, SOIC-8, 3.3V. Add symbol + footprint (or use TI KiCad lib). |
-| `OpenSkyhawk:IRLML2502` | `OpenSkyhawk:IRLML2502` | Pending | N-MOSFET LED zone switch (low-side), SOT-23, 20V/4A, logic-level gate. Gate HIGH = on. Add symbol + footprint. |
+| `OpenSkyhawk:DRV8835` | `Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Pad3.4x5mm` | Ready | Dual H-bridge stepper driver, HTSSOP-16. Uses KiCad built-in HTSSOP-16 footprint. Pins: AIN1/2, BIN1/2, AOUT1/2, BOUT1/2, VM, VCC, GND×2, PGND×2, nSLEEP, MODE, EP. |
+| `OpenSkyhawk:AP63205WU` | `OpenSkyhawk:AP63205WU` | Pending | 12V→5V switching buck, SOT-23-6. Not used on standard MCU/breakout boards — only for future high-5V-current boards. Add symbol + footprint when needed. |
+| `OpenSkyhawk:SN65HVD230` | — | N/A | Use KiCad built-in `Interface_CAN_LIN:SN65HVD230` directly — no custom entry needed. |
+| `OpenSkyhawk:IRLML2502` | `Package_TO_SOT_SMD:SOT-23` | Ready | N-MOSFET LED zone switch (low-side), SOT-23, 20V/4A, logic-level gate (Vgsth 0.3–0.7V). Uses KiCad built-in SOT-23 footprint. Gate HIGH = on. |
 
 ### KiCad built-in libraries (no custom entry needed)
 

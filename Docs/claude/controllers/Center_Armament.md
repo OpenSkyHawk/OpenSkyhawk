@@ -11,29 +11,46 @@
 | MCU | STM32F103CBT6 (LQFP48, 128 KB flash, 20 KB RAM) |
 | CAN transceiver | SN65HVD230 (SOIC-8, 3.3V logic) |
 | CAN node ID | TBD |
-| Voltage regulation | AP63205WU (12V → 5V buck) + AMS1117-3.3 (5V → 3.3V LDO) |
+| Voltage regulation | 5V from main bus (PC ATX PSU); AMS1117-3.3 (SOT-223) locally for 3.3V; no AP63205WU on this board |
 | Stepper | X27.589 — Cabin Pressure gauge, shaft-through-PCB |
 
 ## I²C Devices
 
 | Address | Device | Notes |
 |---|---|---|
-| 0x20 | MCP23017 #1 | Armament Panel switch inputs (A0=A1=A2=LOW) |
-| 0x21 | MCP23017 #2 (optional) | Lamp/output expansion (A0=HIGH, A1=A2=LOW) |
 | 0x22 | MCP23017 | Misc Switch Panel breakout — 12 digital inputs (A1=HIGH, A0=A2=LOW) |
 | 0x48 | ADS1115 | AWRS Panel breakout — QTY, DROP INTVL, MODE SEL (ADDR tied to GND) |
 
+Armament Panel switches (GUNS_READY, ARM_NOSE_TAIL, STATION_1–5, MASTER_ARMED) connect directly to STM32 GPIO via J_PANEL — no MCP23017 on the MCU board.
+
 ## ADC Inputs (on Armament_MCU board)
 
-| STM32 Pin | Input | Type |
-|---|---|---|
-| PA0 | EMER SEL rotary | Resistor ladder |
-| PA1 | MODE SEL lever (bombing mode) | Resistor ladder |
-| PA2 | MISSILE_VOL pot (726, via J2 pin 6) | Analog (pot wiper, −1 to +1 V range) |
-| TBD | MISC_SWITCH_INT from Misc_Switch_Panel (via J2 pin 7) | EXTI — Port A changes (buttons, toggles, BDHI) |
-| TBD | SHRIKE_VOL_INT from Misc_Switch_Panel (via J2 pin 8) | EXTI — Port B changes (Shrike only) |
+| STM32 Pin | Input | Via | Type |
+|---|---|---|---|
+| PA0 | EMER SEL rotary | direct (resistor ladder, pads only this rev) | Resistor ladder |
+| PA1 | MODE SEL lever (bombing mode) | direct (resistor ladder, pads only this rev) | Resistor ladder |
+| PA2 | MISSILE_VOL pot (726) | J2 pin 6 | Analog (pot wiper) |
+| PB13 | MISC_SWITCH_INT | J2 pin 7 | EXTI — Port A changes (buttons, toggles, BDHI) |
+| PB14 | SHRIKE_VOL_INT | J2 pin 8 | EXTI — Port B changes (Shrike only) |
 
 ## Harness Connectors
+
+### J_PANEL → Armament Panel switches — 10-pin JST-XH
+
+Direct switch wiring to STM32 GPIO. Switches connect one terminal to signal pin, other terminal to GND. STM32 internal pull-up enabled in firmware.
+
+| Pin | Signal | STM32 Pin | DCS-BIOS |
+|---|---|---|---|
+| 1 | GUNS_READY | PB0 | 701 |
+| 2 | ARM_NOSE_TAIL | PB1 | 702 |
+| 3 | STATION_1 | PB3 | 703 |
+| 4 | STATION_2 | PB4 | 704 |
+| 5 | STATION_3 | PB5 | 705 |
+| 6 | STATION_4 | PB6 | 706 |
+| 7 | STATION_5 | PB7 | 707 |
+| 8 | MASTER_ARMED | PB8 | 709 |
+| 9 | GND | — | — |
+| 10 | GND | — | — |
 
 ### J1 → AWRS_Panel — 6-pin JST-XH
 
@@ -43,48 +60,46 @@
 | 2 | SCL |
 | 3 | GND |
 | 4 | GND |
-| 5 | 3.3 V (chip power) |
+| 5 | +3.3V (chip power) |
 | 6 | spare |
 
 ### J2 → Misc_Switch_Panel — 8-pin JST-XH
 
-Pinout defined in the Misc_Switch_Panel schematic (source of truth). Reproduced here for reference:
+Pinout confirmed from Misc_Switch_Panel.kicad_sch (schematic is source of truth). 33Ω series dampers on SDA/SCL are on the Armament_MCU PCB side. 100Ω series resistors on interrupt lines (R20/R21) are on the Misc_Switch_Panel PCB side — do not add duplicates here.
 
-| Pin | Signal |
-|---|---|
-| 1 | SDA |
-| 2 | SCL |
-| 3 | GND |
-| 4 | GND |
-| 5 | 12 V switched (LED PWM — MOSFET on MCU board) |
-| 6 | 3.3 V |
-| 7 | MISSILE_VOL (pot wiper → STM32 PA2) |
-| 8 | spare |
+| Pin | Signal | Notes |
+|---|---|---|
+| 1 | SDA | 33Ω damper (R_SDA_J2) on Armament_MCU PCB |
+| 2 | SCL | 33Ω damper (R_SCL_J2) on Armament_MCU PCB |
+| 3 | GND | |
+| 4 | +3.3V | |
+| 5 | NC | spare |
+| 6 | MISSILE_VOL | Pot wiper → 1kΩ + 100nF → STM32 PA2 |
+| 7 | MISC_SWITCH_INT | MCP23017 @ 0x22 INTA; 100Ω R21 already on Misc_Switch_Panel |
+| 8 | SHRIKE_VOL_INT | MCP23017 @ 0x22 INTB; 100Ω R20 already on Misc_Switch_Panel |
 
-### J2_LED → Misc_Switch_Panel LED power — 2-pin Mini-Fit Jr
+### J_LED_MISC → Misc_Switch_Panel LED power — 2-pin Mini-Fit Jr
 
 | Pin | Signal |
 |---|---|
 | 1 | BACKLIGHT_SW_RETURN (MOSFET drain) |
 | 2 | +12V_BACKLIGHT |
 
-LED zone MOSFET (IRLML2502 N-ch, low-side) lives on this board. Gate driven directly by STM32 PWM (3.3V). Drain → BACKLIGHT_SW_RETURN (J2_LED pin 1); source → GND. LED strings: +12V_BACKLIGHT (J2_LED pin 2) → 120Ω resistor → 5× LEDs series → BACKLIGHT_SW_RETURN. J2 pin 5 is NC.
+LED zone MOSFET (IRLML2502 N-ch, low-side) lives on this board. Gate driven directly by STM32 PWM (3.3V) through 100Ω series resistor; 100kΩ pull-down to GND ensures LEDs off during reset. Drain → BACKLIGHT_SW_RETURN; source → GND. LED strings: +12V_BACKLIGHT → 120Ω resistor → 5× LEDs series → BACKLIGHT_SW_RETURN.
 
-## Armament_MCU Schematic — Pending Items
+## Armament_MCU Schematic — Design Notes
 
-These must be addressed when the Armament_MCU schematic is started. See hardware-standards.md "Standard Circuit Blocks" for reference circuits.
+See hardware-standards.md "Standard Circuit Blocks" for reference circuits.
 
 | Item | Detail |
 |---|---|
-| LED zone switch | IRLML2502 N-ch low-side per zone. Gate ← STM32 PWM (3.3V direct, no driver needed). Drain → BACKLIGHT_SW_RETURN (J1_LED pin 1, J2_LED pin 1); source → GND. See standard circuit block. |
-| I2C pull-ups | 4.7 kΩ on SDA and SCL — **one set only**, on this board, not on breakouts |
-| I2C series resistors | 33 Ω on SDA/SCL at each harness connector (J1, J2) — between bus and connector pin |
-| Interrupt protection | 100 Ω series on INTA/INTB at J2 pins 7–8 before leaving board |
-| ADC filter — MISSILE_VOL | 1 kΩ series + 100 nF to GND at STM32 PA2 (J2 pin 6 → 1 kΩ → PA2, PA2 → 100 nF → GND) |
-| ADC filter — EMER SEL | 1 kΩ + 100 nF at PA0 (resistor ladder input) |
-| ADC filter — MODE SEL | 1 kΩ + 100 nF at PA1 (resistor ladder input) |
-| Gate pull-up resistors | 100 kΩ from each IRLML6402 gate to +12V (default-off) |
-| NPN gate driver resistor | 330 Ω from STM32 PWM pin to NPN base (per LED zone) |
+| LED zone switch | IRLML2502 N-ch low-side per zone. Gate ← 100Ω series ← STM32 PWM (3.3V). 100kΩ pull-down gate → GND (ensures LEDs off during STM32 reset). Drain → BACKLIGHT_SW_RETURN; source → GND. |
+| I2C pull-ups | 4.7 kΩ on SDA and SCL — **one set only**, on MCU_CAN sheet, not on breakouts |
+| I2C series dampers | 33 Ω on SDA/SCL at each harness connector (J1, J2) — on MCU_CAN sheet |
+| Interrupt lines J2 | R20/R21 (100Ω) already on Misc_Switch_Panel PCB — **do not add duplicates** on J2 pins 7–8 |
+| ADC filter — MISSILE_VOL | 1 kΩ series + 100 nF to GND at STM32 PA2 (J2 pin 6 → 1 kΩ → PA2 → 100 nF → GND) |
+| ADC filter — EMER SEL | 1 kΩ + 100 nF at PA0 (resistor ladder pads, no ladder wired in this rev) |
+| ADC filter — MODE SEL | 1 kΩ + 100 nF at PA1 (resistor ladder pads, no ladder wired in this rev) |
 
 ## DCS-BIOS Mappings (Armament Panel)
 

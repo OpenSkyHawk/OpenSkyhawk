@@ -66,15 +66,16 @@ PlatformIO with `earlephilhower/arduino-pico` platform (preferred) or Arduino ID
 
 ## Power Supply
 
-**Architecture: 12 V → AP63205 (buck) → 5 V → AMS1117-3.3 (LDO) → 3.3 V**
+**Architecture: PC ATX PSU distributes 12 V and 5 V on the main bus. Each board generates 3.3 V locally.**
 
 | Stage | Part | Package | Notes |
 |-------|------|---------|-------|
-| 12 V → 5 V | AP63205WU | SOT-23-6 | Switching buck; typical BOM: C_in 10 µF, C_bypass 100 nF, L 4.7 µH, C_out 2×22 µF |
-| 5 V → 3.3 V | AMS1117-3.3 | SOT-223 | LDO; 5→3.3 V drop (1.7 V) is acceptable; 12→5 V via LDO would dissipate ~1.4 W — not acceptable |
+| Main bus | PC ATX PSU | — | 12 V and 5 V distributed via Molex Mini-Fit Jr bus connectors |
+| 5 V → 3.3 V | AMS1117-3.3 | SOT-223 | LDO on every MCU and breakout board; 5→3.3 V drop (1.7 V) acceptable at ≤175 mA load |
 | 5 V rail | also feeds | — | DRV8835 VM (stepper driver motor supply) |
+| 12 V → 5 V | AP63205WU | SOT-23-6 | **Only on high-5V-current boards** (future actuator/high-power boards). Not used on standard MCU or breakout boards. Typical BOM: C_in 10 µF, C_bypass 100 nF, L 4.7 µH, C_out 2×22 µF |
 
-LDO is correct for the 5 V → 3.3 V stage only. Never use a linear regulator for 12 V → 5 V.
+Local decoupling required on every board: 100 nF + 10 µF per rail, placed close to each IC. Never use a linear regulator for 12 V → 5 V conversion.
 
 ## Stepper Driver
 
