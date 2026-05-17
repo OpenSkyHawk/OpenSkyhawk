@@ -5,6 +5,7 @@ OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-pr
 @Docs/claude/architecture.md
 @Docs/claude/hardware-standards.md
 @Docs/claude/kicad.md
+@Docs/claude/pcb-design-rules.md
 
 ## Licensing
 

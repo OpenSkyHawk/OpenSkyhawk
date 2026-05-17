@@ -1,0 +1,46 @@
+# JLCPCB Standard 2-Layer — Custom DRC Rules
+# Fabricator: JLCPCB, standard service
+# These rules supplement the minimum constraints already set in the project file.
+# Load via: PCB Editor → File → Board Setup → Design Rules → Custom Rules
+
+(version 1)
+
+# ── Copper to board edge ────────────────────────────────────────────────────
+# JLCPCB requires ≥ 0.3mm from any copper to the board outline.
+
+(rule "JLCPCB_copper_edge_clearance"
+    (constraint edge_clearance (min 0.3mm))
+)
+
+# ── Silkscreen legibility ───────────────────────────────────────────────────
+# Minimum stroke width for readable silkscreen at JLCPCB.
+# Text height is enforced via board settings (min_text_height = 0.8mm).
+
+(rule "JLCPCB_silk_min_width"
+    (layer "?.Silkscreen")
+    (constraint line_width (min 0.153mm))
+)
+
+# ── Hole-to-hole spacing ────────────────────────────────────────────────────
+# JLCPCB: hole edges must be ≥ 0.5mm apart.
+# (Duplicates board setting; explicit rule gives a clearer DRC violation message.)
+
+(rule "JLCPCB_hole_to_hole"
+    (constraint hole_to_hole (min 0.5mm))
+)
+
+# ── PTH pad drill-to-copper clearance ───────────────────────────────────────
+# Clearance from the edge of a drilled hole to nearest copper feature.
+
+(rule "JLCPCB_hole_clearance"
+    (constraint hole_clearance (min 0.254mm))
+)
+
+# ── CAN bus differential pair ───────────────────────────────────────────────
+# CANH/CANL should be routed as a matched-length pair with 0.2mm spacing.
+# Loosely enforced here; tighten if signal integrity issues arise.
+
+(rule "CAN_diff_pair_gap"
+    (net_filter "CAN?")
+    (constraint diff_pair_gap (min 0.2mm) (max 0.4mm))
+)

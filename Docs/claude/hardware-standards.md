@@ -57,17 +57,18 @@ LDO is correct for the 5 V → 3.3 V stage only. Never use a linear regulator fo
 
 | Series | Pitch | Use | Tooling |
 |---|---|---|---|
-| Molex Mini-Fit Jr | 4.2 mm | Main bus — CAN bus + power between controller groups | JRready ST6490-ACT |
-| JST-XH | 2.54 mm | Everything else — MCU ↔ breakout harnesses + switch/signal harnesses | Engineer PA-09 |
+| Molex Mini-Fit Jr | 4.2 mm | Main bus (CAN + power between controller groups) **and** LED power connectors on all boards | JRready ST6490-ACT |
+| JST-XH | 2.54 mm | Signal/logic harnesses — MCU ↔ breakout (I²C, interrupts, analog) and switch wiring | Engineer PA-09 |
 
 **Minimum pitch: 2.54 mm.** Nothing smaller is used anywhere in the build.
 
 **Wire gauge: 24 AWG throughout.**
 
-### Molex Mini-Fit Jr (main bus)
+### Molex Mini-Fit Jr (main bus + LED power)
 
-- **PCB footprint:** Through-hole, dual-row, vertical
-- Carries CAN bus signals and power distribution between controller groups
+- **PCB footprint:** Through-hole, single-row vertical for LED connectors (1×2); dual-row vertical for main bus
+- Main bus: CAN bus signals and power distribution between controller groups
+- LED power: 2-pin (1×2) per lighting zone on every MCU and breakout board — carries `+12V_BACKLIGHT` and `BACKLIGHT_SW_RETURN`
 - Polarized housing — one insertion orientation only
 
 ### JST-XH (intra-group harnesses + switch wiring)
@@ -78,7 +79,7 @@ LDO is correct for the 5 V → 3.3 V stage only. Never use a linear regulator fo
 - Polarized housing — one insertion orientation only
 - Switches share a common GND within each connector group; one GND pin per connector
 
-Standard intra-group harness (6-pin JST-XH):
+Standard intra-group signal harness (6-pin JST-XH):
 
 | Pin | Signal |
 |---|---|
@@ -86,10 +87,17 @@ Standard intra-group harness (6-pin JST-XH):
 | 2 | SCL |
 | 3 | GND |
 | 4 | GND |
-| 5 | 12 V switched (LED backlight — MOSFET output from MCU board) |
-| 6 | 3.3 V (chip power) |
+| 5 | 3.3 V (chip power) |
+| 6 | spare |
 
-Breakout boards with analog outputs use an 8-pin variant (pins 7 = analog signal, pin 8 = spare).
+Breakout boards with analog outputs or interrupts use an 8-pin variant with additional signals on pins 6–8.
+
+LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the signal harness):
+
+| Pin | Signal |
+|---|---|
+| 1 | BACKLIGHT_SW_RETURN (MOSFET drain — near GND when LEDs on) |
+| 2 | +12V_BACKLIGHT (always-on 12V supply to LED string tops) |
 
 ## Switches & Controls
 
@@ -134,10 +142,11 @@ Confirmed from bench testing. Estimated ~500 LEDs total across full cockpit (~10
 
 ### Zone dimming (MOSFET)
 
-- One **IRLML2502** N-channel MOSFET per panel/lighting zone (SOT-23, 20V, 4A, Vgs(th) 0.3–0.7V)
-- Gate driven by STM32 PWM output (3.3V fully enhances the IRLML2502)
-- MOSFET switches the 12V LED rail; harness pin 5 carries the switched 12V output
-- Resistors set per-string current at full on; PWM controls average brightness across the zone
+- One **IRLML2502** N-channel MOSFET per panel/lighting zone (SOT-23, 20V, 4A, Vgs(th) 0.3–0.7V) — **low-side switch**
+- Gate driven directly by STM32 3.3V PWM — no gate driver required (Vgs = 3.3V, well within ±12V Vgs(max))
+- Drain → BACKLIGHT_SW_RETURN (Mini-Fit Jr pin 1); source → GND
+- LED strings: +12V_BACKLIGHT (Mini-Fit Jr pin 2) → resistor → 5× LEDs → BACKLIGHT_SW_RETURN
+- Resistors set per-string current at full on; PWM duty cycle controls average brightness across the zone
 
 ### Other
 
@@ -150,3 +159,57 @@ Confirmed from bench testing. Estimated ~500 LEDs total across full cockpit (~10
 - LOX gauge: 2-5/8″ (~67 mm total)
 - Radar Altimeter gauge: 3-1/8″ (~100 mm with bezel)
 - Cabin Pressure gauge: driven by X27.589 Switec stepper (shaft-through-PCB mount)
+
+---
+
+## Standard Circuit Blocks (Design Library)
+
+These subcircuits repeat on every MCU board and are candidates for KiCad hierarchical sheet templates (`PCB/Libraries/sheets/`).
+
+### LED Zone Switch (per lighting zone)
+
+```
++12V_BACKLIGHT ── R (120 Ω) ──┬── LED1 A
+                               └── LED2 A  (one resistor per string, each string 5 LEDs in series)
+                                   ...
+                               LED_n K → BACKLIGHT_SW_RETURN
+                                              │
+                                        IRLML2502 drain
+                                        IRLML2502 source → GND
+                                        IRLML2502 gate ← STM32 PWM (3.3V direct)
+```
+
+- Default off (gate at 0V, Vgs = 0V → MOSFET off)
+- STM32 HIGH (3.3V) → Vgs = 3.3V → N-ch fully enhanced → BACKLIGHT_SW_RETURN pulled to GND → LED strings conduct
+- STM32 LOW → Vgs = 0V → MOSFET off → no current path → LEDs off
+- No gate pull-up or driver required: IRLML2502 Vgs(th) = 0.3–0.7V; 3.3V is well within Vgs(max) = ±12V
+- LED power arrives on a **separate 2-pin Mini-Fit Jr connector** — not the signal harness
+
+### MCP23017 Instance
+
+Per chip on each MCU board:
+
+| Component | Value | Notes |
+|---|---|---|
+| C_decoupling | 100 nF, 0805 | VDD → GND, placed adjacent to chip |
+| C_bulk | 10 µF, 0805 | VDD → GND, one per board |
+| R_RESET | 10 kΩ, 1206 | RESET → +3V3 pull-up |
+| R_A1 (if addr bit = HIGH) | 10 kΩ, 1206 | Address pin → +3V3 |
+| R_SDA, R_SCL | 33 Ω, 0805 | Series on SDA/SCL between harness and chip — damps ringing on off-board wiring |
+| R_INTA, R_INTB | 100 Ω, 0805 | Series on interrupt outputs before harness connector — ESD/transient protection |
+
+I2C pull-ups (4.7 kΩ) placed **on MCU board only** — one set per bus, not on breakout boards.
+
+Internal MCP23017 pull-ups (GPPU register, ~100 kΩ) are sufficient for switch inputs — no external pull-ups required on breakout boards unless wiring is very long or noisy.
+
+### ADC Input Filter (per analog input)
+
+Placed on MCU board, close to STM32 ADC pin:
+
+```
+pot wiper (via harness) → 1 kΩ → STM32 ADC pin → 100 nF → GND
+```
+
+- 1 kΩ: protects ADC pin during faults/transients, forms RC with 100 nF
+- 100 nF: low-pass filter, reduces noise/jitter on ADC reading
+- RC corner frequency: ~1.6 kHz — well above polling rate, no signal distortion

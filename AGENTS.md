@@ -51,6 +51,20 @@ PCB/<Console>/<ControllerGroup>/
 
 **Custom library:** `PCB/Libraries/OpenSkyhawk.kicad_sym` + `PCB/Libraries/OpenSkyhawk.pretty/`. Each new project gets a copy of `PCB/Libraries/project-template/sym-lib-table` and `fp-lib-table` — these use `${KIPRJMOD}` and require no global KiCad configuration.
 
+**Shared sheet templates:** `PCB/Libraries/sheets/` — reusable hierarchical `.kicad_sch` blocks (power rail, MCP23017, LED zone, etc.). Import via Place → Add Sheet.
+
+**Scaffolding:** use `/new-kicad-project <Console> <Group> <BoardName> [mcu|breakout]` to create a new project with library tables, `.kicad_pro` (JLCPCB design rules + net classes pre-loaded), minimal root schematic, and `jlcpcb-standard.kicad_dru` in one step.
+
+**PCB design rules:** JLCPCB standard 2-layer. Min trace/clearance: **0.2 mm** (floor matches Default net class). Full rules in `Docs/claude/pcb-design-rules.md`.
+
+**Net classes (pre-loaded in every project):**
+- `Default` — 0.2 mm signal traces
+- `LED_Trunk` — 0.5 mm, auto-assigned to `+12V_BACKLIGHT` / `BACKLIGHT_SW_RETURN`
+- `LED_String` — 0.3 mm, manual assignment for per-string traces
+- `CAN` — 0.2 mm / 0.2 mm clearance, auto-assigned to `CANH` / `CANL`
+
+**Board power budget:** logic + LED boards ≤ 500 mA at 12V input. Actuator boards (solenoids, servos, large steppers) require separate design review — see `Docs/claude/pcb-design-rules.md`.
+
 ## Hardware Standards
 
 **Package rule:** All ICs must be visually inspectable after reflow — SOIC, SSOP, TSSOP, HTSSOP, LQFP, SOT-23, SOT-223, through-hole. No QFN, DFN, BGA, or any fully-bottom-terminated package.
@@ -64,7 +78,7 @@ PCB/<Console>/<ControllerGroup>/
 
 Connectors: Molex Mini-Fit Jr (4.2 mm, CAN bus/power main bus) and JST-XH (2.54 mm, everything else). Minimum pitch 2.54 mm. Wire gauge 24 AWG throughout.
 
-LED backlighting: 5050 SMD red, PCB front face, 12 V PWM, ~30 mA per LED.
+LED backlighting: 5050 SMD red, PCB front face, 12 V low-side PWM (IRLML2502 N-ch MOSFET, gate driven directly by STM32 3.3V PWM), 120Ω default per string (~18 mA), 5 LEDs in series per string. LED power on separate 2-pin Mini-Fit Jr connector (+12V_BACKLIGHT / BACKLIGHT_SW_RETURN); not carried on signal harness.
 
 ## KiCad CLI
 

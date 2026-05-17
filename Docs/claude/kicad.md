@@ -38,7 +38,7 @@ PCB/
 | `OpenSkyhawk:DRV8835` | `OpenSkyhawk:DRV8835` | Pending | Dual H-bridge stepper driver, HTSSOP-16. Add symbol + footprint from TI KiCad library or hand-edit. |
 | `OpenSkyhawk:AP63205WU` | `OpenSkyhawk:AP63205WU` | Pending | 12V→5V switching buck, SOT-23-6. Add symbol + footprint. |
 | `OpenSkyhawk:SN65HVD230` | `OpenSkyhawk:SN65HVD230` | Pending | CAN transceiver, SOIC-8, 3.3V. Add symbol + footprint (or use TI KiCad lib). |
-| `OpenSkyhawk:IRLML2502` | `OpenSkyhawk:IRLML2502` | Pending | N-MOSFET LED zone switch, SOT-23, 20V/4A, logic-level. Add symbol + footprint. |
+| `OpenSkyhawk:IRLML2502` | `OpenSkyhawk:IRLML2502` | Pending | N-MOSFET LED zone switch (low-side), SOT-23, 20V/4A, logic-level gate. Gate HIGH = on. Add symbol + footprint. |
 
 ### KiCad built-in libraries (no custom entry needed)
 
@@ -46,11 +46,12 @@ PCB/
 |-----------|------------------|
 | STM32F103CBT6 | `MCU_ST_STM32F1:STM32F103CBTx` |
 | AMS1117-3.3 | `Regulator_Linear:AMS1117-3.3_SOT223` |
-| MCP23017 | `Interface_Expander:MCP23017_I2C` |
+| MCP23017 | `Interface_Expansion:MCP23017x-x-SO` (SOIC-28) |
 | ADS1115 | `Analog_ADC:ADS1115` |
 | Crystal 8 MHz | `Device:Crystal` |
 | JST-XH connectors | `Connector_JST:JST_XH_*` |
-| Molex Mini-Fit Jr | `Connector_Molex:Molex_Minifit_*` |
+| Molex Mini-Fit Jr (main bus) | `Connector_Molex:Molex_Minifit_Jr_5557-*` (dual-row) |
+| Molex Mini-Fit Jr (LED power, 2-pin) | `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A2_2x01_P4.20mm_Vertical` |
 
 ## Adding new components
 
@@ -58,6 +59,35 @@ PCB/
 2. Add the symbol; set Footprint to `OpenSkyhawk:<name>`
 3. Create the matching `.kicad_mod` in `PCB/Libraries/OpenSkyhawk.pretty/`
 4. Commit both files — no duplication across projects needed
+
+## Shared hierarchical sheet templates
+
+`PCB/Libraries/sheets/` — reusable `.kicad_sch` files for standard circuit blocks (power rail, MCP23017 instance, LED zone switch, ADC filter, CAN transceiver).
+
+To use in a project: **Place → Add Sheet** in KiCad, browse to `PCB/Libraries/sheets/<name>.kicad_sch`.
+
+See `PCB/Libraries/sheets/README.md` for the list of available templates and how to add new ones.
+
+## Design rules
+
+JLCPCB standard 2-layer constraints and predefined sizes are documented in `Docs/claude/pcb-design-rules.md`.
+
+They are pre-loaded into every new project via `template.kicad_pro` (board design settings) and `jlcpcb-standard.kicad_dru` (custom DRC rules). See that doc for the full constraint table and JLCPCB ordering settings.
+
+## Scaffolding new projects
+
+Use the `/new-kicad-project` skill to create a new project with library tables, `.kicad_pro`, and minimal root schematic in one step:
+
+```
+/new-kicad-project <Console> <Group> <BoardName> [mcu|breakout]
+```
+
+Example: `/new-kicad-project Center_Console Center_Armament AWRS_Panel breakout`
+
+The skill creates:
+- `PCB/<Console>/<Group>/<BoardName>/sym-lib-table` + `fp-lib-table` (copied from template)
+- `<BoardName>.kicad_pro` (with OpenSkyhawk libs pinned, correct ERC severities)
+- `<BoardName>.kicad_sch` (minimal root sheet with title block)
 
 ---
 
