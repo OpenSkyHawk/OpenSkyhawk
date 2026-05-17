@@ -4,13 +4,15 @@ Organized by discipline, then by console position (Left / Center / Right):
 
 - `CAD/` — Fusion 360 source files (`.f3d`). STLs and STEP exports are gitignored; generate from source.
 - `PCB/` — KiCad projects. `PCB/<Console>/<Controller>/` holds one KiCad project per physical PCB. `PCB/Libraries/` holds shared symbols and footprints.
-- `Firmware/` — PlatformIO projects (preferred) or Arduino sketches. Each subfolder is one STM32 controller. `Firmware/Libraries/` holds shared code used across controllers.
+- `Firmware/` — PlatformIO projects (preferred) or Arduino sketches. `Firmware/<name>/` — one STM32 CAN avionics controller per folder. `Firmware/HID_Controllers/<name>/` — one RP2040 HID controller per folder. `Firmware/Libraries/` — shared code; STM32 and RP2040 libraries in separate subdirectories.
 - `Docs/References/` — cockpit photos, manuals, screenshots. `Docs/Datasheets/` — component datasheets.
 - `docs/claude/controllers/` — per-controller reference docs (pinout, I²C addresses, CAN IDs).
 
 # Firmware Architecture
 
 Each folder under `Firmware/` maps to one STM32 MCU board. Controllers communicate over CAN bus. A controller may drive one panel or a group of adjacent panels.
+
+Controllers fall into two categories: **HID controllers** (RP2040, direct USB to PC) and **CAN avionics controllers** (STM32F103CBT6, CAN bus). The RP2040 in the flight stick doubles as the CAN gateway, bridging USB serial from the PC to the CAN network via UART.
 
 **Toolchain:** PlatformIO preferred (`platformio.ini` + `src/main.cpp`). Arduino IDE + STM32duino is an acceptable fallback (`.ino` file).
 
@@ -33,11 +35,67 @@ Each folder under `Firmware/` maps to one STM32 MCU board. Controllers communica
 
 **LED backlighting:** LEDs placed on the front side of the PCB; all other components on the back side.
 
-**DCS communication:** TBD — evaluating DCS-BIOS over CAN gateway vs. direct USB HID.
+**DCS communication:** Dual-path. RP2040 HID controllers connect directly via USB HID. DCS-BIOS state for cockpit panels routes: PC → USB serial → RP2040 (flight stick, gateway role) → UART → STM32 gateway node → CAN bus → all avionics nodes.
 
 **Naming convention:** Functional names from the start — `Center_Armament`, `Left_ECM`, etc. No `Controller_NN` placeholders.
 
 **Licensing:** GPL v2 (`Firmware/LICENSE`) due to DCS-BIOS dependency (if used).
+
+# Dual-MCU Architecture
+
+## MCU Roles
+
+| Category | MCU | Role |
+|----------|-----|------|
+| HID Controllers | RP2040 module | Flight controls, button boxes — USB HID to PC |
+| CAN Avionics Controllers | STM32F103CBT6 | Cockpit panels — switches, gauges, lighting |
+
+## HID Controllers (RP2040)
+
+Off-the-shelf modules only — no custom PCB.
+
+Preferred modules: Raspberry Pi Pico 2, Raspberry Pi Pico, Tiny2040, RP2040 Zero. Choose by mechanical fit; all are functionally equivalent for HID use.
+
+Devices: flight stick, throttle quadrant, rudder pedals, standalone button boxes.
+
+Toolchain: PlatformIO (earlephilhower/arduino-pico platform) or Arduino IDE with Arduino-Pico core. TinyUSB for USB HID + CDC composite device.
+
+RP2040 modules are bus-powered from USB. No 12V supply needed.
+
+## CAN Avionics Controllers (STM32F103CBT6)
+
+Unchanged from existing architecture. Custom PCBs per controller group. CAN bus primary (SN65HVD230 transceiver on PA11/PA12). No USB at runtime.
+
+## Gateway Role — Flight Stick RP2040
+
+The flight stick's RP2040 runs two functions simultaneously:
+1. USB HID joystick (axes + buttons)
+2. USB CDC serial — receives DCS-BIOS data from PC and forwards over UART
+
+UART connection to the CAN gateway STM32 node:
+
+| Signal | RP2040 pin | STM32 pin |
+|--------|-----------|-----------|
+| TX | RP2040 TX | PA9 (USART1 RX) |
+| RX | RP2040 RX | PA10 (USART1 TX) |
+| GND | shared GND | shared GND |
+
+Both sides are 3.3V — no level shifter required.
+Baud: 115200–230400 (confirm during integration testing).
+Packet format: `[START][TYPE][LENGTH][PAYLOAD][CHECKSUM]`
+
+## Full DCS-BIOS Message Path
+
+```
+PC
+ ↕ USB HID  (joystick axes, buttons — latency-critical)
+ ↕ USB CDC serial  (DCS-BIOS cockpit state)
+RP2040 (flight stick + gateway)
+ ↕ UART (framed packets)
+STM32F103 (CAN gateway node)
+ ↕ CAN bus
+All cockpit avionics nodes
+```
 
 # PCB Architecture
 

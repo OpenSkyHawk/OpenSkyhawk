@@ -22,6 +22,48 @@ HTSSOP (exposed thermal pad on underside) is acceptable — side leads are the c
 - CAN bus is the primary inter-board protocol; USB used only for initial flashing/debug
 - Use the bare die (not Blue Pill module) on MCU boards — fewer passive conflicts, smaller footprint
 
+## RP2040 HID Controllers
+
+**Role:** USB HID devices connecting directly to the PC — flight stick, throttle, rudder pedals, button boxes. No custom PCB; use off-the-shelf modules.
+
+### Module Selection
+
+| Module | Notes |
+|--------|-------|
+| Raspberry Pi Pico 2 | RP2350; preferred for new builds |
+| Raspberry Pi Pico | RP2040; proven, widely available |
+| Tiny2040 (Pimoroni) | Compact; USB-C; good for tight enclosures |
+| RP2040 Zero (Waveshare) | Smallest footprint |
+
+Choose by mechanical fit. All are equivalent for HID use.
+
+### ADC Inputs
+
+- 4 usable ADC channels (GPIO26–29); GPIO29 is used for VSYS monitoring on Pico modules — prefer GPIO26–28 for axes
+- 12-bit ADC, 0–3.3V range
+- Apply same RC input filter as STM32: 1 kΩ series + 100 nF to GND per axis input
+
+**Analog expansion via ADS1115 (worth prototyping):** When more than 3 axes are needed, add ADS1115 breakout(s) over I²C — the same part already used on STM32 breakout boards.
+
+- 4 channels per chip, 16-bit, I²C
+- Up to 4 chips per bus (addresses 0x48–0x4B via ADDR pin) = 16 channels per I²C bus
+- RP2040 has two I²C buses; effectively unlimited axes in practice
+- Library: Adafruit ADS1X15 (same as STM32 side — no new dependency)
+- Use same RC filter (1 kΩ + 100 nF) on each ADS1115 input
+- Prototype note: verify latency vs. onboard ADC for axis polling at HID report rate (~1 ms)
+
+### UART (Gateway Role Only)
+
+The RP2040 in the flight stick also bridges USB CDC serial to the CAN gateway STM32 via UART. See "Dual-MCU Architecture" in `architecture.md` for pin assignments and packet format. Non-gateway RP2040 boards (throttle, rudder, button boxes) do not use UART.
+
+### Power
+
+Bus-powered from USB. No 12V supply needed. If co-located with STM32 CAN hardware, share GND only — do not share 3.3V rails between the RP2040 module and STM32 board.
+
+### Toolchain
+
+PlatformIO with `earlephilhower/arduino-pico` platform (preferred) or Arduino IDE with Arduino-Pico core. TinyUSB is bundled with Arduino-Pico; use it for USB HID + CDC composite.
+
 ## Power Supply
 
 **Architecture: 12 V → AP63205 (buck) → 5 V → AMS1117-3.3 (LDO) → 3.3 V**
