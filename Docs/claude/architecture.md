@@ -68,11 +68,14 @@ Unchanged from existing architecture. Custom PCBs per controller group. CAN bus 
 
 ## Gateway Role — Flight Stick RP2040
 
-The flight stick's RP2040 runs two functions simultaneously:
-1. USB HID joystick (axes + buttons)
-2. USB CDC serial — receives DCS-BIOS data from PC and forwards over UART
+The flight stick's RP2040 runs two serial interfaces simultaneously:
 
-UART connection to the CAN gateway STM32 node:
+| Interface | Object | Baud | Purpose |
+|-----------|--------|------|---------|
+| USB CDC serial | `Serial` | **250000** | DCS-BIOS ↔ PC (fixed by DCS-BIOS protocol) |
+| Hardware UART | `Serial1` | 115200+ | RP2040 ↔ STM32 master node |
+
+UART wiring to the CAN gateway STM32 node:
 
 | Signal | RP2040 pin | STM32 pin |
 |--------|-----------|-----------|
@@ -81,21 +84,51 @@ UART connection to the CAN gateway STM32 node:
 | GND | shared GND | shared GND |
 
 Both sides are 3.3V — no level shifter required.
-Baud: 115200–230400 (confirm during integration testing).
-Packet format: `[START][TYPE][LENGTH][PAYLOAD][CHECKSUM]`
+
+**PlatformIO dependency:** `dcs-skunkworks/DCS-BIOS`. Route to USB with `#define DCSBIOS_DEFAULT_SERIAL` before `#include <DCSBIOS.h>`.
+
+### Packet Format (RP2040 ↔ STM32)
+
+Simple 4-byte struct — no framing overhead needed at this scale:
+
+```cpp
+struct ControlPacket {
+    uint16_t controlId;  // panel control identifier
+    uint16_t value;      // current value
+};
+```
+
+### DCS-BIOS Integration Constraint
+
+DCS-BIOS is designed to read hardware state directly from the MCU it runs on — it cannot consume CAN bus packets natively. On the gateway RP2040, UART packets from the STM32 cluster must be parsed manually and translated into DCS-BIOS commands via `sendDcsBiosMessage("CONTROL_NAME", "value")`.
+
+```cpp
+// Cockpit → DCS (switch/axis input from STM32)
+switch (packet.controlId) {
+    case 0x0101:
+        sendDcsBiosMessage("MASTER_CAUTION_SW", packet.value ? "1" : "0");
+        break;
+}
+```
+
+### Bidirectional Flow — DCS → Cockpit
+
+LED indicator states and gauge targets flow in the opposite direction: DCS-BIOS outputs are intercepted on the RP2040 using `DcsBios::StringBuffer` (or integer buffer) callbacks and pushed back down `Serial1` to the STM32 master, which distributes them over CAN.
 
 ## Full DCS-BIOS Message Path
 
 ```
 PC
  ↕ USB HID  (joystick axes, buttons — latency-critical)
- ↕ USB CDC serial  (DCS-BIOS cockpit state)
+ ↕ USB CDC serial @ 250000 baud  (DCS-BIOS cockpit state)
 RP2040 (flight stick + gateway)
- ↕ UART (framed packets)
-STM32F103 (CAN gateway node)
+ ↕ UART @ 115200+  (ControlPacket structs, bidirectional)
+STM32F103 (CAN master node)
  ↕ CAN bus
 All cockpit avionics nodes
 ```
+
+**STM32 master node role:** CAN Rx interrupt → pack into `ControlPacket` → push out USART TX to RP2040. Reverse: receive `ControlPacket` from RP2040 → broadcast LED/gauge state over CAN.
 
 # PCB Architecture
 
