@@ -21,7 +21,7 @@
 | TBD | MCP23017 #1 | Switch inputs |
 | TBD | MCP23017 #2 (optional) | Lamp/output expansion |
 | TBD | ADS1115 (AWRS breakout) | AWRS QTY, DROP INTVL, MODE SEL |
-| TBD | MCP23017 (Misc Switch breakout) | Toggle inputs |
+| TBD | MCP23017 (Misc Switch breakout) | 12 digital inputs (switches 720–727); see Misc_Switch_Panel.md |
 
 ## ADC Inputs (on Armament_MCU board)
 
@@ -29,13 +29,16 @@
 |---|---|---|
 | TBD | EMER SEL rotary | Resistor ladder |
 | TBD | MODE SEL lever (bombing mode) | Resistor ladder |
+| TBD | MISSILE_VOL pot (726, via J2 pin 7) | Analog (pot wiper, −1 to +1 V range) |
 
 ## Harness Connectors
 
 | Connector | To | Pins |
 |---|---|---|
 | J1 | AWRS_Panel | 6-pin MicroFit 3.0 (SDA, SCL, GND, GND, 12V, 3.3V) |
-| J2 | Misc_Switch_Panel | 6-pin MicroFit 3.0 (SDA, SCL, GND, GND, 12V, 3.3V) |
+| J2 | Misc_Switch_Panel | 7-pin MicroFit 3.0 (SDA, SCL, GND, GND, 12V, 3.3V, ANALOG) |
+
+J2 pin 7 carries the MISSILE_VOL pot wiper from the Misc Switch Panel back to the STM32 ADC.
 
 ## DCS-BIOS Mappings (Armament Panel)
 
@@ -48,3 +51,16 @@
 | 708 | Bombing Mode |
 | 709 | Master |
 | 710 | Cabin Pressure |
+
+## DCS-BIOS Mappings (Misc Switch Panel)
+
+| DCS-BIOS ID | Point | Control |
+|---|---|---|
+| FUEL_EXT_BTN | 720 | Show EXT Fuel (pushbutton) |
+| RADAR_PROFILE | 721 | Radar Plan/Profile (2-pos toggle) |
+| RADAR_RANGE | 722 | Radar Long/Short Range (2-pos toggle) |
+| MASTER_TEST | 723 | Master Test (pushbutton) |
+| BDHI_MODE | 724 | BDHI mode — NAV PAC / TACAN / NAV CMPTR (3-pos toggle) |
+| SHRIKE_SEL_KNB | 725 | Shrike Selector Knob (5-pos rotary; handler stub in mod) |
+| MISSILE_VOL | 726 | Missile Volume Knob (pot, −1 to +1) |
+| — | 727 | CONT/NORM (2-pos toggle; not in DCS — spare GPIO) |
