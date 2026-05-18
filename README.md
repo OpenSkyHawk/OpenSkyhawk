@@ -36,7 +36,7 @@ OpenSkyhawk/
 
 Each physical panel group is driven by one **STM32F103CBT6** MCU board. Boards communicate over **CAN bus** via Molex Mini-Fit Jr connectors. Panel breakout boards connect to their MCU board via 6- or 8-pin JST-XH harnesses. Firmware is built with **PlatformIO**.
 
-DCS communication: DCS-BIOS (CAN gateway vs. direct USB HID — TBD).
+DCS communication: DCS-BIOS cockpit state flows PC → USB CDC → RP2040 bridge (Tiny2040) → UART → STM32 CAN master → CAN bus → all avionics nodes. STM32 native USB CDC is not used — it crashes under sustained DCS-BIOS load.
 
 ## Console Layout
 

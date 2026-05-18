@@ -87,6 +87,8 @@ Both sides are 3.3V — no level shifter required.
 
 **PlatformIO dependency:** `dcs-skunkworks/DCS-BIOS`. Route to USB with `#define DCSBIOS_DEFAULT_SERIAL` before `#include <DCSBIOS.h>`.
 
+**STM32 USB CDC must not be used for DCS-BIOS.** Under sustained DCS-BIOS data flow the STM32 native USB CDC port crashes (socat exits "Permission denied"; port becomes unusable until replug). Always use UART on STM32 nodes and bridge via an RP2040 module (Tiny2040 or similar). The RP2040's USB stack handles 250000 baud DCS-BIOS traffic without issue. Bridge firmware and wiring: `Firmware/HID_Controllers/DCS_BIOS_Bridge/`.
+
 ### Packet Format (RP2040 ↔ STM32)
 
 Simple 4-byte struct — no framing overhead needed at this scale:
