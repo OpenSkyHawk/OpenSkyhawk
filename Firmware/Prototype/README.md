@@ -98,22 +98,21 @@ On the **master**: fast blink means at least one sub-node has missed its heartbe
 
 **What this measures:** The volume and burst shape of the DCS-BIOS data stream from a live FA-18C session. Results size the STM32 UART RX buffer and estimate the maximum CAN frame rate the production system will need to sustain.
 
-**What this does not test:** CAN bus behaviour. The Arduino relays raw DCS-BIOS bytes to the STM32 master. The master tries to parse them as 4-byte `ControlPacket` structs and will emit `[OVF]` alignment errors throughout — this is expected and irrelevant. Ignore the diagnostic tap during this experiment; read only the Serial2 analytics output.
+**What this does not test:** CAN bus behaviour. Run this experiment with the STM32 disconnected — the Arduino measures the byte stream whether or not anything is listening on Serial1.
 
 ### Wiring (Experiment A)
 
 ```
 PC (DCS-BIOS USB) → Arduino USB (Serial, 250000)
-Arduino Serial1 pin 18 (TX) → 1 kΩ → STM32 Master PA3 ← 2 kΩ → GND
-Arduino Serial1 pin 19 (RX) ← STM32 Master PA2
-Arduino Serial2 pin 16 (TX) → USB-TTL adapter 2 RX
-GND ─── GND (all boards)
-USB-TTL adapter 1 RX ← STM32 Master PA9   [optional during this experiment]
+Arduino Serial2 pin 16 (TX) → USB-TTL adapter 2 RX   [analytics console]
+Arduino Serial1 — leave unconnected
 ```
+
+The STM32 is not involved. Serial1 transmits into the air; the firmware doesn't care. Connecting the STM32 during this step adds `[OVF]` noise from the misframed relay without adding useful information — defer that to Experiment B.
 
 ### Procedure
 
-1. Wire as above. Open a terminal on **USB-TTL adapter 2** (115200) — this is the analytics console. Optionally open a second terminal on **USB-TTL adapter 1** (115200) if you want to monitor the expected `[OVF]` noise.
+1. Wire as above. Open a terminal on **USB-TTL adapter 2** (115200) — this is the analytics console.
 2. Load DCS and spawn a FA-18C. Wait for the aircraft to finish initialising.
 3. Send `D` on Serial2 to reset capture statistics (DCS capture mode starts automatically at boot, but `D` gives a clean baseline).
 4. Fly for 5 minutes with realistic cockpit activity — switch sweeps, system runups, a circuit. The goal is representative traffic, not minimum or maximum.
@@ -255,4 +254,3 @@ The Arduino is **not connected** in Experiment C. The UART2 link belongs entirel
 | TEC climbing only with DCS active | UART ISR delays CAN inter-frame timing | Raise CAN NVIC priority above UART DMA |
 | RTT tail >20 ms at fast burst | CAN arbitration delay under contention | Normal at extreme load; investigate if it appears at `F` mode rate |
 | No heartbeat from sub-node | Wiring, termination, or transceiver power | Verify SN65HVD230 VCC = 3.3 V; confirm 120 Ω at endpoints only; confirm GND wire alongside bus |
-| `[OVF]` throughout Experiment A | Expected — master parsing raw DCS-BIOS bytes as ControlPackets | Ignore during Experiment A; this is not a loss event |
