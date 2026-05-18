@@ -1,14 +1,12 @@
 // CAN_Test_Arduino — Arduino Mega 2560
 //
-// Serial  (USB, 115200) : command input + console output (Phase 1)
+// Serial  (USB, 250000) : DCS-BIOS input only
 // Serial1 (pins 18/19, 250000) : UART to STM32 master
-// Serial2 (pins 16/17, 115200) : analytics / diagnostic output
-//   - In Phase 2, Serial is owned by DCS-BIOS at 250000; Serial2 is the
-//     only diagnostic window.  Wire Serial2 to a USB-TTL adapter.
+// Serial2 (pins 16/17, 115200) : command input + analytics / diagnostic output
+//   - Wire Serial2 to a USB-TTL adapter for the debug console.
 //
-// Commands (send a single character over Serial):
-//   D  — DCS-BIOS capture mode: relay Serial→Serial1, analyse byte stream,
-//          print 1-second stats + 5-minute summary to Serial2
+// Commands (send a single character over Serial2):
+//   D  — DCS-BIOS capture mode: relay Serial→Serial1 and reset capture stats
 //   I  — Idle (stop all injection)
 //   S  — Slow sweep: one ControlPacket per 100 ms (10 pkts/sec)
 //   F  — Fast burst: one ControlPacket per 1.6 ms (~625 pkts/sec)
@@ -28,6 +26,10 @@
 // ── modes ─────────────────────────────────────────────────────────────────────
 enum class Mode : uint8_t { IDLE, SLOW, FAST, EXTREME, THROUGHPUT, DCS_CAPTURE };
 static Mode mode = Mode::IDLE;
+
+static constexpr bool START_IN_DCS_CAPTURE = true;
+static constexpr uint32_t DCS_BIOS_BAUD = 250000;
+static constexpr uint32_t DEBUG_BAUD = 115200;
 
 // ── ControlPacket sweep table (Slow/Fast/Extreme) ────────────────────────────
 static const ControlPacket sweepTable[] = {
@@ -95,6 +97,24 @@ static uint32_t dcsPeak100ms = 0, dcsCur100Bytes = 0, dcsCur100Start = 0;
 
 static constexpr uint32_t DCS_FRAME_GAP_MS = 5;   // gap > 5ms = frame boundary
 static constexpr uint32_t DCS_CAPTURE_MS   = 5UL * 60UL * 1000UL;  // 5 min
+
+static void dcsResetStats(uint32_t now) {
+    dcsStartMs = dcsSecStart = dcsCur100Start = now;
+    dcsTotalBytes = dcsTotalFrames = 0;
+    dcsSecBytes = dcsSecFrames = 0;
+    dcsSecMaxFrame = 0;
+    dcsSecMinFrame = 0xFFFFFFFF;
+    dcsSecMaxGap = 0;
+    dcsLastByteMs = now;
+    dcsCurrentFrame = 0;
+    dcsInFrame = false;
+    sumMinRate = sumMinFrame = sumMinGap = 0xFFFFFFFF;
+    sumMaxRate = sumMaxFrame = sumMaxGap = 0;
+    sumRateCount = sumRateTotal = 0;
+    sumFrameCount = sumFrameTotal = 0;
+    sumGapCount = sumGapTotal = 0;
+    dcsPeak100ms = dcsCur100Bytes = 0;
+}
 
 static void dcsProcessByte(uint8_t b, uint32_t now) {
     // relay to STM32
@@ -241,12 +261,18 @@ static void sendSeq(uint16_t seq) {
 
 // ── setup / loop ──────────────────────────────────────────────────────────────
 void setup() {
-    Serial.begin(115200);   // console / Phase-2 DCS-BIOS (250000 set per mode)
+    Serial.begin(DCS_BIOS_BAUD);
     Serial1.begin(250000);  // STM32 master UART
-    Serial2.begin(115200);  // analytics tap
+    Serial2.begin(DEBUG_BAUD);  // debug console / analytics tap
 
     Serial2.println(F("CAN_Test_Arduino ready."));
-    Serial2.println(F("Commands on Serial: D=DCS-capture I=idle S=slow F=fast X=extreme T=throughput"));
+    if (START_IN_DCS_CAPTURE) {
+        uint32_t now = millis();
+        mode = Mode::DCS_CAPTURE;
+        dcsResetStats(now);
+        Serial2.println(F("DCS-BIOS capture started at boot. USB Serial is fixed at 250000 baud."));
+    }
+    Serial2.println(F("Commands on Serial2: D=DCS-capture I=idle S=slow F=fast X=extreme T=throughput"));
 }
 
 static uint32_t lastInject = 0;
@@ -256,28 +282,15 @@ void loop() {
     uint32_t now = millis();
 
     // ── command input ──────────────────────────────────────────────────────
-    if (Serial.available()) {
-        char c = toupper(Serial.read());
+    if (Serial2.available()) {
+        char c = toupper(Serial2.read());
         switch (c) {
             case 'D':
-                // Switch Serial to 250000 for DCS-BIOS
-                Serial.end(); Serial.begin(250000);
                 mode = Mode::DCS_CAPTURE;
-                dcsStartMs = dcsSecStart = dcsCur100Start = now;
-                dcsTotalBytes = dcsTotalFrames = 0;
-                dcsSecBytes = dcsSecFrames = 0;
-                dcsLastByteMs = now;
-                dcsCurrentFrame = 0; dcsInFrame = false;
-                sumMinRate = sumMinFrame = sumMinGap = 0xFFFFFFFF;
-                sumMaxRate = sumMaxFrame = sumMaxGap = 0;
-                sumRateCount = sumRateTotal = 0;
-                sumFrameCount = sumFrameTotal = 0;
-                sumGapCount = sumGapTotal = 0;
-                dcsPeak100ms = dcsCur100Bytes = 0;
-                Serial2.println(F("[D] DCS-BIOS capture started. Serial now 250000 baud."));
+                dcsResetStats(now);
+                Serial2.println(F("[D] DCS-BIOS capture started. USB Serial is fixed at 250000 baud."));
                 break;
             case 'I':
-                if (mode == Mode::DCS_CAPTURE) { Serial.end(); Serial.begin(115200); }
                 mode = Mode::IDLE;
                 Serial2.println(F("[I] Idle."));
                 break;
@@ -314,8 +327,7 @@ void loop() {
         }
         if (now - dcsStartMs >= DCS_CAPTURE_MS) {
             dcsSummary();
-            mode = Mode::IDLE;
-            Serial.end(); Serial.begin(115200);
+            dcsResetStats(now);
         }
         drainDiag();
         return;
