@@ -73,15 +73,19 @@ The flight stick's RP2040 runs two serial interfaces simultaneously:
 | Interface | Object | Baud | Purpose |
 |-----------|--------|------|---------|
 | USB CDC serial | `Serial` | **250000** | DCS-BIOS ↔ PC (fixed by DCS-BIOS protocol) |
-| Hardware UART | `Serial1` | 115200+ | RP2040 ↔ STM32 master node |
+| Hardware UART | `Serial1` | **250000** | RP2040 ↔ STM32 master node |
+
+UART baud matches DCS-BIOS protocol rate on both hops — no buffering mismatch.
 
 UART wiring to the CAN gateway STM32 node:
 
 | Signal | RP2040 pin | STM32 pin |
 |--------|-----------|-----------|
-| TX | RP2040 TX | PA9 (USART1 RX) |
-| RX | RP2040 RX | PA10 (USART1 TX) |
+| TX | GP0 (UART0 TX) | PA3 (UART2 RX) |
+| RX | GP1 (UART0 RX) | PA2 (UART2 TX) |
 | GND | shared GND | shared GND |
+
+**Use UART2 (PA2/PA3) on STM32, not UART1.** Remapping `Serial` to `Serial1` (PA9/PA10) causes "multiple definition of Serial2" compile errors or runtime failures with STM32duino. With no CDC flag, `Serial` maps natively to UART2 on PA2/PA3 — use that.
 
 Both sides are 3.3V — no level shifter required.
 
