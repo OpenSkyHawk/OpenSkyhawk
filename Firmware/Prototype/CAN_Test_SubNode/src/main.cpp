@@ -19,6 +19,7 @@ static uint32_t hbTxId    = CAN_ID_HB_1;
 static uint32_t evtTxId   = CAN_ID_EVT_1;
 static uint32_t echoTxId  = CAN_ID_ECHO_1;
 static uint32_t rxCount   = 0;
+static uint32_t txDrops   = 0;  // mailbox-full TX failures
 static uint32_t startMs   = 0;
 
 // ── HAL CAN state ─────────────────────────────────────────────────────────────
@@ -85,7 +86,9 @@ static void canTx(uint32_t id, const uint8_t* data, uint8_t len) {
     txHeader.StdId = id;
     txHeader.DLC   = len;
     uint32_t mailbox;
-    HAL_CAN_AddTxMessage(&hcan, &txHeader, const_cast<uint8_t*>(data), &mailbox);
+    if (HAL_CAN_AddTxMessage(&hcan, &txHeader, const_cast<uint8_t*>(data), &mailbox) != HAL_OK) {
+        txDrops++;
+    }
 }
 
 // ── CAN receive ───────────────────────────────────────────────────────────────
@@ -116,10 +119,11 @@ static void sendHeartbeat(uint32_t now) {
     if (now - lastHbMs < 500) return;
     lastHbMs = now;
 
-    uint32_t msr32 = CAN1->MSR;
+    uint32_t esr32 = CAN1->ESR;
     uint8_t  flags = 0;
-    if (msr32 & (1 << 2)) flags |= 0x01;  // BOFF
-    if (msr32 & (1 << 1)) flags |= 0x02;  // EPVF
+    if (esr32 & (1 << 2)) flags |= 0x01;  // BOFF  — ESR bit 2
+    if (esr32 & (1 << 1)) flags |= 0x02;  // EPVF  — ESR bit 1
+    if (txDrops > 0)       flags |= 0x04;  // TXDROP — mailbox-full TX failures
 
     uint16_t uptime16 = (uint16_t)((now - startMs) / 1000);
     uint16_t rxc16    = (uint16_t)(rxCount & 0xFFFF);
@@ -158,8 +162,9 @@ static uint32_t lastLedMs = 0;
 static bool     ledState  = false;
 
 static void updateLed(uint32_t now) {
-    uint8_t  tec  = (CAN1->ESR >> 24) & 0xFF;
-    bool     boff = (CAN1->MSR >> 2) & 1;
+    uint32_t esr  = CAN1->ESR;
+    uint8_t  tec  = (esr >> 16) & 0xFF;  // ESR[23:16]
+    bool     boff = (esr >> 2) & 1;      // ESR bit 2
     if (boff) { digitalWrite(LED_PIN, LOW); return; }
     uint32_t period = (tec > 0) ? 100 : 500;
     if (now - lastLedMs >= period) {

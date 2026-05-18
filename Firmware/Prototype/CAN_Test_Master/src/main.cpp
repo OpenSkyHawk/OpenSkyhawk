@@ -13,6 +13,8 @@
 
 // ── peripherals ───────────────────────────────────────────────────────────────
 HardwareSerial DiagSerial(PA9, PA10);  // UART1, TX-only diagnostic tap
+// PA9 = UART1 TX → USB-TTL adapter. PA10 is declared as RX but never used;
+// leave PA10 unconnected on the bench.
 
 // ── HAL CAN state ─────────────────────────────────────────────────────────────
 static CAN_HandleTypeDef    hcan;
@@ -256,13 +258,12 @@ static void monitorErrors(uint32_t now) {
     lastErrReport = now;
 
     uint32_t esr = CAN1->ESR;
-    uint8_t  tec = (esr >> 24) & 0xFF;
-    uint8_t  rec = (esr >> 16) & 0xFF;
-    uint32_t msr = CAN1->MSR;
+    uint8_t  tec = (esr >> 16) & 0xFF;  // ESR[23:16]
+    uint8_t  rec = (esr >> 24) & 0xFF;  // ESR[31:24]
     uint8_t  flags = 0;
-    if (msr & (1 << 2)) flags |= 0x01;  // BOFF
-    if (msr & (1 << 1)) flags |= 0x02;  // EPVF
-    if (msr & (1 << 0)) flags |= 0x04;  // EWGF
+    if (esr & (1 << 2)) flags |= 0x01;  // BOFF — ESR bit 2
+    if (esr & (1 << 1)) flags |= 0x02;  // EPVF — ESR bit 1
+    if (esr & (1 << 0)) flags |= 0x04;  // EWGF — ESR bit 0
     busOff = (flags & 0x01);
 
     if (tec > 0 || rec > 0 || flags) {
