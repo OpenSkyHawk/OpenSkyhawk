@@ -70,15 +70,26 @@ Required defines before `#include <DCSBIOS.h>`:
 
 Baud rate: **250000** (fixed by DCS-BIOS protocol).
 
-### Tiny2040 bridge wiring (proto — maps to RP2040 gateway in production)
+### Arduino Mega 2560 bridge wiring (used in this session)
 
-| Tiny2040 / RP2040 | Direction | STM32 |
+STM32 UART2 connects to Mega UART1. Mega relays traffic between UART1 and
+its USB Serial (`Serial` / UART0) at 250000 baud on both sides.
+
+| Arduino Mega | Direction | STM32 |
 |---|---|---|
-| GP0 (UART0 TX) | → | PA3 (RX) |
-| GP1 (UART0 RX) | ← | PA2 (TX) |
+| Pin 18 (TX1 / UART1) | → | PA3 (UART2 RX) |
+| Pin 19 (RX1 / UART1) | ← | PA2 (UART2 TX) |
 | GND | — | GND |
 
-Both sides are 3.3 V — no level shifter needed.
+⚠️ STM32 is 3.3 V; Mega is 5 V. The STM32 RX pin (PA3) receives 5 V from
+the Mega TX — this is out-of-spec for STM32 GPIO. It worked on the bench
+but a 5 V→3.3 V voltage divider or level shifter on that line is recommended
+for anything beyond a one-off proto session.
+
+The Mega's TX line (Mega Pin 18 → STM32 PA3) drives 5 V into a 3.3 V input.
+
+**Planned replacement:** Tiny2040 (or any RP2040 module) — both sides 3.3 V,
+no level shifter needed. Firmware: `Firmware/HID_Controllers/DCS_BIOS_Bridge/`.
 
 ### PC13 onboard LED
 
