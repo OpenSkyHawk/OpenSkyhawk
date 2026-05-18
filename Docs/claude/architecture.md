@@ -128,7 +128,7 @@ PC
  ↕ USB HID  (joystick axes, buttons — latency-critical)
  ↕ USB CDC serial @ 250000 baud  (DCS-BIOS cockpit state)
 RP2040 (flight stick + gateway)
- ↕ UART @ 115200+  (ControlPacket structs, bidirectional)
+ ↕ UART @ 250000 baud  (ControlPacket structs, bidirectional)
 STM32F103 (CAN master node)
  ↕ CAN bus
 All cockpit avionics nodes
