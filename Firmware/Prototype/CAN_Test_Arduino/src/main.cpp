@@ -51,6 +51,12 @@ static uint32_t tStart  = 0;
 static uint32_t rttBucket[8] = {};
 static uint32_t rttSendTime[T_COUNT] = {};  // send timestamp per seq
 
+/**
+ * Record the round-trip time for a throughput-test sequence echo.
+ *
+ * @param seq Sequence number that was echoed by the STM32 master.
+ * @param rxTime Local millis() timestamp when the echo was received.
+ */
 static void rttRecord(uint16_t seq, uint32_t rxTime) {
     if (seq >= T_COUNT) return;
     uint32_t rtt = rxTime - rttSendTime[seq];
@@ -66,6 +72,9 @@ static void rttRecord(uint16_t seq, uint32_t rxTime) {
     rttBucket[b]++;
 }
 
+/**
+ * Print throughput-test RTT bucket counts and packet totals to Serial2.
+ */
 static void printRttHistogram() {
     Serial2.println(F("=== RTT Histogram ==="));
     const char* labels[] = {"<1ms","1-2ms","2-3ms","3-6ms","6-11ms","11-21ms","21-51ms",">51ms"};
@@ -98,6 +107,11 @@ static uint32_t dcsPeak100ms = 0, dcsCur100Bytes = 0, dcsCur100Start = 0;
 static constexpr uint32_t DCS_FRAME_GAP_MS = 5;   // gap > 5ms = frame boundary
 static constexpr uint32_t DCS_CAPTURE_MS   = 5UL * 60UL * 1000UL;  // 5 min
 
+/**
+ * Reset all DCS-BIOS capture counters and summary accumulators.
+ *
+ * @param now Current millis() timestamp used as the new capture start time.
+ */
 static void dcsResetStats(uint32_t now) {
     dcsStartMs = dcsSecStart = dcsCur100Start = now;
     dcsTotalBytes = dcsTotalFrames = 0;
@@ -116,6 +130,14 @@ static void dcsResetStats(uint32_t now) {
     dcsPeak100ms = dcsCur100Bytes = 0;
 }
 
+/**
+ * Relay one DCS-BIOS byte to the STM32 and update capture statistics.
+ *
+ * Frame boundaries are inferred from idle gaps larger than DCS_FRAME_GAP_MS.
+ *
+ * @param b Raw byte read from the USB Serial DCS-BIOS stream.
+ * @param now Current millis() timestamp for rate, burst, and gap tracking.
+ */
 static void dcsProcessByte(uint8_t b, uint32_t now) {
     // relay to STM32
     Serial1.write(b);
@@ -156,6 +178,11 @@ static void dcsProcessByte(uint8_t b, uint32_t now) {
     dcsLastByteMs = now;
 }
 
+/**
+ * Print and reset the rolling one-second DCS-BIOS capture report.
+ *
+ * @param now Current millis() timestamp used to compute the byte rate.
+ */
 static void dcsSecReport(uint32_t now) {
     uint32_t elapsed = now - dcsSecStart;
     uint32_t rate = (elapsed > 0) ? (dcsSecBytes * 1000UL / elapsed) : 0;
@@ -178,6 +205,9 @@ static void dcsSecReport(uint32_t now) {
     dcsSecStart = now;
 }
 
+/**
+ * Print the accumulated DCS-BIOS capture summary to the debug console.
+ */
 static void dcsSummary() {
     Serial2.println(F(""));
     Serial2.println(F("===== DCS-BIOS CAPTURE SUMMARY ====="));
@@ -206,6 +236,11 @@ static void dcsSummary() {
 static uint8_t diagBuf[8];
 static uint8_t diagPos = 0;
 
+/**
+ * Decode one fixed-size diagnostic frame received from the STM32 master.
+ *
+ * @param p Pointer to an 8-byte diagnostic frame beginning with DIAG_MAGIC.
+ */
 static void processDiag(const uint8_t* p) {
     switch (p[1]) {
         case DIAG_RTT: {
@@ -235,6 +270,12 @@ static void processDiag(const uint8_t* p) {
     }
 }
 
+/**
+ * Drain pending STM32 diagnostic bytes from Serial1.
+ *
+ * The parser waits for DIAG_MAGIC, buffers 8-byte frames, and dispatches each
+ * complete frame to processDiag().
+ */
 static void drainDiag() {
     // drain Serial1 RX (diagnostic responses from master)
     while (Serial1.available()) {
@@ -249,10 +290,20 @@ static void drainDiag() {
 }
 
 // ── injection helpers ─────────────────────────────────────────────────────────
+/**
+ * Send one raw ControlPacket to the STM32 master over Serial1.
+ *
+ * @param pkt Packed 4-byte control packet to transmit.
+ */
 static void sendPacket(const ControlPacket& pkt) {
     Serial1.write(reinterpret_cast<const uint8_t*>(&pkt), 4);
 }
 
+/**
+ * Send one throughput-test sequence packet and remember its send timestamp.
+ *
+ * @param seq Sequence number to place in the TEST_SEQ packet value field.
+ */
 static void sendSeq(uint16_t seq) {
     ControlPacket p{0xFFFF, seq};
     rttSendTime[seq % T_COUNT] = millis();
@@ -260,6 +311,9 @@ static void sendSeq(uint16_t seq) {
 }
 
 // ── setup / loop ──────────────────────────────────────────────────────────────
+/**
+ * Initialize the three serial links and optionally enter DCS capture mode.
+ */
 void setup() {
     Serial.begin(DCS_BIOS_BAUD);
     Serial1.begin(250000);  // STM32 master UART
@@ -278,6 +332,10 @@ void setup() {
 static uint32_t lastInject = 0;
 static uint32_t lastSecReport = 0;
 
+/**
+ * Main scheduler for debug commands, DCS relay/capture, diagnostics, and
+ * synthetic traffic injection modes.
+ */
 void loop() {
     uint32_t now = millis();
 
