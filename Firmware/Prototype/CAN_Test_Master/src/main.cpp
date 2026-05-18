@@ -184,23 +184,26 @@ static void processCan() {
             }
             case ID_ECHO_1:
             case ID_ECHO_2: {
-                uint32_t seq, rxMs;
-                memcpy(&seq,  rxData,     4);
-                memcpy(&rxMs, rxData + 4, 4);
-                uint32_t rtt = now - rxMs;
-                DiagSerial.print(F("[RTT] seq="));
-                DiagSerial.print((uint16_t)seq);
-                DiagSerial.print(F(" ~rtt="));
-                DiagSerial.print(rtt);
-                DiagSerial.println(F("ms"));
+                // bytes 0-3: seq_num; bytes 4-7: Arduino send timestamp (passed
+                // through unchanged by sub-node — do not recompute from sub-node clock)
+                uint32_t seq;
+                memcpy(&seq, rxData, 4);
+                DiagSerial.print(F("[ECHO] node="));
+                DiagSerial.print((id == ID_ECHO_1) ? 1 : 2);
+                DiagSerial.print(F(" seq="));
+                DiagSerial.println((uint16_t)seq);
 
-                uint8_t pl[6];
-                uint16_t seq16 = (uint16_t)seq;
-                memcpy(pl,     &seq16, 2);
-                memcpy(pl + 2, &rxMs,  4);
-                uint8_t pkt[8] = {DIAG_MAGIC, DIAG_RTT};
-                memcpy(pkt + 2, pl, 6);
-                Serial.write(pkt, 8);
+                // Forward ECHO_1 only — Arduino tEchoed counts one echo per seq_num.
+                // ECHO_2 is logged above but not forwarded; the histogram stays 1000/1000.
+                if (id == ID_ECHO_1) {
+                    uint8_t pl[6];
+                    uint16_t seq16 = (uint16_t)seq;
+                    memcpy(pl,     &seq16,      2);
+                    memcpy(pl + 2, rxData + 4,  4);  // Arduino's original send timestamp
+                    uint8_t pkt[8] = {DIAG_MAGIC, DIAG_RTT};
+                    memcpy(pkt + 2, pl, 6);
+                    Serial.write(pkt, 8);
+                }
                 break;
             }
         }

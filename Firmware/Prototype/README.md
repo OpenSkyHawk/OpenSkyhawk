@@ -120,7 +120,7 @@ The STM32 is not involved. Serial1 transmits into the air; the firmware doesn't 
 
 **Record:**
 - Peak 100 ms burst (bytes) → minimum STM32 UART RX buffer size
-- Average byte rate (B/s) → divide by 4 to estimate mean CAN frames/sec
+- Average byte rate (B/s) → UART load metric; do not treat this as a CAN frame rate estimate. The production RP2040 translator will emit selected `ControlPacket`s, not one frame per 4 raw bytes, so actual CAN traffic will be significantly lower.
 - Min/max inter-frame gap (ms) → confirms burst vs. continuous stream character
 
 **FA-18C vs A-4E-C note:** FA-18C has more total controls (~285 vs ~198) but A-4E-C has roughly 6× more float outputs (89 vs ~15). Float outputs update continuously and drive higher sustained byte rates — the A-4E-C stream is the harder production case. Run this experiment against the A-4E-C when the mod is installed in Saved Games rather than the model viewer work tree.
@@ -165,7 +165,11 @@ to:
 hcan.Init.Mode = CAN_MODE_LOOPBACK;
 ```
 
-Rebuild and flash. In loopback mode the CAN controller's TX feeds its own RX internally — no transceiver or bus is needed. Send `S` on Serial2. Watch the diagnostic tap for 30 seconds. Pass: LED blinks at 1 Hz, no `[ERRS]` lines. Any non-zero TEC or REC means the bit timing is wrong — check the crystal and PLL configuration.
+Rebuild and flash. In loopback mode the CAN controller's TX feeds its own RX internally — no transceiver or bus is needed. Send `S` on Serial2. Watch the diagnostic tap for 30 seconds.
+
+Pass: no `[ERRS]` lines with non-zero TEC or REC. Any non-zero TEC or REC means the bit timing is wrong — check the crystal and PLL configuration.
+
+Note: the master LED will **fast-blink** throughout this step because both sub-nodes are absent and the watchdog considers them dead. Fast-blink here is expected and does not indicate a failure.
 
 Loopback does not exercise sub-node echo. The `T` throughput test will time out because the master does not parse `ID_TEST_SEQ` on receive. Use `S` or `F` for traffic generation in this step only.
 
@@ -174,6 +178,8 @@ Restore `CAN_MODE_NORMAL`, rebuild, and flash before proceeding.
 **Step 2 — Two-node bus**
 
 Wire Master and Sub-1 with 120 Ω at each end. Flash Sub-1 (PA0 strapped to 3.3 V → `node_id = 1`). Send `S` on Serial2.
+
+Note: the master LED will fast-blink in this step because Sub-2 is absent and the watchdog considers it dead. This is expected until Step 3.
 
 Pass criteria after 5 minutes:
 - `[HB] node=1` appears every ~500 ms
@@ -222,7 +228,11 @@ Pass: no entries in the >20 ms bucket under normal two-node conditions. If the t
 
 **Why it is blocked:** The RP2040 Bridge firmware (`Firmware/HID_Controllers/DCS_BIOS_Bridge/`) currently relays raw DCS-BIOS bytes transparently. The STM32 master expects 4-byte `ControlPacket` structs (`{uint16_t controlId; uint16_t value;}`). Without a translator the master receives misframed data and emits `[OVF]` alignment errors — CAN nodes do not receive any meaningful state.
 
-**What needs to be built:** A DCS-BIOS output callback on the RP2040 that intercepts specific control values (e.g. `MASTER_ARM_SW`, `HUD_VIDEO_BRT`) and serialises them as `ControlPacket` structs on `Serial1` to the master. See `Docs/claude/architecture.md` — "DCS-BIOS Integration Constraint" section for the packet format and example code.
+**What needs to be built — two independent halves:**
+
+1. **DCS → cockpit** (downstream): DCS-BIOS output callbacks on the RP2040 intercept specific control state values (e.g. `MASTER_ARM_SW`, `HUD_VIDEO_BRT`) and serialise them as `ControlPacket` structs on `Serial1` to the STM32 master, which broadcasts them over CAN to sub-nodes. See `Docs/claude/architecture.md` — "DCS-BIOS Integration Constraint" section for the packet format and example code.
+
+2. **Cockpit → DCS** (upstream): When a sub-node detects a button press it transmits an INPUT_EVENT on CAN. The STM32 master already forwards these to the RP2040 as `ControlPacket` structs over UART2. The RP2040 must parse incoming `ControlPacket`s on `Serial1` and translate them to `sendDcsBiosMessage()` calls. Without this half, physical cockpit inputs have no effect in the sim. See `Docs/claude/architecture.md` — "DCS-BIOS Integration Constraint" section for the translation pattern.
 
 **Wiring once unblocked:**
 

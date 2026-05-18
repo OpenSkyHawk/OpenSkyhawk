@@ -100,14 +100,12 @@ static void processCan() {
             case CAN_ID_CTRL_BCAST:
                 rxCount++;
                 break;
-            case CAN_ID_TEST_SEQ: {
-                uint32_t now = millis();
-                uint8_t buf[8];
-                memcpy(buf,     rxData, 4);  // echo seq_num unchanged
-                memcpy(buf + 4, &now,   4);
-                canTx(echoTxId, buf, 8);
+            case CAN_ID_TEST_SEQ:
+                // Echo all 8 bytes unchanged: bytes 0-3 = seq_num, bytes 4-7 =
+                // Arduino send timestamp. Passing the timestamp through lets the
+                // Arduino compute RTT entirely within its own clock domain.
+                canTx(echoTxId, rxData, 8);
                 break;
-            }
         }
     }
 }

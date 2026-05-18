@@ -9,16 +9,18 @@
 //   D  — DCS-BIOS capture mode: relay Serial→Serial1 and reset capture stats
 //   I  — Idle (stop all injection)
 //   S  — Slow sweep: one ControlPacket per 100 ms (10 pkts/sec)
-//   F  — Fast burst: one ControlPacket per 1.6 ms (~625 pkts/sec)
+//   F  — Fast burst: one ControlPacket per 2 ms (~500 pkts/sec)
 //   X  — Extreme burst: back-to-back, no delay (saturate path deliberately)
 //   T  — Throughput test: 1000 TEST_SEQ packets, print RTT histogram
+//       RTT counts only ECHO_1 (Sub-1) — run T with Sub-1 present; Sub-2
+//       echoes are received but not counted to avoid double-counting.
 //
-// Wiring (Phase 1):
+// Wiring (Experiment B — synthetic CAN stress, no PC/DCS required):
 //   Serial1 TX (pin 18) → 1kΩ → STM32 PA3 → 2kΩ → GND  (5V→3.3V divider)
 //   Serial1 RX (pin 19) ← STM32 PA2  (3.3V into Mega RX is fine)
 //   GND ─ GND
 //
-// In Phase 2 disconnect this board; RP2040 Bridge takes over Serial1 path.
+// In Experiment C disconnect this board; RP2040 Bridge takes over Serial1 path.
 
 #include <Arduino.h>
 #include <CANProtocol.h>
