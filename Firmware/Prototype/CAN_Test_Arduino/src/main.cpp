@@ -23,33 +23,7 @@
 // In Phase 2 disconnect this board; RP2040 Bridge takes over Serial1 path.
 
 #include <Arduino.h>
-
-// ── packet types ─────────────────────────────────────────────────────────────
-
-struct __attribute__((packed)) ControlPacket {
-    uint16_t controlId;
-    uint16_t value;
-};
-
-// TEST_SEQ is a ControlPacket with controlId=0xFFFF; value holds seq_num low
-// word.  The high word of seq_num is sent as a second packet with id=0xFFFE.
-// Simpler: encode seq_num as two consecutive ControlPackets.
-// Actually we just send controlId=0xFFFF, value=(uint16_t)seq, and the
-// master knows this triggers a TEST_SEQ CAN frame.  We track seq locally.
-
-// ── diagnostic framing from master ───────────────────────────────────────────
-// Byte 0: 0xAA magic
-// Byte 1: type  0x01=RTT  0x02=HB_STATUS  0x03=ERR_REPORT
-// Bytes 2-7: payload
-struct DiagPacket {
-    uint8_t magic;   // 0xAA
-    uint8_t type;
-    uint8_t payload[6];
-};
-static constexpr uint8_t DIAG_MAGIC   = 0xAA;
-static constexpr uint8_t DIAG_RTT     = 0x01;
-static constexpr uint8_t DIAG_HB      = 0x02;
-static constexpr uint8_t DIAG_ERR     = 0x03;
+#include <CANProtocol.h>
 
 // ── modes ─────────────────────────────────────────────────────────────────────
 enum class Mode : uint8_t { IDLE, SLOW, FAST, EXTREME, THROUGHPUT, DCS_CAPTURE };

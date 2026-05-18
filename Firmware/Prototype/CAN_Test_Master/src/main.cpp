@@ -4,59 +4,34 @@
 // CAN1  (PA11 RX / PA12 TX)         — SN65HVD230 transceiver, 500 kbps
 // UART1 (PA9 TX only) @ 115200       — diagnostic tap → USB-TTL adapter
 //
-// Timing: 8 MHz crystal, 72 MHz sysclock, APB1 36 MHz
-// CAN 500 kbps: prescaler=4, BS1=13, BS2=4, SJW=1, sample point 77.8%
-//
-// CAN message IDs:
-//   0x010  TX  CONTROL_BROADCAST  4B: controlId(u16) + value(u16)
-//   0x011  TX  TEST_SEQ           8B: seq(u32) + tx_ms(u32)
-//   0x100  RX  HEARTBEAT_1        8B: node_id(u8)+flags(u8)+uptime(u16)+rx_count(u16)+ESR(u16)
-//   0x101  RX  HEARTBEAT_2        same
-//   0x200  RX  INPUT_EVENT_1      8B: controlId(u16)+value(u16)+ts_ms(u32)
-//   0x201  RX  INPUT_EVENT_2      same
-//   0x210  RX  SEQ_ECHO_1         8B: seq(u32)+rx_ms(u32)
-//   0x211  RX  SEQ_ECHO_2         same
-//
-// Diagnostic UART framing (→ USB-TTL adapter on PA9):
-//   plain ASCII lines, prefixed [ERRS] [TXFULL] [OVF] [HB] [RTT] [EVT]
+// Bit timing: APB1 36 MHz, prescaler=4, BS1=13TQ, BS2=4TQ → 500 kbps, SP 77.8%
+// CAN drives via HAL_CAN (no external library — framework provides stm32yyxx_hal_can)
 
 #include <Arduino.h>
-#include <STM32_CAN.h>
+#include <stm32f1xx_hal_can.h>
+#include <CANProtocol.h>
 
 // ── peripherals ───────────────────────────────────────────────────────────────
-STM32_CAN can(CAN1, ALT);  // ALT = PA11/PA12 (default for F103)
+HardwareSerial DiagSerial(PA9, PA10);  // UART1, TX-only diagnostic tap
 
-HardwareSerial DiagSerial(PA9, PA10);  // UART1, TX-only tap
+// ── HAL CAN state ─────────────────────────────────────────────────────────────
+static CAN_HandleTypeDef    hcan;
+static CAN_TxHeaderTypeDef  txHeader;
+static CAN_RxHeaderTypeDef  rxHeader;
 
-// ── packet definitions ────────────────────────────────────────────────────────
-struct __attribute__((packed)) ControlPacket {
-    uint16_t controlId;
-    uint16_t value;
-};
-
-struct DiagOut {
-    uint8_t magic;    // 0xAA
-    uint8_t type;
-    uint8_t payload[6];
-};
-static constexpr uint8_t DIAG_MAGIC = 0xAA;
-static constexpr uint8_t DIAG_RTT   = 0x01;
-static constexpr uint8_t DIAG_HB    = 0x02;
-static constexpr uint8_t DIAG_ERR   = 0x03;
-
-// ── CAN message IDs ───────────────────────────────────────────────────────────
-static constexpr uint32_t ID_CTRL_BCAST  = 0x010;
-static constexpr uint32_t ID_TEST_SEQ    = 0x011;
-static constexpr uint32_t ID_HB_1        = 0x100;
-static constexpr uint32_t ID_HB_2        = 0x101;
-static constexpr uint32_t ID_EVT_1       = 0x200;
-static constexpr uint32_t ID_EVT_2       = 0x201;
-static constexpr uint32_t ID_ECHO_1      = 0x210;
-static constexpr uint32_t ID_ECHO_2      = 0x211;
+// ── local CAN ID aliases ──────────────────────────────────────────────────────
+static constexpr uint32_t ID_CTRL_BCAST = CAN_ID_CTRL_BCAST;
+static constexpr uint32_t ID_TEST_SEQ   = CAN_ID_TEST_SEQ;
+static constexpr uint32_t ID_HB_1       = CAN_ID_HB_1;
+static constexpr uint32_t ID_HB_2       = CAN_ID_HB_2;
+static constexpr uint32_t ID_EVT_1      = CAN_ID_EVT_1;
+static constexpr uint32_t ID_EVT_2      = CAN_ID_EVT_2;
+static constexpr uint32_t ID_ECHO_1     = CAN_ID_ECHO_1;
+static constexpr uint32_t ID_ECHO_2     = CAN_ID_ECHO_2;
 
 // ── node state ────────────────────────────────────────────────────────────────
-static constexpr uint8_t  NUM_NODES = 2;
-static constexpr uint32_t HB_TIMEOUT_MS = 3000;
+static constexpr uint8_t  NUM_NODES      = 2;
+static constexpr uint32_t HB_TIMEOUT_MS  = 3000;
 
 struct NodeState {
     bool     alive;
@@ -72,105 +47,108 @@ static uint32_t txFullCount = 0;
 static uint32_t ovfCount    = 0;
 
 // ── UART receive buffer ───────────────────────────────────────────────────────
-static uint8_t  uartBuf[8];
-static uint8_t  uartPos = 0;
+static uint8_t uartBuf[8];
+static uint8_t uartPos = 0;
 
-// ── LED (PC13 active-low) ─────────────────────────────────────────────────────
-static constexpr uint8_t LED_PIN = PC13;
-
-// ── scope trigger (optional) ──────────────────────────────────────────────────
+// ── LED / scope ───────────────────────────────────────────────────────────────
+static constexpr uint8_t LED_PIN   = PC13;
 static constexpr uint8_t SCOPE_PIN = PB0;
 
-// ── helpers ───────────────────────────────────────────────────────────────────
-static void scopePulse() {
-    digitalWrite(SCOPE_PIN, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(SCOPE_PIN, LOW);
+// ── CAN MSP init (GPIO for PA11/PA12) ────────────────────────────────────────
+extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
+    if (hcan_p->Instance != CAN1) return;
+    __HAL_RCC_CAN1_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    GPIO_InitTypeDef gpio = {};
+
+    // PA12 — CAN1_TX, alternate function push-pull
+    gpio.Pin   = GPIO_PIN_12;
+    gpio.Mode  = GPIO_MODE_AF_PP;
+    gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(GPIOA, &gpio);
+
+    // PA11 — CAN1_RX, input floating
+    gpio.Pin  = GPIO_PIN_11;
+    gpio.Mode = GPIO_MODE_INPUT;
+    gpio.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOA, &gpio);
 }
 
+// ── CAN init ──────────────────────────────────────────────────────────────────
+static void canInit() {
+    hcan.Instance                  = CAN1;
+    hcan.Init.Prescaler            = 4;
+    hcan.Init.Mode                 = CAN_MODE_NORMAL;
+    hcan.Init.SyncJumpWidth        = CAN_SJW_1TQ;
+    hcan.Init.TimeSeg1             = CAN_BS1_13TQ;
+    hcan.Init.TimeSeg2             = CAN_BS2_4TQ;
+    hcan.Init.TimeTriggeredMode    = DISABLE;
+    hcan.Init.AutoBusOff           = DISABLE;
+    hcan.Init.AutoWakeUp           = DISABLE;
+    hcan.Init.AutoRetransmission   = ENABLE;
+    hcan.Init.ReceiveFifoLocked    = DISABLE;
+    hcan.Init.TransmitFifoPriority = DISABLE;
+    HAL_CAN_Init(&hcan);
+
+    // Accept all frames into FIFO0
+    CAN_FilterTypeDef filter = {};
+    filter.FilterBank           = 0;
+    filter.FilterMode           = CAN_FILTERMODE_IDMASK;
+    filter.FilterScale          = CAN_FILTERSCALE_32BIT;
+    filter.FilterIdHigh         = 0;
+    filter.FilterIdLow          = 0;
+    filter.FilterMaskIdHigh     = 0;
+    filter.FilterMaskIdLow      = 0;
+    filter.FilterFIFOAssignment = CAN_RX_FIFO0;
+    filter.FilterActivation     = ENABLE;
+    HAL_CAN_ConfigFilter(&hcan, &filter);
+
+    HAL_CAN_Start(&hcan);
+
+    // Shared TX header defaults
+    txHeader.IDE = CAN_ID_STD;
+    txHeader.RTR = CAN_RTR_DATA;
+    txHeader.TransmitGlobalTime = DISABLE;
+}
+
+// ── CAN transmit ──────────────────────────────────────────────────────────────
 static bool canTx(uint32_t id, const uint8_t* data, uint8_t len) {
-    CAN_message_t msg;
-    msg.id  = id;
-    msg.len = len;
-    memcpy(msg.buf, data, len);
-    if (!can.write(msg)) {
+    txHeader.StdId = id;
+    txHeader.DLC   = len;
+    uint32_t mailbox;
+    if (HAL_CAN_AddTxMessage(&hcan, &txHeader, const_cast<uint8_t*>(data), &mailbox) != HAL_OK) {
         txFullCount++;
         DiagSerial.print(F("[TXFULL] total="));
         DiagSerial.println(txFullCount);
         return false;
     }
-    scopePulse();
+    // Scope trigger: brief pulse on PB0 so an oscilloscope can time the frame
+    digitalWrite(SCOPE_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(SCOPE_PIN, LOW);
     return true;
-}
-
-static void sendDiagToArduino(uint8_t type, const uint8_t* payload6) {
-    // Send structured 8-byte diag packet back over UART2 (Serial) to Arduino
-    uint8_t pkt[8] = {DIAG_MAGIC, type};
-    memcpy(pkt + 2, payload6, 6);
-    Serial.write(pkt, 8);
-}
-
-// ── UART packet processing ────────────────────────────────────────────────────
-static void processUartPacket(const ControlPacket& pkt) {
-    if (pkt.controlId == 0xFFFF) {
-        // TEST_SEQ — broadcast as 0x011, 8 bytes: seq(u16 padded to u32) + tx_ms
-        uint8_t buf[8];
-        uint32_t seq32 = pkt.value;
-        uint32_t now   = millis();
-        memcpy(buf,     &seq32, 4);
-        memcpy(buf + 4, &now,   4);
-        canTx(ID_TEST_SEQ, buf, 8);
-        DiagSerial.print(F("[SEQ] tx seq="));
-        DiagSerial.println(pkt.value);
-    } else {
-        // Normal ControlPacket → CONTROL_BROADCAST
-        uint8_t buf[4];
-        memcpy(buf, &pkt, 4);
-        canTx(ID_CTRL_BCAST, buf, 4);
-    }
-}
-
-static void drainUart() {
-    while (Serial.available()) {
-        uint8_t b = Serial.read();
-        uartBuf[uartPos++] = b;
-        if (uartPos == 4) {
-            ControlPacket pkt;
-            memcpy(&pkt, uartBuf, 4);
-            // Alignment check: reject obviously invalid controlId range
-            if (pkt.controlId <= 0x00FF || pkt.controlId == 0xFFFF || pkt.controlId == 0xFFFE) {
-                processUartPacket(pkt);
-            } else {
-                // Misalignment — discard first byte and retry with shifted window
-                ovfCount++;
-                DiagSerial.print(F("[OVF] align total="));
-                DiagSerial.println(ovfCount);
-                memmove(uartBuf, uartBuf + 1, 3);
-                uartPos = 3;
-                return;
-            }
-            uartPos = 0;
-        }
-    }
 }
 
 // ── CAN receive ───────────────────────────────────────────────────────────────
 static void processCan() {
-    CAN_message_t msg;
-    while (can.read(msg)) {
+    uint8_t rxData[8];
+    while (HAL_CAN_GetRxFifoFillLevel(&hcan, CAN_RX_FIFO0) > 0) {
+        HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &rxHeader, rxData);
+        uint32_t id  = rxHeader.StdId;
         uint32_t now = millis();
-        switch (msg.id) {
+
+        switch (id) {
             case ID_HB_1:
             case ID_HB_2: {
-                uint8_t nodeIdx = (msg.id == ID_HB_1) ? 0 : 1;
+                uint8_t nodeIdx = (id == ID_HB_1) ? 0 : 1;
                 NodeState& n = nodes[nodeIdx];
-                n.alive     = true;
-                n.lastHbMs  = now;
-                n.flags     = msg.buf[1];
-                memcpy(&n.rxCount, msg.buf + 4, 2);
-                memcpy(&n.esr,     msg.buf + 6, 2);
+                n.alive    = true;
+                n.lastHbMs = now;
+                n.flags    = rxData[1];
+                memcpy(&n.rxCount, rxData + 4, 2);
+                memcpy(&n.esr,     rxData + 6, 2);
 
-                // Human-readable diag
                 DiagSerial.print(F("[HB] node="));
                 DiagSerial.print(nodeIdx + 1);
                 DiagSerial.print(F(" flags=0x"));
@@ -184,16 +162,18 @@ static void processCan() {
                 uint8_t pl[6] = {(uint8_t)(nodeIdx + 1), n.flags};
                 memcpy(pl + 2, &n.rxCount, 2);
                 memcpy(pl + 4, &n.esr,     2);
-                sendDiagToArduino(DIAG_HB, pl);
+                uint8_t pkt[8] = {DIAG_MAGIC, DIAG_HB};
+                memcpy(pkt + 2, pl, 6);
+                Serial.write(pkt, 8);
                 break;
             }
             case ID_EVT_1:
             case ID_EVT_2: {
                 uint16_t ctrlId, val;
-                memcpy(&ctrlId, msg.buf,     2);
-                memcpy(&val,    msg.buf + 2, 2);
+                memcpy(&ctrlId, rxData,     2);
+                memcpy(&val,    rxData + 2, 2);
                 DiagSerial.print(F("[EVT] node="));
-                DiagSerial.print((msg.id == ID_EVT_1) ? 1 : 2);
+                DiagSerial.print((id == ID_EVT_1) ? 1 : 2);
                 DiagSerial.print(F(" ctrl=0x"));
                 DiagSerial.print(ctrlId, HEX);
                 DiagSerial.print(F(" val="));
@@ -203,28 +183,69 @@ static void processCan() {
             case ID_ECHO_1:
             case ID_ECHO_2: {
                 uint32_t seq, rxMs;
-                memcpy(&seq,  msg.buf,     4);
-                memcpy(&rxMs, msg.buf + 4, 4);
-                uint32_t rtt = now - rxMs;  // approximate; rxMs is sub-node millis
+                memcpy(&seq,  rxData,     4);
+                memcpy(&rxMs, rxData + 4, 4);
+                uint32_t rtt = now - rxMs;
                 DiagSerial.print(F("[RTT] seq="));
                 DiagSerial.print((uint16_t)seq);
                 DiagSerial.print(F(" ~rtt="));
                 DiagSerial.print(rtt);
                 DiagSerial.println(F("ms"));
 
-                // Forward RTT to Arduino
                 uint8_t pl[6];
                 uint16_t seq16 = (uint16_t)seq;
                 memcpy(pl,     &seq16, 2);
                 memcpy(pl + 2, &rxMs,  4);
-                sendDiagToArduino(DIAG_RTT, pl);
+                uint8_t pkt[8] = {DIAG_MAGIC, DIAG_RTT};
+                memcpy(pkt + 2, pl, 6);
+                Serial.write(pkt, 8);
                 break;
             }
         }
     }
 }
 
-// ── node watchdog + error monitoring ─────────────────────────────────────────
+// ── UART receive + CAN broadcast ─────────────────────────────────────────────
+static void processUartPacket(const ControlPacket& pkt) {
+    if (pkt.controlId == CTRL_TEST_SEQ) {
+        uint8_t buf[8];
+        uint32_t seq32 = pkt.value;
+        uint32_t now   = millis();
+        memcpy(buf,     &seq32, 4);
+        memcpy(buf + 4, &now,   4);
+        canTx(ID_TEST_SEQ, buf, 8);
+        DiagSerial.print(F("[SEQ] tx seq="));
+        DiagSerial.println(pkt.value);
+    } else {
+        uint8_t buf[4];
+        memcpy(buf, &pkt, 4);
+        canTx(ID_CTRL_BCAST, buf, 4);
+    }
+}
+
+static void drainUart() {
+    while (Serial.available()) {
+        uint8_t b = Serial.read();
+        uartBuf[uartPos++] = b;
+        if (uartPos == 4) {
+            ControlPacket pkt;
+            memcpy(&pkt, uartBuf, 4);
+            if (pkt.controlId <= 0x00FF || pkt.controlId == CTRL_TEST_SEQ) {
+                processUartPacket(pkt);
+            } else {
+                ovfCount++;
+                DiagSerial.print(F("[OVF] align total="));
+                DiagSerial.println(ovfCount);
+                memmove(uartBuf, uartBuf + 1, 3);
+                uartPos = 3;
+                return;
+            }
+            uartPos = 0;
+        }
+    }
+}
+
+// ── error monitoring ──────────────────────────────────────────────────────────
 static uint32_t lastErrReport = 0;
 static uint32_t lastLedMs     = 0;
 static bool     ledState       = false;
@@ -252,11 +273,10 @@ static void monitorErrors(uint32_t now) {
         DiagSerial.print(F(" flags=0x"));
         DiagSerial.println(flags, HEX);
 
-        uint8_t pl[6] = {tec, rec, flags, 0, 0, 0};
-        sendDiagToArduino(DIAG_ERR, pl);
+        uint8_t pkt[8] = {DIAG_MAGIC, DIAG_ERR, tec, rec, flags, 0, 0, 0};
+        Serial.write(pkt, 8);
     }
 
-    // Node liveness watchdog
     for (uint8_t i = 0; i < NUM_NODES; i++) {
         if (nodes[i].alive && (now - nodes[i].lastHbMs > HB_TIMEOUT_MS)) {
             nodes[i].alive = false;
@@ -267,12 +287,9 @@ static void monitorErrors(uint32_t now) {
 }
 
 static void updateLed(uint32_t now) {
-    if (busOff) {
-        digitalWrite(LED_PIN, LOW);  // solid on (active-low)
-        return;
-    }
+    if (busOff) { digitalWrite(LED_PIN, LOW); return; }
     bool anyDead = (!nodes[0].alive || !nodes[1].alive);
-    uint32_t period = anyDead ? 100 : 500;  // fast=100ms, slow=500ms
+    uint32_t period = anyDead ? 100 : 500;
     if (now - lastLedMs >= period) {
         ledState = !ledState;
         digitalWrite(LED_PIN, ledState ? LOW : HIGH);
@@ -280,30 +297,20 @@ static void updateLed(uint32_t now) {
     }
 }
 
-// ── setup ─────────────────────────────────────────────────────────────────────
+// ── setup / loop ──────────────────────────────────────────────────────────────
 void setup() {
-    pinMode(LED_PIN,   OUTPUT); digitalWrite(LED_PIN, HIGH);  // off
+    pinMode(LED_PIN,   OUTPUT); digitalWrite(LED_PIN, HIGH);
     pinMode(SCOPE_PIN, OUTPUT); digitalWrite(SCOPE_PIN, LOW);
 
-    // Diagnostic UART on PA9 (TX-only)
     DiagSerial.begin(115200);
     DiagSerial.println(F("CAN_Test_Master starting..."));
 
-    // DCS-BIOS / test UART on PA2/PA3
     Serial.begin(250000);
+    canInit();
 
-    // CAN — 500 kbps, 8 MHz crystal, APB1 36 MHz
-    // prescaler=4, BS1=13, BS2=4, SJW=1 → exactly 500 kbps, SP 77.8%
-    CAN_bit_timing_config_t timing = {4, 13, 4};
-    can.begin();
-    can.setBaudRateConfig(timing);
-    can.setMBFilter(ACCEPT_ALL);
-    can.enableMBInterrupts();
-
-    DiagSerial.println(F("CAN_Test_Master ready. Waiting for packets."));
+    DiagSerial.println(F("CAN_Test_Master ready."));
 }
 
-// ── loop ──────────────────────────────────────────────────────────────────────
 void loop() {
     uint32_t now = millis();
     drainUart();
