@@ -1896,6 +1896,207 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:LED"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LED"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Light emitting diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=K 2=A"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "LED diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "LED* LED_SMD:* LED_THT:*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "LED_0_1"
+				(polyline
+					(pts
+						(xy -3.048 -0.762) (xy -4.572 -2.286) (xy -3.81 -2.286) (xy -4.572 -2.286) (xy -4.572 -1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -0.762) (xy -3.302 -2.286) (xy -2.54 -2.286) (xy -3.302 -2.286) (xy -3.302 -1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy -1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.27) (xy 1.27 1.27) (xy -1.27 0) (xy 1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "LED_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:R"
 			(pin_numbers
 				(hide yes)
@@ -4334,6 +4535,28 @@
 			(embedded_fonts no)
 		)
 	)
+	(rectangle
+		(start 255.905 26.035)
+		(end 277.495 62.23)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "8762fd09-8063-41b7-94b9-93f9b9d90357")
+	)
+	(text "Status LED Indicators"
+		(exclude_from_sim no)
+		(at 266.7 24.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "5145a9d3-80dc-418f-a23e-2c425ebd11ba")
+	)
 	(text "CAN BUS"
 		(exclude_from_sim no)
 		(at 228.6 73.66 0)
@@ -6142,6 +6365,16 @@
 	)
 	(wire
 		(pts
+			(xy 265.43 52.07) (xy 265.43 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb93f8df-fe83-42d1-93af-86f36198d928")
+	)
+	(wire
+		(pts
 			(xy 133.35 43.18) (xy 132.08 43.18)
 		)
 		(stroke
@@ -6706,6 +6939,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C9")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6780,6 +7019,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR031")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR031")
 					(unit 1)
 				)
@@ -6866,6 +7111,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C15")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -6940,6 +7191,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR04")
 					(unit 1)
 				)
@@ -7019,6 +7276,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR013")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR013")
 					(unit 1)
 				)
@@ -7243,6 +7506,90 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 265.43 34.29 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1b54a6c4-b086-4267-81eb-3acb9d16f546")
+		(property "Reference" "#PWR034"
+			(at 265.43 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 265.43 29.21 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 265.43 34.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 265.43 34.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 265.43 34.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2dea83ab-13c4-4610-a800-2dc11bbc8660")
+		)
+		(instances
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR034")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7317,6 +7664,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR05")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR05")
 					(unit 1)
 				)
@@ -7399,6 +7752,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR027")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7473,6 +7832,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR029")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR029")
 					(unit 1)
 				)
@@ -7571,6 +7936,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "J2")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7644,6 +8015,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#FLG02")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#FLG02")
 					(unit 1)
 				)
@@ -7729,6 +8106,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R_BOOT1")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7806,6 +8189,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "R4")
 					(unit 1)
 				)
@@ -7892,6 +8281,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R7")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -7965,6 +8360,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR025")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR025")
 					(unit 1)
 				)
@@ -8047,6 +8448,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR012")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8122,6 +8529,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR023")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR023")
 					(unit 1)
 				)
@@ -8225,6 +8638,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "U2")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8305,6 +8724,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R11")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8378,6 +8803,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR028")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR028")
 					(unit 1)
 				)
@@ -8473,6 +8904,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "J3")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8547,6 +8984,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#FLG03")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#FLG03")
 					(unit 1)
 				)
@@ -8626,6 +9069,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR018")
 					(unit 1)
 				)
@@ -8712,6 +9161,93 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 265.43 38.1 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "64f7d429-50f1-4d8f-8952-ef8d43bb0059")
+		(property "Reference" "R22"
+			(at 262.89 39.37 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "3.3k"
+			(at 267.97 39.37 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 263.652 38.1 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 265.43 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 265.43 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "d412d944-12b8-4a6e-9008-76f9b4b89dc3")
+		)
+		(pin "1"
+			(uuid "05ffb039-9052-4ff2-9308-e4cea167534c")
+		)
+		(instances
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R22")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8794,6 +9330,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R12")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -8868,6 +9410,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR011")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR011")
 					(unit 1)
 				)
@@ -8954,6 +9502,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C13")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9028,6 +9582,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR014")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR014")
 					(unit 1)
 				)
@@ -9109,6 +9669,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR010")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9184,6 +9750,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "R10")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "R10")
 					(unit 1)
 				)
@@ -9269,6 +9841,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C8")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9343,6 +9921,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR09")
 					(unit 1)
 				)
@@ -9424,6 +10008,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR026")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9498,6 +10088,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR016")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR016")
 					(unit 1)
 				)
@@ -9583,6 +10179,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C10")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9657,6 +10259,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR024")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR024")
 					(unit 1)
 				)
@@ -9742,6 +10350,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C7")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9815,6 +10429,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR033")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR033")
 					(unit 1)
 				)
@@ -9900,6 +10520,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "Y1")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -9974,6 +10600,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR022")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR022")
 					(unit 1)
 				)
@@ -10076,6 +10708,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "J5")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -10151,6 +10789,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "C11")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "C11")
 					(unit 1)
 				)
@@ -10233,6 +10877,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR06")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -10311,6 +10961,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR07")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -10385,6 +11041,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR015")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR015")
 					(unit 1)
 				)
@@ -10468,6 +11130,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR017")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -10542,6 +11210,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR030")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR030")
 					(unit 1)
 				)
@@ -10627,6 +11301,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C4")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -10701,6 +11381,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR020")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR020")
 					(unit 1)
 				)
@@ -10786,6 +11472,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C5")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -10863,6 +11555,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "C2")
 					(unit 1)
 				)
@@ -10945,6 +11643,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR021")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -11023,6 +11727,104 @@
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
 					(reference "C1")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED")
+		(at 265.43 45.72 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b4b06b87-1523-405f-86ab-3d7e648f00d7")
+		(property "Reference" "D1"
+			(at 267.97 45.72 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "POWER_ST"
+			(at 262.89 40.64 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
+			(at 265.43 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 265.43 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 265.43 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 265.43 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "1086aa2a-ff7c-40aa-a1df-24d3456fe8f4")
+		)
+		(pin "1"
+			(uuid "928552ca-2256-4b57-8093-9455727145b7")
+		)
+		(instances
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -11126,6 +11928,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "J1")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -11200,6 +12008,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR032")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR032")
 					(unit 1)
 				)
@@ -11280,6 +12094,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "SW1")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "SW1")
 					(unit 1)
 				)
@@ -11367,6 +12187,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "U3")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -11444,6 +12270,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "C14")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "C14")
 					(unit 1)
 				)
@@ -11546,6 +12378,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "J6")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -11623,6 +12461,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "R3")
 					(unit 1)
 				)
@@ -11706,6 +12550,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R2")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -11779,6 +12629,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR08")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR08")
 					(unit 1)
 				)
@@ -11862,6 +12718,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R9")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -11941,6 +12803,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R5")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12016,6 +12884,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "R1")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "R1")
 					(unit 1)
 				)
@@ -12101,6 +12975,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C3")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12179,6 +13059,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR019")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12252,6 +13138,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR03")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR03")
 					(unit 1)
 				)
@@ -12335,6 +13227,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R8")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12413,6 +13311,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR01")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12486,6 +13390,12 @@
 		(instances
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
+					(reference "#PWR02")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
 					(reference "#PWR02")
 					(unit 1)
 				)
@@ -12575,6 +13485,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "J4")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12657,6 +13573,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C12")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12733,6 +13655,90 @@
 			(project "Armament_MCU"
 				(path "/00e506c2-6e76-43a3-96c1-24869bd3aa84/19b25218-7e34-4b84-8320-1fa758a5cef6"
 					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 265.43 52.07 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f5bdec72-1d11-4755-9c8f-f496305ec842")
+		(property "Reference" "#PWR035"
+			(at 265.43 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 265.43 57.15 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 265.43 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 265.43 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 265.43 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b7a20ec4-9a7c-423f-aeb4-a0968457c3ca")
+		)
+		(instances
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "#PWR035")
 					(unit 1)
 				)
 			)
@@ -12817,6 +13823,12 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "C6")
+					(unit 1)
+				)
+			)
 		)
 	)
 	(symbol
@@ -12896,6 +13908,18 @@
 					(unit 1)
 				)
 			)
+			(project "MCU_CAN"
+				(path "/2fbad6a7-6640-46df-bedc-c583edcc3ec5"
+					(reference "R6")
+					(unit 1)
+				)
+			)
 		)
 	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
 )
