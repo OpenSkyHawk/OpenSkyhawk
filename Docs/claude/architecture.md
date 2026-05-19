@@ -28,8 +28,10 @@ Controllers fall into two categories: **HID controllers** (RP2040, direct USB to
 | 2 | SCL |
 | 3 | GND |
 | 4 | GND |
-| 5 | 12 V switched (LED backlight — MOSFET on MCU board, PWM-controlled) |
-| 6 | 3.3 V (chip power) |
+| 5 | 3.3 V (chip power) |
+| 6 | spare |
+
+LED backlight power is carried on a **separate 2-pin Molex Mini-Fit Jr** connector (not the signal harness) — `+12V_BACKLIGHT` and `BACKLIGHT_SW_RETURN`. Breakout boards with analog outputs or interrupts use an 8-pin JST-XH variant with additional signals on pins 6–8.
 
 **Gauges:** X27.589 Switec stepper motors mounted shaft-through-PCB on the controller board.
 
