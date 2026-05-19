@@ -114,6 +114,23 @@ Local decoupling required on every board: 100 nF + 10 µF per rail, placed close
 - LED power: 2-pin (1×2) per lighting zone on every MCU and breakout board — carries `+12V_BACKLIGHT` and `BACKLIGHT_SW_RETURN`
 - Polarized housing — one insertion orientation only
 
+**Main bus connector: 2×4 (8-pin), `Connector_Molex:Molex_Minifit_Jr_5557-08A2_2x04_P4.20mm_Vertical`**
+
+Two identical connectors per MCU board (J_BUS_IN + J_BUS_OUT) — same nets, bus passes through.
+
+| Pin | Signal | Notes |
+|---|---|---|
+| 1 | +12V | Always-on 12V from PSU |
+| 2 | +12V | Parallel — reduces connector resistance for LED backlight current |
+| 3 | +5V | From PSU — 3.3V generated locally via AMS1117 |
+| 4 | GND | |
+| 5 | CANH | Differential pair with pin 6 |
+| 6 | CANL | Differential pair with pin 5 |
+| 7 | GND | |
+| 8 | GND | |
+
+Pins 1/2 both connect to +12V net. Pins 4/7/8 all connect to GND plane. CANH/CANL on pins 5/6 (same row) for clean differential pair routing.
+
 ### JST-XH (intra-group harnesses + switch wiring)
 
 - **PCB footprint:** Through-hole, single-row, vertical

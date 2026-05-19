@@ -27,32 +27,17 @@ Armament Panel switches (GUNS_READY, ARM_NOSE_TAIL, STATION_1–5, MASTER_ARMED)
 
 | STM32 Pin | Input | Via | Type |
 |---|---|---|---|
-| PA0 | EMER SEL rotary | direct (resistor ladder, pads only this rev) | Resistor ladder |
-| PA1 | MODE SEL lever (bombing mode) | direct (resistor ladder, pads only this rev) | Resistor ladder |
 | PA2 | MISSILE_VOL pot (726) | J2 pin 6 | Analog (pot wiper) |
 | PB13 | MISC_SWITCH_INT | J2 pin 7 | EXTI — Port A changes (buttons, toggles, BDHI) |
 | PB14 | SHRIKE_VOL_INT | J2 pin 8 | EXTI — Port B changes (Shrike only) |
 
+**Deferred:** PA0 (EMER SEL), PA1 (MODE SEL), and all Armament Panel direct switches (GUNS_READY, ARM_NOSE_TAIL, STATION_1–5, MASTER_ARMED) — not implemented in this revision. Panel inputs not yet fully researched. J_PANEL connector omitted.
+
 ## Harness Connectors
 
-### J_PANEL → Armament Panel switches — 10-pin JST-XH
+### J1 → AWRS_Panel — TBD-pin JST-XH
 
-Direct switch wiring to STM32 GPIO. Switches connect one terminal to signal pin, other terminal to GND. STM32 internal pull-up enabled in firmware.
-
-| Pin | Signal | STM32 Pin | DCS-BIOS |
-|---|---|---|---|
-| 1 | GUNS_READY | PB0 | 701 |
-| 2 | ARM_NOSE_TAIL | PB1 | 702 |
-| 3 | STATION_1 | PB3 | 703 |
-| 4 | STATION_2 | PB4 | 704 |
-| 5 | STATION_3 | PB5 | 705 |
-| 6 | STATION_4 | PB6 | 706 |
-| 7 | STATION_5 | PB7 | 707 |
-| 8 | MASTER_ARMED | PB8 | 709 |
-| 9 | GND | — | — |
-| 10 | GND | — | — |
-
-### J1 → AWRS_Panel — 6-pin JST-XH
+> **TBD:** Harness size not yet confirmed — depends on AWRS_Panel signal requirements. Placeholder pinout below; verify once AWRS_Panel schematic is complete.
 
 | Pin | Signal |
 |---|---|
