@@ -39,18 +39,20 @@
 
 ## Harness Connector (to MCU board)
 
-**J2 — 8-pin JST-XH**
+**J2 — 8-pin JST-XH** (confirmed from Misc_Switch_Panel.kicad_sch)
 
-| Pin | Signal |
-|---|---|
-| 1 | SDA |
-| 2 | SCL |
-| 3 | GND |
-| 4 | GND |
-| 5 | 12 V (LED PWM) |
-| 6 | 3.3 V |
-| 7 | ANALOG (MISSILE_VOL wiper) |
-| 8 | — (spare) |
+| Pin | Signal | Notes |
+|---|---|---|
+| 1 | SDA | 33Ω damper on Armament_MCU PCB |
+| 2 | SCL | 33Ω damper on Armament_MCU PCB |
+| 3 | GND | |
+| 4 | +3.3V | |
+| 5 | NC | spare |
+| 6 | MISSILE_VOL | Pot wiper → 1kΩ + 100nF → STM32 PA2 |
+| 7 | MISC_SWITCH_INT | MCP23017 @ 0x22 INTA; 100Ω R21 on this board |
+| 8 | SHRIKE_VOL_INT | MCP23017 @ 0x22 INTB; 100Ω R20 on this board |
+
+LED power is on a **separate 2-pin Mini-Fit Jr** (`J_LED_MISC`) on the Armament_MCU board — not on this harness.
 
 ## Switch-to-PCB Connectors
 
@@ -58,7 +60,7 @@ JST-XH (2.54 mm pitch). Grouping TBD during PCB layout — group by physical pro
 
 ## LEDs
 
-5050 SMD red, PCB front face, arrays of 5, driven at ~30 mA, powered from 12 V PWM line (J2 pin 5).
+5050 SMD red, PCB front face, strings of 5 in series. Current set by resistor per string — see hardware-standards.md resistor table; value chosen at assembly time per zone. Array count TBD from Fusion 360 panel model.
 
 ## Dimensions
 

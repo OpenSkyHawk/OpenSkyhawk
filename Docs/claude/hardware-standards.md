@@ -195,7 +195,7 @@ Confirmed from bench testing. Estimated ~500 LEDs total across full cockpit (~10
 
 | Resistor | Measured current | Use |
 |---|---|---|
-| 47Ω | 42–55 mA | **Rejected** — resistor overheated |
+| 47Ω | 34–42 mA | **Rejected** — resistor overheated |
 | 100Ω | 19–23 mA | Bright panels / gauges |
 | 120Ω | ~17–20 mA | **Balanced default** |
 | 150Ω | 14–17 mA | Standard |

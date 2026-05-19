@@ -35,9 +35,7 @@ Armament Panel switches (GUNS_READY, ARM_NOSE_TAIL, STATION_1–5, MASTER_ARMED)
 
 ## Harness Connectors
 
-### J1 → AWRS_Panel — TBD-pin JST-XH
-
-> **TBD:** Harness size not yet confirmed — depends on AWRS_Panel signal requirements. Placeholder pinout below; verify once AWRS_Panel schematic is complete.
+### J1 → AWRS_Panel — 6-pin JST-XH
 
 | Pin | Signal |
 |---|---|
