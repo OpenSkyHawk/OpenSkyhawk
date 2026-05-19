@@ -1,12 +1,10 @@
 ```
-   ___                    ____  _          _   _               _    
-  / _ \ _ __  ___ _ __   / ___|| | ___   | | | | __ ___      | | __
- | | | | '_ \/ _ \ '_ \  \___ \| |/ / | | | |_| |/ _` \ \ /\ / / |/ /
- | |_| | |_) |  __/ | | |  ___) |   <| |_| |  _  | (_| |\ V  V /|   < 
-  \___/| .__/ \___|_| |_| |____/|_|\_\\__, |_| |_|\__,_| \_/\_/ |_|\_\
-       |_|                            |___/                            
-
-              ── DCS A-4E Skyhawk Home Cockpit ──
+  ____                ______        __ __            __  
+ / __ \___  ___ ___  / __/ /____ __/ // /__ __    __/ /__
+/ /_/ / _ \/ -_) _ \_\ \/  '_/ // / _  / _ `/ |/|/ /  '_/
+\____/ .__/\__/_//_/___/_/\_\\_, /_//_/\_,_/|__,__/_/\_\ 
+    /_/                     /___/                        
+          ── DCS A-4E Skyhawk Home Cockpit ──
 ```
 
 Physical DCS A-4E Skyhawk home cockpit — 3D-printed panels, custom PCBs, and STM32 firmware for the [DCS A-4E Community Mod](https://github.com/Community-A-4E/community-a4e-c). Controllers communicate over CAN bus.
