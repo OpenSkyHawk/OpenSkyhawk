@@ -79,13 +79,19 @@ Local decoupling required on every board: 100 nF + 10 µF per rail, placed close
 
 ## Stepper Driver
 
-**Selected: DRV8835 (TI)** — dual H-bridge, HTSSOP-16.
+**Selected: DRV8833PW (TI)** — dual H-bridge, HTSSOP-16.
+
+DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated, not inspectable after reflow). DRV8833PW is the same electrical capability in an inspectable HTSSOP-16 package.
 
 - Drives one X27.589 Switec stepper (bipolar, ~600 steps/315°, 180–300 Ω coils, ~15–30 mA at 5 V)
-- VM supply: 5 V; VCC logic: 3.3 V
-- **nSLEEP pin**: held LOW by MCU at power-on, driven HIGH only after DCS-BIOS sim connection is established — prevents startup needle twitch
+- VM supply: 2–10.8 V (use 5 V); VINT: 3.3 V output (bypass with 100 nF to GND — do not drive with external supply)
+- VCP (charge pump): 100 nF cap to VM — required for internal charge pump
+- **~SLEEP pin (active LOW)**: held LOW by MCU at power-on, driven HIGH only after DCS-BIOS sim connection is established — prevents startup needle twitch
+- AISEN / BISEN: current sense inputs — tie to GND (no current regulation needed; X27.589 coil resistance limits current naturally at 5 V)
+- ~FAULT: open-drain fault output — leave NC in this revision
 - No current-regulation passives needed; X27.589 coil resistance limits current naturally at 5 V
 - Firmware: use **SwitecX25** library (handles homing/reset); AccelStepper does not implement homing
+- KiCad symbol: `Driver_Motor:DRV8833PW` (built-in)
 
 ## Screws
 

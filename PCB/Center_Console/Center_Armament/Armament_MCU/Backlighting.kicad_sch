@@ -313,9 +313,10 @@
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
 			(property "Reference" "Q"
-				(at 3.81 2.54 0)
+				(at 5.08 -31.75 0)
 				(show_name no)
 				(do_not_autoplace no)
+				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -323,7 +324,7 @@
 				)
 			)
 			(property "Value" "IRLML2502"
-				(at 3.81 0 0)
+				(at 4.064 -0.508 90)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -343,7 +344,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.infineon.com/dgdl/irlml2502pbf.pdf"
+			(property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-irlml2502-datasheet-en.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -377,23 +378,177 @@
 				)
 			)
 			(symbol "IRLML2502_0_1"
-				(rectangle
-					(start -2.54 2.54)
-					(end 2.54 -2.54)
+				(polyline
+					(pts
+						(xy -2.286 1.905) (xy -2.286 -1.905)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.286 0) (xy -5.08 0)
+					)
 					(stroke
 						(width 0)
 						(type default)
 					)
 					(fill
-						(type background)
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286) (xy -1.778 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 0.508) (xy -1.778 -0.508)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -1.27) (xy -1.778 -2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -1.778) (xy 0.762 -1.778) (xy 0.762 1.778) (xy -1.778 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.524 0) (xy -0.508 0.381) (xy -0.508 -0.381) (xy -1.524 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center -0.889 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 0 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -2.54) (xy 0 0) (xy -1.778 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 0.508) (xy 0.381 0.381) (xy 1.143 0.381) (xy 1.27 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.381) (xy 0.381 -0.254) (xy 1.143 -0.254) (xy 0.762 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 			)
 			(symbol "IRLML2502_1_1"
 				(pin input line
 					(at -7.62 0 0)
-					(length 5.08)
-					(name "G"
+					(length 2.54)
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -409,9 +564,9 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -1.27 180)
-					(length 5.08)
-					(name "S"
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -427,9 +582,9 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 1.27 180)
-					(length 5.08)
-					(name "D"
+					(at 0 5.08 270)
+					(length 2.54)
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -984,16 +1139,6 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 76.2) (xy 245.11 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17dc23c8-6d37-4adb-a7e0-0b6e140e374a")
-	)
-	(wire
-		(pts
 			(xy 50.8 138.43) (xy 58.42 138.43)
 		)
 		(stroke
@@ -1104,16 +1249,6 @@
 	)
 	(wire
 		(pts
-			(xy 250.19 58.42) (xy 250.19 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5ca4642f-a959-478b-8481-8ba297e131c3")
-	)
-	(wire
-		(pts
 			(xy 115.57 66.04) (xy 127 66.04)
 		)
 		(stroke
@@ -1214,6 +1349,16 @@
 	)
 	(wire
 		(pts
+			(xy 245.11 78.74) (xy 245.11 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "86e336e2-5805-4a10-bfda-e993eacf2914")
+	)
+	(wire
+		(pts
 			(xy 54.61 80.01) (xy 62.23 80.01)
 		)
 		(stroke
@@ -1231,16 +1376,6 @@
 			(type default)
 		)
 		(uuid "9608ddbd-bc1a-46dd-966f-ddc22f82513c")
-	)
-	(wire
-		(pts
-			(xy 252.73 88.9) (xy 252.73 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9d5857bc-96b1-464f-83ed-9062002af3cd")
 	)
 	(wire
 		(pts
@@ -1324,36 +1459,6 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 91.44) (xy 252.73 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d19216a4-5721-4151-a378-d7e7850a887b")
-	)
-	(wire
-		(pts
-			(xy 250.19 39.37) (xy 250.19 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d4737c94-708d-4d7a-bdd6-a789c16a493e")
-	)
-	(wire
-		(pts
-			(xy 252.73 95.25) (xy 245.11 95.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dfe3da0a-f889-48db-bff4-b956955ea318")
-	)
-	(wire
-		(pts
 			(xy 54.61 66.04) (xy 62.23 66.04)
 		)
 		(stroke
@@ -1381,6 +1486,16 @@
 			(type default)
 		)
 		(uuid "eb9d6c5e-535b-4947-92d1-4cdc58e176d6")
+	)
+	(wire
+		(pts
+			(xy 242.57 38.1) (xy 242.57 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "edc3efc4-2922-4af0-82ad-b4a455f3b39d")
 	)
 	(wire
 		(pts
@@ -1463,7 +1578,7 @@
 		(uuid "04ef6a1b-359f-4c4a-8a77-19a7000d7f3e")
 	)
 	(label "PANEL_BACKLIGHT_RETURN"
-		(at 250.19 39.37 180)
+		(at 242.57 38.1 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1533,7 +1648,7 @@
 		(uuid "b10fa281-c64e-4ccf-a209-e8b81ef6e666")
 	)
 	(label "GAUGE_BACKLIGHT_RETURN"
-		(at 245.11 76.2 180)
+		(at 245.11 78.74 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1945,10 +2060,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "03e2e1a9-d17a-4994-92b5-1109de1f73d6")
 		(property "Reference" "Q2"
-			(at 245.11 82.55 0)
+			(at 241.3 86.36 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1958,7 +2072,7 @@
 			)
 		)
 		(property "Value" "IRLML2502"
-			(at 245.11 85.09 0)
+			(at 248.92 90.17 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1978,7 +2092,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.infineon.com/dgdl/irlml2502pbf.pdf"
+		(property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-irlml2502-datasheet-en.pdf"
 			(at 245.11 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -3466,7 +3580,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 226.822 55.88 90)
 			(hide yes)
 			(show_name no)
@@ -4215,10 +4329,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "9689ab9f-f43a-4462-8b80-a90f97ade6cf")
 		(property "Reference" "Q1"
-			(at 242.57 43.18 0)
+			(at 238.76 46.99 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4228,7 +4341,7 @@
 			)
 		)
 		(property "Value" "IRLML2502"
-			(at 242.57 45.72 0)
+			(at 246.38 52.07 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4248,7 +4361,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.infineon.com/dgdl/irlml2502pbf.pdf"
+		(property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/49/infineon-irlml2502-datasheet-en.pdf"
 			(at 242.57 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -4595,7 +4708,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 226.822 96.52 90)
 			(hide yes)
 			(show_name no)
@@ -5349,7 +5462,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 250.19 58.42 0)
+		(at 242.57 55.88 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5360,7 +5473,7 @@
 		(fields_autoplaced yes)
 		(uuid "dc1b0762-a293-444c-b246-4734de6de2ec")
 		(property "Reference" "#PWR042"
-			(at 250.19 64.77 0)
+			(at 242.57 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5371,7 +5484,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 250.19 63.5 0)
+			(at 242.57 60.96 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5381,7 +5494,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 250.19 58.42 0)
+			(at 242.57 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5392,7 +5505,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 250.19 58.42 0)
+			(at 242.57 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5403,7 +5516,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 250.19 58.42 0)
+			(at 242.57 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5785,7 +5898,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 217.17 52.578 90)
 			(hide yes)
 			(show_name no)
@@ -5945,7 +6058,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 218.44 91.948 90)
 			(hide yes)
 			(show_name no)

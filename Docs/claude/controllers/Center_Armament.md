@@ -12,7 +12,7 @@
 | CAN transceiver | SN65HVD230 (SOIC-8, 3.3V logic) |
 | CAN node ID | TBD |
 | Voltage regulation | 5V from main bus (PC ATX PSU); AMS1117-3.3 (SOT-223) locally for 3.3V; no AP63205WU on this board |
-| Stepper | X27.589 — Cabin Pressure gauge, shaft-through-PCB |
+| Stepper | X27.589 — Cabin Pressure gauge, shaft-through-PCB; driver: DRV8833PW (HTSSOP-16) |
 
 ## I²C Devices
 

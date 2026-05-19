@@ -561,6 +561,7 @@
 				(at 0 8.89 0)
 				(show_name no)
 				(do_not_autoplace no)
+				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -571,6 +572,7 @@
 				(at 0 7.62 0)
 				(show_name no)
 				(do_not_autoplace no)
+				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -588,7 +590,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.juken-swiss.com/en/products/switec-instruments/"
+			(property "Datasheet" "http://agr.ucoz.lv/files/SP_X27_e_C.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -621,24 +623,182 @@
 					)
 				)
 			)
-			(symbol "X27.589_Stepper_0_1"
-				(rectangle
-					(start -5.08 6.35)
-					(end 5.08 -6.35)
+			(symbol "X27.589_Stepper_0_0"
+				(polyline
+					(pts
+						(xy 0 -1.778) (xy 0 2.032) (xy 1.27 -0.508) (xy 2.54 2.032) (xy 2.54 -1.778)
+					)
 					(stroke
 						(width 0)
 						(type default)
 					)
 					(fill
-						(type background)
+						(type none)
+					)
+				)
+			)
+			(symbol "X27.589_Stepper_0_1"
+				(polyline
+					(pts
+						(xy -3.81 2.54) (xy -3.175 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.81 -2.54) (xy -3.175 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -3.175 2.54)
+					(mid -2.5427 1.905)
+					(end -3.175 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -3.175 1.27)
+					(mid -2.5427 0.635)
+					(end -3.175 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -3.175 0)
+					(mid -2.5427 -0.635)
+					(end -3.175 -1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -3.175 -1.27)
+					(mid -2.5427 -1.905)
+					(end -3.175 -2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 5.08) (xy -1.27 4.445)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 4.445)
+					(mid -0.635 3.8127)
+					(end -1.27 4.445)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 1.27 4.445)
+					(mid 0.635 3.8127)
+					(end 0 4.445)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.27 0)
+					(radius 3.2512)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 2.54 4.445)
+					(mid 1.905 3.8127)
+					(end 1.27 4.445)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 3.81 4.445)
+					(mid 3.175 3.8127)
+					(end 2.54 4.445)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.81 5.08) (xy 3.81 4.445)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 			)
 			(symbol "X27.589_Stepper_1_1"
 				(pin passive line
-					(at -10.16 3.81 0)
-					(length 5.08)
-					(name "COIL_A1"
+					(at -1.27 7.62 270)
+					(length 2.54)
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -654,9 +814,9 @@
 					)
 				)
 				(pin passive line
-					(at -10.16 1.27 0)
-					(length 5.08)
-					(name "COIL_A2"
+					(at 3.81 7.62 270)
+					(length 2.54)
+					(name "-"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -672,9 +832,9 @@
 					)
 				)
 				(pin passive line
-					(at -10.16 -1.27 0)
-					(length 5.08)
-					(name "COIL_B1"
+					(at -6.35 2.54 0)
+					(length 2.54)
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -690,9 +850,9 @@
 					)
 				)
 				(pin passive line
-					(at -10.16 -3.81 0)
-					(length 5.08)
-					(name "COIL_B2"
+					(at -6.35 -2.54 0)
+					(length 2.54)
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1134,16 +1294,6 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 74.93) (xy 205.74 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1a1b2269-f63f-45fd-87da-2a98e8243470")
-	)
-	(wire
-		(pts
 			(xy 196.85 54.61) (xy 201.93 54.61)
 		)
 		(stroke
@@ -1174,16 +1324,6 @@
 	)
 	(wire
 		(pts
-			(xy 194.31 82.55) (xy 205.74 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "77eb4ecc-7eb8-4177-845d-3d03cf4351c6")
-	)
-	(wire
-		(pts
 			(xy 186.69 49.53) (xy 186.69 55.88)
 		)
 		(stroke
@@ -1201,16 +1341,6 @@
 			(type default)
 		)
 		(uuid "a8f3d000-106d-426e-87ae-7ba92b6774ef")
-	)
-	(wire
-		(pts
-			(xy 194.31 77.47) (xy 205.74 77.47)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ad47c3b2-1981-4871-92ac-a1afe308dffb")
 	)
 	(wire
 		(pts
@@ -1252,15 +1382,85 @@
 		)
 		(uuid "c9a3127c-7ddc-4ba2-8e26-b504cf834370")
 	)
-	(wire
-		(pts
-			(xy 194.31 80.01) (xy 205.74 80.01)
+	(label "MOTOR_B1"
+		(at 194.31 80.01 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
 		)
-		(stroke
-			(width 0)
-			(type default)
+		(uuid "3451321e-4027-4917-9b85-d0c58a234e14")
+	)
+	(label "MOTOR_B2"
+		(at 194.31 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
 		)
-		(uuid "d4729d98-8bd9-4690-85ba-4b426ccc5d23")
+		(uuid "39139567-dae1-48dc-8bb3-692808bd73e6")
+	)
+	(label "MOTOR_B1"
+		(at 234.95 77.47 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "80e81658-7827-46c4-91d0-5e47acb3e035")
+	)
+	(label "MOTOR_A1"
+		(at 194.31 74.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8a3ed90c-bc55-4429-9928-c59a4dd582ed")
+	)
+	(label "MOTOR_B2"
+		(at 234.95 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b14f7f7f-d993-437c-b74f-ecd51d32807d")
+	)
+	(label "MOTOR_A2"
+		(at 194.31 77.47 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c146ea72-3c59-444b-9313-ecc79fef72c1")
+	)
+	(label "MOTOR_A1"
+		(at 240.03 72.39 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e4c6d305-817f-4092-ac59-d4d1c1c8f1fc")
+	)
+	(label "MOTOR_A2"
+		(at 245.11 72.39 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fbd82caf-6651-44c5-87b8-a6a0b444a23e")
 	)
 	(hierarchical_label "STEPPER_A1"
 		(shape input)
@@ -1582,7 +1782,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 196.85 53.6448 0)
 			(hide yes)
 			(show_name no)
@@ -1710,7 +1910,7 @@
 	)
 	(symbol
 		(lib_id "OpenSkyhawk:X27.589_Stepper")
-		(at 215.9 78.74 0)
+		(at 241.3 80.01 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1721,7 +1921,7 @@
 		(fields_autoplaced yes)
 		(uuid "5f059a4d-7084-4773-9b5c-340acba10331")
 		(property "Reference" "MOT1"
-			(at 222.25 77.4699 0)
+			(at 247.65 78.7399 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1732,7 +1932,7 @@
 			)
 		)
 		(property "Value" "X27.589"
-			(at 222.25 80.0099 0)
+			(at 247.65 81.2799 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1743,7 +1943,7 @@
 			)
 		)
 		(property "Footprint" "OpenSkyhawk:X27.589_Stepper"
-			(at 215.9 78.74 0)
+			(at 241.3 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1753,8 +1953,8 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.juken-swiss.com/en/products/switec-instruments/"
-			(at 215.9 78.74 0)
+		(property "Datasheet" "http://agr.ucoz.lv/files/SP_X27_e_C.pdf"
+			(at 241.3 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1765,7 +1965,7 @@
 			)
 		)
 		(property "Description" "Switec X27.589 bipolar instrument stepper motor, shaft-through-PCB mount"
-			(at 215.9 78.74 0)
+			(at 241.3 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2031,7 +2231,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 186.69 54.9148 0)
 			(hide yes)
 			(show_name no)
