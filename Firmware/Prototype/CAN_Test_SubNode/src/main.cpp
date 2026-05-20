@@ -4,11 +4,15 @@
 // Node ID from PA0 strap: Sub-1 ties PA0 to 3.3V → node_id=1; Sub-2 leaves PA0
 // floating (internal pull-down reads LOW) → node_id=2.
 //
-// CAN1 (PA11 RX / PA12 TX) 500 kbps via HAL_CAN — no external library needed.
+// CAN1 (PA11 RX / PA12 TX) 125 kbps via HAL_CAN — no external library needed.
+// DiagSerial: USART1 PA9 TX / PA10 RX @ 115200 — diagnostic tap (TX-only in practice).
 
 #include <Arduino.h>
 #include <stm32f1xx_hal_can.h>
 #include <CANProtocol.h>
+
+// ── diagnostic serial ─────────────────────────────────────────────────────────
+HardwareSerial DiagSerial(PA10, PA9);  // USART1: RX=PA10, TX=PA9
 
 static constexpr uint8_t LED_PIN   = PC13;
 static constexpr uint8_t STRAP_PIN = PA0;
@@ -48,15 +52,15 @@ extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
 // ── CAN init ──────────────────────────────────────────────────────────────────
 static void canInit() {
     hcan.Instance                  = CAN1;
-    hcan.Init.Prescaler            = 4;
+    hcan.Init.Prescaler            = 16;  // 125 kbps (was 4 for 500 kbps)
     hcan.Init.Mode                 = CAN_MODE_NORMAL;
-    hcan.Init.SyncJumpWidth        = CAN_SJW_1TQ;
+    hcan.Init.SyncJumpWidth        = CAN_SJW_4TQ;
     hcan.Init.TimeSeg1             = CAN_BS1_13TQ;
     hcan.Init.TimeSeg2             = CAN_BS2_4TQ;
     hcan.Init.TimeTriggeredMode    = DISABLE;
-    hcan.Init.AutoBusOff           = DISABLE;
+    hcan.Init.AutoBusOff           = ENABLE;
     hcan.Init.AutoWakeUp           = DISABLE;
-    hcan.Init.AutoRetransmission   = ENABLE;
+    hcan.Init.AutoRetransmission   = DISABLE;  // prevent runaway bus-off cycle
     hcan.Init.ReceiveFifoLocked    = DISABLE;
     hcan.Init.TransmitFifoPriority = DISABLE;
     HAL_CAN_Init(&hcan);
@@ -88,6 +92,10 @@ static void canTx(uint32_t id, const uint8_t* data, uint8_t len) {
     uint32_t mailbox;
     if (HAL_CAN_AddTxMessage(&hcan, &txHeader, const_cast<uint8_t*>(data), &mailbox) != HAL_OK) {
         txDrops++;
+        DiagSerial.print(F("[TXFAIL] id=0x"));
+        DiagSerial.print(id, HEX);
+        DiagSerial.print(F(" total="));
+        DiagSerial.println(txDrops);
     }
 }
 
@@ -118,14 +126,34 @@ static void sendHeartbeat(uint32_t now) {
     lastHbMs = now;
 
     uint32_t esr32 = CAN1->ESR;
+    uint8_t  tec   = (esr32 >> 16) & 0xFF;
+    uint8_t  rec   = (esr32 >> 24) & 0xFF;
+    bool     boff  = (esr32 >> 2) & 1;
+    bool     epvf  = (esr32 >> 1) & 1;
+
     uint8_t  flags = 0;
-    if (esr32 & (1 << 2)) flags |= 0x01;  // BOFF  — ESR bit 2
-    if (esr32 & (1 << 1)) flags |= 0x02;  // EPVF  — ESR bit 1
-    if (txDrops > 0)       flags |= 0x04;  // TXDROP — mailbox-full TX failures
+    if (boff)          flags |= 0x01;
+    if (epvf)          flags |= 0x02;
+    if (txDrops > 0)   flags |= 0x04;
+
+    DiagSerial.print(F("[HB] node="));
+    DiagSerial.print(node_id);
+    DiagSerial.print(F(" TEC="));
+    DiagSerial.print(tec);
+    DiagSerial.print(F(" REC="));
+    DiagSerial.print(rec);
+    DiagSerial.print(F(" BOFF="));
+    DiagSerial.print(boff);
+    DiagSerial.print(F(" EPVF="));
+    DiagSerial.print(epvf);
+    DiagSerial.print(F(" drops="));
+    DiagSerial.print(txDrops);
+    DiagSerial.print(F(" rx="));
+    DiagSerial.println(rxCount);
 
     uint16_t uptime16 = (uint16_t)((now - startMs) / 1000);
     uint16_t rxc16    = (uint16_t)(rxCount & 0xFFFF);
-    uint16_t esr16    = (uint16_t)(CAN1->ESR >> 16);
+    uint16_t esr16    = (uint16_t)(esr32 >> 16);
 
     uint8_t buf[8];
     buf[0] = node_id;
@@ -178,6 +206,9 @@ void setup() {
     pinMode(LED_PIN,   OUTPUT); digitalWrite(LED_PIN, HIGH);
     pinMode(BTN_PIN,   INPUT_PULLUP);
 
+    DiagSerial.begin(115200);
+    DiagSerial.println(F("CAN_Test_SubNode ready."));
+
     pinMode(STRAP_PIN, INPUT_PULLDOWN);
     delay(10);
     node_id   = digitalRead(STRAP_PIN) ? 1 : 2;
@@ -185,7 +216,11 @@ void setup() {
     evtTxId   = (node_id == 1) ? CAN_ID_EVT_1  : CAN_ID_EVT_2;
     echoTxId  = (node_id == 1) ? CAN_ID_ECHO_1 : CAN_ID_ECHO_2;
 
+    DiagSerial.print(F("node_id="));
+    DiagSerial.println(node_id);
+
     canInit();
+    DiagSerial.println(F("CAN ready."));
 }
 
 void loop() {
