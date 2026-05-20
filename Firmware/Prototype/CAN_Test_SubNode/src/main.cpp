@@ -52,7 +52,7 @@ extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
 // ── CAN init ──────────────────────────────────────────────────────────────────
 static void canInit() {
     hcan.Instance                  = CAN1;
-    hcan.Init.Prescaler            = 16;  // 125 kbps (was 4 for 500 kbps)
+    hcan.Init.Prescaler            = 4;   // 500 kbps
     hcan.Init.Mode                 = CAN_MODE_NORMAL;
     hcan.Init.SyncJumpWidth        = CAN_SJW_4TQ;
     hcan.Init.TimeSeg1             = CAN_BS1_13TQ;
