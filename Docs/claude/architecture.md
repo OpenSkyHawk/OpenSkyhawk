@@ -37,7 +37,7 @@ LED backlight power is carried on a **separate 2-pin Molex Mini-Fit Jr** connect
 
 **LED backlighting:** LEDs placed on the front side of the PCB; all other components on the back side.
 
-**DCS communication:** Dual-path. RP2040 HID controllers connect directly via USB HID. DCS-BIOS state for cockpit panels routes: PC → USB serial → RP2040 (flight stick, gateway role) → UART → STM32 gateway node → CAN bus → all avionics nodes.
+**DCS communication:** Dual-path. RP2040 HID controllers connect directly via USB HID. DCS-BIOS state for cockpit panels routes: PC → USB serial → RP2040 (standalone gateway box) → UART → STM32 gateway node → CAN bus → all avionics nodes.
 
 **Naming convention:** Functional names from the start — `Center_Armament`, `Left_ECM`, etc. No `Controller_NN` placeholders.
 
@@ -64,13 +64,85 @@ Toolchain: PlatformIO (earlephilhower/arduino-pico platform) or Arduino IDE with
 
 RP2040 modules are bus-powered from USB. No 12V supply needed.
 
+### Waveshare RP2040-Plus — required solder bridges
+
+Two pads are disconnected by default and must be bridged before the board is usable:
+
+| Pad | Purpose | Without it |
+|---|---|---|
+| **RGB** | NeoPixel data line to GP23 | Onboard WS2812 does not respond |
+| **VREF** | ADC reference voltage (to 3.3V) | All ADC reads return garbage / float at 4095 |
+
+Both are small exposed pads on the board edge. Bridge with a solder blob or jumper wire. Do this on every RP2040-Plus before first use.
+
+### USB Identity (HID controllers)
+
+Set at runtime in `setup()` before `Joystick.begin()` — build flags do not work (strings bake into cached framework archive):
+
+```cpp
+#include <USB.h>
+USB.setManufacturer("OpenSkyhawk");
+USB.setProduct("A-4E Skyhawk");
+USB.setVIDPID(0x2E8A, 0x4134);
+```
+
+**PID allocation table** (VID 0x2E8A = Raspberry Pi, reused for all RP2040 devices):
+
+| Device | Role | PID |
+|---|---|---|
+| A-4E Skyhawk | DCS-BIOS bridge + flight stick, CDC + HID | `0x4134` |
+| A-4E Throttle | HID throttle quadrant | `0x4135` |
+| A-4E Rudder | HID rudder pedals | `0x4136` |
+| A-4E Button Box | HID button box | `0x4137` |
+
+### Joystick Axes
+
+All flight control axes originate on STM32 sub-nodes collocated with the physical controls. Sub-nodes read sensors locally and send `ControlPacket` structs over CAN → MAIN_NODE → UART → RP2040, which intercepts them and routes to the HID layer. No long analog wire runs needed — only the CAN bus (CANH/CANL/GND) spans the cockpit.
+
+| Axis | HID method | `controlId` | Source | Sub-node |
+|---|---|---|---|---|
+| Roll | `Joystick.X()` | `CTRL_ROLL` (0x0010) | AS5600 / pot | Stick sub-node |
+| Pitch | `Joystick.Y()` | `CTRL_PITCH` (0x0011) | AS5600 / pot | Stick sub-node |
+| Throttle | `Joystick.sliderLeft()` | `CTRL_THROTTLE` (0x0012) | ADC pot | Throttle sub-node |
+| Rudder | `Joystick.Zrotate()` | `CTRL_RUDDER` (0x0013) | ADC pot | Pedal sub-node |
+| Left brake | `Joystick.sliderRight()` | `CTRL_BRAKE_L` (0x0014) | ADC pot | Pedal sub-node |
+| Right brake | *(8th axis)* | `CTRL_BRAKE_R` (0x0015) | ADC pot | Pedal sub-node |
+| Zoom | `Joystick.Z()` | `CTRL_ZOOM` (0x0016) | ADC pot | Throttle sub-node |
+
+Use `Joystick.use16bit()` + `Joystick.useManualSend(true)` for full ±32767 range and batched HID reports.
+
+### Flight Control Sub-nodes
+
+Three dedicated STM32 sub-nodes handle all physical flight controls:
+
+**Stick sub-node** — mounted in the stick base:
+- Roll + Pitch via AS5600 hall-effect sensors (preferred) or pots
+- Stick grip buttons (trigger, NWS, etc.) → HID buttons via `CTRL_*` IDs
+
+**Throttle sub-node** — mounted at throttle quadrant:
+- Throttle lever + Zoom slider → STM32 ADC
+- Throttle grip switches → cockpit panel inputs (DCS-BIOS) or HID buttons
+
+**Pedal sub-node** — mounted under floor/seat:
+- Rudder axis + left/right toe brakes → STM32 ADC (3 channels)
+
+STM32F103 has sufficient onboard ADC channels for all three pods. No ADS1115 needed.
+
+### Stick Angle Sensing — AS5600 (preferred over pots)
+
+AS5600 hall effect sensor: 12-bit, contactless, no wear, no dead zones. Fixed I²C address 0x36 — two axes on one sub-node require two I²C buses:
+- Roll → I2C0 (PB6/PB7 on STM32)
+- Pitch → I2C1 (PB10/PB11 on STM32)
+
+Magnet: diametrically magnetised disc, 6mm dia × 2.5mm thick, 0.5–3mm gap to IC. Mount to be 3D printed (Fusion 360). No ferrous material near the magnet in the mount.
+
 ## CAN Avionics Controllers (STM32F103CBT6)
 
 Unchanged from existing architecture. Custom PCBs per controller group. CAN bus primary (SN65HVD230 transceiver on PA11/PA12). No USB at runtime.
 
-## Gateway Role — Flight Stick RP2040
+## Gateway Role — Standalone RP2040 Gateway Box
 
-The flight stick's RP2040 runs two serial interfaces simultaneously:
+A dedicated RP2040 module (not embedded in any flight control) acts as the CAN gateway. It runs two serial interfaces simultaneously:
 
 | Interface | Object | Baud | Purpose |
 |-----------|--------|------|---------|
@@ -106,6 +178,22 @@ struct ControlPacket {
 };
 ```
 
+### controlId Namespace
+
+`controlId` determines how the RP2040 gateway routes an incoming packet:
+
+| Range | Owner | Routing |
+|-------|-------|---------|
+| `0x0010` – `0x00FF` | Flight control axes & buttons | HID only — `Joystick.*()` — never DCS-BIOS |
+| `0x8000` – `0x86FF` | DCS-BIOS A-4E-C addresses | DCS-BIOS only — `sendDcsBiosMessage()` — never HID |
+| `0xFFFF` | Reserved: TEST_SEQ | Triggers TEST_SEQ CAN frame — internal use only |
+
+DCS-BIOS output addresses are used directly as `controlId` values in the `0x8000+` range. This means no translation table is needed for the downstream direction (DCS → cockpit): the master node receives a `ControlPacket` from the RP2040, broadcasts it over CAN, and each sub-node extracts `value` from its own address slot.
+
+**RP2040 routing logic:** `controlId < 0x8000` → HID, `controlId >= 0x8000` → `sendDcsBiosMessage()`.
+
+The A-4E-C mod has no axis exports (stick/rudder positions are HID-only inputs). The two ranges therefore never overlap.
+
 ### DCS-BIOS Integration Constraint
 
 DCS-BIOS is designed to read hardware state directly from the MCU it runs on — it cannot consume CAN bus packets natively. On the gateway RP2040, UART packets from the STM32 cluster must be parsed manually and translated into DCS-BIOS commands via `sendDcsBiosMessage("CONTROL_NAME", "value")`.
@@ -129,14 +217,21 @@ LED indicator states and gauge targets flow in the opposite direction: DCS-BIOS 
 PC
  ↕ USB HID  (joystick axes, buttons — latency-critical)
  ↕ USB CDC serial @ 250000 baud  (DCS-BIOS cockpit state)
-RP2040 (flight stick + gateway)
+RP2040 (standalone gateway box)
  ↕ UART @ 250000 baud  (ControlPacket structs, bidirectional)
 STM32F103 (CAN master node)
- ↕ CAN bus
-All cockpit avionics nodes
+ ↕ CAN bus @ 500 kbps
+ ├── All cockpit avionics nodes  (switches, gauges, lighting)
+ ├── Stick sub-node   (AS5600 roll/pitch → CTRL_ROLL/PITCH)
+ ├── Throttle sub-node (ADC throttle/zoom → CTRL_THROTTLE/ZOOM)
+ └── Pedal sub-node   (ADC rudder/brakes → CTRL_RUDDER/BRAKE_*)
 ```
 
+**RP2040 routing:** controlId < 0x8000 → `Joystick.*()` HID; controlId ≥ 0x8000 → `sendDcsBiosMessage()`.
+
 **STM32 master node role:** CAN Rx interrupt → pack into `ControlPacket` → push out USART TX to RP2040. Reverse: receive `ControlPacket` from RP2040 → broadcast LED/gauge state over CAN.
+
+**CAN bandwidth:** 500 kbps bus, ~4,500 frames/sec capacity. Worst case (A-4E-C 89 float outputs at 30 Hz, batched 2-per-frame): ~30% utilisation. Sub-node flight control packets add negligible load at human axis rates.
 
 # PCB Architecture
 

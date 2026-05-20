@@ -24,9 +24,44 @@ static constexpr uint32_t CAN_ID_EVT_2      = 0x201; // Sub-2 → Master: input 
 static constexpr uint32_t CAN_ID_ECHO_1     = 0x210; // Sub-1 → Master: seq echo
 static constexpr uint32_t CAN_ID_ECHO_2     = 0x211; // Sub-2 → Master: seq echo
 
+// ── controlId namespace ───────────────────────────────────────────────────────
+//
+// controlId determines how the RP2040 gateway routes an incoming packet:
+//
+//   0x0010 – 0x00FF  Flight control axes & buttons (HID only — never DCS-BIOS)
+//   0x8000 – 0x86FF  DCS-BIOS A-4E-C addresses    (DCS-BIOS only — never HID)
+//   0xFFFF           Reserved: TEST_SEQ
+//
+// Using DCS-BIOS addresses directly as controlIds in the 0x8000+ range means
+// no translation table is needed for the downstream direction (DCS → cockpit).
+// RP2040 routing logic: controlId < 0x8000 → HID, else → sendDcsBiosMessage().
+
+// ── Flight control axis IDs (0x0010–0x001F) ──────────────────────────────────
+// Read by STM32 sub-nodes (AS5600 / ADC), sent over CAN, intercepted by RP2040
+// and routed to Joystick.X/Y/etc. — never forwarded to DCS-BIOS.
+
+static constexpr uint16_t CTRL_ROLL         = 0x0010; // Joystick.X()
+static constexpr uint16_t CTRL_PITCH        = 0x0011; // Joystick.Y()
+static constexpr uint16_t CTRL_THROTTLE     = 0x0012; // Joystick.sliderLeft()
+static constexpr uint16_t CTRL_RUDDER       = 0x0013; // Joystick.Zrotate()
+static constexpr uint16_t CTRL_BRAKE_L      = 0x0014; // Joystick.sliderRight()
+static constexpr uint16_t CTRL_BRAKE_R      = 0x0015; // (8th axis if needed)
+static constexpr uint16_t CTRL_ZOOM         = 0x0016; // Joystick.Z()
+
 // ── Reserved controlId values ─────────────────────────────────────────────────
 
 static constexpr uint16_t CTRL_TEST_SEQ     = 0xFFFF; // triggers TEST_SEQ CAN frame
+
+// ── Batched CAN frame (2 × ControlPacket in one 8-byte frame) ────────────────
+// MAIN_NODE should batch two ControlPackets per CAN frame when forwarding
+// DCS-BIOS state downstream. Halves bus utilisation (~30% at worst case vs ~60%
+// unbatched). RP2040 and sub-nodes unpack both slots; slot B controlId 0x0000
+// signals an empty/padding slot.
+
+struct __attribute__((packed)) ControlPacketPair {
+    ControlPacket a;
+    ControlPacket b;  // controlId 0x0000 = unused padding slot
+};
 
 // ── Diagnostic framing (UART: master → Arduino/tap) ──────────────────────────
 
