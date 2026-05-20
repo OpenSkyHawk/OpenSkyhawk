@@ -4,11 +4,11 @@ This prototype validates the CAN bus architecture before any production PCBs are
 
 Three experiments are defined below. They are independent and have different wiring, firmware assumptions, and success criteria. Do not treat them as a single continuous test path.
 
-| Experiment | What it tests | Arduino connected? | DCS running? | Status |
-|------------|---------------|--------------------|--------------|--------|
-| A — UART byte-stream capture | DCS-BIOS traffic volume and burst characteristics | Yes | Yes | Ready |
-| B — Synthetic CAN stress | CAN topology, throughput, and saturation limits | Yes | No | Ready |
-| C — DCS-BIOS bridge validation | End-to-end DCS state reaching CAN nodes | No (RP2040) | Yes | **Blocked** — see below |
+| Experiment | What it tests | Injector | DCS running? | Status |
+|------------|---------------|----------|--------------|--------|
+| A — UART byte-stream capture | DCS-BIOS traffic volume and burst characteristics | RP2040 (USB only) | Yes | Ready |
+| B — Synthetic CAN stress | CAN topology, throughput, and saturation limits | RP2040 | No | Ready |
+| C — DCS-BIOS bridge validation | End-to-end DCS state reaching CAN nodes | RP2040 (bridge mode) | Yes | **Blocked** — see below |
 
 **Why Experiment C is blocked:** The RP2040 Bridge firmware is a transparent byte relay. It passes raw DCS-BIOS bytes to the STM32 master, which expects 4-byte `ControlPacket` structs. Without a parser/translator on the RP2040 (or on the master), the master receives misframed data and emits `[OVF]` alignment errors rather than forwarding real control state to the CAN bus. Experiments A and B are both useful without resolving this, but Experiment C cannot produce meaningful results until a translator is implemented.
 
@@ -18,18 +18,23 @@ Three experiments are defined below. They are independent and have different wir
 
 | Qty | Part | Notes |
 |-----|------|-------|
-| 1 | Arduino Mega 2560 | Experiments A and B only |
-| 3 | STM32F103CBT6 Blue Pill | Must have external 8 MHz crystal |
-| 3 | SN65HVD230 CAN transceiver | 3.3 V supply — **not** 5 V |
+| 1 | RP2040 board (any Pico-compatible) | MicroPython pre-installed; replaces Arduino Mega |
+| 2–3 | STM32F103CBT6 Blue Pill | Must have external 8 MHz crystal; 2 minimum (master + Sub-1) |
+| 2–3 | SN65HVD230 CAN transceiver | 3.3 V supply — **not** 5 V |
 | 2 | 120 Ω resistors | CAN bus termination |
-| 2 | USB-TTL adapters | Adapter 1: STM32 master PA9 (diagnostic tap). Adapter 2: Arduino Serial2 (commands + analytics). |
+| 1–2 | USB-TTL adapters | Adapter 1: STM32 master PA9 (diagnostic tap). Adapter 2: optional second tap (see below). |
+| 1 | SSD1306 OLED (128×64, I2C) | Connected to RP2040; shows live node status, TEC/REC, RTT |
 | — | 24 AWG twisted pair | CANH/CANL + a separate GND wire run alongside |
-| — | 1 kΩ + 2 kΩ resistors | Voltage divider: Arduino Serial1 TX (5 V) → STM32 PA3 (3.3 V max) |
 
 **STM32 master pin assignments:**
 - PA11 / PA12 — CAN RX / TX (to SN65HVD230)
-- PA2 / PA3 — UART2 TX / RX (to Arduino Serial1 in Exp. A/B; to RP2040 in Exp. C)
+- PA2 / PA3 — UART2 TX / RX (to RP2040 GP1/GP0 in all experiments)
 - PA9 — UART1 TX, diagnostic tap → USB-TTL adapter 1. **Leave PA10 unconnected.**
+
+**RP2040 pin assignments:**
+- GP0 (TX) / GP1 (RX) — UART0 @ 250000 → STM32 master PA3/PA2. No voltage divider needed — both sides are 3.3 V.
+- GP4 (SDA) / GP5 (SCL) — I2C0 → OLED
+- USB — operator console (MicroPython REPL): commands in, analytics out
 
 **Sub-node ID strap:** same binary is flashed to both sub-nodes. At startup the firmware reads PA0:
 - Sub-1: wire PA0 to 3.3 V rail → reads HIGH → `node_id = 1`
@@ -43,21 +48,27 @@ Three experiments are defined below. They are independent and have different wir
 
 | Project | Target | Role |
 |---------|--------|------|
-| `CAN_Test_Arduino/` | Mega 2560 | Experiments A and B: byte relay, packet injection, analytics |
+| `CAN_Test_RP2040/` | RP2040 (MicroPython) | All experiments: byte relay, packet injection, analytics, OLED display |
 | `CAN_Test_Master/` | Blue Pill | UART → CAN bridge, error monitor, node watchdog |
 | `CAN_Test_SubNode/` | Blue Pill ×2 | CAN sub-node: heartbeat, echo, button event |
+| `CAN_Test_Arduino/` | Mega 2560 | Superseded by CAN_Test_RP2040 — kept for reference |
 
-Flash with `pio run -t upload` inside each project directory. The Blue Pill `platformio.ini` files include the Chinese-clone JTAG ID override (`CPUTAPID 0x2ba01477`) — no extra flags needed.
+**Flashing the RP2040:** Copy `CAN_Test_RP2040/main.py` and `CAN_Test_RP2040/ssd1306.py` to the RP2040 using Thonny or `mpremote`. The board must be running MicroPython firmware (v1.20+ recommended). `main.py` runs automatically on boot.
+
+If `ssd1306.py` is not present the OLED is skipped gracefully — the script still runs and outputs analytics over USB serial.
+
+**Flashing the Blue Pills:** `pio run -t upload` inside `CAN_Test_Master/` or `CAN_Test_SubNode/`. The `platformio.ini` files include the Chinese-clone JTAG ID override (`CPUTAPID 0x2ba01477`) — no extra flags needed.
 
 ### Serial ports
 
 | Port | Baud | Direction | Purpose |
 |------|------|-----------|---------|
-| Arduino USB (`Serial`) | 250000 | In | DCS-BIOS input (Experiment A). Do not open this port in a terminal that sends keystrokes — DCS-BIOS owns it. |
-| Arduino Serial2 (pins 16/17 → USB-TTL adapter 2) | 115200 | In + Out | **Operator console for all experiments.** Send commands here; analytics and status print here. |
-| STM32 Master PA9 (→ USB-TTL adapter 1) | 115200 | Out | CAN bus diagnostics. Open this in a second terminal window alongside the Serial2 console. |
+| RP2040 USB (MicroPython REPL) | any | In + Out | **Operator console for all experiments.** Send commands; analytics and `[HB]`/`[ERR]` lines print here. DCS-BIOS also connects here in Experiment A. |
+| STM32 Master PA9 (→ USB-TTL adapter 1) | 115200 | Out | CAN bus diagnostics: `[ECHO]`, `[ERRS]`, `[TXFULL]`, `[OVF]`, `[DEAD]`. Open in a second terminal alongside the RP2040 REPL. |
 
-### Commands (send one character to Arduino Serial2)
+**Two USB-TTL adapters** are useful but not required. Adapter 1 on PA9 is the primary CAN diagnostic window. A second adapter on PA9 of the sub-node can help debug sub-node behaviour independently. The OLED covers basic status (node alive, TEC/REC, last RTT) without any adapters.
+
+### Commands (send one character in the RP2040 REPL)
 
 | Key | Mode | Description |
 |-----|------|-------------|
@@ -98,25 +109,24 @@ On the **master**: fast blink means at least one sub-node has missed its heartbe
 
 **What this measures:** The volume and burst shape of the DCS-BIOS data stream from a live FA-18C session. Results size the STM32 UART RX buffer and estimate the maximum CAN frame rate the production system will need to sustain.
 
-**What this does not test:** CAN bus behaviour. Run this experiment with the STM32 disconnected — the Arduino measures the byte stream whether or not anything is listening on Serial1.
+**What this does not test:** CAN bus behaviour. Run this experiment with the STM32 disconnected — the RP2040 measures the byte stream whether or not anything is listening on UART0.
 
 ### Wiring (Experiment A)
 
 ```
-PC (DCS-BIOS USB) → Arduino USB (Serial, 250000)
-Arduino Serial2 pin 16 (TX) → USB-TTL adapter 2 RX   [analytics console]
-Arduino Serial1 — leave unconnected
+PC (DCS-BIOS USB) → RP2040 USB
+RP2040 UART0 (GP0/GP1) — leave unconnected
 ```
 
-The STM32 is not involved. Serial1 transmits into the air; the firmware doesn't care. Connecting the STM32 during this step adds `[OVF]` noise from the misframed relay without adding useful information — defer that to Experiment B.
+The STM32 is not involved. UART0 transmits into the air; the firmware doesn't care. Connecting the STM32 during this step adds `[OVF]` noise from the misframed relay without adding useful information — defer that to Experiment B.
 
 ### Procedure
 
-1. Wire as above. Open a terminal on **USB-TTL adapter 2** (115200) — this is the analytics console.
+1. Wire as above. Open a terminal on the **RP2040 USB port** (MicroPython REPL) — this is the analytics console.
 2. Load DCS and spawn a FA-18C. Wait for the aircraft to finish initialising.
-3. Send `D` on Serial2 to reset capture statistics (DCS capture mode starts automatically at boot, but `D` gives a clean baseline).
+3. Send `D` in the REPL to reset capture statistics (DCS capture mode starts automatically at boot, but `D` gives a clean baseline).
 4. Fly for 5 minutes with realistic cockpit activity — switch sweeps, system runups, a circuit. The goal is representative traffic, not minimum or maximum.
-5. After 5 minutes the firmware prints a summary on Serial2, resets stats, and continues capturing. Send `I` to stop.
+5. After 5 minutes the firmware prints a summary, resets stats, and continues capturing. Send `I` to stop.
 
 **Record:**
 - Peak 100 ms burst (bytes) → minimum STM32 UART RX buffer size
@@ -138,9 +148,10 @@ The STM32 is not involved. Serial1 transmits into the air; the firmware doesn't 
 ### Wiring (Experiment B)
 
 ```
-Arduino Serial1 pin 18 (TX) → 1 kΩ → STM32 Master PA3 ← 2 kΩ → GND
-Arduino Serial1 pin 19 (RX) ← STM32 Master PA2
-Arduino Serial2 pin 16 (TX) → USB-TTL adapter 2 RX
+RP2040 GP0 (TX) ──────────────────────── STM32 Master PA3  (direct, no divider)
+RP2040 GP1 (RX) ──────────────────────── STM32 Master PA2
+RP2040 GP4 (SDA) / GP5 (SCL) ─────────── OLED SDA/SCL
+RP2040 USB ────────────────────────────── PC (operator console)
 USB-TTL adapter 1 RX ← STM32 Master PA9
 GND ─── GND (all boards)
 
@@ -165,7 +176,7 @@ to:
 hcan.Init.Mode = CAN_MODE_LOOPBACK;
 ```
 
-Rebuild and flash. In loopback mode the CAN controller's TX feeds its own RX internally — no transceiver or bus is needed. Send `S` on Serial2. Watch the diagnostic tap for 30 seconds.
+Rebuild and flash. In loopback mode the CAN controller's TX feeds its own RX internally — no transceiver or bus is needed. Send `S` in the RP2040 REPL. Watch the diagnostic tap for 30 seconds.
 
 Pass: no `[ERRS]` lines with non-zero TEC or REC. Any non-zero TEC or REC means the bit timing is wrong — check the crystal and PLL configuration.
 
@@ -177,7 +188,7 @@ Restore `CAN_MODE_NORMAL`, rebuild, and flash before proceeding.
 
 **Step 2 — Two-node bus**
 
-Wire Master and Sub-1 with 120 Ω at each end. Flash Sub-1 (PA0 strapped to 3.3 V → `node_id = 1`). Send `S` on Serial2.
+Wire Master and Sub-1 with 120 Ω at each end. Flash Sub-1 (PA0 strapped to 3.3 V → `node_id = 1`). Send `S` in the RP2040 REPL.
 
 Note: the master LED will fast-blink in this step because Sub-2 is absent and the watchdog considers it dead. This is expected until Step 3.
 
