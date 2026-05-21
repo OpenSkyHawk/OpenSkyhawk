@@ -20,6 +20,9 @@ namespace STM32Board {
     // Blink status LED based on CAN health. Call every loop iteration.
     void update();
 
+    // Enable debug output. Starts DiagSerial the first time it is called with true.
+    // When false (default), DiagSerial is never initialised and no CPU cycles are
+    // spent on string formatting or UART transmission.
     void setDebug(bool on);
     void log(const char* msg);
 
@@ -33,7 +36,10 @@ namespace STM32Board {
     // Access the HAL handle for RX filter configuration (PanelGroup / PanelBridge).
     CAN_HandleTypeDef* canHandle();
 
-    // Access DiagSerial for extended formatted output (PanelGroup heartbeat, etc.).
+    // Access DiagSerial for formatted output from PanelGroup / PanelBridge.
+    // Returns an active stream only when setDebug(true) has been called;
+    // use isDebug() to guard print calls so they are skipped when debug is off.
+    bool            isDebug();
     HardwareSerial& diagSerial();
 }
 

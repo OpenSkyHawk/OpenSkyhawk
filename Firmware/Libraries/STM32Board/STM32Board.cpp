@@ -35,8 +35,7 @@ namespace STM32Board {
 void begin() {
     pinMode(LED_PIN, OUTPUT);
     digitalWrite(LED_PIN, HIGH);  // active low — off at startup
-
-    _diag.begin(115200);
+    // DiagSerial is not started here — call setDebug(true) to enable it.
 
     _hcan.Instance                  = CAN1;
     _hcan.Init.Prescaler            = 4;   // 72 MHz / 4 / (1+13+4) = 500 kbps
@@ -79,7 +78,10 @@ void update() {
     }
 }
 
-void setDebug(bool on) { _debugOn = on; }
+void setDebug(bool on) {
+    if (on && !_debugOn) _diag.begin(115200);
+    _debugOn = on;
+}
 
 void log(const char* msg) {
     if (_debugOn) _diag.println(msg);
@@ -91,10 +93,12 @@ bool canSend(uint32_t canId, const uint8_t* data, uint8_t len) {
     uint32_t mailbox;
     if (HAL_CAN_AddTxMessage(&_hcan, &_txHdr, const_cast<uint8_t*>(data), &mailbox) != HAL_OK) {
         _txDrops++;
-        _diag.print(F("[TXFAIL] id=0x"));
-        _diag.print(canId, HEX);
-        _diag.print(F(" total="));
-        _diag.println(_txDrops);
+        if (_debugOn) {
+            _diag.print(F("[TXFAIL] id=0x"));
+            _diag.print(canId, HEX);
+            _diag.print(F(" total="));
+            _diag.println(_txDrops);
+        }
         return false;
     }
     return true;
@@ -105,7 +109,8 @@ uint8_t rec()    { return (CAN1->ESR >> 24) & 0xFF; }
 bool    busOff() { return (CAN1->ESR >> 2) & 1; }
 
 CAN_HandleTypeDef* canHandle() { return &_hcan; }
-HardwareSerial&    diagSerial() { return _diag; }
+bool            isDebug()    { return _debugOn; }
+HardwareSerial& diagSerial() { return _diag; }
 
 } // namespace STM32Board
 

@@ -74,13 +74,15 @@ namespace {
         bool     boff  = (esr32 >> 2) & 1;
         bool     epvf  = (esr32 >> 1) & 1;
 
-        auto& d = STM32Board::diagSerial();
-        d.print(F("[HB] node="));  d.print(_nodeId);
-        d.print(F(" TEC="));       d.print(tec);
-        d.print(F(" REC="));       d.print(rec);
-        d.print(F(" BOFF="));      d.print(boff);
-        d.print(F(" EPVF="));      d.print(epvf);
-        d.print(F(" rx="));        d.println(_rxCount);
+        if (STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[HB] node="));  d.print(_nodeId);
+            d.print(F(" TEC="));       d.print(tec);
+            d.print(F(" REC="));       d.print(rec);
+            d.print(F(" BOFF="));      d.print(boff);
+            d.print(F(" EPVF="));      d.print(epvf);
+            d.print(F(" rx="));        d.println(_rxCount);
+        }
 
         uint8_t  flags  = (boff ? 0x01 : 0) | (epvf ? 0x02 : 0);
         uint16_t uptime = (uint16_t)((now - _startMs) / 1000);
@@ -128,7 +130,6 @@ namespace PanelGroup {
 void setup() {
     _startMs = millis();
     STM32Board::begin();
-    STM32Board::diagSerial().println(F("PanelGroup ready."));
 
     // Strap pin PA0: HIGH → node_id=1 (tied to 3.3V), LOW → node_id=2 (floating)
     pinMode(PA0, INPUT_PULLDOWN);
@@ -138,8 +139,10 @@ void setup() {
     _evtTxId  = (_nodeId == 1) ? CAN_ID_EVT_1  : CAN_ID_EVT_2;
     _echoTxId = (_nodeId == 1) ? CAN_ID_ECHO_1 : CAN_ID_ECHO_2;
 
-    STM32Board::diagSerial().print(F("node_id="));
-    STM32Board::diagSerial().println(_nodeId);
+    if (STM32Board::isDebug()) {
+        STM32Board::diagSerial().print(F("PanelGroup ready. node_id="));
+        STM32Board::diagSerial().println(_nodeId);
+    }
 
     // Accept CTRL_BCAST (0x010) and TEST_SEQ (0x011) only
     CAN_FilterTypeDef filter = {};
@@ -155,7 +158,7 @@ void setup() {
     HAL_CAN_ConfigFilter(STM32Board::canHandle(), &filter);
 
     STM32Board::canStart();
-    STM32Board::diagSerial().println(F("CAN ready."));
+    STM32Board::log("CAN ready.");
 }
 
 void loop() {
