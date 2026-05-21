@@ -196,6 +196,7 @@ void loop() {
         lastStable = raw;
         bool pressed = (raw == LOW);
         Joystick.button(1, pressed);
+        Joystick.send_now();  // flush — manual-send mode requires explicit flush
         Serial.println(pressed ? "BTN:USR:1" : "BTN:USR:0");
     }
 }

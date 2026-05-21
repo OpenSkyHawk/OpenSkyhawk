@@ -12,6 +12,7 @@ namespace {
     static void (*_cbRtt)(uint16_t, uint32_t) = nullptr;
     static void (*_cbHb)(uint8_t, uint16_t)   = nullptr;
     static void (*_cbErr)(uint8_t, uint8_t, uint8_t) = nullptr;
+    static void (*_cbEvt)(uint16_t, uint16_t, uint8_t) = nullptr;
 
     void dispatchDiag() {
         switch (_diagBuf[1]) {
@@ -29,6 +30,13 @@ namespace {
             case DIAG_ERR:
                 if (_cbErr) _cbErr(_diagBuf[2], _diagBuf[3], _diagBuf[4]);
                 break;
+            case DIAG_EVT: {
+                uint16_t controlId, value;
+                memcpy(&controlId, _diagBuf + 2, 2);
+                memcpy(&value,     _diagBuf + 4, 2);
+                if (_cbEvt) _cbEvt(controlId, value, _diagBuf[6]);
+                break;
+            }
         }
     }
 
@@ -77,7 +85,8 @@ void send(uint16_t controlId, uint16_t value) {
 
 void onDiagRtt(void (*cb)(uint16_t, uint32_t))     { _cbRtt = cb; }
 void onDiagHb(void (*cb)(uint8_t, uint16_t))       { _cbHb  = cb; }
-void onDiagErr(void (*cb)(uint8_t, uint8_t, uint8_t)) { _cbErr = cb; }
+void onDiagErr(void (*cb)(uint8_t, uint8_t, uint8_t))      { _cbErr = cb; }
+void onDiagEvt(void (*cb)(uint16_t, uint16_t, uint8_t))    { _cbEvt = cb; }
 
 } // namespace SimGateway
 

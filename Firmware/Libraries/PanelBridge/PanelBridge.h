@@ -70,13 +70,11 @@ namespace PanelBridge {
     void onNodeAlive(void (*cb)(uint8_t nodeId));
 
     /**
-     * @brief Register a callback invoked when no heartbeat is received from any
-     *        sub-node for 3 seconds.
+     * @brief Register a callback invoked when a sub-node has not sent a heartbeat
+     *        for 3 seconds. Called once per timed-out node.
      *
      * @note Set before calling setup().
-     * @param cb Function called with the node_id of the timed-out node.
-     *           In the current prototype, node_id is always 1; multi-node
-     *           tracking is a future enhancement.
+     * @param cb Function called with the node_id (1 or 2) of the timed-out node.
      */
     void onNodeDead(void (*cb)(uint8_t nodeId));
 
