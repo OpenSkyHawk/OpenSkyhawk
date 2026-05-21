@@ -20,9 +20,9 @@ namespace STM32Board {
     // Blink status LED based on CAN health. Call every loop iteration.
     void update();
 
-    // Enable debug output. Starts DiagSerial the first time it is called with true.
-    // When false (default), DiagSerial is never initialised and no CPU cycles are
-    // spent on string formatting or UART transmission.
+    // Enable debug output. DiagSerial is always initialised in begin() (cheap);
+    // this flag gates all log() calls and isDebug() checks so no CPU cycles are
+    // spent on string formatting or UART transmission when debug is off.
     void setDebug(bool on);
     void log(const char* msg);
 

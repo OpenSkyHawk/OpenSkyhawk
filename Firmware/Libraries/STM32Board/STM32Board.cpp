@@ -35,7 +35,7 @@ namespace STM32Board {
 void begin() {
     pinMode(LED_PIN, OUTPUT);
     digitalWrite(LED_PIN, HIGH);  // active low — off at startup
-    // DiagSerial is not started here — call setDebug(true) to enable it.
+    _diag.begin(115200);
 
     _hcan.Instance                  = CAN1;
     _hcan.Init.Prescaler            = 4;   // 72 MHz / 4 / (1+13+4) = 500 kbps
@@ -78,10 +78,7 @@ void update() {
     }
 }
 
-void setDebug(bool on) {
-    if (on && !_debugOn) _diag.begin(115200);
-    _debugOn = on;
-}
+void setDebug(bool on) { _debugOn = on; }
 
 void log(const char* msg) {
     if (_debugOn) _diag.println(msg);
