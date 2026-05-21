@@ -10,8 +10,9 @@ namespace {
     static uint32_t _ovfCount  = 0;
 
     static constexpr uint32_t HB_TIMEOUT_MS = 3000;
-    static bool     _nodeAlive = false;
-    static uint32_t _lastHbMs  = 0;
+    static constexpr uint8_t  MAX_NODES    = 2;
+    static bool     _nodeAlive[MAX_NODES] = {};
+    static uint32_t _lastHbMs[MAX_NODES]  = {};
 
     static void (*_cbAlive)(uint8_t) = nullptr;
     static void (*_cbDead)(uint8_t)  = nullptr;
@@ -21,22 +22,28 @@ namespace {
         if (now - _lastErrMs < 1000) return;
         _lastErrMs = now;
 
-        if (STM32Board::isDebug()) {
-            uint8_t tec  = STM32Board::tec();
-            uint8_t rec  = STM32Board::rec();
-            bool    boff = STM32Board::busOff();
-            if (tec > 0 || rec > 0 || boff) {
+        uint8_t tec  = STM32Board::tec();
+        uint8_t rec  = STM32Board::rec();
+        bool    boff = STM32Board::busOff();
+        if (tec > 0 || rec > 0 || boff) {
+            if (STM32Board::isDebug()) {
                 auto& d = STM32Board::diagSerial();
                 d.print(F("[ERRS] TEC=")); d.print(tec);
                 d.print(F(" REC="));       d.print(rec);
                 d.print(F(" BOFF="));      d.println(boff);
             }
+            uint8_t flags = boff ? 0x01 : 0;
+            uint8_t errFrame[8] = {DIAG_MAGIC, DIAG_ERR, tec, rec, flags};
+            _uart->write(errFrame, 8);
         }
 
-        if (_nodeAlive && (now - _lastHbMs > HB_TIMEOUT_MS)) {
-            _nodeAlive = false;
-            STM32Board::log("[DEAD] node timeout");
-            if (_cbDead) _cbDead(1);
+        for (uint8_t i = 0; i < MAX_NODES; i++) {
+            if (_nodeAlive[i] && (now - _lastHbMs[i] > HB_TIMEOUT_MS)) {
+                _nodeAlive[i] = false;
+                uint8_t nodeId = i + 1;
+                STM32Board::log("[DEAD] node timeout");
+                if (_cbDead) _cbDead(nodeId);
+            }
         }
     }
 
@@ -114,9 +121,10 @@ namespace {
                 }
                 case CAN_ID_HB_1:
                 case CAN_ID_HB_2: {
-                    if (!_nodeAlive && _cbAlive) _cbAlive(rxData[0]);
-                    _nodeAlive = true;
-                    _lastHbMs  = now;
+                    uint8_t nodeIdx = (rxHdr.StdId == CAN_ID_HB_1) ? 0 : 1;
+                    if (!_nodeAlive[nodeIdx] && _cbAlive) _cbAlive(rxData[0]);
+                    _nodeAlive[nodeIdx] = true;
+                    _lastHbMs[nodeIdx]  = now;
                     if (STM32Board::isDebug()) {
                         uint16_t esr16; memcpy(&esr16, rxData + 6, 2);
                         auto& d = STM32Board::diagSerial();
@@ -127,7 +135,26 @@ namespace {
                     uint8_t hb[8] = {DIAG_MAGIC, DIAG_HB, rxData[0], rxData[1]};
                     uint16_t rxc; memcpy(&rxc, rxData + 4, 2);
                     memcpy(hb + 4, &rxc, 2);
+                    memcpy(hb + 6, rxData + 6, 2); // ESR bytes from sub-node heartbeat
                     _uart->write(hb, 8);
+                    break;
+                }
+                case CAN_ID_EVT_1:
+                case CAN_ID_EVT_2: {
+                    uint8_t nodeId = (rxHdr.StdId == CAN_ID_EVT_1) ? 1 : 2;
+                    uint16_t controlId, value;
+                    memcpy(&controlId, rxData,     2);
+                    memcpy(&value,     rxData + 2, 2);
+                    if (STM32Board::isDebug()) {
+                        auto& d = STM32Board::diagSerial();
+                        d.print(F("[EVT] node=")); d.print(nodeId);
+                        d.print(F(" ctrl=0x"));   d.print(controlId, HEX);
+                        d.print(F(" val="));       d.println(value);
+                    }
+                    uint8_t evt[8] = {DIAG_MAGIC, DIAG_EVT, 0, 0, 0, 0, nodeId, 0};
+                    memcpy(evt + 2, &controlId, 2);
+                    memcpy(evt + 4, &value,     2);
+                    _uart->write(evt, 8);
                     break;
                 }
                 case CAN_ID_ECHO_1:

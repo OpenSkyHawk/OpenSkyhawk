@@ -115,6 +115,19 @@ namespace SimGateway {
      */
     void onDiagErr(void (*cb)(uint8_t tec, uint8_t rec, uint8_t flags));
 
+    /**
+     * @brief Register a callback for DIAG_EVT (sub-node input event) frames.
+     *
+     * @details Called when PanelBridge forwards a CAN input event from a sub-node.
+     * controlId and value are the raw PanelGroup::sendEvent() arguments; nodeId
+     * identifies which sub-node sent the event (1 or 2). Use this to translate
+     * the event to a DCS-BIOS message via sendDcsBiosMessage() in the sketch.
+     *
+     * @note Set before calling setup().
+     * @param cb Callback: cb(controlId, value, nodeId).
+     */
+    void onDiagEvt(void (*cb)(uint16_t controlId, uint16_t value, uint8_t nodeId));
+
 } // namespace SimGateway
 
 #endif // ARDUINO_ARCH_RP2040

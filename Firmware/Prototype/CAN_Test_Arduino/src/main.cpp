@@ -34,11 +34,13 @@ static constexpr uint32_t DCS_BIOS_BAUD = 250000;
 static constexpr uint32_t DEBUG_BAUD = 115200;
 
 // ── ControlPacket sweep table (Slow/Fast/Extreme) ────────────────────────────
+// IDs 0x8001–0x8004 are bench-only addresses in the DCS-BIOS range (>=0x8000),
+// accepted by PanelBridge and broadcast as CTRL_BCAST on the CAN bus.
 static const ControlPacket sweepTable[] = {
-    {0x0001, 1}, {0x0001, 0},   // MASTER_ARM toggle
-    {0x0002, 1}, {0x0002, 2}, {0x0002, 0},   // BLEED_AIR 3-pos
-    {0x0003, 0x0000}, {0x0003, 0x8000}, {0x0003, 0xFFFF}, {0x0003, 0x8000}, // HUD_BRT ramp
-    {0x0004, 1}, {0x0004, 0},   // APU toggle
+    {0x8001, 1}, {0x8001, 0},   // bench: MASTER_ARM toggle
+    {0x8002, 1}, {0x8002, 2}, {0x8002, 0},   // bench: BLEED_AIR 3-pos
+    {0x8003, 0x0000}, {0x8003, 0x8000}, {0x8003, 0xFFFF}, {0x8003, 0x8000}, // bench: HUD_BRT ramp
+    {0x8004, 1}, {0x8004, 0},   // bench: APU toggle
 };
 static constexpr uint8_t SWEEP_LEN = sizeof(sweepTable) / sizeof(sweepTable[0]);
 static uint8_t sweepIdx = 0;

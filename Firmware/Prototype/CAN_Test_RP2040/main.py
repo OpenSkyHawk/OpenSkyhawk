@@ -35,6 +35,7 @@ DIAG_MAGIC    = 0xAA
 DIAG_RTT      = 0x01
 DIAG_HB       = 0x02
 DIAG_ERR      = 0x03
+DIAG_EVT      = 0x04
 CTRL_TEST_SEQ = 0xFFFF
 
 # ── modes ─────────────────────────────────────────────────────────────────────
@@ -44,11 +45,13 @@ MODE_NAMES = {0:'IDLE', 1:'SLOW', 2:'FAST', 3:'XBURST', 4:'THRUPUT', 5:'DCS'}
 mode = MODE_IDLE
 
 # ── sweep table ───────────────────────────────────────────────────────────────
+# IDs 0x8001–0x8004 are bench-only addresses in the DCS-BIOS range (>=0x8000),
+# accepted by PanelBridge and dispatched as CTRL_BCAST on the CAN bus.
 SWEEP = [
-    (0x0001, 1), (0x0001, 0),                                           # MASTER_ARM_SW
-    (0x0002, 1), (0x0002, 2), (0x0002, 0),                              # BLEED_AIR_KNOB
-    (0x0003, 0x0000), (0x0003, 0x8000), (0x0003, 0xFFFF), (0x0003, 0x8000),  # HUD_VIDEO_BRT
-    (0x0004, 1), (0x0004, 0),                                           # APU_CONTROL_SW
+    (0x8001, 1), (0x8001, 0),                                               # bench: MASTER_ARM toggle
+    (0x8002, 1), (0x8002, 2), (0x8002, 0),                                  # bench: BLEED_AIR 3-pos
+    (0x8003, 0x0000), (0x8003, 0x8000), (0x8003, 0xFFFF), (0x8003, 0x8000), # bench: HUD_BRT ramp
+    (0x8004, 1), (0x8004, 0),                                               # bench: APU toggle
 ]
 sweep_idx = 0
 
@@ -138,6 +141,11 @@ def _process_diag(p):
     elif typ == DIAG_ERR:
         can_tec = p[2]; can_rec = p[3]; can_flags = p[4]
         print('[ERR] TEC={} REC={} flags=0x{:02X}'.format(can_tec, can_rec, can_flags))
+    elif typ == DIAG_EVT:
+        ctrl_id = struct.unpack_from('<H', p, 2)[0]
+        value   = struct.unpack_from('<H', p, 4)[0]
+        node_id = p[6]
+        print('[EVT] node={} ctrl=0x{:04X} val={}'.format(node_id, ctrl_id, value))
 
 def _drain_uart():
     global _diag_pos
@@ -303,7 +311,8 @@ if oled:
 # ── main loop ─────────────────────────────────────────────────────────────────
 while True:
     now = time.ticks_ms()
-    _check_cmd(now)
+    if mode != MODE_DCS:   # skip command poll in DCS mode — stdin is the binary DCS stream
+        _check_cmd(now)
     _drain_uart()
     if mode == MODE_DCS:
         _run_dcs(now)

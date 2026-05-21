@@ -61,3 +61,4 @@ static constexpr uint8_t DIAG_MAGIC = 0xAA;
 static constexpr uint8_t DIAG_RTT   = 0x01;
 static constexpr uint8_t DIAG_HB    = 0x02;
 static constexpr uint8_t DIAG_ERR   = 0x03;
+static constexpr uint8_t DIAG_EVT   = 0x04; // Sub-node input event forwarded upstream
