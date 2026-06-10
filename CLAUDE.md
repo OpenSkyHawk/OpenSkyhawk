@@ -71,6 +71,6 @@ Tracks non-panel work items — firmware milestones, architecture decisions, lib
 
 ## Git
 
-- Remote: `git@github.com:mottihoresh/OpenSkyhawk.git`
+- Remote: `git@github.com:OpenSkyHawk/OpenSkyhawk.git`
 - Do not add `Co-Authored-By:` trailers to commits
 - STLs, Gerbers, and other generated outputs are gitignored — commit sources only
