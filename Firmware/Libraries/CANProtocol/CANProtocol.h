@@ -79,12 +79,44 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
 // ── controlId namespace ───────────────────────────────────────────────────────
+// CTRL_ID_HID_MIN / CTRL_ID_HID_MAX are defined as macros in HIDControls.h (included above).
+// Do not redeclare them here — macro expansion would cause a syntax error.
 
-static constexpr uint16_t CTRL_ID_HID_MIN  = 0x0010;  ///< HID range start (axes + buttons)
-static constexpr uint16_t CTRL_ID_HID_MAX  = 0x009F;  ///< HID range end
 static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  ///< DCS-BIOS range start
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  ///< DCS-BIOS range end
 static constexpr uint16_t CTRL_ID_TEST_SEQ = 0xFFFF;  ///< Reserved: triggers TEST_SEQ frame
+
+/** @deprecated Use CTRL_ID_TEST_SEQ. Kept for backward compatibility with prototype code. */
+static constexpr uint16_t CTRL_TEST_SEQ    = CTRL_ID_TEST_SEQ;
+
+// ── Deprecated per-node CAN ID constants ─────────────────────────────────────
+// Retained for backward compatibility with prototype code (CAN_Test_Master,
+// CAN_Test_SubNode). These values are WRONG relative to canIdHb/Evt/Echo()
+// functions — they were off-by-one for HB/EVT and used a different base for
+// ECHO. Prototype master+sub-node used them consistently so they worked together.
+// New code must use canIdHb(n), canIdEvt(n), canIdEcho(n) instead.
+
+/** @deprecated Use canIdHb(1) = 0x101. Off-by-one: this is canIdHb(0) (PanelBridge reserved). */
+static constexpr uint32_t CAN_ID_HB_1   = 0x100;
+/** @deprecated Use canIdHb(2) = 0x102. Off-by-one. */
+static constexpr uint32_t CAN_ID_HB_2   = 0x101;
+/** @deprecated Use canIdEvt(1) = 0x201. Off-by-one. */
+static constexpr uint32_t CAN_ID_EVT_1  = 0x200;
+/** @deprecated Use canIdEvt(2) = 0x202. Off-by-one. */
+static constexpr uint32_t CAN_ID_EVT_2  = 0x201;
+/** @deprecated Use canIdEcho(1) = 0x301. Wrong base (0x210 vs 0x300). */
+static constexpr uint32_t CAN_ID_ECHO_1 = 0x210;
+/** @deprecated Use canIdEcho(2) = 0x302. Wrong base. */
+static constexpr uint32_t CAN_ID_ECHO_2 = 0x211;
+
+// ── UART diagnostic framing constants (PanelBridge -> SimGateway) ─────────────
+// Used by SimGateway to parse the UART diagnostic stream from PanelBridge.
+
+static constexpr uint8_t DIAG_MAGIC = 0xAA;  ///< Frame sync byte
+static constexpr uint8_t DIAG_RTT   = 0x01;  ///< Round-trip time measurement frame
+static constexpr uint8_t DIAG_HB    = 0x02;  ///< Sub-node heartbeat frame
+static constexpr uint8_t DIAG_ERR   = 0x03;  ///< CAN error counter frame
+static constexpr uint8_t DIAG_EVT   = 0x04;  ///< Sub-node input event forwarded upstream
 
 // ── Callback types ────────────────────────────────────────────────────────────
 
