@@ -14,15 +14,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Cache PlatformIO packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.platformio/.cache
           key: ${{ runner.os }}-platformio-${{ hashFiles('Firmware/**/platformio.ini') }}
@@ -143,7 +143,7 @@ jobs:
 
       - name: Upload PlatformIO logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: platformio-logs
           path: ${{ runner.temp }}/platformio-logs
@@ -217,7 +217,7 @@ jobs:
               echo "$pr_output"
             elif printf '%s\n' "$pr_output" | grep -q "not permitted to create or approve pull requests"; then
               pr_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/new/$BRANCH"
-              echo "::warning::GitHub Actions is not permitted to create pull requests. Enable the repository workflow setting or open the PR manually."
+              echo "GitHub Actions is not permitted to create pull requests. Enable the repository workflow setting or open the PR manually."
               echo "$pr_output"
               {
                 echo "## A4EC metadata update branch"
