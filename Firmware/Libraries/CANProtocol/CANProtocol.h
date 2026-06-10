@@ -1,6 +1,16 @@
 #pragma once
 #include <stdint.h>
 
+// ── CAN bus status ────────────────────────────────────────────────────────────
+
+/** @brief CAN bus health states reported to STM32Board via onCanStatus(). */
+enum class CanStatus {
+    STARTING,   ///< CAN peripheral configured but not yet started
+    NORMAL,     ///< Bus active, no errors
+    TX_ERROR,   ///< TEC > 0 — transmit errors accumulating
+    BUS_OFF,    ///< CAN controller halted — bus-off condition
+};
+
 // ── Packet types ──────────────────────────────────────────────────────────────
 
 // Primary inter-node packet: 4 bytes, sent raw over UART and as CAN payload.

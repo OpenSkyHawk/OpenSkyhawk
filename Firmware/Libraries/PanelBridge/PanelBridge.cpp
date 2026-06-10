@@ -199,7 +199,7 @@ void setup(HardwareSerial& uartPort) {
 
 void loop() {
     uint32_t now = millis();
-    STM32Board::update();
+    STM32Board::tick();
     drainUart();
     processCan();
     monitorErrors(now);

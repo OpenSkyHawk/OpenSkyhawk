@@ -23,13 +23,26 @@
 
 Armament Panel switches (GUNS_READY, ARM_NOSE_TAIL, STATION_1–5, MASTER_ARMED) connect directly to STM32 GPIO via J_PANEL — no MCP23017 on the MCU board.
 
-## ADC Inputs (on Armament_MCU board)
+## STM32 Pin Assignments (Armament_MCU)
 
-| STM32 Pin | Input | Via | Type |
+| STM32 Pin | Net | Via | Type |
 |---|---|---|---|
 | PA2 | MISSILE_VOL pot (726) | J2 pin 6 | Analog (pot wiper) |
-| PB13 | MISC_SWITCH_INT | J2 pin 7 | EXTI — Port A changes (buttons, toggles, BDHI) |
-| PB14 | SHRIKE_VOL_INT | J2 pin 8 | EXTI — Port B changes (Shrike only) |
+| PA6 | PWM_PANEL_LED | — | TIM3 CH1 PWM — Misc Switch Panel LED zone |
+| PA7 | PWM_GAUGE_LED | — | TIM3 CH2 PWM — gauge backlight zone |
+| PB0 | SHRIKE_VOL_INT | J2 pin 8 | EXTI0 — MCP23017 INTB (Port B / Shrike only) |
+| PB1 | MISC_SWITCH_INT | J2 pin 7 | EXTI1 — MCP23017 INTA (Port A / buttons, toggles, BDHI) |
+| PB2 | STEPPER_A1 | — | DRV8833PW coil A OUT1 |
+| PB3 | STEPPER_A2 | — | DRV8833PW coil A OUT2 |
+| PB4 | STEPPER_B1 | — | DRV8833PW coil B OUT1 |
+| PB5 | STEPPER_B2 | — | DRV8833PW coil B OUT2 |
+| PB6 | SCL | J1/J2 | I2C1 clock |
+| PB7 | SDA | J1/J2 | I2C1 data |
+| PB12 | NSLEEP | — | DRV8833PW ~SLEEP (HIGH from setup()) |
+| PB14 | STATUS_LED_RED | — | STM32Board red status LED — active HIGH |
+| PB15 | STATUS_LED_GRN | — | STM32Board green status LED — active HIGH |
+
+**Reserved / not used on this board:** PB10/PB11 (I2C2 — kept free per firmware contract).
 
 **Deferred:** PA0 (EMER SEL), PA1 (MODE SEL), and all Armament Panel direct switches (GUNS_READY, ARM_NOSE_TAIL, STATION_1–5, MASTER_ARMED) — not implemented in this revision. Panel inputs not yet fully researched. J_PANEL connector omitted.
 
@@ -80,9 +93,12 @@ See hardware-standards.md "Standard Circuit Blocks" for reference circuits.
 | I2C pull-ups | 4.7 kΩ on SDA and SCL — **one set only**, on MCU_CAN sheet, not on breakouts |
 | I2C series dampers | 33 Ω on SDA/SCL at each harness connector (J1, J2) — on MCU_CAN sheet |
 | Interrupt lines J2 | R20/R21 (100Ω) already on Misc_Switch_Panel PCB — **do not add duplicates** on J2 pins 7–8 |
+| Interrupt STM32 pins | MISC_SWITCH_INT → PB1 (EXTI1); SHRIKE_VOL_INT → PB0 (EXTI0) |
 | ADC filter — MISSILE_VOL | 1 kΩ series + 100 nF to GND at STM32 PA2 (J2 pin 6 → 1 kΩ → PA2 → 100 nF → GND) |
 | ADC filter — EMER SEL | 1 kΩ + 100 nF at PA0 (resistor ladder pads, no ladder wired in this rev) |
 | ADC filter — MODE SEL | 1 kΩ + 100 nF at PA1 (resistor ladder pads, no ladder wired in this rev) |
+| Status LEDs | PB14 → R → D_RED → GND; PB15 → R → D_GRN → GND. Active HIGH. R23/R24 = 3.3kΩ → ~0.4mA (intentionally dim — cockpit use). |
+| Stepper pins | DRV8833PW: A1=PB2, A2=PB3, B1=PB4, B2=PB5; ~SLEEP=PB12 |
 
 ## DCS-BIOS Mappings (Armament Panel)
 

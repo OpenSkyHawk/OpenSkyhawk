@@ -21,6 +21,16 @@ From the repo root:
 python Tools/gen_a4ec/gen_a4ec.py
 ```
 
+For reproducible automation, pass the release timestamp and source label
+explicitly:
+
+```bash
+python Tools/gen_a4ec/gen_a4ec.py \
+  --source Tools/gen_a4ec/data/A-4E-C.jsonp \
+  --source-label "DCS-BIOS v0.0.0 (DCS-BIOS_0.0.0.zip)" \
+  --timestamp "2025-01-01T00:00:00Z"
+```
+
 After running, commit all changed files in `Firmware/Libraries/A4EC/` and reflash
 all boards. PanelBridge and every PanelGroup node must run firmware built from
 the same header revision — `DCSIN_*` IDs are not backward-compatible across
@@ -36,7 +46,21 @@ regenerations.
 
 ## Updating the committed snapshot
 
-Copy the file from your DCS-BIOS installation, then regenerate:
+The preferred update path is the manual GitHub Actions workflow:
+
+```text
+Refresh A4EC Metadata
+```
+
+It downloads the latest published DCS-Skunkworks DCS-BIOS release, updates
+`Tools/gen_a4ec/data/A-4E-C.jsonp`, regenerates the A4EC headers, runs the
+generator tests, requires PlatformIO builds for projects that reference `A4EC`,
+attempts every PlatformIO project under `Firmware/`, and opens a pull request if
+anything changed.
+
+For local updates, copy the file from your DCS-BIOS installation, then
+regenerate:
+
 
 ```bash
 # Windows (PowerShell)
@@ -51,14 +75,13 @@ python Tools/gen_a4ec/gen_a4ec.py
 Commit both the updated `data/A-4E-C.jsonp` and all changed files in
 `Firmware/Libraries/A4EC/`.
 
-## Fetching from GitHub (not yet implemented)
+## Fetching from GitHub
 
 The DCS-BIOS A-4E-C JSON is auto-generated during releases at:
 `https://github.com/DCS-Skunkworks/dcs-bios` — `Scripts/DCS-BIOS/doc/doc_assets/`
 
-A future `--fetch-github` flag will download the latest release asset and
-update the committed snapshot automatically. For now, use the manual copy
-procedure above.
+The `Refresh A4EC Metadata` workflow performs the GitHub fetch. The local
+`--fetch-github` flag is still reserved for a future direct generator fetch mode.
 
 ## Running the tests
 

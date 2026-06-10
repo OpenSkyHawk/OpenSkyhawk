@@ -9,7 +9,7 @@ Parses the DCS-BIOS A-4E-C.jsonp control definitions and emits:
   Firmware/Libraries/A4EC/GENERATOR_GAPS.md  — skipped controls with reasons
 
 Usage (from repo root):
-  python Tools/gen_a4ec/gen_a4ec.py [--source <path>] [--fetch-github]
+  python Tools/gen_a4ec/gen_a4ec.py [--source <path>] [--timestamp <value>] [--fetch-github]
 
 Source resolution (priority order):
   1. --source <path>           explicit override, any platform
@@ -398,6 +398,10 @@ def main() -> None:
     )
     parser.add_argument("--source", metavar="PATH",
                         help="Path to A-4E-C.jsonp (or .json); overrides auto-detect")
+    parser.add_argument("--timestamp", metavar="VALUE",
+                        help="Generation timestamp/label to embed; defaults to current UTC time")
+    parser.add_argument("--source-label", metavar="TEXT",
+                        help="Source label to embed; defaults to the source filename")
     parser.add_argument("--fetch-github", action="store_true",
                         help="(not yet implemented) Fetch JSON from DCS-Skunkworks/dcs-bios release")
     args = parser.parse_args()
@@ -414,7 +418,7 @@ def main() -> None:
     controls = flatten_controls(data)
     print(f"Controls loaded: {len(controls)}")
 
-    ts = _now_iso()
+    ts = args.timestamp if args.timestamp else _now_iso()
 
     input_entries,  input_gaps  = build_input_entries(controls)
     output_entries, output_gaps = build_output_entries(controls)
@@ -425,7 +429,7 @@ def main() -> None:
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    source_name = source.name
+    source_name = args.source_label if args.source_label else source.name
     writes = {
         "A4EC_CmdIds.h":    emit_cmdids(input_entries,  source_name, ts),
         "A4EC_OutputIds.h": emit_outputids(output_entries, source_name, ts),
