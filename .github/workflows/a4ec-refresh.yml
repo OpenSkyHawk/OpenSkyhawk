@@ -1,0 +1,224 @@
+name: Refresh A4EC Metadata
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    name: Refresh from latest DCS-BIOS release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.platformio/.cache
+          key: ${{ runner.os }}-platformio-${{ hashFiles('Firmware/**/platformio.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-platformio-
+
+      - name: Install Python tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install platformio pytest
+
+      - name: Download latest DCS-BIOS release
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          release_json="$RUNNER_TEMP/dcs-bios-release.json"
+          archive="$RUNNER_TEMP/dcs-bios.zip"
+          extract_dir="$RUNNER_TEMP/dcs-bios"
+
+          gh api repos/DCS-Skunkworks/dcs-bios/releases/latest > "$release_json"
+
+          tag="$(jq -r '.tag_name' "$release_json")"
+          published_at="$(jq -r '.published_at' "$release_json")"
+          safe_tag="$(printf '%s' "$tag" | tr -c 'A-Za-z0-9._-' '-')"
+
+          asset_url="$(jq -r 'first(.assets[]? | select(.name | test("^DCS-BIOS.*\\.zip$"; "i")) | .url) // empty' "$release_json")"
+          asset_name="$(jq -r 'first(.assets[]? | select(.name | test("^DCS-BIOS.*\\.zip$"; "i")) | .name) // empty' "$release_json")"
+
+          if [ -n "$asset_url" ]; then
+            curl --fail --location \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --header "Accept: application/octet-stream" \
+              --output "$archive" \
+              "$asset_url"
+            source_ref="$asset_name"
+          else
+            zipball_url="$(jq -r '.zipball_url' "$release_json")"
+            curl --fail --location \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --output "$archive" \
+              "$zipball_url"
+            source_ref="GitHub source archive"
+          fi
+
+          rm -rf "$extract_dir"
+          mkdir -p "$extract_dir"
+          unzip -q "$archive" -d "$extract_dir"
+
+          json_path="$(find "$extract_dir" -path '*/doc/doc_assets/A-4E-C.jsonp' -print -quit)"
+          if [ -z "$json_path" ]; then
+            echo "Could not find A-4E-C.jsonp in DCS-BIOS release archive." >&2
+            find "$extract_dir" -maxdepth 5 -type f | sort >&2
+            exit 1
+          fi
+
+          cp "$json_path" Tools/gen_a4ec/data/A-4E-C.jsonp
+
+          {
+            echo "tag=$tag"
+            echo "safe_tag=$safe_tag"
+            echo "published_at=$published_at"
+            echo "source_ref=$source_ref"
+            echo "json_path=$json_path"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Using DCS-BIOS $tag from $source_ref"
+          echo "A-4E-C metadata: $json_path"
+
+      - name: Regenerate A4EC metadata
+        run: |
+          python Tools/gen_a4ec/gen_a4ec.py \
+            --source Tools/gen_a4ec/data/A-4E-C.jsonp \
+            --source-label "DCS-BIOS ${{ steps.release.outputs.tag }} (${{ steps.release.outputs.source_ref }})" \
+            --timestamp "${{ steps.release.outputs.published_at }}"
+
+      - name: Test A4EC generator
+        run: |
+          python -m py_compile Tools/gen_a4ec/gen_a4ec.py
+          python -m pytest Tools/gen_a4ec/tests/test_gen.py
+
+      - name: Compile A4EC PlatformIO consumers
+        run: |
+          set -euo pipefail
+
+          found=0
+          while IFS= read -r project_ini; do
+            if ! grep -Eq '^[[:space:]]*A4EC([[:space:]]|$)' "$project_ini"; then
+              continue
+            fi
+
+            found=1
+            project_dir="$(dirname "$project_ini")"
+            echo "::group::platformio run -d $project_dir"
+            platformio run -d "$project_dir"
+            echo "::endgroup::"
+          done < <(find Firmware -name platformio.ini -print | sort)
+
+          if [ "$found" -eq 0 ]; then
+            echo "No PlatformIO projects reference the A4EC library." >&2
+            exit 1
+          fi
+
+      - name: Attempt all PlatformIO firmware builds
+        run: |
+          set -euo pipefail
+
+          {
+            echo "## PlatformIO build sweep"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          failed=0
+          while IFS= read -r project_ini; do
+            project_dir="$(dirname "$project_ini")"
+            echo "::group::platformio run -d $project_dir"
+            if ! platformio run -d "$project_dir"; then
+              failed=1
+              echo "::warning file=$project_ini::PlatformIO build failed"
+              echo "- FAIL \`$project_dir\`" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "- PASS \`$project_dir\`" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            echo "::endgroup::"
+          done < <(find Firmware -name platformio.ini -print | sort)
+
+          if [ "$failed" -ne 0 ]; then
+            echo "One or more non-A4EC PlatformIO projects failed. See the build sweep summary."
+          fi
+
+      - name: Create or update pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: bot/update-a4ec-dcs-bios-${{ steps.release.outputs.safe_tag }}
+          BASE_BRANCH: ${{ github.ref_name }}
+          COMMIT_MESSAGE: "firmware: update A4EC metadata for DCS-BIOS ${{ steps.release.outputs.tag }}"
+          PR_TITLE: "Update A4EC metadata for DCS-BIOS ${{ steps.release.outputs.tag }}"
+        run: |
+          set -euo pipefail
+
+          paths=(
+            Tools/gen_a4ec/data/A-4E-C.jsonp
+            Firmware/Libraries/A4EC/A4EC_CmdIds.h
+            Firmware/Libraries/A4EC/A4EC_OutputIds.h
+            Firmware/Libraries/A4EC/A4EC_InputMap.h
+            Firmware/Libraries/A4EC/GENERATOR_GAPS.md
+          )
+
+          if git diff --quiet -- "${paths[@]}"; then
+            echo "No A4EC metadata changes detected; skipping PR creation."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout -B "$BRANCH"
+          git add "${paths[@]}"
+          git commit -m "$COMMIT_MESSAGE"
+          git push --force-with-lease origin "$BRANCH"
+
+          body_file="$RUNNER_TEMP/a4ec-refresh-pr-body.md"
+          cat > "$body_file" <<'BODY'
+          Updates A-4E-C metadata from the latest published DCS-BIOS release.
+
+          Source release: DCS-BIOS `${{ steps.release.outputs.tag }}`
+          Published: `${{ steps.release.outputs.published_at }}`
+          Archive: `${{ steps.release.outputs.source_ref }}`
+
+          Validation performed by this workflow:
+          - A4EC generator syntax check
+          - A4EC generator pytest suite
+          - Required PlatformIO build for projects that reference `A4EC`
+          - Advisory PlatformIO build sweep for every `Firmware/**/platformio.ini` project
+          BODY
+
+          existing_pr="$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head "$BRANCH" \
+            --json number \
+            --jq '.[0].number // empty')"
+
+          if [ -n "$existing_pr" ]; then
+            gh pr edit "$existing_pr" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "$PR_TITLE" \
+              --body-file "$body_file"
+            echo "Updated PR #$existing_pr"
+          else
+            gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base "$BASE_BRANCH" \
+              --head "$BRANCH" \
+              --title "$PR_TITLE" \
+              --body-file "$body_file"
+          fi
