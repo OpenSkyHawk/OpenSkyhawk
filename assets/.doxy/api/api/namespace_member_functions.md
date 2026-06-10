@@ -58,6 +58,7 @@
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **sendEvent** ([**PanelGroup**](namespacePanelGroup.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
+* **setWarning** ([**STM32Board**](namespaceSTM32Board.md))
 * **send** ([**SimGateway**](namespaceSimGateway.md))
 
 

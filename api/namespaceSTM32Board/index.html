@@ -1922,6 +1922,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-setwarning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function setWarning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-tec" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2041,6 +2052,10 @@
 <tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-setdebug"><strong>setDebug</strong></a> (bool on) <br><em>Enable or disable DiagSerial output.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-setwarning"><strong>setWarning</strong></a> () <br><em>Enter WARNING LED state — red/green alternating at 500 ms.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint8_t</td>
@@ -2166,6 +2181,13 @@
 <ul>
 <li><code>on</code> True to emit output on USART1; false for silence (default). </li>
 </ul>
+<hr>
+
+<h3 id="function-setwarning">function setWarning</h3>
+<p><em>Enter WARNING LED state — red/green alternating at 500 ms.</em> </p>
+<pre><code class="language-C++">void STM32Board::setWarning () 
+</code></pre>
+<p>Call when a degraded condition is detected that is not represented by CanStatus (e.g. SYNC timeout, missing heartbeat, application-layer fault). </p>
 <hr>
 
 <h3 id="function-tec">function tec</h3>

@@ -68,6 +68,7 @@
 |  void | [**onCanStatus**](#function-oncanstatus) ([**CanStatus**](CANProtocol_8h.md#enum-canstatus) status) <br>_CAN bus status event handler — maps CanStatus to LED state._  |
 |  uint8\_t | [**rec**](#function-rec) () <br> |
 |  void | [**setDebug**](#function-setdebug) (bool on) <br>_Enable or disable DiagSerial output._  |
+|  void | [**setWarning**](#function-setwarning) () <br>_Enter WARNING LED state — red/green alternating at 500 ms._  |
 |  uint8\_t | [**tec**](#function-tec) () <br> |
 |  void | [**tick**](#function-tick) () <br>_Drive LED animations. Call once per loop() iteration._  |
 
@@ -404,6 +405,24 @@ DiagSerial is always initialised by [**begin()**](namespaceSTM32Board.md#functio
 * `on` True to emit output on USART1; false for silence (default). 
 
 
+
+
+        
+
+<hr>
+
+
+
+### function setWarning 
+
+_Enter WARNING LED state — red/green alternating at 500 ms._ 
+```C++
+void STM32Board::setWarning () 
+```
+
+
+
+Call when a degraded condition is detected that is not represented by CanStatus (e.g. SYNC timeout, missing heartbeat, application-layer fault). 
 
 
         

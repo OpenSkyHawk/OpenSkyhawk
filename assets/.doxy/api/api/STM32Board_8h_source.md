@@ -35,6 +35,8 @@ namespace STM32Board {
 
     void onCanStatus(CanStatus status);
 
+    void setWarning();
+
     bool isDebug();
 
     void log(const char* msg);
