@@ -1,0 +1,93 @@
+name: A4EC CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "Tools/gen_a4ec/**"
+      - "Firmware/Libraries/A4EC/**"
+      - "Firmware/Templates/PanelBridge/**"
+      - "Firmware/Templates/PanelGroup/**"
+      - ".github/workflows/a4ec-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  a4ec:
+    name: Test generator and A4EC consumers
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.platformio/.cache
+          key: ${{ runner.os }}-platformio-a4ec-${{ hashFiles('Firmware/**/platformio.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-platformio-a4ec-
+            ${{ runner.os }}-platformio-
+
+      - name: Install Python tools
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install platformio pytest
+
+      - name: Test A4EC generator
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/gen_a4ec/gen_a4ec.py
+          python -m pytest Tools/gen_a4ec/tests/test_gen.py
+
+      - name: Compile A4EC PlatformIO consumers
+        run: |
+          set -euo pipefail
+
+          logs_dir="$RUNNER_TEMP/platformio-logs/a4ec"
+          mkdir -p "$logs_dir"
+
+          found=0
+          while IFS= read -r project_ini; do
+            if ! grep -Eq '(^|[[:space:]=])A4EC([[:space:]]|$)' "$project_ini"; then
+              continue
+            fi
+
+            found=1
+            project_dir="$(dirname "$project_ini")"
+            log_file="$logs_dir/$(printf '%s' "$project_dir" | tr '/ ' '__').log"
+
+            echo "Building A4EC consumer: $project_dir"
+            if platformio run -d "$project_dir" > "$log_file" 2>&1; then
+              echo "PASS $project_dir"
+            else
+              echo "::error file=$project_ini::PlatformIO build failed"
+              echo "FAIL $project_dir"
+              echo "::group::Last 120 lines from $project_dir"
+              tail -n 120 "$log_file"
+              echo "::endgroup::"
+              exit 1
+            fi
+          done < <(find Firmware -name platformio.ini -print | sort)
+
+          if [ "$found" -eq 0 ]; then
+            echo "No PlatformIO projects reference the A4EC library." >&2
+            exit 1
+          fi
+
+      - name: Upload PlatformIO logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: a4ec-platformio-logs
+          path: ${{ runner.temp }}/platformio-logs
+          if-no-files-found: ignore
+          retention-days: 7

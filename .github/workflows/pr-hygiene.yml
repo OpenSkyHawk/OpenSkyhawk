@@ -1,0 +1,46 @@
+name: PR Hygiene
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    name: Basic repository checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Check patch whitespace
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ github.base_ref || 'main' }}" --depth=1
+          git diff --check "origin/${{ github.base_ref || 'main' }}...HEAD"
+
+      - name: Validate workflow YAML
+        run: |
+          set -euo pipefail
+          find .github/workflows -type f \( -name '*.yml' -o -name '*.yaml' \) -print0 |
+            xargs -0 ruby -e 'ARGV.each { |path| require "yaml"; YAML.load_file(path); puts "PASS #{path}" }'
+
+      - name: Compile Python tools
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find Tools -type f -name '*.py' -not -path '*/__pycache__/*' | sort)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No Python tool files found."
+            exit 0
+          fi
+          python -m py_compile "${files[@]}"

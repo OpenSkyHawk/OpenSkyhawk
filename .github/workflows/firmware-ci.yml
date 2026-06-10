@@ -1,0 +1,83 @@
+name: Firmware CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "Firmware/**"
+      - ".github/workflows/firmware-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  firmware:
+    name: Build supported PlatformIO projects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.platformio/.cache
+          key: ${{ runner.os }}-platformio-firmware-${{ hashFiles('Firmware/**/platformio.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-platformio-firmware-
+            ${{ runner.os }}-platformio-
+
+      - name: Install PlatformIO
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install platformio
+
+      - name: Build firmware projects
+        run: |
+          set -euo pipefail
+
+          logs_dir="$RUNNER_TEMP/platformio-logs/firmware"
+          mkdir -p "$logs_dir"
+          failed=0
+          found=0
+
+          while IFS= read -r project_ini; do
+            found=1
+            project_dir="$(dirname "$project_ini")"
+            log_file="$logs_dir/$(printf '%s' "$project_dir" | tr '/ ' '__').log"
+
+            echo "Building $project_dir"
+            if platformio run -d "$project_dir" > "$log_file" 2>&1; then
+              echo "PASS $project_dir"
+            else
+              failed=1
+              echo "::error file=$project_ini::PlatformIO build failed"
+              echo "FAIL $project_dir"
+              echo "::group::Last 120 lines from $project_dir"
+              tail -n 120 "$log_file"
+              echo "::endgroup::"
+            fi
+          done < <(find Firmware -name platformio.ini -not -path '*/ScratchPad/*' -print | sort)
+
+          if [ "$found" -eq 0 ]; then
+            echo "No PlatformIO projects found under Firmware/." >&2
+            exit 1
+          fi
+
+          exit "$failed"
+
+      - name: Upload PlatformIO logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: firmware-platformio-logs
+          path: ${{ runner.temp }}/platformio-logs
+          if-no-files-found: ignore
+          retention-days: 7

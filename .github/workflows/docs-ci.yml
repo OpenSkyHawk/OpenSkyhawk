@@ -1,0 +1,92 @@
+name: Docs CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "**/*.md"
+      - "**/*.markdown"
+      - "Docs/**"
+      - "docs/**"
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - ".github/workflows/docs-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    name: Check Markdown files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Check changed Markdown files
+        run: |
+          set -euo pipefail
+          git fetch origin "${{ github.base_ref || 'main' }}" --depth=1
+          mapfile -t files < <(
+            git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD" |
+              grep -E '\.(md|markdown)$' || true
+          )
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No changed Markdown files found."
+            exit 0
+          fi
+
+          python - "${files[@]}" <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+          from urllib.parse import unquote
+
+          link_re = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+          errors = []
+
+          for raw in sys.argv[1:]:
+              path = Path(raw)
+              try:
+                  text = path.read_text(encoding="utf-8")
+              except UnicodeDecodeError:
+                  errors.append(f"{path}: not valid UTF-8")
+                  continue
+
+              for line_no, line in enumerate(text.splitlines(), start=1):
+                  for match in link_re.finditer(line):
+                      target = match.group(1).strip()
+                      if not target or target.startswith("#"):
+                          continue
+                      if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target):
+                          continue
+                      if target.startswith("<") and target.endswith(">"):
+                          target = target[1:-1]
+                      target = target.split("#", 1)[0].strip()
+                      if not target:
+                          continue
+                      target_path = (path.parent / unquote(target)).resolve()
+                      repo_root = Path.cwd().resolve()
+                      try:
+                          target_path.relative_to(repo_root)
+                      except ValueError:
+                          errors.append(f"{path}:{line_no}: link escapes repository: {target}")
+                          continue
+                      if not target_path.exists():
+                          errors.append(f"{path}:{line_no}: missing relative link target: {target}")
+
+          if errors:
+              print("\n".join(errors), file=sys.stderr)
+              sys.exit(1)
+
+          print(f"Checked {len(sys.argv) - 1} Markdown file(s).")
+          PY
