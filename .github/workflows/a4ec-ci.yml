@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "Tools/gen_a4ec/**"
+      - "tools/gen_a4ec/**"
       - "Firmware/Libraries/A4EC/**"
       - "Firmware/Templates/PanelBridge/**"
       - "Firmware/Templates/PanelGroup/**"
@@ -45,8 +45,8 @@ jobs:
       - name: Test A4EC generator
         run: |
           set -euo pipefail
-          python -m py_compile Tools/gen_a4ec/gen_a4ec.py
-          python -m pytest Tools/gen_a4ec/tests/test_gen.py
+          python -m py_compile tools/gen_a4ec/gen_a4ec.py
+          python -m pytest tools/gen_a4ec/tests/test_gen.py
 
       - name: Compile A4EC PlatformIO consumers
         run: |
