@@ -26,6 +26,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <CANProtocol.h>
 
 // ── Output objects — DCS state → panel hardware ───────────────────────────────
