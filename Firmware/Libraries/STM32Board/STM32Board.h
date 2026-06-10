@@ -70,6 +70,14 @@ namespace STM32Board {
     void onCanStatus(CanStatus status);
 
     /**
+     * @brief Enter WARNING LED state — red/green alternating at 500 ms.
+     *
+     * Call when a degraded condition is detected that is not represented by CanStatus
+     * (e.g. SYNC timeout, missing heartbeat, application-layer fault).
+     */
+    void setWarning();
+
+    /**
      * @brief Returns true when debug output is enabled.
      *
      * Guard multi-field formatted print blocks with this to skip string formatting

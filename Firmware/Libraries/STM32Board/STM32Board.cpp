@@ -141,6 +141,10 @@ void onCanStatus(CanStatus status) {
     }
 }
 
+void setWarning() {
+    _setLedState(LedState::WARNING);
+}
+
 void log(const char* msg) {
     if (_debugOn) _diag.println(msg);
 }
