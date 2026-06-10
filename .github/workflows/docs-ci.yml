@@ -36,7 +36,8 @@ jobs:
           git fetch origin "${{ github.base_ref || 'main' }}" --depth=1
           mapfile -t files < <(
             git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD" |
-              grep -E '\.(md|markdown)$' || true
+              grep -E '\.(md|markdown)$' |
+              grep -v '^docs/api/' || true
           )
 
           if [ "${#files[@]}" -eq 0 ]; then
