@@ -1,23 +1,18 @@
 # Doxyfile — OpenSkyhawk API documentation
-# Generates HTML styled with doxygen-awesome-css + brand overrides.
-# Run locally: doxygen Doxyfile → .doxygen/html/
-# CI: doxygen Doxyfile → cp -r .doxygen/html/. docs/api/ → mkdocs gh-deploy
+# Used by mkdoxy for MkDocs-native API pages.
+# Run locally from the repository root: doxygen docs/Doxyfile → .doxygen/xml/
+# CI: mkdoxy reads the equivalent config from docs/mkdocs.yml during mkdocs build.
 
 PROJECT_NAME           = OpenSkyhawk
 INPUT                  = Firmware/Libraries
-FILE_PATTERNS          = *.h
+FILE_PATTERNS          = *.h *.cpp
 RECURSIVE              = YES
 EXCLUDE_PATTERNS       = */library.json */README.md
 
-GENERATE_HTML          = YES
-HTML_OUTPUT            = .doxygen/html
-HTML_EXTRA_STYLESHEET  = tools/doxygen-awesome.css tools/doxygen-brand.css
-HTML_COLORSTYLE        = LIGHT
-GENERATE_TREEVIEW      = YES
-DISABLE_INDEX          = NO
-FULL_SIDEBAR           = NO
+GENERATE_HTML          = NO
 GENERATE_LATEX         = NO
-GENERATE_XML           = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = .doxygen/xml
 
 EXTRACT_ALL            = YES
 EXTRACT_PRIVATE        = NO

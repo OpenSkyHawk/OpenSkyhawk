@@ -6,11 +6,6 @@ on:
     paths:
       - "docs/**"
       - "Firmware/Libraries/**"
-      - "mkdocs.yml"
-      - "Doxyfile"
-      - "tools/doxygen-awesome.css"
-      - "tools/doxygen-brand.css"
-      - "tools/doxygen-force-dark.js"
       - ".github/workflows/docs-deploy.yml"
   workflow_dispatch:
 
@@ -32,20 +27,15 @@ jobs:
           python-version: "3.12"
 
       - name: Install mkdocs dependencies
-        run: pip install mkdocs-material
+        run: pip install mkdocs-material mkdoxy
 
       - name: Install Doxygen
-        run: sudo apt-get install -y --no-install-recommends doxygen
-
-      - name: Generate Doxygen HTML
         run: |
-          mkdir -p .doxygen/html
-          doxygen Doxyfile
-          mkdir -p docs/api
-          cp -r .doxygen/html/. docs/api/
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends doxygen
 
       - name: Deploy to gh-pages
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          mkdocs gh-deploy --force
+          mkdocs gh-deploy -f docs/mkdocs.yml --force --remote-branch gh-pages

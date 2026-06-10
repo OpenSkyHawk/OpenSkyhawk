@@ -3,7 +3,7 @@
  * @brief CAN controlId constants for HID axes and buttons.
  *
  * Shared between STM32 (via CANProtocol) and RP2040 (SimGateway sketches).
- * Contains only #define constants — no classes, no functions, no state.
+ * Contains only `#define` constants — no classes, no functions, no state.
  *
  * controlId routing by range:
  *   0x0010–0x001F  HID axes   — routed to Joystick axis setters on SimGateway

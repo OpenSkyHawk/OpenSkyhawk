@@ -1,72 +1,113 @@
 {% extends "main.html" %}
 
 {% block content %}
-<div class="md-content os-landing" data-md-component="content">
-  <article class="md-content__inner">
-
-    <!-- Hero -->
-    <section class="os-hero">
-      <p class="os-eyebrow">DCS A-4E Skyhawk Cockpit Build</p>
-      <h1 class="os-hero-title">OPEN HARDWARE.<br><span class="os-accent">OPEN COCKPITS.</span></h1>
-      <p class="os-hero-sub">OpenSkyhawk is an open-source initiative dedicated to developing high-quality, modular cockpit hardware for the DCS A-4E Skyhawk. Built by the community, for the community.</p>
-      <div class="os-hero-actions">
-        <a href="#projects" class="md-button md-button--primary">Explore Projects →</a>
-        <a href="{{ config.repo_url }}" class="md-button" target="_blank" rel="noopener">View on GitHub</a>
-      </div>
-    </section>
-
-    <!-- Feature strip -->
-    <section class="os-features">
-      <div class="os-features-grid">
-        <div class="os-feature">
-          <div class="os-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-            </svg>
-          </div>
-          <div><strong>Open Source</strong><br><small>Built in the open</small></div>
-        </div>
-        <div class="os-feature">
-          <div class="os-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-            </svg>
-          </div>
-          <div><strong>Open Hardware</strong><br><small>Designed for makers</small></div>
-        </div>
-        <div class="os-feature">
-          <div class="os-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <div><strong>Open Cockpits</strong><br><small>For the community</small></div>
-        </div>
-        <div class="os-feature">
-          <div class="os-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <div><strong>Together We Build</strong><br><small>Better, smarter, together</small></div>
-        </div>
-        <div class="os-feature">
-          <div class="os-feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
-            </svg>
-          </div>
-          <div><strong>A-4E Skyhawk</strong><br><small>Iconic. Agile. Proven.</small></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Markdown content (About + Projects sections from index.md) -->
-    <div class="os-page-content md-typeset">
-      {{ page.content }}
+<div class="os-landing">
+  <section class="os-hero">
+    <p class="os-eyebrow">DCS A-4E Skyhawk Cockpit Build</p>
+    <h1 class="os-hero-title">Open hardware.<br><span class="os-accent">Open cockpits.</span></h1>
+    <div class="os-divider" aria-hidden="true"></div>
+    <p class="os-hero-sub">OpenSkyhawk is an open source initiative dedicated to developing high quality, modular cockpit hardware for the A-4E Skyhawk and beyond.</p>
+    <div class="os-hero-actions">
+      <a href="#projects" class="md-button md-button--primary">Explore Projects</a>
+      <a href="{{ config.repo_url }}" class="md-button" target="_blank" rel="noopener">View on GitHub</a>
     </div>
+  </section>
 
-  </article>
+  <section class="os-features" aria-label="OpenSkyhawk principles">
+    <div class="os-features-grid">
+      <div class="os-feature">
+        <div class="os-feature-icon">
+          <img src="{{ 'assets/images/brand/icon-open-source.png' | url }}" alt="" />
+        </div>
+        <div><strong>Open Source</strong><br><small>Built in the open.</small></div>
+      </div>
+      <div class="os-feature">
+        <div class="os-feature-icon">
+          <img src="{{ 'assets/images/brand/icon-open-hardware.png' | url }}" alt="" />
+        </div>
+        <div><strong>Open Hardware</strong><br><small>Designed for makers.</small></div>
+      </div>
+      <div class="os-feature">
+        <div class="os-feature-icon">
+          <img src="{{ 'assets/images/brand/icon-open-cockpits.png' | url }}" alt="" />
+        </div>
+        <div><strong>Open Cockpits</strong><br><small>For the community.</small></div>
+      </div>
+      <div class="os-feature">
+        <div class="os-feature-icon">
+          <img src="{{ 'assets/images/brand/icon-together.png' | url }}" alt="" />
+        </div>
+        <div><strong>Together We Build</strong><br><small>Better. Smarter. Together.</small></div>
+      </div>
+      <div class="os-feature">
+        <div class="os-feature-icon">
+          <img src="{{ 'assets/images/brand/icon-skyhawk.png' | url }}" alt="" />
+        </div>
+        <div><strong>A-4E Skyhawk</strong><br><small>Iconic. Agile. Proven.</small></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="os-light-band">
+    <section class="os-about" id="about">
+      <div>
+        <p class="os-section-kicker">About OpenSkyhawk</p>
+        <h2>Open tools.<br/>Real engineering.<br/>Shared progress.</h2>
+        <div class="os-divider" aria-hidden="true"></div>
+        <p>We believe the best aviation hardware is built collaboratively. By sharing designs, documentation, and knowledge, OpenSkyhawk helps cockpit builders create, learn, and push the boundaries of what is possible.</p>
+        <a class="md-button os-button os-button--ghost" href="{{ config.repo_url }}" target="_blank" rel="noopener">Learn More About Us</a>
+      </div>
+      <div class="os-about-art" aria-hidden="true"></div>
+    </section>
+
+    <section class="os-projects" id="projects">
+      <div class="os-section-head">
+        <h2>Featured Projects</h2>
+        <a class="md-button os-button os-button--ghost" href="{{ config.repo_url }}/tree/main" target="_blank" rel="noopener">View All Projects</a>
+      </div>
+      <div class="os-projects-grid">
+        <article class="os-project-card">
+          <div class="os-project-thumb">
+            <img src="{{ 'assets/images/brand/project-cdu.png' | url }}" alt="Skyhawk CDU hardware" />
+          </div>
+          <div class="os-project-info">
+            <h3>Armament CDU</h3>
+            <p>Center console master MCU board driving armament switches and LED backlighting over CAN bus.</p>
+            <a href="{{ config.repo_url }}/tree/main/PCB/Center_Console/Center_Armament" target="_blank" rel="noopener">View Project</a>
+          </div>
+        </article>
+        <article class="os-project-card">
+          <div class="os-project-thumb">
+            <img src="{{ 'assets/images/brand/project-ufcp.png' | url }}" alt="Skyhawk panel hardware" />
+          </div>
+          <div class="os-project-info">
+            <h3>AWRS Panel</h3>
+            <p>Weapon release system breakout board with MCP23017 I/O expansion and JST-XH harnessing.</p>
+            <a href="{{ config.repo_url }}/tree/main/PCB/Center_Console/Center_Armament" target="_blank" rel="noopener">View Project</a>
+          </div>
+        </article>
+        <article class="os-project-card">
+          <div class="os-project-thumb">
+            <img src="{{ 'assets/images/brand/project-led-driver.png' | url }}" alt="OpenSkyhawk circuit board" />
+          </div>
+          <div class="os-project-info">
+            <h3>CAN Firmware</h3>
+            <p>STM32 panel controllers and gateway firmware for modular avionics nodes.</p>
+            <a href="{{ config.repo_url }}/tree/main/Firmware" target="_blank" rel="noopener">View Project</a>
+          </div>
+        </article>
+        <article class="os-project-card">
+          <div class="os-project-thumb">
+            <img src="{{ 'assets/images/brand/project-3d-parts.png' | url }}" alt="3D printable cockpit parts" />
+          </div>
+          <div class="os-project-info">
+            <h3>3D Printable Parts</h3>
+            <p>Parametric panel frames, placards, gauge bezels, and cockpit mounting fixtures.</p>
+            <a href="{{ config.repo_url }}/tree/main/CAD" target="_blank" rel="noopener">View Project</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
 </div>
 {% endblock %}

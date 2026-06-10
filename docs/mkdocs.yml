@@ -1,0 +1,112 @@
+site_name: OpenSkyhawk
+site_url: https://openskyhawk.github.io/OpenSkyhawk/
+repo_url: https://github.com/OpenSkyhawk/OpenSkyhawk
+repo_name: Get Involved
+docs_dir: .
+site_dir: ../site
+
+theme:
+  name: material
+  custom_dir: overrides
+  palette:
+    scheme: slate
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+  logo: assets/images/brand/site-logo.png
+
+extra_css:
+  - assets/css/extra.css
+
+nav:
+  - Home: index.md
+  - Architecture:
+    - Overview: claude/architecture.md
+    - Hardware Standards: claude/hardware-standards.md
+    - CAN Bus / PCB Rules: claude/pcb-design-rules.md
+    - KiCad Workflow: claude/kicad.md
+    - DCS-BIOS STM32 Debugging: claude/dcsbios-stm32-debug.md
+    - Docs Site Workflow: claude/docs-site-workflow.md
+  - Controllers:
+    - Center Armament: claude/controllers/Center_Armament.md
+    - AWRS Panel: claude/controllers/AWRS_Panel.md
+    - Misc Switch Panel: claude/controllers/Misc_Switch_Panel.md
+    - A-4E-C DCS-BIOS Addresses: claude/controllers/a4e-c-dcsbios-addresses.md
+  - API Reference:
+    - Overview: api/index.md
+    - Deprecated List: api/deprecated.md
+    - Namespaces:
+      - Namespace List: api/namespaces.md
+      - Namespace Members:
+        - All: api/namespace_members.md
+        - Functions: api/namespace_member_functions.md
+        - Variables: api/namespace_member_variables.md
+        - Typedefs: api/namespace_member_typedefs.md
+        - Enums: api/namespace_member_enums.md
+    - Classes:
+      - Class List: api/annotated.md
+      - Class Index: api/classes.md
+      - Class Hierarchy: api/hierarchy.md
+      - Class Members:
+        - All: api/class_members.md
+        - Functions: api/class_member_functions.md
+        - Variables: api/class_member_variables.md
+        - Typedefs: api/class_member_typedefs.md
+        - Enums: api/class_member_enums.md
+    - Files:
+      - File List: api/files.md
+      - Functions: api/functions.md
+      - Variables: api/variables.md
+      - Macros: api/macros.md
+    - Modules: api/modules.md
+    - Pages: api/pages.md
+
+not_in_nav: |
+  api/_*.md
+  api/class_open_skyhawk_*.md
+  api/dir_*.md
+  api/namespace_0*.md
+  api/namespace_input_type.md
+  api/namespace_open_skyhawk.md
+  api/namespace_panel_bridge.md
+  api/namespace_panel_group.md
+  api/namespace_s_t_m32_board.md
+  api/namespace_sim_gateway.md
+  api/struct_*.md
+  api/links.md
+
+exclude_docs: |
+  mkdocs.yml
+  Doxyfile
+  overrides/
+  assets/source-mocks/
+  assets/**/*mock*.png
+
+plugins:
+  - search
+  - mkdoxy:
+      projects:
+        api:
+          src-dirs: Firmware/Libraries
+          full-doc: True
+          doxy-cfg:
+            FILE_PATTERNS: "*.h *.cpp"
+            RECURSIVE: YES
+            EXCLUDE_PATTERNS: "*/library.json */README.md"
+            EXTRACT_ALL: YES
+            EXTRACT_PRIVATE: NO
+            EXTRACT_STATIC: YES
+            EXTRACT_ANON_NSPACES: NO
+            ENABLE_PREPROCESSING: YES
+            MACRO_EXPANSION: YES
+            PREDEFINED: "ARDUINO_ARCH_STM32 ARDUINO_ARCH_RP2040"
+            QUIET: YES
+            WARNINGS: YES
+            WARN_IF_UNDOCUMENTED: NO
+
+markdown_extensions:
+  - attr_list
+  - md_in_html

@@ -56,8 +56,15 @@ production/
 __pycache__/
 *.pyc
 
-# Doxygen — all generated output is ephemeral; CI copies to docs/api/ at build time
+# Doxygen/MkDocs — generated API and site output are ephemeral
 .doxygen/
-docs/api/
+docs/api/*
+!docs/api/
+!docs/api/index.md
+site/
+
+# Local site mock/reference images are useful while designing but should not ship
+docs/assets/source-mocks/
+docs/assets/**/*mock*.png
 
 Firmware/ScratchPad/
