@@ -1,0 +1,37 @@
+site_name: OpenSkyhawk
+site_url: https://openskyhawk.github.io/OpenSkyhawk/
+repo_url: https://github.com/OpenSkyHawk/OpenSkyhawk
+repo_name: OpenSkyHawk/OpenSkyhawk
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  palette:
+    scheme: slate
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+  logo: assets/images/logo.svg
+
+extra_css:
+  - assets/css/extra.css
+
+nav:
+  - Home: index.md
+  - Architecture:
+    - Overview: claude/architecture.md
+    - Hardware Standards: claude/hardware-standards.md
+    - CAN Bus / PCB Rules: claude/pcb-design-rules.md
+    - KiCad Workflow: claude/kicad.md
+  - ...
+  - Controllers:
+    - Center Armament: claude/controllers/Center_Armament.md
+    - AWRS Panel: claude/controllers/AWRS_Panel.md
+    - Misc Switch Panel: claude/controllers/Misc_Switch_Panel.md
+
+plugins:
+  - search
+  - awesome-pages

@@ -1,0 +1,47 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "Firmware/Libraries/**"
+      - "mkdocs.yml"
+      - "Doxyfile"
+      - "tools/doxy2md.py"
+      - ".github/workflows/docs-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Build and deploy MkDocs site
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install mkdocs dependencies
+        run: pip install mkdocs-material mkdocs-awesome-pages-plugin
+
+      - name: Install Doxygen
+        run: sudo apt-get install -y --no-install-recommends doxygen
+
+      - name: Generate API Markdown from docblocks
+        run: |
+          doxygen Doxyfile
+          python3 tools/doxy2md.py --xml .doxygen/xml --out docs/api
+
+      - name: Deploy to gh-pages
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          mkdocs gh-deploy --force
