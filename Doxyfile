@@ -1,0 +1,31 @@
+# Doxyfile — OpenSkyhawk API documentation
+# Generates XML consumed by tools/doxy2md.py → docs/api/*.md
+# Run: doxygen Doxyfile
+# Output: .doxygen/xml/ (gitignored; only docs/api/ is committed)
+
+PROJECT_NAME           = OpenSkyhawk
+INPUT                  = Firmware/Libraries
+FILE_PATTERNS          = *.h *.cpp
+RECURSIVE              = YES
+EXCLUDE_PATTERNS       = */library.json */README.md
+
+GENERATE_HTML          = NO
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = .doxygen/xml
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+EXTRACT_ANON_NSPACES   = NO
+
+# Required: expand preprocessor guards so #ifdef ARDUINO_ARCH_STM32 / _RP2040
+# blocks are not hidden from Doxygen — without these, most members vanish.
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+PREDEFINED             = ARDUINO_ARCH_STM32 \
+                         ARDUINO_ARCH_RP2040
+
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = NO
