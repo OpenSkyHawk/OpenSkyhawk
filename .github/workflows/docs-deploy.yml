@@ -8,7 +8,7 @@ on:
       - "Firmware/Libraries/**"
       - "mkdocs.yml"
       - "Doxyfile"
-      - "tools/doxy2md.py"
+      - "tools/doxygen-dark.css"
       - ".github/workflows/docs-deploy.yml"
   workflow_dispatch:
 
@@ -30,16 +30,17 @@ jobs:
           python-version: "3.12"
 
       - name: Install mkdocs dependencies
-        run: pip install mkdocs-material mkdocs-awesome-pages-plugin
+        run: pip install mkdocs-material
 
       - name: Install Doxygen
         run: sudo apt-get install -y --no-install-recommends doxygen
 
-      - name: Generate API Markdown from docblocks
+      - name: Generate Doxygen HTML
         run: |
-          mkdir -p .doxygen/xml
+          mkdir -p .doxygen/html
           doxygen Doxyfile
-          python3 tools/doxy2md.py --xml .doxygen/xml --out docs/api
+          mkdir -p docs/api
+          cp -r .doxygen/html/. docs/api/
 
       - name: Deploy to gh-pages
         run: |
