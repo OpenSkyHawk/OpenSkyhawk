@@ -97,7 +97,7 @@ See hardware-standards.md "Standard Circuit Blocks" for reference circuits.
 | ADC filter — MISSILE_VOL | 1 kΩ series + 100 nF to GND at STM32 PA2 (J2 pin 6 → 1 kΩ → PA2 → 100 nF → GND) |
 | ADC filter — EMER SEL | 1 kΩ + 100 nF at PA0 (resistor ladder pads, no ladder wired in this rev) |
 | ADC filter — MODE SEL | 1 kΩ + 100 nF at PA1 (resistor ladder pads, no ladder wired in this rev) |
-| Status LEDs | PB14 → R → D_RED → GND; PB15 → R → D_GRN → GND. Active HIGH. **Use 1kΩ** (not 3.3kΩ) for ~1.3mA — schematic currently shows 3.3kΩ (0.4mA, too dim). Update R23/R24 to 1kΩ before ordering. |
+| Status LEDs | PB14 → R → D_RED → GND; PB15 → R → D_GRN → GND. Active HIGH. R23/R24 = 3.3kΩ → ~0.4mA (intentionally dim — cockpit use). |
 | Stepper pins | DRV8833PW: A1=PB2, A2=PB3, B1=PB4, B2=PB5; ~SLEEP=PB12 |
 
 ## DCS-BIOS Mappings (Armament Panel)
