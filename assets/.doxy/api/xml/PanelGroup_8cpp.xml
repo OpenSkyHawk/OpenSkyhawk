@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PanelGroup_8cpp" kind="file" language="C++">
+    <compoundname>PanelGroup.cpp</compoundname>
+    <includes refid="PanelGroup_8h" local="yes">PanelGroup.h</includes>
+    <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
+    <incdepgraph>
+      <node id="6">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
+        <link refid="PanelGroup_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Arduino.h</label>
+      </node>
+      <node id="7">
+        <label>stdint.h</label>
+      </node>
+      <node id="5">
+        <label>stm32f1xx_hal_can.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacePanelGroup">PanelGroup</innernamespace>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="PanelGroup_8cpp_1a60bc9aad5749b092911b761cbc390693" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t DEBOUNCE_MS</definition>
+        <argsstring></argsstring>
+        <name>DEBOUNCE_MS</name>
+        <initializer>= 20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="35" column="27" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Static<sp/>linked-list<sp/>roots<sp/>──────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OpenSkyhawk::OutputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1a0940e964094ea28c9d085ec66d66c669" kindref="member">OpenSkyhawk::OutputBase::first</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">OpenSkyhawk::InputBase</ref>*<sp/><sp/><ref refid="classOpenSkyhawk_1_1InputBase_1afa37c73dc476686a141ce4e41bd036c0" kindref="member">OpenSkyhawk::InputBase::first</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" kindref="member">OpenSkyhawk::OutputBase::OutputBase</ref>()<sp/>:<sp/>next(first)<sp/>{<sp/>first<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" kindref="member">OpenSkyhawk::InputBase::InputBase</ref>()<sp/><sp/><sp/>:<sp/>next(first)<sp/>{<sp/>first<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>OpenSkyhawk::LED<sp/>──────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1LED_1abf9bf1f79a77257363968f7beec77272" kindref="member">OpenSkyhawk::LED::LED</ref>(uint16_t<sp/>addr,<sp/>uint16_t<sp/>mask,<sp/>uint8_t<sp/>pin)</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>addr_(addr),<sp/>mask_(mask),<sp/>pin_(pin)<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(pin_,<sp/>OUTPUT);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(pin_,<sp/>LOW);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1LED_1a12d8f375f38d40f78ea92fe86ff6d8fa" kindref="member">OpenSkyhawk::LED::onPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(controlId<sp/>!=<sp/>addr_)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(pin_,<sp/>(value<sp/>&amp;<sp/>mask_)<sp/>?<sp/>HIGH<sp/>:<sp/>LOW);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>OpenSkyhawk::IntegerOutput<sp/>────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1IntegerOutput_1aac4ef0c3970f75b0a3620fcf459eeba2" kindref="member">OpenSkyhawk::IntegerOutput::IntegerOutput</ref>(uint16_t<sp/>addr,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint16_t))</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>addr_(addr),<sp/>cb_(cb)<sp/>{}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1IntegerOutput_1a92ebb6ee889bd37bde7b78bd50b9bc0a" kindref="member">OpenSkyhawk::IntegerOutput::onPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(controlId<sp/>!=<sp/>addr_)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>cb_(value);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>OpenSkyhawk::Switch2Pos<sp/>───────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="PanelGroup_8cpp_1a60bc9aad5749b092911b761cbc390693" kindref="member">DEBOUNCE_MS</ref><sp/>=<sp/>20;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1Switch2Pos_1a9a0c8e6764a0b71df8a54cfbecf85d15" kindref="member">OpenSkyhawk::Switch2Pos::Switch2Pos</ref>(uint16_t<sp/>addr,<sp/>uint8_t<sp/>pin)</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>addr_(addr),<sp/>pin_(pin),<sp/>debounceMs_(0)<sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(pin_,<sp/>INPUT_PULLUP);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>lastRaw_<sp/><sp/><sp/><sp/>=<sp/>digitalRead(pin_);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>lastStable_<sp/>=<sp/>lastRaw_;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f" kindref="member">OpenSkyhawk::Switch2Pos::poll</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>raw<sp/>=<sp/>digitalRead(pin_);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>!=<sp/>lastRaw_)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>debounceMs_<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lastRaw_<sp/><sp/><sp/><sp/>=<sp/>raw;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((now<sp/>-<sp/>debounceMs_)<sp/>&gt;=<sp/><ref refid="PanelGroup_8cpp_1a60bc9aad5749b092911b761cbc390693" kindref="member">DEBOUNCE_MS</ref><sp/>&amp;&amp;<sp/>lastRaw_<sp/>!=<sp/>lastStable_)<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lastStable_<sp/>=<sp/>lastRaw_;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacePanelGroup_1a21b5d03ffa53faaa9e4a7bd9759b0443" kindref="member">PanelGroup::sendEvent</ref>(addr_,<sp/>lastStable_<sp/>==<sp/>LOW<sp/>?<sp/>1<sp/>:<sp/>0);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>PanelGroup<sp/>internals<sp/>──────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint8_t<sp/><sp/>_nodeId<sp/><sp/><sp/><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/>_hbTxId<sp/><sp/><sp/><sp/>=<sp/><ref refid="CANProtocol_8h_1acdc9aacd81293c775e4fff1639738447" kindref="member">CAN_ID_HB_1</ref>;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/>_evtTxId<sp/><sp/><sp/>=<sp/><ref refid="CANProtocol_8h_1acb79363cee27b9c1dddb9ee0c4cef376" kindref="member">CAN_ID_EVT_1</ref>;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/>_echoTxId<sp/><sp/>=<sp/><ref refid="CANProtocol_8h_1a1eac1fef8d944f86b05d90700802dc4a" kindref="member">CAN_ID_ECHO_1</ref>;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/>_rxCount<sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/>_startMs<sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/>_lastHbMs<sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>sendHeartbeat(uint32_t<sp/>now)<sp/>{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(now<sp/>-<sp/>_lastHbMs<sp/>&lt;<sp/>500)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_lastHbMs<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t<sp/>esr32<sp/>=<sp/>CAN1-&gt;ESR;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="namespaceSTM32Board_1a876424c3726988dd55f3450f6ee95d1f" kindref="member">tec</ref><sp/><sp/><sp/>=<sp/>(esr32<sp/>&gt;&gt;<sp/>16)<sp/>&amp;<sp/>0xFF;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="namespaceSTM32Board_1adf04daf0f145cd52941ac815728d3202" kindref="member">rec</ref><sp/><sp/><sp/>=<sp/>(esr32<sp/>&gt;&gt;<sp/>24)<sp/>&amp;<sp/>0xFF;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>boff<sp/><sp/>=<sp/>(esr32<sp/>&gt;&gt;<sp/>2)<sp/>&amp;<sp/>1;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>epvf<sp/><sp/>=<sp/>(esr32<sp/>&gt;&gt;<sp/>1)<sp/>&amp;<sp/>1;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[HB]<sp/>node=&quot;</highlight><highlight class="normal">));<sp/><sp/>d.print(_nodeId);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>TEC=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(tec);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>REC=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(rec);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>BOFF=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/>d.print(boff);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>EPVF=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/>d.print(epvf);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>rx=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.println(_rxCount);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>flags<sp/><sp/>=<sp/>(boff<sp/>?<sp/>0x01<sp/>:<sp/>0)<sp/>|<sp/>(epvf<sp/>?<sp/>0x02<sp/>:<sp/>0);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>uptime<sp/>=<sp/>(uint16_t)((now<sp/>-<sp/>_startMs)<sp/>/<sp/>1000);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>rxc<sp/><sp/><sp/><sp/>=<sp/>(uint16_t)(_rxCount<sp/>&amp;<sp/>0xFFFF);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>esr16<sp/><sp/>=<sp/>(uint16_t)(esr32<sp/>&gt;&gt;<sp/>16);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>buf[8];</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buf[0]<sp/>=<sp/>_nodeId;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buf[1]<sp/>=<sp/>flags;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memcpy(buf<sp/>+<sp/>2,<sp/>&amp;uptime,<sp/>2);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memcpy(buf<sp/>+<sp/>4,<sp/>&amp;rxc,<sp/><sp/><sp/><sp/>2);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memcpy(buf<sp/>+<sp/>6,<sp/>&amp;esr16,<sp/><sp/>2);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a49ebd854f1a68888769d72036066957b" kindref="member">STM32Board::canSend</ref>(_hbTxId,<sp/>buf,<sp/>8);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>processCan()<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>CAN_RxHeaderTypeDef<sp/>rxHdr;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>rxData[8];</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(HAL_CAN_GetRxFifoFillLevel(<ref refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kindref="member">STM32Board::canHandle</ref>(),<sp/>CAN_RX_FIFO0)<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>HAL_CAN_GetRxMessage(<ref refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kindref="member">STM32Board::canHandle</ref>(),<sp/>CAN_RX_FIFO0,<sp/>&amp;rxHdr,<sp/>rxData);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(rxHdr.StdId)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" kindref="member">CAN_ID_CTRL_BCAST</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_rxCount++;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ControlPacket<sp/>pkt;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memcpy(&amp;pkt,<sp/>rxData,<sp/>4);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>o<sp/>=<sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1a0940e964094ea28c9d085ec66d66c669" kindref="member">OpenSkyhawk::OutputBase::first</ref>;<sp/>o;<sp/>o<sp/>=<sp/>o-&gt;<ref refid="classOpenSkyhawk_1_1OutputBase_1adc3b923d0d22a0697d1f2858c38bcbea" kindref="member">next</ref>)</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>o-&gt;onPacket(pkt.controlId,<sp/>pkt.value);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kindref="member">CAN_ID_TEST_SEQ</ref>:</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Echo<sp/>all<sp/>8<sp/>bytes<sp/>unchanged<sp/>—<sp/>preserves<sp/>the<sp/>timestamp<sp/>so<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>RP2040<sp/>can<sp/>compute<sp/>RTT<sp/>entirely<sp/>within<sp/>its<sp/>own<sp/>clock<sp/>domain.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a49ebd854f1a68888769d72036066957b" kindref="member">STM32Board::canSend</ref>(_echoTxId,<sp/>rxData,<sp/>8);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>PanelGroup<sp/>public<sp/>API<sp/>─────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="namespacePanelGroup" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setup()<sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>_startMs<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin</ref>();</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Strap<sp/>pin<sp/>PA0:<sp/>HIGH<sp/>→<sp/>node_id=1<sp/>(tied<sp/>to<sp/>3.3V),<sp/>LOW<sp/>→<sp/>node_id=2<sp/>(floating)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(PA0,<sp/>INPUT_PULLDOWN);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>delay(10);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>_nodeId<sp/><sp/><sp/>=<sp/>digitalRead(PA0)<sp/>?<sp/>1<sp/>:<sp/>2;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>_hbTxId<sp/><sp/><sp/>=<sp/>(_nodeId<sp/>==<sp/>1)<sp/>?<sp/><ref refid="CANProtocol_8h_1acdc9aacd81293c775e4fff1639738447" kindref="member">CAN_ID_HB_1</ref><sp/><sp/><sp/>:<sp/><ref refid="CANProtocol_8h_1ae94b30704e5c8754a53ed96796758091" kindref="member">CAN_ID_HB_2</ref>;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>_evtTxId<sp/><sp/>=<sp/>(_nodeId<sp/>==<sp/>1)<sp/>?<sp/><ref refid="CANProtocol_8h_1acb79363cee27b9c1dddb9ee0c4cef376" kindref="member">CAN_ID_EVT_1</ref><sp/><sp/>:<sp/><ref refid="CANProtocol_8h_1a1278c70be5eb4b6a0e18bc8d334d5961" kindref="member">CAN_ID_EVT_2</ref>;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>_echoTxId<sp/>=<sp/>(_nodeId<sp/>==<sp/>1)<sp/>?<sp/><ref refid="CANProtocol_8h_1a1eac1fef8d944f86b05d90700802dc4a" kindref="member">CAN_ID_ECHO_1</ref><sp/>:<sp/><ref refid="CANProtocol_8h_1a64d87ba59764de931aa19fcadc425aab" kindref="member">CAN_ID_ECHO_2</ref>;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>().print(F(</highlight><highlight class="stringliteral">&quot;PanelGroup<sp/>ready.<sp/>node_id=&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>().println(_nodeId);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Accept<sp/>CTRL_BCAST<sp/>(0x010)<sp/>and<sp/>TEST_SEQ<sp/>(0x011)<sp/>only</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>CAN_FilterTypeDef<sp/>filter<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterBank<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterMode<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_FILTERMODE_IDLIST;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterScale<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_FILTERSCALE_16BIT;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterIdHigh<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" kindref="member">CAN_ID_CTRL_BCAST</ref><sp/>&lt;&lt;<sp/>5;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterIdLow<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kindref="member">CAN_ID_TEST_SEQ</ref><sp/><sp/><sp/>&lt;&lt;<sp/>5;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterMaskIdHigh<sp/><sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterMaskIdLow<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterFIFOAssignment<sp/>=<sp/>CAN_RX_FIFO0;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>filter.FilterActivation<sp/><sp/><sp/><sp/><sp/>=<sp/>ENABLE;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_CAN_ConfigFilter(<ref refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kindref="member">STM32Board::canHandle</ref>(),<sp/>&amp;filter);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a02db1dfc484f69c1d8d75ba4e16d9f3c" kindref="member">STM32Board::canStart</ref>();</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kindref="member">STM32Board::log</ref>(</highlight><highlight class="stringliteral">&quot;CAN<sp/>ready.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loop()<sp/>{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">STM32Board::tick</ref>();</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>processCan();</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>i<sp/>=<sp/><ref refid="classOpenSkyhawk_1_1InputBase_1afa37c73dc476686a141ce4e41bd036c0" kindref="member">OpenSkyhawk::InputBase::first</ref>;<sp/>i;<sp/>i<sp/>=<sp/>i-&gt;<ref refid="classOpenSkyhawk_1_1InputBase_1ad29900282f4dadab1b3ff8b10507f2e0" kindref="member">next</ref>)</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>i-&gt;poll();</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>sendHeartbeat(now);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1a21b5d03ffa53faaa9e4a7bd9759b0443" kindref="member">sendEvent</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>buf[8]<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(buf,<sp/><sp/><sp/><sp/><sp/>&amp;controlId,<sp/>2);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(buf<sp/>+<sp/>2,<sp/>&amp;value,<sp/><sp/><sp/><sp/><sp/>2);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(buf<sp/>+<sp/>4,<sp/>&amp;now,<sp/><sp/><sp/><sp/><sp/><sp/><sp/>4);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a49ebd854f1a68888769d72036066957b" kindref="member">STM32Board::canSend</ref>(_evtTxId,<sp/>buf,<sp/>8);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal">uint8_t<sp/><ref refid="namespacePanelGroup_1aecfca5a88d5758bb09efa658a633d0c6" kindref="member">nodeId</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_nodeId;<sp/>}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelGroup</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp"/>
+  </compounddef>
+</doxygen>

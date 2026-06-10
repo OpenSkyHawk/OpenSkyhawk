@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="STM32Board_8h" kind="file" language="C++">
+    <compoundname>STM32Board.h</compoundname>
+    <includes local="no">Arduino.h</includes>
+    <includes local="no">stm32f1xx_hal_can.h</includes>
+    <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <includedby refid="PanelBridge_8h" local="no">Firmware/Libraries/PanelBridge/PanelBridge.h</includedby>
+    <includedby refid="PanelGroup_8cpp" local="no">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
+    <includedby refid="PanelGroup_8h" local="no">Firmware/Libraries/PanelGroup/PanelGroup.h</includedby>
+    <includedby refid="STM32Board_8cpp" local="yes">Firmware/Libraries/STM32Board/STM32Board.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/STM32Board/STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Arduino.h</label>
+      </node>
+      <node id="3">
+        <label>stm32f1xx_hal_can.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.h</label>
+        <link refid="PanelBridge_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
+        <link refid="PanelGroup_8cpp"/>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
+        <link refid="STM32Board_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/STM32Board/STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceSTM32Board">STM32Board</innernamespace>
+    <briefdescription>
+<para>Shared STM32F103 hardware initialisation for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> avionics nodes. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Manages the bi-color status LED, DiagSerial, and CAN peripheral configuration — identical on every <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> STM32F103CBT6 board. All CAN bus operations (send, filter, start) go through CANProtocol.</para>
+<para>Fixed hardware (same on every board — no constructor arguments):<itemizedlist>
+<listitem><para>LED : PB14 (red) + PB15 (green), active HIGH</para>
+</listitem><listitem><para>UART : USART1 PA9 TX / PA10 RX @ 115200 (diagnostic tap)</para>
+</listitem><listitem><para>CAN : SN65HVD230 on PA11 (RX) / PA12 (TX)</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="version"><para>0.2.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stm32f1xx_hal_can.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">//<sp/>CanStatus<sp/>is<sp/>owned<sp/>by<sp/>CANProtocol;<sp/>forward-declared<sp/>here<sp/>so<sp/>onCanStatus()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>can<sp/>accept<sp/>it<sp/>without<sp/>pulling<sp/>the<sp/>full<sp/>CANProtocol<sp/>header<sp/>into<sp/>every<sp/>user.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(NODE_ID<sp/>&lt;=<sp/>63,</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;NODE_ID<sp/>must<sp/>be<sp/>0-63.<sp/>0<sp/>is<sp/>reserved<sp/>for<sp/>PanelBridge;<sp/>1-63<sp/>for<sp/>PanelGroup<sp/>nodes.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSTM32Board" kindref="compound">STM32Board</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">PIN_LED_RED</ref><sp/><sp/><sp/>=<sp/>PB14;<sp/></highlight></codeline>
+<codeline lineno="34" refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">PIN_LED_GREEN</ref><sp/>=<sp/>PB15;<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">begin</ref>();</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" kindref="member">setDebug</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>on);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">tick</ref>();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a25f2a41dba3a3e6ac8d2d551a0b3a5ee" kindref="member">onCanStatus</ref>(<ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/>status);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">isDebug</ref>();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kindref="member">log</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>msg);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>HardwareSerial&amp;<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">diagSerial</ref>();</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>CAN_HandleTypeDef*<sp/><ref refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kindref="member">canHandle</ref>();</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Deprecated<sp/>—<sp/>will<sp/>be<sp/>removed<sp/>when<sp/>CANProtocol<sp/>is<sp/>implemented<sp/>──────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>These<sp/>remain<sp/>temporarily<sp/>so<sp/>PanelGroup<sp/>and<sp/>PanelBridge<sp/>compile<sp/>unchanged</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>until<sp/>the<sp/>CANProtocol<sp/>PR<sp/>migrates<sp/>those<sp/>calls.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a02db1dfc484f69c1d8d75ba4e16d9f3c" kindref="member">canStart</ref>();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a49ebd854f1a68888769d72036066957b" kindref="member">canSend</ref>(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/>uint8_t<sp/>len);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="namespaceSTM32Board_1a876424c3726988dd55f3450f6ee95d1f" kindref="member">tec</ref>();</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="namespaceSTM32Board_1adf04daf0f145cd52941ac815728d3202" kindref="member">rec</ref>();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a05f41ecf367b8d99880f387c7e924be9" kindref="member">busOff</ref>();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>STM32Board</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/STM32Board/STM32Board.h"/>
+  </compounddef>
+</doxygen>

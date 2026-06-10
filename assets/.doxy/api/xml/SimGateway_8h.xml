@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="SimGateway_8h" kind="file" language="C++">
+    <compoundname>SimGateway.h</compoundname>
+    <includes local="no">Arduino.h</includes>
+    <includes local="no">Joystick.h</includes>
+    <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
+    <includedby refid="SimGateway_8cpp" local="yes">Firmware/Libraries/SimGateway/SimGateway.cpp</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/SimGateway/SimGateway.h</label>
+        <link refid="SimGateway_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Arduino.h</label>
+      </node>
+      <node id="3">
+        <label>Joystick.h</label>
+      </node>
+      <node id="5">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/SimGateway/SimGateway.cpp</label>
+        <link refid="SimGateway_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/SimGateway/SimGateway.h</label>
+        <link refid="SimGateway_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceSimGateway">SimGateway</innernamespace>
+    <briefdescription>
+<para>RP2040 USB HID + DCS-BIOS gateway domain layer for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Owns USB device identity, Joystick HID composite device, and the UART link to the <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> STM32. Parses incoming DIAG frames from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> and dispatches them to registered callbacks. DCS-BIOS setup/loop must be called by the sketch — they require <computeroutput>#define DCSBIOS_DEFAULT_SERIAL</computeroutput> in the sketch&apos;s translation unit before <computeroutput>#include &lt;DcsBios.h&gt;</computeroutput>.</para>
+<para>A minimal gateway sketch:</para>
+<para><programlisting><codeline><highlight class="preprocessor">#define<sp/>DCSBIOS_DEFAULT_SERIAL</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;DcsBios.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SimGateway_8h" kindref="compound">SimGateway.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">DcsBios::IntegerBuffer<sp/>rpmBuf(<ref refid="A4EC__OutputIds_8h_1a206088114371f4818f9b0209034f5bce" kindref="member">A_4E_C_RPM</ref>,<sp/>onRpmChange);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" kindref="member">setup</ref>()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">SimGateway::setup</ref>(Serial1);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>DcsBios::setup();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>DcsBios::loop();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">SimGateway::loop</ref>();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="note"><para>Including <ref refid="SimGateway_8h" kindref="compound">SimGateway.h</ref> pulls in Joystick.h transitively, so sketches can call Joystick.button() etc. without an extra include.</para>
+</simplesect>
+<simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Joystick.h&gt;</highlight><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref><sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">setup</ref>(HardwareSerial&amp;<sp/>panelBridgePort);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a6211ad592ee4601e0b3f786c8c686c02" kindref="member">send</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="namespaceSimGateway_1a15934467207174180ad674352e7faea3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a044ada407e3ac32ed02c6d49a633e174" kindref="member">onDiagRtt</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint16_t<sp/>seq,<sp/>uint32_t<sp/>sentMs));</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="namespaceSimGateway_1aceb284ef7b55b164307d9bab9ebae419" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a80c8829be7313b397f4004fd758dd861" kindref="member">onDiagHb</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint8_t<sp/>nodeId,<sp/>uint16_t<sp/>rxCount));</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="namespaceSimGateway_1afb79344cfe32256b4ccc081fc1534a26" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a6f34e7c985ea652027bcd92792af21fe" kindref="member">onDiagErr</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint8_t<sp/>tec,<sp/>uint8_t<sp/>rec,<sp/>uint8_t<sp/>flags));</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="namespaceSimGateway_1a041725de0f0b3cc12cecb7bd5dba65eb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1afc5bc8ec904ee834a0d7b342de91921b" kindref="member">onDiagEvt</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value,<sp/>uint8_t<sp/>nodeId));</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SimGateway</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.h"/>
+  </compounddef>
+</doxygen>

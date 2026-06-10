@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structDcsBiosInputEntry" kind="struct" language="C++" prot="public">
+    <compoundname>DcsBiosInputEntry</compoundname>
+    <includes refid="A4EC__InputMap_8h" local="no">A4EC_InputMap.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structDcsBiosInputEntry_1ab076abc3d8f2c904d45a44dac3a79044" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t DcsBiosInputEntry::cmdId</definition>
+        <argsstring></argsstring>
+        <name>cmdId</name>
+        <qualifiedname>DcsBiosInputEntry::cmdId</qualifiedname>
+        <briefdescription>
+<para>DCSIN_* compact ID — matches <ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref> constant. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="23" column="17" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structDcsBiosInputEntry_1a4d40d75e74355fc75646e66bf1fcc4ae" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t DcsBiosInputEntry::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>DcsBiosInputEntry::type</qualifiedname>
+        <briefdescription>
+<para>One of <ref refid="namespaceInputType" kindref="compound">InputType</ref>::* — determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> dispatch. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="24" column="17" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structDcsBiosInputEntry_1adea4723339818331154a098605820a17" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* DcsBiosInputEntry::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>DcsBiosInputEntry::name</qualifiedname>
+        <briefdescription>
+<para>DCS-BIOS control name for sendDcsBiosMessage() </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="25" column="16" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structDcsBiosInputEntry_1a58256154ca2cad9b19a67f129e9669f2" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* DcsBiosInputEntry::arg0</definition>
+        <argsstring></argsstring>
+        <name>arg0</name>
+        <qualifiedname>DcsBiosInputEntry::arg0</qualifiedname>
+        <briefdescription>
+<para>value=0 argument (&quot;0&quot;, &quot;DEC&quot;, position string) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="26" column="16" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structDcsBiosInputEntry_1abc9f211155294b89d3363541a0620f3a" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* DcsBiosInputEntry::arg1</definition>
+        <argsstring></argsstring>
+        <name>arg1</name>
+        <qualifiedname>DcsBiosInputEntry::arg1</qualifiedname>
+        <briefdescription>
+<para>value=1 argument (&quot;1&quot;, &quot;INC&quot;); nullptr for ACTION/MULTIPOS </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="27" column="16" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structDcsBiosInputEntry_1a8ff20c7a4efcf9b244215ecbaebe9215" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* DcsBiosInputEntry::arg0fast</definition>
+        <argsstring></argsstring>
+        <name>arg0fast</name>
+        <qualifiedname>DcsBiosInputEntry::arg0fast</qualifiedname>
+        <briefdescription>
+<para>ACCEL_ENCODER: fast decrement arg; nullptr for all other types. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="28" column="16" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structDcsBiosInputEntry_1af948b8810284950bc248883263a9aaac" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* DcsBiosInputEntry::arg1fast</definition>
+        <argsstring></argsstring>
+        <name>arg1fast</name>
+        <qualifiedname>DcsBiosInputEntry::arg1fast</qualifiedname>
+        <briefdescription>
+<para>ACCEL_ENCODER: fast increment arg; nullptr for all other types. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="29" column="16" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/A4EC/A4EC_InputMap.h" line="22" column="1" bodyfile="Firmware/Libraries/A4EC/A4EC_InputMap.h" bodystart="22" bodyend="30"/>
+    <listofallmembers>
+      <member refid="structDcsBiosInputEntry_1a58256154ca2cad9b19a67f129e9669f2" prot="public" virt="non-virtual"><scope>DcsBiosInputEntry</scope><name>arg0</name></member>
+      <member refid="structDcsBiosInputEntry_1a8ff20c7a4efcf9b244215ecbaebe9215" prot="public" virt="non-virtual"><scope>DcsBiosInputEntry</scope><name>arg0fast</name></member>
+      <member refid="structDcsBiosInputEntry_1abc9f211155294b89d3363541a0620f3a" prot="public" virt="non-virtual"><scope>DcsBiosInputEntry</scope><name>arg1</name></member>
+      <member refid="structDcsBiosInputEntry_1af948b8810284950bc248883263a9aaac" prot="public" virt="non-virtual"><scope>DcsBiosInputEntry</scope><name>arg1fast</name></member>
+      <member refid="structDcsBiosInputEntry_1ab076abc3d8f2c904d45a44dac3a79044" prot="public" virt="non-virtual"><scope>DcsBiosInputEntry</scope><name>cmdId</name></member>
+      <member refid="structDcsBiosInputEntry_1adea4723339818331154a098605820a17" prot="public" virt="non-virtual"><scope>DcsBiosInputEntry</scope><name>name</name></member>
+      <member refid="structDcsBiosInputEntry_1a4d40d75e74355fc75646e66bf1fcc4ae" prot="public" virt="non-virtual"><scope>DcsBiosInputEntry</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

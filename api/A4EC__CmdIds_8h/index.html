@@ -1,0 +1,7800 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/A4EC__CmdIds_8h/">
+      
+      
+        <link rel="prev" href="../../claude/controllers/Misc_Switch_Panel/">
+      
+      
+        <link rel="next" href="../A4EC__CmdIds_8h_source/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>File A4EC_CmdIds.h - OpenSkyhawk</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#file-a4ec_cmdidsh" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="OpenSkyhawk" class="md-header__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenSkyhawk
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              File A4EC_CmdIds.h
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OpenSkyHawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OpenSkyHawk/OpenSkyhawk
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../claude/architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../claude/controllers/Center_Armament/" class="md-tabs__link">
+          
+  
+  
+  Controllers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../claude/dcsbios-stm32-debug/" class="md-tabs__link">
+          
+  
+  
+  Claude
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="OpenSkyhawk" class="md-nav__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    OpenSkyhawk
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OpenSkyHawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    OpenSkyHawk/OpenSkyhawk
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/hardware-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/pcb-design-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN Bus / PCB Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/kicad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KiCad Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controllers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controllers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/Center_Armament/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Center Armament
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/AWRS_Panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWRS Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/Misc_Switch_Panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Misc Switch Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File A4EC_CmdIds.h
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File A4EC_CmdIds.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macro-definition-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Definition Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macro Definition Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_accel_reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ACCEL_RESET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_1n2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_1N2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_1n2_cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_1N2_COVER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_ail_trim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_AIL_TRIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_alt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_ALT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_engage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_ENGAGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_hdg_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_HDG_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_hdg_set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_HDG_SET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_stab_aug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_STAB_AUG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_stby" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_STBY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_alt_press_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ALT_PRESS_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_aoa_index_dim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AOA_INDEX_DIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_apc_enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_APC_ENABLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_aps_cold_std_hot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_APS_COLD_STD_HOT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_10mhz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_10MHZ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_1mhz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_1MHZ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_50khz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_50KHZ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_pre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_PRE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_squelch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_SQUELCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_xmit_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_XMIT_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_bomb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_BOMB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_emerg_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_EMERG_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_func_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_FUNC_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_gun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_GUN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_MASTER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_lat_slew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_LAT_SLEW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_lon_slew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_LON_SLEW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_magvar_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_MAGVAR_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_magvar_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_MAGVAR_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_winddir_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDDIR_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_winddir_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDDIR_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_windspeed_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDSPEED_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_windspeed_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDSPEED_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_drop_int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_DROP_INT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_multi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_MULTI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_quant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_QUANT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_bdhi_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_BDHI_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cabin_press" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CABIN_PRESS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cabin_temp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CABIN_TEMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_canopy_sw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CANOPY_SW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_adj1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_ADJ1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_adj2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_ADJ2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_AUTO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_bank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_BANK
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_pwr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_PWR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lat_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LAT_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lat_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LAT_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lon_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LON_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lon_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LON_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_doppler_mem_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DOPPLER_MEM_TEST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_doppler_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DOPPLER_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_drop_press_refuel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DROP_PRESS_REFUEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr25_pw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR25_PW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr27_light" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR27_LIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr27_pw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR27_PW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr27_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR27_TEST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_audio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_AUDIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_msl_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_MSL_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_prf_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_PRF_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_bomb_rel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_BOMB_REL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_gear_rel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_GEAR_REL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_gen_bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_GEN_BYPASS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_gen_deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_GEN_DEPLOY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_trans_fuel_dump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_TRANS_FUEL_DUMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_flaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FLAPS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_fuel_control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FUEL_CONTROL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_fuel_ext_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FUEL_EXT_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_fuel_trans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FUEL_TRANS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gear_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GEAR_HANDLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_clear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_CLEAR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_l" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_L
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_r" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_R
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunsight_bright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNSIGHT_BRIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunsight_day_night" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNSIGHT_DAY_NIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunsight_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNSIGHT_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_harness_reel_contr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_HARNESS_REEL_CONTR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_hook_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_HOOK_HANDLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ias_index_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_IAS_INDEX_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ias_index_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_IAS_INDEX_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_jato_arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_JATO_ARM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_jato_jett_safe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_JATO_JETT_SAFE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_anticoll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_ANTICOLL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_flash_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_FLASH_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_fuselage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_FUSELAGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_MASTER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_nav" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_NAV
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_PROBE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_tail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_TAIL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_taxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_TAXI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_bright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_BRIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_console" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_CONSOLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_flood_wht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_FLOOD_WHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_instr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_INSTR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_man_flight_control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MAN_FLIGHT_CONTROL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_man_fuel_off_catch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MAN_FUEL_OFF_CATCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_man_fuel_off_lv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MAN_FUEL_OFF_LV
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_master_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MASTER_TEST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_mcl_chan_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MCL_CHAN_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_mcl_pwr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MCL_PWR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_missile_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MISSILE_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_nav_dead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_NAV_DEAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_nav_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_NAV_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_oxy_sw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_OXY_SW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lat_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LAT_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lat_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LAT_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lon_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LON_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lon_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LON_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_alt_index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_ALT_INDEX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_alt_sw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_ALT_SW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_ANGLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_aoacomp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_AOACOMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_brilliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_BRILLIANCE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_DETAIL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_FILTER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_gain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_GAIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_PROFILE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_RANGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_reticle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_RETICLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_STORAGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_rain_remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RAIN_REMOVE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_rudder_trim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RUDDER_TRIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_seat_adj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SEAT_ADJ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_sec_eject_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SEC_EJECT_HANDLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_shrike_sel_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SHRIKE_SEL_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_speedbrake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SPEEDBRAKE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_speedbrake_emerg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SPEEDBRAKE_EMERG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_spoiler_arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SPOILER_ARM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_starter_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STARTER_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_stby_att_index_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STBY_ATT_INDEX_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_stby_att_index_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STBY_ATT_INDEX_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_stopwatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STOPWATCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_ant_cont" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_ANT_CONT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_chan_maj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_CHAN_MAJ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_chan_min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_CHAN_MIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_throttle_click" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_THROTTLE_CLICK
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_windshld_defrost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_WINDSHLD_DEFROST
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A4EC__CmdIds_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File A4EC_CmdIds.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A4EC__InputMap_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File A4EC_InputMap.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A4EC__InputMap_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File A4EC_InputMap.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A4EC__OutputIds_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File A4EC_OutputIds.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A4EC__OutputIds_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File A4EC_OutputIds.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CANProtocol_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File CANProtocol.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CANProtocol_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File CANProtocol.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HIDControls_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File HIDControls.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HIDControls_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File HIDControls.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelBridge_8cpp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelBridge.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelBridge_8cpp_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelBridge.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelBridge_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelBridge.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelBridge_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelBridge.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelGroup_8cpp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelGroup.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelGroup_8cpp_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelGroup.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelGroup_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelGroup.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PanelGroup_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File PanelGroup.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STM32Board_8cpp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File STM32Board.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STM32Board_8cpp_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File STM32Board.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STM32Board_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File STM32Board.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STM32Board_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File STM32Board.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SimGateway_8cpp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File SimGateway.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SimGateway_8cpp_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File SimGateway.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SimGateway_8h/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File SimGateway.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SimGateway_8h_source/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File SimGateway.h
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annotated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classOpenSkyhawk_1_1InputBase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class OpenSkyhawk::InputBase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classOpenSkyhawk_1_1IntegerOutput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class OpenSkyhawk::IntegerOutput
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classOpenSkyhawk_1_1LED/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class OpenSkyhawk::LED
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classOpenSkyhawk_1_1OutputBase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class OpenSkyhawk::OutputBase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classOpenSkyhawk_1_1Switch2Pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class OpenSkyhawk::Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Member Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Member Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Member Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Member Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Members
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deprecated
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_4c3761349dd87c66ada20ca5eb39042a/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries/A4EC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_54a06c409a6161127d200302d3061b3f/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries/PanelGroup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_81ff3032570f78b12938068450b63228/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries/CANProtocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_8de7ffd664ed88ad14416481a318893f/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries/HIDControls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_a54aa0246e1c520ae49dfef506a428ca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries/SimGateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_aa1816754c0645981f9c7af905857f7d/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries/STM32Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dir_f592a3c441b32532ba8eb6b28add2a90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dir Firmware/Libraries/PanelBridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hierarchy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Links
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaceInputType/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace InputType
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaceOpenSkyhawk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace OpenSkyhawk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacePanelBridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace PanelBridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacePanelGroup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace PanelGroup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaceSTM32Board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace STM32Board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaceSimGateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace SimGateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_0d5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_0d7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_0d9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Member Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Member Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Member Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Member Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Members
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Related Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structDcsBiosInputEntry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Struct DcsBiosInputEntry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Claude
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/dcsbios-stm32-debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS STM32 Debug Session Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controllers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controllers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/a4e-c-dcsbios-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A-4E-C DCS-BIOS Address Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macro-definition-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Definition Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macro Definition Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_accel_reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ACCEL_RESET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_1n2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_1N2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_1n2_cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_1N2_COVER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_ail_trim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_AIL_TRIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_alt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_ALT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_engage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_ENGAGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_hdg_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_HDG_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_hdg_set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_HDG_SET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_stab_aug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_STAB_AUG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_afcs_stby" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AFCS_STBY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_alt_press_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ALT_PRESS_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_aoa_index_dim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AOA_INDEX_DIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_apc_enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_APC_ENABLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_aps_cold_std_hot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_APS_COLD_STD_HOT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_10mhz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_10MHZ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_1mhz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_1MHZ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_50khz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_50KHZ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_freq_pre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_FREQ_PRE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_squelch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_SQUELCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arc51_xmit_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARC51_XMIT_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_bomb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_BOMB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_emerg_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_EMERG_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_func_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_FUNC_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_gun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_GUN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_MASTER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_arm_station5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ARM_STATION5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_lat_slew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_LAT_SLEW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_lon_slew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_LON_SLEW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_magvar_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_MAGVAR_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_magvar_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_MAGVAR_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_winddir_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDDIR_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_winddir_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDDIR_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_windspeed_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDSPEED_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_asn41_windspeed_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ASN41_WINDSPEED_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_drop_int" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_DROP_INT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_multi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_MULTI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_awrs_quant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_AWRS_QUANT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_bdhi_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_BDHI_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cabin_press" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CABIN_PRESS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cabin_temp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CABIN_TEMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_canopy_sw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CANOPY_SW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_adj1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_ADJ1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_adj2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_ADJ2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_auto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_AUTO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_bank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_BANK
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_cm_pwr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_CM_PWR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lat_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LAT_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lat_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LAT_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lon_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LON_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_dest_lon_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DEST_LON_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_doppler_mem_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DOPPLER_MEM_TEST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_doppler_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DOPPLER_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_drop_press_refuel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_DROP_PRESS_REFUEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr25_pw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR25_PW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr27_light" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR27_LIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr27_pw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR27_PW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_apr27_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_APR27_TEST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_audio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_AUDIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_msl_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_MSL_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_prf_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_PRF_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ecm_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_ECM_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_bomb_rel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_BOMB_REL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_gear_rel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_GEAR_REL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_gen_bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_GEN_BYPASS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_gen_deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_GEN_DEPLOY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_emerg_trans_fuel_dump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_EMERG_TRANS_FUEL_DUMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_flaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FLAPS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_fuel_control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FUEL_CONTROL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_fuel_ext_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FUEL_EXT_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_fuel_trans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_FUEL_TRANS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gear_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GEAR_HANDLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_clear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_CLEAR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_l" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_L
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunpod_r" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNPOD_R
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunsight_bright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNSIGHT_BRIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunsight_day_night" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNSIGHT_DAY_NIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_gunsight_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_GUNSIGHT_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_harness_reel_contr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_HARNESS_REEL_CONTR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_hook_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_HOOK_HANDLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ias_index_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_IAS_INDEX_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ias_index_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_IAS_INDEX_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_jato_arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_JATO_ARM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_jato_jett_safe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_JATO_JETT_SAFE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_anticoll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_ANTICOLL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_flash_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_FLASH_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_fuselage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_FUSELAGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_MASTER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_nav" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_NAV
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_PROBE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_tail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_TAIL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_ext_taxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_EXT_TAXI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_bright" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_BRIGHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_console" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_CONSOLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_flood_wht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_FLOOD_WHT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_light_int_instr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_LIGHT_INT_INSTR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_man_flight_control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MAN_FLIGHT_CONTROL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_man_fuel_off_catch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MAN_FUEL_OFF_CATCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_man_fuel_off_lv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MAN_FUEL_OFF_LV
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_master_test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MASTER_TEST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_mcl_chan_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MCL_CHAN_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_mcl_pwr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MCL_PWR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_missile_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_MISSILE_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_nav_dead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_NAV_DEAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_nav_sel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_NAV_SEL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_oxy_sw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_OXY_SW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lat_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LAT_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lat_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LAT_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lon_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LON_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_ppos_lon_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_PPOS_LON_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_alt_index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_ALT_INDEX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_alt_sw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_ALT_SW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_ANGLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_aoacomp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_AOACOMP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_brilliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_BRILLIANCE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_DETAIL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_FILTER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_gain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_GAIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_PROFILE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_RANGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_reticle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_RETICLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_STORAGE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_radar_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RADAR_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_rain_remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RAIN_REMOVE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_rudder_trim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_RUDDER_TRIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_seat_adj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SEAT_ADJ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_sec_eject_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SEC_EJECT_HANDLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_shrike_sel_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SHRIKE_SEL_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_speedbrake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SPEEDBRAKE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_speedbrake_emerg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SPEEDBRAKE_EMERG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_spoiler_arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_SPOILER_ARM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_starter_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STARTER_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_stby_att_index_btn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STBY_ATT_INDEX_BTN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_stby_att_index_knb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STBY_ATT_INDEX_KNB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_stopwatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_STOPWATCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_ant_cont" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_ANT_CONT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_chan_maj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_CHAN_MAJ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_chan_min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_CHAN_MIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_MODE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_tacan_vol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_TACAN_VOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_throttle_click" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_THROTTLE_CLICK
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-dcsin_windshld_defrost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define DCSIN_WINDSHLD_DEFROST
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="file-a4ec_cmdidsh">File A4EC_CmdIds.h</h1>
+<p><a href="../files/"><strong>FileList</strong></a> <strong>&gt;</strong> <a href="../dir_4c3761349dd87c66ada20ca5eb39042a/"><strong>A4EC</strong></a> <strong>&gt;</strong> <a href="./"><strong>A4EC_CmdIds.h</strong></a></p>
+<p><a href="../A4EC__CmdIds_8h_source/">Go to the source code of this file</a></p>
+<h2 id="macros">Macros</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_accel_reset"><strong>DCSIN_ACCEL_RESET</strong></a>  <code>0x8001</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_1n2"><strong>DCSIN_AFCS_1N2</strong></a>  <code>0x8002</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_1n2_cover"><strong>DCSIN_AFCS_1N2_COVER</strong></a>  <code>0x8003</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_ail_trim"><strong>DCSIN_AFCS_AIL_TRIM</strong></a>  <code>0x8004</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_alt"><strong>DCSIN_AFCS_ALT</strong></a>  <code>0x8005</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_engage"><strong>DCSIN_AFCS_ENGAGE</strong></a>  <code>0x8006</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_hdg_sel"><strong>DCSIN_AFCS_HDG_SEL</strong></a>  <code>0x8007</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_hdg_set"><strong>DCSIN_AFCS_HDG_SET</strong></a>  <code>0x8008</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_stab_aug"><strong>DCSIN_AFCS_STAB_AUG</strong></a>  <code>0x8009</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_afcs_stby"><strong>DCSIN_AFCS_STBY</strong></a>  <code>0x800a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_alt_press_knb"><strong>DCSIN_ALT_PRESS_KNB</strong></a>  <code>0x800b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_aoa_index_dim"><strong>DCSIN_AOA_INDEX_DIM</strong></a>  <code>0x800c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_apc_enable"><strong>DCSIN_APC_ENABLE</strong></a>  <code>0x800d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_aps_cold_std_hot"><strong>DCSIN_APS_COLD_STD_HOT</strong></a>  <code>0x800e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_freq_10mhz"><strong>DCSIN_ARC51_FREQ_10MHZ</strong></a>  <code>0x800f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_freq_1mhz"><strong>DCSIN_ARC51_FREQ_1MHZ</strong></a>  <code>0x8010</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_freq_50khz"><strong>DCSIN_ARC51_FREQ_50KHZ</strong></a>  <code>0x8011</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_freq_pre"><strong>DCSIN_ARC51_FREQ_PRE</strong></a>  <code>0x8012</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_mode"><strong>DCSIN_ARC51_MODE</strong></a>  <code>0x8013</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_squelch"><strong>DCSIN_ARC51_SQUELCH</strong></a>  <code>0x8014</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_vol"><strong>DCSIN_ARC51_VOL</strong></a>  <code>0x8015</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arc51_xmit_mode"><strong>DCSIN_ARC51_XMIT_MODE</strong></a>  <code>0x8016</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_bomb"><strong>DCSIN_ARM_BOMB</strong></a>  <code>0x8017</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_emerg_sel"><strong>DCSIN_ARM_EMERG_SEL</strong></a>  <code>0x8018</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_func_sel"><strong>DCSIN_ARM_FUNC_SEL</strong></a>  <code>0x8019</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_gun"><strong>DCSIN_ARM_GUN</strong></a>  <code>0x801a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_master"><strong>DCSIN_ARM_MASTER</strong></a>  <code>0x801b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_station1"><strong>DCSIN_ARM_STATION1</strong></a>  <code>0x801c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_station2"><strong>DCSIN_ARM_STATION2</strong></a>  <code>0x801d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_station3"><strong>DCSIN_ARM_STATION3</strong></a>  <code>0x801e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_station4"><strong>DCSIN_ARM_STATION4</strong></a>  <code>0x801f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_arm_station5"><strong>DCSIN_ARM_STATION5</strong></a>  <code>0x8020</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_lat_slew"><strong>DCSIN_ASN41_LAT_SLEW</strong></a>  <code>0x8021</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_lon_slew"><strong>DCSIN_ASN41_LON_SLEW</strong></a>  <code>0x8022</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_magvar_btn"><strong>DCSIN_ASN41_MAGVAR_BTN</strong></a>  <code>0x8023</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_magvar_knb"><strong>DCSIN_ASN41_MAGVAR_KNB</strong></a>  <code>0x8024</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_winddir_btn"><strong>DCSIN_ASN41_WINDDIR_BTN</strong></a>  <code>0x8025</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_winddir_knb"><strong>DCSIN_ASN41_WINDDIR_KNB</strong></a>  <code>0x8026</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_windspeed_btn"><strong>DCSIN_ASN41_WINDSPEED_BTN</strong></a>  <code>0x8027</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_asn41_windspeed_knb"><strong>DCSIN_ASN41_WINDSPEED_KNB</strong></a>  <code>0x8028</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_awrs_drop_int"><strong>DCSIN_AWRS_DROP_INT</strong></a>  <code>0x8029</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_awrs_mode"><strong>DCSIN_AWRS_MODE</strong></a>  <code>0x802a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_awrs_multi"><strong>DCSIN_AWRS_MULTI</strong></a>  <code>0x802b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_awrs_quant"><strong>DCSIN_AWRS_QUANT</strong></a>  <code>0x802c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_bdhi_mode"><strong>DCSIN_BDHI_MODE</strong></a>  <code>0x802d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_cabin_press"><strong>DCSIN_CABIN_PRESS</strong></a>  <code>0x802e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_cabin_temp"><strong>DCSIN_CABIN_TEMP</strong></a>  <code>0x802f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_canopy_sw"><strong>DCSIN_CANOPY_SW</strong></a>  <code>0x8030</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_cm_adj1"><strong>DCSIN_CM_ADJ1</strong></a>  <code>0x8031</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_cm_adj2"><strong>DCSIN_CM_ADJ2</strong></a>  <code>0x8032</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_cm_auto"><strong>DCSIN_CM_AUTO</strong></a>  <code>0x8033</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_cm_bank"><strong>DCSIN_CM_BANK</strong></a>  <code>0x8034</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_cm_pwr"><strong>DCSIN_CM_PWR</strong></a>  <code>0x8035</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_dest_lat_btn"><strong>DCSIN_DEST_LAT_BTN</strong></a>  <code>0x8036</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_dest_lat_knb"><strong>DCSIN_DEST_LAT_KNB</strong></a>  <code>0x8037</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_dest_lon_btn"><strong>DCSIN_DEST_LON_BTN</strong></a>  <code>0x8038</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_dest_lon_knb"><strong>DCSIN_DEST_LON_KNB</strong></a>  <code>0x8039</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_doppler_mem_test"><strong>DCSIN_DOPPLER_MEM_TEST</strong></a>  <code>0x803a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_doppler_sel"><strong>DCSIN_DOPPLER_SEL</strong></a>  <code>0x803b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_drop_press_refuel"><strong>DCSIN_DROP_PRESS_REFUEL</strong></a>  <code>0x803c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_apr25_pw"><strong>DCSIN_ECM_APR25_PW</strong></a>  <code>0x803d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_apr27_light"><strong>DCSIN_ECM_APR27_LIGHT</strong></a>  <code>0x803e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_apr27_pw"><strong>DCSIN_ECM_APR27_PW</strong></a>  <code>0x803f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_apr27_test"><strong>DCSIN_ECM_APR27_TEST</strong></a>  <code>0x8040</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_audio"><strong>DCSIN_ECM_AUDIO</strong></a>  <code>0x8041</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_msl_vol"><strong>DCSIN_ECM_MSL_VOL</strong></a>  <code>0x8042</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_prf_vol"><strong>DCSIN_ECM_PRF_VOL</strong></a>  <code>0x8043</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ecm_sel"><strong>DCSIN_ECM_SEL</strong></a>  <code>0x8044</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_emerg_bomb_rel"><strong>DCSIN_EMERG_BOMB_REL</strong></a>  <code>0x8045</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_emerg_gear_rel"><strong>DCSIN_EMERG_GEAR_REL</strong></a>  <code>0x8046</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_emerg_gen_bypass"><strong>DCSIN_EMERG_GEN_BYPASS</strong></a>  <code>0x8047</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_emerg_gen_deploy"><strong>DCSIN_EMERG_GEN_DEPLOY</strong></a>  <code>0x8048</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_emerg_trans_fuel_dump"><strong>DCSIN_EMERG_TRANS_FUEL_DUMP</strong></a>  <code>0x8049</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_flaps"><strong>DCSIN_FLAPS</strong></a>  <code>0x804a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_fuel_control"><strong>DCSIN_FUEL_CONTROL</strong></a>  <code>0x804b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_fuel_ext_btn"><strong>DCSIN_FUEL_EXT_BTN</strong></a>  <code>0x804c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_fuel_trans"><strong>DCSIN_FUEL_TRANS</strong></a>  <code>0x804d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gear_handle"><strong>DCSIN_GEAR_HANDLE</strong></a>  <code>0x804e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gunpod_c"><strong>DCSIN_GUNPOD_C</strong></a>  <code>0x804f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gunpod_clear"><strong>DCSIN_GUNPOD_CLEAR</strong></a>  <code>0x8050</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gunpod_l"><strong>DCSIN_GUNPOD_L</strong></a>  <code>0x8051</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gunpod_r"><strong>DCSIN_GUNPOD_R</strong></a>  <code>0x8052</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gunsight_bright"><strong>DCSIN_GUNSIGHT_BRIGHT</strong></a>  <code>0x8053</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gunsight_day_night"><strong>DCSIN_GUNSIGHT_DAY_NIGHT</strong></a>  <code>0x8054</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_gunsight_knb"><strong>DCSIN_GUNSIGHT_KNB</strong></a>  <code>0x8055</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_harness_reel_contr"><strong>DCSIN_HARNESS_REEL_CONTR</strong></a>  <code>0x8056</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_hook_handle"><strong>DCSIN_HOOK_HANDLE</strong></a>  <code>0x8057</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ias_index_btn"><strong>DCSIN_IAS_INDEX_BTN</strong></a>  <code>0x8058</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ias_index_knb"><strong>DCSIN_IAS_INDEX_KNB</strong></a>  <code>0x8059</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_jato_arm"><strong>DCSIN_JATO_ARM</strong></a>  <code>0x805a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_jato_jett_safe"><strong>DCSIN_JATO_JETT_SAFE</strong></a>  <code>0x805b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_anticoll"><strong>DCSIN_LIGHT_EXT_ANTICOLL</strong></a>  <code>0x805c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_flash_mode"><strong>DCSIN_LIGHT_EXT_FLASH_MODE</strong></a>  <code>0x805d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_fuselage"><strong>DCSIN_LIGHT_EXT_FUSELAGE</strong></a>  <code>0x805e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_master"><strong>DCSIN_LIGHT_EXT_MASTER</strong></a>  <code>0x805f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_nav"><strong>DCSIN_LIGHT_EXT_NAV</strong></a>  <code>0x8060</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_probe"><strong>DCSIN_LIGHT_EXT_PROBE</strong></a>  <code>0x8061</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_tail"><strong>DCSIN_LIGHT_EXT_TAIL</strong></a>  <code>0x8062</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_ext_taxi"><strong>DCSIN_LIGHT_EXT_TAXI</strong></a>  <code>0x8063</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_int_bright"><strong>DCSIN_LIGHT_INT_BRIGHT</strong></a>  <code>0x8064</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_int_console"><strong>DCSIN_LIGHT_INT_CONSOLE</strong></a>  <code>0x8065</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_int_flood_wht"><strong>DCSIN_LIGHT_INT_FLOOD_WHT</strong></a>  <code>0x8066</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_light_int_instr"><strong>DCSIN_LIGHT_INT_INSTR</strong></a>  <code>0x8067</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_man_flight_control"><strong>DCSIN_MAN_FLIGHT_CONTROL</strong></a>  <code>0x8068</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_man_fuel_off_catch"><strong>DCSIN_MAN_FUEL_OFF_CATCH</strong></a>  <code>0x8069</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_man_fuel_off_lv"><strong>DCSIN_MAN_FUEL_OFF_LV</strong></a>  <code>0x806a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_master_test"><strong>DCSIN_MASTER_TEST</strong></a>  <code>0x806b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_mcl_chan_sel"><strong>DCSIN_MCL_CHAN_SEL</strong></a>  <code>0x806c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_mcl_pwr"><strong>DCSIN_MCL_PWR</strong></a>  <code>0x806d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_missile_vol"><strong>DCSIN_MISSILE_VOL</strong></a>  <code>0x806e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_nav_dead"><strong>DCSIN_NAV_DEAD</strong></a>  <code>0x806f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_nav_sel"><strong>DCSIN_NAV_SEL</strong></a>  <code>0x8070</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_oxy_sw"><strong>DCSIN_OXY_SW</strong></a>  <code>0x8071</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ppos_lat_btn"><strong>DCSIN_PPOS_LAT_BTN</strong></a>  <code>0x8072</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ppos_lat_knb"><strong>DCSIN_PPOS_LAT_KNB</strong></a>  <code>0x8073</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ppos_lon_btn"><strong>DCSIN_PPOS_LON_BTN</strong></a>  <code>0x8074</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_ppos_lon_knb"><strong>DCSIN_PPOS_LON_KNB</strong></a>  <code>0x8075</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_alt_index"><strong>DCSIN_RADAR_ALT_INDEX</strong></a>  <code>0x8076</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_alt_sw"><strong>DCSIN_RADAR_ALT_SW</strong></a>  <code>0x8077</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_angle"><strong>DCSIN_RADAR_ANGLE</strong></a>  <code>0x8078</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_aoacomp"><strong>DCSIN_RADAR_AOACOMP</strong></a>  <code>0x8079</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_brilliance"><strong>DCSIN_RADAR_BRILLIANCE</strong></a>  <code>0x807a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_detail"><strong>DCSIN_RADAR_DETAIL</strong></a>  <code>0x807b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_filter"><strong>DCSIN_RADAR_FILTER</strong></a>  <code>0x807c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_gain"><strong>DCSIN_RADAR_GAIN</strong></a>  <code>0x807d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_mode"><strong>DCSIN_RADAR_MODE</strong></a>  <code>0x807e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_profile"><strong>DCSIN_RADAR_PROFILE</strong></a>  <code>0x807f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_range"><strong>DCSIN_RADAR_RANGE</strong></a>  <code>0x8080</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_reticle"><strong>DCSIN_RADAR_RETICLE</strong></a>  <code>0x8081</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_storage"><strong>DCSIN_RADAR_STORAGE</strong></a>  <code>0x8082</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_radar_vol"><strong>DCSIN_RADAR_VOL</strong></a>  <code>0x8083</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_rain_remove"><strong>DCSIN_RAIN_REMOVE</strong></a>  <code>0x8084</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_rudder_trim"><strong>DCSIN_RUDDER_TRIM</strong></a>  <code>0x8085</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_seat_adj"><strong>DCSIN_SEAT_ADJ</strong></a>  <code>0x8086</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_sec_eject_handle"><strong>DCSIN_SEC_EJECT_HANDLE</strong></a>  <code>0x8087</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_shrike_sel_knb"><strong>DCSIN_SHRIKE_SEL_KNB</strong></a>  <code>0x8088</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_speedbrake"><strong>DCSIN_SPEEDBRAKE</strong></a>  <code>0x8089</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_speedbrake_emerg"><strong>DCSIN_SPEEDBRAKE_EMERG</strong></a>  <code>0x808a</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_spoiler_arm"><strong>DCSIN_SPOILER_ARM</strong></a>  <code>0x808b</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_starter_btn"><strong>DCSIN_STARTER_BTN</strong></a>  <code>0x808c</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_stby_att_index_btn"><strong>DCSIN_STBY_ATT_INDEX_BTN</strong></a>  <code>0x808d</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_stby_att_index_knb"><strong>DCSIN_STBY_ATT_INDEX_KNB</strong></a>  <code>0x808e</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_stopwatch"><strong>DCSIN_STOPWATCH</strong></a>  <code>0x808f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_tacan_ant_cont"><strong>DCSIN_TACAN_ANT_CONT</strong></a>  <code>0x8090</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_tacan_chan_maj"><strong>DCSIN_TACAN_CHAN_MAJ</strong></a>  <code>0x8091</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_tacan_chan_min"><strong>DCSIN_TACAN_CHAN_MIN</strong></a>  <code>0x8092</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_tacan_mode"><strong>DCSIN_TACAN_MODE</strong></a>  <code>0x8093</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_tacan_vol"><strong>DCSIN_TACAN_VOL</strong></a>  <code>0x8094</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_throttle_click"><strong>DCSIN_THROTTLE_CLICK</strong></a>  <code>0x8095</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-dcsin_windshld_defrost"><strong>DCSIN_WINDSHLD_DEFROST</strong></a>  <code>0x8096</code><br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
+<h3 id="define-dcsin_accel_reset">define DCSIN_ACCEL_RESET</h3>
+<pre><code class="language-C++">#define DCSIN_ACCEL_RESET `0x8001`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_1n2">define DCSIN_AFCS_1N2</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_1N2 `0x8002`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_1n2_cover">define DCSIN_AFCS_1N2_COVER</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_1N2_COVER `0x8003`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_ail_trim">define DCSIN_AFCS_AIL_TRIM</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_AIL_TRIM `0x8004`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_alt">define DCSIN_AFCS_ALT</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_ALT `0x8005`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_engage">define DCSIN_AFCS_ENGAGE</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_ENGAGE `0x8006`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_hdg_sel">define DCSIN_AFCS_HDG_SEL</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_HDG_SEL `0x8007`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_hdg_set">define DCSIN_AFCS_HDG_SET</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_HDG_SET `0x8008`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_stab_aug">define DCSIN_AFCS_STAB_AUG</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_STAB_AUG `0x8009`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_afcs_stby">define DCSIN_AFCS_STBY</h3>
+<pre><code class="language-C++">#define DCSIN_AFCS_STBY `0x800a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_alt_press_knb">define DCSIN_ALT_PRESS_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_ALT_PRESS_KNB `0x800b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_aoa_index_dim">define DCSIN_AOA_INDEX_DIM</h3>
+<pre><code class="language-C++">#define DCSIN_AOA_INDEX_DIM `0x800c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_apc_enable">define DCSIN_APC_ENABLE</h3>
+<pre><code class="language-C++">#define DCSIN_APC_ENABLE `0x800d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_aps_cold_std_hot">define DCSIN_APS_COLD_STD_HOT</h3>
+<pre><code class="language-C++">#define DCSIN_APS_COLD_STD_HOT `0x800e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_freq_10mhz">define DCSIN_ARC51_FREQ_10MHZ</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_FREQ_10MHZ `0x800f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_freq_1mhz">define DCSIN_ARC51_FREQ_1MHZ</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_FREQ_1MHZ `0x8010`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_freq_50khz">define DCSIN_ARC51_FREQ_50KHZ</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_FREQ_50KHZ `0x8011`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_freq_pre">define DCSIN_ARC51_FREQ_PRE</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_FREQ_PRE `0x8012`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_mode">define DCSIN_ARC51_MODE</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_MODE `0x8013`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_squelch">define DCSIN_ARC51_SQUELCH</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_SQUELCH `0x8014`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_vol">define DCSIN_ARC51_VOL</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_VOL `0x8015`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arc51_xmit_mode">define DCSIN_ARC51_XMIT_MODE</h3>
+<pre><code class="language-C++">#define DCSIN_ARC51_XMIT_MODE `0x8016`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_bomb">define DCSIN_ARM_BOMB</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_BOMB `0x8017`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_emerg_sel">define DCSIN_ARM_EMERG_SEL</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_EMERG_SEL `0x8018`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_func_sel">define DCSIN_ARM_FUNC_SEL</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_FUNC_SEL `0x8019`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_gun">define DCSIN_ARM_GUN</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_GUN `0x801a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_master">define DCSIN_ARM_MASTER</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_MASTER `0x801b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_station1">define DCSIN_ARM_STATION1</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_STATION1 `0x801c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_station2">define DCSIN_ARM_STATION2</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_STATION2 `0x801d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_station3">define DCSIN_ARM_STATION3</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_STATION3 `0x801e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_station4">define DCSIN_ARM_STATION4</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_STATION4 `0x801f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_arm_station5">define DCSIN_ARM_STATION5</h3>
+<pre><code class="language-C++">#define DCSIN_ARM_STATION5 `0x8020`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_lat_slew">define DCSIN_ASN41_LAT_SLEW</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_LAT_SLEW `0x8021`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_lon_slew">define DCSIN_ASN41_LON_SLEW</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_LON_SLEW `0x8022`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_magvar_btn">define DCSIN_ASN41_MAGVAR_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_MAGVAR_BTN `0x8023`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_magvar_knb">define DCSIN_ASN41_MAGVAR_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_MAGVAR_KNB `0x8024`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_winddir_btn">define DCSIN_ASN41_WINDDIR_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_WINDDIR_BTN `0x8025`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_winddir_knb">define DCSIN_ASN41_WINDDIR_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_WINDDIR_KNB `0x8026`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_windspeed_btn">define DCSIN_ASN41_WINDSPEED_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_WINDSPEED_BTN `0x8027`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_asn41_windspeed_knb">define DCSIN_ASN41_WINDSPEED_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_ASN41_WINDSPEED_KNB `0x8028`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_awrs_drop_int">define DCSIN_AWRS_DROP_INT</h3>
+<pre><code class="language-C++">#define DCSIN_AWRS_DROP_INT `0x8029`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_awrs_mode">define DCSIN_AWRS_MODE</h3>
+<pre><code class="language-C++">#define DCSIN_AWRS_MODE `0x802a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_awrs_multi">define DCSIN_AWRS_MULTI</h3>
+<pre><code class="language-C++">#define DCSIN_AWRS_MULTI `0x802b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_awrs_quant">define DCSIN_AWRS_QUANT</h3>
+<pre><code class="language-C++">#define DCSIN_AWRS_QUANT `0x802c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_bdhi_mode">define DCSIN_BDHI_MODE</h3>
+<pre><code class="language-C++">#define DCSIN_BDHI_MODE `0x802d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_cabin_press">define DCSIN_CABIN_PRESS</h3>
+<pre><code class="language-C++">#define DCSIN_CABIN_PRESS `0x802e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_cabin_temp">define DCSIN_CABIN_TEMP</h3>
+<pre><code class="language-C++">#define DCSIN_CABIN_TEMP `0x802f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_canopy_sw">define DCSIN_CANOPY_SW</h3>
+<pre><code class="language-C++">#define DCSIN_CANOPY_SW `0x8030`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_cm_adj1">define DCSIN_CM_ADJ1</h3>
+<pre><code class="language-C++">#define DCSIN_CM_ADJ1 `0x8031`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_cm_adj2">define DCSIN_CM_ADJ2</h3>
+<pre><code class="language-C++">#define DCSIN_CM_ADJ2 `0x8032`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_cm_auto">define DCSIN_CM_AUTO</h3>
+<pre><code class="language-C++">#define DCSIN_CM_AUTO `0x8033`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_cm_bank">define DCSIN_CM_BANK</h3>
+<pre><code class="language-C++">#define DCSIN_CM_BANK `0x8034`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_cm_pwr">define DCSIN_CM_PWR</h3>
+<pre><code class="language-C++">#define DCSIN_CM_PWR `0x8035`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_dest_lat_btn">define DCSIN_DEST_LAT_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_DEST_LAT_BTN `0x8036`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_dest_lat_knb">define DCSIN_DEST_LAT_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_DEST_LAT_KNB `0x8037`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_dest_lon_btn">define DCSIN_DEST_LON_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_DEST_LON_BTN `0x8038`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_dest_lon_knb">define DCSIN_DEST_LON_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_DEST_LON_KNB `0x8039`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_doppler_mem_test">define DCSIN_DOPPLER_MEM_TEST</h3>
+<pre><code class="language-C++">#define DCSIN_DOPPLER_MEM_TEST `0x803a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_doppler_sel">define DCSIN_DOPPLER_SEL</h3>
+<pre><code class="language-C++">#define DCSIN_DOPPLER_SEL `0x803b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_drop_press_refuel">define DCSIN_DROP_PRESS_REFUEL</h3>
+<pre><code class="language-C++">#define DCSIN_DROP_PRESS_REFUEL `0x803c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_apr25_pw">define DCSIN_ECM_APR25_PW</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_APR25_PW `0x803d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_apr27_light">define DCSIN_ECM_APR27_LIGHT</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_APR27_LIGHT `0x803e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_apr27_pw">define DCSIN_ECM_APR27_PW</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_APR27_PW `0x803f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_apr27_test">define DCSIN_ECM_APR27_TEST</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_APR27_TEST `0x8040`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_audio">define DCSIN_ECM_AUDIO</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_AUDIO `0x8041`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_msl_vol">define DCSIN_ECM_MSL_VOL</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_MSL_VOL `0x8042`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_prf_vol">define DCSIN_ECM_PRF_VOL</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_PRF_VOL `0x8043`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ecm_sel">define DCSIN_ECM_SEL</h3>
+<pre><code class="language-C++">#define DCSIN_ECM_SEL `0x8044`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_emerg_bomb_rel">define DCSIN_EMERG_BOMB_REL</h3>
+<pre><code class="language-C++">#define DCSIN_EMERG_BOMB_REL `0x8045`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_emerg_gear_rel">define DCSIN_EMERG_GEAR_REL</h3>
+<pre><code class="language-C++">#define DCSIN_EMERG_GEAR_REL `0x8046`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_emerg_gen_bypass">define DCSIN_EMERG_GEN_BYPASS</h3>
+<pre><code class="language-C++">#define DCSIN_EMERG_GEN_BYPASS `0x8047`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_emerg_gen_deploy">define DCSIN_EMERG_GEN_DEPLOY</h3>
+<pre><code class="language-C++">#define DCSIN_EMERG_GEN_DEPLOY `0x8048`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_emerg_trans_fuel_dump">define DCSIN_EMERG_TRANS_FUEL_DUMP</h3>
+<pre><code class="language-C++">#define DCSIN_EMERG_TRANS_FUEL_DUMP `0x8049`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_flaps">define DCSIN_FLAPS</h3>
+<pre><code class="language-C++">#define DCSIN_FLAPS `0x804a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_fuel_control">define DCSIN_FUEL_CONTROL</h3>
+<pre><code class="language-C++">#define DCSIN_FUEL_CONTROL `0x804b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_fuel_ext_btn">define DCSIN_FUEL_EXT_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_FUEL_EXT_BTN `0x804c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_fuel_trans">define DCSIN_FUEL_TRANS</h3>
+<pre><code class="language-C++">#define DCSIN_FUEL_TRANS `0x804d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gear_handle">define DCSIN_GEAR_HANDLE</h3>
+<pre><code class="language-C++">#define DCSIN_GEAR_HANDLE `0x804e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gunpod_c">define DCSIN_GUNPOD_C</h3>
+<pre><code class="language-C++">#define DCSIN_GUNPOD_C `0x804f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gunpod_clear">define DCSIN_GUNPOD_CLEAR</h3>
+<pre><code class="language-C++">#define DCSIN_GUNPOD_CLEAR `0x8050`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gunpod_l">define DCSIN_GUNPOD_L</h3>
+<pre><code class="language-C++">#define DCSIN_GUNPOD_L `0x8051`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gunpod_r">define DCSIN_GUNPOD_R</h3>
+<pre><code class="language-C++">#define DCSIN_GUNPOD_R `0x8052`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gunsight_bright">define DCSIN_GUNSIGHT_BRIGHT</h3>
+<pre><code class="language-C++">#define DCSIN_GUNSIGHT_BRIGHT `0x8053`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gunsight_day_night">define DCSIN_GUNSIGHT_DAY_NIGHT</h3>
+<pre><code class="language-C++">#define DCSIN_GUNSIGHT_DAY_NIGHT `0x8054`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_gunsight_knb">define DCSIN_GUNSIGHT_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_GUNSIGHT_KNB `0x8055`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_harness_reel_contr">define DCSIN_HARNESS_REEL_CONTR</h3>
+<pre><code class="language-C++">#define DCSIN_HARNESS_REEL_CONTR `0x8056`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_hook_handle">define DCSIN_HOOK_HANDLE</h3>
+<pre><code class="language-C++">#define DCSIN_HOOK_HANDLE `0x8057`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ias_index_btn">define DCSIN_IAS_INDEX_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_IAS_INDEX_BTN `0x8058`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ias_index_knb">define DCSIN_IAS_INDEX_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_IAS_INDEX_KNB `0x8059`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_jato_arm">define DCSIN_JATO_ARM</h3>
+<pre><code class="language-C++">#define DCSIN_JATO_ARM `0x805a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_jato_jett_safe">define DCSIN_JATO_JETT_SAFE</h3>
+<pre><code class="language-C++">#define DCSIN_JATO_JETT_SAFE `0x805b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_anticoll">define DCSIN_LIGHT_EXT_ANTICOLL</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_ANTICOLL `0x805c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_flash_mode">define DCSIN_LIGHT_EXT_FLASH_MODE</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_FLASH_MODE `0x805d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_fuselage">define DCSIN_LIGHT_EXT_FUSELAGE</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_FUSELAGE `0x805e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_master">define DCSIN_LIGHT_EXT_MASTER</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_MASTER `0x805f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_nav">define DCSIN_LIGHT_EXT_NAV</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_NAV `0x8060`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_probe">define DCSIN_LIGHT_EXT_PROBE</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_PROBE `0x8061`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_tail">define DCSIN_LIGHT_EXT_TAIL</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_TAIL `0x8062`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_ext_taxi">define DCSIN_LIGHT_EXT_TAXI</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_EXT_TAXI `0x8063`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_int_bright">define DCSIN_LIGHT_INT_BRIGHT</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_INT_BRIGHT `0x8064`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_int_console">define DCSIN_LIGHT_INT_CONSOLE</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_INT_CONSOLE `0x8065`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_int_flood_wht">define DCSIN_LIGHT_INT_FLOOD_WHT</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_INT_FLOOD_WHT `0x8066`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_light_int_instr">define DCSIN_LIGHT_INT_INSTR</h3>
+<pre><code class="language-C++">#define DCSIN_LIGHT_INT_INSTR `0x8067`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_man_flight_control">define DCSIN_MAN_FLIGHT_CONTROL</h3>
+<pre><code class="language-C++">#define DCSIN_MAN_FLIGHT_CONTROL `0x8068`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_man_fuel_off_catch">define DCSIN_MAN_FUEL_OFF_CATCH</h3>
+<pre><code class="language-C++">#define DCSIN_MAN_FUEL_OFF_CATCH `0x8069`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_man_fuel_off_lv">define DCSIN_MAN_FUEL_OFF_LV</h3>
+<pre><code class="language-C++">#define DCSIN_MAN_FUEL_OFF_LV `0x806a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_master_test">define DCSIN_MASTER_TEST</h3>
+<pre><code class="language-C++">#define DCSIN_MASTER_TEST `0x806b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_mcl_chan_sel">define DCSIN_MCL_CHAN_SEL</h3>
+<pre><code class="language-C++">#define DCSIN_MCL_CHAN_SEL `0x806c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_mcl_pwr">define DCSIN_MCL_PWR</h3>
+<pre><code class="language-C++">#define DCSIN_MCL_PWR `0x806d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_missile_vol">define DCSIN_MISSILE_VOL</h3>
+<pre><code class="language-C++">#define DCSIN_MISSILE_VOL `0x806e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_nav_dead">define DCSIN_NAV_DEAD</h3>
+<pre><code class="language-C++">#define DCSIN_NAV_DEAD `0x806f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_nav_sel">define DCSIN_NAV_SEL</h3>
+<pre><code class="language-C++">#define DCSIN_NAV_SEL `0x8070`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_oxy_sw">define DCSIN_OXY_SW</h3>
+<pre><code class="language-C++">#define DCSIN_OXY_SW `0x8071`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ppos_lat_btn">define DCSIN_PPOS_LAT_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_PPOS_LAT_BTN `0x8072`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ppos_lat_knb">define DCSIN_PPOS_LAT_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_PPOS_LAT_KNB `0x8073`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ppos_lon_btn">define DCSIN_PPOS_LON_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_PPOS_LON_BTN `0x8074`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_ppos_lon_knb">define DCSIN_PPOS_LON_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_PPOS_LON_KNB `0x8075`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_alt_index">define DCSIN_RADAR_ALT_INDEX</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_ALT_INDEX `0x8076`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_alt_sw">define DCSIN_RADAR_ALT_SW</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_ALT_SW `0x8077`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_angle">define DCSIN_RADAR_ANGLE</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_ANGLE `0x8078`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_aoacomp">define DCSIN_RADAR_AOACOMP</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_AOACOMP `0x8079`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_brilliance">define DCSIN_RADAR_BRILLIANCE</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_BRILLIANCE `0x807a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_detail">define DCSIN_RADAR_DETAIL</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_DETAIL `0x807b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_filter">define DCSIN_RADAR_FILTER</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_FILTER `0x807c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_gain">define DCSIN_RADAR_GAIN</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_GAIN `0x807d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_mode">define DCSIN_RADAR_MODE</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_MODE `0x807e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_profile">define DCSIN_RADAR_PROFILE</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_PROFILE `0x807f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_range">define DCSIN_RADAR_RANGE</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_RANGE `0x8080`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_reticle">define DCSIN_RADAR_RETICLE</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_RETICLE `0x8081`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_storage">define DCSIN_RADAR_STORAGE</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_STORAGE `0x8082`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_radar_vol">define DCSIN_RADAR_VOL</h3>
+<pre><code class="language-C++">#define DCSIN_RADAR_VOL `0x8083`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_rain_remove">define DCSIN_RAIN_REMOVE</h3>
+<pre><code class="language-C++">#define DCSIN_RAIN_REMOVE `0x8084`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_rudder_trim">define DCSIN_RUDDER_TRIM</h3>
+<pre><code class="language-C++">#define DCSIN_RUDDER_TRIM `0x8085`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_seat_adj">define DCSIN_SEAT_ADJ</h3>
+<pre><code class="language-C++">#define DCSIN_SEAT_ADJ `0x8086`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_sec_eject_handle">define DCSIN_SEC_EJECT_HANDLE</h3>
+<pre><code class="language-C++">#define DCSIN_SEC_EJECT_HANDLE `0x8087`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_shrike_sel_knb">define DCSIN_SHRIKE_SEL_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_SHRIKE_SEL_KNB `0x8088`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_speedbrake">define DCSIN_SPEEDBRAKE</h3>
+<pre><code class="language-C++">#define DCSIN_SPEEDBRAKE `0x8089`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_speedbrake_emerg">define DCSIN_SPEEDBRAKE_EMERG</h3>
+<pre><code class="language-C++">#define DCSIN_SPEEDBRAKE_EMERG `0x808a`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_spoiler_arm">define DCSIN_SPOILER_ARM</h3>
+<pre><code class="language-C++">#define DCSIN_SPOILER_ARM `0x808b`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_starter_btn">define DCSIN_STARTER_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_STARTER_BTN `0x808c`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_stby_att_index_btn">define DCSIN_STBY_ATT_INDEX_BTN</h3>
+<pre><code class="language-C++">#define DCSIN_STBY_ATT_INDEX_BTN `0x808d`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_stby_att_index_knb">define DCSIN_STBY_ATT_INDEX_KNB</h3>
+<pre><code class="language-C++">#define DCSIN_STBY_ATT_INDEX_KNB `0x808e`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_stopwatch">define DCSIN_STOPWATCH</h3>
+<pre><code class="language-C++">#define DCSIN_STOPWATCH `0x808f`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_tacan_ant_cont">define DCSIN_TACAN_ANT_CONT</h3>
+<pre><code class="language-C++">#define DCSIN_TACAN_ANT_CONT `0x8090`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_tacan_chan_maj">define DCSIN_TACAN_CHAN_MAJ</h3>
+<pre><code class="language-C++">#define DCSIN_TACAN_CHAN_MAJ `0x8091`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_tacan_chan_min">define DCSIN_TACAN_CHAN_MIN</h3>
+<pre><code class="language-C++">#define DCSIN_TACAN_CHAN_MIN `0x8092`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_tacan_mode">define DCSIN_TACAN_MODE</h3>
+<pre><code class="language-C++">#define DCSIN_TACAN_MODE `0x8093`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_tacan_vol">define DCSIN_TACAN_VOL</h3>
+<pre><code class="language-C++">#define DCSIN_TACAN_VOL `0x8094`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_throttle_click">define DCSIN_THROTTLE_CLICK</h3>
+<pre><code class="language-C++">#define DCSIN_THROTTLE_CLICK `0x8095`
+</code></pre>
+<hr>
+
+<h3 id="define-dcsin_windshld_defrost">define DCSIN_WINDSHLD_DEFROST</h3>
+<pre><code class="language-C++">#define DCSIN_WINDSHLD_DEFROST `0x8096`
+</code></pre>
+<hr>
+
+<hr />
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/A4EC/A4EC_CmdIds.h</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacePanelBridge" kind="namespace" language="C++">
+    <compoundname>PanelBridge</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelBridge::setup</definition>
+        <argsstring>(HardwareSerial &amp;uartPort)</argsstring>
+        <name>setup</name>
+        <qualifiedname>PanelBridge::setup</qualifiedname>
+        <param>
+          <type>HardwareSerial &amp;</type>
+          <declname>uartPort</declname>
+        </param>
+        <briefdescription>
+<para>Initialise hardware and start the CAN bus. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls <ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref>, starts the UART at 250000 baud, configures a pass-all CAN filter, then calls canStart(). Call STM32Board::setDebug(true) before this to enable diagnostic output.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>uartPort</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Hardware serial port connected to the RP2040 <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref>. Use Serial2 (UART2 PA2/PA3) on the standard master board. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="178" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="178" bodyend="198" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="53" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelBridge::loop</definition>
+        <argsstring>()</argsstring>
+        <name>loop</name>
+        <qualifiedname>PanelBridge::loop</qualifiedname>
+        <briefdescription>
+<para>Service all <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> activity. Call every Arduino <ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop()</ref> iteration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls STM32Board::update(), drains the UART RX buffer and processes incoming ControlPackets, drains the CAN RX FIFO and forwards frames to the RP2040, and checks the sub-node heartbeat watchdog. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="200" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="200" bodyend="206" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="62" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePanelBridge_1a4c052dcd94dfa9b49908fb3eb38da1f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelBridge::onNodeAlive</definition>
+        <argsstring>(void(*cb)(uint8_t nodeId))</argsstring>
+        <name>onNodeAlive</name>
+        <qualifiedname>PanelBridge::onNodeAlive</qualifiedname>
+        <param>
+          <type>void(*)(uint8_t nodeId)</type>
+          <declname>cb</declname>
+        </param>
+        <briefdescription>
+<para>Register a callback invoked when a sub-node sends its first heartbeat after a dead or startup period. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Set before calling <ref refid="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" kindref="member">setup()</ref>. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cb</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function called with the node_id of the newly live node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="208" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="208" bodyend="208" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="71" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePanelBridge_1a9c7bc065270361ca15cbe44274a6fdb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelBridge::onNodeDead</definition>
+        <argsstring>(void(*cb)(uint8_t nodeId))</argsstring>
+        <name>onNodeDead</name>
+        <qualifiedname>PanelBridge::onNodeDead</qualifiedname>
+        <param>
+          <type>void(*)(uint8_t nodeId)</type>
+          <declname>cb</declname>
+        </param>
+        <briefdescription>
+<para>Register a callback invoked when a sub-node has not sent a heartbeat for 3 seconds. Called once per timed-out node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Set before calling <ref refid="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" kindref="member">setup()</ref>. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cb</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function called with the node_id (1 or 2) of the timed-out node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="209" column="6" bodyfile="Firmware/Libraries/PanelBridge/PanelBridge.cpp" bodystart="209" bodyend="209" declfile="Firmware/Libraries/PanelBridge/PanelBridge.h" declline="80" declcolumn="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Static singleton for CAN master / UART bridge firmware. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Bridges ControlPacket structs between the RP2040 <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref> (UART) and the CAN bus. Accepts all CAN frames. Forwards heartbeats and RTT echo frames to the RP2040 as 8-byte DIAG frames (DIAG_MAGIC framing defined in <ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>). Fires optional callbacks when a sub-node comes alive or goes silent. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PanelBridge/PanelBridge.cpp" line="176" column="1"/>
+  </compounddef>
+</doxygen>

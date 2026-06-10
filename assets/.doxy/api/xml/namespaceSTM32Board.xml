@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespaceSTM32Board" kind="namespace" language="C++">
+    <compoundname>STM32Board</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t STM32Board::PIN_LED_RED</definition>
+        <argsstring></argsstring>
+        <name>PIN_LED_RED</name>
+        <qualifiedname>STM32Board::PIN_LED_RED</qualifiedname>
+        <initializer>= PB14</initializer>
+        <briefdescription>
+<para>Red LED pin — same on all STM32 boards. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.h" line="33" column="30" bodyfile="Firmware/Libraries/STM32Board/STM32Board.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t STM32Board::PIN_LED_GREEN</definition>
+        <argsstring></argsstring>
+        <name>PIN_LED_GREEN</name>
+        <qualifiedname>STM32Board::PIN_LED_GREEN</qualifiedname>
+        <initializer>= PB15</initializer>
+        <briefdescription>
+<para>Green LED pin — same on all STM32 boards. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.h" line="34" column="30" bodyfile="Firmware/Libraries/STM32Board/STM32Board.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void STM32Board::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>STM32Board::begin</qualifiedname>
+        <briefdescription>
+<para>Initialise all shared hardware. Call once at the top of setup(). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call CANProtocol::start() after filter setup. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="94" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="94" bodyend="120" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="44" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void STM32Board::setDebug</definition>
+        <argsstring>(bool on)</argsstring>
+        <name>setDebug</name>
+        <qualifiedname>STM32Board::setDebug</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>on</declname>
+        </param>
+        <briefdescription>
+<para>Enable or disable DiagSerial output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>DiagSerial is always initialised by <ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">begin()</ref>; this flag gates all <ref refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kindref="member">log()</ref> calls.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>on</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True to emit output on USART1; false for silence (default). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="122" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="122" bodyend="122" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="53" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool STM32Board::isDebug</definition>
+        <argsstring>()</argsstring>
+        <name>isDebug</name>
+        <qualifiedname>STM32Board::isDebug</qualifiedname>
+        <briefdescription>
+<para>Returns true when debug output is enabled. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Guard multi-field formatted print blocks with this to skip string formatting overhead when debug is off. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="123" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="123" bodyend="123" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="78" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void STM32Board::tick</definition>
+        <argsstring>()</argsstring>
+        <name>tick</name>
+        <qualifiedname>STM32Board::tick</qualifiedname>
+        <briefdescription>
+<para>Drive LED animations. Call once per loop() iteration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Advances blink state using millis(). Fully non-blocking. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="125" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="125" bodyend="133" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="60" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a25f2a41dba3a3e6ac8d2d551a0b3a5ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void STM32Board::onCanStatus</definition>
+        <argsstring>(CanStatus status)</argsstring>
+        <name>onCanStatus</name>
+        <qualifiedname>STM32Board::onCanStatus</qualifiedname>
+        <param>
+          <type><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref></type>
+          <declname>status</declname>
+        </param>
+        <briefdescription>
+<para>CAN bus status event handler — maps CanStatus to LED state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Register with CANProtocol::onStatusChange(STM32Board::onCanStatus) in setup(). Never call directly from sketch code.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>status</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New CAN bus status reported by CANProtocol. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="135" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="135" bodyend="142" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="70" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void STM32Board::log</definition>
+        <argsstring>(const char *msg)</argsstring>
+        <name>log</name>
+        <qualifiedname>STM32Board::log</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+<para>Print a line to DiagSerial if debug is enabled; no-op otherwise. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Null-terminated string to print. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="144" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="144" bodyend="146" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="84" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>HardwareSerial &amp;</type>
+        <definition>HardwareSerial &amp; STM32Board::diagSerial</definition>
+        <argsstring>()</argsstring>
+        <name>diagSerial</name>
+        <qualifiedname>STM32Board::diagSerial</qualifiedname>
+        <briefdescription>
+<para>Access DiagSerial directly for multi-field formatted output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Guard with <ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">isDebug()</ref> to avoid formatting overhead when debug is off.</para>
+<para><simplesect kind="return"><para>Reference to the USART1 HardwareSerial instance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="148" column="16" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="148" bodyend="148" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="93" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>CAN_HandleTypeDef *</type>
+        <definition>CAN_HandleTypeDef * STM32Board::canHandle</definition>
+        <argsstring>()</argsstring>
+        <name>canHandle</name>
+        <qualifiedname>STM32Board::canHandle</qualifiedname>
+        <briefdescription>
+<para>Access the HAL CAN handle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Internal — used by CANProtocol only. Do not call from sketches. </para>
+</simplesect>
+<simplesect kind="return"><para>Pointer to the internal CAN_HandleTypeDef. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="149" column="19" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="149" bodyend="149" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="101" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a02db1dfc484f69c1d8d75ba4e16d9f3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void STM32Board::canStart</definition>
+        <argsstring>()</argsstring>
+        <name>canStart</name>
+        <qualifiedname>STM32Board::canStart</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><xrefsect id="deprecated_1_deprecated000001"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::start() instead. </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="153" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="153" bodyend="155" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="108" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a49ebd854f1a68888769d72036066957b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool STM32Board::canSend</definition>
+        <argsstring>(uint32_t canId, const uint8_t *data, uint8_t len)</argsstring>
+        <name>canSend</name>
+        <qualifiedname>STM32Board::canSend</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>canId</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>len</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><xrefsect id="deprecated_1_deprecated000002"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::send() instead. </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="157" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="157" bodyend="162" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="111" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a876424c3726988dd55f3450f6ee95d1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t STM32Board::tec</definition>
+        <argsstring>()</argsstring>
+        <name>tec</name>
+        <qualifiedname>STM32Board::tec</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><xrefsect id="deprecated_1_deprecated000003"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::tec() instead. </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="164" column="9" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="164" bodyend="164" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="114" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1adf04daf0f145cd52941ac815728d3202" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t STM32Board::rec</definition>
+        <argsstring>()</argsstring>
+        <name>rec</name>
+        <qualifiedname>STM32Board::rec</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><xrefsect id="deprecated_1_deprecated000004"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::rec() instead. </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="165" column="9" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="165" bodyend="165" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="117" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a05f41ecf367b8d99880f387c7e924be9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool STM32Board::busOff</definition>
+        <argsstring>()</argsstring>
+        <name>busOff</name>
+        <qualifiedname>STM32Board::busOff</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><xrefsect id="deprecated_1_deprecated000005"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::busOff() instead. </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="166" column="9" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="166" bodyend="166" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="120" declcolumn="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="92" column="1"/>
+  </compounddef>
+</doxygen>

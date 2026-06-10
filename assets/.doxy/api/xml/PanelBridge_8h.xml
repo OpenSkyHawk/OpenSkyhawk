@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PanelBridge_8h" kind="file" language="C++">
+    <compoundname>PanelBridge.h</compoundname>
+    <includes local="no">Arduino.h</includes>
+    <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
+    <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
+    <includedby refid="PanelBridge_8cpp" local="yes">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <incdepgraph>
+      <node id="5">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.h</label>
+        <link refid="PanelBridge_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Arduino.h</label>
+      </node>
+      <node id="6">
+        <label>stdint.h</label>
+      </node>
+      <node id="4">
+        <label>stm32f1xx_hal_can.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.h</label>
+        <link refid="PanelBridge_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacePanelBridge">PanelBridge</innernamespace>
+    <briefdescription>
+<para>CAN master / UART bridge domain layer for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides a transparent bridge between the RP2040 <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref> (over UART) and the CAN sub-nodes (<ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> boards). ControlPackets received from the RP2040 are broadcast on the CAN bus; frames received from sub-nodes are forwarded to the RP2040 as DIAG frames. Sub-node heartbeat watchdog fires callbacks on liveness changes.</para>
+<para>A minimal master sketch:</para>
+<para><programlisting><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelBridge_8h" kindref="compound">PanelBridge.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" kindref="member">setup</ref>()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" kindref="member">STM32Board::setDebug</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" kindref="member">PanelBridge::setup</ref>(Serial2);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>UART2<sp/>PA2/PA3<sp/>@<sp/>250000</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/>{<sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">PanelBridge::loop</ref>();<sp/>}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref><sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" kindref="member">setup</ref>(HardwareSerial&amp;<sp/>uartPort);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a4c052dcd94dfa9b49908fb3eb38da1f9" kindref="member">onNodeAlive</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint8_t<sp/>nodeId));</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a9c7bc065270361ca15cbe44274a6fdb7" kindref="member">onNodeDead</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint8_t<sp/>nodeId));</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelBridge</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelBridge/PanelBridge.h"/>
+  </compounddef>
+</doxygen>

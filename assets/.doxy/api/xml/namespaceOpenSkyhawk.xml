@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespaceOpenSkyhawk" kind="namespace" language="C++">
+    <compoundname>OpenSkyhawk</compoundname>
+    <innerclass refid="classOpenSkyhawk_1_1InputBase" prot="public">OpenSkyhawk::InputBase</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1IntegerOutput" prot="public">OpenSkyhawk::IntegerOutput</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1LED" prot="public">OpenSkyhawk::LED</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1OutputBase" prot="public">OpenSkyhawk::OutputBase</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1Switch2Pos" prot="public">OpenSkyhawk::Switch2Pos</innerclass>
+    <briefdescription>
+<para>Output and input classes for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> panel boards. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Objects are declared at global scope in a sketch; constructors self-register into static linked lists. <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> dispatches incoming ControlPacket CAN frames to all registered <ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref> objects and polls all registered <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> objects every iteration. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="42" column="1"/>
+  </compounddef>
+</doxygen>
