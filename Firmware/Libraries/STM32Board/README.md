@@ -2,7 +2,7 @@
 
 Shared STM32F103 hardware initialisation for OpenSkyhawk avionics nodes.
 
-Every OpenSkyhawk CAN avionics board uses the same MCU (STM32F103CBT6) with the same fixed pinout: SN65HVD230 CAN transceiver on PA11/PA12, diagnostic UART on USART1 PA9/PA10, and a status LED on PC13. `STM32Board` defines `HAL_CAN_MspInit` once and provides a consistent API so `PanelGroup` and `PanelBridge` don't duplicate this boilerplate.
+Every OpenSkyhawk CAN avionics board uses the same MCU (STM32F103CBT6) with the same fixed pinout: SN65HVD230 CAN transceiver on PA11/PA12, diagnostic UART on USART1 PA9/PA10, and a bi-color status LED on PB14 (red) / PB15 (green). `STM32Board` defines `HAL_CAN_MspInit` once and provides a consistent API so `PanelGroup` and `PanelBridge` don't duplicate this boilerplate.
 
 ## Dependencies
 
@@ -46,11 +46,13 @@ SJW=4 is required to tolerate the crystal tolerance variation between Blue Pill 
 
 ## Status LED blink patterns
 
-| Pattern | Meaning |
-|---|---|
-| 500 ms blink | Normal — CAN bus healthy |
-| 100 ms blink | TEC > 0 — transmit errors accumulating |
-| Solid ON | Bus-off — CAN controller shut down by hardware |
+| Red (PB14) | Green (PB15) | Meaning |
+|---|---|---|
+| Slow blink 1 Hz | OFF | Booting / initialising |
+| OFF | Slow blink 1 Hz | Normal — CAN bus healthy |
+| Fast blink 4 Hz | OFF | TEC > 0 — transmit errors accumulating |
+| Solid ON | OFF | Bus-off — CAN controller halted |
+| Alternating | Alternating | Warning / degraded state |
 
 ## API
 
@@ -58,13 +60,11 @@ See [`STM32Board.h`](STM32Board.h) for full Doxygen documentation.
 
 | Function | Description |
 |---|---|
-| `begin()` | Init LED, DiagSerial, CAN HAL (no HAL_CAN_Start) |
-| `canStart()` | Start CAN peripheral after filter config |
-| `update()` | Blink status LED — call every loop() |
+| `begin()` | Init PB14/PB15 LEDs, DiagSerial, CAN HAL (no HAL_CAN_Start) |
+| `tick()` | Advance LED blink state machine — call every loop() |
+| `onCanStatus(CanStatus)` | Update LED state from CAN bus health report |
 | `setDebug(bool)` | Enable/disable all diagnostic output |
 | `log(msg)` | Print a string if debug is enabled |
-| `canSend(id, data, len)` | Transmit a CAN frame |
-| `tec()` / `rec()` / `busOff()` | Read CAN error state |
-| `canHandle()` | Access HAL handle for filter config |
 | `isDebug()` | Guard multi-field print blocks |
 | `diagSerial()` | Access USART1 for formatted output |
+| `canHandle()` | Internal — HAL handle for CANProtocol use only |
