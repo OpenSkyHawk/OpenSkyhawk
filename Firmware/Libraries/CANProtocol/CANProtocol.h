@@ -37,8 +37,8 @@ static constexpr uint32_t CAN_ID_ECHO_2     = 0x211; // Sub-2 → Master: seq ec
 // RP2040 routing logic: controlId < 0x8000 → HID, else → sendDcsBiosMessage().
 
 // ── Flight control axis IDs ───────────────────────────────────────────────────
-// Moved to HIDControls.h — include that header for CTRL_ROLL etc.
-#include "HIDControls.h"
+// Defined in the HIDControls library — include that header for CTRL_ROLL etc.
+#include <HIDControls.h>
 
 // ── Reserved controlId values ─────────────────────────────────────────────────
 
