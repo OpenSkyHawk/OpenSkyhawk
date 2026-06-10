@@ -6,8 +6,8 @@ Three experiments are defined below. They are independent and have different wir
 
 | Experiment | What it tests | Injector | DCS running? | Status |
 |------------|---------------|----------|--------------|--------|
-| A — UART byte-stream capture | DCS-BIOS traffic volume and burst characteristics | RP2040 (USB only) | Yes | Ready |
-| B — Synthetic CAN stress | CAN topology, throughput, and saturation limits | RP2040 | No | Ready |
+| A — UART byte-stream capture | DCS-BIOS traffic volume and burst characteristics | RP2040 (USB only) | Yes | Not started |
+| B — Synthetic CAN stress | CAN topology, throughput, and saturation limits | RP2040 | No | **In progress** — Steps 2 + failure modes done; Steps 1, 3–7 pending |
 | C — DCS-BIOS bridge validation | End-to-end DCS state reaching CAN nodes | RP2040 (bridge mode) | Yes | **Blocked** — see below |
 
 **Why Experiment C is blocked:** The RP2040 Bridge firmware is a transparent byte relay. It passes raw DCS-BIOS bytes to the STM32 master, which expects 4-byte `ControlPacket` structs. Without a parser/translator on the RP2040 (or on the master), the master receives misframed data and emits `[OVF]` alignment errors rather than forwarding real control state to the CAN bus. Experiments A and B are both useful without resolving this, but Experiment C cannot produce meaningful results until a translator is implemented.
@@ -107,9 +107,11 @@ On the **master**: fast blink means at least one sub-node has missed its heartbe
 
 ## Experiment A — UART Byte-Stream Capture
 
-**What this measures:** The volume and burst shape of the DCS-BIOS data stream from a live FA-18C session. Results size the STM32 UART RX buffer and estimate the maximum CAN frame rate the production system will need to sustain.
+**What this measures:** The volume and burst shape of the DCS-BIOS data stream from a live A-4E-C session. Results size the STM32 UART RX buffer and estimate the maximum CAN frame rate the production system will need to sustain.
 
 **What this does not test:** CAN bus behaviour. Run this experiment with the STM32 disconnected — the RP2040 measures the byte stream whether or not anything is listening on UART0.
+
+**Pre-requisite:** The A-4E-C mod must be installed in DCS Saved Games (not the model viewer worktree) for DCS to load it. Verify this before running.
 
 ### Wiring (Experiment A)
 
@@ -123,7 +125,7 @@ The STM32 is not involved. UART0 transmits into the air; the firmware doesn't ca
 ### Procedure
 
 1. Wire as above. Open a terminal on the **RP2040 USB port** (MicroPython REPL) — this is the analytics console.
-2. Load DCS and spawn a FA-18C. Wait for the aircraft to finish initialising.
+2. Load DCS and spawn an A-4E-C. Wait for the aircraft to finish initialising.
 3. Send `D` in the REPL to reset capture statistics (DCS capture mode starts automatically at boot, but `D` gives a clean baseline).
 4. Fly for 5 minutes with realistic cockpit activity — switch sweeps, system runups, a circuit. The goal is representative traffic, not minimum or maximum.
 5. After 5 minutes the firmware prints a summary, resets stats, and continues capturing. Send `I` to stop.
@@ -133,7 +135,7 @@ The STM32 is not involved. UART0 transmits into the air; the firmware doesn't ca
 - Average byte rate (B/s) → UART load metric; do not treat this as a CAN frame rate estimate. The production RP2040 translator will emit selected `ControlPacket`s, not one frame per 4 raw bytes, so actual CAN traffic will be significantly lower.
 - Min/max inter-frame gap (ms) → confirms burst vs. continuous stream character
 
-**FA-18C vs A-4E-C note:** FA-18C has more total controls (~285 vs ~198) but A-4E-C has roughly 6× more float outputs (89 vs ~15). Float outputs update continuously and drive higher sustained byte rates — the A-4E-C stream is the harder production case. Run this experiment against the A-4E-C when the mod is installed in Saved Games rather than the model viewer work tree.
+**Why A-4E-C and not FA-18C:** FA-18C has more total controls (~285 vs ~198) but A-4E-C has roughly 6× more float outputs (89 vs ~15). Float outputs update continuously and drive higher sustained byte rates — the A-4E-C stream is the harder production case and the actual target aircraft.
 
 ---
 
@@ -163,7 +165,7 @@ CAN BUS (daisy-chain, 24 AWG twisted pair + GND wire):
 
 ### Steps
 
-**Step 1 — Bit timing verification (master only, no bus)**
+**Step 1 — Bit timing verification (master only, no bus)** ⬜ *Not run as a standalone step*
 
 Before connecting any transceiver, confirm the crystal, PLL, and CAN bit timing are correct.
 
@@ -186,7 +188,10 @@ Loopback does not exercise sub-node echo. The `T` throughput test will time out 
 
 Restore `CAN_MODE_NORMAL`, rebuild, and flash before proceeding.
 
-**Step 2 — Two-node bus**
+**Step 2 — Two-node bus** ✅ *Done — 2026-05-20*
+
+> **Results:** 21-min soak, 1257 pings @ 1 pkt/sec, RTT=1 ms avg/min/max, lost=0, TEC=0 REC=0 BOFF=0 throughout.
+> **Key finding:** SJW must be 4TQ on Blue Pill clones — SJW=1TQ caused CRC errors due to crystal tolerance mismatch between boards. Fixed in both master and sub-node firmware. See Notion "CAN integration test" for full failure mode observations.
 
 Wire Master and Sub-1 with 120 Ω at each end. Flash Sub-1 (PA0 strapped to 3.3 V → `node_id = 1`). Send `S` in the RP2040 REPL.
 
@@ -197,21 +202,21 @@ Pass criteria after 5 minutes:
 - `[ERRS]` TEC = 0, REC = 0, flags = 0x00
 - Sub-node heartbeat `flags` byte = 0x00 (no BOFF, EPVF, or TX drops)
 
-**Step 3 — Three-node bus**
+**Step 3 — Three-node bus** ⬜ *Pending — need second sub-node*
 
 Add Sub-2. Move the far-end 120 Ω to Sub-2 (remove the one at Sub-1). Flash Sub-2 (PA0 floating → `node_id = 2`). Both `[HB] node=1` and `[HB] node=2` must appear within 1 second of each other.
 
-**Step 4 — INPUT_EVENT round-trip**
+**Step 4 — INPUT_EVENT round-trip** ⬜ *Pending*
 
 Press the button wired to Sub-1 PB1. Diagnostic tap must print `[EVT] node=1 ctrl=0x0001 val=1` within 5 ms of the physical press. Release — `val=0`. Both edges must appear. Note: PB1 has no debounce; a single press may produce multiple edges on a noisy switch. Count events over time, not per press.
 
-**Step 5 — Fast burst**
+**Step 5 — Fast burst** ⬜ *Pending*
 
 Send `F` (~500 pkts/sec, 2 ms interval). Run for 30 seconds.
 
 Pass criteria: zero `[TXFULL]`, zero `[OVF]`, heartbeat `rx` counter increments proportionally, sub-node `flags` = 0x00.
 
-**Step 6 — Extreme burst (bottleneck hunt)**
+**Step 6 — Extreme burst (bottleneck hunt)** ⬜ *Pending — failure mode behaviour characterised manually (see Notion), formal bottleneck sweep not yet run*
 
 Send `X` (back-to-back, no delay). Run for 20 seconds. Record the **first** symptom to appear:
 
@@ -223,7 +228,7 @@ Send `X` (back-to-back, no delay). Run for 20 seconds. Record the **first** symp
 | Sub-node `flags` bit 2 set | Sub-node TX mailbox full (echo/heartbeat drops) |
 | Heartbeat `rx` grows slower than injected count | CAN frame loss |
 
-**Step 7 — Throughput test**
+**Step 7 — Throughput test** ✅ *Done — 2026-05-20 (1257 pings @ 1 pkt/sec, RTT=1 ms avg/min/max, lost=0 over 21 min)*
 
 Send `T` (1000 TEST_SEQ packets). The Arduino prints an RTT histogram on Serial2 when complete. Record the full distribution.
 
