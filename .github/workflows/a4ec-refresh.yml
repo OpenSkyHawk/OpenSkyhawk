@@ -110,12 +110,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          logs_dir="$RUNNER_TEMP/platformio-logs/required"
+          logs_dir="$RUNNER_TEMP/platformio-logs/a4ec"
           mkdir -p "$logs_dir"
 
           found=0
           while IFS= read -r project_ini; do
-            if ! grep -Eq '^[[:space:]]*A4EC([[:space:]]|$)' "$project_ini"; then
+            if ! grep -Eq '(^|[[:space:]=])A4EC([[:space:]]|$)' "$project_ini"; then
               continue
             fi
 
@@ -139,42 +139,6 @@ jobs:
           if [ "$found" -eq 0 ]; then
             echo "No PlatformIO projects reference the A4EC library." >&2
             exit 1
-          fi
-
-      - name: Attempt all PlatformIO firmware builds
-        run: |
-          set -euo pipefail
-
-          logs_dir="$RUNNER_TEMP/platformio-logs/sweep"
-          mkdir -p "$logs_dir"
-
-          {
-            echo "## PlatformIO build sweep"
-            echo ""
-          } >> "$GITHUB_STEP_SUMMARY"
-
-          failed=0
-          while IFS= read -r project_ini; do
-            project_dir="$(dirname "$project_ini")"
-            log_file="$logs_dir/$(printf '%s' "$project_dir" | tr '/ ' '__').log"
-
-            echo "Building $project_dir"
-            if platformio run -d "$project_dir" > "$log_file" 2>&1; then
-              echo "PASS $project_dir"
-              echo "- PASS \`$project_dir\`" >> "$GITHUB_STEP_SUMMARY"
-            else
-              failed=1
-              echo "::warning file=$project_ini::PlatformIO build failed"
-              echo "FAIL $project_dir"
-              echo "- FAIL \`$project_dir\`" >> "$GITHUB_STEP_SUMMARY"
-              echo "::group::Last 80 lines from $project_dir"
-              tail -n 80 "$log_file"
-              echo "::endgroup::"
-            fi
-          done < <(find Firmware -name platformio.ini -print | sort)
-
-          if [ "$failed" -ne 0 ]; then
-            echo "One or more non-A4EC PlatformIO projects failed. See the build sweep summary."
           fi
 
       - name: Upload PlatformIO logs
@@ -228,8 +192,7 @@ jobs:
           Validation performed by this workflow:
           - A4EC generator syntax check
           - A4EC generator pytest suite
-          - Required PlatformIO build for projects that reference `A4EC`
-          - Advisory PlatformIO build sweep for every `Firmware/**/platformio.ini` project
+          - PlatformIO build for projects that reference `A4EC`
           BODY
 
           existing_pr="$(gh pr list \
@@ -245,10 +208,26 @@ jobs:
               --body-file "$body_file"
             echo "Updated PR #$existing_pr"
           else
-            gh pr create \
-              --repo "$GITHUB_REPOSITORY" \
-              --base "$BASE_BRANCH" \
-              --head "$BRANCH" \
-              --title "$PR_TITLE" \
-              --body-file "$body_file"
+            if pr_output="$(gh pr create \
+                --repo "$GITHUB_REPOSITORY" \
+                --base "$BASE_BRANCH" \
+                --head "$BRANCH" \
+                --title "$PR_TITLE" \
+                --body-file "$body_file" 2>&1)"; then
+              echo "$pr_output"
+            elif printf '%s\n' "$pr_output" | grep -q "not permitted to create or approve pull requests"; then
+              pr_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/new/$BRANCH"
+              echo "::warning::GitHub Actions is not permitted to create pull requests. Enable the repository workflow setting or open the PR manually."
+              echo "$pr_output"
+              {
+                echo "## A4EC metadata update branch"
+                echo ""
+                echo "The update branch was pushed, but this repository does not allow GitHub Actions to create pull requests."
+                echo ""
+                echo "Open the PR manually: $pr_url"
+              } >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "$pr_output"
+              exit 1
+            fi
           fi

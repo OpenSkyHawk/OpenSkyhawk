@@ -54,9 +54,8 @@ Refresh A4EC Metadata
 
 It downloads the latest published DCS-Skunkworks DCS-BIOS release, updates
 `Tools/gen_a4ec/data/A-4E-C.jsonp`, regenerates the A4EC headers, runs the
-generator tests, requires PlatformIO builds for projects that reference `A4EC`,
-attempts every PlatformIO project under `Firmware/`, and opens a pull request if
-anything changed.
+generator tests, builds PlatformIO projects that reference `A4EC`, and opens a
+pull request if anything changed.
 
 For local updates, copy the file from your DCS-BIOS installation, then
 regenerate:
