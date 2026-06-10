@@ -18,15 +18,15 @@ on the committed headers — no Python or JSON at compile time.
 From the repo root:
 
 ```bash
-python Tools/gen_a4ec/gen_a4ec.py
+python tools/gen_a4ec/gen_a4ec.py
 ```
 
 For reproducible automation, pass the release timestamp and source label
 explicitly:
 
 ```bash
-python Tools/gen_a4ec/gen_a4ec.py \
-  --source Tools/gen_a4ec/data/A-4E-C.jsonp \
+python tools/gen_a4ec/gen_a4ec.py \
+  --source tools/gen_a4ec/data/A-4E-C.jsonp \
   --source-label "DCS-BIOS v0.0.0 (DCS-BIOS_0.0.0.zip)" \
   --timestamp "2025-01-01T00:00:00Z"
 ```
@@ -42,7 +42,7 @@ regenerations.
 2. Platform auto-detect (used if path exists, skipped otherwise):
    - **Windows:** `%USERPROFILE%\Saved Games\DCS\Scripts\DCS-BIOS\doc\doc_assets\A-4E-C.jsonp`
    - **macOS:** `<repo>/Firmware/ScratchPad/DCS-BIOS/DCS-BIOS/doc/doc_assets/A-4E-C.jsonp`
-3. Committed snapshot: `Tools/gen_a4ec/data/A-4E-C.jsonp`
+3. Committed snapshot: `tools/gen_a4ec/data/A-4E-C.jsonp`
 
 ## Updating the committed snapshot
 
@@ -53,7 +53,7 @@ Refresh A4EC Metadata
 ```
 
 It downloads the latest published DCS-Skunkworks DCS-BIOS release, updates
-`Tools/gen_a4ec/data/A-4E-C.jsonp`, regenerates the A4EC headers, runs the
+`tools/gen_a4ec/data/A-4E-C.jsonp`, regenerates the A4EC headers, runs the
 generator tests, builds PlatformIO projects that reference `A4EC`, and opens a
 pull request if anything changed.
 
@@ -63,12 +63,12 @@ regenerate:
 
 ```bash
 # Windows (PowerShell)
-cp "$env:USERPROFILE\Saved Games\DCS\Scripts\DCS-BIOS\doc\doc_assets\A-4E-C.jsonp" Tools/gen_a4ec/data/
+cp "$env:USERPROFILE\Saved Games\DCS\Scripts\DCS-BIOS\doc\doc_assets\A-4E-C.jsonp" tools/gen_a4ec/data/
 
 # macOS (from repo root — ScratchPad already has it)
-cp Firmware/ScratchPad/DCS-BIOS/DCS-BIOS/doc/doc_assets/A-4E-C.jsonp Tools/gen_a4ec/data/
+cp Firmware/ScratchPad/DCS-BIOS/DCS-BIOS/doc/doc_assets/A-4E-C.jsonp tools/gen_a4ec/data/
 
-python Tools/gen_a4ec/gen_a4ec.py
+python tools/gen_a4ec/gen_a4ec.py
 ```
 
 Commit both the updated `data/A-4E-C.jsonp` and all changed files in
@@ -85,7 +85,7 @@ The `Refresh A4EC Metadata` workflow performs the GitHub fetch. The local
 ## Running the tests
 
 ```bash
-python -m pytest Tools/gen_a4ec/tests/test_gen.py
+python -m pytest tools/gen_a4ec/tests/test_gen.py
 ```
 
 No external dependencies beyond Python 3 stdlib and `pytest`.

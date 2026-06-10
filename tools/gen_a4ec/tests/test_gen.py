@@ -1,6 +1,6 @@
 """
 Tests for gen_a4ec.py — run from repo root:
-  python -m pytest Tools/gen_a4ec/tests/test_gen.py
+  python -m pytest tools/gen_a4ec/tests/test_gen.py
 """
 
 import json

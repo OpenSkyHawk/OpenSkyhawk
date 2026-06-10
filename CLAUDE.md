@@ -9,17 +9,6 @@ OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-pr
 @Firmware/ScratchPad/FirmwarePlan/README.md
 @Firmware/ScratchPad/TechSpec/README.md
 
-## Firmware API
-
-Generated from Doxygen docblocks by `tools/doxy2md.py`. Re-run `doxygen Doxyfile && python3 tools/doxy2md.py --xml .doxygen/xml --out docs/api` after changing library headers.
-
-@docs/api/CANProtocol_h.md
-@docs/api/STM32Board.md
-@docs/api/PanelBridge.md
-@docs/api/PanelGroup.md
-@docs/api/SimGateway.md
-@docs/api/HIDControls_h.md
-
 ## Firmware
 
 All firmware architecture decisions, data flows, and contract boundaries are defined in

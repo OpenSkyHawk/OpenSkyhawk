@@ -81,7 +81,7 @@ jobs:
             exit 1
           fi
 
-          cp "$json_path" Tools/gen_a4ec/data/A-4E-C.jsonp
+          cp "$json_path" tools/gen_a4ec/data/A-4E-C.jsonp
 
           {
             echo "tag=$tag"
@@ -96,15 +96,15 @@ jobs:
 
       - name: Regenerate A4EC metadata
         run: |
-          python Tools/gen_a4ec/gen_a4ec.py \
-            --source Tools/gen_a4ec/data/A-4E-C.jsonp \
+          python tools/gen_a4ec/gen_a4ec.py \
+            --source tools/gen_a4ec/data/A-4E-C.jsonp \
             --source-label "DCS-BIOS ${{ steps.release.outputs.tag }} (${{ steps.release.outputs.source_ref }})" \
             --timestamp "${{ steps.release.outputs.published_at }}"
 
       - name: Test A4EC generator
         run: |
-          python -m py_compile Tools/gen_a4ec/gen_a4ec.py
-          python -m pytest Tools/gen_a4ec/tests/test_gen.py
+          python -m py_compile tools/gen_a4ec/gen_a4ec.py
+          python -m pytest tools/gen_a4ec/tests/test_gen.py
 
       - name: Compile A4EC PlatformIO consumers
         run: |
@@ -161,7 +161,7 @@ jobs:
           set -euo pipefail
 
           paths=(
-            Tools/gen_a4ec/data/A-4E-C.jsonp
+            tools/gen_a4ec/data/A-4E-C.jsonp
             Firmware/Libraries/A4EC/A4EC_CmdIds.h
             Firmware/Libraries/A4EC/A4EC_OutputIds.h
             Firmware/Libraries/A4EC/A4EC_InputMap.h
