@@ -47,7 +47,7 @@
 <para>Initialise all shared hardware. Call once at the top of setup(). </para>
         </briefdescription>
         <detaileddescription>
-<para>Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call CANProtocol::start() after filter setup. </para>
+<para>Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref> after filter setup. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -135,7 +135,7 @@
 <parametername>status</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>New CAN bus status reported by CANProtocol. </para>
+<para>New CAN bus status reported by <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -219,7 +219,7 @@
 <para>Access the HAL CAN handle. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="note"><para>Internal — used by CANProtocol only. Do not call from sketches. </para>
+<para><simplesect kind="note"><para>Internal — used by <ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref> only. Do not call from sketches. </para>
 </simplesect>
 <simplesect kind="return"><para>Pointer to the internal CAN_HandleTypeDef. </para>
 </simplesect>
@@ -238,7 +238,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para><xrefsect id="deprecated_1_deprecated000001"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::start() instead. </para>
+<para><xrefsect id="deprecated_1_deprecated000008"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref> instead. </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
@@ -266,7 +266,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para><xrefsect id="deprecated_1_deprecated000002"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::send() instead. </para>
+<para><xrefsect id="deprecated_1_deprecated000009"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use <ref refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kindref="member">CANProtocol::send()</ref> instead. </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
@@ -282,7 +282,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para><xrefsect id="deprecated_1_deprecated000003"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::tec() instead. </para>
+<para><xrefsect id="deprecated_1_deprecated000010"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use <ref refid="namespaceCANProtocol_1aa387fe005cbba866e64171146d49018a" kindref="member">CANProtocol::tec()</ref> instead. </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
@@ -298,7 +298,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para><xrefsect id="deprecated_1_deprecated000004"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::rec() instead. </para>
+<para><xrefsect id="deprecated_1_deprecated000011"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use <ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">CANProtocol::rec()</ref> instead. </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
@@ -314,7 +314,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para><xrefsect id="deprecated_1_deprecated000005"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use CANProtocol::busOff() instead. </para>
+<para><xrefsect id="deprecated_1_deprecated000012"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use <ref refid="namespaceCANProtocol_1a1c61d1e29b732170869ac92225f580ad" kindref="member">CANProtocol::busOff()</ref> instead. </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>

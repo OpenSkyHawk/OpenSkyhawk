@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d7/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/CANProtocol_8cpp/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp} - OpenSkyhawk</title>
+        <title>File CANProtocol.cpp - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp" class="md-skip">
+        <a href="#file-canprotocolcpp" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+              File CANProtocol.cpp
             
           </span>
         </div>
@@ -1721,6 +1721,417 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespaces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Static Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-max_filter_ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable MAX_FILTER_IDS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-max_tx_attempts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable MAX_TX_ATTEMPTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-rx_ring_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable RX_RING_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-tx_ring_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable TX_RING_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_batches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _batches
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_filtercount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _filterCount
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_filterids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _filterIds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_filterpassall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _filterPassAll
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_rxcb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _rxCb
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_rxhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _rxHead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_rxring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _rxRing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_rxtail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _rxTail
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_statuscb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _statusCb
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_syncreqcb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _syncReqCb
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_txdrops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _txDrops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_txhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _txHead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_txring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _txRing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_txtail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _txTail
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-hal_can_rxfifo0msgpendingcallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function HAL_CAN_RxFifo0MsgPendingCallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-hal_can_txmailbox0completecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function HAL_CAN_TxMailbox0CompleteCallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-hal_can_txmailbox1completecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function HAL_CAN_TxMailbox1CompleteCallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-hal_can_txmailbox2completecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function HAL_CAN_TxMailbox2CompleteCallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Static Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-_applyfilters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function _applyFilters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-_draintxqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function _drainTxQueue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-_startinternal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function _startInternal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-_updatestatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function _updateStatus
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1739,10 +2150,342 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp">Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a></p>
+<h1 id="file-canprotocolcpp">File CANProtocol.cpp</h1>
+<p><a href="../files/"><strong>FileList</strong></a> <strong>&gt;</strong> <a href="../dir_81ff3032570f78b12938068450b63228/"><strong>CANProtocol</strong></a> <strong>&gt;</strong> <a href="./"><strong>CANProtocol.cpp</strong></a></p>
+<p><a href="../CANProtocol_8cpp_source/">Go to the source code of this file</a></p>
+<ul>
+<li><code>#include "CANProtocol.h"</code></li>
+<li><code>#include &lt;STM32Board.h&gt;</code></li>
+<li><code>#include &lt;Arduino.h&gt;</code></li>
+<li><code>#include &lt;string.h&gt;</code></li>
+</ul>
+<h2 id="namespaces">Namespaces</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">namespace</td>
+<td style="text-align: left;"><a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structBatchState/"><strong>BatchState</strong></a> <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structRxQueueEntry/"><strong>RxQueueEntry</strong></a> <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a> <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-attributes">Public Static Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-max_filter_ids"><strong>MAX_FILTER_IDS</strong></a>   = <code>16</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-max_tx_attempts"><strong>MAX_TX_ATTEMPTS</strong></a>   = <code>3</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-rx_ring_size"><strong>RX_RING_SIZE</strong></a>   = <code>8</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-tx_ring_size"><strong>TX_RING_SIZE</strong></a>   = <code>16</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../structBatchState/"><strong>BatchState</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_batches"><strong>_batches</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#variable-_filtercount"><strong>_filterCount</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#variable-_filterids"><strong>_filterIds</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_filterpassall"><strong>_filterPassAll</strong></a>   = <code>false</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../CANProtocol_8h/#typedef-canrxcallback"><strong>CanRxCallback</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_rxcb"><strong>_rxCb</strong></a>   = <code>nullptr</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">volatile uint8_t</td>
+<td style="text-align: left;"><a href="#variable-_rxhead"><strong>_rxHead</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../structRxQueueEntry/"><strong>RxQueueEntry</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_rxring"><strong>_rxRing</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">volatile uint8_t</td>
+<td style="text-align: left;"><a href="#variable-_rxtail"><strong>_rxTail</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../CANProtocol_8h/#enum-canstatus"><strong>CanStatus</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_status"><strong>_status</strong></a>   = <code>CanStatus::STARTING</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../CANProtocol_8h/#typedef-canstatuscallback"><strong>CanStatusCallback</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_statuscb"><strong>_statusCb</strong></a>   = <code>nullptr</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../CANProtocol_8h/#typedef-cansyncreqcallback"><strong>CanSyncReqCallback</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_syncreqcb"><strong>_syncReqCb</strong></a>   = <code>nullptr</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#variable-_txdrops"><strong>_txDrops</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">volatile uint8_t</td>
+<td style="text-align: left;"><a href="#variable-_txhead"><strong>_txHead</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_txring"><strong>_txRing</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">volatile uint8_t</td>
+<td style="text-align: left;"><a href="#variable-_txtail"><strong>_txTail</strong></a>   = <code>0</code><br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-functions">Public Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-hal_can_rxfifo0msgpendingcallback"><strong>HAL_CAN_RxFifo0MsgPendingCallback</strong></a> (CAN_HandleTypeDef * hcan) <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-hal_can_txmailbox0completecallback"><strong>HAL_CAN_TxMailbox0CompleteCallback</strong></a> (CAN_HandleTypeDef *) <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-hal_can_txmailbox1completecallback"><strong>HAL_CAN_TxMailbox1CompleteCallback</strong></a> (CAN_HandleTypeDef *) <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-hal_can_txmailbox2completecallback"><strong>HAL_CAN_TxMailbox2CompleteCallback</strong></a> (CAN_HandleTypeDef *) <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-functions">Public Static Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-_applyfilters"><strong>_applyFilters</strong></a> () <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-_draintxqueue"><strong>_drainTxQueue</strong></a> () <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-_startinternal"><strong>_startInternal</strong></a> (uint32_t mode) <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-_updatestatus"><strong>_updateStatus</strong></a> () <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-max_filter_ids">variable MAX_FILTER_IDS</h3>
+<pre><code class="language-C++">constexpr uint8_t MAX_FILTER_IDS;
+</code></pre>
+<hr>
+
+<h3 id="variable-max_tx_attempts">variable MAX_TX_ATTEMPTS</h3>
+<pre><code class="language-C++">constexpr uint8_t MAX_TX_ATTEMPTS;
+</code></pre>
+<hr>
+
+<h3 id="variable-rx_ring_size">variable RX_RING_SIZE</h3>
+<pre><code class="language-C++">constexpr uint8_t RX_RING_SIZE;
+</code></pre>
+<hr>
+
+<h3 id="variable-tx_ring_size">variable TX_RING_SIZE</h3>
+<pre><code class="language-C++">constexpr uint8_t TX_RING_SIZE;
+</code></pre>
+<hr>
+
+<h3 id="variable-_batches">variable _batches</h3>
+<pre><code class="language-C++">BatchState _batches[2];
+</code></pre>
+<hr>
+
+<h3 id="variable-_filtercount">variable _filterCount</h3>
+<pre><code class="language-C++">uint8_t _filterCount;
+</code></pre>
+<hr>
+
+<h3 id="variable-_filterids">variable _filterIds</h3>
+<pre><code class="language-C++">uint32_t _filterIds[MAX_FILTER_IDS];
+</code></pre>
+<hr>
+
+<h3 id="variable-_filterpassall">variable _filterPassAll</h3>
+<pre><code class="language-C++">bool _filterPassAll;
+</code></pre>
+<hr>
+
+<h3 id="variable-_rxcb">variable _rxCb</h3>
+<pre><code class="language-C++">CanRxCallback _rxCb;
+</code></pre>
+<hr>
+
+<h3 id="variable-_rxhead">variable _rxHead</h3>
+<pre><code class="language-C++">volatile uint8_t _rxHead;
+</code></pre>
+<hr>
+
+<h3 id="variable-_rxring">variable _rxRing</h3>
+<pre><code class="language-C++">RxQueueEntry _rxRing[RX_RING_SIZE];
+</code></pre>
+<hr>
+
+<h3 id="variable-_rxtail">variable _rxTail</h3>
+<pre><code class="language-C++">volatile uint8_t _rxTail;
+</code></pre>
+<hr>
+
+<h3 id="variable-_status">variable _status</h3>
+<pre><code class="language-C++">CanStatus _status;
+</code></pre>
+<hr>
+
+<h3 id="variable-_statuscb">variable _statusCb</h3>
+<pre><code class="language-C++">CanStatusCallback _statusCb;
+</code></pre>
+<hr>
+
+<h3 id="variable-_syncreqcb">variable _syncReqCb</h3>
+<pre><code class="language-C++">CanSyncReqCallback _syncReqCb;
+</code></pre>
+<hr>
+
+<h3 id="variable-_txdrops">variable _txDrops</h3>
+<pre><code class="language-C++">uint32_t _txDrops;
+</code></pre>
+<hr>
+
+<h3 id="variable-_txhead">variable _txHead</h3>
+<pre><code class="language-C++">volatile uint8_t _txHead;
+</code></pre>
+<hr>
+
+<h3 id="variable-_txring">variable _txRing</h3>
+<pre><code class="language-C++">TxQueueEntry _txRing[TX_RING_SIZE];
+</code></pre>
+<hr>
+
+<h3 id="variable-_txtail">variable _txTail</h3>
+<pre><code class="language-C++">volatile uint8_t _txTail;
+</code></pre>
+<hr>
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+<h3 id="function-hal_can_rxfifo0msgpendingcallback">function HAL_CAN_RxFifo0MsgPendingCallback</h3>
+<pre><code class="language-C++">void HAL_CAN_RxFifo0MsgPendingCallback (
+    CAN_HandleTypeDef * hcan
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-hal_can_txmailbox0completecallback">function HAL_CAN_TxMailbox0CompleteCallback</h3>
+<pre><code class="language-C++">void HAL_CAN_TxMailbox0CompleteCallback (
+    CAN_HandleTypeDef *
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-hal_can_txmailbox1completecallback">function HAL_CAN_TxMailbox1CompleteCallback</h3>
+<pre><code class="language-C++">void HAL_CAN_TxMailbox1CompleteCallback (
+    CAN_HandleTypeDef *
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-hal_can_txmailbox2completecallback">function HAL_CAN_TxMailbox2CompleteCallback</h3>
+<pre><code class="language-C++">void HAL_CAN_TxMailbox2CompleteCallback (
+    CAN_HandleTypeDef *
+) 
+</code></pre>
+<hr>
+<h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
+<h3 id="function-_applyfilters">function _applyFilters</h3>
+<pre><code class="language-C++">static void _applyFilters () 
+</code></pre>
+<hr>
+
+<h3 id="function-_draintxqueue">function _drainTxQueue</h3>
+<pre><code class="language-C++">static void _drainTxQueue () 
+</code></pre>
+<hr>
+
+<h3 id="function-_startinternal">function _startInternal</h3>
+<pre><code class="language-C++">static void _startInternal (
+    uint32_t mode
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-_updatestatus">function _updateStatus</h3>
+<pre><code class="language-C++">static void _updateStatus () 
+</code></pre>
+<hr>
+
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/CANProtocol/CANProtocol.cpp</code></p>
 
 
 

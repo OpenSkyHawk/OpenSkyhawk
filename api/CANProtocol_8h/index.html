@@ -1728,6 +1728,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespaces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1761,6 +1772,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#detailed-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-types-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1773,10 +1795,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#typedef-canrxcallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typedef CanRxCallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-canstatus" class="md-nav__link">
     <span class="md-ellipsis">
       
         enum CanStatus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typedef-canstatuscallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typedef CanStatusCallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typedef-cansyncreqcallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typedef CanSyncReqCallback
       
     </span>
   </a>
@@ -1878,10 +1933,54 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-can_id_sync_req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAN_ID_SYNC_REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-can_id_test_seq" class="md-nav__link">
     <span class="md-ellipsis">
       
         variable CAN_ID_TEST_SEQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ctrl_id_dcs_max" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CTRL_ID_DCS_MAX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ctrl_id_dcs_min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CTRL_ID_DCS_MIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ctrl_id_test_seq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CTRL_ID_TEST_SEQ
       
     </span>
   </a>
@@ -1982,6 +2081,50 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-canidecho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function canIdEcho
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-canidevt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function canIdEvt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-canidhb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function canIdHb
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-canidready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function canIdReady
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2010,10 +2153,26 @@
 <h1 id="file-canprotocolh">File CANProtocol.h</h1>
 <p><a href="../files/"><strong>FileList</strong></a> <strong>&gt;</strong> <a href="../dir_81ff3032570f78b12938068450b63228/"><strong>CANProtocol</strong></a> <strong>&gt;</strong> <a href="./"><strong>CANProtocol.h</strong></a></p>
 <p><a href="../CANProtocol_8h_source/">Go to the source code of this file</a></p>
+<p><em>Shared CAN bus types, frame IDs, and runtime API for</em> <a href="../namespaceOpenSkyhawk/"><em><strong>OpenSkyhawk</strong></em></a> <em>STM32 nodes.</em><a href="#detailed-description">More...</a></p>
 <ul>
 <li><code>#include &lt;stdint.h&gt;</code></li>
 <li><code>#include &lt;HIDControls.h&gt;</code></li>
 </ul>
+<h2 id="namespaces">Namespaces</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">namespace</td>
+<td style="text-align: left;"><a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> <br></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-types">Public Types</h2>
 <table>
 <thead>
@@ -2024,8 +2183,20 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: right;">typedef void(*)(uint32_t canId, const uint8_t *data, uint8_t len)</td>
+<td style="text-align: left;"><a href="#typedef-canrxcallback"><strong>CanRxCallback</strong></a>  <br><em>Fired when a CAN frame is received. Register via onReceive().</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">enum</td>
-<td style="text-align: left;"><a href="#enum-canstatus"><strong>CanStatus</strong></a>  <br><em>CAN bus health states reported to</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> <em>via onCanStatus().</em></td>
+<td style="text-align: left;"><a href="#enum-canstatus"><strong>CanStatus</strong></a>  <br><em>CAN bus health states. Reported to</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> <em>via onStatusChange().</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">typedef void(*)(<a href="./#enum-canstatus"><strong>CanStatus</strong></a> status)</td>
+<td style="text-align: left;"><a href="#typedef-canstatuscallback"><strong>CanStatusCallback</strong></a>  <br><em>Fired when CAN bus status changes. Register via onStatusChange().</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">typedef void(*)()</td>
+<td style="text-align: left;"><a href="#typedef-cansyncreqcallback"><strong>CanSyncReqCallback</strong></a>  <br><em>Fired when SYNC_REQ is received. Register via onSyncReq().</em></td>
 </tr>
 </tbody>
 </table>
@@ -2040,7 +2211,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_ctrl_bcast"><strong>CAN_ID_CTRL_BCAST</strong></a>   = <code>0x010</code><br></td>
+<td style="text-align: left;"><a href="#variable-can_id_ctrl_bcast"><strong>CAN_ID_CTRL_BCAST</strong></a>   = <code>0x010</code><br><em>Broadcast ControlPacketPair to all panels.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
@@ -2068,31 +2239,47 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_test_seq"><strong>CAN_ID_TEST_SEQ</strong></a>   = <code>0x011</code><br></td>
+<td style="text-align: left;"><a href="#variable-can_id_sync_req"><strong>CAN_ID_SYNC_REQ</strong></a>   = <code>0x012</code><br><em>Request all nodes to re-poll inputs.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-can_id_test_seq"><strong>CAN_ID_TEST_SEQ</strong></a>   = <code>0x011</code><br><em>RTT throughput test.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-ctrl_test_seq"><strong>CTRL_TEST_SEQ</strong></a>   = <code>0xFFFF</code><br></td>
+<td style="text-align: left;"><a href="#variable-ctrl_id_dcs_max"><strong>CTRL_ID_DCS_MAX</strong></a>   = <code>0x86FF</code><br><em>DCS-BIOS range end.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-ctrl_id_dcs_min"><strong>CTRL_ID_DCS_MIN</strong></a>   = <code>0x8000</code><br><em>DCS-BIOS range start.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-ctrl_id_test_seq"><strong>CTRL_ID_TEST_SEQ</strong></a>   = <code>0xFFFF</code><br><em>Reserved: triggers TEST_SEQ frame.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-ctrl_test_seq"><strong>CTRL_TEST_SEQ</strong></a>   = <code>[**CTRL\_ID\_TEST\_SEQ**](CANProtocol_8h.md#variable-ctrl_id_test_seq)</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-diag_err"><strong>DIAG_ERR</strong></a>   = <code>0x03</code><br></td>
+<td style="text-align: left;"><a href="#variable-diag_err"><strong>DIAG_ERR</strong></a>   = <code>0x03</code><br><em>CAN error counter frame.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-diag_evt"><strong>DIAG_EVT</strong></a>   = <code>0x04</code><br></td>
+<td style="text-align: left;"><a href="#variable-diag_evt"><strong>DIAG_EVT</strong></a>   = <code>0x04</code><br><em>Sub-node input event forwarded upstream.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-diag_hb"><strong>DIAG_HB</strong></a>   = <code>0x02</code><br></td>
+<td style="text-align: left;"><a href="#variable-diag_hb"><strong>DIAG_HB</strong></a>   = <code>0x02</code><br><em>Sub-node heartbeat frame.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-diag_magic"><strong>DIAG_MAGIC</strong></a>   = <code>0xAA</code><br></td>
+<td style="text-align: left;"><a href="#variable-diag_magic"><strong>DIAG_MAGIC</strong></a>   = <code>0xAA</code><br><em>Frame sync byte.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-diag_rtt"><strong>DIAG_RTT</strong></a>   = <code>0x01</code><br></td>
+<td style="text-align: left;"><a href="#variable-diag_rtt"><strong>DIAG_RTT</strong></a>   = <code>0x01</code><br><em>Round-trip time measurement frame.</em></td>
 </tr>
 </tbody>
 </table>
@@ -2107,13 +2294,42 @@
 <tbody>
 <tr>
 <td style="text-align: right;">struct</td>
-<td style="text-align: left;"><a href="#function-__attribute__"><strong>__attribute__</strong></a> ((packed)) <br></td>
+<td style="text-align: left;"><a href="#function-__attribute__"><strong>__attribute__</strong></a> ((packed)) <br><em>Primary input/output routing packet. 4 bytes; two are batched for CTRL_BCAST/EVT_n.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#function-canidecho"><strong>canIdEcho</strong></a> (uint8_t n) <br><em>TEST_SEQ echo frame ID for node n. Range 0x301-0x33F.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#function-canidevt"><strong>canIdEvt</strong></a> (uint8_t n) <br><em>Input event frame ID for node n. Range 0x201-0x23F.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#function-canidhb"><strong>canIdHb</strong></a> (uint8_t n) <br><em>Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#function-canidready"><strong>canIdReady</strong></a> (uint8_t n) <br><em>Boot-complete READY frame ID for node n. Range 0x401-0x43F.</em></td>
 </tr>
 </tbody>
 </table>
+<h2 id="detailed-description">Detailed Description</h2>
+<p>Owns all CAN bus interaction for <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> nodes. Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks, diagnostics) is STM32-only and guarded by ARDUINO_ARCH_STM32.</p>
+<p>Dependency: <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> must be called before <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>. <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> owns CAN bus operation; <a href="../namespaceSTM32Board/"><strong>STM32Board</strong></a> owns peripheral hardware init.</p>
+<p><strong>Version:</strong></p>
+<p>0.2.0 </p>
+<p><strong>Copyright:</strong></p>
+<p>GPL-2.0-only — see Firmware/LICENSE </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
+<h3 id="typedef-canrxcallback">typedef CanRxCallback</h3>
+<p><em>Fired when a CAN frame is received. Register via onReceive().</em> </p>
+<pre><code class="language-C++">using CanRxCallback =  void(*)(uint32_t canId, const uint8_t* data, uint8_t len);
+</code></pre>
+<hr>
+
 <h3 id="enum-canstatus">enum CanStatus</h3>
-<p><em>CAN bus health states reported to</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> <em>via onCanStatus().</em></p>
+<p><em>CAN bus health states. Reported to</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> <em>via onStatusChange().</em></p>
 <pre><code class="language-C++">enum CanStatus {
     STARTING,
     NORMAL,
@@ -2122,8 +2338,21 @@
 };
 </code></pre>
 <hr>
+
+<h3 id="typedef-canstatuscallback">typedef CanStatusCallback</h3>
+<p><em>Fired when CAN bus status changes. Register via onStatusChange().</em> </p>
+<pre><code class="language-C++">using CanStatusCallback =  void(*)(CanStatus status);
+</code></pre>
+<hr>
+
+<h3 id="typedef-cansyncreqcallback">typedef CanSyncReqCallback</h3>
+<p><em>Fired when SYNC_REQ is received. Register via onSyncReq().</em> </p>
+<pre><code class="language-C++">using CanSyncReqCallback =  void(*)();
+</code></pre>
+<hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-can_id_ctrl_bcast">variable CAN_ID_CTRL_BCAST</h3>
+<p><em>Broadcast ControlPacketPair to all panels.</em> </p>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_CTRL_BCAST;
 </code></pre>
 <hr>
@@ -2131,71 +2360,152 @@
 <h3 id="variable-can_id_echo_1">variable CAN_ID_ECHO_1</h3>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_ECHO_1;
 </code></pre>
+<p><strong>Deprecated</strong></p>
+<p>Use canIdEcho(1) = 0x301. Wrong base (0x210 vs 0x300). </p>
 <hr>
 
 <h3 id="variable-can_id_echo_2">variable CAN_ID_ECHO_2</h3>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_ECHO_2;
 </code></pre>
+<p><strong>Deprecated</strong></p>
+<p>Use canIdEcho(2) = 0x302. Wrong base. </p>
 <hr>
 
 <h3 id="variable-can_id_evt_1">variable CAN_ID_EVT_1</h3>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_EVT_1;
 </code></pre>
+<p><strong>Deprecated</strong></p>
+<p>Use canIdEvt(1) = 0x201. Off-by-one. </p>
 <hr>
 
 <h3 id="variable-can_id_evt_2">variable CAN_ID_EVT_2</h3>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_EVT_2;
 </code></pre>
+<p><strong>Deprecated</strong></p>
+<p>Use canIdEvt(2) = 0x202. Off-by-one. </p>
 <hr>
 
 <h3 id="variable-can_id_hb_1">variable CAN_ID_HB_1</h3>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_HB_1;
 </code></pre>
+<p><strong>Deprecated</strong></p>
+<p>Use canIdHb(1) = 0x101. Off-by-one: this is canIdHb(0) (<a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reserved). </p>
 <hr>
 
 <h3 id="variable-can_id_hb_2">variable CAN_ID_HB_2</h3>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_HB_2;
 </code></pre>
+<p><strong>Deprecated</strong></p>
+<p>Use canIdHb(2) = 0x102. Off-by-one. </p>
+<hr>
+
+<h3 id="variable-can_id_sync_req">variable CAN_ID_SYNC_REQ</h3>
+<p><em>Request all nodes to re-poll inputs.</em> </p>
+<pre><code class="language-C++">constexpr uint32_t CAN_ID_SYNC_REQ;
+</code></pre>
 <hr>
 
 <h3 id="variable-can_id_test_seq">variable CAN_ID_TEST_SEQ</h3>
+<p><em>RTT throughput test.</em> </p>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_TEST_SEQ;
+</code></pre>
+<hr>
+
+<h3 id="variable-ctrl_id_dcs_max">variable CTRL_ID_DCS_MAX</h3>
+<p><em>DCS-BIOS range end.</em> </p>
+<pre><code class="language-C++">constexpr uint16_t CTRL_ID_DCS_MAX;
+</code></pre>
+<hr>
+
+<h3 id="variable-ctrl_id_dcs_min">variable CTRL_ID_DCS_MIN</h3>
+<p><em>DCS-BIOS range start.</em> </p>
+<pre><code class="language-C++">constexpr uint16_t CTRL_ID_DCS_MIN;
+</code></pre>
+<hr>
+
+<h3 id="variable-ctrl_id_test_seq">variable CTRL_ID_TEST_SEQ</h3>
+<p><em>Reserved: triggers TEST_SEQ frame.</em> </p>
+<pre><code class="language-C++">constexpr uint16_t CTRL_ID_TEST_SEQ;
 </code></pre>
 <hr>
 
 <h3 id="variable-ctrl_test_seq">variable CTRL_TEST_SEQ</h3>
 <pre><code class="language-C++">constexpr uint16_t CTRL_TEST_SEQ;
 </code></pre>
+<p><strong>Deprecated</strong></p>
+<p>Use CTRL_ID_TEST_SEQ. Kept for backward compatibility with prototype code. </p>
 <hr>
 
 <h3 id="variable-diag_err">variable DIAG_ERR</h3>
+<p><em>CAN error counter frame.</em> </p>
 <pre><code class="language-C++">constexpr uint8_t DIAG_ERR;
 </code></pre>
 <hr>
 
 <h3 id="variable-diag_evt">variable DIAG_EVT</h3>
+<p><em>Sub-node input event forwarded upstream.</em> </p>
 <pre><code class="language-C++">constexpr uint8_t DIAG_EVT;
 </code></pre>
 <hr>
 
 <h3 id="variable-diag_hb">variable DIAG_HB</h3>
+<p><em>Sub-node heartbeat frame.</em> </p>
 <pre><code class="language-C++">constexpr uint8_t DIAG_HB;
 </code></pre>
 <hr>
 
 <h3 id="variable-diag_magic">variable DIAG_MAGIC</h3>
+<p><em>Frame sync byte.</em> </p>
 <pre><code class="language-C++">constexpr uint8_t DIAG_MAGIC;
 </code></pre>
 <hr>
 
 <h3 id="variable-diag_rtt">variable DIAG_RTT</h3>
+<p><em>Round-trip time measurement frame.</em> </p>
 <pre><code class="language-C++">constexpr uint8_t DIAG_RTT;
 </code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-__attribute__">function __attribute__</h3>
+<p><em>Primary input/output routing packet. 4 bytes; two are batched for CTRL_BCAST/EVT_n.</em> </p>
 <pre><code class="language-C++">struct __attribute__ (
     (packed)
+) 
+</code></pre>
+<p>8-byte payload carried by HB_n heartbeat frames.</p>
+<p>Two ControlPackets packed into one 8-byte input/output CAN frame.</p>
+<p>Used by CTRL_BCAST and EVT_n only. Slot B controlId == 0x0000 signals an empty/padding slot.</p>
+<p>Sent every 500 ms by <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> nodes. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reads HB_1–HB_63 to track <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> health and populate diagnostics. HB_0 is reserved but not transmitted. </p>
+<hr>
+
+<h3 id="function-canidecho">function canIdEcho</h3>
+<p><em>TEST_SEQ echo frame ID for node n. Range 0x301-0x33F.</em> </p>
+<pre><code class="language-C++">constexpr uint32_t canIdEcho (
+    uint8_t n
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-canidevt">function canIdEvt</h3>
+<p><em>Input event frame ID for node n. Range 0x201-0x23F.</em> </p>
+<pre><code class="language-C++">constexpr uint32_t canIdEvt (
+    uint8_t n
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-canidhb">function canIdHb</h3>
+<p><em>Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
+<pre><code class="language-C++">constexpr uint32_t canIdHb (
+    uint8_t n
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-canidready">function canIdReady</h3>
+<p><em>Boot-complete READY frame ID for node n. Range 0x401-0x43F.</em> </p>
+<pre><code class="language-C++">constexpr uint32_t canIdReady (
+    uint8_t n
 ) 
 </code></pre>
 <hr>

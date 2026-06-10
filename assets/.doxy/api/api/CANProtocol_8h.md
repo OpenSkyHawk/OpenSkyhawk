@@ -8,7 +8,7 @@
 
 [Go to the source code of this file](CANProtocol_8h_source.md)
 
-
+_Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _STM32 nodes._[More...](#detailed-description)
 
 * `#include <stdint.h>`
 * `#include <HIDControls.h>`
@@ -25,6 +25,11 @@
 
 
 
+## Namespaces
+
+| Type | Name |
+| ---: | :--- |
+| namespace | [**CANProtocol**](namespaceCANProtocol.md) <br> |
 
 
 
@@ -33,7 +38,10 @@
 
 | Type | Name |
 | ---: | :--- |
-| enum  | [**CanStatus**](#enum-canstatus)  <br>_CAN bus health states reported to_ [_**STM32Board**_](namespaceSTM32Board.md) _via onCanStatus()._ |
+| typedef void(\*)(uint32\_t canId, const uint8\_t \*data, uint8\_t len) | [**CanRxCallback**](#typedef-canrxcallback)  <br>_Fired when a CAN frame is received. Register via onReceive()._  |
+| enum  | [**CanStatus**](#enum-canstatus)  <br>_CAN bus health states. Reported to_ [_**STM32Board**_](namespaceSTM32Board.md) _via onStatusChange()._ |
+| typedef void(\*)([**CanStatus**](CANProtocol_8h.md#enum-canstatus) status) | [**CanStatusCallback**](#typedef-canstatuscallback)  <br>_Fired when CAN bus status changes. Register via onStatusChange()._  |
+| typedef void(\*)() | [**CanSyncReqCallback**](#typedef-cansyncreqcallback)  <br>_Fired when SYNC\_REQ is received. Register via onSyncReq()._  |
 
 
 
@@ -44,20 +52,24 @@
 
 | Type | Name |
 | ---: | :--- |
-|  constexpr uint32\_t | [**CAN\_ID\_CTRL\_BCAST**](#variable-can_id_ctrl_bcast)   = `0x010`<br> |
+|  constexpr uint32\_t | [**CAN\_ID\_CTRL\_BCAST**](#variable-can_id_ctrl_bcast)   = `0x010`<br>_Broadcast ControlPacketPair to all panels._  |
 |  constexpr uint32\_t | [**CAN\_ID\_ECHO\_1**](#variable-can_id_echo_1)   = `0x210`<br> |
 |  constexpr uint32\_t | [**CAN\_ID\_ECHO\_2**](#variable-can_id_echo_2)   = `0x211`<br> |
 |  constexpr uint32\_t | [**CAN\_ID\_EVT\_1**](#variable-can_id_evt_1)   = `0x200`<br> |
 |  constexpr uint32\_t | [**CAN\_ID\_EVT\_2**](#variable-can_id_evt_2)   = `0x201`<br> |
 |  constexpr uint32\_t | [**CAN\_ID\_HB\_1**](#variable-can_id_hb_1)   = `0x100`<br> |
 |  constexpr uint32\_t | [**CAN\_ID\_HB\_2**](#variable-can_id_hb_2)   = `0x101`<br> |
-|  constexpr uint32\_t | [**CAN\_ID\_TEST\_SEQ**](#variable-can_id_test_seq)   = `0x011`<br> |
-|  constexpr uint16\_t | [**CTRL\_TEST\_SEQ**](#variable-ctrl_test_seq)   = `0xFFFF`<br> |
-|  constexpr uint8\_t | [**DIAG\_ERR**](#variable-diag_err)   = `0x03`<br> |
-|  constexpr uint8\_t | [**DIAG\_EVT**](#variable-diag_evt)   = `0x04`<br> |
-|  constexpr uint8\_t | [**DIAG\_HB**](#variable-diag_hb)   = `0x02`<br> |
-|  constexpr uint8\_t | [**DIAG\_MAGIC**](#variable-diag_magic)   = `0xAA`<br> |
-|  constexpr uint8\_t | [**DIAG\_RTT**](#variable-diag_rtt)   = `0x01`<br> |
+|  constexpr uint32\_t | [**CAN\_ID\_SYNC\_REQ**](#variable-can_id_sync_req)   = `0x012`<br>_Request all nodes to re-poll inputs._  |
+|  constexpr uint32\_t | [**CAN\_ID\_TEST\_SEQ**](#variable-can_id_test_seq)   = `0x011`<br>_RTT throughput test._  |
+|  constexpr uint16\_t | [**CTRL\_ID\_DCS\_MAX**](#variable-ctrl_id_dcs_max)   = `0x86FF`<br>_DCS-BIOS range end._  |
+|  constexpr uint16\_t | [**CTRL\_ID\_DCS\_MIN**](#variable-ctrl_id_dcs_min)   = `0x8000`<br>_DCS-BIOS range start._  |
+|  constexpr uint16\_t | [**CTRL\_ID\_TEST\_SEQ**](#variable-ctrl_id_test_seq)   = `0xFFFF`<br>_Reserved: triggers TEST\_SEQ frame._  |
+|  constexpr uint16\_t | [**CTRL\_TEST\_SEQ**](#variable-ctrl_test_seq)   = `[**CTRL\_ID\_TEST\_SEQ**](CANProtocol_8h.md#variable-ctrl_id_test_seq)`<br> |
+|  constexpr uint8\_t | [**DIAG\_ERR**](#variable-diag_err)   = `0x03`<br>_CAN error counter frame._  |
+|  constexpr uint8\_t | [**DIAG\_EVT**](#variable-diag_evt)   = `0x04`<br>_Sub-node input event forwarded upstream._  |
+|  constexpr uint8\_t | [**DIAG\_HB**](#variable-diag_hb)   = `0x02`<br>_Sub-node heartbeat frame._  |
+|  constexpr uint8\_t | [**DIAG\_MAGIC**](#variable-diag_magic)   = `0xAA`<br>_Frame sync byte._  |
+|  constexpr uint8\_t | [**DIAG\_RTT**](#variable-diag_rtt)   = `0x01`<br>_Round-trip time measurement frame._  |
 
 
 
@@ -76,7 +88,11 @@
 
 | Type | Name |
 | ---: | :--- |
-|  struct | [**\_\_attribute\_\_**](#function-__attribute__) ((packed)) <br> |
+|  struct | [**\_\_attribute\_\_**](#function-__attribute__) ((packed)) <br>_Primary input/output routing packet. 4 bytes; two are batched for CTRL\_BCAST/EVT\_n._  |
+|  constexpr uint32\_t | [**canIdEcho**](#function-canidecho) (uint8\_t n) <br>_TEST\_SEQ echo frame ID for node n. Range 0x301-0x33F._  |
+|  constexpr uint32\_t | [**canIdEvt**](#function-canidevt) (uint8\_t n) <br>_Input event frame ID for node n. Range 0x201-0x23F._  |
+|  constexpr uint32\_t | [**canIdHb**](#function-canidhb) (uint8\_t n) <br>_Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
+|  constexpr uint32\_t | [**canIdReady**](#function-canidready) (uint8\_t n) <br>_Boot-complete READY frame ID for node n. Range 0x401-0x43F._  |
 
 
 
@@ -105,14 +121,55 @@
 
 
 
+## Detailed Description
+
+
+Owns all CAN bus interaction for [**PanelGroup**](namespacePanelGroup.md) and [**PanelBridge**](namespacePanelBridge.md) nodes. Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks, diagnostics) is STM32-only and guarded by ARDUINO\_ARCH\_STM32.
+
+
+Dependency: [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin) must be called before [**CANProtocol::start()**](namespaceCANProtocol.md#function-start). [**CANProtocol**](namespaceCANProtocol.md) owns CAN bus operation; [**STM32Board**](namespaceSTM32Board.md) owns peripheral hardware init.
+
+
+
+
+**Version:**
+
+0.2.0 
+
+
+
+
+**Copyright:**
+
+GPL-2.0-only — see Firmware/LICENSE 
+
+
+
+
+
+    
 ## Public Types Documentation
 
 
 
 
+### typedef CanRxCallback 
+
+_Fired when a CAN frame is received. Register via onReceive()._ 
+```C++
+using CanRxCallback =  void(*)(uint32_t canId, const uint8_t* data, uint8_t len);
+```
+
+
+
+
+<hr>
+
+
+
 ### enum CanStatus 
 
-_CAN bus health states reported to_ [_**STM32Board**_](namespaceSTM32Board.md) _via onCanStatus()._
+_CAN bus health states. Reported to_ [_**STM32Board**_](namespaceSTM32Board.md) _via onStatusChange()._
 ```C++
 enum CanStatus {
     STARTING,
@@ -126,6 +183,34 @@ enum CanStatus {
 
 
 <hr>
+
+
+
+### typedef CanStatusCallback 
+
+_Fired when CAN bus status changes. Register via onStatusChange()._ 
+```C++
+using CanStatusCallback =  void(*)(CanStatus status);
+```
+
+
+
+
+<hr>
+
+
+
+### typedef CanSyncReqCallback 
+
+_Fired when SYNC\_REQ is received. Register via onSyncReq()._ 
+```C++
+using CanSyncReqCallback =  void(*)();
+```
+
+
+
+
+<hr>
 ## Public Static Attributes Documentation
 
 
@@ -133,6 +218,7 @@ enum CanStatus {
 
 ### variable CAN\_ID\_CTRL\_BCAST 
 
+_Broadcast ControlPacketPair to all panels._ 
 ```C++
 constexpr uint32_t CAN_ID_CTRL_BCAST;
 ```
@@ -153,6 +239,16 @@ constexpr uint32_t CAN_ID_ECHO_1;
 
 
 
+
+**Deprecated**
+
+Use canIdEcho(1) = 0x301. Wrong base (0x210 vs 0x300). 
+
+
+
+
+        
+
 <hr>
 
 
@@ -165,6 +261,16 @@ constexpr uint32_t CAN_ID_ECHO_2;
 
 
 
+
+
+**Deprecated**
+
+Use canIdEcho(2) = 0x302. Wrong base. 
+
+
+
+
+        
 
 <hr>
 
@@ -179,6 +285,16 @@ constexpr uint32_t CAN_ID_EVT_1;
 
 
 
+
+**Deprecated**
+
+Use canIdEvt(1) = 0x201. Off-by-one. 
+
+
+
+
+        
+
 <hr>
 
 
@@ -191,6 +307,16 @@ constexpr uint32_t CAN_ID_EVT_2;
 
 
 
+
+
+**Deprecated**
+
+Use canIdEvt(2) = 0x202. Off-by-one. 
+
+
+
+
+        
 
 <hr>
 
@@ -205,6 +331,16 @@ constexpr uint32_t CAN_ID_HB_1;
 
 
 
+
+**Deprecated**
+
+Use canIdHb(1) = 0x101. Off-by-one: this is canIdHb(0) ([**PanelBridge**](namespacePanelBridge.md) reserved). 
+
+
+
+
+        
+
 <hr>
 
 
@@ -218,14 +354,81 @@ constexpr uint32_t CAN_ID_HB_2;
 
 
 
+
+**Deprecated**
+
+Use canIdHb(2) = 0x102. Off-by-one. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### variable CAN\_ID\_SYNC\_REQ 
+
+_Request all nodes to re-poll inputs._ 
+```C++
+constexpr uint32_t CAN_ID_SYNC_REQ;
+```
+
+
+
+
 <hr>
 
 
 
 ### variable CAN\_ID\_TEST\_SEQ 
 
+_RTT throughput test._ 
 ```C++
 constexpr uint32_t CAN_ID_TEST_SEQ;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CTRL\_ID\_DCS\_MAX 
+
+_DCS-BIOS range end._ 
+```C++
+constexpr uint16_t CTRL_ID_DCS_MAX;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CTRL\_ID\_DCS\_MIN 
+
+_DCS-BIOS range start._ 
+```C++
+constexpr uint16_t CTRL_ID_DCS_MIN;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CTRL\_ID\_TEST\_SEQ 
+
+_Reserved: triggers TEST\_SEQ frame._ 
+```C++
+constexpr uint16_t CTRL_ID_TEST_SEQ;
 ```
 
 
@@ -244,12 +447,23 @@ constexpr uint16_t CTRL_TEST_SEQ;
 
 
 
+
+**Deprecated**
+
+Use CTRL\_ID\_TEST\_SEQ. Kept for backward compatibility with prototype code. 
+
+
+
+
+        
+
 <hr>
 
 
 
 ### variable DIAG\_ERR 
 
+_CAN error counter frame._ 
 ```C++
 constexpr uint8_t DIAG_ERR;
 ```
@@ -263,6 +477,7 @@ constexpr uint8_t DIAG_ERR;
 
 ### variable DIAG\_EVT 
 
+_Sub-node input event forwarded upstream._ 
 ```C++
 constexpr uint8_t DIAG_EVT;
 ```
@@ -276,6 +491,7 @@ constexpr uint8_t DIAG_EVT;
 
 ### variable DIAG\_HB 
 
+_Sub-node heartbeat frame._ 
 ```C++
 constexpr uint8_t DIAG_HB;
 ```
@@ -289,6 +505,7 @@ constexpr uint8_t DIAG_HB;
 
 ### variable DIAG\_MAGIC 
 
+_Frame sync byte._ 
 ```C++
 constexpr uint8_t DIAG_MAGIC;
 ```
@@ -302,6 +519,7 @@ constexpr uint8_t DIAG_MAGIC;
 
 ### variable DIAG\_RTT 
 
+_Round-trip time measurement frame._ 
 ```C++
 constexpr uint8_t DIAG_RTT;
 ```
@@ -317,9 +535,87 @@ constexpr uint8_t DIAG_RTT;
 
 ### function \_\_attribute\_\_ 
 
+_Primary input/output routing packet. 4 bytes; two are batched for CTRL\_BCAST/EVT\_n._ 
 ```C++
 struct __attribute__ (
     (packed)
+) 
+```
+
+
+
+8-byte payload carried by HB\_n heartbeat frames.
+
+
+Two ControlPackets packed into one 8-byte input/output CAN frame.
+
+
+Used by CTRL\_BCAST and EVT\_n only. Slot B controlId == 0x0000 signals an empty/padding slot.
+
+
+Sent every 500 ms by [**PanelGroup**](namespacePanelGroup.md) nodes. [**PanelBridge**](namespacePanelBridge.md) reads HB\_1–HB\_63 to track [**PanelGroup**](namespacePanelGroup.md) health and populate diagnostics. HB\_0 is reserved but not transmitted. 
+
+
+        
+
+<hr>
+
+
+
+### function canIdEcho 
+
+_TEST\_SEQ echo frame ID for node n. Range 0x301-0x33F._ 
+```C++
+constexpr uint32_t canIdEcho (
+    uint8_t n
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function canIdEvt 
+
+_Input event frame ID for node n. Range 0x201-0x23F._ 
+```C++
+constexpr uint32_t canIdEvt (
+    uint8_t n
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function canIdHb 
+
+_Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _._
+```C++
+constexpr uint32_t canIdHb (
+    uint8_t n
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function canIdReady 
+
+_Boot-complete READY frame ID for node n. Range 0x401-0x43F._ 
+```C++
+constexpr uint32_t canIdReady (
+    uint8_t n
 ) 
 ```
 

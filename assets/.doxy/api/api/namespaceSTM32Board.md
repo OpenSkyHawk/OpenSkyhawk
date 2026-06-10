@@ -143,7 +143,7 @@ void STM32Board::begin ()
 
 
 
-Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call CANProtocol::start() after filter setup. 
+Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call [**CANProtocol::start()**](namespaceCANProtocol.md#function-start) after filter setup. 
 
 
         
@@ -164,7 +164,7 @@ bool STM32Board::busOff ()
 
 **Deprecated**
 
-Use CANProtocol::busOff() instead. 
+Use [**CANProtocol::busOff()**](namespaceCANProtocol.md#function-busoff) instead. 
 
 
 
@@ -188,7 +188,7 @@ CAN_HandleTypeDef * STM32Board::canHandle ()
 
 **Note:**
 
-Internal — used by CANProtocol only. Do not call from sketches. 
+Internal — used by [**CANProtocol**](namespaceCANProtocol.md) only. Do not call from sketches. 
 
 
 
@@ -223,7 +223,7 @@ bool STM32Board::canSend (
 
 **Deprecated**
 
-Use CANProtocol::send() instead. 
+Use [**CANProtocol::send()**](namespaceCANProtocol.md#function-send) instead. 
 
 
 
@@ -246,7 +246,7 @@ void STM32Board::canStart ()
 
 **Deprecated**
 
-Use CANProtocol::start() instead. 
+Use [**CANProtocol::start()**](namespaceCANProtocol.md#function-start) instead. 
 
 
 
@@ -349,7 +349,7 @@ Register with CANProtocol::onStatusChange(STM32Board::onCanStatus) in setup(). N
 **Parameters:**
 
 
-* `status` New CAN bus status reported by CANProtocol. 
+* `status` New CAN bus status reported by [**CANProtocol**](namespaceCANProtocol.md). 
 
 
 
@@ -372,7 +372,7 @@ uint8_t STM32Board::rec ()
 
 **Deprecated**
 
-Use CANProtocol::rec() instead. 
+Use [**CANProtocol::rec()**](namespaceCANProtocol.md#function-rec) instead. 
 
 
 
@@ -443,7 +443,7 @@ uint8_t STM32Board::tec ()
 
 **Deprecated**
 
-Use CANProtocol::tec() instead. 
+Use [**CANProtocol::tec()**](namespaceCANProtocol.md#function-tec) instead. 
 
 
 

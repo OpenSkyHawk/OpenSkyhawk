@@ -11,7 +11,8 @@ Here is a list of all files with brief descriptions:
             * **file** [**A4EC\_InputMap.h**](A4EC__InputMap_8h.md)     
             * **file** [**A4EC\_OutputIds.h**](A4EC__OutputIds_8h.md)     
         * **dir** [**CANProtocol**](dir_81ff3032570f78b12938068450b63228.md)     
-            * **file** [**CANProtocol.h**](CANProtocol_8h.md)     
+            * **file** [**CANProtocol.cpp**](CANProtocol_8cpp.md)     
+            * **file** [**CANProtocol.h**](CANProtocol_8h.md) _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _STM32 nodes._    
         * **dir** [**HIDControls**](dir_8de7ffd664ed88ad14416481a318893f.md)     
             * **file** [**HIDControls.h**](HIDControls_8h.md) _CAN controlId constants for HID axes and buttons._     
         * **dir** [**PanelBridge**](dir_f592a3c441b32532ba8eb6b28add2a90.md)     

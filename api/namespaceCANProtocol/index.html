@@ -1,0 +1,2281 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespaceCANProtocol/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Namespace CANProtocol - OpenSkyhawk</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#namespace-canprotocol" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="OpenSkyhawk" class="md-header__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenSkyhawk
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Namespace CANProtocol
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-header-nav" aria-label="Primary navigation">
+      <a href="../.." class="">Home</a>
+      <a href="../..#projects">Projects</a>
+      <a href="../../claude/architecture/" class="">Documentation</a>
+      <a href="../../claude/hardware-standards/" class="">Hardware</a>
+      <a href="../" class="os-header-nav__link--active">API Reference</a>
+    </div>
+
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../claude/architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../claude/controllers/Center_Armament/" class="md-tabs__link">
+          
+  
+  
+  Controllers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="OpenSkyhawk" class="md-nav__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    OpenSkyhawk
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/hardware-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/pcb-design-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN Bus / PCB Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/kicad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KiCad Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/dcsbios-stm32-debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS STM32 Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/docs-site-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs Site Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controllers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controllers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/Center_Armament/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Center Armament
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/AWRS_Panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWRS Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/Misc_Switch_Panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Misc Switch Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../claude/controllers/a4e-c-dcsbios-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A-4E-C DCS-BIOS Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deprecated List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3_2" id="__nav_4_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespace Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annotated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hierarchy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4_4" id="__nav_4_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Class Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-busoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function busOff
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-drain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function drain
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-filteracceptall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function filterAcceptAll
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-filteracceptid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function filterAcceptId
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-flushbatched" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function flushBatched
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-makeheartbeatpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function makeHeartbeatPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-onreceive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function onReceive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-onstatuschange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function onStatusChange
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-onsyncreq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function onSyncReq
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-rec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function rec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-send" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function send
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-sendbatched" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function sendBatched
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-startloopback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function startLoopback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-tec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function tec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-txdropcount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function txDropCount
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="namespace-canprotocol">Namespace CANProtocol</h1>
+<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>CANProtocol</strong></a></p>
+<h2 id="public-functions">Public Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-busoff"><strong>busOff</strong></a> () <br><em>Return true if the CAN controller is in bus-off state.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-drain"><strong>drain</strong></a> () <br><em>Process RX callbacks and batched-ControlPacket deadlines. Call once per loop().</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-filteracceptall"><strong>filterAcceptAll</strong></a> () <br><em>Accept all incoming CAN frames. Use for</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-filteracceptid"><strong>filterAcceptId</strong></a> (uint32_t canId) <br><em>Accept a specific CAN ID. Use for</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>nodes.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-flushbatched"><strong>flushBatched</strong></a> (uint32_t canId) <br><em>Force a half-full ControlPacketPair batch to send immediately.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">HeartbeatPayload</td>
+<td style="text-align: left;"><a href="#function-makeheartbeatpayload"><strong>makeHeartbeatPayload</strong></a> (uint8_t nodeId, uint16_t rxCount) <br><em>Build the standard 8-byte heartbeat payload for the current node.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-onreceive"><strong>onReceive</strong></a> (<a href="../CANProtocol_8h/#typedef-canrxcallback"><strong>CanRxCallback</strong></a> cb) <br><em>Register a general-purpose RX frame handler.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-onstatuschange"><strong>onStatusChange</strong></a> (<a href="../CANProtocol_8h/#typedef-canstatuscallback"><strong>CanStatusCallback</strong></a> cb) <br><em>Register a CAN bus status change callback.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-onsyncreq"><strong>onSyncReq</strong></a> (<a href="../CANProtocol_8h/#typedef-cansyncreqcallback"><strong>CanSyncReqCallback</strong></a> cb) <br><em>Register a SYNC_REQ handler.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#function-rec"><strong>rec</strong></a> () <br><em>Return the CAN Receive Error Counter (0-255) from ESR.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-send"><strong>send</strong></a> (uint32_t canId, const uint8_t * data, uint8_t len) <br><em>Send a CAN frame.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-sendbatched"><strong>sendBatched</strong></a> (uint32_t canId, const ControlPacket &amp; pkt) <br><em>Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-start"><strong>start</strong></a> () <br><em>Start the CAN peripheral and apply registered filters.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-startloopback"><strong>startLoopback</strong></a> () <br><em>Start in silent loopback mode — for bench testing only.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#function-tec"><strong>tec</strong></a> () <br><em>Return the CAN Transmit Error Counter (0-255) from ESR.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#function-txdropcount"><strong>txDropCount</strong></a> () <br><em>Return the cumulative TX queue drop count since startup.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+<h3 id="function-busoff">function busOff</h3>
+<p><em>Return true if the CAN controller is in bus-off state.</em> </p>
+<pre><code class="language-C++">bool CANProtocol::busOff () 
+</code></pre>
+<hr>
+
+<h3 id="function-drain">function drain</h3>
+<p><em>Process RX callbacks and batched-ControlPacket deadlines. Call once per loop().</em> </p>
+<pre><code class="language-C++">void CANProtocol::drain () 
+</code></pre>
+<p>Drains all frames received since the last call:
+* SYNC_REQ: fires <a href="./#function-onsyncreq"><strong>onSyncReq()</strong></a>, not forwarded to <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
+* TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
+* All other frames: fires <a href="./#function-onreceive"><strong>onReceive()</strong></a>.</p>
+<p>Also services <a href="./#function-sendbatched"><strong>sendBatched()</strong></a> deadlines: a half-full ControlPacketPair that has waited two <a href="./#function-drain"><strong>drain()</strong></a> calls is flushed with slot B set to the null sentinel. </p>
+<hr>
+
+<h3 id="function-filteracceptall">function filterAcceptAll</h3>
+<p><em>Accept all incoming CAN frames. Use for</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
+<pre><code class="language-C++">void CANProtocol::filterAcceptAll () 
+</code></pre>
+<p>Configures a pass-all hardware mask filter. Mandatory IDs (CTRL_BCAST, TEST_SEQ, SYNC_REQ) are included but have no effect with pass-all active. </p>
+<hr>
+
+<h3 id="function-filteracceptid">function filterAcceptId</h3>
+<p><em>Accept a specific CAN ID. Use for</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>nodes.</em></p>
+<pre><code class="language-C++">void CANProtocol::filterAcceptId (
+    uint32_t canId
+) 
+</code></pre>
+<p>Adds one ID to the hardware filter list. Call multiple times for multiple IDs. CTRL_BCAST (0x010), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always included automatically by <a href="./#function-start"><strong>start()</strong></a> — do not add them manually.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>canId</code> 11-bit standard CAN ID to accept. </li>
+</ul>
+<hr>
+
+<h3 id="function-flushbatched">function flushBatched</h3>
+<p><em>Force a half-full ControlPacketPair batch to send immediately.</em> </p>
+<pre><code class="language-C++">void CANProtocol::flushBatched (
+    uint32_t canId
+) 
+</code></pre>
+<p>If the named CAN ID has a pending slot A, sends it with slot B as the null sentinel. No-op if no packet is pending.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>canId</code> CAN_ID_CTRL_BCAST or canIdEvt(NODE_ID). </li>
+</ul>
+<hr>
+
+<h3 id="function-makeheartbeatpayload">function makeHeartbeatPayload</h3>
+<p><em>Build the standard 8-byte heartbeat payload for the current node.</em> </p>
+<pre><code class="language-C++">HeartbeatPayload CANProtocol::makeHeartbeatPayload (
+    uint8_t nodeId,
+    uint16_t rxCount
+) 
+</code></pre>
+<p>Fills uptime, CAN health flags, and ESR-derived TEC/REC from <a href="./"><strong>CANProtocol</strong></a> state.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>nodeId</code> Node ID (1-63 <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>; 0 reserved for <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>). </li>
+<li><code>rxCount</code> Caller-owned receive counter to embed in the payload. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Fully populated HeartbeatPayload ready to send as HB_n. </p>
+<hr>
+
+<h3 id="function-onreceive">function onReceive</h3>
+<p><em>Register a general-purpose RX frame handler.</em> </p>
+<pre><code class="language-C++">void CANProtocol::onReceive (
+    CanRxCallback cb
+) 
+</code></pre>
+<p>Fired by <a href="./#function-drain"><strong>drain()</strong></a> for all frames except SYNC_REQ and TEST_SEQ. Only one handler per node — <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> each register their own.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>cb</code> Callback invoked with canId, data pointer, and payload length. </li>
+</ul>
+<hr>
+
+<h3 id="function-onstatuschange">function onStatusChange</h3>
+<p><em>Register a CAN bus status change callback.</em> </p>
+<pre><code class="language-C++">void CANProtocol::onStatusChange (
+    CanStatusCallback cb
+) 
+</code></pre>
+<p>Fires immediately with the current status upon registration (STARTING before <a href="./#function-start"><strong>start()</strong></a> is called), then on each subsequent status transition.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>cb</code> Callback to invoke with the new CanStatus. </li>
+</ul>
+<hr>
+
+<h3 id="function-onsyncreq">function onSyncReq</h3>
+<p><em>Register a SYNC_REQ handler.</em> </p>
+<pre><code class="language-C++">void CANProtocol::onSyncReq (
+    CanSyncReqCallback cb
+) 
+</code></pre>
+<p>Fired by <a href="./#function-drain"><strong>drain()</strong></a> when SYNC_REQ (0x012) is received. <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> registers this to trigger a re-poll of all registered input objects.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>cb</code> Callback to invoke on SYNC_REQ receipt. </li>
+</ul>
+<hr>
+
+<h3 id="function-rec">function rec</h3>
+<p><em>Return the CAN Receive Error Counter (0-255) from ESR.</em> </p>
+<pre><code class="language-C++">uint8_t CANProtocol::rec () 
+</code></pre>
+<hr>
+
+<h3 id="function-send">function send</h3>
+<p><em>Send a CAN frame.</em> </p>
+<pre><code class="language-C++">void CANProtocol::send (
+    uint32_t canId,
+    const uint8_t * data,
+    uint8_t len
+) 
+</code></pre>
+<p>Sends immediately if a TX mailbox is free; otherwise enqueues in the TX ring buffer (~16 entries), drained automatically via TX-complete interrupt. CTRL_BCAST coalesces stale queued state (newest wins). EVT/control frames retry up to 3 attempts then drop. All drops increment <a href="./#function-txdropcount"><strong>txDropCount()</strong></a>.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>canId</code> 11-bit standard CAN ID. </li>
+<li><code>data</code> Pointer to payload bytes. </li>
+<li><code>len</code> Payload length in bytes (0-8). </li>
+</ul>
+<hr>
+
+<h3 id="function-sendbatched">function sendBatched</h3>
+<p><em>Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.</em> </p>
+<pre><code class="language-C++">void CANProtocol::sendBatched (
+    uint32_t canId,
+    const ControlPacket &amp; pkt
+) 
+</code></pre>
+<p>Valid only for CAN_ID_CTRL_BCAST and canIdEvt(n). Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two <a href="./#function-drain"><strong>drain()</strong></a> calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>canId</code> CAN_ID_CTRL_BCAST or canIdEvt(NODE_ID). </li>
+<li><code>pkt</code> ControlPacket to batch. </li>
+</ul>
+<hr>
+
+<h3 id="function-start">function start</h3>
+<p><em>Start the CAN peripheral and apply registered filters.</em> </p>
+<pre><code class="language-C++">void CANProtocol::start () 
+</code></pre>
+<p>Must be called after <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded.</p>
+<p>Fires the onStatusChange callback with NORMAL on success. </p>
+<hr>
+
+<h3 id="function-startloopback">function startLoopback</h3>
+<p><em>Start in silent loopback mode — for bench testing only.</em> </p>
+<pre><code class="language-C++">void CANProtocol::startLoopback () 
+</code></pre>
+<p>Identical to <a href="./#function-start"><strong>start()</strong></a> but uses CAN_MODE_SILENT_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus.</p>
+<p><strong>Note:</strong></p>
+<p>Never call this in production firmware. </p>
+<hr>
+
+<h3 id="function-tec">function tec</h3>
+<p><em>Return the CAN Transmit Error Counter (0-255) from ESR.</em> </p>
+<pre><code class="language-C++">uint8_t CANProtocol::tec () 
+</code></pre>
+<hr>
+
+<h3 id="function-txdropcount">function txDropCount</h3>
+<p><em>Return the cumulative TX queue drop count since startup.</em> </p>
+<pre><code class="language-C++">uint32_t CANProtocol::txDropCount () 
+</code></pre>
+<hr>
+
+<hr />
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/CANProtocol/CANProtocol.cpp</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  <div class="os-site-footer">
+    <div class="os-footer-grid">
+      <div class="os-footer-brand">
+        <img src="../../assets/images/brand/footer-logo.png" alt="OpenSkyhawk" />
+      </div>
+      <div class="os-footer-col">
+        <h2>Quick Links</h2>
+        <a href="../../claude/architecture/">Documentation</a>
+        <a href="../../claude/controllers/Center_Armament/">Controllers</a>
+        <a href="../">API Reference</a>
+      </div>
+      <div class="os-footer-col">
+        <h2>Resources</h2>
+        <a href="../../claude/hardware-standards/">Hardware Standards</a>
+        <a href="../../claude/kicad/">KiCad Workflow</a>
+        <a href="../../claude/pcb-design-rules/">PCB Rules</a>
+      </div>
+      <div class="os-footer-col">
+        <h2>Repository</h2>
+        <p>Follow the build, firmware, PCB, and CAD work in the project repository.</p>
+        <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+    <div class="os-footer-bottom">
+      OpenSkyhawk. Open hardware for community-built cockpits.
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

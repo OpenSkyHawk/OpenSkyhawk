@@ -1,5 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.8" xml:lang="en-US">
+  <compound refid="structBatchState" kind="struct"><name>BatchState</name>
+    <member refid="structBatchState_1a1fd47b3b9d392ce63d48cb71d4a7602d" kind="variable"><name>canId</name></member>
+    <member refid="structBatchState_1aafb11af30d0ec7282687fbad89be0c36" kind="variable"><name>hasA</name></member>
+    <member refid="structBatchState_1a0a13960dfe76dd7a9d9acb0d08de3759" kind="variable"><name>a</name></member>
+    <member refid="structBatchState_1a00971116092e610b778f923f94de1fd7" kind="variable"><name>loopsWaited</name></member>
+  </compound>
   <compound refid="structDcsBiosInputEntry" kind="struct"><name>DcsBiosInputEntry</name>
     <member refid="structDcsBiosInputEntry_1ab076abc3d8f2c904d45a44dac3a79044" kind="variable"><name>cmdId</name></member>
     <member refid="structDcsBiosInputEntry_1a4d40d75e74355fc75646e66bf1fcc4ae" kind="variable"><name>type</name></member>
@@ -34,6 +40,11 @@
     <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" kind="function"><name>OutputBase</name></member>
     <member refid="classOpenSkyhawk_1_1OutputBase_1a2f5d8b95fc224204c1ac2fe462fca3b0" kind="function"><name>onPacket</name></member>
   </compound>
+  <compound refid="structRxQueueEntry" kind="struct"><name>RxQueueEntry</name>
+    <member refid="structRxQueueEntry_1a758987839532de7c7ef2e059f552b033" kind="variable"><name>canId</name></member>
+    <member refid="structRxQueueEntry_1ad7f337951df4e0a7075dd47a8ca93d7c" kind="variable"><name>len</name></member>
+    <member refid="structRxQueueEntry_1ad621304447b625321e0cfe744e57d1ea" kind="variable"><name>data</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1Switch2Pos" kind="class"><name>OpenSkyhawk::Switch2Pos</name>
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1a6f84543df1397dda0b80ffa364c9c814" kind="variable"><name>addr_</name></member>
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1a058c8b8da91083611e7b6ed8f7d4068b" kind="variable"><name>pin_</name></member>
@@ -43,11 +54,35 @@
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1a9a0c8e6764a0b71df8a54cfbecf85d15" kind="function"><name>Switch2Pos</name></member>
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f" kind="function"><name>poll</name></member>
   </compound>
-  <compound refid="namespace_0d5" kind="namespace"><name>@5</name>
+  <compound refid="structTxQueueEntry" kind="struct"><name>TxQueueEntry</name>
+    <member refid="structTxQueueEntry_1aa218a9b070cfc094584bbfcf398b6f29" kind="variable"><name>canId</name></member>
+    <member refid="structTxQueueEntry_1ac97d64f73e4b53529f3cb74ecf432d47" kind="variable"><name>len</name></member>
+    <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
+    <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d7" kind="namespace"><name>@7</name>
+  <compound refid="namespace_0d10" kind="namespace"><name>@10</name>
   </compound>
-  <compound refid="namespace_0d9" kind="namespace"><name>@9</name>
+  <compound refid="namespace_0d6" kind="namespace"><name>@6</name>
+  </compound>
+  <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
+  </compound>
+  <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
+    <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
+    <member refid="namespaceCANProtocol_1a4a1066c652bf5a9d6dafb6838f1d900d" kind="function"><name>filterAcceptId</name></member>
+    <member refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kind="function"><name>start</name></member>
+    <member refid="namespaceCANProtocol_1acc6510e0de85e6bf717989ef8c04cf77" kind="function"><name>startLoopback</name></member>
+    <member refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kind="function"><name>drain</name></member>
+    <member refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kind="function"><name>send</name></member>
+    <member refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kind="function"><name>sendBatched</name></member>
+    <member refid="namespaceCANProtocol_1a1c8a1d8a898a80e32c16d4a184d0835b" kind="function"><name>flushBatched</name></member>
+    <member refid="namespaceCANProtocol_1a438f275b91eb5d34ae85eeaa2a3505ea" kind="function"><name>onStatusChange</name></member>
+    <member refid="namespaceCANProtocol_1a8ea19c74f3b784a3844f0e5a1b8ed699" kind="function"><name>onSyncReq</name></member>
+    <member refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kind="function"><name>onReceive</name></member>
+    <member refid="namespaceCANProtocol_1aa387fe005cbba866e64171146d49018a" kind="function"><name>tec</name></member>
+    <member refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kind="function"><name>rec</name></member>
+    <member refid="namespaceCANProtocol_1a1c61d1e29b732170869ac92225f580ad" kind="function"><name>busOff</name></member>
+    <member refid="namespaceCANProtocol_1af5d7ba8e24001ec0c58625e0b7094161" kind="function"><name>makeHeartbeatPayload</name></member>
+    <member refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kind="function"><name>txDropCount</name></member>
   </compound>
   <compound refid="namespaceInputType" kind="namespace"><name>InputType</name>
     <member refid="namespaceInputType_1a18171b2b5e3e9697dae19c2f4006cbd5" kind="variable"><name>SWITCH</name></member>
@@ -886,27 +921,67 @@
     <member refid="A4EC__OutputIds_8h_1a854e43ed928151110040abfc368215f9" kind="define"><name>A_4E_C_WINDSHLD_DEFROST</name></member>
     <member refid="A4EC__OutputIds_8h_1a026efdd651936ad38d0cca67e8e6b4c3" kind="define"><name>A_4E_C_WINDSHLD_DEFROST_AM</name></member>
   </compound>
+  <compound refid="CANProtocol_8cpp" kind="file"><name>CANProtocol.cpp</name>
+    <member refid="CANProtocol_8cpp_1ab8c2b1490b083600ae5be831959f2b46" kind="variable"><name>TX_RING_SIZE</name></member>
+    <member refid="CANProtocol_8cpp_1a6ed548630a5d43db6305235cce94116a" kind="variable"><name>RX_RING_SIZE</name></member>
+    <member refid="CANProtocol_8cpp_1afe36626a88c1e9b2220f955e2396eaf0" kind="variable"><name>MAX_FILTER_IDS</name></member>
+    <member refid="CANProtocol_8cpp_1ad94a2a956940702ac4f942c1f9bc70a4" kind="variable"><name>MAX_TX_ATTEMPTS</name></member>
+    <member refid="CANProtocol_8cpp_1a286f62108a8908edee9cb56d064a8b27" kind="variable"><name>_txRing</name></member>
+    <member refid="CANProtocol_8cpp_1ac9ed5662be19eaa305259ef38e108bd6" kind="variable"><name>_txHead</name></member>
+    <member refid="CANProtocol_8cpp_1ab74538438a87fffa6737f11bd7ec247e" kind="variable"><name>_txTail</name></member>
+    <member refid="CANProtocol_8cpp_1a9ed7b2fea647e9a1dea3f3ec42585d9c" kind="variable"><name>_rxRing</name></member>
+    <member refid="CANProtocol_8cpp_1affe906eef67f71ca3d6d265cdc0a3d67" kind="variable"><name>_rxHead</name></member>
+    <member refid="CANProtocol_8cpp_1a3a5a18863444e1f2b3857b697442e399" kind="variable"><name>_rxTail</name></member>
+    <member refid="CANProtocol_8cpp_1a6eded7aea2399972243adcb61f3f4838" kind="variable"><name>_batches</name></member>
+    <member refid="CANProtocol_8cpp_1a5b2a3b8032d639af719c01040846a52c" kind="variable"><name>_statusCb</name></member>
+    <member refid="CANProtocol_8cpp_1a9687dabc39156fd4bf066fcf14ede868" kind="variable"><name>_syncReqCb</name></member>
+    <member refid="CANProtocol_8cpp_1a2794f36e9a2373b34e11d2b380ea327e" kind="variable"><name>_rxCb</name></member>
+    <member refid="CANProtocol_8cpp_1a138fc366b9b00851dbd34f2ef9495e60" kind="variable"><name>_status</name></member>
+    <member refid="CANProtocol_8cpp_1ae18bc05d725d5b3c6ecfbdb005c6797e" kind="variable"><name>_txDrops</name></member>
+    <member refid="CANProtocol_8cpp_1ae8c240afe214af73dd1351beece0963f" kind="variable"><name>_filterIds</name></member>
+    <member refid="CANProtocol_8cpp_1a5bbc64960a0df91680d4505a61fbf9f2" kind="variable"><name>_filterCount</name></member>
+    <member refid="CANProtocol_8cpp_1a77aeda5d9cc96272ba093a0085276014" kind="variable"><name>_filterPassAll</name></member>
+    <member refid="CANProtocol_8cpp_1a30f93eb192e2bcc94a7223591c4d4554" kind="function"><name>_drainTxQueue</name></member>
+    <member refid="CANProtocol_8cpp_1a4b15c6d1739fcc2f6611c7fe635b4019" kind="function"><name>_applyFilters</name></member>
+    <member refid="CANProtocol_8cpp_1a8c31ad45b7e95614b7871c4965e594cf" kind="function"><name>_updateStatus</name></member>
+    <member refid="CANProtocol_8cpp_1a74abbbd636a12499b258cbba93e31e0a" kind="function"><name>_startInternal</name></member>
+    <member refid="CANProtocol_8cpp_1ad7ae8fb843bba2b420116bbc7c48b538" kind="function"><name>HAL_CAN_TxMailbox0CompleteCallback</name></member>
+    <member refid="CANProtocol_8cpp_1a5a41a025c8cda749aacd16cb5cd55b8b" kind="function"><name>HAL_CAN_TxMailbox1CompleteCallback</name></member>
+    <member refid="CANProtocol_8cpp_1aed9b3dc2aa3b87f873f6bc9e8bf54cf8" kind="function"><name>HAL_CAN_TxMailbox2CompleteCallback</name></member>
+    <member refid="CANProtocol_8cpp_1a7368d39e78009c017d6f81ccf33b9b2c" kind="function"><name>HAL_CAN_RxFifo0MsgPendingCallback</name></member>
+  </compound>
   <compound refid="CANProtocol_8h" kind="file"><name>CANProtocol.h</name>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kind="enum"><name>CanStatus</name></member>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kind="enumvalue"><name>STARTING</name></member>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a1e23852820b9154316c7c06e2b7ba051" kind="enumvalue"><name>NORMAL</name></member>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a39374db5533b6f88ff25658b2d6c7316" kind="enumvalue"><name>TX_ERROR</name></member>
     <member refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728aea3c14b559f5e4065a5bf09df4a9d9f0" kind="enumvalue"><name>BUS_OFF</name></member>
+    <member refid="CANProtocol_8h_1a0fd53b9da84f0920081fc8324505c504" kind="typedef"><name>CanStatusCallback</name></member>
+    <member refid="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" kind="typedef"><name>CanRxCallback</name></member>
+    <member refid="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" kind="typedef"><name>CanSyncReqCallback</name></member>
     <member refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" kind="variable"><name>CAN_ID_CTRL_BCAST</name></member>
     <member refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kind="variable"><name>CAN_ID_TEST_SEQ</name></member>
+    <member refid="CANProtocol_8h_1ad1f85ba093dec9722550d305be836227" kind="variable"><name>CAN_ID_SYNC_REQ</name></member>
+    <member refid="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" kind="variable"><name>CTRL_ID_DCS_MIN</name></member>
+    <member refid="CANProtocol_8h_1a641852573b3979285d256589876be93b" kind="variable"><name>CTRL_ID_DCS_MAX</name></member>
+    <member refid="CANProtocol_8h_1a2adc02b5f66eda455c48eaa88fab4e00" kind="variable"><name>CTRL_ID_TEST_SEQ</name></member>
+    <member refid="CANProtocol_8h_1abae4d718216a0471e230b58637b49d18" kind="variable"><name>CTRL_TEST_SEQ</name></member>
     <member refid="CANProtocol_8h_1acdc9aacd81293c775e4fff1639738447" kind="variable"><name>CAN_ID_HB_1</name></member>
     <member refid="CANProtocol_8h_1ae94b30704e5c8754a53ed96796758091" kind="variable"><name>CAN_ID_HB_2</name></member>
     <member refid="CANProtocol_8h_1acb79363cee27b9c1dddb9ee0c4cef376" kind="variable"><name>CAN_ID_EVT_1</name></member>
     <member refid="CANProtocol_8h_1a1278c70be5eb4b6a0e18bc8d334d5961" kind="variable"><name>CAN_ID_EVT_2</name></member>
     <member refid="CANProtocol_8h_1a1eac1fef8d944f86b05d90700802dc4a" kind="variable"><name>CAN_ID_ECHO_1</name></member>
     <member refid="CANProtocol_8h_1a64d87ba59764de931aa19fcadc425aab" kind="variable"><name>CAN_ID_ECHO_2</name></member>
-    <member refid="CANProtocol_8h_1abae4d718216a0471e230b58637b49d18" kind="variable"><name>CTRL_TEST_SEQ</name></member>
     <member refid="CANProtocol_8h_1af903c55bd4ae0b54a10b3c8e5311760e" kind="variable"><name>DIAG_MAGIC</name></member>
     <member refid="CANProtocol_8h_1ab71918f3191f6a3a791f5685d23dcada" kind="variable"><name>DIAG_RTT</name></member>
     <member refid="CANProtocol_8h_1ab8eb2dfcb3c349b622c9467d44988eaa" kind="variable"><name>DIAG_HB</name></member>
     <member refid="CANProtocol_8h_1a5feebc3a11850d3e77023b90161424d8" kind="variable"><name>DIAG_ERR</name></member>
     <member refid="CANProtocol_8h_1a532a40e4a608edef869dfbc131a1d1f3" kind="variable"><name>DIAG_EVT</name></member>
     <member refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kind="function"><name>__attribute__</name></member>
+    <member refid="CANProtocol_8h_1a3688e2363e1deaa57d248e523f9ef44c" kind="function"><name>canIdHb</name></member>
+    <member refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" kind="function"><name>canIdEvt</name></member>
+    <member refid="CANProtocol_8h_1a6a9b896bfe9298c8fd1d2d7e80c140ba" kind="function"><name>canIdEcho</name></member>
+    <member refid="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" kind="function"><name>canIdReady</name></member>
   </compound>
   <compound refid="HIDControls_8h" kind="file"><name>HIDControls.h</name>
     <member refid="HIDControls_8h_1a11d1309b8aff12a66521df5046c35c13" kind="define"><name>CTRL_ROLL</name></member>

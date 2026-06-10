@@ -1801,9 +1801,9 @@ void OpenSkyhawk::Switch2Pos::poll() {
 // ── PanelGroup internals ──────────────────────────────────────────────────────
 namespace {
     static uint8_t  _nodeId    = 1;
-    static uint32_t _hbTxId    = CAN_ID_HB_1;
-    static uint32_t _evtTxId   = CAN_ID_EVT_1;
-    static uint32_t _echoTxId  = CAN_ID_ECHO_1;
+    static uint32_t _hbTxId    = canIdHb(1);
+    static uint32_t _evtTxId   = canIdEvt(1);
+    static uint32_t _echoTxId  = canIdEcho(1);
     static uint32_t _rxCount   = 0;
     static uint32_t _startMs   = 0;
     static uint32_t _lastHbMs  = 0;
@@ -1879,9 +1879,9 @@ void setup() {
     pinMode(PA0, INPUT_PULLDOWN);
     delay(10);
     _nodeId   = digitalRead(PA0) ? 1 : 2;
-    _hbTxId   = (_nodeId == 1) ? CAN_ID_HB_1   : CAN_ID_HB_2;
-    _evtTxId  = (_nodeId == 1) ? CAN_ID_EVT_1  : CAN_ID_EVT_2;
-    _echoTxId = (_nodeId == 1) ? CAN_ID_ECHO_1 : CAN_ID_ECHO_2;
+    _hbTxId   = canIdHb(_nodeId);
+    _evtTxId  = canIdEvt(_nodeId);
+    _echoTxId = canIdEcho(_nodeId);
 
     if (STM32Board::isDebug()) {
         STM32Board::diagSerial().print(F(&quot;PanelGroup ready. node_id=&quot;));

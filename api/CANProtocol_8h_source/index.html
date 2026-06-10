@@ -1742,10 +1742,30 @@
 <h1 id="file-canprotocolh">File CANProtocol.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_81ff3032570f78b12938068450b63228/"><strong>CANProtocol</strong></a> <strong>&gt;</strong> <a href="../CANProtocol_8h/"><strong>CANProtocol.h</strong></a></p>
 <p><a href="../CANProtocol_8h/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">#pragma once
+<pre><code class="language-C++">
+#pragma once
 #include &lt;stdint.h&gt;
+#include &lt;HIDControls.h&gt;
 
-// ── CAN bus status ────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+struct __attribute__((packed)) ControlPacket {
+    uint16_t controlId;  
+    uint16_t value;      
+};
+
+struct __attribute__((packed)) ControlPacketPair {
+    ControlPacket a;
+    ControlPacket b;  
+};
+
+struct __attribute__((packed)) HeartbeatPayload {
+    uint8_t  nodeId;   
+    uint8_t  flags;    
+    uint16_t uptime;   
+    uint16_t rxCount;  
+    uint16_t esr;      
+};
 
 enum class CanStatus {
     STARTING,   
@@ -1754,67 +1774,114 @@ enum class CanStatus {
     BUS_OFF,    
 };
 
-// ── Packet types ──────────────────────────────────────────────────────────────
+// ── Fixed frame IDs (PanelBridge -&gt; All) ─────────────────────────────────────
 
-// Primary inter-node packet: 4 bytes, sent raw over UART and as CAN payload.
-// controlId=0xFFFF is reserved for TEST_SEQ (throughput test).
-struct __attribute__((packed)) ControlPacket {
-    uint16_t controlId;
-    uint16_t value;
-};
+static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;  
+static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  
+static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  
 
-// ── CAN message IDs ───────────────────────────────────────────────────────────
+// ── CAN ID functions (per-node IDs computed from NODE_ID) ─────────────────────
 
-static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010; // Master → All: ControlPacket payload
-static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011; // Master → All: throughput test seq
+constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 
-static constexpr uint32_t CAN_ID_HB_1       = 0x100; // Sub-1 → All: heartbeat
-static constexpr uint32_t CAN_ID_HB_2       = 0x101; // Sub-2 → All: heartbeat
+constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
 
-static constexpr uint32_t CAN_ID_EVT_1      = 0x200; // Sub-1 → Master: input event
-static constexpr uint32_t CAN_ID_EVT_2      = 0x201; // Sub-2 → Master: input event
+constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 
-static constexpr uint32_t CAN_ID_ECHO_1     = 0x210; // Sub-1 → Master: seq echo
-static constexpr uint32_t CAN_ID_ECHO_2     = 0x211; // Sub-2 → Master: seq echo
+constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
 // ── controlId namespace ───────────────────────────────────────────────────────
-//
-// controlId determines how the RP2040 gateway routes an incoming packet:
-//
-//   0x0010 – 0x00FF  Flight control axes &amp; buttons (HID only — never DCS-BIOS)
-//   0x8000 – 0x86FF  DCS-BIOS A-4E-C addresses    (DCS-BIOS only — never HID)
-//   0xFFFF           Reserved: TEST_SEQ
-//
-// Using DCS-BIOS addresses directly as controlIds in the 0x8000+ range means
-// no translation table is needed for the downstream direction (DCS → cockpit).
-// RP2040 routing logic: controlId &lt; 0x8000 → HID, else → sendDcsBiosMessage().
+// CTRL_ID_HID_MIN / CTRL_ID_HID_MAX are defined as macros in HIDControls.h (included above).
+// Do not redeclare them here — macro expansion would cause a syntax error.
 
-// ── Flight control axis IDs ───────────────────────────────────────────────────
-// Defined in the HIDControls library — include that header for CTRL_ROLL etc.
-#include &lt;HIDControls.h&gt;
+static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  
+static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  
+static constexpr uint16_t CTRL_ID_TEST_SEQ = 0xFFFF;  
 
-// ── Reserved controlId values ─────────────────────────────────────────────────
+static constexpr uint16_t CTRL_TEST_SEQ    = CTRL_ID_TEST_SEQ;
 
-static constexpr uint16_t CTRL_TEST_SEQ     = 0xFFFF; // triggers TEST_SEQ CAN frame
+// ── Deprecated per-node CAN ID constants ─────────────────────────────────────
+// Retained for backward compatibility with prototype code (CAN_Test_Master,
+// CAN_Test_SubNode). These values are WRONG relative to canIdHb/Evt/Echo()
+// functions — they were off-by-one for HB/EVT and used a different base for
+// ECHO. Prototype master+sub-node used them consistently so they worked together.
+// New code must use canIdHb(n), canIdEvt(n), canIdEcho(n) instead.
 
-// ── Batched CAN frame (2 × ControlPacket in one 8-byte frame) ────────────────
-// MAIN_NODE should batch two ControlPackets per CAN frame when forwarding
-// DCS-BIOS state downstream. Halves bus utilisation (~30% at worst case vs ~60%
-// unbatched). RP2040 and sub-nodes unpack both slots; slot B controlId 0x0000
-// signals an empty/padding slot.
+static constexpr uint32_t CAN_ID_HB_1   = 0x100;
+static constexpr uint32_t CAN_ID_HB_2   = 0x101;
+static constexpr uint32_t CAN_ID_EVT_1  = 0x200;
+static constexpr uint32_t CAN_ID_EVT_2  = 0x201;
+static constexpr uint32_t CAN_ID_ECHO_1 = 0x210;
+static constexpr uint32_t CAN_ID_ECHO_2 = 0x211;
 
-struct __attribute__((packed)) ControlPacketPair {
-    ControlPacket a;
-    ControlPacket b;  // controlId 0x0000 = unused padding slot
-};
+// ── UART diagnostic framing constants (PanelBridge -&gt; SimGateway) ─────────────
+// Used by SimGateway to parse the UART diagnostic stream from PanelBridge.
 
-// ── Diagnostic framing (UART: master → Arduino/tap) ──────────────────────────
+static constexpr uint8_t DIAG_MAGIC = 0xAA;  
+static constexpr uint8_t DIAG_RTT   = 0x01;  
+static constexpr uint8_t DIAG_HB    = 0x02;  
+static constexpr uint8_t DIAG_ERR   = 0x03;  
+static constexpr uint8_t DIAG_EVT   = 0x04;  
 
-static constexpr uint8_t DIAG_MAGIC = 0xAA;
-static constexpr uint8_t DIAG_RTT   = 0x01;
-static constexpr uint8_t DIAG_HB    = 0x02;
-static constexpr uint8_t DIAG_ERR   = 0x03;
-static constexpr uint8_t DIAG_EVT   = 0x04; // Sub-node input event forwarded upstream
+// ── Callback types ────────────────────────────────────────────────────────────
+
+using CanStatusCallback  = void(*)(CanStatus status);
+
+using CanRxCallback      = void(*)(uint32_t canId, const uint8_t* data, uint8_t len);
+
+using CanSyncReqCallback = void(*)();
+
+// ── Runtime API (STM32 only) ──────────────────────────────────────────────────
+
+#ifdef ARDUINO_ARCH_STM32
+
+namespace CANProtocol {
+
+    // ── Filter configuration (call before start()) ────────────────────────────
+
+    void filterAcceptAll();
+
+    void filterAcceptId(uint32_t canId);
+
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
+
+    void start();
+
+    void startLoopback();
+
+    void drain();
+
+    // ── Transmit ──────────────────────────────────────────────────────────────
+
+    void send(uint32_t canId, const uint8_t* data, uint8_t len);
+
+    void sendBatched(uint32_t canId, const ControlPacket&amp; pkt);
+
+    void flushBatched(uint32_t canId);
+
+    // ── Callbacks ─────────────────────────────────────────────────────────────
+
+    void onStatusChange(CanStatusCallback cb);
+
+    void onSyncReq(CanSyncReqCallback cb);
+
+    void onReceive(CanRxCallback cb);
+
+    // ── Diagnostics ───────────────────────────────────────────────────────────
+
+    uint8_t tec();
+
+    uint8_t rec();
+
+    bool busOff();
+
+    HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount);
+
+    uint32_t txDropCount();
+
+} // namespace CANProtocol
+
+#endif // ARDUINO_ARCH_STM32
 </code></pre>
 
 

@@ -2084,14 +2084,14 @@
 <p><em>Initialise all shared hardware. Call once at the top of setup().</em> </p>
 <pre><code class="language-C++">void STM32Board::begin () 
 </code></pre>
-<p>Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call CANProtocol::start() after filter setup. </p>
+<p>Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a> after filter setup. </p>
 <hr>
 
 <h3 id="function-busoff">function busOff</h3>
 <pre><code class="language-C++">bool STM32Board::busOff () 
 </code></pre>
 <p><strong>Deprecated</strong></p>
-<p>Use CANProtocol::busOff() instead. </p>
+<p>Use <a href="../namespaceCANProtocol/#function-busoff"><strong>CANProtocol::busOff()</strong></a> instead. </p>
 <hr>
 
 <h3 id="function-canhandle">function canHandle</h3>
@@ -2099,7 +2099,7 @@
 <pre><code class="language-C++">CAN_HandleTypeDef * STM32Board::canHandle () 
 </code></pre>
 <p><strong>Note:</strong></p>
-<p>Internal — used by CANProtocol only. Do not call from sketches. </p>
+<p>Internal — used by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> only. Do not call from sketches. </p>
 <p><strong>Returns:</strong></p>
 <p>Pointer to the internal CAN_HandleTypeDef. </p>
 <hr>
@@ -2112,14 +2112,14 @@
 ) 
 </code></pre>
 <p><strong>Deprecated</strong></p>
-<p>Use CANProtocol::send() instead. </p>
+<p>Use <a href="../namespaceCANProtocol/#function-send"><strong>CANProtocol::send()</strong></a> instead. </p>
 <hr>
 
 <h3 id="function-canstart">function canStart</h3>
 <pre><code class="language-C++">void STM32Board::canStart () 
 </code></pre>
 <p><strong>Deprecated</strong></p>
-<p>Use CANProtocol::start() instead. </p>
+<p>Use <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a> instead. </p>
 <hr>
 
 <h3 id="function-diagserial">function diagSerial</h3>
@@ -2159,7 +2159,7 @@
 <p>Register with CANProtocol::onStatusChange(STM32Board::onCanStatus) in setup(). Never call directly from sketch code.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>status</code> New CAN bus status reported by CANProtocol. </li>
+<li><code>status</code> New CAN bus status reported by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a>. </li>
 </ul>
 <hr>
 
@@ -2167,7 +2167,7 @@
 <pre><code class="language-C++">uint8_t STM32Board::rec () 
 </code></pre>
 <p><strong>Deprecated</strong></p>
-<p>Use CANProtocol::rec() instead. </p>
+<p>Use <a href="../namespaceCANProtocol/#function-rec"><strong>CANProtocol::rec()</strong></a> instead. </p>
 <hr>
 
 <h3 id="function-setdebug">function setDebug</h3>
@@ -2194,7 +2194,7 @@
 <pre><code class="language-C++">uint8_t STM32Board::tec () 
 </code></pre>
 <p><strong>Deprecated</strong></p>
-<p>Use CANProtocol::tec() instead. </p>
+<p>Use <a href="../namespaceCANProtocol/#function-tec"><strong>CANProtocol::tec()</strong></a> instead. </p>
 <hr>
 
 <h3 id="function-tick">function tick</h3>

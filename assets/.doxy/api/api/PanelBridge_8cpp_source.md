@@ -129,9 +129,9 @@ namespace {
                     forwardDiagRtt(seq16, rxData);
                     break;
                 }
-                case CAN_ID_HB_1:
-                case CAN_ID_HB_2: {
-                    uint8_t nodeIdx = (rxHdr.StdId == CAN_ID_HB_1) ? 0 : 1;
+                case canIdHb(1):
+                case canIdHb(2): {
+                    uint8_t nodeIdx = (rxHdr.StdId == canIdHb(1)) ? 0 : 1;
                     if (!_nodeAlive[nodeIdx] && _cbAlive) _cbAlive(rxData[0]);
                     _nodeAlive[nodeIdx] = true;
                     _lastHbMs[nodeIdx]  = now;
@@ -149,9 +149,9 @@ namespace {
                     _uart->write(hb, 8);
                     break;
                 }
-                case CAN_ID_EVT_1:
-                case CAN_ID_EVT_2: {
-                    uint8_t nodeId = (rxHdr.StdId == CAN_ID_EVT_1) ? 1 : 2;
+                case canIdEvt(1):
+                case canIdEvt(2): {
+                    uint8_t nodeId = (rxHdr.StdId == canIdEvt(1)) ? 1 : 2;
                     uint16_t controlId, value;
                     memcpy(&controlId, rxData,     2);
                     memcpy(&value,     rxData + 2, 2);
@@ -167,8 +167,8 @@ namespace {
                     _uart->write(evt, 8);
                     break;
                 }
-                case CAN_ID_ECHO_1:
-                case CAN_ID_ECHO_2: {
+                case canIdEcho(1):
+                case canIdEcho(2): {
                     uint32_t seq32; memcpy(&seq32, rxData, 4);
                     uint16_t seq16 = (uint16_t)seq32;
                     if (STM32Board::isDebug()) {
