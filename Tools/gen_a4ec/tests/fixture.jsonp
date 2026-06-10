@@ -1,0 +1,140 @@
+docdata["A-4E-C"] =
+{
+  "TEST": {
+    "ALPHA_SWITCH": {
+      "category": "TEST",
+      "control_type": "selector",
+      "description": "A 2-position switch (set_state + fixed_step + action)",
+      "identifier": "ALPHA_SWITCH",
+      "inputs": [
+        { "interface": "action",     "argument": "TOGGLE",
+          "description": "Toggle" },
+        { "interface": "fixed_step", "description": "Step" },
+        { "interface": "set_state",  "max_value": 1,
+          "description": "Set position" }
+      ],
+      "outputs": [
+        {
+          "address": 4096,
+          "address_mask_shift_identifier": "A_4E_C_ALPHA_SWITCH",
+          "address_mask_identifier":       "A_4E_C_ALPHA_SWITCH_AM",
+          "mask": 1,
+          "max_value": 1,
+          "shift_by": 0,
+          "description": "switch position",
+          "type": "integer"
+        }
+      ]
+    },
+    "BETA_MULTIPOS": {
+      "category": "TEST",
+      "control_type": "selector",
+      "description": "A 3-position selector (set_state max>1)",
+      "identifier": "BETA_MULTIPOS",
+      "inputs": [
+        { "interface": "fixed_step", "description": "Step" },
+        { "interface": "set_state",  "max_value": 2,
+          "description": "Set position" }
+      ],
+      "outputs": [
+        {
+          "address": 4098,
+          "address_mask_shift_identifier": "A_4E_C_BETA_MULTIPOS",
+          "mask": 6,
+          "max_value": 2,
+          "shift_by": 1,
+          "description": "selector position",
+          "type": "integer"
+        }
+      ]
+    },
+    "DELTA_ENCODER": {
+      "category": "TEST",
+      "control_type": "knob",
+      "description": "A rotary encoder (fixed_step only)",
+      "identifier": "DELTA_ENCODER",
+      "inputs": [
+        { "interface": "fixed_step", "description": "Turn left/right" }
+      ],
+      "outputs": []
+    },
+    "EPSILON_ACCEL": {
+      "category": "TEST",
+      "control_type": "knob",
+      "description": "An accelerated encoder (two fixed_step entries)",
+      "identifier": "EPSILON_ACCEL",
+      "inputs": [
+        { "interface": "fixed_step",
+          "argument_decrement": "DEC",
+          "argument_increment": "INC",
+          "description": "Slow step" },
+        { "interface": "fixed_step",
+          "argument_decrement": "DEC_FAST",
+          "argument_increment": "INC_FAST",
+          "description": "Fast step" }
+      ],
+      "outputs": []
+    },
+    "GAMMA_ACTION": {
+      "category": "TEST",
+      "control_type": "action",
+      "description": "A momentary button (action only)",
+      "identifier": "GAMMA_ACTION",
+      "inputs": [
+        { "interface": "action", "argument": "1",
+          "description": "Press" }
+      ],
+      "outputs": []
+    },
+    "IOTA_VARSTEP": {
+      "category": "TEST",
+      "control_type": "analog_dial",
+      "description": "A continuous analog dial (variable_step — should be skipped)",
+      "identifier": "IOTA_VARSTEP",
+      "inputs": [
+        { "interface": "set_state",    "max_value": 65535,
+          "description": "Set value" },
+        { "interface": "variable_step","max_value": 65535,
+          "suggested_step": 3200,
+          "description": "Turn dial" }
+      ],
+      "outputs": [
+        {
+          "address": 4100,
+          "address_mask_shift_identifier": "A_4E_C_IOTA_VARSTEP",
+          "address_mask_identifier":       "A_4E_C_IOTA_VARSTEP_AM",
+          "mask": 65535,
+          "max_value": 65535,
+          "shift_by": 0,
+          "description": "dial position",
+          "type": "integer"
+        }
+      ]
+    },
+    "ZETA_COVER": {
+      "category": "TEST",
+      "control_type": "selector",
+      "description": "A guard cover (2-position switch — identical to ALPHA_SWITCH structure)",
+      "identifier": "ZETA_COVER",
+      "inputs": [
+        { "interface": "action",    "argument": "TOGGLE",
+          "description": "Toggle" },
+        { "interface": "fixed_step","description": "Step" },
+        { "interface": "set_state", "max_value": 1,
+          "description": "Set position" }
+      ],
+      "outputs": [
+        {
+          "address": 4102,
+          "address_mask_shift_identifier": "A_4E_C_ZETA_COVER",
+          "address_mask_identifier":       "A_4E_C_ZETA_COVER_AM",
+          "mask": 4,
+          "max_value": 1,
+          "shift_by": 2,
+          "description": "cover position",
+          "type": "integer"
+        }
+      ]
+    }
+  }
+};
