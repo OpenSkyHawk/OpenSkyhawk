@@ -6,6 +6,19 @@ OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-pr
 @Docs/claude/hardware-standards.md
 @Docs/claude/kicad.md
 @Docs/claude/pcb-design-rules.md
+@Firmware/ScratchPad/FirmwarePlan/README.md
+@Firmware/ScratchPad/TechSpec/README.md
+
+## Firmware
+
+All firmware architecture decisions, data flows, and contract boundaries are defined in
+`Firmware/ScratchPad/FirmwarePlan/` — **this is the authoritative source of truth** and
+supersedes any firmware content in `Docs/claude/`. Implementation-level technical
+specifications (public API, class structure, method signatures) live in
+`Firmware/ScratchPad/TechSpec/`.
+
+Do not rely on the Firmware Architecture section of `Docs/claude/architecture.md` for
+firmware decisions — read the FirmwarePlan instead.
 
 ## Licensing
 

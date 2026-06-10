@@ -86,7 +86,7 @@ DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated
 - Drives one X27.589 Switec stepper (bipolar, ~600 steps/315°, 180–300 Ω coils, ~15–30 mA at 5 V)
 - VM supply: 2–10.8 V (use 5 V); VINT: 3.3 V output (bypass with 100 nF to GND — do not drive with external supply)
 - VCP (charge pump): 100 nF cap to VM — required for internal charge pump
-- **~SLEEP pin (active LOW)**: held LOW by MCU at power-on, driven HIGH only after DCS-BIOS sim connection is established — prevents startup needle twitch
+- **~SLEEP pin (active LOW)**: driven HIGH from `setup()` before the homing sequence runs — motor requires active driver output for homing torque. Remains HIGH permanently after that. Anti-twitch is achieved by homing to position 0 before DCS connects, not by disabling the driver.
 - AISEN / BISEN: current sense inputs — tie to GND (no current regulation needed; X27.589 coil resistance limits current naturally at 5 V)
 - ~FAULT: open-drain fault output — leave NC in this revision
 - No current-regulation passives needed; X27.589 coil resistance limits current naturally at 5 V
@@ -228,6 +228,21 @@ Confirmed from bench testing. Estimated ~500 LEDs total across full cockpit (~10
 
 ---
 
+## Component Pin Assignment Rules
+
+Hard design rules that apply at schematic capture time. These are not layout preferences —
+violating them causes functional failures that cannot be fixed after fabrication.
+
+| Chip | Affected pins | Rule | Reason |
+|---|---|---|---|
+| MCP23017 | GPA7, GPB7 | **Output only — never configure as inputs** | Silicon bug confirmed by Microchip (datasheet Rev D, June 2022): SDA signal is corrupted if pin voltage changes during an I2C bit transmission, causing bus malfunction. The IODIR register physically allows input mode but it is unsafe. |
+
+**MCP23017 input capacity: 14 pins per chip** (GPA0–GPA6 + GPB0–GPB6).  
+GPA7 and GPB7 may drive LEDs, enables, or any other output load without restriction.  
+Source: Microchip support article *"GPA7 & GPB7 Cannot Be Used as Inputs In MCP23017"*
+
+---
+
 ## Standard Circuit Blocks (Design Library)
 
 These subcircuits repeat on every MCU board and are candidates for KiCad hierarchical sheet templates (`PCB/Libraries/sheets/`).
@@ -252,6 +267,14 @@ These subcircuits repeat on every MCU board and are candidates for KiCad hierarc
 - LED power arrives on a **separate 2-pin Mini-Fit Jr connector** — not the signal harness
 
 ### MCP23017 Instance
+
+> **Silicon bug — GPA7 and GPB7 must not be used as inputs.**  
+> Confirmed by Microchip in datasheet Revision D (June 2022) and support article
+> "GPA7 & GPB7 Cannot Be Used as Inputs In MCP23017": the SDA signal can be corrupted
+> if the pin voltage changes during an I2C bit transmission, potentially causing bus host
+> malfunction. The register bits allow direction to be changed to input, but doing so is
+> unsafe. **Route switches and other inputs to GPA0–GPA6 and GPB0–GPB6 only (14 input
+> pins per chip). GPA7 and GPB7 may be used as outputs (LEDs, enables, etc.).**
 
 Per chip on each MCU board:
 
