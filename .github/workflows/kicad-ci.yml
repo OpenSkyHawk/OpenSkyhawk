@@ -11,7 +11,7 @@ on:
       - "PCB/**/sym-lib-table"
       - "PCB/**/fp-lib-table"
       - "PCB/Libraries/**"
-      - "Docs/claude/pcb-design-rules.md"
+      - "docs/claude/pcb-design-rules.md"
       - ".github/workflows/kicad-ci.yml"
 
 permissions:
@@ -41,8 +41,8 @@ jobs:
           mkdir -p "$reports_dir"
 
           git fetch origin "${{ github.base_ref || 'main' }}" --depth=1
-          git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD" -- PCB Docs/claude/pcb-design-rules.md |
-            grep -E '(\.kicad_(pro|sch|pcb|dru)$|/(sym-lib-table|fp-lib-table)$|^PCB/Libraries/|^Docs/claude/pcb-design-rules\.md$)' |
+          git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD" -- PCB docs/claude/pcb-design-rules.md |
+            grep -E '(\.kicad_(pro|sch|pcb|dru)$|/(sym-lib-table|fp-lib-table)$|^PCB/Libraries/|^docs/claude/pcb-design-rules\.md$)' |
             grep -v '/\.history/' > "$changed_file" || true
 
           if [ ! -s "$changed_file" ]; then
@@ -51,7 +51,7 @@ jobs:
           fi
 
           : > "$projects_file"
-          if grep -Eq '^(PCB/Libraries/|Docs/claude/pcb-design-rules\.md$)' "$changed_file"; then
+          if grep -Eq '^(PCB/Libraries/|docs/claude/pcb-design-rules\.md$)' "$changed_file"; then
             find PCB -name '*.kicad_pro' \
               -not -path 'PCB/Libraries/*' \
               -not -path '*/.history/*' \

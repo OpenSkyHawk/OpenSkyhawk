@@ -5,14 +5,14 @@ the **STM32 CAN master node** (UART @ 250000 baud). Replaces the Arduino Mega
 2560 used during initial prototyping.
 
 In production this role is filled by the RP2040 in the flight stick (see
-`Docs/claude/architecture.md`). This board is a standalone prototype bridge
+`docs/claude/architecture.md`). This board is a standalone prototype bridge
 for bench testing before the flight stick is wired up.
 
 ## Why this exists
 
 STM32 native USB CDC crashes under sustained DCS-BIOS data flow (port becomes
 unusable until replug). The RP2040 USB stack handles 250000 baud without issue.
-Full debug notes: `Docs/claude/dcsbios-stm32-debug.md`.
+Full debug notes: `docs/claude/dcsbios-stm32-debug.md`.
 
 ## What it connects
 
@@ -26,7 +26,7 @@ STM32 CAN master — they do not connect here.
 ## Hardware
 
 Any RP2040 module works. Change the `board` in `platformio.ini` to match
-what you have on hand (see `Docs/claude/hardware-standards.md` for the
+what you have on hand (see `docs/claude/hardware-standards.md` for the
 approved module list).
 
 ## Wiring
@@ -59,5 +59,5 @@ from the Mega.
 
 ## Open concern — CAN bus under DCS-BIOS load
 
-See `Docs/claude/dcsbios-stm32-debug.md` for the known open concern about
+See `docs/claude/dcsbios-stm32-debug.md` for the known open concern about
 STM32 UART + CAN bus coexistence under high DCS-BIOS throughput.

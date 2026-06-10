@@ -5,7 +5,7 @@ Organized by discipline, then by console position (Left / Center / Right):
 - `CAD/` — Fusion 360 source files (`.f3d`). STLs and STEP exports are gitignored; generate from source.
 - `PCB/` — KiCad projects. `PCB/<Console>/<Controller>/` holds one KiCad project per physical PCB. `PCB/Libraries/` holds shared symbols and footprints.
 - `Firmware/` — PlatformIO projects (preferred) or Arduino sketches. `Firmware/<name>/` — one STM32 CAN avionics controller per folder. `Firmware/HID_Controllers/<name>/` — one RP2040 HID controller per folder. `Firmware/Libraries/` — shared code; STM32 and RP2040 libraries in separate subdirectories.
-- `Docs/References/` — cockpit photos, manuals, screenshots. `Docs/Datasheets/` — component datasheets.
+- `docs/References/` — cockpit photos, manuals, screenshots. `docs/Datasheets/` — component datasheets.
 - `docs/claude/controllers/` — per-controller reference docs (pinout, I²C addresses, CAN IDs).
 
 # Firmware Architecture

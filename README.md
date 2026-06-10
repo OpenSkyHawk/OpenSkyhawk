@@ -33,7 +33,7 @@ OpenSkyhawk/
 │   ├── Center_Armament/
 │   └── Libraries/              # Shared firmware code
 │
-└── Docs/
+└── docs/
     ├── References/             # Cockpit photos, manuals, screenshots
     ├── Datasheets/             # Component datasheets
     └── claude/                 # AI-readable architecture and standards docs
