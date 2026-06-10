@@ -6,7 +6,7 @@ cockpit exclusively over CAN bus — it does not run DCS-BIOS and has no direct
 connection to the PC or the RP2040 gateway.
 
 For pinout, I²C addresses, and DCS-BIOS mappings see
-`Docs/claude/controllers/Center_Armament.md`.
+`docs/claude/controllers/Center_Armament.md`.
 
 ## Development Notes
 
@@ -22,5 +22,5 @@ debug_extra_cmds = set CPUTAPID 0x2ba01477
 ```
 
 Full debug session notes (DCS-BIOS, USB CDC issues, UART bridge) are in
-`Docs/claude/dcsbios-stm32-debug.md` — those findings apply to the STM32 CAN
+`docs/claude/dcsbios-stm32-debug.md` — those findings apply to the STM32 CAN
 master node, not to this panel node.

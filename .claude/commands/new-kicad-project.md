@@ -137,13 +137,13 @@ List each file created with its full relative path.
 **Next steps — MCU board** (if Type == mcu):
 1. Open `<BoardName>.kicad_pro` in KiCad
 2. Add hierarchical sub-sheets: Power, MCU (STM32F103CBT6), CAN (SN65HVD230), I/O (one sheet per MCP23017 instance), Backlighting (one per LED zone)
-3. Refer to `Docs/claude/hardware-standards.md` Standard Circuit Blocks section for each block's component list
+3. Refer to `docs/claude/hardware-standards.md` Standard Circuit Blocks section for each block's component list
 4. Import templates from `PCB/Libraries/sheets/` via Place → Add Sheet when available
 5. Run ERC (`kicad-cli sch erc`) after wiring each sheet
 
 **Next steps — Breakout board** (if Type == breakout):
 1. Open `<BoardName>.kicad_pro` in KiCad
 2. Add hierarchical sub-sheets: Controls (MCP23017 + harness connector J1) and Backlighting (LED strings + Mini-Fit Jr J_LED)
-3. Check `Docs/claude/controllers/<Group>.md` for the I²C address and GPIO allocation for this board
+3. Check `docs/claude/controllers/<Group>.md` for the I²C address and GPIO allocation for this board
 4. Import templates from `PCB/Libraries/sheets/` via Place → Add Sheet when available
 5. Run ERC (`kicad-cli sch erc`) after wiring each sheet

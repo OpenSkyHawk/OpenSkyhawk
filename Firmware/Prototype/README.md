@@ -1,6 +1,6 @@
 # CAN Bus Integration Test
 
-This prototype validates the CAN bus architecture before any production PCBs are built. The goal is to find bottlenecks and failure modes on the bench — the same way the STM32 USB CDC crash was discovered during the DCS-BIOS debug session (see `Docs/claude/dcsbios-stm32-debug.md`).
+This prototype validates the CAN bus architecture before any production PCBs are built. The goal is to find bottlenecks and failure modes on the bench — the same way the STM32 USB CDC crash was discovered during the DCS-BIOS debug session (see `docs/claude/dcsbios-stm32-debug.md`).
 
 Three experiments are defined below. They are independent and have different wiring, firmware assumptions, and success criteria. Do not treat them as a single continuous test path.
 
@@ -246,9 +246,9 @@ Pass: no entries in the >20 ms bucket under normal two-node conditions. If the t
 
 **What needs to be built — two independent halves:**
 
-1. **DCS → cockpit** (downstream): DCS-BIOS output callbacks on the RP2040 intercept specific control state values (e.g. `MASTER_ARM_SW`, `HUD_VIDEO_BRT`) and serialise them as `ControlPacket` structs on `Serial1` to the STM32 master, which broadcasts them over CAN to sub-nodes. See `Docs/claude/architecture.md` — "DCS-BIOS Integration Constraint" section for the packet format and example code.
+1. **DCS → cockpit** (downstream): DCS-BIOS output callbacks on the RP2040 intercept specific control state values (e.g. `MASTER_ARM_SW`, `HUD_VIDEO_BRT`) and serialise them as `ControlPacket` structs on `Serial1` to the STM32 master, which broadcasts them over CAN to sub-nodes. See `docs/claude/architecture.md` — "DCS-BIOS Integration Constraint" section for the packet format and example code.
 
-2. **Cockpit → DCS** (upstream): When a sub-node detects a button press it transmits an INPUT_EVENT on CAN. The STM32 master already forwards these to the RP2040 as `ControlPacket` structs over UART2. The RP2040 must parse incoming `ControlPacket`s on `Serial1` and translate them to `sendDcsBiosMessage()` calls. Without this half, physical cockpit inputs have no effect in the sim. See `Docs/claude/architecture.md` — "DCS-BIOS Integration Constraint" section for the translation pattern.
+2. **Cockpit → DCS** (upstream): When a sub-node detects a button press it transmits an INPUT_EVENT on CAN. The STM32 master already forwards these to the RP2040 as `ControlPacket` structs over UART2. The RP2040 must parse incoming `ControlPacket`s on `Serial1` and translate them to `sendDcsBiosMessage()` calls. Without this half, physical cockpit inputs have no effect in the sim. See `docs/claude/architecture.md` — "DCS-BIOS Integration Constraint" section for the translation pattern.
 
 **Wiring once unblocked:**
 

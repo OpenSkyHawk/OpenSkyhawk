@@ -71,7 +71,7 @@ See `PCB/Libraries/sheets/README.md` for the list of available templates and how
 
 ## Design rules
 
-JLCPCB standard 2-layer constraints and predefined sizes are documented in `Docs/claude/pcb-design-rules.md`.
+JLCPCB standard 2-layer constraints and predefined sizes are documented in `docs/claude/pcb-design-rules.md`.
 
 They are pre-loaded into every new project via `template.kicad_pro` (board design settings) and `jlcpcb-standard.kicad_dru` (custom DRC rules). See that doc for the full constraint table and JLCPCB ordering settings.
 

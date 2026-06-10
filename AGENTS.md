@@ -2,7 +2,7 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
-> **Note:** This file is a standalone summary for Codex. The authoritative source is `CLAUDE.md` + `Docs/claude/`. Keep in sync when updating hardware standards or architecture.
+> **Note:** This file is a standalone summary for Codex. The authoritative source is `CLAUDE.md` + `docs/claude/`. Keep in sync when updating hardware standards or architecture.
 
 ## Project
 
@@ -15,7 +15,7 @@ Organized by discipline, then by console position (Left / Center / Right):
 - `CAD/` — Fusion 360 source files (`.f3d`). STLs and STEP exports are gitignored; generate from source.
 - `PCB/` — KiCad projects. `PCB/<Console>/<Controller>/` holds one KiCad project per physical PCB. `PCB/Libraries/` holds shared symbols and footprints.
 - `Firmware/` — PlatformIO projects (preferred) or Arduino sketches. Each subfolder is one STM32 controller. `Firmware/Libraries/` holds shared code used across controllers.
-- `Docs/References/` — cockpit photos, manuals, screenshots. `Docs/Datasheets/` — component datasheets.
+- `docs/References/` — cockpit photos, manuals, screenshots. `docs/Datasheets/` — component datasheets.
 - `docs/claude/` — Claude Code reference docs (architecture, hardware standards, KiCad notes).
 
 ## Firmware Architecture
@@ -55,7 +55,7 @@ PCB/<Console>/<ControllerGroup>/
 
 **Scaffolding:** use `/new-kicad-project <Console> <Group> <BoardName> [mcu|breakout]` to create a new project with library tables, `.kicad_pro` (JLCPCB design rules + net classes pre-loaded), minimal root schematic, and `jlcpcb-standard.kicad_dru` in one step.
 
-**PCB design rules:** JLCPCB standard 2-layer. Min trace/clearance: **0.2 mm** (floor matches Default net class). Full rules in `Docs/claude/pcb-design-rules.md`.
+**PCB design rules:** JLCPCB standard 2-layer. Min trace/clearance: **0.2 mm** (floor matches Default net class). Full rules in `docs/claude/pcb-design-rules.md`.
 
 **Net classes (pre-loaded in every project):**
 - `Default` — 0.2 mm signal traces
@@ -63,7 +63,7 @@ PCB/<Console>/<ControllerGroup>/
 - `LED_String` — 0.3 mm, manual assignment for per-string traces
 - `CAN` — 0.2 mm / 0.2 mm clearance, auto-assigned to `CANH` / `CANL`
 
-**Board power budget:** logic + LED boards ≤ 500 mA at 12V input. Actuator boards (solenoids, servos, large steppers) require separate design review — see `Docs/claude/pcb-design-rules.md`.
+**Board power budget:** logic + LED boards ≤ 500 mA at 12V input. Actuator boards (solenoids, servos, large steppers) require separate design review — see `docs/claude/pcb-design-rules.md`.
 
 ## Hardware Standards
 
