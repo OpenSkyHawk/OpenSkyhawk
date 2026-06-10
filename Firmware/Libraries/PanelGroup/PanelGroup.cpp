@@ -163,7 +163,7 @@ void setup() {
 
 void loop() {
     uint32_t now = millis();
-    STM32Board::update();
+    STM32Board::tick();
     processCan();
     for (auto* i = OpenSkyhawk::InputBase::first; i; i = i->next)
         i->poll();
