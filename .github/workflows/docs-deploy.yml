@@ -37,6 +37,7 @@ jobs:
 
       - name: Generate API Markdown from docblocks
         run: |
+          mkdir -p .doxygen/xml
           doxygen Doxyfile
           python3 tools/doxy2md.py --xml .doxygen/xml --out docs/api
 
