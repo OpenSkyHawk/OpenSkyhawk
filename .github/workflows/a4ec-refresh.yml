@@ -110,6 +110,9 @@ jobs:
         run: |
           set -euo pipefail
 
+          logs_dir="$RUNNER_TEMP/platformio-logs/required"
+          mkdir -p "$logs_dir"
+
           found=0
           while IFS= read -r project_ini; do
             if ! grep -Eq '^[[:space:]]*A4EC([[:space:]]|$)' "$project_ini"; then
@@ -118,9 +121,19 @@ jobs:
 
             found=1
             project_dir="$(dirname "$project_ini")"
-            echo "::group::platformio run -d $project_dir"
-            platformio run -d "$project_dir"
-            echo "::endgroup::"
+            log_file="$logs_dir/$(printf '%s' "$project_dir" | tr '/ ' '__').log"
+
+            echo "Building required A4EC consumer: $project_dir"
+            if platformio run -d "$project_dir" > "$log_file" 2>&1; then
+              echo "PASS $project_dir"
+            else
+              echo "::error file=$project_ini::PlatformIO build failed"
+              echo "FAIL $project_dir"
+              echo "::group::Last 120 lines from $project_dir"
+              tail -n 120 "$log_file"
+              echo "::endgroup::"
+              exit 1
+            fi
           done < <(find Firmware -name platformio.ini -print | sort)
 
           if [ "$found" -eq 0 ]; then
@@ -132,6 +145,9 @@ jobs:
         run: |
           set -euo pipefail
 
+          logs_dir="$RUNNER_TEMP/platformio-logs/sweep"
+          mkdir -p "$logs_dir"
+
           {
             echo "## PlatformIO build sweep"
             echo ""
@@ -140,20 +156,35 @@ jobs:
           failed=0
           while IFS= read -r project_ini; do
             project_dir="$(dirname "$project_ini")"
-            echo "::group::platformio run -d $project_dir"
-            if ! platformio run -d "$project_dir"; then
+            log_file="$logs_dir/$(printf '%s' "$project_dir" | tr '/ ' '__').log"
+
+            echo "Building $project_dir"
+            if platformio run -d "$project_dir" > "$log_file" 2>&1; then
+              echo "PASS $project_dir"
+              echo "- PASS \`$project_dir\`" >> "$GITHUB_STEP_SUMMARY"
+            else
               failed=1
               echo "::warning file=$project_ini::PlatformIO build failed"
+              echo "FAIL $project_dir"
               echo "- FAIL \`$project_dir\`" >> "$GITHUB_STEP_SUMMARY"
-            else
-              echo "- PASS \`$project_dir\`" >> "$GITHUB_STEP_SUMMARY"
+              echo "::group::Last 80 lines from $project_dir"
+              tail -n 80 "$log_file"
+              echo "::endgroup::"
             fi
-            echo "::endgroup::"
           done < <(find Firmware -name platformio.ini -print | sort)
 
           if [ "$failed" -ne 0 ]; then
             echo "One or more non-A4EC PlatformIO projects failed. See the build sweep summary."
           fi
+
+      - name: Upload PlatformIO logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: platformio-logs
+          path: ${{ runner.temp }}/platformio-logs
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Create or update pull request
         env:
