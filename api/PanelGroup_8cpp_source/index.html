@@ -1800,71 +1800,43 @@ void OpenSkyhawk::Switch2Pos::poll() {
 
 // ── PanelGroup internals ──────────────────────────────────────────────────────
 namespace {
-    static uint8_t  _nodeId    = 1;
-    static uint32_t _hbTxId    = canIdHb(1);
-    static uint32_t _evtTxId   = canIdEvt(1);
-    static uint32_t _echoTxId  = canIdEcho(1);
-    static uint32_t _rxCount   = 0;
-    static uint32_t _startMs   = 0;
-    static uint32_t _lastHbMs  = 0;
+    static uint8_t  _nodeId   = 1;
+    static uint32_t _hbTxId   = canIdHb(1);
+    static uint32_t _evtTxId  = canIdEvt(1);
+    static uint32_t _rxCount  = 0;
+    static uint32_t _startMs  = 0;
+    static uint32_t _lastHbMs = 0;
 
     void sendHeartbeat(uint32_t now) {
         if (now - _lastHbMs &lt; 500) return;
         _lastHbMs = now;
 
-        uint32_t esr32 = CAN1-&gt;ESR;
-        uint8_t  tec   = (esr32 &gt;&gt; 16) &amp; 0xFF;
-        uint8_t  rec   = (esr32 &gt;&gt; 24) &amp; 0xFF;
-        bool     boff  = (esr32 &gt;&gt; 2) &amp; 1;
-        bool     epvf  = (esr32 &gt;&gt; 1) &amp; 1;
+        HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(_nodeId, (uint16_t)(_rxCount &amp; 0xFFFF));
 
         if (STM32Board::isDebug()) {
             auto&amp; d = STM32Board::diagSerial();
-            d.print(F(&quot;[HB] node=&quot;));  d.print(_nodeId);
-            d.print(F(&quot; TEC=&quot;));       d.print(tec);
-            d.print(F(&quot; REC=&quot;));       d.print(rec);
-            d.print(F(&quot; BOFF=&quot;));      d.print(boff);
-            d.print(F(&quot; EPVF=&quot;));      d.print(epvf);
-            d.print(F(&quot; rx=&quot;));        d.println(_rxCount);
+            d.print(F(&quot;[HB] node=&quot;));   d.print(_nodeId);
+            d.print(F(&quot; TEC=&quot;));        d.print(hb.esr &amp; 0xFF);
+            d.print(F(&quot; REC=&quot;));        d.print(hb.esr &gt;&gt; 8);
+            d.print(F(&quot; flags=0x&quot;));    d.print(hb.flags, HEX);
+            d.print(F(&quot; rx=&quot;));         d.println(_rxCount);
         }
 
-        uint8_t  flags  = (boff ? 0x01 : 0) | (epvf ? 0x02 : 0);
-        uint16_t uptime = (uint16_t)((now - _startMs) / 1000);
-        uint16_t rxc    = (uint16_t)(_rxCount &amp; 0xFFFF);
-        uint16_t esr16  = (uint16_t)(esr32 &gt;&gt; 16);
-
-        uint8_t buf[8];
-        buf[0] = _nodeId;
-        buf[1] = flags;
-        memcpy(buf + 2, &amp;uptime, 2);
-        memcpy(buf + 4, &amp;rxc,    2);
-        memcpy(buf + 6, &amp;esr16,  2);
-        STM32Board::canSend(_hbTxId, buf, 8);
+        CANProtocol::send(_hbTxId, reinterpret_cast&lt;const uint8_t*&gt;(&amp;hb), sizeof(hb));
     }
 
-    void processCan() {
-        static CAN_RxHeaderTypeDef rxHdr;
-        uint8_t rxData[8];
-
-        while (HAL_CAN_GetRxFifoFillLevel(STM32Board::canHandle(), CAN_RX_FIFO0) &gt; 0) {
-            HAL_CAN_GetRxMessage(STM32Board::canHandle(), CAN_RX_FIFO0, &amp;rxHdr, rxData);
-
-            switch (rxHdr.StdId) {
-                case CAN_ID_CTRL_BCAST: {
-                    _rxCount++;
-                    ControlPacket pkt;
-                    memcpy(&amp;pkt, rxData, 4);
-                    for (auto* o = OpenSkyhawk::OutputBase::first; o; o = o-&gt;next)
-                        o-&gt;onPacket(pkt.controlId, pkt.value);
-                    break;
-                }
-                case CAN_ID_TEST_SEQ:
-                    // Echo all 8 bytes unchanged — preserves the timestamp so the
-                    // RP2040 can compute RTT entirely within its own clock domain.
-                    STM32Board::canSend(_echoTxId, rxData, 8);
-                    break;
-            }
-        }
+    void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
+        if (canId != CAN_ID_CTRL_BCAST) return;
+        _rxCount++;
+        ControlPacketPair pair;
+        memcpy(&amp;pair, data, 8);
+        auto dispatch = [](const ControlPacket&amp; pkt) {
+            if (pkt.controlId == 0x0000) return;
+            for (auto* o = OpenSkyhawk::OutputBase::first; o; o = o-&gt;next)
+                o-&gt;onPacket(pkt.controlId, pkt.value);
+        };
+        dispatch(pair.a);
+        dispatch(pair.b);
     }
 }
 
@@ -1874,41 +1846,30 @@ namespace PanelGroup {
 void setup() {
     _startMs = millis();
     STM32Board::begin();
+    CANProtocol::onStatusChange(STM32Board::onCanStatus);
+    CANProtocol::onReceive(onCanRx);
 
     // Strap pin PA0: HIGH → node_id=1 (tied to 3.3V), LOW → node_id=2 (floating)
     pinMode(PA0, INPUT_PULLDOWN);
     delay(10);
-    _nodeId   = digitalRead(PA0) ? 1 : 2;
-    _hbTxId   = canIdHb(_nodeId);
-    _evtTxId  = canIdEvt(_nodeId);
-    _echoTxId = canIdEcho(_nodeId);
+    _nodeId  = digitalRead(PA0) ? 1 : 2;
+    _hbTxId  = canIdHb(_nodeId);
+    _evtTxId = canIdEvt(_nodeId);
 
     if (STM32Board::isDebug()) {
         STM32Board::diagSerial().print(F(&quot;PanelGroup ready. node_id=&quot;));
         STM32Board::diagSerial().println(_nodeId);
     }
 
-    // Accept CTRL_BCAST (0x010) and TEST_SEQ (0x011) only
-    CAN_FilterTypeDef filter = {};
-    filter.FilterBank           = 0;
-    filter.FilterMode           = CAN_FILTERMODE_IDLIST;
-    filter.FilterScale          = CAN_FILTERSCALE_16BIT;
-    filter.FilterIdHigh         = CAN_ID_CTRL_BCAST &lt;&lt; 5;
-    filter.FilterIdLow          = CAN_ID_TEST_SEQ   &lt;&lt; 5;
-    filter.FilterMaskIdHigh     = 0;
-    filter.FilterMaskIdLow      = 0;
-    filter.FilterFIFOAssignment = CAN_RX_FIFO0;
-    filter.FilterActivation     = ENABLE;
-    HAL_CAN_ConfigFilter(STM32Board::canHandle(), &amp;filter);
-
-    STM32Board::canStart();
+    // CTRL_BCAST, TEST_SEQ, and SYNC_REQ are added by start() automatically.
+    CANProtocol::start();
     STM32Board::log(&quot;CAN ready.&quot;);
 }
 
 void loop() {
     uint32_t now = millis();
     STM32Board::tick();
-    processCan();
+    CANProtocol::drain();
     for (auto* i = OpenSkyhawk::InputBase::first; i; i = i-&gt;next)
         i-&gt;poll();
     sendHeartbeat(now);
@@ -1919,8 +1880,9 @@ bool sendEvent(uint16_t controlId, uint16_t value) {
     memcpy(buf,     &amp;controlId, 2);
     memcpy(buf + 2, &amp;value,     2);
     uint32_t now = millis();
-    memcpy(buf + 4, &amp;now,       4);
-    return STM32Board::canSend(_evtTxId, buf, 8);
+    memcpy(buf + 4, &amp;now, 4);
+    CANProtocol::send(_evtTxId, buf, 8);
+    return true;
 }
 
 uint8_t nodeId() { return _nodeId; }

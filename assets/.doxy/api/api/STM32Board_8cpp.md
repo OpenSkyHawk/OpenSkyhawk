@@ -54,7 +54,6 @@
 |  CAN\_HandleTypeDef | [**\_hcan**](#variable-_hcan)  <br> |
 |  uint32\_t | [**\_ledLastMs**](#variable-_ledlastms)   = `0`<br> |
 |  [**LedState**](STM32Board_8cpp.md#enum-ledstate) | [**\_state**](#variable-_state)   = `LedState::OFF`<br> |
-|  CAN\_TxHeaderTypeDef | [**\_txHdr**](#variable-_txhdr)  <br> |
 
 
 
@@ -193,19 +192,6 @@ uint32_t _ledLastMs;
 
 ```C++
 LedState _state;
-```
-
-
-
-
-<hr>
-
-
-
-### variable \_txHdr 
-
-```C++
-CAN_TxHeaderTypeDef _txHdr;
 ```
 
 

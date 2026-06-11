@@ -12,12 +12,6 @@
 ## c
 
 * **CAN\_ID\_CTRL\_BCAST** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CAN\_ID\_ECHO\_1** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CAN\_ID\_ECHO\_2** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CAN\_ID\_EVT\_1** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CAN\_ID\_EVT\_2** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CAN\_ID\_HB\_1** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CAN\_ID\_HB\_2** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CAN\_ID\_SYNC\_REQ** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CAN\_ID\_TEST\_SEQ** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CTRL\_ID\_DCS\_MAX** ([**CANProtocol.h**](CANProtocol_8h.md))
@@ -83,7 +77,6 @@
 * **\_hcan** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_ledLastMs** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_state** ([**STM32Board.cpp**](STM32Board_8cpp.md))
-* **\_txHdr** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
 
 

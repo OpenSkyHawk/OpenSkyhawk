@@ -1867,72 +1867,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#variable-can_id_echo_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CAN_ID_ECHO_1
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-can_id_echo_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CAN_ID_ECHO_2
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-can_id_evt_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CAN_ID_EVT_1
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-can_id_evt_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CAN_ID_EVT_2
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-can_id_hb_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CAN_ID_HB_1
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-can_id_hb_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CAN_ID_HB_2
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#variable-can_id_sync_req" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2215,30 +2149,6 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_echo_1"><strong>CAN_ID_ECHO_1</strong></a>   = <code>0x210</code><br></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_echo_2"><strong>CAN_ID_ECHO_2</strong></a>   = <code>0x211</code><br></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_evt_1"><strong>CAN_ID_EVT_1</strong></a>   = <code>0x200</code><br></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_evt_2"><strong>CAN_ID_EVT_2</strong></a>   = <code>0x201</code><br></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_hb_1"><strong>CAN_ID_HB_1</strong></a>   = <code>0x100</code><br></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint32_t</td>
-<td style="text-align: left;"><a href="#variable-can_id_hb_2"><strong>CAN_ID_HB_2</strong></a>   = <code>0x101</code><br></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint32_t</td>
 <td style="text-align: left;"><a href="#variable-can_id_sync_req"><strong>CAN_ID_SYNC_REQ</strong></a>   = <code>0x012</code><br><em>Request all nodes to re-poll inputs.</em></td>
 </tr>
 <tr>
@@ -2355,48 +2265,6 @@
 <p><em>Broadcast ControlPacketPair to all panels.</em> </p>
 <pre><code class="language-C++">constexpr uint32_t CAN_ID_CTRL_BCAST;
 </code></pre>
-<hr>
-
-<h3 id="variable-can_id_echo_1">variable CAN_ID_ECHO_1</h3>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_ECHO_1;
-</code></pre>
-<p><strong>Deprecated</strong></p>
-<p>Use canIdEcho(1) = 0x301. Wrong base (0x210 vs 0x300). </p>
-<hr>
-
-<h3 id="variable-can_id_echo_2">variable CAN_ID_ECHO_2</h3>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_ECHO_2;
-</code></pre>
-<p><strong>Deprecated</strong></p>
-<p>Use canIdEcho(2) = 0x302. Wrong base. </p>
-<hr>
-
-<h3 id="variable-can_id_evt_1">variable CAN_ID_EVT_1</h3>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_EVT_1;
-</code></pre>
-<p><strong>Deprecated</strong></p>
-<p>Use canIdEvt(1) = 0x201. Off-by-one. </p>
-<hr>
-
-<h3 id="variable-can_id_evt_2">variable CAN_ID_EVT_2</h3>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_EVT_2;
-</code></pre>
-<p><strong>Deprecated</strong></p>
-<p>Use canIdEvt(2) = 0x202. Off-by-one. </p>
-<hr>
-
-<h3 id="variable-can_id_hb_1">variable CAN_ID_HB_1</h3>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_HB_1;
-</code></pre>
-<p><strong>Deprecated</strong></p>
-<p>Use canIdHb(1) = 0x101. Off-by-one: this is canIdHb(0) (<a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reserved). </p>
-<hr>
-
-<h3 id="variable-can_id_hb_2">variable CAN_ID_HB_2</h3>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_HB_2;
-</code></pre>
-<p><strong>Deprecated</strong></p>
-<p>Use canIdHb(2) = 0x102. Off-by-one. </p>
 <hr>
 
 <h3 id="variable-can_id_sync_req">variable CAN_ID_SYNC_REQ</h3>

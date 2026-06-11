@@ -1800,20 +1800,6 @@ static constexpr uint16_t CTRL_ID_TEST_SEQ = 0xFFFF;
 
 static constexpr uint16_t CTRL_TEST_SEQ    = CTRL_ID_TEST_SEQ;
 
-// ── Deprecated per-node CAN ID constants ─────────────────────────────────────
-// Retained for backward compatibility with prototype code (CAN_Test_Master,
-// CAN_Test_SubNode). These values are WRONG relative to canIdHb/Evt/Echo()
-// functions — they were off-by-one for HB/EVT and used a different base for
-// ECHO. Prototype master+sub-node used them consistently so they worked together.
-// New code must use canIdHb(n), canIdEvt(n), canIdEcho(n) instead.
-
-static constexpr uint32_t CAN_ID_HB_1   = 0x100;
-static constexpr uint32_t CAN_ID_HB_2   = 0x101;
-static constexpr uint32_t CAN_ID_EVT_1  = 0x200;
-static constexpr uint32_t CAN_ID_EVT_2  = 0x201;
-static constexpr uint32_t CAN_ID_ECHO_1 = 0x210;
-static constexpr uint32_t CAN_ID_ECHO_2 = 0x211;
-
 // ── UART diagnostic framing constants (PanelBridge -&gt; SimGateway) ─────────────
 // Used by SimGateway to parse the UART diagnostic stream from PanelBridge.
 

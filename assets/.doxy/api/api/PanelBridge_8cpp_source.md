@@ -32,9 +32,9 @@ namespace {
         if (now - _lastErrMs < 1000) return;
         _lastErrMs = now;
 
-        uint8_t tec  = STM32Board::tec();
-        uint8_t rec  = STM32Board::rec();
-        bool    boff = STM32Board::busOff();
+        uint8_t tec  = CANProtocol::tec();
+        uint8_t rec  = CANProtocol::rec();
+        bool    boff = CANProtocol::busOff();
         if (tec > 0 || rec > 0 || boff) {
             if (STM32Board::isDebug()) {
                 auto& d = STM32Board::diagSerial();
@@ -58,21 +58,19 @@ namespace {
     }
 
     void processUartPacket(const ControlPacket& pkt) {
-        if (pkt.controlId == CTRL_TEST_SEQ) {
+        if (pkt.controlId == CTRL_ID_TEST_SEQ) {
             uint8_t buf[8];
             uint32_t seq32 = pkt.value;
             uint32_t now   = millis();
             memcpy(buf,     &seq32, 4);
             memcpy(buf + 4, &now,   4);
-            STM32Board::canSend(CAN_ID_TEST_SEQ, buf, 8);
+            CANProtocol::send(CAN_ID_TEST_SEQ, buf, 8);
             if (STM32Board::isDebug()) {
                 STM32Board::diagSerial().print(F("[SEQ] tx seq="));
                 STM32Board::diagSerial().println(pkt.value);
             }
         } else {
-            uint8_t buf[4];
-            memcpy(buf, &pkt, 4);
-            STM32Board::canSend(CAN_ID_CTRL_BCAST, buf, 4);
+            CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, pkt);
         }
     }
 
@@ -86,7 +84,7 @@ namespace {
             memcpy(&pkt, _uartBuf, 4);
             if ((pkt.controlId >= 0x0010 && pkt.controlId <= 0x00FF)
                     || pkt.controlId >= 0x8000
-                    || pkt.controlId == CTRL_TEST_SEQ) {
+                    || pkt.controlId == CTRL_ID_TEST_SEQ) {
                 processUartPacket(pkt);
             } else {
                 _ovfCount++;
@@ -109,76 +107,52 @@ namespace {
         _uart->write(rtt, 8);
     }
 
-    void processCan() {
-        static CAN_RxHeaderTypeDef rxHdr;
-        uint8_t rxData[8];
+    void onCanRx(uint32_t canId, const uint8_t* rxData, uint8_t len) {
         uint32_t now = millis();
 
-        while (HAL_CAN_GetRxFifoFillLevel(STM32Board::canHandle(), CAN_RX_FIFO0) > 0) {
-            HAL_CAN_GetRxMessage(STM32Board::canHandle(), CAN_RX_FIFO0, &rxHdr, rxData);
-
-            switch (rxHdr.StdId) {
-                case CAN_ID_TEST_SEQ: {
-                    // Fires in loopback mode only (no sub-node present).
-                    uint32_t seq32; memcpy(&seq32, rxData, 4);
-                    uint16_t seq16 = (uint16_t)seq32;
-                    if (STM32Board::isDebug()) {
-                        STM32Board::diagSerial().print(F("[LOOPBACK] seq="));
-                        STM32Board::diagSerial().println(seq16);
-                    }
-                    forwardDiagRtt(seq16, rxData);
-                    break;
-                }
-                case canIdHb(1):
-                case canIdHb(2): {
-                    uint8_t nodeIdx = (rxHdr.StdId == canIdHb(1)) ? 0 : 1;
-                    if (!_nodeAlive[nodeIdx] && _cbAlive) _cbAlive(rxData[0]);
-                    _nodeAlive[nodeIdx] = true;
-                    _lastHbMs[nodeIdx]  = now;
-                    if (STM32Board::isDebug()) {
-                        uint16_t esr16; memcpy(&esr16, rxData + 6, 2);
-                        auto& d = STM32Board::diagSerial();
-                        d.print(F("[HB] node="));  d.print(rxData[0]);
-                        d.print(F(" flags=0x"));   d.print(rxData[1], HEX);
-                        d.print(F(" ESR=0x"));     d.println(esr16, HEX);
-                    }
-                    uint8_t hb[8] = {DIAG_MAGIC, DIAG_HB, rxData[0], rxData[1]};
-                    uint16_t rxc; memcpy(&rxc, rxData + 4, 2);
-                    memcpy(hb + 4, &rxc, 2);
-                    memcpy(hb + 6, rxData + 6, 2); // ESR bytes from sub-node heartbeat
-                    _uart->write(hb, 8);
-                    break;
-                }
-                case canIdEvt(1):
-                case canIdEvt(2): {
-                    uint8_t nodeId = (rxHdr.StdId == canIdEvt(1)) ? 1 : 2;
-                    uint16_t controlId, value;
-                    memcpy(&controlId, rxData,     2);
-                    memcpy(&value,     rxData + 2, 2);
-                    if (STM32Board::isDebug()) {
-                        auto& d = STM32Board::diagSerial();
-                        d.print(F("[EVT] node=")); d.print(nodeId);
-                        d.print(F(" ctrl=0x"));   d.print(controlId, HEX);
-                        d.print(F(" val="));       d.println(value);
-                    }
-                    uint8_t evt[8] = {DIAG_MAGIC, DIAG_EVT, 0, 0, 0, 0, nodeId, 0};
-                    memcpy(evt + 2, &controlId, 2);
-                    memcpy(evt + 4, &value,     2);
-                    _uart->write(evt, 8);
-                    break;
-                }
-                case canIdEcho(1):
-                case canIdEcho(2): {
-                    uint32_t seq32; memcpy(&seq32, rxData, 4);
-                    uint16_t seq16 = (uint16_t)seq32;
-                    if (STM32Board::isDebug()) {
-                        STM32Board::diagSerial().print(F("[ECHO] seq="));
-                        STM32Board::diagSerial().println(seq16);
-                    }
-                    forwardDiagRtt(seq16, rxData);
-                    break;
-                }
+        if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODES)) {
+            uint8_t nodeIdx = (uint8_t)(canId - canIdHb(1));
+            if (!_nodeAlive[nodeIdx] && _cbAlive) _cbAlive(rxData[0]);
+            _nodeAlive[nodeIdx] = true;
+            _lastHbMs[nodeIdx]  = now;
+            if (STM32Board::isDebug()) {
+                uint16_t esr16; memcpy(&esr16, rxData + 6, 2);
+                auto& d = STM32Board::diagSerial();
+                d.print(F("[HB] node="));  d.print(rxData[0]);
+                d.print(F(" flags=0x"));   d.print(rxData[1], HEX);
+                d.print(F(" ESR=0x"));     d.println(esr16, HEX);
             }
+            uint8_t hb[8] = {DIAG_MAGIC, DIAG_HB, rxData[0], rxData[1]};
+            uint16_t rxc; memcpy(&rxc, rxData + 4, 2);
+            memcpy(hb + 4, &rxc, 2);
+            memcpy(hb + 6, rxData + 6, 2);
+            _uart->write(hb, 8);
+
+        } else if (canId >= canIdEvt(1) && canId <= canIdEvt(MAX_NODES)) {
+            uint8_t nodeId = (uint8_t)(canId - canIdEvt(0));
+            uint16_t controlId, value;
+            memcpy(&controlId, rxData,     2);
+            memcpy(&value,     rxData + 2, 2);
+            if (STM32Board::isDebug()) {
+                auto& d = STM32Board::diagSerial();
+                d.print(F("[EVT] node=")); d.print(nodeId);
+                d.print(F(" ctrl=0x"));   d.print(controlId, HEX);
+                d.print(F(" val="));       d.println(value);
+            }
+            uint8_t evt[8] = {DIAG_MAGIC, DIAG_EVT, 0, 0, 0, 0, nodeId, 0};
+            memcpy(evt + 2, &controlId, 2);
+            memcpy(evt + 4, &value,     2);
+            _uart->write(evt, 8);
+
+        } else if (canId >= canIdEcho(0) && canId <= canIdEcho(MAX_NODES)) {
+            // Echo reply from sub-node (or self in loopback via canIdEcho(NODE_ID))
+            uint32_t seq32; memcpy(&seq32, rxData, 4);
+            uint16_t seq16 = (uint16_t)seq32;
+            if (STM32Board::isDebug()) {
+                STM32Board::diagSerial().print(F("[ECHO] seq="));
+                STM32Board::diagSerial().println(seq16);
+            }
+            forwardDiagRtt(seq16, rxData);
         }
     }
 }
@@ -188,22 +162,13 @@ namespace PanelBridge {
 void setup(HardwareSerial& uartPort) {
     _uart = &uartPort;
     STM32Board::begin();
+    CANProtocol::onStatusChange(STM32Board::onCanStatus);
+    CANProtocol::onReceive(onCanRx);
 
     _uart->begin(250000);
 
-    CAN_FilterTypeDef filter = {};
-    filter.FilterBank           = 0;
-    filter.FilterMode           = CAN_FILTERMODE_IDMASK;
-    filter.FilterScale          = CAN_FILTERSCALE_32BIT;
-    filter.FilterIdHigh         = 0;
-    filter.FilterIdLow          = 0;
-    filter.FilterMaskIdHigh     = 0;
-    filter.FilterMaskIdLow      = 0;
-    filter.FilterFIFOAssignment = CAN_RX_FIFO0;
-    filter.FilterActivation     = ENABLE;
-    HAL_CAN_ConfigFilter(STM32Board::canHandle(), &filter);
-
-    STM32Board::canStart();
+    CANProtocol::filterAcceptAll();
+    CANProtocol::start();
     STM32Board::log("PanelBridge ready. CAN ready.");
 }
 
@@ -211,7 +176,7 @@ void loop() {
     uint32_t now = millis();
     STM32Board::tick();
     drainUart();
-    processCan();
+    CANProtocol::drain();
     monitorErrors(now);
 }
 

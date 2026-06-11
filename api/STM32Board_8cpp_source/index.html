@@ -1766,7 +1766,6 @@ static uint32_t          _ledLastMs  = 0;
 static bool              _debugOn    = false;
 static HardwareSerial    _diag(PA10, PA9);  // USART1: RX=PA10, TX=PA9
 static CAN_HandleTypeDef _hcan;
-static CAN_TxHeaderTypeDef _txHdr;
 
 // ── Private helpers ───────────────────────────────────────────────────────────
 
@@ -1858,9 +1857,6 @@ void begin() {
     _hcan.Init.TransmitFifoPriority = DISABLE;
     HAL_CAN_Init(&amp;_hcan);
 
-    _txHdr.IDE                = CAN_ID_STD;
-    _txHdr.RTR                = CAN_RTR_DATA;
-    _txHdr.TransmitGlobalTime = DISABLE;
 }
 
 void setDebug(bool on) { _debugOn = on; }
@@ -1895,23 +1891,6 @@ void log(const char* msg) {
 
 HardwareSerial&amp; diagSerial()     { return _diag; }
 CAN_HandleTypeDef* canHandle()   { return &amp;_hcan; }
-
-// ── Deprecated forwarders (removed in CANProtocol PR) ────────────────────────
-
-void canStart() {
-    HAL_CAN_Start(&amp;_hcan);
-}
-
-bool canSend(uint32_t canId, const uint8_t* data, uint8_t len) {
-    _txHdr.StdId = canId;
-    _txHdr.DLC   = len;
-    uint32_t mailbox;
-    return HAL_CAN_AddTxMessage(&amp;_hcan, &amp;_txHdr, const_cast&lt;uint8_t*&gt;(data), &amp;mailbox) == HAL_OK;
-}
-
-uint8_t tec()    { return (CAN1-&gt;ESR &gt;&gt; 16) &amp; 0xFF; }
-uint8_t rec()    { return (CAN1-&gt;ESR &gt;&gt; 24) &amp; 0xFF; }
-bool    busOff() { return (CAN1-&gt;ESR &gt;&gt; 2) &amp; 1; }
 
 } // namespace STM32Board
 

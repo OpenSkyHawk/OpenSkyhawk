@@ -100,7 +100,7 @@ Fixed hardware (same on every board — no constructor arguments):
 
 **Version:**
 
-0.2.0 
+0.3.0 
 
 
 

@@ -12,15 +12,13 @@
 
 ## b
 
-* **busOff** ([**CANProtocol**](namespaceCANProtocol.md), [**STM32Board**](namespaceSTM32Board.md))
+* **busOff** ([**CANProtocol**](namespaceCANProtocol.md))
 * **begin** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## c
 
 * **canHandle** ([**STM32Board**](namespaceSTM32Board.md))
-* **canSend** ([**STM32Board**](namespaceSTM32Board.md))
-* **canStart** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## d
@@ -85,7 +83,7 @@
 
 ## r
 
-* **rec** ([**CANProtocol**](namespaceCANProtocol.md), [**STM32Board**](namespaceSTM32Board.md))
+* **rec** ([**CANProtocol**](namespaceCANProtocol.md))
 
 
 ## s
@@ -103,7 +101,7 @@
 
 ## t
 
-* **tec** ([**CANProtocol**](namespaceCANProtocol.md), [**STM32Board**](namespaceSTM32Board.md))
+* **tec** ([**CANProtocol**](namespaceCANProtocol.md))
 * **txDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
 * **tick** ([**STM32Board**](namespaceSTM32Board.md))
 
