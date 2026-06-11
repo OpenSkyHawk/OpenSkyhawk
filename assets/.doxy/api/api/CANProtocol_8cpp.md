@@ -102,6 +102,9 @@
 | ---: | :--- |
 |  void | [**\_applyFilters**](#function-_applyfilters) () <br> |
 |  void | [**\_drainTxQueue**](#function-_draintxqueue) () <br> |
+|  void | [**\_drainTxQueueFromMain**](#function-_draintxqueuefrommain) () <br> |
+|  void | [**\_enqueueRxFrame**](#function-_enqueuerxframe) (uint32\_t canId, uint8\_t len, const uint8\_t \* data) <br> |
+|  void | [**\_pollRxFifo0**](#function-_pollrxfifo0) () <br> |
 |  void | [**\_startInternal**](#function-_startinternal) (uint32\_t mode) <br> |
 |  void | [**\_updateStatus**](#function-_updatestatus) () <br> |
 
@@ -463,6 +466,49 @@ static void _applyFilters ()
 
 ```C++
 static void _drainTxQueue () 
+```
+
+
+
+
+<hr>
+
+
+
+### function \_drainTxQueueFromMain 
+
+```C++
+static void _drainTxQueueFromMain () 
+```
+
+
+
+
+<hr>
+
+
+
+### function \_enqueueRxFrame 
+
+```C++
+static void _enqueueRxFrame (
+    uint32_t canId,
+    uint8_t len,
+    const uint8_t * data
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function \_pollRxFifo0 
+
+```C++
+static void _pollRxFifo0 () 
 ```
 
 

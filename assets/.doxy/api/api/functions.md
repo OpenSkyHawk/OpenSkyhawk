@@ -24,6 +24,9 @@
 
 * **\_applyFilters** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_drainTxQueue** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_drainTxQueueFromMain** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_enqueueRxFrame** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_pollRxFifo0** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_startInternal** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_updateStatus** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_\_attribute\_\_** ([**CANProtocol.h**](CANProtocol_8h.md))
