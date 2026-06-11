@@ -2,7 +2,7 @@
 
 #include "SimGateway.h"
 #include <USB.h>
-#include <Joystick.h>
+#include <MGS_Pico_Joystick.h>
 
 // ── HIDAxis ───────────────────────────────────────────────────────────────────
 
@@ -132,10 +132,7 @@ void setup(HardwareSerial& uart) {
     USB.setVIDPID(0x2E8A, 0x4134);
 
     _uart->begin(250000);
-
-    Joystick.use16bit();
-    Joystick.useManualSend(true);
-    Joystick.begin();
+    Joystick.begin(); // USB identity must be set above before this call
 }
 
 void loop() {
