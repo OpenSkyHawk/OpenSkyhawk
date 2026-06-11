@@ -2,10 +2,15 @@ name: Firmware CI
 
 on:
   workflow_dispatch:
+  schedule:
+    # Weekly full build. PRs use affected-project selection for faster feedback.
+    - cron: "0 8 * * 0"
   pull_request:
     paths:
       - "Firmware/**"
       - ".github/workflows/firmware-ci.yml"
+      - ".github/firmware-platformio-impact.json"
+      - ".github/scripts/select-platformio-projects.py"
 
 permissions:
   contents: read
@@ -18,13 +23,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
+      - name: Select firmware projects
+        id: select
+        run: |
+          set -euo pipefail
+
+          projects_file="$RUNNER_TEMP/platformio-projects.txt"
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            # pull_request checks out GitHub's synthetic merge commit.
+            # With fetch-depth 2, HEAD^1 is the base parent and HEAD is the merge result.
+            python .github/scripts/select-platformio-projects.py \
+              --mode affected \
+              --base "HEAD^1" \
+              --head "HEAD" \
+              --output "$projects_file" \
+              --github-output "$GITHUB_OUTPUT"
+          else
+            python .github/scripts/select-platformio-projects.py \
+              --mode full \
+              --output "$projects_file" \
+              --github-output "$GITHUB_OUTPUT"
+          fi
+
       - name: Cache PlatformIO packages
+        if: steps.select.outputs.project_count != '0'
         uses: actions/cache@v5
         with:
           path: ~/.platformio/.cache
@@ -34,12 +64,14 @@ jobs:
             ${{ runner.os }}-platformio-
 
       - name: Install PlatformIO
+        if: steps.select.outputs.project_count != '0'
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
           python -m pip install platformio
 
       - name: Build firmware projects
+        if: steps.select.outputs.project_count != '0'
         run: |
           set -euo pipefail
 
@@ -48,9 +80,9 @@ jobs:
           failed=0
           found=0
 
-          while IFS= read -r project_ini; do
+          while IFS= read -r project_dir; do
             found=1
-            project_dir="$(dirname "$project_ini")"
+            project_ini="$project_dir/platformio.ini"
             log_file="$logs_dir/$(printf '%s' "$project_dir" | tr '/ ' '__').log"
 
             echo "Building $project_dir"
@@ -64,14 +96,18 @@ jobs:
               tail -n 120 "$log_file"
               echo "::endgroup::"
             fi
-          done < <(find Firmware -name platformio.ini -not -path '*/ScratchPad/*' -print | sort)
+          done < "$RUNNER_TEMP/platformio-projects.txt"
 
           if [ "$found" -eq 0 ]; then
-            echo "No PlatformIO projects found under Firmware/." >&2
+            echo "No PlatformIO projects were selected." >&2
             exit 1
           fi
 
           exit "$failed"
+
+      - name: Skip firmware builds
+        if: steps.select.outputs.project_count == '0'
+        run: echo "No affected PlatformIO projects were selected."
 
       - name: Upload PlatformIO logs
         if: always()
