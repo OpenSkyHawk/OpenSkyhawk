@@ -1739,17 +1739,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#detailed-description" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Detailed Description
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#public-functions-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1766,105 +1755,6 @@
     <span class="md-ellipsis">
       
         function loop
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiagerr" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagErr
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiagerr_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagErr
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiagevt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagEvt
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiagevt_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagEvt
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiaghb" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagHb
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiaghb_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagHb
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiagrtt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagRtt
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-ondiagrtt_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function onDiagRtt
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-send" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function send
       
     </span>
   </a>
@@ -1909,7 +1799,6 @@
 
 <h1 id="namespace-simgateway">Namespace SimGateway</h1>
 <p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>SimGateway</strong></a></p>
-<p><em>&lt; Exposed so sketches can call Joystick.button() etc.</em> <a href="#detailed-description">More...</a></p>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -1921,174 +1810,44 @@
 <tbody>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-loop"><strong>loop</strong></a> () <br><em>Drain the UART from</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>and dispatch DIAG frames.</em></td>
+<td style="text-align: left;"><a href="#function-loop"><strong>loop</strong></a> () <br><em>Relay bytes and dispatch HID frames. Call once per</em> <a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiagerr"><strong>onDiagErr</strong></a> (void(*)(uint8_t, uint8_t, uint8_t) cb) <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiagerr"><strong>onDiagErr</strong></a> (void(*)(uint8_t tec, uint8_t rec, uint8_t flags) cb) <br><em>Register a callback for DIAG_ERR (CAN error counter) frames.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiagevt"><strong>onDiagEvt</strong></a> (void(*)(uint16_t, uint16_t, uint8_t) cb) <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiagevt"><strong>onDiagEvt</strong></a> (void(*)(uint16_t controlId, uint16_t value, uint8_t nodeId) cb) <br><em>Register a callback for DIAG_EVT (sub-node input event) frames.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiaghb"><strong>onDiagHb</strong></a> (void(*)(uint8_t, uint16_t) cb) <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiaghb"><strong>onDiagHb</strong></a> (void(*)(uint8_t nodeId, uint16_t rxCount) cb) <br><em>Register a callback for DIAG_HB (sub-node heartbeat) frames.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiagrtt"><strong>onDiagRtt</strong></a> (void(*)(uint16_t, uint32_t) cb) <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-ondiagrtt"><strong>onDiagRtt</strong></a> (void(*)(uint16_t seq, uint32_t sentMs) cb) <br><em>Register a callback for DIAG_RTT frames from</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-send"><strong>send</strong></a> (uint16_t controlId, uint16_t value) <br><em>Send a ControlPacket to</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>over UART.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-setup"><strong>setup</strong></a> (HardwareSerial &amp; panelBridgePort) <br><em>Initialise USB identity, Joystick, and UART link to</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></td>
+<td style="text-align: left;"><a href="#function-setup"><strong>setup</strong></a> (SerialUART &amp; uart, uint8_t txPin=DEFAULT_UART_TX_PIN, uint8_t rxPin=DEFAULT_UART_RX_PIN) <br><em>Initialise USB identity, OpenSkyhawkJoystick, and UART link to</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></td>
 </tr>
 </tbody>
 </table>
-<h2 id="detailed-description">Detailed Description</h2>
-<p>Static singleton for the RP2040 DCS-BIOS / USB HID gateway.</p>
-<p>Sets the USB VID/PID and product strings, initialises the Joystick HID composite device, and starts the UART link to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> at 250000 baud. In <a href="./#function-loop"><strong>loop()</strong></a>, drains the UART and dispatches 8-byte DIAG frames to registered callbacks. Sending ControlPackets to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> is done via <a href="./#function-send"><strong>send()</strong></a>. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-loop">function loop</h3>
-<p><em>Drain the UART from</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>and dispatch DIAG frames.</em></p>
+<p><em>Relay bytes and dispatch HID frames. Call once per</em> <a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></p>
 <pre><code class="language-C++">void SimGateway::loop () 
 </code></pre>
-<p>Reads incoming bytes from panelBridgePort, re-syncs on DIAG_MAGIC, and calls the registered onDiagRtt / onDiagHb / onDiagErr callbacks when a complete 8-byte DIAG frame is assembled. Call DcsBios::loop() in your sketch's <a href="./#function-loop"><strong>loop()</strong></a> before or after this. </p>
-<hr>
-
-<h3 id="function-ondiagerr">function onDiagErr</h3>
-<pre><code class="language-C++">void SimGateway::onDiagErr (
-    void(*)(uint8_t, uint8_t, uint8_t) cb
-) 
-</code></pre>
-<hr>
-
-<h3 id="function-ondiagerr_1">function onDiagErr</h3>
-<p><em>Register a callback for DIAG_ERR (CAN error counter) frames.</em> </p>
-<pre><code class="language-C++">void SimGateway::onDiagErr (
-    void(*)(uint8_t tec, uint8_t rec, uint8_t flags) cb
-) 
-</code></pre>
+<p>Per call:
+* Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>.
+* Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE
+* If any HID setter fired, call OsJoystick.send() exactly once.</p>
 <p><strong>Note:</strong></p>
-<p>Set before calling <a href="./#function-setup"><strong>setup()</strong></a>. </p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>cb</code> Callback: cb(tec, rec, flags). flags bits: 0x01=bus-off, 0x02=error-passive. </li>
-</ul>
-<hr>
-
-<h3 id="function-ondiagevt">function onDiagEvt</h3>
-<pre><code class="language-C++">void SimGateway::onDiagEvt (
-    void(*)(uint16_t, uint16_t, uint8_t) cb
-) 
-</code></pre>
-<hr>
-
-<h3 id="function-ondiagevt_1">function onDiagEvt</h3>
-<p><em>Register a callback for DIAG_EVT (sub-node input event) frames.</em> </p>
-<pre><code class="language-C++">void SimGateway::onDiagEvt (
-    void(*)(uint16_t controlId, uint16_t value, uint8_t nodeId) cb
-) 
-</code></pre>
-<p>Called when <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> forwards a CAN input event from a sub-node. controlId and value are the raw <a href="../namespacePanelGroup/#function-sendevent"><strong>PanelGroup::sendEvent()</strong></a> arguments; nodeId identifies which sub-node sent the event (1 or 2). Use this to translate the event to a DCS-BIOS message via sendDcsBiosMessage() in the sketch.</p>
-<p><strong>Note:</strong></p>
-<p>Set before calling <a href="./#function-setup"><strong>setup()</strong></a>. </p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>cb</code> Callback: cb(controlId, value, nodeId). </li>
-</ul>
-<hr>
-
-<h3 id="function-ondiaghb">function onDiagHb</h3>
-<pre><code class="language-C++">void SimGateway::onDiagHb (
-    void(*)(uint8_t, uint16_t) cb
-) 
-</code></pre>
-<hr>
-
-<h3 id="function-ondiaghb_1">function onDiagHb</h3>
-<p><em>Register a callback for DIAG_HB (sub-node heartbeat) frames.</em> </p>
-<pre><code class="language-C++">void SimGateway::onDiagHb (
-    void(*)(uint8_t nodeId, uint16_t rxCount) cb
-) 
-</code></pre>
-<p><strong>Note:</strong></p>
-<p>Set before calling <a href="./#function-setup"><strong>setup()</strong></a>. </p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>cb</code> Callback: cb(nodeId, rxCount). </li>
-</ul>
-<hr>
-
-<h3 id="function-ondiagrtt">function onDiagRtt</h3>
-<pre><code class="language-C++">void SimGateway::onDiagRtt (
-    void(*)(uint16_t, uint32_t) cb
-) 
-</code></pre>
-<hr>
-
-<h3 id="function-ondiagrtt_1">function onDiagRtt</h3>
-<p><em>Register a callback for DIAG_RTT frames from</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">void SimGateway::onDiagRtt (
-    void(*)(uint16_t seq, uint32_t sentMs) cb
-) 
-</code></pre>
-<p>Called when <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> forwards a sub-node echo back as a round-trip time measurement frame. seq matches the sequence number sent with CTRL_TEST_SEQ; sentMs is the PanelBridge-side timestamp when the TEST_SEQ CAN frame was sent (use millis() - pingSentMs on the RP2040 side to compute RTT).</p>
-<p><strong>Note:</strong></p>
-<p>Set before calling <a href="./#function-setup"><strong>setup()</strong></a>. </p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>cb</code> Callback: cb(seq, sentMs). </li>
-</ul>
-<hr>
-
-<h3 id="function-send">function send</h3>
-<p><em>Send a ControlPacket to</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>over UART.</em></p>
-<pre><code class="language-C++">void SimGateway::send (
-    uint16_t controlId,
-    uint16_t value
-) 
-</code></pre>
-<p>Packs controlId and value into a 4-byte ControlPacket struct and writes it to panelBridgePort. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> will broadcast it on CAN as a CTRL_BCAST frame (or as a TEST_SEQ frame if controlId == CTRL_TEST_SEQ).</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>controlId</code> Identifies the target control (HID, DCS-BIOS address, or CTRL_TEST_SEQ). </li>
-<li><code>value</code> Value to send. </li>
-</ul>
+<p>Parser state persists across calls — frames split across iterations assemble correctly. </p>
 <hr>
 
 <h3 id="function-setup">function setup</h3>
-<p><em>Initialise USB identity, Joystick, and UART link to</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
+<p><em>Initialise USB identity, OpenSkyhawkJoystick, and UART link to</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
 <pre><code class="language-C++">void SimGateway::setup (
-    HardwareSerial &amp; panelBridgePort
+    SerialUART &amp; uart,
+    uint8_t txPin=DEFAULT_UART_TX_PIN,
+    uint8_t rxPin=DEFAULT_UART_RX_PIN
 ) 
 </code></pre>
-<p>Must be called before DcsBios::setup() so the USB identity is set before the composite device stack starts. Sets:
-* Manufacturer: "OpenSkyhawk", Product: "A-4E Skyhawk"
-* VID/PID: 0x2E8A / 0x4134</p>
+<p>Must be the first call in the sketch's <a href="./#function-setup"><strong>setup()</strong></a>. Sets USB identity before the TinyUSB stack enumerates:
+* Manufacturer: "OpenSkyhawk"
+* Product: "A-4E Skyhawk"
+* VID/PID: 0x2E8A / 0x4134 Configures the UART pins and calls uart.begin(250000), then calls OsJoystick.begin() to initialise the HID descriptor and enumerate.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>panelBridgePort</code> UART port connected to the <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> STM32. Use Serial1 (GP0 TX / GP1 RX) on the standard gateway board. </li>
+<li><code>uart</code> Hardware UART connected to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (Serial1 / UART0 on standard board). </li>
+<li><code>txPin</code> RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3. </li>
+<li><code>rxPin</code> RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2. </li>
 </ul>
 <hr>
 

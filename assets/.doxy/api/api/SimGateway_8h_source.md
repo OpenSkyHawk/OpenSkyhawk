@@ -13,24 +13,84 @@
 #ifdef ARDUINO_ARCH_RP2040
 
 #include <Arduino.h>
-#include <Joystick.h>   
-#include <CANProtocol.h>
+#include <HIDControls.h>
+
+namespace OpenSkyhawk {
+
+class HIDAxis {
+public:
+    HIDAxis(uint16_t controlId, uint8_t axisIndex);
+
+    static HIDAxis* head();       
+    uint16_t controlId() const;   
+    void     dispatch(uint16_t value);
+    HIDAxis* next() const;        
+
+private:
+    static HIDAxis* _head;
+    HIDAxis*        _next;
+    uint16_t        _controlId;
+    uint8_t         _axisIndex;
+};
+
+class HIDButton {
+public:
+    HIDButton(uint16_t controlId, uint8_t buttonIndex);
+
+    static HIDButton* head();
+    uint16_t controlId() const;
+    void      dispatch(uint16_t value);
+    HIDButton* next() const;
+
+private:
+    static HIDButton* _head;
+    HIDButton*        _next;
+    uint16_t          _controlId;
+    uint8_t           _buttonIndex;
+};
+
+class HIDHatSwitch {
+public:
+    HIDHatSwitch(uint16_t controlId, uint8_t hatIndex);
+
+    static HIDHatSwitch* head();
+    uint16_t controlId() const;
+    void          dispatch(uint16_t value);
+    HIDHatSwitch* next() const;
+
+private:
+    static HIDHatSwitch* _head;
+    HIDHatSwitch*        _next;
+    uint16_t             _controlId;
+    uint8_t              _hatIndex;
+};
+
+} // namespace OpenSkyhawk
 
 namespace SimGateway {
 
-    void setup(HardwareSerial& panelBridgePort);
+static constexpr uint8_t DEFAULT_UART_TX_PIN = 0; 
+static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; 
 
-    void loop();
+void setup(SerialUART& uart,
+           uint8_t txPin = DEFAULT_UART_TX_PIN,
+           uint8_t rxPin = DEFAULT_UART_RX_PIN);
 
-    void send(uint16_t controlId, uint16_t value);
+void loop();
 
-    void onDiagRtt(void (*cb)(uint16_t seq, uint32_t sentMs));
+#ifdef SIMGATEWAY_TEST
+bool feedByte(uint8_t b);
 
-    void onDiagHb(void (*cb)(uint8_t nodeId, uint16_t rxCount));
+void resetParser();
 
-    void onDiagErr(void (*cb)(uint8_t tec, uint8_t rec, uint8_t flags));
+void resetCdcCapture();
 
-    void onDiagEvt(void (*cb)(uint16_t controlId, uint16_t value, uint8_t nodeId));
+size_t cdcCaptureCount();
+
+uint8_t cdcCaptureByte(size_t index);
+
+bool cdcCaptureOverflow();
+#endif
 
 } // namespace SimGateway
 

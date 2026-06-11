@@ -11,7 +11,7 @@
 
 
 * `#include "SimGateway.h"`
-* `#include <USB.h>`
+* `#include <Adafruit_TinyUSB.h>`
 
 
 
@@ -29,7 +29,8 @@
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**SimGateway**](namespaceSimGateway.md) <br>_&lt; Exposed so sketches can call Joystick.button() etc._  |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Output and input classes for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._ |
+| namespace | [**SimGateway**](namespaceSimGateway.md) <br> |
 
 
 

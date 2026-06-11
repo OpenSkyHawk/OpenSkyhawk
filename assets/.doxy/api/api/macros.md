@@ -637,6 +637,7 @@
 
 * **CTRL\_BRAKE\_L** ([**HIDControls.h**](HIDControls_8h.md))
 * **CTRL\_BRAKE\_R** ([**HIDControls.h**](HIDControls_8h.md))
+* **CTRL\_HAT\_0** ([**HIDControls.h**](HIDControls_8h.md))
 * **CTRL\_ID\_HID\_MAX** ([**HIDControls.h**](HIDControls_8h.md))
 * **CTRL\_ID\_HID\_MIN** ([**HIDControls.h**](HIDControls_8h.md))
 * **CTRL\_PITCH** ([**HIDControls.h**](HIDControls_8h.md))

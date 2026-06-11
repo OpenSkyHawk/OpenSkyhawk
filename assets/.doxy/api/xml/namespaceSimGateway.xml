@@ -2,32 +2,93 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="namespaceSimGateway" kind="namespace" language="C++">
     <compoundname>SimGateway</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceSimGateway_1a5130d15328037ded5720f8c9dd28b908" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t SimGateway::DEFAULT_UART_TX_PIN</definition>
+        <argsstring></argsstring>
+        <name>DEFAULT_UART_TX_PIN</name>
+        <qualifiedname>SimGateway::DEFAULT_UART_TX_PIN</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>RP2040 UART0 TX to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> RX. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="129" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceSimGateway_1ad3fdd14db89769c45bb818c966922d9e" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t SimGateway::DEFAULT_UART_RX_PIN</definition>
+        <argsstring></argsstring>
+        <name>DEFAULT_UART_RX_PIN</name>
+        <qualifiedname>SimGateway::DEFAULT_UART_RX_PIN</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+<para>RP2040 UART0 RX from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> TX. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="130" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void SimGateway::setup</definition>
-        <argsstring>(HardwareSerial &amp;panelBridgePort)</argsstring>
+        <argsstring>(SerialUART &amp;uart, uint8_t txPin=DEFAULT_UART_TX_PIN, uint8_t rxPin=DEFAULT_UART_RX_PIN)</argsstring>
         <name>setup</name>
         <qualifiedname>SimGateway::setup</qualifiedname>
         <param>
-          <type>HardwareSerial &amp;</type>
-          <declname>panelBridgePort</declname>
+          <type>SerialUART &amp;</type>
+          <declname>uart</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>txPin</declname>
+          <defval>DEFAULT_UART_TX_PIN</defval>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>rxPin</declname>
+          <defval>DEFAULT_UART_RX_PIN</defval>
         </param>
         <briefdescription>
-<para>Initialise USB identity, Joystick, and UART link to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
+<para>Initialise USB identity, OpenSkyhawkJoystick, and UART link to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Must be called before DcsBios::setup() so the USB identity is set before the composite device stack starts. Sets:<itemizedlist>
-<listitem><para>Manufacturer: &quot;OpenSkyhawk&quot;, Product: &quot;A-4E Skyhawk&quot;</para>
-</listitem><listitem><para>VID/PID: 0x2E8A / 0x4134</para>
+<para>Must be the first call in the sketch&apos;s <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup()</ref>. Sets USB identity before the TinyUSB stack enumerates:<itemizedlist>
+<listitem><para>Manufacturer: &quot;OpenSkyhawk&quot;</para>
+</listitem><listitem><para>Product: &quot;A-4E Skyhawk&quot;</para>
+</listitem><listitem><para>VID/PID: 0x2E8A / 0x4134 Configures the UART pins and calls uart.begin(250000), then calls OsJoystick.begin() to initialise the HID descriptor and enumerate.</para>
 </listitem></itemizedlist>
 </para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername>panelBridgePort</parametername>
+<parametername>uart</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>UART port connected to the <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> STM32. Use Serial1 (GP0 TX / GP1 RX) on the standard gateway board. </para>
+<para>Hardware UART connected to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (Serial1 / UART0 on standard board). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>txPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rxPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -35,7 +96,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="60" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="60" bodyend="74" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="65" declcolumn="10"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="287" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="287" bodyend="303" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="147" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -44,263 +105,28 @@
         <name>loop</name>
         <qualifiedname>SimGateway::loop</qualifiedname>
         <briefdescription>
-<para>Drain the UART from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> and dispatch DIAG frames. </para>
+<para>Relay bytes and dispatch HID frames. Call once per <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref> iteration. </para>
         </briefdescription>
         <detaileddescription>
-<para>Reads incoming bytes from panelBridgePort, re-syncs on DIAG_MAGIC, and calls the registered onDiagRtt / onDiagHb / onDiagErr callbacks when a complete 8-byte DIAG frame is assembled. Call DcsBios::loop() in your sketch&apos;s <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref> before or after this. </para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="76" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="76" bodyend="79" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="75" declcolumn="10"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1a6211ad592ee4601e0b3f786c8c686c02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::send</definition>
-        <argsstring>(uint16_t controlId, uint16_t value)</argsstring>
-        <name>send</name>
-        <qualifiedname>SimGateway::send</qualifiedname>
-        <param>
-          <type>uint16_t</type>
-          <declname>controlId</declname>
-        </param>
-        <param>
-          <type>uint16_t</type>
-          <declname>value</declname>
-        </param>
-        <briefdescription>
-<para>Send a ControlPacket to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> over UART. </para>
-        </briefdescription>
-        <detaileddescription>
-<para>Packs controlId and value into a 4-byte ControlPacket struct and writes it to panelBridgePort. <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> will broadcast it on CAN as a CTRL_BCAST frame (or as a TEST_SEQ frame if controlId == CTRL_TEST_SEQ).</para>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>controlId</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Identifies the target control (HID, DCS-BIOS address, or CTRL_TEST_SEQ). </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>value</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Value to send. </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
+<para>Per call:<orderedlist>
+<listitem><para>Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>.</para>
+</listitem><listitem><para>Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE</para>
+</listitem><listitem><para>If any HID setter fired, call OsJoystick.send() exactly once.</para>
+</listitem></orderedlist>
 </para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="81" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="81" bodyend="84" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="87" declcolumn="10"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1a044ada407e3ac32ed02c6d49a633e174" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagRtt</definition>
-        <argsstring>(void(*cb)(uint16_t, uint32_t))</argsstring>
-        <name>onDiagRtt</name>
-        <qualifiedname>SimGateway::onDiagRtt</qualifiedname>
-        <param>
-          <type>void(*)(uint16_t, uint32_t)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="86" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="86" bodyend="86"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1a80c8829be7313b397f4004fd758dd861" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagHb</definition>
-        <argsstring>(void(*cb)(uint8_t, uint16_t))</argsstring>
-        <name>onDiagHb</name>
-        <qualifiedname>SimGateway::onDiagHb</qualifiedname>
-        <param>
-          <type>void(*)(uint8_t, uint16_t)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="87" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="87" bodyend="87"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1a6f34e7c985ea652027bcd92792af21fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagErr</definition>
-        <argsstring>(void(*cb)(uint8_t, uint8_t, uint8_t))</argsstring>
-        <name>onDiagErr</name>
-        <qualifiedname>SimGateway::onDiagErr</qualifiedname>
-        <param>
-          <type>void(*)(uint8_t, uint8_t, uint8_t)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="88" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="88" bodyend="88"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1afc5bc8ec904ee834a0d7b342de91921b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagEvt</definition>
-        <argsstring>(void(*cb)(uint16_t, uint16_t, uint8_t))</argsstring>
-        <name>onDiagEvt</name>
-        <qualifiedname>SimGateway::onDiagEvt</qualifiedname>
-        <param>
-          <type>void(*)(uint16_t, uint16_t, uint8_t)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="89" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="89" bodyend="89"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1a15934467207174180ad674352e7faea3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagRtt</definition>
-        <argsstring>(void(*cb)(uint16_t seq, uint32_t sentMs))</argsstring>
-        <name>onDiagRtt</name>
-        <qualifiedname>SimGateway::onDiagRtt</qualifiedname>
-        <param>
-          <type>void(*)(uint16_t seq, uint32_t sentMs)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-<para>Register a callback for DIAG_RTT frames from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
-        </briefdescription>
-        <detaileddescription>
-<para>Called when <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> forwards a sub-node echo back as a round-trip time measurement frame. seq matches the sequence number sent with CTRL_TEST_SEQ; sentMs is the PanelBridge-side timestamp when the TEST_SEQ CAN frame was sent (use millis() - pingSentMs on the RP2040 side to compute RTT).</para>
-<para><simplesect kind="note"><para>Set before calling <ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">setup()</ref>. </para>
+<para><simplesect kind="note"><para>Parser state persists across calls — frames split across iterations assemble correctly. </para>
 </simplesect>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>cb</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Callback: cb(seq, sentMs). </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="100" column="10" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="100" declcolumn="10"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1aceb284ef7b55b164307d9bab9ebae419" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagHb</definition>
-        <argsstring>(void(*cb)(uint8_t nodeId, uint16_t rxCount))</argsstring>
-        <name>onDiagHb</name>
-        <qualifiedname>SimGateway::onDiagHb</qualifiedname>
-        <param>
-          <type>void(*)(uint8_t nodeId, uint16_t rxCount)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-<para>Register a callback for DIAG_HB (sub-node heartbeat) frames. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><simplesect kind="note"><para>Set before calling <ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">setup()</ref>. </para>
-</simplesect>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>cb</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Callback: cb(nodeId, rxCount). </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="108" column="10" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="108" declcolumn="10"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1afb79344cfe32256b4ccc081fc1534a26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagErr</definition>
-        <argsstring>(void(*cb)(uint8_t tec, uint8_t rec, uint8_t flags))</argsstring>
-        <name>onDiagErr</name>
-        <qualifiedname>SimGateway::onDiagErr</qualifiedname>
-        <param>
-          <type>void(*)(uint8_t tec, uint8_t rec, uint8_t flags)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-<para>Register a callback for DIAG_ERR (CAN error counter) frames. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><simplesect kind="note"><para>Set before calling <ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">setup()</ref>. </para>
-</simplesect>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>cb</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Callback: cb(tec, rec, flags). flags bits: 0x01=bus-off, 0x02=error-passive. </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="116" column="10" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="116" declcolumn="10"/>
-      </memberdef>
-      <memberdef kind="function" id="namespaceSimGateway_1a041725de0f0b3cc12cecb7bd5dba65eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void SimGateway::onDiagEvt</definition>
-        <argsstring>(void(*cb)(uint16_t controlId, uint16_t value, uint8_t nodeId))</argsstring>
-        <name>onDiagEvt</name>
-        <qualifiedname>SimGateway::onDiagEvt</qualifiedname>
-        <param>
-          <type>void(*)(uint16_t controlId, uint16_t value, uint8_t nodeId)</type>
-          <declname>cb</declname>
-        </param>
-        <briefdescription>
-<para>Register a callback for DIAG_EVT (sub-node input event) frames. </para>
-        </briefdescription>
-        <detaileddescription>
-<para>Called when <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> forwards a CAN input event from a sub-node. controlId and value are the raw <ref refid="namespacePanelGroup_1a21b5d03ffa53faaa9e4a7bd9759b0443" kindref="member">PanelGroup::sendEvent()</ref> arguments; nodeId identifies which sub-node sent the event (1 or 2). Use this to translate the event to a DCS-BIOS message via sendDcsBiosMessage() in the sketch.</para>
-<para><simplesect kind="note"><para>Set before calling <ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">setup()</ref>. </para>
-</simplesect>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>cb</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Callback: cb(controlId, value, nodeId). </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="129" column="10" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="129" declcolumn="10"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="305" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="305" bodyend="319" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="164" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>&lt; Exposed so sketches can call Joystick.button() etc. </para>
     </briefdescription>
     <detaileddescription>
-<para>Static singleton for the RP2040 DCS-BIOS / USB HID gateway.</para>
-<para>Sets the USB VID/PID and product strings, initialises the Joystick HID composite device, and starts the UART link to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> at 250000 baud. In <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref>, drains the UART and dispatches 8-byte DIAG frames to registered callbacks. Sending ControlPackets to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> is done via <ref refid="namespaceSimGateway_1a6211ad592ee4601e0b3f786c8c686c02" kindref="member">send()</ref>. </para>
     </detaileddescription>
-    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="58" column="1"/>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="285" column="1"/>
   </compounddef>
 </doxygen>

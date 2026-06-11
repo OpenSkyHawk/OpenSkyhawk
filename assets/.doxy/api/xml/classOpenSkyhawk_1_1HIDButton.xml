@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1HIDButton" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::HIDButton</compoundname>
+    <includes refid="SimGateway_8h" local="no">SimGateway.h</includes>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDButton_1a7dfa59d0b7dc1506ad3b884d4ee122d7" prot="private" static="yes" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref> *</type>
+        <definition>HIDButton * OpenSkyhawk::HIDButton::_head</definition>
+        <argsstring></argsstring>
+        <name>_head</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::_head</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="87" column="22" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDButton_1a2bbf920cca491284645bd73727eee46a" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref> *</type>
+        <definition>HIDButton* OpenSkyhawk::HIDButton::_next</definition>
+        <argsstring></argsstring>
+        <name>_next</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="88" column="22" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDButton_1a26ad56c78bbe545d6be4fff6bd43cf1f" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::HIDButton::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="89" column="23" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDButton_1aac21c7de743d3e91262e13d465ebd97e" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::HIDButton::_buttonIndex</definition>
+        <argsstring></argsstring>
+        <name>_buttonIndex</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::_buttonIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="90" column="23" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDButton_1a49c61dc426698c8419e541a12495570f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::HIDButton::HIDButton</definition>
+        <argsstring>(uint16_t controlId, uint8_t buttonIndex)</argsstring>
+        <name>HIDButton</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::HIDButton</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>buttonIndex</declname>
+        </param>
+        <briefdescription>
+<para>Register a HID button handler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>CTRL_* constant from <ref refid="HIDControls_8h" kindref="compound">HIDControls.h</ref> (0x0030–0x00AF range). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>buttonIndex</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>OpenSkyhawkJoystick button index (0–127). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="75" column="5" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="160" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::HIDButton::controlId</definition>
+        <argsstring>() const</argsstring>
+        <name>controlId</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="78" column="14" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="168" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDButton_1a687de4afa5a755de7c1c2608f2bbcd9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::HIDButton::dispatch</definition>
+        <argsstring>(uint16_t value)</argsstring>
+        <name>dispatch</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::dispatch</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Dispatch a value to the joystick button. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>0 → released; non-zero → pressed. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="83" column="15" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="170" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDButton_1afecca874fab5385a17f868947478516f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref> *</type>
+        <definition>HIDButton * OpenSkyhawk::HIDButton::next</definition>
+        <argsstring>() const</argsstring>
+        <name>next</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="84" column="15" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="169" bodyend="169"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDButton_1aa90309452ab963924aed872a17805669" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref> *</type>
+        <definition>HIDButton * OpenSkyhawk::HIDButton::head</definition>
+        <argsstring>()</argsstring>
+        <name>head</name>
+        <qualifiedname>OpenSkyhawk::HIDButton::head</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="77" column="22" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="167" bodyend="167"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>HID button handler. Declared at sketch scope for each button. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Self-registers into a static linked list at construction. value != 0 → button pressed; value == 0 → button released. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="68" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="68" bodyend="91"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1aac21c7de743d3e91262e13d465ebd97e" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>_buttonIndex</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1a26ad56c78bbe545d6be4fff6bd43cf1f" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1a7dfa59d0b7dc1506ad3b884d4ee122d7" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>_head</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1a2bbf920cca491284645bd73727eee46a" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>_next</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1a687de4afa5a755de7c1c2608f2bbcd9f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>dispatch</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1aa90309452ab963924aed872a17805669" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1a49c61dc426698c8419e541a12495570f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>HIDButton</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDButton_1afecca874fab5385a17f868947478516f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDButton</scope><name>next</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1784,6 +1784,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#define-ctrl_hat_0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define CTRL_HAT_0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#define-ctrl_id_hid_max" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1919,7 +1930,11 @@
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
-<td style="text-align: left;"><a href="./#define-ctrl_id_hid_max"><strong>CTRL_ID_HID_MAX</strong></a>  <code>0x009F</code><br></td>
+<td style="text-align: left;"><a href="./#define-ctrl_hat_0"><strong>CTRL_HAT_0</strong></a>  <code>0x0020</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-ctrl_id_hid_max"><strong>CTRL_ID_HID_MAX</strong></a>  <code>0x00AF</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
@@ -1943,7 +1958,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
-<td style="text-align: left;"><a href="./#define-ctrl_trigger"><strong>CTRL_TRIGGER</strong></a>  <code>0x0020</code><br></td>
+<td style="text-align: left;"><a href="./#define-ctrl_trigger"><strong>CTRL_TRIGGER</strong></a>  <code>0x0030</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
@@ -1953,7 +1968,7 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Shared between STM32 (via <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a>) and RP2040 (<a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> sketches). Contains only <code>#define</code> constants — no classes, no functions, no state.</p>
-<p>controlId routing by range: 0x0010–0x001F HID axes — routed to Joystick axis setters on <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> 0x0020–0x009F HID buttons — routed to Joystick button setters on <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a></p>
+<p>controlId routing by range: 0x0010–0x001F HID axes — routed to axis setters on <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> 0x0020–0x002F HID hat switches — routed to hat setters on <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> 0x0030–0x00AF HID buttons — routed to button setters on <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a></p>
 <p><strong>Version:</strong></p>
 <p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
@@ -1969,8 +1984,13 @@
 </code></pre>
 <hr>
 
+<h3 id="define-ctrl_hat_0">define CTRL_HAT_0</h3>
+<pre><code class="language-C++">#define CTRL_HAT_0 `0x0020`
+</code></pre>
+<hr>
+
 <h3 id="define-ctrl_id_hid_max">define CTRL_ID_HID_MAX</h3>
-<pre><code class="language-C++">#define CTRL_ID_HID_MAX `0x009F`
+<pre><code class="language-C++">#define CTRL_ID_HID_MAX `0x00AF`
 </code></pre>
 <hr>
 
@@ -2000,7 +2020,7 @@
 <hr>
 
 <h3 id="define-ctrl_trigger">define CTRL_TRIGGER</h3>
-<pre><code class="language-C++">#define CTRL_TRIGGER `0x0020`
+<pre><code class="language-C++">#define CTRL_TRIGGER `0x0030`
 </code></pre>
 <hr>
 

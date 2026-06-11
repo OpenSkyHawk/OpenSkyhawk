@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1HIDHatSwitch" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::HIDHatSwitch</compoundname>
+    <includes refid="SimGateway_8h" local="no">SimGateway.h</includes>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDHatSwitch_1a464c2e81a3ad01b82528241a04bf5da6" prot="private" static="yes" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref> *</type>
+        <definition>HIDHatSwitch * OpenSkyhawk::HIDHatSwitch::_head</definition>
+        <argsstring></argsstring>
+        <name>_head</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::_head</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="119" column="25" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDHatSwitch_1ac47ac50a59447c599a0d735a178d7dae" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref> *</type>
+        <definition>HIDHatSwitch* OpenSkyhawk::HIDHatSwitch::_next</definition>
+        <argsstring></argsstring>
+        <name>_next</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="120" column="25" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDHatSwitch_1a336bb9a4970621e44320c6dffa63f91f" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::HIDHatSwitch::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="121" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDHatSwitch_1aabd8543fdff368436b7c31680aaf5e81" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::HIDHatSwitch::_hatIndex</definition>
+        <argsstring></argsstring>
+        <name>_hatIndex</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::_hatIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="122" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDHatSwitch_1adfe837ac2934640b66870aad4e5eeed2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::HIDHatSwitch::HIDHatSwitch</definition>
+        <argsstring>(uint16_t controlId, uint8_t hatIndex)</argsstring>
+        <name>HIDHatSwitch</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::HIDHatSwitch</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>hatIndex</declname>
+        </param>
+        <briefdescription>
+<para>Register a HID hat switch handler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>CTRL_* constant from <ref refid="HIDControls_8h" kindref="compound">HIDControls.h</ref> (0x0020–0x002F range). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hatIndex</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>OpenSkyhawkJoystick hat index (0–3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="106" column="5" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="178" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::HIDHatSwitch::controlId</definition>
+        <argsstring>() const</argsstring>
+        <name>controlId</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="109" column="14" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="186" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDHatSwitch_1a763cd0251dbc89304e041eaad7366644" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::HIDHatSwitch::dispatch</definition>
+        <argsstring>(uint16_t value)</argsstring>
+        <name>dispatch</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::dispatch</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Dispatch a direction to the hat switch. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>0 = centered, 1 = N, 2 = NE, 3 = E, 4 = SE, 5 = S, 6 = SW, 7 = W, 8 = NW. Values &gt; 8 → centered. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="115" column="19" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="188" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDHatSwitch_1a0f7b6694376ec757652728ac00755962" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref> *</type>
+        <definition>HIDHatSwitch * OpenSkyhawk::HIDHatSwitch::next</definition>
+        <argsstring>() const</argsstring>
+        <name>next</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="116" column="18" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="187" bodyend="187"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDHatSwitch_1a385f8888cec0ed4b0b133be41310b5cd" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref> *</type>
+        <definition>HIDHatSwitch * OpenSkyhawk::HIDHatSwitch::head</definition>
+        <argsstring>()</argsstring>
+        <name>head</name>
+        <qualifiedname>OpenSkyhawk::HIDHatSwitch::head</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="108" column="25" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="185" bodyend="185"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>HID hat switch handler. Declared at sketch scope for each hat switch. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Self-registers into a static linked list at construction. Dispatches to OsJoystick.setHat() with direction clamped to 0–8. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="99" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="99" bodyend="123"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1a336bb9a4970621e44320c6dffa63f91f" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1aabd8543fdff368436b7c31680aaf5e81" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>_hatIndex</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1a464c2e81a3ad01b82528241a04bf5da6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>_head</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1ac47ac50a59447c599a0d735a178d7dae" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>_next</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1a763cd0251dbc89304e041eaad7366644" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>dispatch</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1a385f8888cec0ed4b0b133be41310b5cd" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1adfe837ac2934640b66870aad4e5eeed2" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>HIDHatSwitch</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1a0f7b6694376ec757652728ac00755962" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDHatSwitch</scope><name>next</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

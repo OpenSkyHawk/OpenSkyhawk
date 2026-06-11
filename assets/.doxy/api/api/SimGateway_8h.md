@@ -8,11 +8,10 @@
 
 [Go to the source code of this file](SimGateway_8h_source.md)
 
-_RP2040 USB HID + DCS-BIOS gateway domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._[More...](#detailed-description)
+_RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**SimGateway**_](namespaceSimGateway.md) _board._[More...](#detailed-description)
 
 * `#include <Arduino.h>`
-* `#include <Joystick.h>`
-* `#include <CANProtocol.h>`
+* `#include <HIDControls.h>`
 
 
 
@@ -30,9 +29,17 @@ _RP2040 USB HID + DCS-BIOS gateway domain layer for_ [_**OpenSkyhawk**_](namespa
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**SimGateway**](namespaceSimGateway.md) <br>_&lt; Exposed so sketches can call Joystick.button() etc._  |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Output and input classes for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._ |
+| namespace | [**SimGateway**](namespaceSimGateway.md) <br> |
 
 
+## Classes
+
+| Type | Name |
+| ---: | :--- |
+| class | [**HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) <br>_HID axis handler. Declared at sketch scope for each joystick axis._  |
+| class | [**HIDButton**](classOpenSkyhawk_1_1HIDButton.md) <br>_HID button handler. Declared at sketch scope for each button._  |
+| class | [**HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md) <br>_HID hat switch handler. Declared at sketch scope for each hat switch._  |
 
 
 
@@ -86,37 +93,10 @@ _RP2040 USB HID + DCS-BIOS gateway domain layer for_ [_**OpenSkyhawk**_](namespa
 ## Detailed Description
 
 
-Owns USB device identity, Joystick HID composite device, and the UART link to the [**PanelBridge**](namespacePanelBridge.md) STM32. Parses incoming DIAG frames from [**PanelBridge**](namespacePanelBridge.md) and dispatches them to registered callbacks. DCS-BIOS setup/loop must be called by the sketch — they require `#define DCSBIOS_DEFAULT_SERIAL` in the sketch's translation unit before `#include <DcsBios.h>`.
+Owns the USB CDC ↔ UART relay, 0xAA 0x55 HID frame demultiplexer, and OsJoystick.send() batching. HIDAxis, HIDButton, and HIDHatSwitch objects are declared in the sketch at file scope and self-register into linked lists at construction. [**SimGateway::loop()**](namespaceSimGateway.md#function-loop) walks those lists and dispatches matching HID frames to the OpenSkyhawkJoystick abstraction layer.
 
 
-A minimal gateway sketch:
-
-
-
-```C++
-#define DCSBIOS_DEFAULT_SERIAL
-#include <DcsBios.h>
-#include <SimGateway.h>
-
-DcsBios::IntegerBuffer rpmBuf(A_4E_C_RPM, onRpmChange);
-
-void setup() {
-    SimGateway::setup(Serial1);
-    DcsBios::setup();
-}
-void loop() {
-    DcsBios::loop();
-    SimGateway::loop();
-}
-```
-
-
-
-
-
-**Note:**
-
-Including [**SimGateway.h**](SimGateway_8h.md) pulls in Joystick.h transitively, so sketches can call Joystick.button() etc. without an extra include.
+Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN. Platform: RP2040 only.
 
 
 

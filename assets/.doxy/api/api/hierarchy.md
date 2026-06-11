@@ -4,6 +4,9 @@
 This inheritance list is sorted roughly, but not completely, alphabetically:
 
 
+* **class** [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) _HID axis handler. Declared at sketch scope for each joystick axis._ 
+* **class** [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md) _HID button handler. Declared at sketch scope for each button._ 
+* **class** [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md) _HID hat switch handler. Declared at sketch scope for each hat switch._ 
 * **class** [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md) _Base class for all hardware-polled input objects on a_ [_**PanelGroup**_](namespacePanelGroup.md) _board._    
     * **class** [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md) _Debounced 2-position GPIO switch — sends a ControlPacket CAN event on change._ 
 * **class** [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md) _Base class for all DCS-driven output objects on a_ [_**PanelGroup**_](namespacePanelGroup.md) _board._    

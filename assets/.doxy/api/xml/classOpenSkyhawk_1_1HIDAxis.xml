@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1HIDAxis" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::HIDAxis</compoundname>
+    <includes refid="SimGateway_8h" local="no">SimGateway.h</includes>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDAxis_1a0439c987ad56df9c8fc9466a90ffc12c" prot="private" static="yes" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref> *</type>
+        <definition>HIDAxis * OpenSkyhawk::HIDAxis::_head</definition>
+        <argsstring></argsstring>
+        <name>_head</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::_head</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="56" column="20" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDAxis_1a10522a85da4e369e724993f4b4277800" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref> *</type>
+        <definition>HIDAxis* OpenSkyhawk::HIDAxis::_next</definition>
+        <argsstring></argsstring>
+        <name>_next</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="57" column="20" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDAxis_1a91a13605486b8009fa6edbcbba9fe294" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::HIDAxis::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="58" column="21" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1HIDAxis_1ab96aae013936620d8b496ec665160a6d" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::HIDAxis::_axisIndex</definition>
+        <argsstring></argsstring>
+        <name>_axisIndex</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::_axisIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="59" column="21" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDAxis_1ac7bfd3a4927cac3c9b629947f9bb33e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::HIDAxis::HIDAxis</definition>
+        <argsstring>(uint16_t controlId, uint8_t axisIndex)</argsstring>
+        <name>HIDAxis</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::HIDAxis</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>axisIndex</declname>
+        </param>
+        <briefdescription>
+<para>Register a HID axis handler. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>CTRL_* constant from <ref refid="HIDControls_8h" kindref="compound">HIDControls.h</ref> (0x0010–0x001F range). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>axisIndex</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>OpenSkyhawkJoystick axis index (0–7). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="44" column="5" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="142" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::HIDAxis::controlId</definition>
+        <argsstring>() const</argsstring>
+        <name>controlId</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::controlId</qualifiedname>
+        <briefdescription>
+<para>controlId this handler is registered for. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="47" column="14" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDAxis_1a319dc333c8692e54719e371ebd3478ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::HIDAxis::dispatch</definition>
+        <argsstring>(uint16_t value)</argsstring>
+        <name>dispatch</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::dispatch</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Dispatch a value to the joystick axis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unsigned 0–65535; mapped to int16_t (value − 32768) internally. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="52" column="14" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="152" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDAxis_1a47f4604ec2a4073a94bd81fe4bc13a09" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref> *</type>
+        <definition>HIDAxis * OpenSkyhawk::HIDAxis::next</definition>
+        <argsstring>() const</argsstring>
+        <name>next</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::next</qualifiedname>
+        <briefdescription>
+<para>Next axis in list; nullptr at end. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="53" column="13" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="151" bodyend="151"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1HIDAxis_1ade8a2b676e12be8183d6e19a9879d17f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref> *</type>
+        <definition>HIDAxis * OpenSkyhawk::HIDAxis::head</definition>
+        <argsstring>()</argsstring>
+        <name>head</name>
+        <qualifiedname>OpenSkyhawk::HIDAxis::head</qualifiedname>
+        <briefdescription>
+<para>First registered axis; nullptr if none. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="46" column="20" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="149" bodyend="149"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>HID axis handler. Declared at sketch scope for each joystick axis. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Self-registers into a static linked list at construction. <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">SimGateway::loop()</ref> walks the list and calls OsJoystick.setAxis() when a HID frame with a matching controlId arrives. The 0–65535 unsigned value from <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> is mapped to signed ±32767 internally (value − 32768).</para>
+<para>Declare at file scope, not inside functions — C++ constructs file-scope objects before setup() runs, which is required for the linked list to be populated. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="37" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="37" bodyend="60"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1ab96aae013936620d8b496ec665160a6d" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>_axisIndex</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1a91a13605486b8009fa6edbcbba9fe294" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1a0439c987ad56df9c8fc9466a90ffc12c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>_head</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1a10522a85da4e369e724993f4b4277800" prot="private" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>_next</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1a319dc333c8692e54719e371ebd3478ca" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>dispatch</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1ade8a2b676e12be8183d6e19a9879d17f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1ac7bfd3a4927cac3c9b629947f9bb33e6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>HIDAxis</name></member>
+      <member refid="classOpenSkyhawk_1_1HIDAxis_1a47f4604ec2a4073a94bd81fe4bc13a09" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HIDAxis</scope><name>next</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

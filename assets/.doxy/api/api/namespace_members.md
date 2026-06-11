@@ -25,6 +25,8 @@
 
 * **drain** ([**CANProtocol**](namespaceCANProtocol.md))
 * **diagSerial** ([**STM32Board**](namespaceSTM32Board.md))
+* **DEFAULT\_UART\_RX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
+* **DEFAULT\_UART\_TX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## e
@@ -69,16 +71,13 @@
 * **onNodeAlive** ([**PanelBridge**](namespacePanelBridge.md))
 * **onNodeDead** ([**PanelBridge**](namespacePanelBridge.md))
 * **onCanStatus** ([**STM32Board**](namespaceSTM32Board.md))
-* **onDiagErr** ([**SimGateway**](namespaceSimGateway.md))
-* **onDiagEvt** ([**SimGateway**](namespaceSimGateway.md))
-* **onDiagHb** ([**SimGateway**](namespaceSimGateway.md))
-* **onDiagRtt** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## p
 
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d10.md))
 
 
 ## r
@@ -88,7 +87,7 @@
 
 ## s
 
-* **send** ([**CANProtocol**](namespaceCANProtocol.md), [**SimGateway**](namespaceSimGateway.md))
+* **send** ([**CANProtocol**](namespaceCANProtocol.md))
 * **sendBatched** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))

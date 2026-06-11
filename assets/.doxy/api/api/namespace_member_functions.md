@@ -56,10 +56,6 @@
 * **onNodeAlive** ([**PanelBridge**](namespacePanelBridge.md))
 * **onNodeDead** ([**PanelBridge**](namespacePanelBridge.md))
 * **onCanStatus** ([**STM32Board**](namespaceSTM32Board.md))
-* **onDiagErr** ([**SimGateway**](namespaceSimGateway.md))
-* **onDiagEvt** ([**SimGateway**](namespaceSimGateway.md))
-* **onDiagHb** ([**SimGateway**](namespaceSimGateway.md))
-* **onDiagRtt** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## r
@@ -69,7 +65,7 @@
 
 ## s
 
-* **send** ([**CANProtocol**](namespaceCANProtocol.md), [**SimGateway**](namespaceSimGateway.md))
+* **send** ([**CANProtocol**](namespaceCANProtocol.md))
 * **sendBatched** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))

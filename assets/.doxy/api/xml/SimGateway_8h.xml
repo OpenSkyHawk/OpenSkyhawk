@@ -3,19 +3,10 @@
   <compounddef id="SimGateway_8h" kind="file" language="C++">
     <compoundname>SimGateway.h</compoundname>
     <includes local="no">Arduino.h</includes>
-    <includes local="no">Joystick.h</includes>
-    <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
+    <includes refid="HIDControls_8h" local="no">HIDControls.h</includes>
     <includedby refid="SimGateway_8cpp" local="yes">Firmware/Libraries/SimGateway/SimGateway.cpp</includedby>
     <incdepgraph>
-      <node id="4">
-        <label>CANProtocol.h</label>
-        <link refid="CANProtocol_8h"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="6">
+      <node id="3">
         <label>HIDControls.h</label>
         <link refid="HIDControls_8h"/>
       </node>
@@ -26,17 +17,9 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
       </node>
       <node id="2">
         <label>Arduino.h</label>
-      </node>
-      <node id="3">
-        <label>Joystick.h</label>
-      </node>
-      <node id="5">
-        <label>stdint.h</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
@@ -51,31 +34,18 @@
         </childnode>
       </node>
     </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1HIDAxis" prot="public">OpenSkyhawk::HIDAxis</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1HIDButton" prot="public">OpenSkyhawk::HIDButton</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1HIDHatSwitch" prot="public">OpenSkyhawk::HIDHatSwitch</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
     <innernamespace refid="namespaceSimGateway">SimGateway</innernamespace>
     <briefdescription>
-<para>RP2040 USB HID + DCS-BIOS gateway domain layer for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref>. </para>
+<para>RP2040 USB HID gateway library for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref> board. </para>
     </briefdescription>
     <detaileddescription>
-<para>Owns USB device identity, Joystick HID composite device, and the UART link to the <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> STM32. Parses incoming DIAG frames from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> and dispatches them to registered callbacks. DCS-BIOS setup/loop must be called by the sketch — they require <computeroutput>#define DCSBIOS_DEFAULT_SERIAL</computeroutput> in the sketch&apos;s translation unit before <computeroutput>#include &lt;DcsBios.h&gt;</computeroutput>.</para>
-<para>A minimal gateway sketch:</para>
-<para><programlisting><codeline><highlight class="preprocessor">#define<sp/>DCSBIOS_DEFAULT_SERIAL</highlight><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;DcsBios.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SimGateway_8h" kindref="compound">SimGateway.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal">DcsBios::IntegerBuffer<sp/>rpmBuf(<ref refid="A4EC__OutputIds_8h_1a206088114371f4818f9b0209034f5bce" kindref="member">A_4E_C_RPM</ref>,<sp/>onRpmChange);</highlight></codeline>
-<codeline><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a6a9b532557e5119d0f52449f56aa6e24" kindref="member">setup</ref>()<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">SimGateway::setup</ref>(Serial1);</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>DcsBios::setup();</highlight></codeline>
-<codeline><highlight class="normal">}</highlight></codeline>
-<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/>{</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>DcsBios::loop();</highlight></codeline>
-<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">SimGateway::loop</ref>();</highlight></codeline>
-<codeline><highlight class="normal">}</highlight></codeline>
-</programlisting></para>
-<para><simplesect kind="note"><para>Including <ref refid="SimGateway_8h" kindref="compound">SimGateway.h</ref> pulls in Joystick.h transitively, so sketches can call Joystick.button() etc. without an extra include.</para>
-</simplesect>
-<simplesect kind="version"><para>0.1.0 </para>
+<para>Owns the USB CDC ↔ UART relay, 0xAA 0x55 HID frame demultiplexer, and OsJoystick.send() batching. HIDAxis, HIDButton, and HIDHatSwitch objects are declared in the sketch at file scope and self-register into linked lists at construction. <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">SimGateway::loop()</ref> walks those lists and dispatches matching HID frames to the OpenSkyhawkJoystick abstraction layer.</para>
+<para>Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN. Platform: RP2040 only.</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
 </simplesect>
 <simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
 </simplesect>
@@ -83,32 +53,92 @@
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Joystick.h&gt;</highlight><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref><sp/>{</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a89bf3a57aff757a503c224b4df54b21d" kindref="member">setup</ref>(HardwareSerial&amp;<sp/>panelBridgePort);</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="HIDControls_8h" kindref="compound">HIDControls.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="classOpenSkyhawk_1_1HIDAxis" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref><sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>axisIndex);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1ade8a2b676e12be8183d6e19a9879d17f" kindref="member">head</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a319dc333c8692e54719e371ebd3478ca" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a47f4604ec2a4073a94bd81fe4bc13a09" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_axisIndex;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="classOpenSkyhawk_1_1HIDButton" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>buttonIndex);</highlight></codeline>
 <codeline lineno="76"><highlight class="normal"></highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a6211ad592ee4601e0b3f786c8c686c02" kindref="member">send</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value);</highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight></codeline>
-<codeline lineno="100" refid="namespaceSimGateway_1a15934467207174180ad674352e7faea3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a044ada407e3ac32ed02c6d49a633e174" kindref="member">onDiagRtt</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint16_t<sp/>seq,<sp/>uint32_t<sp/>sentMs));</highlight></codeline>
-<codeline lineno="101"><highlight class="normal"></highlight></codeline>
-<codeline lineno="108" refid="namespaceSimGateway_1aceb284ef7b55b164307d9bab9ebae419" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a80c8829be7313b397f4004fd758dd861" kindref="member">onDiagHb</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint8_t<sp/>nodeId,<sp/>uint16_t<sp/>rxCount));</highlight></codeline>
-<codeline lineno="109"><highlight class="normal"></highlight></codeline>
-<codeline lineno="116" refid="namespaceSimGateway_1afb79344cfe32256b4ccc081fc1534a26" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a6f34e7c985ea652027bcd92792af21fe" kindref="member">onDiagErr</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint8_t<sp/>tec,<sp/>uint8_t<sp/>rec,<sp/>uint8_t<sp/>flags));</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1aa90309452ab963924aed872a17805669" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1a687de4afa5a755de7c1c2608f2bbcd9f" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afecca874fab5385a17f868947478516f" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_buttonIndex;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="classOpenSkyhawk_1_1HIDHatSwitch" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref><sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>hatIndex);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a385f8888cec0ed4b0b133be41310b5cd" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a763cd0251dbc89304e041eaad7366644" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a0f7b6694376ec757652728ac00755962" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="117"><highlight class="normal"></highlight></codeline>
-<codeline lineno="129" refid="namespaceSimGateway_1a041725de0f0b3cc12cecb7bd5dba65eb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1afc5bc8ec904ee834a0d7b342de91921b" kindref="member">onDiagEvt</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value,<sp/>uint8_t<sp/>nodeId));</highlight></codeline>
-<codeline lineno="130"><highlight class="normal"></highlight></codeline>
-<codeline lineno="131"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SimGateway</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="132"><highlight class="normal"></highlight></codeline>
-<codeline lineno="133"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hatIndex;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref><sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>DEFAULT_UART_TX_PIN<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>DEFAULT_UART_RX_PIN<sp/>=<sp/>1;<sp/></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup</ref>(SerialUART&amp;<sp/>uart,</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>txPin<sp/>=<sp/>DEFAULT_UART_TX_PIN,</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>rxPin<sp/>=<sp/>DEFAULT_UART_RX_PIN);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SIMGATEWAY_TEST</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>feedByte(uint8_t<sp/>b);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetParser();</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetCdcCapture();</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cdcCaptureCount();</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal">uint8_t<sp/>cdcCaptureByte(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>index);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>cdcCaptureOverflow();</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SimGateway</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/SimGateway/SimGateway.h"/>
   </compounddef>

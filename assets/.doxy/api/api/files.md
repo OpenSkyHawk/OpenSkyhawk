@@ -26,5 +26,5 @@ Here is a list of all files with brief descriptions:
             * **file** [**STM32Board.h**](STM32Board_8h.md) _Shared STM32F103 hardware initialisation for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _avionics nodes._    
         * **dir** [**SimGateway**](dir_a54aa0246e1c520ae49dfef506a428ca.md)     
             * **file** [**SimGateway.cpp**](SimGateway_8cpp.md)     
-            * **file** [**SimGateway.h**](SimGateway_8h.md) _RP2040 USB HID + DCS-BIOS gateway domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
+            * **file** [**SimGateway.h**](SimGateway_8h.md) _RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**SimGateway**_](namespaceSimGateway.md) _board._    
 

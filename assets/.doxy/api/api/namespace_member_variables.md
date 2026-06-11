@@ -10,6 +10,12 @@
 * **ANALOG** ([**InputType**](namespaceInputType.md))
 
 
+## d
+
+* **DEFAULT\_UART\_RX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
+* **DEFAULT\_UART\_TX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
+
+
 ## e
 
 * **ENCODER** ([**InputType**](namespaceInputType.md))

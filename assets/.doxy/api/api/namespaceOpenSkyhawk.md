@@ -29,6 +29,9 @@ _Output and input classes for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pan
 
 | Type | Name |
 | ---: | :--- |
+| class | [**HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) <br>_HID axis handler. Declared at sketch scope for each joystick axis._  |
+| class | [**HIDButton**](classOpenSkyhawk_1_1HIDButton.md) <br>_HID button handler. Declared at sketch scope for each button._  |
+| class | [**HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md) <br>_HID hat switch handler. Declared at sketch scope for each hat switch._  |
 | class | [**InputBase**](classOpenSkyhawk_1_1InputBase.md) <br>_Base class for all hardware-polled input objects on a_ [_**PanelGroup**_](namespacePanelGroup.md) _board._ |
 | class | [**IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md) <br>_Call an arbitrary function with the raw value from a ControlPacket._  |
 | class | [**LED**](classOpenSkyhawk_1_1LED.md) <br>_Drive a GPIO pin from a single bit of a DCS-BIOS output value._  |
