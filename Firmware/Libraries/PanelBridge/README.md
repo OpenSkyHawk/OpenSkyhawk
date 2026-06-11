@@ -33,7 +33,7 @@ to drive LEDs, gauges, and other outputs.
 ## Dependencies
 
 - [STM32Board](../STM32Board/README.md)
-- [CANProtocol](../CANProtocol/README.md)
+- [CANProtocol](../CANProtocol/CANProtocol.h)
 - A4EC — input map and command IDs
 - DCS-BIOS — `ExportStreamListener`, `StringBuffer`, `sendDcsBiosMessage()`
 
