@@ -61,6 +61,10 @@ static void _drainTxQueue() {
     while (_txHead != _txTail) {
         TxQueueEntry& e = _txRing[_txHead];
 
+        if (HAL_CAN_GetTxMailboxesFreeLevel(STM32Board::canHandle()) == 0) {
+            break;
+        }
+
         CAN_TxHeaderTypeDef hdr = {};
         hdr.StdId              = e.canId;
         hdr.IDE                = CAN_ID_STD;
@@ -72,7 +76,6 @@ static void _drainTxQueue() {
         if (HAL_CAN_AddTxMessage(STM32Board::canHandle(), &hdr, e.data, &mailbox) == HAL_OK) {
             _txHead = (_txHead + 1) % TX_RING_SIZE;
         } else {
-            // All mailboxes still busy
             e.attempts++;
             if (e.attempts >= MAX_TX_ATTEMPTS) {
                 _txHead = (_txHead + 1) % TX_RING_SIZE;
@@ -147,6 +150,38 @@ static void _updateStatus() {
     }
 }
 
+static void _enqueueRxFrame(uint32_t canId, uint8_t len, const uint8_t* data) {
+    uint8_t next = (_rxTail + 1) % RX_RING_SIZE;
+    if (next == _rxHead) return;  // software RX ring full — drop
+
+    _rxRing[_rxTail].canId = canId;
+    _rxRing[_rxTail].len   = len;
+    memcpy(_rxRing[_rxTail].data, data, len);
+    _rxTail = next;
+}
+
+// Safe to call from main-loop context — guards against TX-complete ISR preemption.
+static void _drainTxQueueFromMain() {
+    uint32_t m = __get_PRIMASK();
+    __disable_irq();
+    _drainTxQueue();
+    if (!m) __enable_irq();
+}
+
+static void _pollRxFifo0() {
+    CAN_HandleTypeDef* hcan = STM32Board::canHandle();
+
+    uint32_t primask = __get_PRIMASK();
+    __disable_irq();
+    while (HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0) > 0) {
+        CAN_RxHeaderTypeDef hdr;
+        uint8_t data[8] = {};
+        if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &hdr, data) != HAL_OK) break;
+        _enqueueRxFrame(hdr.StdId, hdr.DLC, data);
+    }
+    if (!primask) __enable_irq();
+}
+
 static void _startInternal(uint32_t mode) {
     CAN_HandleTypeDef* hcan = STM32Board::canHandle();
     hcan->Init.Mode = mode;
@@ -176,13 +211,7 @@ extern "C" void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
     uint8_t data[8] = {};
     if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &hdr, data) != HAL_OK) return;
 
-    uint8_t next = (_rxTail + 1) % RX_RING_SIZE;
-    if (next == _rxHead) return;  // software RX ring full — drop
-
-    _rxRing[_rxTail].canId = hdr.StdId;
-    _rxRing[_rxTail].len   = hdr.DLC;
-    memcpy(_rxRing[_rxTail].data, data, hdr.DLC);
-    _rxTail = next;
+    _enqueueRxFrame(hdr.StdId, hdr.DLC, data);
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -201,6 +230,9 @@ void start()         { _startInternal(CAN_MODE_NORMAL); }
 void startLoopback() { _startInternal(CAN_MODE_SILENT_LOOPBACK); }
 
 void drain() {
+    _drainTxQueueFromMain();
+    _pollRxFifo0();
+
     // Drain RX ring — copy out before advancing head so ISR can't clobber in-flight frame
     while (_rxHead != _rxTail) {
         RxQueueEntry frame = _rxRing[_rxHead];
@@ -214,6 +246,8 @@ void drain() {
             if (_rxCb) _rxCb(frame.canId, frame.data, frame.len);
         }
     }
+
+    _drainTxQueueFromMain();
 
     // Service batch deadlines
     for (auto& b : _batches) {
@@ -229,6 +263,8 @@ void drain() {
             }
         }
     }
+
+    _drainTxQueueFromMain();
 
     _updateStatus();
 }
@@ -248,6 +284,7 @@ void send(uint32_t canId, const uint8_t* data, uint8_t len) {
     }
 
     // All mailboxes busy — enqueue in TX ring (protect with critical section)
+    uint32_t primask = __get_PRIMASK();
     __disable_irq();
 
     if (canId == CAN_ID_CTRL_BCAST) {
@@ -257,7 +294,7 @@ void send(uint32_t canId, const uint8_t* data, uint8_t len) {
             if (_txRing[i].canId == CAN_ID_CTRL_BCAST) {
                 memcpy(_txRing[i].data, data, len);
                 _txRing[i].len = len;
-                __enable_irq();
+                if (!primask) __enable_irq();
                 return;
             }
             i = (i + 1) % TX_RING_SIZE;
@@ -267,7 +304,7 @@ void send(uint32_t canId, const uint8_t* data, uint8_t len) {
     uint8_t next = (_txTail + 1) % TX_RING_SIZE;
     if (next == _txHead) {
         _txDrops++;
-        __enable_irq();
+        if (!primask) __enable_irq();
         return;
     }
 
@@ -277,7 +314,7 @@ void send(uint32_t canId, const uint8_t* data, uint8_t len) {
     memcpy(_txRing[_txTail].data, data, len);
     _txTail = next;
 
-    __enable_irq();
+    if (!primask) __enable_irq();
 }
 
 void sendBatched(uint32_t canId, const ControlPacket& pkt) {

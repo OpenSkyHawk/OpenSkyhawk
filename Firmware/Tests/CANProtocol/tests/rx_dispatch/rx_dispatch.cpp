@@ -20,6 +20,8 @@ static bool _syncReqInRx   = false;
 static bool _testSeqInRx   = false;
 static bool _echoArrived   = false;
 static bool _normalArrived = false;
+static uint8_t  _stage     = 0;
+static uint32_t _stageMs   = 0;
 
 static void onSyncReq() {
     _syncReqFired = true;
@@ -28,8 +30,32 @@ static void onSyncReq() {
 static void onRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     if (canId == CAN_ID_SYNC_REQ)    _syncReqInRx  = true;
     if (canId == CAN_ID_TEST_SEQ)    _testSeqInRx  = true;
-    if (canId == canIdEcho(NODE_ID)) _echoArrived  = true;
+    if (canId == canIdEcho(NODE_ID) && len == 8 && data[0] == 0xA5) _echoArrived = true;
     if (canId == canIdHb(NODE_ID))   _normalArrived = true;
+}
+
+static void advanceStage() {
+    uint8_t d[8] = {};
+
+    _stageMs = millis();
+    switch (_stage) {
+        case 0:
+            CANProtocol::send(CAN_ID_SYNC_REQ, d, 8);  // drain() → onSyncReq only
+            _stage = 1;
+            break;
+        case 1: {
+            uint8_t testSeq[8] = {0xA5};
+            CANProtocol::send(CAN_ID_TEST_SEQ, testSeq, 8);  // drain() → auto ECHO, not onReceive
+            _stage = 2;
+            break;
+        }
+        case 2:
+            CANProtocol::send(canIdHb(NODE_ID), d, 8);  // drain() → onReceive
+            _stage = 3;
+            break;
+        default:
+            break;
+    }
 }
 
 void setup() {
@@ -43,19 +69,24 @@ void setup() {
     CANProtocol::filterAcceptAll();
     CANProtocol::startLoopback();
 
-    uint8_t d[8] = {};
-    CANProtocol::send(CAN_ID_SYNC_REQ,  d, 8);  // drain() → onSyncReq only
-    CANProtocol::send(CAN_ID_TEST_SEQ,  d, 8);  // drain() → auto ECHO, not onReceive
-    CANProtocol::send(canIdHb(NODE_ID), d, 8);  // drain() → onReceive
-    // ECHO loops back and arrives in onReceive on the next drain() iteration
+    advanceStage();
 }
 
 void loop() {
     STM32Board::tick();
     CANProtocol::drain();
 
+    if (_stage == 1 && (_syncReqFired || millis() - _stageMs > 100)) {
+        advanceStage();
+    } else if (_stage == 2 && (_echoArrived || millis() - _stageMs > 100)) {
+        advanceStage();
+    } else if (_stage == 3 && (_normalArrived || millis() - _stageMs > 100)) {
+        _stage = 4;
+        _stageMs = millis();
+    }
+
     static bool _reported = false;
-    if (!_reported && millis() > 500) {
+    if (!_reported && _stage == 4 && millis() - _stageMs > 100) {
         _reported = true;
         auto& d = STM32Board::diagSerial();
         d.println(F("--- rx_dispatch results ---"));
