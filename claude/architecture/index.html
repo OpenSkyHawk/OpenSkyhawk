@@ -1765,7 +1765,7 @@
 <ul>
 <li><code>CAD/</code> — Fusion 360 source files (<code>.f3d</code>). STLs and STEP exports are gitignored; generate from source.</li>
 <li><code>PCB/</code> — KiCad projects. <code>PCB/&lt;Console&gt;/&lt;Controller&gt;/</code> holds one KiCad project per physical PCB. <code>PCB/Libraries/</code> holds shared symbols and footprints.</li>
-<li><code>Firmware/</code> — PlatformIO projects (preferred) or Arduino sketches. <code>Firmware/&lt;name&gt;/</code> — one STM32 CAN avionics controller per folder. <code>Firmware/HID_Controllers/&lt;name&gt;/</code> — one RP2040 HID controller per folder. <code>Firmware/Libraries/</code> — shared code; STM32 and RP2040 libraries in separate subdirectories.</li>
+<li><code>Firmware/</code> — PlatformIO projects (preferred) or Arduino sketches. <code>Firmware/&lt;name&gt;/</code> — one production firmware sketch per folder (STM32 or RP2040, flat — no MCU-type subdirectory). <code>Firmware/Libraries/</code> — shared code; STM32 and RP2040 libraries in separate subdirectories.</li>
 <li><code>docs/References/</code> — cockpit photos, manuals, screenshots. <code>docs/Datasheets/</code> — component datasheets.</li>
 <li><code>docs/claude/controllers/</code> — per-controller reference docs (pinout, I²C addresses, CAN IDs).</li>
 </ul>
