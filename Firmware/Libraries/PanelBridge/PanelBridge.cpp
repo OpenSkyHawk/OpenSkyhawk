@@ -1,178 +1,351 @@
+// DcsBios.h defines tryToSendDcsBiosMessage only under DCSBIOS_DEFAULT_SERIAL.
+// Pre-declare it so the inline sendDcsBiosMessage() in DcsBios.h compiles without the flag.
+// The definition is provided by the sketch TU (compiled with -DDCSBIOS_DEFAULT_SERIAL).
+namespace DcsBios {
+    bool tryToSendDcsBiosMessage(const char* msg, const char* arg);
+}
+
+// Include DcsBios.h WITHOUT DCSBIOS_DEFAULT_SERIAL to avoid ODR violations.
+// The sketch TU owns ProtocolParser, DcsBios::setup(), DcsBios::loop(), and the definition
+// of tryToSendDcsBiosMessage(). This TU only needs the types and constants.
+#ifdef DCSBIOS_DEFAULT_SERIAL
+#  undef DCSBIOS_DEFAULT_SERIAL
+#  define _PBRIDGE_RESTORE_DCSBIOS
+#endif
+#include <DcsBios.h>
+#ifdef _PBRIDGE_RESTORE_DCSBIOS
+#  define DCSBIOS_DEFAULT_SERIAL
+#  undef _PBRIDGE_RESTORE_DCSBIOS
+#endif
+
 #ifdef ARDUINO_ARCH_STM32
 
 #include "PanelBridge.h"
+#include <CANProtocol.h>
 #include <STM32Board.h>
+#include <A4EC_InputMap.h>
+#include <string.h>
 
 namespace {
-    static HardwareSerial* _uart     = nullptr;
-    static uint8_t  _uartBuf[4];
-    static uint8_t  _uartPos   = 0;
-    static uint32_t _ovfCount  = 0;
 
-    static constexpr uint32_t HB_TIMEOUT_MS = 3000;
-    static constexpr uint8_t  MAX_NODES    = 2;
-    static bool     _nodeAlive[MAX_NODES] = {};
-    static uint32_t _lastHbMs[MAX_NODES]  = {};
+// ── Node tracking ─────────────────────────────────────────────────────────────
 
-    static void (*_cbAlive)(uint8_t) = nullptr;
-    static void (*_cbDead)(uint8_t)  = nullptr;
+static constexpr uint8_t  MAX_NODE_ID   = 63;
+static constexpr uint32_t HB_TIMEOUT_MS = 3000;
 
-    static uint32_t _lastErrMs = 0;
-    void monitorErrors(uint32_t now) {
-        if (now - _lastErrMs < 1000) return;
-        _lastErrMs = now;
+struct NodeState {
+    bool     alive;
+    bool     everSeen;
+    uint32_t lastSeenMs;
+};
 
-        uint8_t tec  = CANProtocol::tec();
-        uint8_t rec  = CANProtocol::rec();
-        bool    boff = CANProtocol::busOff();
-        if (tec > 0 || rec > 0 || boff) {
-            if (STM32Board::isDebug()) {
-                auto& d = STM32Board::diagSerial();
-                d.print(F("[ERRS] TEC=")); d.print(tec);
-                d.print(F(" REC="));       d.print(rec);
-                d.print(F(" BOFF="));      d.println(boff);
-            }
-            uint8_t flags = boff ? 0x01 : 0;
-            uint8_t errFrame[8] = {DIAG_MAGIC, DIAG_ERR, tec, rec, flags};
-            _uart->write(errFrame, 8);
+static NodeState      _nodes[MAX_NODE_ID] = {};   // index = nodeId - 1
+static void (*_cbAlive)(uint8_t)          = nullptr;
+static void (*_cbDead)(uint8_t)           = nullptr;
+
+// ── TEST_SEQ state ─────────────────────────────────────────────────────────────
+
+static uint16_t _testSeqNum    = 0;
+static uint32_t _testSeqSentMs = 0;
+
+// ── DCS session change ─────────────────────────────────────────────────────────
+
+static int32_t _lastModelTimeSec = -1;  // -1 = unseeded
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+static void broadcastSyncReq() {
+    static const uint8_t empty[1] = {};
+    CANProtocol::send(CAN_ID_SYNC_REQ, empty, 0);
+    STM32Board::log("[BRIDGE] SYNC_REQ broadcast");
+}
+
+static void sendHidFrame(uint16_t controlId, uint16_t value) {
+    uint8_t frame[6] = {
+        0xAA, 0x55,
+        (uint8_t)(controlId & 0xFF), (uint8_t)(controlId >> 8),
+        (uint8_t)(value     & 0xFF), (uint8_t)(value     >> 8)
+    };
+    Serial.write(frame, 6);
+}
+
+// Internal helper called by BridgeExportListener — separated for testability.
+void handleDcsBiosExport(uint16_t address, uint16_t value) {
+    ControlPacket pkt;
+    pkt.controlId = address;
+    pkt.value     = value;
+    CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, pkt);
+}
+
+static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
+    // Binary search in A4EC_INPUT_MAP (sorted ascending by cmdId)
+    int lo = 0, hi = (int)A4EC_INPUT_MAP_SIZE - 1;
+    const DcsBiosInputEntry* entry = nullptr;
+    while (lo <= hi) {
+        int mid = (lo + hi) / 2;
+        if      (A4EC_INPUT_MAP[mid].cmdId == controlId) { entry = &A4EC_INPUT_MAP[mid]; break; }
+        else if (A4EC_INPUT_MAP[mid].cmdId <  controlId)   lo = mid + 1;
+        else                                                hi = mid - 1;
+    }
+    if (!entry) {
+        if (STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[BRIDGE] unknown DCS ctrl=0x")); d.println(controlId, HEX);
         }
-
-        for (uint8_t i = 0; i < MAX_NODES; i++) {
-            if (_nodeAlive[i] && (now - _lastHbMs[i] > HB_TIMEOUT_MS)) {
-                _nodeAlive[i] = false;
-                uint8_t nodeId = i + 1;
-                STM32Board::log("[DEAD] node timeout");
-                if (_cbDead) _cbDead(nodeId);
-            }
-        }
+        return;
     }
 
-    void processUartPacket(const ControlPacket& pkt) {
-        if (pkt.controlId == CTRL_ID_TEST_SEQ) {
-            uint8_t buf[8];
-            uint32_t seq32 = pkt.value;
-            uint32_t now   = millis();
-            memcpy(buf,     &seq32, 4);
-            memcpy(buf + 4, &now,   4);
-            CANProtocol::send(CAN_ID_TEST_SEQ, buf, 8);
-            if (STM32Board::isDebug()) {
-                STM32Board::diagSerial().print(F("[SEQ] tx seq="));
-                STM32Board::diagSerial().println(pkt.value);
-            }
-        } else {
-            CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, pkt);
-        }
-    }
+    char multiBuf[7];  // "65535\0" + guard
+    const char* arg = nullptr;
 
-    void drainUart() {
-        while (_uart->available()) {
-            _uartBuf[_uartPos++] = _uart->read();
-            if (_uartPos < 4) continue;
-            _uartPos = 0;
-
-            ControlPacket pkt;
-            memcpy(&pkt, _uartBuf, 4);
-            if ((pkt.controlId >= 0x0010 && pkt.controlId <= 0x00FF)
-                    || pkt.controlId >= 0x8000
-                    || pkt.controlId == CTRL_ID_TEST_SEQ) {
-                processUartPacket(pkt);
-            } else {
-                _ovfCount++;
+    switch (entry->type) {
+        case InputType::SWITCH:
+            if (value > 1) {
                 if (STM32Board::isDebug()) {
-                    STM32Board::diagSerial().print(F("[OVF] id=0x"));
-                    STM32Board::diagSerial().print(pkt.controlId, HEX);
-                    STM32Board::diagSerial().print(F(" total="));
-                    STM32Board::diagSerial().println(_ovfCount);
+                    auto& d = STM32Board::diagSerial();
+                    d.print(F("[BRIDGE] bad val ctrl=0x")); d.print(controlId, HEX);
+                    d.print(F(" val=")); d.println(value);
                 }
-                memmove(_uartBuf, _uartBuf + 1, 3);
-                _uartPos = 3;
+                return;
             }
+            arg = (value == 0) ? entry->arg0 : entry->arg1;
+            break;
+        case InputType::ACTION:
+            if (value == 0) return;  // ignore release
+            arg = entry->arg0;
+            break;
+        case InputType::ENCODER:
+            if (value > 1) {
+                if (STM32Board::isDebug()) {
+                    auto& d = STM32Board::diagSerial();
+                    d.print(F("[BRIDGE] bad val ctrl=0x")); d.print(controlId, HEX);
+                    d.print(F(" val=")); d.println(value);
+                }
+                return;
+            }
+            arg = (value == 0) ? entry->arg0 : entry->arg1;
+            break;
+        case InputType::ACCEL_ENCODER:
+            if      (value == 0) arg = entry->arg0;
+            else if (value == 1) arg = entry->arg1;
+            else if (value == 2) arg = entry->arg0fast;
+            else if (value == 3) arg = entry->arg1fast;
+            else {
+                if (STM32Board::isDebug()) {
+                    auto& d = STM32Board::diagSerial();
+                    d.print(F("[BRIDGE] bad val ctrl=0x")); d.print(controlId, HEX);
+                    d.print(F(" val=")); d.println(value);
+                }
+                return;
+            }
+            break;
+        case InputType::MULTIPOS:
+        case InputType::ANALOG:
+            snprintf(multiBuf, sizeof(multiBuf), "%u", (unsigned)value);
+            arg = multiBuf;
+            break;
+        default:
+            return;
+    }
+
+    if (!arg) {
+        if (STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[BRIDGE] null arg ctrl=0x")); d.println(controlId, HEX);
         }
+        return;
     }
 
-    void forwardDiagRtt(uint16_t seq16, const uint8_t* rxData) {
-        uint8_t rtt[8] = {DIAG_MAGIC, DIAG_RTT};
-        memcpy(rtt + 2, &seq16,     2);
-        memcpy(rtt + 4, rxData + 4, 4);
-        _uart->write(rtt, 8);
-    }
+    DcsBios::sendDcsBiosMessage(entry->name, arg);
+}
 
-    void onCanRx(uint32_t canId, const uint8_t* rxData, uint8_t len) {
-        uint32_t now = millis();
-
-        if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODES)) {
-            uint8_t nodeIdx = (uint8_t)(canId - canIdHb(1));
-            if (!_nodeAlive[nodeIdx] && _cbAlive) _cbAlive(rxData[0]);
-            _nodeAlive[nodeIdx] = true;
-            _lastHbMs[nodeIdx]  = now;
-            if (STM32Board::isDebug()) {
-                uint16_t esr16; memcpy(&esr16, rxData + 6, 2);
-                auto& d = STM32Board::diagSerial();
-                d.print(F("[HB] node="));  d.print(rxData[0]);
-                d.print(F(" flags=0x"));   d.print(rxData[1], HEX);
-                d.print(F(" ESR=0x"));     d.println(esr16, HEX);
-            }
-            uint8_t hb[8] = {DIAG_MAGIC, DIAG_HB, rxData[0], rxData[1]};
-            uint16_t rxc; memcpy(&rxc, rxData + 4, 2);
-            memcpy(hb + 4, &rxc, 2);
-            memcpy(hb + 6, rxData + 6, 2);
-            _uart->write(hb, 8);
-
-        } else if (canId >= canIdEvt(1) && canId <= canIdEvt(MAX_NODES)) {
-            uint8_t nodeId = (uint8_t)(canId - canIdEvt(0));
-            uint16_t controlId, value;
-            memcpy(&controlId, rxData,     2);
-            memcpy(&value,     rxData + 2, 2);
-            if (STM32Board::isDebug()) {
-                auto& d = STM32Board::diagSerial();
-                d.print(F("[EVT] node=")); d.print(nodeId);
-                d.print(F(" ctrl=0x"));   d.print(controlId, HEX);
-                d.print(F(" val="));       d.println(value);
-            }
-            uint8_t evt[8] = {DIAG_MAGIC, DIAG_EVT, 0, 0, 0, 0, nodeId, 0};
-            memcpy(evt + 2, &controlId, 2);
-            memcpy(evt + 4, &value,     2);
-            _uart->write(evt, 8);
-
-        } else if (canId >= canIdEcho(0) && canId <= canIdEcho(MAX_NODES)) {
-            // Echo reply from sub-node (or self in loopback via canIdEcho(NODE_ID))
-            uint32_t seq32; memcpy(&seq32, rxData, 4);
-            uint16_t seq16 = (uint16_t)seq32;
-            if (STM32Board::isDebug()) {
-                STM32Board::diagSerial().print(F("[ECHO] seq="));
-                STM32Board::diagSerial().println(seq16);
-            }
-            forwardDiagRtt(seq16, rxData);
+static void dispatchEvtSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000)                                            return;  // null sentinel
+    if (controlId >= CTRL_ID_DCS_MIN && controlId <= CTRL_ID_DCS_MAX)
+        dispatchDcsInput(controlId, value);
+    else if (controlId < CTRL_ID_DCS_MIN)
+        sendHidFrame(controlId, value);
+    else {
+        if (STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[BRIDGE] drop ctrl=0x")); d.println(controlId, HEX);
         }
     }
 }
 
+// Update liveness state and fire alive callback on dead/unseen → alive transition.
+// Returns true if this call caused a transition (caller responsible for SYNC_REQ).
+static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
+    uint8_t idx   = nodeId - 1;
+    bool wasAlive = _nodes[idx].alive;
+    _nodes[idx].alive      = true;
+    _nodes[idx].everSeen   = true;
+    _nodes[idx].lastSeenMs = now;
+    if (!wasAlive) {
+        if (STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[BRIDGE] node=")); d.print(nodeId); d.println(F(" alive"));
+        }
+        if (_cbAlive) _cbAlive(nodeId);
+        return true;
+    }
+    return false;
+}
+
+static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
+    uint32_t now = millis();
+
+    // HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition
+    if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODE_ID)) {
+        uint8_t nodeId = (uint8_t)(canId - canIdHb(0));
+        if (markNodeAlive(nodeId, now)) broadcastSyncReq();
+        return;
+    }
+
+    // EVT_1 – EVT_63: 8-byte ControlPacketPair, dispatch each non-null slot
+    if (canId >= canIdEvt(1) && canId <= canIdEvt(MAX_NODE_ID)) {
+        if (len < 8) return;
+        ControlPacketPair pair;
+        memcpy(&pair, data, 8);
+        dispatchEvtSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchEvtSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // ECHO_1 – ECHO_63: consume TEST_SEQ RTT response, log locally
+    if (canId >= canIdEcho(1) && canId <= canIdEcho(MAX_NODE_ID)) {
+        if (!STM32Board::isDebug() || len < 8) return;
+        uint16_t seq;    memcpy(&seq,    data,     2);
+        uint32_t sentMs; memcpy(&sentMs, data + 2, 4);
+        uint32_t rtt = now - sentMs;
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] ECHO node=")); d.print((uint8_t)(canId - canIdEcho(0)));
+        d.print(F(" seq="));              d.print(seq);
+        d.print(F(" rtt="));              d.print(rtt); d.println(F("ms"));
+        return;
+    }
+
+    // READY_1 – READY_63: node boot-complete — mark alive, always broadcast SYNC_REQ.
+    // SYNC_REQ is unconditional: READY signals a fresh boot regardless of prior state.
+    if (canId >= canIdReady(1) && canId <= canIdReady(MAX_NODE_ID)) {
+        uint8_t nodeId = (uint8_t)(canId - canIdReady(0));
+        if (STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[BRIDGE] READY node=")); d.println(nodeId);
+        }
+        markNodeAlive(nodeId, now);
+        broadcastSyncReq();
+        return;
+    }
+    // All other IDs discarded silently
+}
+
+static void checkNodeTimeouts(uint32_t now) {
+    for (uint8_t i = 0; i < MAX_NODE_ID; i++) {
+        if (!_nodes[i].alive) continue;
+        if (now - _nodes[i].lastSeenMs > HB_TIMEOUT_MS) {
+            _nodes[i].alive = false;
+            uint8_t nodeId  = i + 1;
+            if (STM32Board::isDebug()) {
+                auto& d = STM32Board::diagSerial();
+                d.print(F("[BRIDGE] node=")); d.print(nodeId); d.println(F(" dead"));
+            }
+            if (_cbDead) _cbDead(nodeId);
+        }
+    }
+}
+
+static void onModelTimeChange(char* value) {
+    int32_t sec = 0;
+    for (uint8_t i = 0; i < 5 && value[i] != '\0'; i++) {
+        if (value[i] == '.') break;
+        if (value[i] >= '0' && value[i] <= '9')
+            sec = sec * 10 + (value[i] - '0');
+    }
+    if (_lastModelTimeSec < 0) {
+        _lastModelTimeSec = sec;  // seed — no SYNC_REQ on first value
+        return;
+    }
+    if (sec < _lastModelTimeSec) {
+        STM32Board::log("[BRIDGE] DCS session change — SYNC_REQ");
+        broadcastSyncReq();
+    }
+    _lastModelTimeSec = sec;
+}
+
+// DCS-BIOS export listener — intercepts 0x8000–0x86FF and batches to CTRL_BCAST.
+// ExportStreamListener::firstExportStreamListener (Protocol.cpp) is zero-initialized
+// before any constructors run, so file-scope registration is safe.
+class BridgeExportListener : public DcsBios::ExportStreamListener {
+public:
+    BridgeExportListener() : DcsBios::ExportStreamListener(0x8000, 0x86FF) {}
+    void onDcsBiosWrite(unsigned int address, unsigned int data) override {
+        handleDcsBiosExport((uint16_t)address, (uint16_t)data);
+    }
+};
+
+static BridgeExportListener     _exportListener;
+static DcsBios::StringBuffer<5> _modelTimeBuf(CommonData_MOD_TIME_A, onModelTimeChange);
+
+} // anonymous namespace
+
 namespace PanelBridge {
 
-void setup(HardwareSerial& uartPort) {
-    _uart = &uartPort;
+void onNodeAlive(NodeCallback cb) { _cbAlive = cb; }
+void onNodeDead(NodeCallback cb)  { _cbDead  = cb; }
+
+void setup() {
     STM32Board::begin();
+    Serial.begin(250000);
     CANProtocol::onStatusChange(STM32Board::onCanStatus);
-    CANProtocol::onReceive(onCanRx);
-
-    _uart->begin(250000);
-
     CANProtocol::filterAcceptAll();
+    CANProtocol::onReceive(onCanRx);
     CANProtocol::start();
-    STM32Board::log("PanelBridge ready. CAN ready.");
+    broadcastSyncReq();
 }
 
 void loop() {
     uint32_t now = millis();
     STM32Board::tick();
-    drainUart();
     CANProtocol::drain();
-    monitorErrors(now);
+    checkNodeTimeouts(now);
+
+    auto& diag = STM32Board::diagSerial();
+    while (diag.available()) {
+        char c = (char)diag.read();
+        if (c != 'T') continue;
+        _testSeqNum++;
+        _testSeqSentMs = millis();
+        uint8_t payload[8] = {};
+        payload[0] = (uint8_t)(_testSeqNum & 0xFF);
+        payload[1] = (uint8_t)(_testSeqNum >> 8);
+        payload[2] = (uint8_t)(_testSeqSentMs & 0xFF);
+        payload[3] = (uint8_t)((_testSeqSentMs >>  8) & 0xFF);
+        payload[4] = (uint8_t)((_testSeqSentMs >> 16) & 0xFF);
+        payload[5] = (uint8_t)((_testSeqSentMs >> 24) & 0xFF);
+        // payload[6..7] = reserved = 0
+        CANProtocol::send(CAN_ID_TEST_SEQ, payload, 8);
+        if (STM32Board::isDebug()) {
+            diag.print(F("[BRIDGE] TEST_SEQ seq=")); diag.println(_testSeqNum);
+        }
+    }
 }
 
-void onNodeAlive(void (*cb)(uint8_t nodeId)) { _cbAlive = cb; }
-void onNodeDead(void (*cb)(uint8_t nodeId))  { _cbDead  = cb; }
+} // namespace PanelBridge
+
+#ifdef PANELBRIDGE_TEST
+namespace PanelBridge {
+
+void testDispatchEvt(uint16_t controlId, uint16_t value) {
+    dispatchEvtSlot(controlId, value);
+}
+
+void testHandleExport(uint16_t address, uint16_t value) {
+    handleDcsBiosExport(address, value);
+}
 
 } // namespace PanelBridge
+#endif // PANELBRIDGE_TEST
 
 #endif // ARDUINO_ARCH_STM32

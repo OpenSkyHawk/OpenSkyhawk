@@ -1,70 +1,91 @@
 # PanelBridge
 
-CAN master / UART bridge domain layer for OpenSkyhawk.
+STM32 CAN master and DCS-BIOS processing node for OpenSkyhawk.
 
-`PanelBridge` turns an STM32F103CBT6 into a transparent bridge between the RP2040  
-SimGateway (over UART) and the CAN sub-nodes (PanelGroup boards). It does two things:
+`PanelBridge` turns an STM32F103CBT6 into the CAN cluster master. It runs the DCS-BIOS
+library on `Serial` (UART2, PA2/PA3 — wired to SimGateway), batches DCS cockpit-output
+updates to `CTRL_BCAST` CAN frames, and routes panel input events (CAN EVTs) to either
+DCS-BIOS ASCII commands or 6-byte HID frames back on the same UART.
 
-- **UART → CAN**: `ControlPacket` frames received from the RP2040 are broadcast on  
-  the CAN bus as `CTRL_BCAST` frames (or as `TEST_SEQ` frames when `controlId == CTRL_TEST_SEQ`).
+## Architecture
 
-- **CAN → UART**: Heartbeat and echo frames received from sub-nodes are forwarded to  
-  the RP2040 as 8-byte DIAG frames (`DIAG_MAGIC` framing, defined in `CANProtocol.h`).
+```
+SimGateway (RP2040)
+    ↕ UART2 (PA2/PA3) @ 250000 baud
+PanelBridge (STM32F103CBT6)   ← this library
+    ↕ CAN @ 500 kbps
+    ├── PanelGroup #1
+    └── PanelGroup #N
+```
 
-A heartbeat watchdog fires `onNodeDead()` if no heartbeat is seen for 3 seconds, and  
-`onNodeAlive()` when one returns.
+**DCS-BIOS exports (sim → cockpit):** `BridgeExportListener` listens to the DCS-BIOS
+stream on addresses `0x8000–0x86FF` and batches each value as a `ControlPacket` to
+`CANProtocol::sendBatched(CAN_ID_CTRL_BCAST)`. PanelGroup nodes subscribe to these frames
+to drive LEDs, gauges, and other outputs.
+
+**Panel inputs (cockpit → sim):** CAN EVT frames from PanelGroup nodes carry pairs of
+`ControlPacket` values. PanelBridge dispatches each slot:
+- `controlId 0x8000–0x86FF` → binary search in `A4EC_INPUT_MAP` → `sendDcsBiosMessage()`
+  → DCS-BIOS ASCII command on UART (forwarded by SimGateway to PC)
+- `controlId < 0x8000` → 6-byte HID frame (`0xAA 0x55 controlId[2LE] value[2LE]`) on UART
+  → SimGateway routes to USB HID axis/button report
 
 ## Dependencies
 
 - [STM32Board](../STM32Board/README.md)
-- [CANProtocol](../CANProtocol/) — `ControlPacket`, CAN IDs, `DIAG_*` constants
+- [CANProtocol](../CANProtocol/README.md)
+- A4EC — input map and command IDs
+- DCS-BIOS — `ExportStreamListener`, `StringBuffer`, `sendDcsBiosMessage()`
 
 ## UART wiring
 
-Connect UART2 (PA2/PA3) on the master STM32 to GP0/GP1 (Serial1) on the RP2040:
-
-| Signal | Master STM32 | RP2040 |
+| Signal | STM32 (PanelBridge) | RP2040 (SimGateway) |
 |---|---|---|
-| TX | PA2 (UART2 TX) | GP1 (Serial1 RX) |
-| RX | PA3 (UART2 RX) | GP0 (Serial1 TX) |
+| TX | PA2 (UART2 TX) | UART RX pin |
+| RX | PA3 (UART2 RX) | UART TX pin |
 | GND | GND | GND |
 
-Both sides are 3.3 V — no level shifter required. Baud rate: **250000**.
-
-> **Note:** Use `Serial2` (UART2 on PA2/PA3) on the master STM32, not `Serial` remapped  
-> to UART1. Remapping `Serial` to PA9/PA10 causes "multiple definition of Serial2"  
-> compile errors with STM32duino.
+Both sides 3.3 V — no level shifter required. Baud rate: **250000**.
 
 ## Usage
 
 ```cpp
+#define DCSBIOS_DEFAULT_SERIAL
+#include <DcsBios.h>
 #include <PanelBridge.h>
+#include <STM32Board.h>
 
 void onAlive(uint8_t nodeId) { /* node came online */ }
 void onDead(uint8_t nodeId)  { /* node timed out  */ }
 
 void setup() {
+    STM32Board::setDebug(true);          // optional — enables DiagSerial output
     PanelBridge::onNodeAlive(onAlive);   // optional
     PanelBridge::onNodeDead(onDead);     // optional
-    STM32Board::setDebug(true);          // optional
-    PanelBridge::setup(Serial2);         // UART2 PA2/PA3 @ 250000
+    PanelBridge::setup();
+    DcsBios::setup();
 }
 
 void loop() {
+    DcsBios::loop();
     PanelBridge::loop();
 }
 ```
 
-## DIAG frame format
+`DCSBIOS_DEFAULT_SERIAL` must be defined **before** `#include <DcsBios.h>` in the sketch.
+It makes the DCS-BIOS library own `Serial` (UART2). `PanelBridge.h` must be included
+**after** `DcsBios.h`.
 
-Frames forwarded to the RP2040 are 8 bytes with the first byte always `DIAG_MAGIC` (0xAA):
+## Node tracking
 
-| Byte | DIAG_RTT | DIAG_HB |
-|---|---|---|
-| 0 | `0xAA` (DIAG_MAGIC) | `0xAA` |
-| 1 | `0x01` (DIAG_RTT) | `0x02` (DIAG_HB) |
-| 2–3 | seq (uint16_t LE) | node_id, flags |
-| 4–7 | original send timestamp (uint32_t LE) | rxCount (uint16_t LE), padding |
+PanelBridge tracks up to 63 PanelGroup nodes. A node is marked alive on first heartbeat
+or READY frame; dead after 3 s without a heartbeat. On each alive transition, PanelBridge
+broadcasts `SYNC_REQ` so the node re-polls and sends its current input state.
+
+## DiagSerial test sequence
+
+Sending `'T'` on DiagSerial (USART1, PA9/PA10, 115200) triggers a `TEST_SEQ` CAN frame
+to all nodes. Each node replies with an `ECHO` frame; PanelBridge logs the RTT.
 
 ## API
 
@@ -72,7 +93,7 @@ See [`PanelBridge.h`](PanelBridge.h) for full Doxygen documentation.
 
 | Function | Description |
 |---|---|
-| `PanelBridge::setup(uartPort)` | Init hardware, start UART + CAN |
-| `PanelBridge::loop()` | Drain UART + CAN, watchdog check |
-| `PanelBridge::onNodeAlive(cb)` | Callback when a sub-node heartbeat appears |
-| `PanelBridge::onNodeDead(cb)` | Callback after 3 s with no heartbeat |
+| `PanelBridge::setup()` | Init board services, UART, CAN, cold-boot SYNC_REQ |
+| `PanelBridge::loop()` | Drain CAN, check heartbeat timeouts, handle DiagSerial |
+| `PanelBridge::onNodeAlive(cb)` | Callback fired when a node transitions to alive |
+| `PanelBridge::onNodeDead(cb)` | Callback fired after 3 s with no heartbeat |
