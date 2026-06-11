@@ -6,8 +6,9 @@
  * Contains only `#define` constants — no classes, no functions, no state.
  *
  * controlId routing by range:
- *   0x0010–0x001F  HID axes   — routed to Joystick axis setters on SimGateway
- *   0x0020–0x009F  HID buttons — routed to Joystick button setters on SimGateway
+ *   0x0010–0x001F  HID axes        — routed to axis setters on SimGateway
+ *   0x0020–0x002F  HID hat switches — routed to hat setters on SimGateway
+ *   0x0030–0x00AF  HID buttons     — routed to button setters on SimGateway
  *
  * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
@@ -26,12 +27,18 @@
 #define CTRL_ZOOM       0x0016  // Zoom axis       — throttle sub-node (ADC)
 // 0x0017–0x001F: reserved for future axes
 
-// ── HID buttons — controlId range 0x0020–0x009F (128 slots) ──────────────────
+// ── HID hat switches — controlId range 0x0020–0x002F (16 slots) ──────────────
+// value: 0 = centered, 1 = N, 2 = NE, 3 = E, 4 = SE, 5 = S, 6 = SW, 7 = W, 8 = NW
 
-#define CTRL_TRIGGER    0x0020  // Trigger (button index 0) — stick grip
-// 0x0021–0x009F: additional buttons added here as stick/throttle grip is catalogued
+#define CTRL_HAT_0      0x0020  // Hat switch 0    — stick grip (4-way / 8-way)
+// 0x0021–0x002F: reserved for additional hat switches
+
+// ── HID buttons — controlId range 0x0030–0x00AF (128 slots) ──────────────────
+
+#define CTRL_TRIGGER    0x0030  // Trigger (button index 0) — stick grip
+// 0x0031–0x00AF: additional buttons added here as stick/throttle grip is catalogued
 
 // ── Range sentinels (used by CANProtocol and SimGateway for routing checks) ──
 
 #define CTRL_ID_HID_MIN 0x0010  // First valid HID controlId
-#define CTRL_ID_HID_MAX 0x009F  // Last valid HID controlId
+#define CTRL_ID_HID_MAX 0x00AF  // Last valid HID controlId
