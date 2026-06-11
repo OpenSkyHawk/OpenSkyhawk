@@ -7,13 +7,26 @@
 //   controlId < 0x8000      → HID frame (0xAA 0x55 ...) → UART → SimGateway
 //
 // No per-panel control declarations needed — A4EC_InputMap covers the full A-4E-C set.
-// NODE_ID is not used by PanelBridge (it is the CAN master, not a sub-node).
+// NODE_ID=0 is required; PanelBridge is the CAN master and does not transmit HB_0.
 
+#define DCSBIOS_DEFAULT_SERIAL
 #include <DcsBios.h>
 #include <PanelBridge.h>
+#include <STM32Board.h>
+
+void onNodeAlive(uint8_t nodeId) {
+    (void)nodeId;  // add diagnostics here if needed
+}
+
+void onNodeDead(uint8_t nodeId) {
+    (void)nodeId;  // add diagnostics here if needed
+}
 
 void setup() {
-    PanelBridge::setup(Serial2);  // Serial2 = UART2 PA2/PA3; arg removed in Phase 2
+    STM32Board::setDebug(true);       // remove for production; enables DiagSerial output
+    PanelBridge::onNodeAlive(onNodeAlive);
+    PanelBridge::onNodeDead(onNodeDead);
+    PanelBridge::setup();
     DcsBios::setup();
 }
 
