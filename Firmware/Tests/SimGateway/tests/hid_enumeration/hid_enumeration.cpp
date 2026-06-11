@@ -58,6 +58,7 @@ OpenSkyhawk::HIDAxis axisBrakeR  (CTRL_BRAKE_R, 5);
 OpenSkyhawk::HIDAxis axisZoom    (CTRL_ZOOM,    6);
 OpenSkyhawk::HIDAxis axisSlot7   (0x0017,       7); // tests 8th axis slot
 OpenSkyhawk::HIDButton trigger   (CTRL_TRIGGER, 0);
+OpenSkyhawk::HIDHatSwitch hat0   (CTRL_HAT_0,   0);
 
 // Helper: inject one 6-byte HID frame via feedByte() (SIMGATEWAY_TEST not defined,
 // but feedByte() is not available — drive via simulated UART loopback instead).
@@ -139,7 +140,7 @@ void loop() {
         // Hat 0 sweep: center → N → NE → E → SE → S → SW → W → NW → center
         static uint8_t hatDir = 0;
         static const char* HAT_NAMES[] = { "center", "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
-        sendFrame(Serial1, 0x0020, hatDir); // 0x0020 = first hat slot (if registered)
+        sendFrame(Serial1, CTRL_HAT_0, hatDir);
 
         Serial.print(F("[hat]  hat0 direction="));
         Serial.println(HAT_NAMES[hatDir]);

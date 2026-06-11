@@ -30,7 +30,8 @@
 // ── HID hat switches — controlId range 0x0020–0x002F (16 slots) ──────────────
 // value: 0 = centered, 1 = N, 2 = NE, 3 = E, 4 = SE, 5 = S, 6 = SW, 7 = W, 8 = NW
 
-// 0x0020–0x002F: hat switches added here as controls are catalogued
+#define CTRL_HAT_0      0x0020  // Hat switch 0    — stick grip (4-way / 8-way)
+// 0x0021–0x002F: reserved for additional hat switches
 
 // ── HID buttons — controlId range 0x0030–0x00AF (128 slots) ──────────────────
 

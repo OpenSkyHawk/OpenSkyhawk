@@ -292,6 +292,7 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
     TinyUSBDevice.setID(0x2E8A, 0x4134);
     TinyUSBDevice.setManufacturerDescriptor("OpenSkyhawk");
     TinyUSBDevice.setProductDescriptor("A-4E Skyhawk");
+    Serial.begin(115200); // start Adafruit_USBD_CDC; required before available()/write() work
 #endif
 
     _uart->setTX(txPin);
