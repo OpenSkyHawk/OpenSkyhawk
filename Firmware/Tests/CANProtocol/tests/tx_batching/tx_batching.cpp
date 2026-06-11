@@ -57,7 +57,7 @@ void loop() {
     CANProtocol::drain();  // also services 2-loop batch deadline
 
     static bool _reported = false;
-    if (!_reported && millis() > 1000) {
+    if (!_reported && (_rxCount >= 3 || millis() > 2000)) {
         _reported = true;
         auto& d = STM32Board::diagSerial();
         d.println(F("--- tx_batching results ---"));
