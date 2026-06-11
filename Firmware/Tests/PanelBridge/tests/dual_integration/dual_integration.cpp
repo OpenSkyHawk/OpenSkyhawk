@@ -63,6 +63,8 @@ void onNodeDead(uint8_t nodeId) {
 }
 
 void setup() {
+    STM32Board::diagSerial().begin(115200);
+    STM32Board::diagSerial().println(F("=== PanelBridge: dual_integration [bridge] ==="));
     STM32Board::setDebug(true);
     PanelBridge::onNodeAlive(onNodeAlive);
     PanelBridge::onNodeDead(onNodeDead);
@@ -100,6 +102,8 @@ static void onSyncReq() {
 }
 
 void setup() {
+    STM32Board::diagSerial().begin(115200);
+    STM32Board::diagSerial().println(F("=== PanelBridge: dual_integration [node] ==="));
     STM32Board::begin();
     STM32Board::setDebug(true);
     CANProtocol::onStatusChange(STM32Board::onCanStatus);

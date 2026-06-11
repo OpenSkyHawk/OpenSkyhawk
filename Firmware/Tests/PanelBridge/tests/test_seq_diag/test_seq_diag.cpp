@@ -31,6 +31,8 @@
 #include <PanelBridge.h>
 
 void setup() {
+    STM32Board::diagSerial().begin(115200);
+    STM32Board::diagSerial().println(F("=== PanelBridge: test_seq_diag [bridge] ==="));
     STM32Board::setDebug(true);
     PanelBridge::setup();
     DcsBios::setup();
@@ -44,30 +46,24 @@ void loop() {
 }
 
 #else
-// ── PanelGroup role: echoes TEST_SEQ ─────────────────────────────────────────
+// ── PanelGroup role ───────────────────────────────────────────────────────────
+// TEST_SEQ echo is handled automatically by CANProtocol::drain() — not forwarded
+// to onReceive(). No manual echo needed here; node just needs to be on the bus
+// with HBs running.
 // TODO Phase 3: replace with PanelGroup::setup()/loop() once PanelGroup library exists.
 
 static uint32_t _lastHbMs = 0;
 static bool     _readySent = false;
 
-static void onRx(uint32_t canId, const uint8_t* data, uint8_t len) {
-    if (canId == CAN_ID_TEST_SEQ && len == 8) {
-        CANProtocol::send(canIdEcho(NODE_ID), data, len);
-        if (STM32Board::isDebug()) {
-            uint16_t seq; memcpy(&seq, data, 2);
-            STM32Board::diagSerial().print(F("[NODE] echo seq=")); STM32Board::diagSerial().println(seq);
-        }
-    }
-}
-
 void setup() {
+    STM32Board::diagSerial().begin(115200);
+    STM32Board::diagSerial().println(F("=== PanelBridge: test_seq_diag [node] ==="));
     STM32Board::begin();
     STM32Board::setDebug(true);
     CANProtocol::onStatusChange(STM32Board::onCanStatus);
     CANProtocol::filterAcceptAll();
-    CANProtocol::onReceive(onRx);
     CANProtocol::start();
-    STM32Board::diagSerial().println(F("[TEST] test_seq_diag — node ready, echoing TEST_SEQ"));
+    STM32Board::diagSerial().println(F("[TEST] test_seq_diag — node ready, auto-echoing TEST_SEQ"));
 }
 
 void loop() {

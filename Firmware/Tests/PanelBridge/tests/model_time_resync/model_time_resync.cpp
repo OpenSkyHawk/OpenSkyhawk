@@ -27,6 +27,11 @@
 //
 // Pass criteria (manual, DiagSerial):
 //   - "[BRIDGE] DCS session change — SYNC_REQ" appears only on the third send (decrease)
+//
+// DEFERRED (2026-06-11): USB-UART adapters available during Phase 2 testing cannot open
+// at 250000 baud (macOS stty rejects the rate). Injection requires a sender at 250000.
+// Deferred to Phase 6 SimGateway integration — RP2040 UART handles 250000 natively and
+// will feed live model-time data through PA3, exercising this path end-to-end.
 
 #define DCSBIOS_DEFAULT_SERIAL
 #include <DcsBios.h>
@@ -34,6 +39,8 @@
 #include <STM32Board.h>
 
 void setup() {
+    STM32Board::diagSerial().begin(115200);
+    STM32Board::diagSerial().println(F("=== PanelBridge: model_time_resync ==="));
     STM32Board::setDebug(true);
     PanelBridge::setup();
     DcsBios::setup();

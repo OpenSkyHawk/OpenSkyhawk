@@ -38,6 +38,8 @@ void onNodeDead(uint8_t nodeId) {
 }
 
 void setup() {
+    STM32Board::diagSerial().begin(115200);
+    STM32Board::diagSerial().println(F("=== PanelBridge: startup_sequence ==="));
     STM32Board::setDebug(true);
     PanelBridge::onNodeAlive(onNodeAlive);
     PanelBridge::onNodeDead(onNodeDead);

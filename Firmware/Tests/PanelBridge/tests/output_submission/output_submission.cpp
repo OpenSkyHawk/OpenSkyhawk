@@ -47,6 +47,8 @@ static uint8_t  _idx    = 0;
 static uint32_t _lastMs = 0;
 
 void setup() {
+    STM32Board::diagSerial().begin(115200);
+    STM32Board::diagSerial().println(F("=== PanelBridge: output_submission ==="));
     STM32Board::setDebug(true);
     PanelBridge::setup();
     DcsBios::setup();
