@@ -2,65 +2,131 @@
 
 #include "SimGateway.h"
 #include <USB.h>
+#include <Joystick.h>
+
+// ── HIDAxis ───────────────────────────────────────────────────────────────────
+
+namespace OpenSkyhawk {
+
+HIDAxis* HIDAxis::_head = nullptr;
+
+HIDAxis::HIDAxis(uint16_t controlId, uint8_t axisIndex)
+    : _next(nullptr), _controlId(controlId), _axisIndex(axisIndex)
+{
+    _next = _head;
+    _head = this;
+}
+
+HIDAxis* HIDAxis::head()                   { return _head; }
+uint16_t HIDAxis::controlId() const        { return _controlId; }
+HIDAxis* HIDAxis::next() const             { return _next; }
+void     HIDAxis::dispatch(uint16_t value) {
+    Joystick.SetAxis(_axisIndex, (int16_t)(value - 32768));
+}
+
+// ── HIDButton ─────────────────────────────────────────────────────────────────
+
+HIDButton* HIDButton::_head = nullptr;
+
+HIDButton::HIDButton(uint16_t controlId, uint8_t buttonIndex)
+    : _next(nullptr), _controlId(controlId), _buttonIndex(buttonIndex)
+{
+    _next = _head;
+    _head = this;
+}
+
+HIDButton* HIDButton::head()                   { return _head; }
+uint16_t   HIDButton::controlId() const        { return _controlId; }
+HIDButton* HIDButton::next() const             { return _next; }
+void       HIDButton::dispatch(uint16_t value) {
+    Joystick.SetButton(_buttonIndex, value != 0);
+}
+
+} // namespace OpenSkyhawk
+
+// ── Internal parser ───────────────────────────────────────────────────────────
 
 namespace {
-    static HardwareSerial* _uart = nullptr;
 
-    static uint8_t  _diagBuf[8];
-    static uint8_t  _diagPos = 0;
+enum class ParserState : uint8_t { IDLE, GOT_AA, IN_FRAME };
 
-    static void (*_cbRtt)(uint16_t, uint32_t) = nullptr;
-    static void (*_cbHb)(uint8_t, uint16_t)   = nullptr;
-    static void (*_cbErr)(uint8_t, uint8_t, uint8_t) = nullptr;
-    static void (*_cbEvt)(uint16_t, uint16_t, uint8_t) = nullptr;
+HardwareSerial* _uart     = nullptr;
+ParserState     _state    = ParserState::IDLE;
+uint8_t         _frameBuf[4];
+uint8_t         _framePos = 0;
 
-    void dispatchDiag() {
-        switch (_diagBuf[1]) {
-            case DIAG_RTT: {
-                uint16_t seq;    memcpy(&seq,    _diagBuf + 2, 2);
-                uint32_t sentMs; memcpy(&sentMs, _diagBuf + 4, 4);
-                if (_cbRtt) _cbRtt(seq, sentMs);
-                break;
+#ifdef SIMGATEWAY_TEST
+// Captured by test files; updated on each HID dispatch.
+uint16_t _sgtest_lastControlId = 0;
+uint16_t _sgtest_lastValue     = 0;
+uint8_t  _sgtest_dispatchCount = 0;
+#endif
+
+// Process one UART byte through the state machine.
+// Returns true if a HID setter fired (Joystick.Set* was called).
+bool _processByte(uint8_t b) {
+    switch (_state) {
+
+        case ParserState::IDLE:
+            if (b == 0xAA) {
+                _state = ParserState::GOT_AA;
+            } else {
+                Serial.write(b); // DCS-BIOS byte → CDC
             }
-            case DIAG_HB: {
-                uint16_t rxc; memcpy(&rxc, _diagBuf + 4, 2);
-                if (_cbHb) _cbHb(_diagBuf[2], rxc);
-                break;
+            return false;
+
+        case ParserState::GOT_AA:
+            if (b == 0x55) {
+                _framePos = 0;
+                _state    = ParserState::IN_FRAME;
+            } else {
+                // Resync: 0xAA was not a magic prefix — forward both bytes
+                Serial.write(0xAA);
+                Serial.write(b);
+                _state = ParserState::IDLE;
             }
-            case DIAG_ERR:
-                if (_cbErr) _cbErr(_diagBuf[2], _diagBuf[3], _diagBuf[4]);
-                break;
-            case DIAG_EVT: {
-                uint16_t controlId, value;
-                memcpy(&controlId, _diagBuf + 2, 2);
-                memcpy(&value,     _diagBuf + 4, 2);
-                if (_cbEvt) _cbEvt(controlId, value, _diagBuf[6]);
-                break;
+            return false;
+
+        case ParserState::IN_FRAME: {
+            _frameBuf[_framePos++] = b;
+            if (_framePos < 4) return false;
+
+            uint16_t controlId = (uint16_t)_frameBuf[0] | ((uint16_t)_frameBuf[1] << 8);
+            uint16_t value     = (uint16_t)_frameBuf[2] | ((uint16_t)_frameBuf[3] << 8);
+            bool fired = false;
+
+            for (auto* a = OpenSkyhawk::HIDAxis::head(); a; a = a->next()) {
+                if (a->controlId() == controlId) { a->dispatch(value); fired = true; }
             }
+            for (auto* btn = OpenSkyhawk::HIDButton::head(); btn; btn = btn->next()) {
+                if (btn->controlId() == controlId) { btn->dispatch(value); fired = true; }
+            }
+
+#ifdef SIMGATEWAY_TEST
+            if (fired) {
+                _sgtest_lastControlId = controlId;
+                _sgtest_lastValue     = value;
+                _sgtest_dispatchCount++;
+            }
+#endif
+
+            _state = ParserState::IDLE;
+            return fired;
         }
     }
-
-    void drainUart() {
-        while (_uart->available()) {
-            uint8_t b = _uart->read();
-
-            // Resync: drop bytes until we see DIAG_MAGIC at position 0
-            if (_diagPos == 0 && b != DIAG_MAGIC) continue;
-
-            _diagBuf[_diagPos++] = b;
-            if (_diagPos < 8) continue;
-            _diagPos = 0;
-            dispatchDiag();
-        }
-    }
+    return false;
 }
+
+} // anonymous namespace
+
+// ── SimGateway ────────────────────────────────────────────────────────────────
 
 namespace SimGateway {
 
-void setup(HardwareSerial& panelBridgePort) {
-    _uart = &panelBridgePort;
+void setup(HardwareSerial& uart) {
+    _uart = &uart;
 
-    // Must be set before Joystick.begin() / DcsBios::setup()
+    // USB identity must be set before TinyUSB enumerates
     USB.setManufacturer("OpenSkyhawk");
     USB.setProduct("A-4E Skyhawk");
     USB.setVIDPID(0x2E8A, 0x4134);
@@ -70,23 +136,28 @@ void setup(HardwareSerial& panelBridgePort) {
     Joystick.use16bit();
     Joystick.useManualSend(true);
     Joystick.begin();
-    // DcsBios::setup() must be called by the sketch after this
 }
 
 void loop() {
-    // DcsBios::loop() must be called by the sketch before or after this
-    drainUart();
+    // 1. Forward CDC → UART (PC DCS-BIOS stream to PanelBridge)
+    while (Serial.available()) {
+        _uart->write(Serial.read());
+    }
+
+    // 2. Drain UART; HID frames dispatched, DCS-BIOS bytes forwarded to CDC
+    bool anyFired = false;
+    while (_uart->available()) {
+        anyFired |= _processByte(_uart->read());
+    }
+
+    // 3. Flush one HID report if any setter fired this iteration
+    if (anyFired) Joystick.Send();
 }
 
-void send(uint16_t controlId, uint16_t value) {
-    ControlPacket pkt = {controlId, value};
-    _uart->write(reinterpret_cast<const uint8_t*>(&pkt), 4);
-}
-
-void onDiagRtt(void (*cb)(uint16_t, uint32_t))     { _cbRtt = cb; }
-void onDiagHb(void (*cb)(uint8_t, uint16_t))       { _cbHb  = cb; }
-void onDiagErr(void (*cb)(uint8_t, uint8_t, uint8_t))      { _cbErr = cb; }
-void onDiagEvt(void (*cb)(uint16_t, uint16_t, uint8_t))    { _cbEvt = cb; }
+#ifdef SIMGATEWAY_TEST
+bool feedByte(uint8_t b)  { return _processByte(b); }
+void resetParser()         { _state = ParserState::IDLE; _framePos = 0; }
+#endif
 
 } // namespace SimGateway
 
