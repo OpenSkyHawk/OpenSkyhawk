@@ -1762,8 +1762,12 @@
 <p><a href="../files/"><strong>FileList</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_f592a3c441b32532ba8eb6b28add2a90/"><strong>PanelBridge</strong></a> <strong>&gt;</strong> <a href="./"><strong>PanelBridge.cpp</strong></a></p>
 <p><a href="../PanelBridge_8cpp_source/">Go to the source code of this file</a></p>
 <ul>
+<li><code>#include &lt;DcsBios.h&gt;</code></li>
 <li><code>#include "PanelBridge.h"</code></li>
+<li><code>#include &lt;CANProtocol.h&gt;</code></li>
 <li><code>#include &lt;STM32Board.h&gt;</code></li>
+<li><code>#include &lt;A4EC_InputMap.h&gt;</code></li>
+<li><code>#include &lt;string.h&gt;</code></li>
 </ul>
 <h2 id="namespaces">Namespaces</h2>
 <table>
@@ -1776,7 +1780,11 @@
 <tbody>
 <tr>
 <td style="text-align: right;">namespace</td>
-<td style="text-align: left;"><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> <br><em>Static singleton for CAN master / UART bridge firmware.</em></td>
+<td style="text-align: left;"><a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">namespace</td>
+<td style="text-align: left;"><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> <br></td>
 </tr>
 </tbody>
 </table>

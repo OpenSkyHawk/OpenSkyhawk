@@ -1746,21 +1746,34 @@
 #pragma once
 #ifdef ARDUINO_ARCH_STM32
 
-#include &lt;Arduino.h&gt;
-#include &lt;STM32Board.h&gt;
-#include &lt;CANProtocol.h&gt;
+#include &lt;stdint.h&gt;
 
 namespace PanelBridge {
 
-    void setup(HardwareSerial&amp; uartPort);
+    using NodeCallback = void(*)(uint8_t nodeId);
+
+    void onNodeAlive(NodeCallback cb);
+
+    void onNodeDead(NodeCallback cb);
+
+    void setup();
 
     void loop();
 
-    void onNodeAlive(void (*cb)(uint8_t nodeId));
+} // namespace PanelBridge
 
-    void onNodeDead(void (*cb)(uint8_t nodeId));
+// ── Test hooks (PANELBRIDGE_TEST builds only) ─────────────────────────────────
+// Analogous to SimGateway::feedByte(). Allow unit tests to exercise dispatch logic
+// without a physical CAN bus or a live DCS-BIOS connection.
+#ifdef PANELBRIDGE_TEST
+namespace PanelBridge {
+
+    void testDispatchEvt(uint16_t controlId, uint16_t value);
+
+    void testHandleExport(uint16_t address, uint16_t value);
 
 } // namespace PanelBridge
+#endif // PANELBRIDGE_TEST
 
 #endif // ARDUINO_ARCH_STM32
 </code></pre>

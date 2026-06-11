@@ -3,6 +3,7 @@
   <compounddef id="A4EC__InputMap_8h" kind="file" language="C++">
     <compoundname>A4EC_InputMap.h</compoundname>
     <includes refid="A4EC__CmdIds_8h" local="no">A4EC_CmdIds.h</includes>
+    <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
     <incdepgraph>
       <node id="2">
         <label>A4EC_CmdIds.h</label>
@@ -15,6 +16,18 @@
         </childnode>
       </node>
     </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/A4EC/A4EC_InputMap.h</label>
+        <link refid="A4EC__InputMap_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+    </invincdepgraph>
     <innerclass refid="structDcsBiosInputEntry" prot="public">DcsBiosInputEntry</innerclass>
     <innernamespace refid="namespaceInputType">InputType</innernamespace>
     <sectiondef kind="var">

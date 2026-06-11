@@ -60,6 +60,7 @@
 
 ## n
 
+* **NodeCallback** ([**PanelBridge**](namespacePanelBridge.md))
 * **nodeId** ([**PanelGroup**](namespacePanelGroup.md))
 
 
@@ -102,6 +103,7 @@
 
 * **tec** ([**CANProtocol**](namespaceCANProtocol.md))
 * **txDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
+* **tryToSendDcsBiosMessage** ([**DcsBios**](namespaceDcsBios.md))
 * **tick** ([**STM32Board**](namespaceSTM32Board.md))
 
 

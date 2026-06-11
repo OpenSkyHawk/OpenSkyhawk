@@ -10,8 +10,12 @@
 
 
 
+* `#include <DcsBios.h>`
 * `#include "PanelBridge.h"`
+* `#include <CANProtocol.h>`
 * `#include <STM32Board.h>`
+* `#include <A4EC_InputMap.h>`
+* `#include <string.h>`
 
 
 
@@ -29,7 +33,8 @@
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**PanelBridge**](namespacePanelBridge.md) <br>_Static singleton for CAN master / UART bridge firmware._  |
+| namespace | [**DcsBios**](namespaceDcsBios.md) <br> |
+| namespace | [**PanelBridge**](namespacePanelBridge.md) <br> |
 
 
 

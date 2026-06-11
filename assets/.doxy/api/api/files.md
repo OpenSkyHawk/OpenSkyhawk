@@ -17,7 +17,7 @@ Here is a list of all files with brief descriptions:
             * **file** [**HIDControls.h**](HIDControls_8h.md) _CAN controlId constants for HID axes and buttons._     
         * **dir** [**PanelBridge**](dir_f592a3c441b32532ba8eb6b28add2a90.md)     
             * **file** [**PanelBridge.cpp**](PanelBridge_8cpp.md)     
-            * **file** [**PanelBridge.h**](PanelBridge_8h.md) _CAN master / UART bridge domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
+            * **file** [**PanelBridge.h**](PanelBridge_8h.md) _STM32 CAN master and DCS-BIOS processing node for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
         * **dir** [**PanelGroup**](dir_54a06c409a6161127d200302d3061b3f.md)     
             * **file** [**PanelGroup.cpp**](PanelGroup_8cpp.md)     
             * **file** [**PanelGroup.h**](PanelGroup_8h.md) _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._    

@@ -1772,11 +1772,9 @@
 <h1 id="file-panelbridgeh">File PanelBridge.h</h1>
 <p><a href="../files/"><strong>FileList</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_f592a3c441b32532ba8eb6b28add2a90/"><strong>PanelBridge</strong></a> <strong>&gt;</strong> <a href="./"><strong>PanelBridge.h</strong></a></p>
 <p><a href="../PanelBridge_8h_source/">Go to the source code of this file</a></p>
-<p><em>CAN master / UART bridge domain layer for</em> <a href="../namespaceOpenSkyhawk/"><em><strong>OpenSkyhawk</strong></em></a> <em>.</em><a href="#detailed-description">More...</a></p>
+<p><em>STM32 CAN master and DCS-BIOS processing node for</em> <a href="../namespaceOpenSkyhawk/"><em><strong>OpenSkyhawk</strong></em></a> <em>.</em><a href="#detailed-description">More...</a></p>
 <ul>
-<li><code>#include &lt;Arduino.h&gt;</code></li>
-<li><code>#include &lt;STM32Board.h&gt;</code></li>
-<li><code>#include &lt;CANProtocol.h&gt;</code></li>
+<li><code>#include &lt;stdint.h&gt;</code></li>
 </ul>
 <h2 id="namespaces">Namespaces</h2>
 <table>
@@ -1789,23 +1787,28 @@
 <tbody>
 <tr>
 <td style="text-align: right;">namespace</td>
-<td style="text-align: left;"><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> <br><em>Static singleton for CAN master / UART bridge firmware.</em></td>
+<td style="text-align: left;"><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> <br></td>
 </tr>
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>Provides a transparent bridge between the RP2040 <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> (over UART) and the CAN sub-nodes (<a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> boards). ControlPackets received from the RP2040 are broadcast on the CAN bus; frames received from sub-nodes are forwarded to the RP2040 as DIAG frames. Sub-node heartbeat watchdog fires callbacks on liveness changes.</p>
-<p>A minimal master sketch:</p>
-<pre><code class="language-C++">#include &lt;PanelBridge.h&gt;
+<p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> bridges the RP2040 <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> (UART2, PA2/PA3) and the <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> CAN cluster. It runs the DCS-BIOS library on Serial, batches DCS output to CAN CTRL_BCAST frames, routes CAN EVTs to DCS-BIOS commands or HID frames, and tracks <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> node liveness.</p>
+<p>Minimal production sketch: </p>
+<pre><code class="language-C++">#define DCSBIOS_DEFAULT_SERIAL
+#include &lt;DcsBios.h&gt;
+#include &lt;PanelBridge.h&gt;
 
 void setup() {
-    STM32Board::setDebug(true);
-    PanelBridge::setup(Serial2);   // UART2 PA2/PA3 @ 250000
+    PanelBridge::setup();
+    DcsBios::setup();
 }
-void loop() { PanelBridge::loop(); }
+void loop() {
+    DcsBios::loop();
+    PanelBridge::loop();
+}
 </code></pre>
 <p><strong>Version:</strong></p>
-<p>0.1.0 </p>
+<p>0.2.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />

@@ -1728,6 +1728,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#public-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1739,13 +1750,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#detailed-description" class="md-nav__link">
+  <a href="#public-types-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Detailed Description
+        Public Types Documentation
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Public Types Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typedef-nodecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typedef NodeCallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1832,7 +1860,21 @@
 
 <h1 id="namespace-panelbridge">Namespace PanelBridge</h1>
 <p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>PanelBridge</strong></a></p>
-<p><em>Static singleton for CAN master / UART bridge firmware.</em> <a href="#detailed-description">More...</a></p>
+<h2 id="public-types">Public Types</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">typedef void(*)(uint8_t nodeId)</td>
+<td style="text-align: left;"><a href="#typedef-nodecallback"><strong>NodeCallback</strong></a>  <br><em>Callback type for node liveness events. Parameter is</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>node ID (1–63).</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -1844,71 +1886,71 @@
 <tbody>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-loop"><strong>loop</strong></a> () <br><em>Service all</em> <a href="./"><em><strong>PanelBridge</strong></em></a> <em>activity. Call every Arduino</em><a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></td>
+<td style="text-align: left;"><a href="#function-loop"><strong>loop</strong></a> () <br><em>Run</em> <a href="./"><em><strong>PanelBridge</strong></em></a> <em>work not owned by DcsBios::loop().</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-onnodealive"><strong>onNodeAlive</strong></a> (void(*)(uint8_t nodeId) cb) <br><em>Register a callback invoked when a sub-node sends its first heartbeat after a dead or startup period.</em></td>
+<td style="text-align: left;"><a href="#function-onnodealive"><strong>onNodeAlive</strong></a> (<a href="./#typedef-nodecallback"><strong>NodeCallback</strong></a> cb) <br><em>Register a callback fired when a node transitions from dead/unseen to alive.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-onnodedead"><strong>onNodeDead</strong></a> (void(*)(uint8_t nodeId) cb) <br><em>Register a callback invoked when a sub-node has not sent a heartbeat for 3 seconds. Called once per timed-out node.</em></td>
+<td style="text-align: left;"><a href="#function-onnodedead"><strong>onNodeDead</strong></a> (<a href="./#typedef-nodecallback"><strong>NodeCallback</strong></a> cb) <br><em>Register a callback fired when a live node misses the heartbeat timeout (3 s).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-setup"><strong>setup</strong></a> (HardwareSerial &amp; uartPort) <br><em>Initialise hardware and start the CAN bus.</em></td>
+<td style="text-align: left;"><a href="#function-setup"><strong>setup</strong></a> () <br><em>Initialise STM32 board services, UART2,</em> <a href="../namespaceCANProtocol/"><em><strong>CANProtocol</strong></em></a> <em>, and</em><a href="./"><em><strong>PanelBridge</strong></em></a> <em>internals.</em></td>
 </tr>
 </tbody>
 </table>
-<h2 id="detailed-description">Detailed Description</h2>
-<p>Bridges ControlPacket structs between the RP2040 <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> (UART) and the CAN bus. Accepts all CAN frames. Forwards heartbeats and RTT echo frames to the RP2040 as 8-byte DIAG frames (DIAG_MAGIC framing defined in <a href="../CANProtocol_8h/"><strong>CANProtocol.h</strong></a>). Fires optional callbacks when a sub-node comes alive or goes silent. </p>
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+<h3 id="typedef-nodecallback">typedef NodeCallback</h3>
+<p><em>Callback type for node liveness events. Parameter is</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>node ID (1–63).</em></p>
+<pre><code class="language-C++">using PanelBridge::NodeCallback = typedef void(*)(uint8_t nodeId);
+</code></pre>
+<hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-loop">function loop</h3>
-<p><em>Service all</em> <a href="./"><em><strong>PanelBridge</strong></em></a> <em>activity. Call every Arduino</em><a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></p>
+<p><em>Run</em> <a href="./"><em><strong>PanelBridge</strong></em></a> <em>work not owned by DcsBios::loop().</em></p>
 <pre><code class="language-C++">void PanelBridge::loop () 
 </code></pre>
-<p>Calls STM32Board::update(), drains the UART RX buffer and processes incoming ControlPackets, drains the CAN RX FIFO and forwards frames to the RP2040, and checks the sub-node heartbeat watchdog. </p>
+<p>Drains <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> RX, dispatches EVT packets, services <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> batching deadlines, checks node heartbeat timeouts (3 s), and handles DiagSerial 'T' bytes for TEST_SEQ.</p>
+<p><strong>Note:</strong></p>
+<p>Call after DcsBios::loop() each iteration. </p>
 <hr>
 
 <h3 id="function-onnodealive">function onNodeAlive</h3>
-<p><em>Register a callback invoked when a sub-node sends its first heartbeat after a dead or startup period.</em> </p>
+<p><em>Register a callback fired when a node transitions from dead/unseen to alive.</em> </p>
 <pre><code class="language-C++">void PanelBridge::onNodeAlive (
-    void(*)(uint8_t nodeId) cb
+    NodeCallback cb
 ) 
 </code></pre>
-<p><strong>Note:</strong></p>
-<p>Set before calling <a href="./#function-setup"><strong>setup()</strong></a>. </p>
+<p>Passing nullptr clears the callback. Set before calling <a href="./#function-setup"><strong>setup()</strong></a>.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>cb</code> Function called with the node_id of the newly live node. </li>
+<li><code>cb</code> Function called with the <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> node ID (1–63). </li>
 </ul>
 <hr>
 
 <h3 id="function-onnodedead">function onNodeDead</h3>
-<p><em>Register a callback invoked when a sub-node has not sent a heartbeat for 3 seconds. Called once per timed-out node.</em> </p>
+<p><em>Register a callback fired when a live node misses the heartbeat timeout (3 s).</em> </p>
 <pre><code class="language-C++">void PanelBridge::onNodeDead (
-    void(*)(uint8_t nodeId) cb
+    NodeCallback cb
 ) 
 </code></pre>
-<p><strong>Note:</strong></p>
-<p>Set before calling <a href="./#function-setup"><strong>setup()</strong></a>. </p>
+<p>Passing nullptr clears the callback. Set before calling <a href="./#function-setup"><strong>setup()</strong></a>.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>cb</code> Function called with the node_id (1 or 2) of the timed-out node. </li>
+<li><code>cb</code> Function called with the <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> node ID (1–63). </li>
 </ul>
 <hr>
 
 <h3 id="function-setup">function setup</h3>
-<p><em>Initialise hardware and start the CAN bus.</em> </p>
-<pre><code class="language-C++">void PanelBridge::setup (
-    HardwareSerial &amp; uartPort
-) 
+<p><em>Initialise STM32 board services, UART2,</em> <a href="../namespaceCANProtocol/"><em><strong>CANProtocol</strong></em></a> <em>, and</em><a href="./"><em><strong>PanelBridge</strong></em></a> <em>internals.</em></p>
+<pre><code class="language-C++">void PanelBridge::setup () 
 </code></pre>
-<p>Calls <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a>, starts the UART at 250000 baud, configures a pass-all CAN filter, then calls canStart(). Call STM32Board::setDebug(true) before this to enable diagnostic output.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>uartPort</code> Hardware serial port connected to the RP2040 <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a>. Use Serial2 (UART2 PA2/PA3) on the standard master board. </li>
-</ul>
+<p>Performs in order: <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a>, Serial.begin(250000), DCS-BIOS export listener registration, <a href="../namespaceCANProtocol/#function-filteracceptall"><strong>CANProtocol::filterAcceptAll()</strong></a>, <a href="../namespaceCANProtocol/#function-onreceive"><strong>CANProtocol::onReceive()</strong></a> registration, <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>, and cold-boot SYNC_REQ broadcast.</p>
+<p><strong>Note:</strong></p>
+<p>Sketch must call DcsBios::setup() immediately after this. </p>
 <hr>
 
 <hr />

@@ -8,7 +8,6 @@
 
 
 
-_Static singleton for CAN master / UART bridge firmware._ [More...](#detailed-description)
 
 
 
@@ -27,6 +26,12 @@ _Static singleton for CAN master / UART bridge firmware._ [More...](#detailed-de
 
 
 
+
+## Public Types
+
+| Type | Name |
+| ---: | :--- |
+| typedef void(\*)(uint8\_t nodeId) | [**NodeCallback**](#typedef-nodecallback)  <br>_Callback type for node liveness events. Parameter is_ [_**PanelGroup**_](namespacePanelGroup.md) _node ID (1–63)._ |
 
 
 
@@ -51,10 +56,10 @@ _Static singleton for CAN master / UART bridge firmware._ [More...](#detailed-de
 
 | Type | Name |
 | ---: | :--- |
-|  void | [**loop**](#function-loop) () <br>_Service all_ [_**PanelBridge**_](namespacePanelBridge.md) _activity. Call every Arduino_[_**loop()**_](namespacePanelBridge.md#function-loop) _iteration._ |
-|  void | [**onNodeAlive**](#function-onnodealive) (void(\*)(uint8\_t nodeId) cb) <br>_Register a callback invoked when a sub-node sends its first heartbeat after a dead or startup period._  |
-|  void | [**onNodeDead**](#function-onnodedead) (void(\*)(uint8\_t nodeId) cb) <br>_Register a callback invoked when a sub-node has not sent a heartbeat for 3 seconds. Called once per timed-out node._  |
-|  void | [**setup**](#function-setup) (HardwareSerial & uartPort) <br>_Initialise hardware and start the CAN bus._  |
+|  void | [**loop**](#function-loop) () <br>_Run_ [_**PanelBridge**_](namespacePanelBridge.md) _work not owned by DcsBios::loop()._ |
+|  void | [**onNodeAlive**](#function-onnodealive) ([**NodeCallback**](namespacePanelBridge.md#typedef-nodecallback) cb) <br>_Register a callback fired when a node transitions from dead/unseen to alive._  |
+|  void | [**onNodeDead**](#function-onnodedead) ([**NodeCallback**](namespacePanelBridge.md#typedef-nodecallback) cb) <br>_Register a callback fired when a live node misses the heartbeat timeout (3 s)._  |
+|  void | [**setup**](#function-setup) () <br>_Initialise STM32 board services, UART2,_ [_**CANProtocol**_](namespaceCANProtocol.md) _, and_[_**PanelBridge**_](namespacePanelBridge.md) _internals._ |
 
 
 
@@ -83,13 +88,22 @@ _Static singleton for CAN master / UART bridge firmware._ [More...](#detailed-de
 
 
 
-## Detailed Description
+## Public Types Documentation
 
 
-Bridges ControlPacket structs between the RP2040 [**SimGateway**](namespaceSimGateway.md) (UART) and the CAN bus. Accepts all CAN frames. Forwards heartbeats and RTT echo frames to the RP2040 as 8-byte DIAG frames (DIAG\_MAGIC framing defined in [**CANProtocol.h**](CANProtocol_8h.md)). Fires optional callbacks when a sub-node comes alive or goes silent. 
 
 
-    
+### typedef NodeCallback 
+
+_Callback type for node liveness events. Parameter is_ [_**PanelGroup**_](namespacePanelGroup.md) _node ID (1–63)._
+```C++
+using PanelBridge::NodeCallback = typedef void(*)(uint8_t nodeId);
+```
+
+
+
+
+<hr>
 ## Public Functions Documentation
 
 
@@ -97,14 +111,24 @@ Bridges ControlPacket structs between the RP2040 [**SimGateway**](namespaceSimGa
 
 ### function loop 
 
-_Service all_ [_**PanelBridge**_](namespacePanelBridge.md) _activity. Call every Arduino_[_**loop()**_](namespacePanelBridge.md#function-loop) _iteration._
+_Run_ [_**PanelBridge**_](namespacePanelBridge.md) _work not owned by DcsBios::loop()._
 ```C++
 void PanelBridge::loop () 
 ```
 
 
 
-Calls STM32Board::update(), drains the UART RX buffer and processes incoming ControlPackets, drains the CAN RX FIFO and forwards frames to the RP2040, and checks the sub-node heartbeat watchdog. 
+Drains [**CANProtocol**](namespaceCANProtocol.md) RX, dispatches EVT packets, services [**CANProtocol**](namespaceCANProtocol.md) batching deadlines, checks node heartbeat timeouts (3 s), and handles DiagSerial 'T' bytes for TEST\_SEQ.
+
+
+
+
+**Note:**
+
+Call after DcsBios::loop() each iteration. 
+
+
+
 
 
         
@@ -115,20 +139,16 @@ Calls STM32Board::update(), drains the UART RX buffer and processes incoming Con
 
 ### function onNodeAlive 
 
-_Register a callback invoked when a sub-node sends its first heartbeat after a dead or startup period._ 
+_Register a callback fired when a node transitions from dead/unseen to alive._ 
 ```C++
 void PanelBridge::onNodeAlive (
-    void(*)(uint8_t nodeId) cb
+    NodeCallback cb
 ) 
 ```
 
 
 
-
-
-**Note:**
-
-Set before calling [**setup()**](namespacePanelBridge.md#function-setup). 
+Passing nullptr clears the callback. Set before calling [**setup()**](namespacePanelBridge.md#function-setup).
 
 
 
@@ -136,7 +156,7 @@ Set before calling [**setup()**](namespacePanelBridge.md#function-setup).
 **Parameters:**
 
 
-* `cb` Function called with the node\_id of the newly live node. 
+* `cb` Function called with the [**PanelGroup**](namespacePanelGroup.md) node ID (1–63). 
 
 
 
@@ -149,20 +169,16 @@ Set before calling [**setup()**](namespacePanelBridge.md#function-setup).
 
 ### function onNodeDead 
 
-_Register a callback invoked when a sub-node has not sent a heartbeat for 3 seconds. Called once per timed-out node._ 
+_Register a callback fired when a live node misses the heartbeat timeout (3 s)._ 
 ```C++
 void PanelBridge::onNodeDead (
-    void(*)(uint8_t nodeId) cb
+    NodeCallback cb
 ) 
 ```
 
 
 
-
-
-**Note:**
-
-Set before calling [**setup()**](namespacePanelBridge.md#function-setup). 
+Passing nullptr clears the callback. Set before calling [**setup()**](namespacePanelBridge.md#function-setup).
 
 
 
@@ -170,7 +186,7 @@ Set before calling [**setup()**](namespacePanelBridge.md#function-setup).
 **Parameters:**
 
 
-* `cb` Function called with the node\_id (1 or 2) of the timed-out node. 
+* `cb` Function called with the [**PanelGroup**](namespacePanelGroup.md) node ID (1–63). 
 
 
 
@@ -183,24 +199,22 @@ Set before calling [**setup()**](namespacePanelBridge.md#function-setup).
 
 ### function setup 
 
-_Initialise hardware and start the CAN bus._ 
+_Initialise STM32 board services, UART2,_ [_**CANProtocol**_](namespaceCANProtocol.md) _, and_[_**PanelBridge**_](namespacePanelBridge.md) _internals._
 ```C++
-void PanelBridge::setup (
-    HardwareSerial & uartPort
-) 
+void PanelBridge::setup () 
 ```
 
 
 
-Calls [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin), starts the UART at 250000 baud, configures a pass-all CAN filter, then calls canStart(). Call STM32Board::setDebug(true) before this to enable diagnostic output.
+Performs in order: [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin), Serial.begin(250000), DCS-BIOS export listener registration, [**CANProtocol::filterAcceptAll()**](namespaceCANProtocol.md#function-filteracceptall), [**CANProtocol::onReceive()**](namespaceCANProtocol.md#function-onreceive) registration, [**CANProtocol::start()**](namespaceCANProtocol.md#function-start), and cold-boot SYNC\_REQ broadcast.
 
 
 
 
-**Parameters:**
+**Note:**
 
+Sketch must call DcsBios::setup() immediately after this. 
 
-* `uartPort` Hardware serial port connected to the RP2040 [**SimGateway**](namespaceSimGateway.md). Use Serial2 (UART2 PA2/PA3) on the standard master board. 
 
 
 
