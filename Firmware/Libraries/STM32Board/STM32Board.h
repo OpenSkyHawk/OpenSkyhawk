@@ -11,7 +11,7 @@
  *   - UART : USART1 PA9 TX / PA10 RX @ 115200 (diagnostic tap)
  *   - CAN  : SN65HVD230 on PA11 (RX) / PA12 (TX)
  *
- * @version 0.2.0
+ * @version 0.3.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -99,25 +99,6 @@ namespace STM32Board {
      * @returns Pointer to the internal CAN_HandleTypeDef.
      */
     CAN_HandleTypeDef* canHandle();
-
-    // ── Deprecated — will be removed when CANProtocol is implemented ──────────
-    // These remain temporarily so PanelGroup and PanelBridge compile unchanged
-    // until the CANProtocol PR migrates those calls.
-
-    /** @deprecated Use CANProtocol::start() instead. */
-    void canStart();
-
-    /** @deprecated Use CANProtocol::send() instead. */
-    bool canSend(uint32_t canId, const uint8_t* data, uint8_t len);
-
-    /** @deprecated Use CANProtocol::tec() instead. */
-    uint8_t tec();
-
-    /** @deprecated Use CANProtocol::rec() instead. */
-    uint8_t rec();
-
-    /** @deprecated Use CANProtocol::busOff() instead. */
-    bool busOff();
 
 } // namespace STM32Board
 
