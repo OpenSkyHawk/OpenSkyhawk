@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
-import sys
 from pathlib import Path
 
 
@@ -140,10 +139,7 @@ def select_projects(
                 if project in project_set:
                     selected.add(project)
                 else:
-                    print(
-                        f"warning: impact map references missing project {project}",
-                        file=sys.stderr,
-                    )
+                    return all_projects, f"full: impact map references missing project {project}"
             continue
 
         if changed.startswith("Firmware/"):

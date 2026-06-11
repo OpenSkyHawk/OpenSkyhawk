@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -38,10 +38,12 @@ jobs:
 
           projects_file="$RUNNER_TEMP/platformio-projects.txt"
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            # pull_request checks out GitHub's synthetic merge commit.
+            # With fetch-depth 2, HEAD^1 is the base parent and HEAD is the merge result.
             python .github/scripts/select-platformio-projects.py \
               --mode affected \
-              --base "${{ github.event.pull_request.base.sha }}" \
-              --head "${{ github.event.pull_request.head.sha }}" \
+              --base "HEAD^1" \
+              --head "HEAD" \
               --output "$projects_file" \
               --github-output "$GITHUB_OUTPUT"
           else
