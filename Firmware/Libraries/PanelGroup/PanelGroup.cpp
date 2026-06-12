@@ -22,7 +22,9 @@ struct ExpanderEntry {
 };
 
 struct ADCEntry {
-    ADS1115* adc;
+    ADS1115*  adc;
+    uint8_t   addr;
+    TwoWire*  wire;
 };
 
 static ExpanderEntry _expanders[MAX_EXPANDERS];
@@ -75,6 +77,7 @@ static uint8_t findOrAddIntPin(uint8_t pin) {
 
 static void onCanReceive(uint32_t canId, const uint8_t* data, uint8_t len) {
     if (canId != CAN_ID_CTRL_BCAST) return;
+    if (len != sizeof(ControlPacketPair)) return; // malformed — discard
     _rxCount++;
     ControlPacketPair pair;
     memcpy(&pair, data, sizeof(pair));
@@ -110,17 +113,18 @@ OpenSkyhawk::OutputBase* OpenSkyhawk::OutputBase::next() const { return _next; }
 
 // ── OpenSkyhawk::LED ──────────────────────────────────────────────────────────
 
-OpenSkyhawk::LED::LED(uint16_t addr, uint16_t mask, PinRef pin)
-    : _addr(addr), _mask(mask), _pin(pin) {}
+OpenSkyhawk::LED::LED(uint16_t addr, uint16_t mask, PinRef pin, bool activeHigh)
+    : _addr(addr), _mask(mask), _pin(pin), _activeHigh(activeHigh) {}
 
 void OpenSkyhawk::LED::configure() {
     _pin.configureAsOutput();
-    _pin.write(false);
+    _pin.write(!_activeHigh); // drive to LED-off state regardless of polarity
 }
 
 void OpenSkyhawk::LED::onControlPacket(uint16_t controlId, uint16_t value) {
     if (controlId != _addr) return;
-    _pin.write((value & _mask) != 0);
+    bool lit = (value & _mask) != 0;
+    _pin.write(_activeHigh ? lit : !lit);
 }
 
 // ── OpenSkyhawk::IntegerOutput ────────────────────────────────────────────────
@@ -137,12 +141,15 @@ void OpenSkyhawk::IntegerOutput::onControlPacket(uint16_t controlId, uint16_t va
 
 namespace PanelGroup {
 
-void registerADC(ADS1115& adc) {
+void registerADC(ADS1115& adc, uint8_t addr, TwoWire& wire) {
     if (_adcCount >= MAX_ADCS) return;
     // Deduplicate: skip if already registered
     for (uint8_t i = 0; i < _adcCount; i++)
         if (_adcs[i].adc == &adc) return;
-    _adcs[_adcCount++].adc = &adc;
+    auto& e = _adcs[_adcCount++];
+    e.adc  = &adc;
+    e.addr = addr;
+    e.wire = &wire;
 }
 
 void registerExpander(MCP23017& chip, uint8_t intaPin, uint8_t intbPin) {
@@ -164,9 +171,9 @@ void setup() {
     STM32Board::begin();
     CANProtocol::onStatusChange(STM32Board::onCanStatus);
 
-    // Step 2a — ADC begin
+    // Step 2a — ADC begin (address and bus were captured at registerADC time)
     for (uint8_t i = 0; i < _adcCount; i++)
-        _adcs[i].adc->begin();
+        _adcs[i].adc->begin(_adcs[i].addr, _adcs[i].wire);
 
     // Step 2b — determine open-drain: any two expanders sharing an interrupt pin
     for (uint8_t i = 0; i < _expanderCount; i++) {
@@ -205,9 +212,14 @@ void setup() {
     for (uint8_t i = 0; i < _expanderCount; i++) {
         auto& e = _expanders[i];
 
-        // Enable interrupt-on-change (CHANGE = compare against previous value)
-        e.chip->interrupt(MCP23017Port::A, CHANGE);
-        e.chip->interrupt(MCP23017Port::B, CHANGE);
+        // Enable interrupt-on-change only on input pins, excluding GPA7/GPB7.
+        // GPA7/GPB7 must be outputs per Microchip silicon bug (Rev D erratum):
+        // asserting GPINTEN on them while in input mode corrupts SDA mid-transfer.
+        // IODIR bit=1 means input; mask to 0x7F to exclude bit 7 on both ports.
+        uint8_t gpintenA = e.chip->readRegister(MCP23017Register::IODIR_A) & 0x7Fu;
+        uint8_t gpintenB = e.chip->readRegister(MCP23017Register::IODIR_B) & 0x7Fu;
+        e.chip->writeRegister(MCP23017Register::GPINTEN_A, gpintenA);
+        e.chip->writeRegister(MCP23017Register::GPINTEN_B, gpintenB);
 
         // Baseline read — captures initial state after configure() sets IODIR
         e.portAcache = e.chip->readPort(MCP23017Port::A);

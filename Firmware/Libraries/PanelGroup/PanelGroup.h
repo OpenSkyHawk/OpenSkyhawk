@@ -37,6 +37,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <Arduino.h>
+#include <Wire.h>
 #include <MCP23017.h>
 #include "ADS1115.h"
 #include "PinRef.h"
@@ -163,11 +164,13 @@ class LED : public OutputBase {
 public:
     /**
      * @brief Construct an LED output.
-     * @param addr  DCS-BIOS controlId this LED responds to.
-     * @param mask  Bitmask applied to the received value.
-     * @param pin   PinRef for the LED pin (GPIO or MCP23017 output bit).
+     * @param addr       DCS-BIOS controlId this LED responds to.
+     * @param mask       Bitmask applied to the received value.
+     * @param pin        PinRef for the LED pin (GPIO or MCP23017 output bit).
+     * @param activeHigh true (default) — pin HIGH when LED on (current-source).
+     *                   false — pin LOW when LED on (current-sink / active-low).
      */
-    LED(uint16_t addr, uint16_t mask, PinRef pin);
+    LED(uint16_t addr, uint16_t mask, PinRef pin, bool activeHigh = true);
 
     void configure() override;
     void onControlPacket(uint16_t controlId, uint16_t value) override;
@@ -176,6 +179,7 @@ private:
     uint16_t _addr;
     uint16_t _mask;
     PinRef   _pin;
+    bool     _activeHigh;
 };
 
 /**
@@ -222,13 +226,15 @@ namespace PanelGroup {
     /**
      * @brief Register an ADS1115 ADC. Call before setup().
      *
-     * PanelGroup calls adc.begin() during setup(). Register each ADS1115 instance
-     * exactly once — multiple AnalogInput objects may share the same chip.
+     * PanelGroup calls adc.begin(addr, wire) during setup(). Register each ADS1115
+     * instance exactly once — multiple AnalogInput objects may share the same chip.
      *
-     * @param adc  ADS1115 instance. Must outlive PanelGroup.
-     * @note Wire.begin() must be called by the sketch before setup().
+     * @param adc   ADS1115 instance. Must outlive PanelGroup.
+     * @param addr  I2C address (0x48–0x4B via ADDR pin). Default 0x48.
+     * @param wire  I2C bus. Default Wire (I2C1 on STM32).
+     * @note Wire.begin() (or Wire1.begin()) must be called by the sketch before setup().
      */
-    void registerADC(ADS1115& adc);
+    void registerADC(ADS1115& adc, uint8_t addr = 0x48, TwoWire& wire = Wire);
 
     /**
      * @brief Register an MCP23017 expander. Call before setup().
