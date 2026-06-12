@@ -16,6 +16,7 @@
 // they succeed; any BUS_OFF condition from a missing bus does not affect ADS1115 init.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <Wire.h>
 #include <PanelGroup.h>
 
@@ -28,16 +29,16 @@ static void onCan(uint32_t id, const uint8_t*, uint8_t) {
 }
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PanelGroup register_adc ===");
-    Serial.println("Hardware: ADS1115 @ 0x48, A0 at ~1.65 V mid-rail");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PanelGroup register_adc ===");
+    STM32Board::diagSerial().println("Hardware: ADS1115 @ 0x48, A0 at ~1.65 V mid-rail");
 
     bool pass = true;
     auto check = [&](const char* label, bool cond) {
         if (!cond) pass = false;
-        Serial.print(label);
-        Serial.println(cond ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(cond ? ": PASS" : ": FAIL");
     };
 
     // Register ADC before setup() — pattern identical to sketch usage
@@ -46,7 +47,7 @@ void setup() {
 
     // Register same instance again — must be deduplicated (no crash, no double-init)
     PanelGroup::registerADC(gAdc, 0x48, Wire);
-    Serial.println("Double-register: did not crash");
+    STM32Board::diagSerial().println("Double-register: did not crash");
 
     // Start CAN in loopback so setup() does not hang on bus-off
     CANProtocol::onReceive(onCan);
@@ -65,15 +66,15 @@ void setup() {
     // After setup(), the ADS1115 is initialised — PinRef can read
     PinRef pin(gAdc, 0); // channel 0 = A0
     uint16_t val = pin.readAnalog();
-    Serial.print("PinRef(adc, 0).readAnalog() = ");
-    Serial.println(val);
+    STM32Board::diagSerial().print("PinRef(adc, 0).readAnalog() = ");
+    STM32Board::diagSerial().println(val);
 
     check("readAnalog() > 0        (ADS1115 responding)", val > 0);
     check("readAnalog() <= 65534   (15-bit×2 range)",     val <= 65534u);
     check("readAnalog() in [8000, 56000] (mid-rail ~1.65 V)",
           val >= 8000 && val <= 56000);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {

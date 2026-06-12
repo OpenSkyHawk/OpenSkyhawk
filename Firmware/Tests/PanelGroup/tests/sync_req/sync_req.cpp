@@ -7,6 +7,7 @@
 // Hardware: STM32. No CAN bus, no MCP23017. Tests dispatch in isolation.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <PanelGroup.h>
 
 // Minimal concrete InputBase — counts configure, poll, forceReport calls.
@@ -27,15 +28,15 @@ CountingInput gInputB;
 CountingInput gInputC;
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PanelGroup sync_req ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PanelGroup sync_req ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     // Linked list must contain all 3 (order is reverse-declaration due to push-to-front)
@@ -79,7 +80,7 @@ void setup() {
     check("poll() called on gInputB",  gInputB.pollCount == 1);
     check("poll() called on gInputC",  gInputC.pollCount == 1);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

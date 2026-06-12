@@ -14,6 +14,7 @@
 //   after toggling switch closed: cache bit GPA0=0
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <Wire.h>
 #include <MCP23017.h>
 #include <PanelGroup.h>
@@ -22,10 +23,10 @@
 MCP23017 gExpander(0x20, Wire);
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PanelGroup interrupt_dispatch ===");
-    Serial.println("Hardware: MCP23017 @ 0x20 required");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PanelGroup interrupt_dispatch ===");
+    STM32Board::diagSerial().println("Hardware: MCP23017 @ 0x20 required");
 
     Wire.begin();
 
@@ -37,8 +38,8 @@ void setup() {
 
     // GPA0 starts HIGH (switch open, 10 kΩ pull-up)
     bool initial = PanelGroup::readCachedPin(gExpander, 0 /*PORT_A*/, 0 /*bit*/);
-    Serial.print("GPA0 initial cache: ");
-    Serial.println(initial ? "HIGH (PASS — switch open)" : "LOW (FAIL or switch already closed)");
+    STM32Board::diagSerial().print("GPA0 initial cache: ");
+    STM32Board::diagSerial().println(initial ? "HIGH (PASS — switch open)" : "LOW (FAIL or switch already closed)");
 }
 
 void loop() {
@@ -50,8 +51,8 @@ void loop() {
         lastPrintMs = now;
         bool gpa0 = PanelGroup::readCachedPin(gExpander, 0, 0);
         bool gpa1 = PanelGroup::readCachedPin(gExpander, 0, 1);
-        Serial.print("GPA0="); Serial.print(gpa0);
-        Serial.print("  GPA1="); Serial.println(gpa1);
-        Serial.println(gpa0 ? "Switch open (HIGH)" : "Switch CLOSED (LOW) — PASS");
+        STM32Board::diagSerial().print("GPA0="); STM32Board::diagSerial().print(gpa0);
+        STM32Board::diagSerial().print("  GPA1="); STM32Board::diagSerial().println(gpa1);
+        STM32Board::diagSerial().println(gpa0 ? "Switch open (HIGH)" : "Switch CLOSED (LOW) — PASS");
     }
 }

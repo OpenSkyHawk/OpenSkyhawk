@@ -15,6 +15,7 @@
 // Serial output shows raw readAnalog() value for cross-check.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <Wire.h>
 #include "ADS1115.h"
 #include <PinRef.h>
@@ -22,27 +23,27 @@
 static ADS1115 gAdc;
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PinRef ads1115_analog ===");
-    Serial.println("Hardware: ADS1115 @ 0x48, A0 wired to ~1.65 V mid-rail divider");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PinRef ads1115_analog ===");
+    STM32Board::diagSerial().println("Hardware: ADS1115 @ 0x48, A0 wired to ~1.65 V mid-rail divider");
 
     Wire.begin();
     bool ok = gAdc.begin(0x48, &Wire);
     if (!ok) {
-        Serial.println("ADS1115 begin() FAILED — check wiring");
-        Serial.println("=== FAIL ===");
+        STM32Board::diagSerial().println("ADS1115 begin() FAILED — check wiring");
+        STM32Board::diagSerial().println("=== FAIL ===");
         return;
     }
-    Serial.println("ADS1115 begin(): OK");
+    STM32Board::diagSerial().println("ADS1115 begin(): OK");
 
     PinRef pin(gAdc, 0); // channel 0 = A0
 
     bool pass = true;
     auto check = [&](const char* label, bool cond) {
         if (!cond) pass = false;
-        Serial.print(label);
-        Serial.println(cond ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(cond ? ": PASS" : ": FAIL");
     };
 
     // Identity
@@ -51,8 +52,8 @@ void setup() {
 
     // readAnalog() — ADS1115 15-bit single-ended × 2 → 0–65534
     uint16_t val = pin.readAnalog();
-    Serial.print("readAnalog() = ");
-    Serial.println(val);
+    STM32Board::diagSerial().print("readAnalog() = ");
+    STM32Board::diagSerial().println(val);
 
     check("readAnalog() > 0       ", val > 0);
     check("readAnalog() <= 65534  ", val <= 65534u);
@@ -61,27 +62,27 @@ void setup() {
 
     // read() threshold: true when > 32767
     bool r = pin.read();
-    Serial.print("read() = ");
-    Serial.println(r ? "true" : "false");
+    STM32Board::diagSerial().print("read() = ");
+    STM32Board::diagSerial().println(r ? "true" : "false");
     // Verify read() matches readAnalog() > 32767
     check("read() matches readAnalog() > 32767", r == (val > 32767u));
 
     // write() is a no-op — just must not crash
     pin.write(true);
     pin.write(false);
-    Serial.println("write(): compiled and ran (no crash)");
+    STM32Board::diagSerial().println("write(): compiled and ran (no crash)");
 
     // Second readAnalog() call — value should be stable (same wiring, no noise source)
     uint16_t val2 = pin.readAnalog();
-    Serial.print("readAnalog() second call = ");
-    Serial.println(val2);
+    STM32Board::diagSerial().print("readAnalog() second call = ");
+    STM32Board::diagSerial().println(val2);
     // Allow ±10% variation between two back-to-back reads
     uint16_t tolerance = val / 10 + 200;
     check("Second read within ±10% of first",
           val2 >= (val > tolerance ? val - tolerance : 0) &&
           val2 <= val + tolerance);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

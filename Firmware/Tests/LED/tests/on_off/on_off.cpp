@@ -8,6 +8,7 @@
 // Hardware: STM32. GPIO PB0 only. No CAN, no MCP23017.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <LED.h>
 
 static constexpr uint8_t TEST_PIN   = PB0;
@@ -17,15 +18,15 @@ static constexpr uint16_t MASK      = 0xFFFF;
 OpenSkyhawk::LED gLed(CTRL_ID, MASK, PinRef(TEST_PIN));
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== LED on_off ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== LED on_off ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     gLed.configure(); // sets OUTPUT, drives LOW (off)
@@ -47,7 +48,7 @@ void setup() {
     gLed.onControlPacket(CTRL_ID, 0x0000);
     check("value=0 again → pin LOW (off)", digitalRead(TEST_PIN) == LOW);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

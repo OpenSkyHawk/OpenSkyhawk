@@ -8,6 +8,7 @@
 // Hardware: STM32. No CAN bus connected — uses CAN loopback mode.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <PanelGroup.h>
 
 static uint8_t  rxCount    = 0;
@@ -24,15 +25,15 @@ static void onCan(uint32_t canId, const uint8_t* data, uint8_t len) {
 }
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PanelGroup can_drain ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PanelGroup can_drain ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     CANProtocol::onReceive(onCan);
@@ -84,7 +85,7 @@ void setup() {
     CANProtocol::drain();
     check("Second drain: no duplicates", rxCount == 0);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

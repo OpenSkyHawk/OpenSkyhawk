@@ -6,12 +6,13 @@
 // No hardware wiring required — exercises default constructor only.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <PinRef.h>
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PinRef nc_sentinel ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PinRef nc_sentinel ===");
 
     // Default constructor produces NC sentinel
     PinRef nc;
@@ -19,8 +20,8 @@ void setup() {
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     check("PIN_NC.read()      == false", PIN_NC.read()      == false);
@@ -36,9 +37,9 @@ void setup() {
     nc.write(false);
     nc.writeAnalog(0);
     nc.writeAnalog(65535);
-    Serial.println("write/writeAnalog: compiled and ran (no crash)");
+    STM32Board::diagSerial().println("write/writeAnalog: compiled and ran (no crash)");
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

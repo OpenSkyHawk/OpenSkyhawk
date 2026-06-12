@@ -10,6 +10,7 @@
 // via digitalRead() which reads the GPIO output register, not an external signal.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <LED.h>
 
 static constexpr uint8_t PIN_SOURCE = PB0;  // reverse=false LED
@@ -20,15 +21,15 @@ OpenSkyhawk::LED gLedSource(0x1111, 0xFFFF, PinRef(PIN_SOURCE));             // 
 OpenSkyhawk::LED gLedSink  (0x2222, 0xFFFF, PinRef(PIN_SINK),  /*reverse=*/true);
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== LED configure ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== LED configure ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     // Call configure() — sets OUTPUT mode and drives off-state.
@@ -41,7 +42,7 @@ void setup() {
     // reverse=true: off state is HIGH (current-sink — pin HIGH keeps LED cathode above GND)
     check("reverse=true:  pin HIGH after configure()", digitalRead(PIN_SINK) == HIGH);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

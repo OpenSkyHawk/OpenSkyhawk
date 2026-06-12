@@ -6,20 +6,21 @@
 // No hardware wiring required — reads identity metadata only, does not drive pins.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <PinRef.h>
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PinRef gpio_identity ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PinRef gpio_identity ===");
 
     PinRef p(PA0);
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     check("GPIO.isGpio()   == true ", p.isGpio()       == true);
@@ -27,7 +28,7 @@ void setup() {
     check("GPIO.isNC()     == false", p.isNC()          == false);
     check("PIN_NC.isGpio() == false", PIN_NC.isGpio()   == false);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

@@ -8,6 +8,7 @@
 // Uses CANProtocol loopback mode.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <PanelGroup.h>
 
 static bool readyReceived = false;
@@ -19,15 +20,15 @@ static void onCan(uint32_t canId, const uint8_t* data, uint8_t len) {
 }
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PanelGroup boot_sequence ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PanelGroup boot_sequence ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     // No inputs or outputs declared at global scope — lists must be empty
@@ -46,7 +47,7 @@ void setup() {
     check("READY frame received via loopback", readyReceived);
     check("HB not fired before 500 ms",        !hbReceived);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

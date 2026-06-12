@@ -10,6 +10,7 @@
 // via digitalRead() which reads the GPIO output register, not an external signal.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <LED.h>
 
 static constexpr uint8_t  PIN_SRC  = PB0;
@@ -21,15 +22,15 @@ OpenSkyhawk::LED gSrc (CTRL_SRC, 0xFFFF, PinRef(PIN_SRC));               // reve
 OpenSkyhawk::LED gSink(CTRL_SNK, 0xFFFF, PinRef(PIN_SINK), /*reverse=*/true);
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== LED reverse ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== LED reverse ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     gSrc.configure();
@@ -55,7 +56,7 @@ void setup() {
     check("src ignores sink controlId — sink pin unchanged",
           digitalRead(PIN_SINK) == snapSink);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

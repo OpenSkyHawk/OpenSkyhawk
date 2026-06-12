@@ -5,6 +5,7 @@
 // Verifies that read() returns true when driven HIGH and false when driven LOW.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <PinRef.h>
 
 static PinRef out0(PB0);
@@ -13,10 +14,10 @@ static PinRef in0(PA8);
 static PinRef in1(PA9);
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PinRef gpio_digital ===");
-    Serial.println("Hardware: PB0->PA8, PB1->PA9 loopback wires required.");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PinRef gpio_digital ===");
+    STM32Board::diagSerial().println("Hardware: PB0->PA8, PB1->PA9 loopback wires required.");
 
     out0.configureAsOutput();
     out1.configureAsOutput();
@@ -27,8 +28,8 @@ void setup() {
     auto check = [&](const char* label, bool expected, bool actual) {
         bool ok = (actual == expected);
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     // Drive HIGH — read back HIGH
@@ -45,7 +46,7 @@ void setup() {
     check("PB0->PA8 LOW ", false, in0.read());
     check("PB1->PA9 LOW ", false, in1.read());
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}

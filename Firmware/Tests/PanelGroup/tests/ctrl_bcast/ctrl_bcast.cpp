@@ -10,6 +10,7 @@
 // Hardware: STM32. No CAN bus, no MCP23017.
 
 #include <Arduino.h>
+#include <STM32Board.h>
 #include <PanelGroup.h>
 
 static constexpr uint16_t ADDR_A = 0x1100;
@@ -39,15 +40,15 @@ CountingOutput gOutA(ADDR_A);
 CountingOutput gOutB(ADDR_B);
 
 void setup() {
-    Serial.begin(115200);
-    while (!Serial) {}
-    Serial.println("=== PanelGroup ctrl_bcast ===");
+    STM32Board::setDebug(true);
+    STM32Board::begin();
+    STM32Board::diagSerial().println("=== PanelGroup ctrl_bcast ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
         if (!ok) pass = false;
-        Serial.print(label);
-        Serial.println(ok ? ": PASS" : ": FAIL");
+        STM32Board::diagSerial().print(label);
+        STM32Board::diagSerial().println(ok ? ": PASS" : ": FAIL");
     };
 
     // Linked list must contain exactly 2 entries
@@ -102,7 +103,7 @@ void setup() {
     check("Pair slot A fired gOutA (count=2)", gOutA.callCount == 2);
     check("Pair slot B fired gOutB (count=2)", gOutB.callCount == 2);
 
-    Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
+    STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
 void loop() {}
