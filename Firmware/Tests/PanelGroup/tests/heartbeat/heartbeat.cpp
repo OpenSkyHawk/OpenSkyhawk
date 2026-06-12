@@ -28,6 +28,7 @@ void setup() {
     STM32Board::diagSerial().println("=== PanelGroup heartbeat ===");
 
     CANProtocol::onReceive(onCan);
+    CANProtocol::filterAcceptId(canIdHb(NODE_ID));
     CANProtocol::startLoopback();
 
     // Replicate heartbeat-timer arming without full board init

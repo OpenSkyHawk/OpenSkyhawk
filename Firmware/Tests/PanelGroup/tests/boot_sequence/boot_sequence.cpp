@@ -35,13 +35,17 @@ void setup() {
     check("InputBase::head()  == nullptr", OpenSkyhawk::InputBase::head()  == nullptr);
     check("OutputBase::head() == nullptr", OpenSkyhawk::OutputBase::head() == nullptr);
 
-    // Use loopback so READY frame comes back through onCan
+    // Use loopback so READY frame comes back through onCan.
+    // filterAcceptId required — default filter only passes CTRL_BCAST/TEST_SEQ/SYNC_REQ.
     CANProtocol::onReceive(onCan);
+    CANProtocol::filterAcceptId(canIdReady(NODE_ID));
     CANProtocol::startLoopback();
 
     // Emit boot sequence tail (no expanders/ADCs, no inputs for EVT burst)
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
     CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    // Two drain() calls: first flushes TX into CAN hardware, second reads loopback RX.
+    CANProtocol::drain();
     CANProtocol::drain();
 
     check("READY frame received via loopback", readyReceived);
