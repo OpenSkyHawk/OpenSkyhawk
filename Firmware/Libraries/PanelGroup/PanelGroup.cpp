@@ -1,6 +1,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include "PanelGroup.h"
+#include <MCP23017.h>
 #include <STM32Board.h>
 
 // ── Static linked-list roots ──────────────────────────────────────────────────
@@ -142,6 +143,14 @@ bool sendEvent(uint16_t controlId, uint16_t value) {
 }
 
 uint8_t nodeId() { return _nodeId; }
+
+// ── PinRef package-internal stubs ─────────────────────────────────────────────
+// Placeholder definitions so PinRef tests link without a full PanelGroup
+// implementation. Replace with the real MCP23017 cache-backed implementations
+// when PanelGroup Phase 3 is implemented.
+
+bool readCachedPin(const MCP23017&, uint8_t, uint8_t) { return false; }
+void writeCachedPin(MCP23017&, uint8_t, uint8_t, bool) {}
 
 } // namespace PanelGroup
 
