@@ -6,7 +6,9 @@
  * with `class`, so this file defines a concrete wrapper class that inherits every constructor and
  * method from Adafruit_ADS1115 without adding any logic.
  *
- * Sketches use `ADS1115 adc(0x48, &Wire)` — identical to Adafruit_ADS1115 usage.
+ * Adafruit_ADS1115 takes address and bus via begin(), not the constructor. Pattern:
+ *   ADS1115 adc;
+ *   PanelGroup::registerADC(adc, 0x48, Wire);
  *
  * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE

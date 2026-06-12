@@ -29,8 +29,8 @@ void setup() {
 
     Wire.begin();
 
-    // Register in polling-fallback mode (no interrupt pin)
-    PanelGroup::registerExpander(gExpander, PanelGroup::NO_INT_PIN, PanelGroup::NO_INT_PIN);
+    // Register in polling-fallback mode (no interrupt pin required)
+    PanelGroup::registerExpander(gExpander);
 
     // setup() initialises the chip, reads baseline, arms heartbeat timer
     PanelGroup::setup();

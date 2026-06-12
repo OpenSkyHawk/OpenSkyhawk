@@ -10,6 +10,7 @@ namespace {
 static constexpr uint8_t MAX_EXPANDERS = 8;
 static constexpr uint8_t MAX_ADCS      = 8;
 static constexpr uint8_t MAX_INT_PINS  = 8;  // max unique STM32 interrupt pins
+static constexpr uint8_t NO_INT_PIN    = 0xFF; // polling-fallback sentinel
 
 struct ExpanderEntry {
     MCP23017* chip;
@@ -111,32 +112,6 @@ OpenSkyhawk::InputBase*  OpenSkyhawk::InputBase::next()  const { return _next; }
 OpenSkyhawk::OutputBase* OpenSkyhawk::OutputBase::head()       { return _head; }
 OpenSkyhawk::OutputBase* OpenSkyhawk::OutputBase::next() const { return _next; }
 
-// ── OpenSkyhawk::LED ──────────────────────────────────────────────────────────
-
-OpenSkyhawk::LED::LED(uint16_t addr, uint16_t mask, PinRef pin, bool activeHigh)
-    : _addr(addr), _mask(mask), _pin(pin), _activeHigh(activeHigh) {}
-
-void OpenSkyhawk::LED::configure() {
-    _pin.configureAsOutput();
-    _pin.write(!_activeHigh); // drive to LED-off state regardless of polarity
-}
-
-void OpenSkyhawk::LED::onControlPacket(uint16_t controlId, uint16_t value) {
-    if (controlId != _addr) return;
-    bool lit = (value & _mask) != 0;
-    _pin.write(_activeHigh ? lit : !lit);
-}
-
-// ── OpenSkyhawk::IntegerOutput ────────────────────────────────────────────────
-
-OpenSkyhawk::IntegerOutput::IntegerOutput(uint16_t addr, void (*cb)(uint16_t))
-    : _addr(addr), _cb(cb) {}
-
-void OpenSkyhawk::IntegerOutput::onControlPacket(uint16_t controlId, uint16_t value) {
-    if (controlId != _addr) return;
-    _cb(value);
-}
-
 // ── PanelGroup::registerADC / registerExpander ────────────────────────────────
 
 namespace PanelGroup {
@@ -162,6 +137,10 @@ void registerExpander(MCP23017& chip, uint8_t intaPin, uint8_t intbPin) {
     e.openDrain = false; // resolved in setup()
     e.portAcache = 0xFF;
     e.portBcache = 0xFF;
+}
+
+void registerExpander(MCP23017& chip) {
+    registerExpander(chip, NO_INT_PIN, NO_INT_PIN);
 }
 
 // ── PanelGroup::setup ─────────────────────────────────────────────────────────

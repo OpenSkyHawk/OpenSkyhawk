@@ -1,33 +1,42 @@
 // PanelGroup — CTRL_BCAST dispatch test
 //
-// Verifies: LED and IntegerOutput respond to matching controlId, ignore
-// non-matching. Exercises the OutputBase linked list and onControlPacket
-// dispatch logic that PanelGroup::loop() drives on every CTRL_BCAST frame.
+// Verifies: non-null ControlPackets are dispatched to all OutputBase objects;
+// null slots (controlId == 0) are skipped; non-matching controlIds do not
+// trigger the object's internal action.
 //
-// Hardware: STM32. No CAN bus, no MCP23017. Tests dispatch in isolation.
+// Uses a minimal concrete OutputBase subclass — does not depend on LED or
+// any other concrete output class so this test is pure PanelGroup dispatch logic.
+//
+// Hardware: STM32. No CAN bus, no MCP23017.
 
 #include <Arduino.h>
 #include <PanelGroup.h>
 
-static constexpr uint16_t ADDR_LED = 0x1100;
-static constexpr uint16_t ADDR_INT = 0x1200;
+static constexpr uint16_t ADDR_A = 0x1100;
+static constexpr uint16_t ADDR_B = 0x1200;
 
-// Concrete LED on a GPIO pin — configure() just sets OUTPUT.
-// We skip the pin abstraction and track state via a separate bool.
-static bool ledPinState = false;
-static PinRef ledPin(PB0);  // PB0 is safe — not used by CAN/I2C/SPI
-
-class TestLED : public OpenSkyhawk::LED {
+class CountingOutput : public OpenSkyhawk::OutputBase {
 public:
-    TestLED() : OpenSkyhawk::LED(ADDR_LED, 0x0001, PinRef(PB0)) {}
+    uint16_t callCount = 0;
+    uint16_t lastId    = 0;
+    uint16_t lastVal   = 0;
+
+    explicit CountingOutput(uint16_t addr) : _addr(addr) {}
+
+    void onControlPacket(uint16_t controlId, uint16_t value) override {
+        if (controlId != _addr) return;
+        callCount++;
+        lastId  = controlId;
+        lastVal = value;
+    }
+
+private:
+    uint16_t _addr;
 };
 
-static uint16_t intValue = 0xDEAD;
-static void onInt(uint16_t v) { intValue = v; }
-
-// Declare at global scope — constructors self-register before setup().
-TestLED                       gLED;
-OpenSkyhawk::IntegerOutput    gInt(ADDR_INT, onInt);
+// Declared at global scope — constructors self-register before setup().
+CountingOutput gOutA(ADDR_A);
+CountingOutput gOutB(ADDR_B);
 
 void setup() {
     Serial.begin(115200);
@@ -41,58 +50,57 @@ void setup() {
         Serial.println(ok ? ": PASS" : ": FAIL");
     };
 
-    // OutputBase linked list must have exactly 2 entries (gLED + gInt)
+    // Linked list must contain exactly 2 entries
     uint8_t outCount = 0;
     for (auto* p = OpenSkyhawk::OutputBase::head(); p; p = p->next()) outCount++;
     check("2 outputs registered", outCount == 2);
 
-    // ── LED dispatch ────────────────────────────────────────────────────────
+    // ── Dispatch helper — mirrors PanelGroup::loop() inner logic ────────────
 
-    // Match: value & mask = non-zero → LED on (configure() not called; just dispatch)
-    gLED.onControlPacket(ADDR_LED, 0x0001);
-    // LED drive confirmed by inspecting serial — no easy way to read PB0 back here
-    // without extra wiring; we test non-match instead.
-
-    // Non-match: different controlId → no effect on intValue; no crash
-    intValue = 0xDEAD;
-    gLED.onControlPacket(0xBEEF, 0xFFFF);
-    check("LED ignores foreign controlId (no crash)", true);
-
-    // ── IntegerOutput dispatch ───────────────────────────────────────────────
-
-    // Match: callback fires with the exact value
-    intValue = 0xDEAD;
-    gInt.onControlPacket(ADDR_INT, 0x0042);
-    check("IntegerOutput match fires callback", intValue == 0x0042);
-
-    // Non-match: callback must NOT fire
-    intValue = 0xDEAD;
-    gInt.onControlPacket(0xBEEF, 0x0099);
-    check("IntegerOutput ignores foreign controlId", intValue == 0xDEAD);
-
-    // ── Full dispatch loop (as PanelGroup::loop() does it) ──────────────────
-
-    // Simulated CTRL_BCAST pair: slot A = ADDR_LED match, slot B = ADDR_INT match
-    ControlPacketPair pair;
-    pair.a = { ADDR_LED, 0x0000 }; // mask = 0 → LED off
-    pair.b = { ADDR_INT, 0x00FF };
-
-    intValue = 0xDEAD;
     auto dispatch = [](const ControlPacket& pkt) {
         if (pkt.controlId == 0x0000) return;
         for (auto* o = OpenSkyhawk::OutputBase::head(); o; o = o->next())
             o->onControlPacket(pkt.controlId, pkt.value);
     };
+
+    // ── Match: ADDR_A fires gOutA, not gOutB ────────────────────────────────
+
+    dispatch({ ADDR_A, 0x0042 });
+    check("ADDR_A dispatched to gOutA",       gOutA.callCount == 1);
+    check("ADDR_A: gOutA.lastVal == 0x0042",  gOutA.lastVal   == 0x0042);
+    check("ADDR_A did not fire gOutB",        gOutB.callCount == 0);
+
+    // ── Match: ADDR_B fires gOutB ────────────────────────────────────────────
+
+    dispatch({ ADDR_B, 0x00FF });
+    check("ADDR_B dispatched to gOutB",       gOutB.callCount == 1);
+    check("ADDR_B: gOutB.lastVal == 0x00FF",  gOutB.lastVal   == 0x00FF);
+    check("ADDR_B did not add to gOutA",      gOutA.callCount == 1); // unchanged
+
+    // ── Null sentinel (controlId == 0) must be skipped ───────────────────────
+
+    uint8_t countA = gOutA.callCount, countB = gOutB.callCount;
+    dispatch({ 0x0000, 0xFFFF });
+    check("Null sentinel skipped: gOutA unchanged", gOutA.callCount == countA);
+    check("Null sentinel skipped: gOutB unchanged", gOutB.callCount == countB);
+
+    // ── Foreign controlId does not fire either output ────────────────────────
+
+    countA = gOutA.callCount; countB = gOutB.callCount;
+    dispatch({ 0xBEEF, 0x1234 });
+    check("Foreign controlId: gOutA unchanged", gOutA.callCount == countA);
+    check("Foreign controlId: gOutB unchanged", gOutB.callCount == countB);
+
+    // ── Consecutive packets — both slots in a ControlPacketPair ──────────────
+
+    ControlPacketPair pair;
+    pair.a = { ADDR_A, 0x0001 };
+    pair.b = { ADDR_B, 0x0002 };
     dispatch(pair.a);
     dispatch(pair.b);
 
-    check("Full dispatch: IntegerOutput received 0x00FF", intValue == 0x00FF);
-
-    // Null sentinel (controlId == 0) must be skipped
-    ControlPacket null_pkt = { 0x0000, 0x1234 };
-    intValue = 0xDEAD;
-    dispatch(null_pkt);
-    check("Null sentinel skipped", intValue == 0xDEAD);
+    check("Pair slot A fired gOutA (count=2)", gOutA.callCount == 2);
+    check("Pair slot B fired gOutB (count=2)", gOutB.callCount == 2);
 
     Serial.println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }

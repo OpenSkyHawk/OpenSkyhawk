@@ -12,24 +12,28 @@
  * #include <Wire.h>
  * #include <MCP23017.h>
  * #include <PanelGroup.h>
+ * #include <LED.h>
+ * #include <A4EC_OutputIds.h>
  *
  * MCP23017 exp1(0x20, Wire);
+ * ADS1115  adc1;
  *
  * const PinRef PIN_MASTER_ARM  = PinRef(exp1, PORT_A, 3);
  * const PinRef PIN_CAUTION_LED = PinRef(PB0);
  *
- * OpenSkyhawk::Switch2Pos  masterArm(DCSIN_ARM_MASTER,          PIN_MASTER_ARM);
- * OpenSkyhawk::LED         masterCaution(A_4E_C_MASTER_CAUTION, 0x4000, PIN_CAUTION_LED);
+ * OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM,
+ *                                PIN_CAUTION_LED);
  *
  * void setup() {
  *     Wire.begin();
- *     PanelGroup::registerExpander(exp1, PB3, PB4);
+ *     PanelGroup::registerExpander(exp1, PB3, PB4);  // INTA→PB3, INTB→PB4
+ *     PanelGroup::registerADC(adc1, 0x48, Wire);
  *     PanelGroup::setup();
  * }
  * void loop() { PanelGroup::loop(); }
  * @endcode
  *
- * @version 0.2.0
+ * @version 0.3.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -148,67 +152,6 @@ private:
     OutputBase* _next;
 };
 
-// ── Concrete output classes ───────────────────────────────────────────────────
-
-/**
- * @brief Drive a pin HIGH/LOW from a bitmask of a DCS-BIOS output value.
- *
- * @details Pin goes HIGH when `(value & mask) != 0`, LOW otherwise.
- * Works on GPIO, MCP23017, and ADS1115 PinRefs (ADS write is a no-op).
- *
- * @code
- * OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, 0x4000, PinRef(PB0));
- * @endcode
- */
-class LED : public OutputBase {
-public:
-    /**
-     * @brief Construct an LED output.
-     * @param addr       DCS-BIOS controlId this LED responds to.
-     * @param mask       Bitmask applied to the received value.
-     * @param pin        PinRef for the LED pin (GPIO or MCP23017 output bit).
-     * @param activeHigh true (default) — pin HIGH when LED on (current-source).
-     *                   false — pin LOW when LED on (current-sink / active-low).
-     */
-    LED(uint16_t addr, uint16_t mask, PinRef pin, bool activeHigh = true);
-
-    void configure() override;
-    void onControlPacket(uint16_t controlId, uint16_t value) override;
-
-private:
-    uint16_t _addr;
-    uint16_t _mask;
-    PinRef   _pin;
-    bool     _activeHigh;
-};
-
-/**
- * @brief Forward a raw DCS-BIOS value to a user-supplied callback.
- *
- * @details Escape hatch for non-standard output logic (motor positions,
- * PWM brightness, multi-bit state machines). No pin ownership.
- *
- * @code
- * void onCanopyPos(uint16_t v) { analogWrite(MOTOR_PWM, v >> 8); }
- * OpenSkyhawk::IntegerOutput canopy(A_4E_C_CANOPY_POS, onCanopyPos);
- * @endcode
- */
-class IntegerOutput : public OutputBase {
-public:
-    /**
-     * @brief Construct an IntegerOutput.
-     * @param addr  DCS-BIOS controlId to listen to.
-     * @param cb    Callback invoked with the raw 16-bit value on each match.
-     */
-    IntegerOutput(uint16_t addr, void (*cb)(uint16_t));
-
-    void onControlPacket(uint16_t controlId, uint16_t value) override;
-
-private:
-    uint16_t _addr;
-    void (*_cb)(uint16_t);
-};
-
 } // namespace OpenSkyhawk
 
 // ── PanelGroup namespace — sketch-facing API ──────────────────────────────────
@@ -229,6 +172,13 @@ namespace PanelGroup {
      * PanelGroup calls adc.begin(addr, wire) during setup(). Register each ADS1115
      * instance exactly once — multiple AnalogInput objects may share the same chip.
      *
+     * Adafruit_ADS1115 takes address and bus via begin(), not the constructor.
+     * Pattern:
+     * @code
+     * ADS1115 adc;
+     * PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
+     * @endcode
+     *
      * @param adc   ADS1115 instance. Must outlive PanelGroup.
      * @param addr  I2C address (0x48–0x4B via ADDR pin). Default 0x48.
      * @param wire  I2C bus. Default Wire (I2C1 on STM32).
@@ -237,39 +187,44 @@ namespace PanelGroup {
     void registerADC(ADS1115& adc, uint8_t addr = 0x48, TwoWire& wire = Wire);
 
     /**
-     * @brief Register an MCP23017 expander. Call before setup().
+     * @brief Register an MCP23017 expander in interrupt-driven mode. Call before setup().
      *
-     * PanelGroup stores the reference and interrupt pin assignments. During setup(),
-     * PanelGroup calls chip.init(), configures IOCON, reads baseline port state,
-     * and attaches STM32 interrupt handlers.
+     * PanelGroup calls chip.init(), configures IOCON (MIRROR and/or open-drain as
+     * detected), enables interrupt-on-change on input pins only (IODIR-masked, bit 7
+     * excluded per GPA7/GPB7 silicon erratum), reads baseline port state, and attaches
+     * STM32 ISRs.
      *
-     * Pass the same pin for intaPin and intbPin to use MIRROR mode (IOCON.MIRROR=1),
-     * which causes either port interrupt to assert the shared line.
+     * Pass the same STM32 pin for intaPin and intbPin to use MIRROR mode
+     * (IOCON.MIRROR=1), where either port interrupt asserts the shared line.
      *
-     * Pass NO_INT_PIN (0xFF) for both pins to enable polling-fallback mode (~20 ms).
-     *
-     * If two or more chips share the same interrupt line (wired-OR), PanelGroup
-     * sets IOCON.ODR=1 (open-drain) automatically on all chips on that line.
+     * If two or more chips share an interrupt line (wired-OR), PanelGroup sets
+     * IOCON.ODR=1 (open-drain) automatically on all chips on that line.
      *
      * @param chip     blemasle/MCP23017 instance. Must outlive PanelGroup.
-     * @param intaPin  STM32 GPIO pin connected to chip INTA. Use NO_INT_PIN for polling.
+     * @param intaPin  STM32 GPIO pin connected to chip INTA.
      * @param intbPin  STM32 GPIO pin connected to chip INTB. Same as intaPin for MIRROR.
-     *
      * @note Do not use PB14/PB15 (status LED) or PC13–PC15 (RTC/oscillator).
      */
     void registerExpander(MCP23017& chip, uint8_t intaPin, uint8_t intbPin);
 
-    /** @brief Sentinel: pass as intaPin and intbPin for polling-fallback mode. */
-    static constexpr uint8_t NO_INT_PIN = 0xFF;
+    /**
+     * @brief Register an MCP23017 expander in polling-fallback mode. Call before setup().
+     *
+     * PanelGroup reads all port registers every ~20 ms in loop(). No STM32 interrupt
+     * pin is required. Use when interrupt lines are not wired or not needed.
+     *
+     * @param chip  blemasle/MCP23017 instance. Must outlive PanelGroup.
+     */
+    void registerExpander(MCP23017& chip);
 
     /**
      * @brief Initialise PanelGroup. Call from sketch setup() after Wire.begin().
      *
      * Performs the 8-step boot sequence:
      *   1. STM32Board::begin()
-     *   2. For each registered ADC: begin(). For each registered expander: init(),
-     *      configure IOCON, enable interrupt-on-change, read baseline port state,
-     *      attach STM32 ISR.
+     *   2. For each registered ADC: begin(addr, wire). For each registered expander:
+     *      init(), configure IOCON, enable interrupt-on-change on input pins,
+     *      read baseline port state, attach STM32 ISR.
      *   3. configure() on all InputBase and OutputBase objects.
      *   4. Register CAN callbacks.
      *   5. CANProtocol::start().
@@ -287,7 +242,7 @@ namespace PanelGroup {
      *
      * Each call:
      *   1. Check interrupt flags; read INTCAP; update expander port caches.
-     *   2. Polling fallback (~20 ms): read ports for chips with no interrupt pin.
+     *   2. Polling fallback (~20 ms): read ports for chips registered without interrupt.
      *   3. poll() on all InputBase objects.
      *   4. CANProtocol::drain() — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
      *   5. update() on all OutputBase objects.
