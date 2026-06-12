@@ -289,7 +289,11 @@ Per chip on each MCU board:
 
 I2C pull-ups (4.7 kΩ) placed **on MCU board only** — one set per bus, not on breakout boards.
 
-Internal MCP23017 pull-ups (GPPU register, ~100 kΩ) are sufficient for switch inputs — no external pull-ups required on breakout boards unless wiring is very long or noisy.
+Switch inputs are active-low by project convention: the net is held HIGH and the switch
+closes to GND. Prefer a 10 kΩ external pull-up to +3V3 on the board that owns the switch
+net. MCP23017 GPPU pull-ups are weak (~100 kΩ) and available only in the pull-up direction;
+do not use them as the standard bias for OpenSkyhawk switch nets unless a specific schematic
+intentionally documents that choice.
 
 ### ADC Input Filter (per analog input)
 
