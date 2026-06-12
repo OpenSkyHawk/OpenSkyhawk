@@ -5,7 +5,9 @@
 //   reverse=true:            value > 0 → pin LOW  (on); value == 0 → pin HIGH (off).
 //   Both on and off transitions are inverted correctly.
 //
-// Hardware: STM32. GPIO PB0 (reverse=false) and PB1 (reverse=true). No CAN.
+// Hardware: STM32. PB0 (PIN_SRC, reverse=false) and PB1 (PIN_SINK, reverse=true).
+// No external connections needed — pins are driven as outputs and read back
+// via digitalRead() which reads the GPIO output register, not an external signal.
 
 #include <Arduino.h>
 #include <LED.h>

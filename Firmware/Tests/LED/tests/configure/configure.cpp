@@ -5,8 +5,9 @@
 //   reverse=true:  configure() drives pin HIGH (LED off in sink wiring).
 //   configureAsOutput() is called: pin is readable via digitalRead() after configure().
 //
-// Hardware: STM32. GPIO only. No CAN, no MCP23017.
-// PB0 and PB1 are safe GPIO pins (not used by CAN, I2C, SPI, or USART1).
+// Hardware: STM32. PB0 (reverse=false LED) and PB1 (reverse=true LED).
+// No external connections needed — pins are driven as outputs and read back
+// via digitalRead() which reads the GPIO output register, not an external signal.
 
 #include <Arduino.h>
 #include <LED.h>
