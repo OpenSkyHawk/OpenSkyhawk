@@ -9,6 +9,7 @@
 //   DCSIN_* (0x8001–0x86FF) → DCS-BIOS sendDcsBiosMessage()
 //   CTRL_*  (0x0010–0x009F) → HID frame → SimGateway → Joystick
 
+#include <STM32Board.h>
 #include <PanelGroup.h>
 #include <A4EC_CmdIds.h>     // generated: #define DCSIN_* constants
 #include <A4EC_OutputIds.h>  // generated: #define A_4E_C_*_A address + _AM mask constants
