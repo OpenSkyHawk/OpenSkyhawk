@@ -672,6 +672,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What You'll Need
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -689,12 +714,64 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#to-understand-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To understand the project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-build-a-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To build a panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-contribute-firmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To contribute firmware
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -725,7 +802,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -814,13 +891,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -877,13 +947,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -911,13 +974,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -947,13 +1003,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -982,13 +1031,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1016,13 +1058,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -5250,6 +5285,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#to-understand-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To understand the project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-build-a-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To build a panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-contribute-firmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To contribute firmware
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5269,11 +5345,87 @@
 
 
 <h1 id="what-youll-need">What You'll Need</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>What you need depends on what you're here to do. Pick your path — you don't need the
+build or firmware toolchain just to understand the project.</p>
+<p>This page lists the tools and skills. It does <strong>not</strong> cover installation — setup steps live
+in the <a href="../../guides/">build guides</a>.</p>
+<h2 id="to-understand-the-project">To understand the project</h2>
+<p>You can read the whole site and follow the architecture with nothing installed. To actually
+<em>see</em> OpenSkyhawk drive a cockpit, you need:</p>
+<ul>
+<li><strong><a href="https://www.digitalcombatsimulator.com/">DCS World</a></strong> with the <strong>A-4E-C Skyhawk
+  Community Mod</strong> installed. The A-4E-C is a free community module — OpenSkyhawk targets it
+  specifically.</li>
+<li><strong>Basic electronics familiarity</strong> — you should be comfortable with the idea of a
+  microcontroller, a serial link, and reading a schematic. You do not need to know CAN bus,
+  DCS-BIOS, or STM32 development going in; the docs explain those.</li>
+</ul>
+<h2 id="to-build-a-panel">To build a panel</h2>
+<p>Fabricating and wiring a panel adds the hardware toolchain:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Use</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="https://www.kicad.org/">KiCad</a></strong> 8+</td>
+<td>PCB schematic + layout review</td>
+<td>Project tooling and CI use <strong>v10.0.1</strong>; open the <code>.kicad_pro</code> projects under <code>PCB/</code></td>
+</tr>
+<tr>
+<td><strong><a href="https://platformio.org/">PlatformIO</a></strong> + <strong><a href="https://code.visualstudio.com/">VS Code</a></strong></td>
+<td>Firmware build and upload</td>
+<td>The firmware build system — see <a href="../../firmware/platformio-setup/">PlatformIO Setup</a></td>
+</tr>
+<tr>
+<td><strong><a href="https://www.st.com/en/development-tools/stm32cubeprog.html">STM32CubeProgrammer</a></strong> + ST-Link</td>
+<td>Flashing STM32 boards over SWD</td>
+<td>STM32 boards expose a 5-pin SWD header (PA13/PA14/NRST/GND/3.3V)</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/DCS-Skunkworks/dcs-bios">DCS-BIOS</a></strong></td>
+<td>DCS ↔ cockpit export stream</td>
+<td>Runs on the PC; the firmware speaks its protocol</td>
+</tr>
+<tr>
+<td><strong><a href="https://jlcpcb.com/">JLCPCB</a> account</strong></td>
+<td>PCB fabrication</td>
+<td>Design rules are pre-loaded for JLCPCB's standard 2-layer service</td>
+</tr>
+<tr>
+<td><strong>Soldering iron + multimeter</strong></td>
+<td>Assembly and bring-up</td>
+<td>Surface-mount rework; continuity and voltage checks</td>
+</tr>
+</tbody>
+</table>
+<p>CAD is optional for panel building — the <strong><code>.f3d</code></strong> Fusion 360 sources under <code>CAD/</code> open in
+<strong><a href="https://www.autodesk.com/products/fusion-360/">Autodesk Fusion 360</a></strong> if you want to print
+or modify the physical panels.</p>
+<div class="admonition note">
+<p class="admonition-title">RP2040 boards need no special flasher</p>
+<p>The SimGateway and any HID boards run on off-the-shelf RP2040 modules (e.g. a Raspberry
+Pi Pico). They flash over USB by drag-and-drop UF2 or directly from PlatformIO — no
+ST-Link required. Only the STM32 boards need the SWD programmer.</p>
 </div>
+<h2 id="to-contribute-firmware">To contribute firmware</h2>
+<p>Everything above, plus the bench hardware to develop and verify against real boards:</p>
+<ul>
+<li><strong>STM32F103CBT6 dev board</strong> — a Blue Pill is fine for development. Note the firmware
+  requires an <strong>external 8 MHz crystal</strong> for CAN; verify your board has one populated.</li>
+<li><strong>RP2040 module</strong> (Raspberry Pi Pico or similar) — for SimGateway work.</li>
+<li><strong>USB-to-TTL serial adapter</strong> — for the DiagSerial debug stream. Every STM32 board exposes
+  a 3-pin header (GND / RX / TX) on <strong>USART1 at 115200 baud</strong> for human-readable diagnostics.</li>
+<li><strong>ST-Link</strong> (or compatible SWD probe) — for flashing and debugging STM32 targets.</li>
+<li><strong>CAN bus analyzer</strong> — <em>optional but useful</em>. Lets you watch frames on the bus directly
+  when debugging multi-node behaviour.</li>
+</ul>
+<p>See <a href="../../contributing/">How to Contribute</a> for conventions, and
+<a href="../../guides/new-panel-group/">Adding a New Panel Group</a> for the end-to-end workflow.</p>
 
 
 

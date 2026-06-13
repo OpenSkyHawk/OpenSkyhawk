@@ -675,7 +675,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -710,7 +710,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -804,13 +804,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -867,13 +860,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -897,6 +883,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN Bus Protocol
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -911,15 +915,93 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bus-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bus configuration
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frame-id-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frame ID scheme
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controlpacket-wire-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ControlPacket wire format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#node_id-scheme-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NODE_ID scheme (brief)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup-and-sync-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup and sync sequence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gotchas-get-these-right" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gotchas — get these right
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -946,13 +1028,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -982,13 +1057,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1016,13 +1084,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -5250,6 +5311,80 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bus-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bus configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frame-id-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frame ID scheme
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controlpacket-wire-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ControlPacket wire format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#node_id-scheme-brief" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NODE_ID scheme (brief)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup-and-sync-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup and sync sequence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gotchas-get-these-right" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gotchas — get these right
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5269,20 +5404,206 @@
 
 
 <h1 id="can-bus-protocol">CAN Bus Protocol</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>The CAN bus is the backbone of OpenSkyhawk — every panel hangs off it, and every control
+crosses it in the same <code>ControlPacket</code> format. This page is the full protocol reference:
+configuration, frame IDs, wire format, the startup handshake, and the settings you must get
+right. Constants here are taken from <code>Firmware/Libraries/CANProtocol/CANProtocol.h</code> — when in
+doubt, that header is authoritative.</p>
+<h2 id="bus-configuration">Bus configuration</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baud rate</td>
+<td><strong>500 kbps</strong></td>
+</tr>
+<tr>
+<td>Bit timing</td>
+<td>Prescaler = 4, BS1 = 13TQ, BS2 = 4TQ, <strong>SJW = 4TQ</strong></td>
+</tr>
+<tr>
+<td>Transceiver</td>
+<td>SN65HVD230 (SOIC-8, 3.3 V logic), one per STM32 board, on PA11 (RX) / PA12 (TX)</td>
+</tr>
+<tr>
+<td>Topology</td>
+<td>Two-wire differential (CANH/CANL), daisy-chained across all boards</td>
+</tr>
+<tr>
+<td>Termination</td>
+<td>120 Ω across CANH/CANL at the <strong>two physical end nodes only</strong> — omit on intermediate nodes</td>
+</tr>
+</tbody>
+</table>
+<p>The bus requires an external 8 MHz crystal on every STM32 board — the internal RC oscillator
+is not accurate enough for 500 kbps. Both the crystal requirement and the SJW = 4TQ value are
+empirical findings; see <a href="../design-decisions/#d5-sjw-4tq-empirically-determined">Design Decisions</a>.</p>
+<h2 id="frame-id-scheme">Frame ID scheme</h2>
+<p>All frames use standard 11-bit CAN IDs. Per-node IDs are computed from <code>NODE_ID</code> (1–63) with
+helper functions — <strong>never hard-code these values</strong>, always use the helper.</p>
+<table>
+<thead>
+<tr>
+<th>Frame</th>
+<th>CAN ID</th>
+<th>Helper</th>
+<th>Direction</th>
+<th>DLC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CTRL_BCAST</code></td>
+<td><code>0x010</code></td>
+<td><code>CAN_ID_CTRL_BCAST</code></td>
+<td>PanelBridge → All</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>TEST_SEQ</code></td>
+<td><code>0x011</code></td>
+<td><code>CAN_ID_TEST_SEQ</code></td>
+<td>PanelBridge → All</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>SYNC_REQ</code></td>
+<td><code>0x012</code></td>
+<td><code>CAN_ID_SYNC_REQ</code></td>
+<td>PanelBridge → All</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>HB_n</code></td>
+<td><code>0x100 + n</code></td>
+<td><code>canIdHb(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>EVT_n</code></td>
+<td><code>0x200 + n</code></td>
+<td><code>canIdEvt(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>ECHO_n</code></td>
+<td><code>0x300 + n</code></td>
+<td><code>canIdEcho(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>READY_n</code></td>
+<td><code>0x400 + n</code></td>
+<td><code>canIdReady(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>CTRL_BCAST</code> carries DCS-BIOS output state from PanelBridge to every node.</li>
+<li><code>EVT_n</code> carries input events from a node back up to PanelBridge.</li>
+<li><code>HB_n</code> is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).</li>
+<li><code>TEST_SEQ</code> / <code>ECHO_n</code> are a round-trip latency test: PanelBridge sends <code>TEST_SEQ</code>, a node
+  echoes on <code>ECHO_n</code>.</li>
+<li><code>SYNC_REQ</code> / <code>READY_n</code> are the boot/resync handshake (below).</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">canIdHb(1) = 0x101, not 0x100</p>
+<p><code>canIdHb(0)</code> (<code>0x100</code>) is reserved for PanelBridge and <strong>is never transmitted</strong> — the
+master has no consumer for its own heartbeat. Real nodes start at <code>canIdHb(1) = 0x101</code>.
+The old <code>CAN_ID_HB_1 = 0x100</code> constant is deprecated; use the <code>canIdHb(n)</code> helper.</p>
 </div>
+<h2 id="controlpacket-wire-format">ControlPacket wire format</h2>
+<p>Everything that routes a control is a <code>ControlPacket</code> — a 4-byte <code>{ controlId, value }</code> pair:</p>
+<pre><code class="language-cpp">struct ControlPacket     { uint16_t controlId; uint16_t value; };  // 4 bytes
+struct ControlPacketPair { ControlPacket a; ControlPacket b; };    // 8 bytes
+</code></pre>
+<ul>
+<li><strong><code>controlId</code></strong> is the routing key — <em>what</em> the control is. It is <strong>not</strong> a CAN arbitration
+  ID; the two namespaces are separate and equal numeric values don't collide because they
+  occupy different CAN frame fields. See <a href="../dcsbios-vs-hid/">DCS-BIOS vs HID</a> for the
+  <code>controlId</code> ranges.</li>
+<li><strong><code>value</code></strong> is the payload — interpretation depends on the <code>controlId</code> range.</li>
+</ul>
+<p><code>CTRL_BCAST</code> and <code>EVT_n</code> frames carry a <strong><code>ControlPacketPair</code></strong> so two packets share one
+8-byte frame. When only one packet is ready, slot B's <code>controlId</code> is set to the null sentinel
+<code>0x0000</code>. Batching is owned by <code>CANProtocol::sendBatched()</code> / <code>flushBatched()</code> — callers
+submit individual <code>ControlPacket</code>s and the library packs them.</p>
+<h2 id="node_id-scheme-brief">NODE_ID scheme (brief)</h2>
+<p><code>NODE_ID</code> is a compile-time constant (<code>build_flags = -DNODE_ID=N</code> in <code>platformio.ini</code>), range
+0–63. <strong>0</strong> is PanelBridge (reserved); <strong>1–63</strong> are PanelGroup nodes, assigned incrementally
+and permanent once assigned. SimGateway has no NODE_ID. Full policy and the live registry are
+on the <a href="../../firmware/node-id/">NODE_ID &amp; CAN Addressing</a> page.</p>
+<h2 id="startup-and-sync-sequence">Startup and sync sequence</h2>
+<p>PanelGroup nodes may power up before or after PanelBridge, so boot state can't be assumed.
+The <code>SYNC_REQ</code> / <code>READY</code> handshake makes input state deterministic:</p>
+<ol>
+<li>On cold boot a PanelGroup completes its initial input poll, then sends <code>READY_n</code>.</li>
+<li>PanelBridge broadcasts <code>SYNC_REQ</code> — on its own cold boot, on a DCS session change, when it
+   sees a <code>READY_n</code>, or when a node transitions from unseen to alive.</li>
+<li>On receiving <code>SYNC_REQ</code>, every PanelGroup re-polls all its inputs and re-sends their
+   current state as <code>EVT_n</code> frames.</li>
+</ol>
+<p>This guarantees PanelBridge can request a fresh input snapshot at any time. Missed <em>outputs</em>
+(LEDs, gauges) are tolerable — a fresh DCS-BIOS update arrives within ~50 ms. Missed <em>inputs</em>
+(switch positions) are not — they'd leave DCS in the wrong state until the next physical
+change, which is why the handshake exists. See
+<a href="../design-decisions/">Design Decisions</a> for the reasoning.</p>
+<h2 id="gotchas-get-these-right">Gotchas — get these right</h2>
+<div class="admonition warning">
+<p class="admonition-title">Two CAN HAL settings are correctness requirements</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Required value</th>
+<th>Consequence if wrong</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AutoRetransmission</code></td>
+<td><strong>DISABLE</strong></td>
+<td>One unACKed frame jams all 3 TX mailboxes → immediate bus-off; the TX queue never drains.</td>
+</tr>
+<tr>
+<td><code>AutoBusOff</code></td>
+<td><strong>ENABLE</strong></td>
+<td>Hardware recovers from bus-off in ~3 ms; with it disabled, firmware must restart the controller by hand.</td>
+</tr>
+</tbody>
+</table>
+<p>These are not preferences. The full failure analysis is in
+<a href="../design-decisions/#d4-autoretransmission-disable-this-one-will-catch-you-out">Design Decisions D4</a>.</p>
+</div>
+<ul>
+<li><strong>SJW = 4TQ.</strong> Lower values cause intermittent CRC errors from crystal tolerance between
+  boards. Keep it at 4TQ permanently — it costs nothing. See
+  <a href="../design-decisions/#d5-sjw-4tq-empirically-determined">D5</a>.</li>
+<li><strong>Batch flush deadline.</strong> A half-full <code>ControlPacketPair</code> must flush within <strong>two firmware
+  <code>loop()</code> iterations</strong> — user input must not sit waiting for a slot-B packet that may never
+  arrive. Input-snapshot bursts (boot, <code>SYNC_REQ</code> re-polls) flush any trailing single packet
+  immediately at the end of the poll pass.</li>
+<li><strong>TX overflow is frame-type dependent.</strong> <code>CTRL_BCAST</code> drops stale state and keeps the
+  newest (coalescing by <code>controlId</code>); <code>EVT_n</code> and the special frames use bounded retry (3
+  attempts) then drop and bump a diagnostic counter. A healthy bus drops nothing — any
+  <code>EVT_n</code> drop is a signal, not normal.</li>
+</ul>
 
 
 
 
 
 
-
-  
-  
 
 
 

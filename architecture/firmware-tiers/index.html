@@ -675,7 +675,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -710,7 +710,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -804,13 +804,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -862,6 +855,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firmware Tiers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -876,15 +887,82 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-tiers-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three tiers at a glance
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simgateway-rp2040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SimGateway (RP2040)
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panelbridge-stm32f103cbt6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PanelBridge (STM32F103CBT6)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panelgroup-stm32f103cbt6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PanelGroup (STM32F103CBT6)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the split
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -911,13 +989,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -947,13 +1018,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -982,13 +1046,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1016,13 +1073,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -5250,6 +5300,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-tiers-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three tiers at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simgateway-rp2040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SimGateway (RP2040)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panelbridge-stm32f103cbt6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PanelBridge (STM32F103CBT6)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panelgroup-stm32f103cbt6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PanelGroup (STM32F103CBT6)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the split
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5269,20 +5382,131 @@
 
 
 <h1 id="firmware-tiers">Firmware Tiers</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
-</div>
+<p>OpenSkyhawk firmware runs across three tiers. Each owns a clear slice of the job and hands
+off to the next over a defined link. The contracts between tiers — what each tier does
+<em>not</em> do — matter as much as what it does. Get them wrong and you'll duplicate logic or
+break the byte-relay guarantees the architecture depends on.</p>
+<pre><code>PC (DCS + DCS-BIOS)
+  │  USB — single connection, composite CDC + HID
+  ▼
+SimGateway   (RP2040)
+  │  UART @ 250 kbps
+  ▼
+PanelBridge  (STM32F103CBT6, CAN master)
+  │  CAN bus @ 500 kbps
+  ▼
+PanelGroup   (STM32F103CBT6, one per panel group)
+  │  I²C over JST-XH
+  ▼
+Breakout boards (MCP23017, ADS1115)
+</code></pre>
+<h2 id="the-three-tiers-at-a-glance">The three tiers at a glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SimGateway</th>
+<th>PanelBridge</th>
+<th>PanelGroup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MCU</strong></td>
+<td>RP2040</td>
+<td>STM32F103CBT6</td>
+<td>STM32F103CBT6</td>
+</tr>
+<tr>
+<td><strong>Library</strong></td>
+<td><code>SimGateway.h</code></td>
+<td><code>PanelBridge.h</code></td>
+<td><code>OpenSkyhawk.h</code></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>USB bridge + HID</td>
+<td>CAN master + DCS-BIOS</td>
+<td>Panel I/O</td>
+</tr>
+<tr>
+<td><strong>Upstream</strong></td>
+<td>USB to PC</td>
+<td>UART to SimGateway</td>
+<td>CAN to PanelBridge</td>
+</tr>
+<tr>
+<td><strong>Downstream</strong></td>
+<td>UART to PanelBridge</td>
+<td>CAN to PanelGroup nodes</td>
+<td>I²C to breakouts</td>
+</tr>
+<tr>
+<td><strong>Count</strong></td>
+<td>1 per cockpit</td>
+<td>1 per cockpit</td>
+<td>1 per panel group</td>
+</tr>
+</tbody>
+</table>
+<p>Three more libraries are shared rather than owned by a single tier: <strong><code>CANProtocol</code></strong> (packet
+structs, CAN IDs, the <code>controlId</code> namespace), <strong><code>STM32Board</code></strong> (CAN/UART/status-LED hardware
+init for both STM32 tiers), and <strong><code>HIDControls</code></strong> (the HID <code>controlId</code> allocations, shared
+between SimGateway and CANProtocol).</p>
+<h2 id="simgateway-rp2040">SimGateway (RP2040)</h2>
+<p>The single USB device the PC sees. A composite device: USB CDC for the DCS-BIOS stream, USB
+HID for flight-control axes and buttons. It relays the DCS-BIOS byte stream transparently to
+PanelBridge over UART, and intercepts HID frames coming back up to drive the joystick report.</p>
+<p><strong>What it does <em>not</em> do:</strong></p>
+<ul>
+<li>It does <strong>not</strong> run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream
+  — every byte is relayed verbatim.</li>
+<li>It has <strong>no knowledge</strong> of DCS-BIOS control names, addresses, or the input map.</li>
+<li>It does <strong>not</strong> buffer or delay DCS-BIOS bytes — relay is immediate, so PanelBridge sees the
+  stream with USB-CDC latency only.</li>
+</ul>
+<p>See <a href="../sim-gateway/">SimGateway</a> for the full breakdown.</p>
+<h2 id="panelbridge-stm32f103cbt6">PanelBridge (STM32F103CBT6)</h2>
+<p>The CAN master, and the only tier that runs the DCS-BIOS library. It receives the DCS-BIOS
+stream from SimGateway over UART, fires the DCS-BIOS export listener, and broadcasts every
+DCS output onto the CAN bus as <code>CTRL_BCAST</code> frames. In the other direction it collects input
+events (<code>EVT_n</code>) from the nodes and routes each one: DCS-BIOS inputs go out as ASCII commands
+over UART; HID inputs are wrapped in HID frames for SimGateway.</p>
+<p><strong>What it does <em>not</em> do:</strong></p>
+<ul>
+<li>It does <strong>not</strong> touch USB at runtime. (USB and CAN share pins PA11/PA12 on the STM32 — they
+  can't both be active. That's the whole reason SimGateway exists.)</li>
+<li>It does <strong>not</strong> track which node sent an input event — PanelBridge has no per-node input
+  state. Multiple controls may map to the same DCS command.</li>
+<li>It does <strong>not</strong> drive panel hardware decisions; nodes own their own I/O.</li>
+</ul>
+<p><code>NODE_ID</code> is always <strong>0</strong> for PanelBridge — reserved, and never transmitted as a heartbeat on
+the bus.</p>
+<h2 id="panelgroup-stm32f103cbt6">PanelGroup (STM32F103CBT6)</h2>
+<p>One per panel group. Each node drives its panel hardware directly — GPIO, or MCP23017
+(digital I/O) and ADS1115 (analog) breakouts over I²C — and carries a unique <code>NODE_ID</code> (1–63)
+baked in at compile time. It receives <code>CTRL_BCAST</code> frames and dispatches them to registered
+output objects (LEDs, gauges); it polls input objects and fires <code>EVT_n</code> frames back to
+PanelBridge.</p>
+<p><strong>What it does <em>not</em> do:</strong></p>
+<ul>
+<li>It does <strong>not</strong> decide DCS-BIOS vs HID routing. A node just fires a <code>controlId</code> and a value;
+  the routing happens upstream (PanelBridge for DCS-BIOS, SimGateway for HID). See
+  <a href="../dcsbios-vs-hid/">DCS-BIOS vs HID</a>.</li>
+<li>It does <strong>not</strong> run the DCS-BIOS library or know any DCS command strings — it works in
+  compact <code>controlId</code> / value terms only.</li>
+<li>It does <strong>not</strong> talk to other nodes. All traffic is node ↔ PanelBridge.</li>
+</ul>
+<h2 id="why-the-split">Why the split</h2>
+<p>Each boundary exists for a concrete reason — USB reliability, peripheral conflicts, keeping
+nodes dumb and routing centralised. Those reasons, with the failure data behind them, are in
+<a href="../design-decisions/">Design Decisions</a>.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

@@ -675,7 +675,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -710,7 +710,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -804,13 +804,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -867,13 +860,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -901,13 +887,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -937,13 +916,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -972,13 +944,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1002,6 +967,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1016,15 +999,82 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distribution
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-33-v-regulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local 3.3 V regulation
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#board-power-budget-logic-led-boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Board power budget — logic + LED boards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-tier-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-tier notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tbd-not-yet-specified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TBD — not yet specified
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -5250,6 +5300,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-33-v-regulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local 3.3 V regulation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#board-power-budget-logic-led-boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Board power budget — logic + LED boards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-tier-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-tier notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tbd-not-yet-specified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TBD — not yet specified
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5269,10 +5382,112 @@
 
 
 <h1 id="power-architecture">Power Architecture</h1>
+<p>How power is distributed across an OpenSkyhawk cockpit. The firmware/hardware contracts cover
+the logic-side rails in detail; high-current actuator boards are not yet designed and are
+marked TBD below.</p>
+<h2 id="distribution">Distribution</h2>
+<p>A PC ATX power supply feeds the main bus with <strong>12 V and 5 V</strong>, distributed between
+controller groups over <strong>Molex Mini-Fit Jr</strong> connectors. <strong>Each board generates its own
+3.3 V locally</strong> — the 3.3 V rail is never distributed across the bus.</p>
+<table>
+<thead>
+<tr>
+<th>Rail</th>
+<th>Source</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12 V</td>
+<td>ATX PSU, main bus</td>
+<td>LED backlight strings; input to local 5 V buck on high-current boards</td>
+</tr>
+<tr>
+<td>5 V</td>
+<td>ATX PSU, main bus</td>
+<td>Input to the local 3.3 V regulator; stepper driver motor supply (VM)</td>
+</tr>
+<tr>
+<td>3.3 V</td>
+<td>Generated <strong>on each board</strong></td>
+<td>STM32 / RP2040 logic, MCP23017, ADS1115, SN65HVD230</td>
+</tr>
+</tbody>
+</table>
+<h2 id="local-33-v-regulation">Local 3.3 V regulation</h2>
+<p>Every MCU and breakout board carries an <strong>AMS1117-3.3</strong> LDO (SOT-223) that drops the bus 5 V
+to 3.3 V. The 1.7 V drop is acceptable at the boards' logic load (≤ ~175 mA). Local
+decoupling is required on every board: <strong>100 nF + 10 µF per rail</strong>, placed close to each IC.</p>
+<p>For the rare board that needs significant 5 V current, an <strong>AP63205WU</strong> switching buck
+(SOT-23-6) converts 12 V → 5 V on-board. This is <strong>not</strong> used on standard MCU or breakout
+boards — only on future high-5V-current boards.</p>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Never use a linear regulator for 12 V → 5 V</p>
+<p>The 12 V → 5 V step is done with a switching buck (AP63205WU) where needed, never an LDO —
+the drop would dissipate too much power. The AMS1117 LDO is only for the small 5 V → 3.3 V
+step.</p>
+</div>
+<h2 id="board-power-budget-logic-led-boards">Board power budget — logic + LED boards</h2>
+<p>Standard MCU and breakout boards are designed to stay within <strong>≤ 500 mA at 12 V input</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Rail</th>
+<th>Typical</th>
+<th>Max expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12 V → LEDs</td>
+<td>54–180 mA</td>
+<td>~360 mA (large panel)</td>
+</tr>
+<tr>
+<td>12 V → AP63205 input (if fitted)</td>
+<td>~100 mA</td>
+<td>~150 mA</td>
+</tr>
+<tr>
+<td><strong>Total 12 V per board</strong></td>
+<td>~160–280 mA</td>
+<td>~510 mA (large-panel edge case)</td>
+</tr>
+<tr>
+<td>5 V → stepper driver VM</td>
+<td>15–30 mA</td>
+<td>50 mA</td>
+</tr>
+<tr>
+<td>3.3 V → STM32 + MCP23017 + CAN</td>
+<td>~125 mA</td>
+<td>~175 mA</td>
+</tr>
+</tbody>
+</table>
+<p>Across a full ~20-board cockpit that's roughly <strong>2.3 A at 12 V</strong> — well under 10% of what a
+500–600 W ATX supply delivers on its 12 V rail.</p>
+<h2 id="cross-tier-notes">Cross-tier notes</h2>
+<ul>
+<li><strong>CAN transceiver</strong> (SN65HVD230) runs directly from the 3.3 V rail — no level shifter.</li>
+<li><strong>RP2040 SimGateway</strong> is bus-powered from USB. If it's co-located with STM32 CAN hardware,
+  <strong>share GND only</strong> — do not tie the RP2040 module's 3.3 V to the STM32 board's 3.3 V.</li>
+<li><strong>Stepper driver motor supply (VM)</strong> runs from the <strong>5 V</strong> rail. The specific driver part is
+  still being validated on the bench — see TBD below.</li>
+</ul>
+<h2 id="tbd-not-yet-specified">TBD — not yet specified</h2>
+<div class="admonition note">
+<p class="admonition-title">Marked TBD because it isn't in source material yet</p>
+<ul>
+<li><strong>Stepper driver selection.</strong> The motor supply rail (5 V) is settled, but the driver IC
+  itself is still under bench evaluation and is intentionally left unspecified here.</li>
+<li><strong>Actuator boards</strong> (solenoids, servos, large steppers) are <strong>not yet designed</strong>. Each
+  will need its own power-budget analysis before PCB work — flyback protection, dedicated
+  supply rails, and driver selection are all open. The established boundary is that logic +
+  LED boards stay ≤ 500 mA at 12 V; actuator boards are sized to their specific loads and
+  require separate design review.</li>
+</ul>
 </div>
 
 
@@ -5280,9 +5495,6 @@
 
 
 
-
-  
-  
 
 
 

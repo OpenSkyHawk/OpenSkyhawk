@@ -675,7 +675,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -710,7 +710,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -799,6 +799,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -813,15 +831,38 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-in-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's in this section
+      
+    </span>
+  </a>
   
-
+</li>
+      
+    </ul>
   
-
-      </a>
+</nav>
       
     </li>
   
@@ -877,13 +918,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -911,13 +945,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -947,13 +974,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -982,13 +1002,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1016,13 +1029,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -5250,6 +5256,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-in-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's in this section
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5269,20 +5294,41 @@
 
 
 <h1 id="architecture-overview">Architecture Overview</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../contributing/">contribute to the docs</a>.</p>
-</div>
+<p>OpenSkyhawk connects a physical A-4E-C cockpit to DCS over a single USB cable. Behind that
+cable is a three-tier firmware stack joined by a CAN bus. This section explains how that
+stack is built and — just as importantly — <em>why</em> it's built that way.</p>
+<p>The short version: a <a href="sim-gateway/">SimGateway</a> on an RP2040 owns the one USB connection
+to the PC. It relays the DCS-BIOS stream to a <a href="firmware-tiers/">PanelBridge</a> (STM32), which
+runs the DCS-BIOS library and acts as CAN master. The PanelBridge distributes everything to
+<a href="firmware-tiers/">PanelGroup</a> nodes (STM32) over the <a href="can-bus/">CAN bus</a>, one node per
+panel group. Every control — switch, knob, gauge, axis — travels the bus in the same
+<code>ControlPacket</code> format and is routed by its <code>controlId</code>.</p>
+<p>If you're new here, start with <a href="../getting-started/system-overview/">How the System Works</a>
+for the big picture, then come back to this section for the detail.</p>
+<h2 id="whats-in-this-section">What's in this section</h2>
+<ul>
+<li><strong><a href="design-decisions/">Design Decisions</a></strong> — the <em>why</em>. The failure modes and empirical
+  data behind the architecture: why the STM32 USB was abandoned, why AutoRetransmission is
+  disabled, why SJW is 4TQ. Read this before proposing architectural changes.</li>
+<li><strong><a href="firmware-tiers/">Firmware Tiers</a></strong> — the three-tier model in detail: what each tier
+  does, what it deliberately does <em>not</em> do, and the contracts between them.</li>
+<li><strong><a href="can-bus/">CAN Bus Protocol</a></strong> — the full protocol reference: bus configuration, frame
+  ID table, <code>ControlPacket</code> wire format, the startup/sync handshake, and the gotchas.</li>
+<li><strong><a href="sim-gateway/">SimGateway</a></strong> — how the USB gateway works: composite USB device, HID
+  profile, and the byte-relay contract.</li>
+<li><strong><a href="dcsbios-vs-hid/">DCS-BIOS vs HID</a></strong> — the decision rule every panel author must read
+  before implementing a control: when to use the DCS-BIOS path and when to use HID.</li>
+<li><strong><a href="power/">Power Architecture</a></strong> — how 12 V, 5 V, and 3.3 V are distributed across boards.</li>
+</ul>
+<p>These pages are reference material — read the one you need. The two you should read in full
+before contributing firmware are <a href="design-decisions/">Design Decisions</a> and
+<a href="dcsbios-vs-hid/">DCS-BIOS vs HID</a>.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

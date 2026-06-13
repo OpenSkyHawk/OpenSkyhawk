@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#repository-layout" class="md-skip">
+        <a href="#repo-layout" class="md-skip">
           Skip to content
         </a>
       
@@ -680,7 +680,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -707,6 +707,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo Layout
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -724,12 +749,64 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#top-level-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top-level directories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-directories-for-contributors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key directories for contributors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-note-on-the-a4ec-generator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A note on the A4EC generator
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -814,13 +891,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -877,13 +947,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -911,13 +974,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -947,13 +1003,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -982,13 +1031,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1016,13 +1058,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -5250,6 +5285,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#top-level-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top-level directories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-directories-for-contributors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key directories for contributors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-note-on-the-a4ec-generator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A note on the A4EC generator
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5268,12 +5344,99 @@
   
 
 
-<h1 id="repository-layout">Repository Layout</h1>
+<h1 id="repo-layout">Repo Layout</h1>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">This reflects the target structure</p>
+<p>The repository is being restructured. Some directories shown here are in the process of
+being moved, renamed, or created. This page describes the <strong>target state</strong> — where things
+are headed — so contributors orient against the intended layout, not transient cruft.</p>
 </div>
+<pre><code>OpenSkyhawk/
+├── .github/
+│   └── workflows/          ← CI: docs, firmware, KiCad, A4EC generator
+├── CAD/                    ← Fusion 360 sources (.f3d) — early stage
+├── Firmware/
+│   ├── Examples/
+│   │   └── E2E_DCS_Test/   ← working reference sketch (LED + Switch2Pos + real DCS-BIOS)
+│   ├── Libraries/          ← production shared libraries
+│   ├── Panels/             ← panel-group sketches (one folder per group)
+│   ├── PanelBridge/        ← STM32 PanelBridge sketch
+│   ├── SimGateway/         ← RP2040 SimGateway sketch
+│   ├── Templates/          ← PlatformIO project templates for new boards
+│   ├── Tests/              ← test projects
+│   └── NODE_IDS.md         ← pointer to the NODE_ID registry docs
+├── PCB/
+│   ├── Center_Console/     ← KiCad projects, by console then controller group
+│   ├── Left_Console/
+│   ├── Right_Console/
+│   └── Libraries/          ← shared symbols, footprints, sheet templates
+├── docs/                   ← this MkDocs site (docs_dir = &quot;.&quot;)
+├── tools/
+│   └── gen_a4ec/           ← Python A4EC DCS-BIOS header generator (maintainer tooling)
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+├── AGENTS.md
+└── README.md
+</code></pre>
+<h2 id="top-level-directories">Top-level directories</h2>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>What's in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.github/workflows/</code></td>
+<td>CI pipelines — docs build/deploy, firmware builds, KiCad ERC/DRC, and the A4EC generator.</td>
+</tr>
+<tr>
+<td><code>CAD/</code></td>
+<td>Fusion 360 panel sources (<code>.f3d</code>). STLs and STEP exports are generated, not committed. Early stage.</td>
+</tr>
+<tr>
+<td><code>Firmware/</code></td>
+<td>All firmware — shared libraries, the three tier sketches, panel groups, templates, and tests.</td>
+</tr>
+<tr>
+<td><code>PCB/</code></td>
+<td>One KiCad project per physical board, organised by console then controller group. Shared parts live in <code>PCB/Libraries/</code>.</td>
+</tr>
+<tr>
+<td><code>docs/</code></td>
+<td>This documentation site.</td>
+</tr>
+<tr>
+<td><code>tools/gen_a4ec/</code></td>
+<td>The Python generator that turns A-4E-C DCS-BIOS definitions into firmware headers. Maintainer-only — see below.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="key-directories-for-contributors">Key directories for contributors</h2>
+<p>Three places matter most if you're writing firmware:</p>
+<ul>
+<li><strong><code>Firmware/Libraries/</code></strong> — the production shared code: <code>CANProtocol</code>, <code>STM32Board</code>,
+  <code>HIDControls</code>, <code>PanelGroup</code>, <code>PanelBridge</code>, <code>SimGateway</code>, and the generated <code>A4EC</code> headers.
+  This is the <strong>authoritative source</strong> for any constant or API. When docs and a header
+  disagree, the header wins.</li>
+<li><strong><code>Firmware/Examples/E2E_DCS_Test/</code></strong> — a working, hardware-verified reference sketch that
+  exercises an LED output and a Switch2Pos input against real DCS-BIOS IDs. The best starting
+  point for understanding a PanelGroup sketch end to end. It's used as the worked example in
+  <a href="../../guides/first-panel/">Your First Panel</a>.</li>
+<li><strong><code>Firmware/Templates/</code></strong> — PlatformIO project templates for PanelBridge, SimGateway, and
+  PanelGroup. Start a new panel group by copying from here.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Don't copy a panel sketch as a template</p>
+<p>Use <code>Firmware/Templates/</code> to start a new board — <strong>not</strong> an existing panel group's
+<code>platformio.ini</code>. Some in-tree panel sketches carry stale dependencies.</p>
+</div>
+<h2 id="a-note-on-the-a4ec-generator">A note on the A4EC generator</h2>
+<p><code>tools/gen_a4ec/</code> parses the A-4E-C DCS-BIOS JSON and emits the <code>A4EC_*</code> headers committed
+under <code>Firmware/Libraries/</code>. The generated headers are committed — <strong>contributors do not run
+the generator</strong>. Refreshing it when a new A-4E-C release ships is a maintainer task. See the
+maintainer documentation for that workflow.</p>
 
 
 

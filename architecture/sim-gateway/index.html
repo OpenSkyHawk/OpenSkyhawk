@@ -675,7 +675,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -710,7 +710,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
@@ -804,13 +804,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -867,13 +860,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -902,13 +888,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -932,6 +911,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SimGateway
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -946,15 +943,93 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usb-composite-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USB composite device
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hid-device-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HID device profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-relay-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The relay contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controlid-routing-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        controlId routing logic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dispatch-and-startup-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatch and startup behaviour
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -981,13 +1056,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1016,13 +1084,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -5250,6 +5311,80 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usb-composite-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USB composite device
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hid-device-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HID device profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-relay-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The relay contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controlid-routing-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        controlId routing logic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dispatch-and-startup-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatch and startup behaviour
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5269,20 +5404,158 @@
 
 
 <h1 id="simgateway">SimGateway</h1>
+<p>The SimGateway is the one device the PC plugs into. It's an off-the-shelf RP2040 module that
+presents a single composite USB device to DCS and relays everything to the rest of the
+cockpit over a UART. This page covers <em>how</em> it works. For <em>why</em> a separate gateway exists at
+all — the STM32 USB failure that forced it — see
+<a href="../design-decisions/#d1-simgateway-exists-because-stm32-usb-cant-take-the-load">Design Decisions D1</a>.</p>
+<h2 id="hardware">Hardware</h2>
+<ul>
+<li><strong>MCU:</strong> an off-the-shelf RP2040 module (e.g. Raspberry Pi Pico). No custom PCB.</li>
+<li><strong>USB:</strong> the single connection to the PC.</li>
+<li><strong>UART:</strong> RP2040 <code>Serial1</code> / UART0 — <strong>GP0</strong> (TX → PanelBridge RX/PA3) and <strong>GP1</strong>
+  (RX ← PanelBridge TX/PA2), at <strong>250000 baud</strong>. Both sides are 3.3 V; no level shifter.</li>
+</ul>
+<p><code>SimGateway::setup(Serial1)</code> configures the pins, starts the UART at 250000, sets the USB
+identity, and enumerates the TinyUSB HID device. The baud rate matches the DCS-BIOS protocol
+rate exactly, so there's no buffering mismatch on the relay.</p>
+<h2 id="usb-composite-device">USB composite device</h2>
+<p>SimGateway enumerates as a <strong>composite CDC + HID device</strong> on one USB port:</p>
+<ul>
+<li><strong>CDC (serial)</strong> carries the DCS-BIOS stream, both directions.</li>
+<li><strong>HID (joystick)</strong> presents flight-control axes and buttons to the PC.</li>
+</ul>
+<p>USB identity is set at runtime before the HID device starts (TinyUSB replaces the default
+Pico USB stack):</p>
+<pre><code class="language-cpp">TinyUSBDevice.setID(0x2E8A, 0x4134);   // VID = Raspberry Pi, PID = A-4E Skyhawk
+TinyUSBDevice.setManufacturerDescriptor(&quot;OpenSkyhawk&quot;);
+TinyUSBDevice.setProductDescriptor(&quot;A-4E Skyhawk&quot;);
+</code></pre>
+<h2 id="hid-device-profile">HID device profile</h2>
+<p>The HID descriptor is built on the Adafruit TinyUSB library and frozen:</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Axes</td>
+<td>8 — X, Y, Z, Rx, Ry, Rz, Slider, Dial (16-bit signed, ±32767)</td>
+</tr>
+<tr>
+<td>Buttons</td>
+<td>128 (1 bit each)</td>
+</tr>
+<tr>
+<td>Hat switches</td>
+<td>4 (4-bit nibble each; <code>0xF</code> = centered)</td>
+</tr>
+<tr>
+<td>Report size</td>
+<td><strong>34 bytes</strong></td>
+</tr>
+</tbody>
+</table>
+<p>This covers all 7 planned OpenSkyhawk axes (Roll, Pitch, Throttle, Rudder, Brake L, Brake R,
+Zoom) with one spare, plus headroom on buttons and hats. Validated against DCS World
+(DirectInput) as a full <code>DIJOYSTATE2</code> match — 8 axes, 128 buttons, 4 POV hats, no limits
+exceeded.</p>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Never grow the HID report past 64 bytes</p>
+<p>TinyUSB on the RP2040 hardcodes <code>CFG_TUD_HID_EP_BUFSIZE = 64</code>; build-flag overrides are
+silently ignored. A report over 64 bytes makes <code>sendReport()</code> return <code>false</code> and drop
+silently — no error, no crash. The production report is 34 bytes; keep it well under 64.</p>
 </div>
+<h2 id="the-relay-contract">The relay contract</h2>
+<p>This is the heart of SimGateway, and it's deliberately dumb:</p>
+<ul>
+<li>Every byte from USB CDC is forwarded to the UART <strong>immediately</strong>.</li>
+<li>Every UART byte that is <strong>not</strong> part of a HID frame is forwarded to USB CDC <strong>immediately</strong>.</li>
+<li>SimGateway never buffers, parses, or delays DCS-BIOS bytes, and never runs the DCS-BIOS
+  library. PanelBridge therefore sees the stream with USB-CDC latency only.</li>
+</ul>
+<p>The two streams share one UART because they can't collide: DCS-BIOS text is pure printable
+ASCII + LF (every byte ≤ <code>0x7F</code>), while HID frames start with the magic bytes <code>0xAA 0x55</code>
+(both have bit 7 set).</p>
+<h2 id="controlid-routing-logic">controlId routing logic</h2>
+<p>Incoming HID frames (PanelBridge → SimGateway) are fixed 6-byte little-endian:</p>
+<table>
+<thead>
+<tr>
+<th>Bytes</th>
+<th>Field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–1</td>
+<td>Magic <code>0xAA 0x55</code></td>
+</tr>
+<tr>
+<td>2–3</td>
+<td><code>controlId</code> (uint16 LE)</td>
+</tr>
+<tr>
+<td>4–5</td>
+<td><code>value</code> (uint16 LE)</td>
+</tr>
+</tbody>
+</table>
+<p>SimGateway demultiplexes the UART byte stream:</p>
+<ul>
+<li>Byte ≤ <code>0x7F</code> → DCS-BIOS byte → forward to USB CDC.</li>
+<li>Byte <code>0xAA</code> followed by <code>0x55</code> → HID frame: read 4 more bytes, dispatch by <code>controlId</code>.</li>
+<li>Byte <code>0xAA</code> <em>not</em> followed by <code>0x55</code> → not a frame: forward both bytes and resume scanning
+  (self-healing resync at the next byte boundary).</li>
+</ul>
+<p>HID controls are owned entirely here — PanelBridge wraps them but never interprets them. The
+<code>controlId</code> ranges SimGateway dispatches:</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Type</th>
+<th>Handler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x0010</code>–<code>0x001F</code></td>
+<td>Axes</td>
+<td><code>HIDAxis</code></td>
+</tr>
+<tr>
+<td><code>0x0020</code>–<code>0x002F</code></td>
+<td>Hat switches</td>
+<td><code>HIDHatSwitch</code></td>
+</tr>
+<tr>
+<td><code>0x0030</code>–<code>0x00AF</code></td>
+<td>Buttons</td>
+<td><code>HIDButton</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>HIDAxis</code> maps the incoming 0–65535 value to ±32767 internally; <code>HIDButton</code> treats
+<code>value != 0</code> as pressed; <code>HIDHatSwitch</code> reads a direction nibble (0 = centered, 1–8 = N…NW).</p>
+<h2 id="dispatch-and-startup-behaviour">Dispatch and startup behaviour</h2>
+<p>Each <code>SimGateway::loop()</code> iteration drains all pending HID frames, applies them to the axis /
+button / hat objects, and then calls <code>OsJoystick.send()</code> <strong>once</strong> to flush the HID report.
+Sending once per drain cycle — not once per frame — keeps the HID report rate predictable and
+avoids redundant USB packets.</p>
+<p>At startup, <code>SimGateway::setup()</code> owns all of it: USB identity, GP0/GP1 pin configuration,
+<code>Serial1.begin(250000)</code>, and TinyUSB HID enumeration. The sketch only declares its <code>HIDAxis</code>
+/ <code>HIDButton</code> / <code>HIDHatSwitch</code> objects and calls <code>setup()</code> / <code>loop()</code> — DCS-BIOS relay is
+automatic and needs no declarations.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 
