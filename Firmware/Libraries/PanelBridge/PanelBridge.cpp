@@ -157,6 +157,11 @@ static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
     }
 
     DcsBios::sendDcsBiosMessage(entry->name, arg);
+    if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] DCS -> \"")); d.print(entry->name);
+        d.print(F("\" \"")); d.print(arg); d.println('"');
+    }
 }
 
 static void dispatchEvtSlot(uint16_t controlId, uint16_t value) {

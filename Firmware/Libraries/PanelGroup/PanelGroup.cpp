@@ -92,6 +92,7 @@ static void onCanReceive(uint32_t canId, const uint8_t* data, uint8_t len) {
 }
 
 static void onSyncReq() {
+    STM32Board::log("[PanelGroup] SYNC_REQ -> forceReport burst");
     for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next())
         p->forceReport();
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
