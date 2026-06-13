@@ -39,10 +39,10 @@
 
     <div class="os-header-nav" aria-label="Primary navigation">
       <a href="{{ nav.homepage.url | url }}" class="{% if current_url == nav.homepage.url %}os-header-nav__link--active{% endif %}">Home</a>
-      <a href="{{ nav.homepage.url | url }}#projects">Projects</a>
-      <a href="{{ 'claude/architecture/' | url }}" class="{% if current_url.startswith('claude/architecture') or current_url.startswith('claude/dcsbios') %}os-header-nav__link--active{% endif %}">Documentation</a>
-      <a href="{{ 'claude/hardware-standards/' | url }}" class="{% if current_url.startswith('claude/hardware') or current_url.startswith('claude/pcb') or current_url.startswith('claude/kicad') %}os-header-nav__link--active{% endif %}">Hardware</a>
-      <a href="{{ 'api/' | url }}" class="{% if current_url.startswith('api/') %}os-header-nav__link--active{% endif %}">API Reference</a>
+      <a href="{{ 'getting-started/overview/' | url }}" class="{% if current_url.startswith('getting-started/') %}os-header-nav__link--active{% endif %}">Getting Started</a>
+      <a href="{{ 'architecture/' | url }}" class="{% if current_url.startswith('architecture/') %}os-header-nav__link--active{% endif %}">Architecture</a>
+      <a href="{{ 'hardware/' | url }}" class="{% if current_url.startswith('hardware/') or current_url.startswith('firmware/') %}os-header-nav__link--active{% endif %}">Reference</a>
+      <a href="{{ 'api/' | url }}" class="{% if current_url.startswith('api/') %}os-header-nav__link--active{% endif %}">API</a>
     </div>
 
     {% if config.theme.palette %}
