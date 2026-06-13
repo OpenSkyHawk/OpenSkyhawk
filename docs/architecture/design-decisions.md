@@ -180,11 +180,11 @@ on the [DCS-BIOS vs HID](dcsbios-vs-hid.md) page.
 ## D7 — STM32F103 for the CAN nodes
 
 **Decision:** The CAN nodes — PanelBridge and every PanelGroup node — use the **STM32F103**
-family (LQFP48, 20 KB RAM). The **C8** variant (64 KB flash) is the default; the **CB**
-variant (`STM32F103CBT6`, 128 KB flash) is used only where flash demands it.
-**PanelBridge** is the CB case — it runs the DCS-BIOS library plus the full generated
+family (LQFP48, 20 KB RAM). The **STM32F103C8** (64 KB flash) is the default; the
+**STM32F103CB** (128 KB flash) is used only where flash demands it.
+**PanelBridge** is the STM32F103CB case — it runs the DCS-BIOS library plus the full generated
 input map (~300 entries). PanelGroup nodes carry only the `DCSIN_*` constants they use,
-so they fit C8.
+so they fit the STM32F103C8.
 
 **Reasoning:**
 

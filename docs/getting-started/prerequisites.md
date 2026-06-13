@@ -53,8 +53,8 @@ or modify the physical panels.
 
 Everything above, plus the bench hardware to develop and verify against real boards:
 
-- **STM32F103 dev board** — a C8 Blue Pill is the default and runs most of the firmware.
-  The **CB** variant (`STM32F103CBT6`, 128 KB flash) is only needed where flash demands
+- **STM32F103 dev board** — an STM32F103C8 Blue Pill is the default and runs most of the firmware.
+  The **STM32F103CB** (128 KB flash) is only needed where flash demands
   it — notably **PanelBridge**, which carries the full DCS-BIOS input map. Either way the
   firmware requires an **external 8 MHz crystal** for CAN; verify your board has one
   populated.
