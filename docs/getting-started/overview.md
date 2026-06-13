@@ -13,8 +13,7 @@ firmware that ties it together, and — eventually — a replica stick, throttle
 Build a home sim pit the usual way and you end up with a drawer full of separate USB
 devices — a button box here, an encoder panel there, a third board for the gauges. Ten or
 fifteen HID controllers, each with its own COM port, its own DCS bindings, its own profile
-to maintain. Add a panel and you add another device to the pile. Windows only allows eight
-HID joysticks before you start losing axes. The wiring sprawls, the bindings drift, and
+to maintain. Add a panel and you add another device to the pile. Windows gives each HID device only eight axes to begin with. The wiring sprawls, the bindings drift, and
 every rebuild is an afternoon of re-mapping.
 
 ## The solution: one cable, one bus

@@ -12,8 +12,7 @@ into the sim.
 ## The problem it solves
 
 A home pit built from off-the-shelf controllers is a pile of separate USB devices — one per
-panel, each with its own port, bindings, and profile. Windows caps you at eight HID
-joysticks, the wiring sprawls, and every new panel is another device to map. OpenSkyhawk
+panel, each with its own port, bindings, and profile. DirectInput caps you at eight axes per HID device, the wiring sprawls, and every new panel is another device to map. OpenSkyhawk
 collapses all of that onto **one USB connection** and a shared bus.
 
 ## The three tiers
