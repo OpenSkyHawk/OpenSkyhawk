@@ -2,7 +2,7 @@
 
 **Location:** Center Console  
 **Panels:** Armament Panel (host), AWRS Panel (breakout), Misc Switch Panel (breakout)  
-**Repo:** `Firmware/Center_Armament/`, `PCB/Center_Console/Center_Armament/`
+**Repo:** `Firmware/Panels/Center_Armament/`, `PCB/Center_Console/Center_Armament/`
 
 ## MCU Board (Armament_MCU)
 
