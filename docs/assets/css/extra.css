@@ -883,8 +883,16 @@ body {
 
   [data-md-toggle="search"]:checked ~ .md-header .md-search {
     right: max(13rem, calc((100vw - 74rem) / 2 + 11rem));
+    z-index: 8;
     width: 18rem;
     pointer-events: auto;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .os-header-nav,
+  [data-md-toggle="search"]:checked ~ .md-header .md-header__button[for="__search"] {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
 
   [data-md-toggle="search"]:checked ~ .md-header .md-search__inner {
