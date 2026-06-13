@@ -69,7 +69,7 @@ class HIDButton {
 public:
     /**
      * @brief Register a HID button handler.
-     * @param controlId   CTRL_* constant from HIDControls.h (0x0030–0x00AF range).
+     * @param controlId   CTRL_* button constant from HIDControls.h (0x0030–0x00AF range).
      * @param buttonIndex OpenSkyhawkJoystick button index (0–127).
      */
     HIDButton(uint16_t controlId, uint8_t buttonIndex);

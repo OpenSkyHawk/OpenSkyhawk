@@ -75,7 +75,7 @@ DCS-BIOS message — the panel author does not write that translation.
 
 | Range | Type | Routing on SimGateway |
 |---|---|---|
-| `0x0010`–`0x00FF` | HID axis / button | → `Joystick.*()` |
+| `0x0010`–`0x00FF` | HID axis / hat / button / reserved HID expansion | → `Joystick.*()` when a SimGateway handler is registered |
 | `0x8000`–`0xFFFF` | DCS-BIOS address | → `sendDcsBiosMessage()` |
 
 For DCS-BIOS outputs (DCS → panel), the controlId **is** the DCS-BIOS address — no  
