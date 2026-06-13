@@ -38,7 +38,7 @@ jobs:
       - name: Compile Python tools
         run: |
           set -euo pipefail
-          mapfile -t files < <(find Tools -type f -name '*.py' -not -path '*/__pycache__/*' | sort)
+          mapfile -t files < <(find tools -type f -name '*.py' -not -path '*/__pycache__/*' | sort)
           if [ "${#files[@]}" -eq 0 ]; then
             echo "No Python tool files found."
             exit 0
