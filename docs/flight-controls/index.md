@@ -26,8 +26,8 @@ DirectInput axis slots:
 | 1 | `CTRL_PITCH` | Pitch — replica stick |
 | 2 | `CTRL_THROTTLE` | Throttle position — replica throttle |
 | 3 | `CTRL_RUDDER` | Rudder — rudder pedals |
-| 4 | `CTRL_LEFT_BRAKE` | Left toe brake — rudder pedals |
-| 5 | `CTRL_RIGHT_BRAKE` | Right toe brake — rudder pedals |
+| 4 | `CTRL_BRAKE_L` | Left toe brake — rudder pedals |
+| 5 | `CTRL_BRAKE_R` | Right toe brake — rudder pedals |
 | 6 | `CTRL_ZOOM` | Zoom |
 
 The **speed brake** is a DCS-BIOS on/off switch, not a HID axis.
