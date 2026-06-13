@@ -26,10 +26,7 @@ these. The full frame map is in [CAN Bus Protocol](../architecture/can-bus.md).
 
 The authoritative record lives in `Firmware/NODE_IDS.md` at the repo root. Current state:
 
-| NODE_ID | Panel Group | Console | Status |
-|---------|-------------|---------|--------|
-| 0 | PanelBridge | — | Reserved — CAN master, never transmitted on bus |
-| 1 | Center_Armament | Center | Active |
+--8<-- "Firmware/NODE_IDS.md:registry"
 
 ## How to claim a new NODE_ID
 
@@ -43,3 +40,9 @@ When you start a new panel group:
 
 One NODE_ID per physical STM32 board. See [Adding a New Panel Group](../guides/new-panel-group.md)
 for the full workflow — claiming the ID is step one.
+
+!!! note "CI enforces this"
+    A CI check (`tools/check_node_ids.py`) validates every production panel under
+    `Firmware/Panels/` against this registry on each firmware PR: it fails the build if a board's
+    NODE_ID is unregistered, duplicated, or out of range. The table above is transcluded directly
+    from `Firmware/NODE_IDS.md`, so the docs can't drift from the registry.
