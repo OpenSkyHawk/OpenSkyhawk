@@ -1,0 +1,8527 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/_source/controllers/a4e-c-dcsbios-addresses/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>A-4E-C DCS-BIOS Address Reference - OpenSkyhawk</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/css/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#a-4e-c-dcs-bios-address-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="OpenSkyhawk" class="md-header__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenSkyhawk
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              A-4E-C DCS-BIOS Address Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-header-nav" aria-label="Primary navigation">
+      <a href="../../.." class="">Home</a>
+      <a href="../../..#projects">Projects</a>
+      <a href="../../../claude/architecture/" class="">Documentation</a>
+      <a href="../../../claude/hardware-standards/" class="">Hardware</a>
+      <a href="../../../api/" class="">API Reference</a>
+    </div>
+
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/overview/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../hardware/standards/" class="md-tabs__link">
+          
+  
+  
+  Hardware Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../firmware/" class="md-tabs__link">
+          
+  
+  
+  Firmware Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../panels/center-console/" class="md-tabs__link">
+          
+  
+  
+  Center Console
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../panels/left-console/" class="md-tabs__link">
+          
+  
+  
+  Left Console
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../panels/right-console/" class="md-tabs__link">
+          
+  
+  
+  Right Console
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../flight-controls/" class="md-tabs__link">
+          
+  
+  
+  Flight Controls (HOTAS)
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../kits/" class="md-tabs__link">
+          
+  
+  
+  Kit Assembly
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/" class="md-tabs__link">
+          
+  
+  
+  Build Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="OpenSkyhawk" class="md-nav__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    OpenSkyhawk
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is OpenSkyhawk?
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/system-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How the System Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What You'll Need
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/repo-layout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo Layout
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/design-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/firmware-tiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firmware Tiers
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/can-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN Bus Protocol
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/sim-gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SimGateway
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dcsbios-vs-hid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS vs HID
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hardware Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hardware/standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hardware/pcb-design-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PCB Design Rules
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hardware/kicad-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KiCad Workflow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hardware/connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connector & Harness Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hardware/components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component Library
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firmware Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Firmware Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../firmware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../firmware/platformio-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PlatformIO Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../firmware/node-id/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NODE_ID & CAN Addressing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../firmware/dcsbios-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS Integration
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../firmware/hid-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HID Controls
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../firmware/control-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Types
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../firmware/debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging on STM32
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Center Console
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Center Console
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Armament Group
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Armament Group
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/armament/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/armament/armament-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Armament Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/armament/awrs-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWRS Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/armament/misc-switch-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Misc Switch Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/armament/gunpod-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gunpod Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/armament/gunsight-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gunsight Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/armament/chaff-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaff Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flight Instruments
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Flight Instruments
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/instruments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/instruments/wheels-flaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wheels & Flaps Indicator
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/instruments/caution-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caution Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/instruments/advisory-lights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pilot Advisory Lights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/center-console/instruments/radar-indicator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Radar Indicator
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Left Console
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Left Console
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Navigation & Comms
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Navigation & Comms
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/nav-comms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/nav-comms/radar-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AN/APG-53A Radar Control
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/nav-comms/uhf-radio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AN/ARC-51A UHF Radio
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/nav-comms/tacan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AN/ARN-52 TACAN
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/nav-comms/compass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compass Control
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lighting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lighting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/lighting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/lighting/interior-lights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interior Lights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/left-console/lighting/exterior-lights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exterior Lights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Right Console
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Right Console
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flight Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Flight Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/flight-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/flight-controls/afcs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AFCS / Autopilot
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/flight-controls/afcs-test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AFCS Test Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/flight-controls/flap-handle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flap Handle
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/flight-controls/throttle-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Throttle Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine & Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Engine & Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/engine-systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/engine-systems/engine-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine Control
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../panels/right-console/engine-systems/ecm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ECM Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flight Controls (HOTAS)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Flight Controls (HOTAS)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../flight-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../flight-controls/stick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replica Stick
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../flight-controls/throttle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replica Throttle
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../flight-controls/rudder-pedals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rudder Pedals
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../flight-controls/hid-axes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HID Axis Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kit Assembly
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kit Assembly
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kits/whats-in-the-box/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What's in the Box
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Armament Group Kit
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Armament Group Kit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kits/armament/assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kits/armament/flashing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashing Firmware
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kits/armament/dcs-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kits/armament/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Build Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/first-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your First Panel
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/pcb-ordering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PCB Ordering (JLCPCB)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly & Soldering
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/flashing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashing Firmware
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/bring-up/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bring-Up & Testing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/new-panel-group/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a New Panel Group
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/new-control-type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a New Control Type
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to Contribute
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Conventions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/docs-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs Workflow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/adding-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a Controller
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/deprecated.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deprecated List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_3" id="__nav_13_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/namespaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_3_2" id="__nav_13_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_13_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespace Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/namespace_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/namespace_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/namespace_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/namespace_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/namespace_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_4" id="__nav_13_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/annotated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/hierarchy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_4_4" id="__nav_13_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_13_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Class Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/class_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/class_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/class_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/class_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/class_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_5" id="__nav_13_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#address-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Address Format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#direction-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direction Key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engine-instruments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engine Instruments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mechanical-systems-indicators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mechanical Systems Indicators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-flight-instruments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main Flight Instruments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Main Flight Instruments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standby-attitude-indicator-sai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standby Attitude Indicator (SAI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ias-mach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAS / Mach
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#radar-altimeter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Radar Altimeter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#barometric-altimeter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Barometric Altimeter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-flight-instruments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Flight Instruments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adi-attitude-direction-indicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADI (Attitude Direction Indicator)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warning-indicator-lights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Warning &amp; Indicator Lights
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Warning &amp; Indicator Lights">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glareshield-warning-lights-packed-at-0x845c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glareshield Warning Lights (packed at 0x845C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aoa-advisory-ecm-indicator-lights-packed-at-0x8470" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AOA / Advisory / ECM Indicator Lights (packed at 0x8470)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gunsight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gunsight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bdhi-bearing-distance-heading-indicator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BDHI (Bearing Distance Heading Indicator)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#radar-apg-53a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Radar (APG-53A)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#afcs-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AFCS Panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approach-power-compensator-apc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approach Power Compensator (APC)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armament-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Armament Panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mechanical-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mechanical Systems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fuel-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fuel Systems
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avionics-misc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avionics / Misc
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecm-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECM Panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uhf-radio-anarc-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UHF Radio (AN/ARC-51)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UHF Radio (AN/ARC-51)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#display-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tacan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TACAN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#doppler-navigation-apn-153-asn-41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doppler Navigation (APN-153 / ASN-41)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Doppler Navigation (APN-153 / ASN-41)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#displays" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Displays
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controls_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#countermeasures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Countermeasures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cockpit-lighting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cockpit Lighting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cockpit Lighting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#outputs-ambient-levels-exported-by-dcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs (ambient levels exported by DCS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interior-light-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interior light controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exterior-light-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exterior light controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clock
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#air-conditioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Air Conditioning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#t-handles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T-Handles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejection-seat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejection Seat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcl-master-caution-light-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCL (Master Caution Light panel)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-aircraft-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Aircraft Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#address-map-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Address Map Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="a-4e-c-dcs-bios-address-reference">A-4E-C DCS-BIOS Address Reference</h1>
+<p>Module base address: <code>0x8400</code>. All addresses are in the range <code>0x8400</code>–<code>0x8554</code>.</p>
+<h2 id="address-format">Address Format</h2>
+<p>Each <code>#define</code> in <code>Addresses.h</code> expands to <code>address, mask, shift</code> for use with <code>DcsBios::IntegerBuffer</code>:</p>
+<pre><code class="language-cpp">DcsBios::IntegerBuffer buf(A_4E_C_RPM, onRpmChange);
+</code></pre>
+<p>The <code>_A</code> suffix variant provides the address only (for <code>StringBuffer</code> or direct reads).
+The <code>_AM</code> suffix variant provides <code>address, mask</code> (for <code>ChangeDispatcher</code>).</p>
+<h2 id="direction-key">Direction Key</h2>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OUT</td>
+<td>DCS → cockpit (gauge needle, indicator light, display digit)</td>
+</tr>
+<tr>
+<td>IN</td>
+<td>Cockpit → DCS (switch, button, knob — also echoed back as output)</td>
+</tr>
+<tr>
+<td>EXT</td>
+<td>External aircraft model (animation args)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="engine-instruments">Engine Instruments</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RPM</code></td>
+<td>0x8400</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Engine RPM (0–65535 = 0–100%)</td>
+</tr>
+<tr>
+<td><code>RPM_DECI</code></td>
+<td>0x8402</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Engine RPM decimal digit</td>
+</tr>
+<tr>
+<td><code>EGT_C</code></td>
+<td>0x8404</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Exhaust Gas Temperature</td>
+</tr>
+<tr>
+<td><code>D_FUEL_FLOW</code></td>
+<td>0x8406</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Fuel flow gauge</td>
+</tr>
+<tr>
+<td><code>OIL_PRESSURE</code></td>
+<td>0x8408</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Oil pressure gauge</td>
+</tr>
+<tr>
+<td><code>PRESSURE_RATIO</code></td>
+<td>0x840A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Pressure ratio gauge</td>
+</tr>
+<tr>
+<td><code>D_FUEL</code></td>
+<td>0x840C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Fuel quantity gauge</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mechanical-systems-indicators">Mechanical Systems Indicators</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D_FLAPS_IND</code></td>
+<td>0x840E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Flap position indicator needle</td>
+</tr>
+<tr>
+<td><code>D_TAIL_HOOK</code></td>
+<td>0x8410</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Hook position indicator</td>
+</tr>
+<tr>
+<td><code>GEAR_NOSE</code></td>
+<td>0x8412</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Nose gear indicator</td>
+</tr>
+<tr>
+<td><code>GEAR_LEFT</code></td>
+<td>0x8414</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Left gear indicator</td>
+</tr>
+<tr>
+<td><code>GEAR_RIGHT</code></td>
+<td>0x8416</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Right gear indicator</td>
+</tr>
+<tr>
+<td><code>CANOPY_POS</code></td>
+<td>0x84EC</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Canopy position</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="main-flight-instruments">Main Flight Instruments</h2>
+<h3 id="standby-attitude-indicator-sai">Standby Attitude Indicator (SAI)</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ATTGYRO_STBY_HORIZ</code></td>
+<td>0x8418</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>SAI horizon bar</td>
+</tr>
+<tr>
+<td><code>ATTGYRO_STBY_PITCH</code></td>
+<td>0x841A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>SAI pitch</td>
+</tr>
+<tr>
+<td><code>ATTGYRO_STBY_ROLL</code></td>
+<td>0x841C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>SAI roll</td>
+</tr>
+<tr>
+<td><code>ATTGYRO_STBY_OFF</code></td>
+<td>0x841E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>SAI off flag</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ias-mach">IAS / Mach</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D_IAS_DEG</code></td>
+<td>0x8420</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>IAS needle</td>
+</tr>
+<tr>
+<td><code>D_IAS_MACH_DEG</code></td>
+<td>0x8422</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Mach disc</td>
+</tr>
+<tr>
+<td><code>D_IAS_IDX</code></td>
+<td>0x8424</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>IAS index bug</td>
+</tr>
+<tr>
+<td><code>D_MACH_IDX</code></td>
+<td>0x8426</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Mach index</td>
+</tr>
+</tbody>
+</table>
+<h3 id="radar-altimeter">Radar Altimeter</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D_RADAR_ALT</code></td>
+<td>0x8428</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Radar altimeter needle</td>
+</tr>
+<tr>
+<td><code>D_RADAR_IDX</code></td>
+<td>0x842A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Radar alt indexer</td>
+</tr>
+<tr>
+<td><code>D_RADAR_OFF</code></td>
+<td>0x842C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Radar alt off flag</td>
+</tr>
+<tr>
+<td><code>RADAR_ALT_INDEX</code></td>
+<td>0x8510</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Warning index knob</td>
+</tr>
+<tr>
+<td><code>RADAR_ALT_SW</code></td>
+<td>0x850E</td>
+<td>0x8000</td>
+<td>IN</td>
+<td>Warning button</td>
+</tr>
+</tbody>
+</table>
+<h3 id="barometric-altimeter">Barometric Altimeter</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D_ALT_NEEDLE</code></td>
+<td>0x842E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Altimeter needle</td>
+</tr>
+<tr>
+<td><code>D_ALT_10K</code></td>
+<td>0x8430</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>10,000s drum</td>
+</tr>
+<tr>
+<td><code>D_ALT_1K</code></td>
+<td>0x8432</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>1,000s drum</td>
+</tr>
+<tr>
+<td><code>D_ALT_100S</code></td>
+<td>0x8434</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>100s drum</td>
+</tr>
+<tr>
+<td><code>ALT_ADJ_NN00</code></td>
+<td>0x8436</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Baro setting NNxx digits</td>
+</tr>
+<tr>
+<td><code>ALT_ADJ_00N0</code></td>
+<td>0x8438</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Baro setting xxNx digit</td>
+</tr>
+<tr>
+<td><code>ALT_ADJ_000N</code></td>
+<td>0x843A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Baro setting xxxN digit</td>
+</tr>
+<tr>
+<td><code>ALT_PRESS_KNB</code></td>
+<td>0x8516</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Baro setting knob</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-flight-instruments">Other Flight Instruments</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CABIN_ALT</code></td>
+<td>0x843C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Cabin altitude gauge</td>
+</tr>
+<tr>
+<td><code>LIQUID_O2</code></td>
+<td>0x843E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Liquid oxygen quantity</td>
+</tr>
+<tr>
+<td><code>D_OXYGEN_OFF</code></td>
+<td>0x8440</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Oxygen off flag</td>
+</tr>
+<tr>
+<td><code>ACCEL_CUR</code></td>
+<td>0x8442</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Accelerometer current G</td>
+</tr>
+<tr>
+<td><code>ACCEL_MAX</code></td>
+<td>0x8444</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Accelerometer max G needle</td>
+</tr>
+<tr>
+<td><code>ACCEL_MIN</code></td>
+<td>0x8446</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Accelerometer min G needle</td>
+</tr>
+<tr>
+<td><code>ACCEL_RESET</code></td>
+<td>0x850E</td>
+<td>0x2000</td>
+<td>IN</td>
+<td>Accelerometer reset button</td>
+</tr>
+<tr>
+<td><code>VVI</code></td>
+<td>0x8448</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Vertical velocity indicator</td>
+</tr>
+<tr>
+<td><code>COMPASS_HDG</code></td>
+<td>0x8456</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Backup compass heading</td>
+</tr>
+<tr>
+<td><code>AOA_G</code></td>
+<td>0x8458</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Angle of attack gauge</td>
+</tr>
+<tr>
+<td><code>AOA_INDEX_DIM</code></td>
+<td>0x851A</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>AOA indexer dimming wheel</td>
+</tr>
+</tbody>
+</table>
+<h3 id="adi-attitude-direction-indicator">ADI (Attitude Direction Indicator)</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ADI_PITCH</code></td>
+<td>0x844A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ADI pitch</td>
+</tr>
+<tr>
+<td><code>ADI_ROLL</code></td>
+<td>0x844C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ADI roll</td>
+</tr>
+<tr>
+<td><code>ADI_HDG</code></td>
+<td>0x844E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ADI heading</td>
+</tr>
+<tr>
+<td><code>ADI_OFF</code></td>
+<td>0x8450</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ADI off flag</td>
+</tr>
+<tr>
+<td><code>ADI_SLIP</code></td>
+<td>0x8452</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ADI slip ball</td>
+</tr>
+<tr>
+<td><code>ADI_TURN</code></td>
+<td>0x8454</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ADI turn rate</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="warning-indicator-lights">Warning &amp; Indicator Lights</h2>
+<h3 id="glareshield-warning-lights-packed-at-0x845c">Glareshield Warning Lights (packed at 0x845C)</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Bit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D_FUELBOOST_CAUTION</code></td>
+<td>0x845C</td>
+<td>0x0001</td>
+<td>0</td>
+<td>Fuel boost caution (yellow)</td>
+</tr>
+<tr>
+<td><code>D_CONTHYD_CAUTION</code></td>
+<td>0x845C</td>
+<td>0x0002</td>
+<td>1</td>
+<td>Control hydraulics caution (yellow)</td>
+</tr>
+<tr>
+<td><code>D_UTILHYD_CAUTION</code></td>
+<td>0x845C</td>
+<td>0x0004</td>
+<td>2</td>
+<td>Utility hydraulics caution (yellow)</td>
+</tr>
+<tr>
+<td><code>D_FUELTRANS_CAUTION</code></td>
+<td>0x845C</td>
+<td>0x0008</td>
+<td>3</td>
+<td>Fuel transfer caution (yellow)</td>
+</tr>
+<tr>
+<td><code>D_SPDBRK_CAUTION</code></td>
+<td>0x845C</td>
+<td>0x0010</td>
+<td>4</td>
+<td>Speed brake caution (yellow)</td>
+</tr>
+<tr>
+<td><code>D_SPOILER_CAUTION</code></td>
+<td>0x845C</td>
+<td>0x0020</td>
+<td>5</td>
+<td>Spoiler caution (yellow)</td>
+</tr>
+<tr>
+<td><code>D_RADAR_WARN</code></td>
+<td>0x845C</td>
+<td>0x0040</td>
+<td>6</td>
+<td>Radar altitude warning (red)</td>
+</tr>
+<tr>
+<td><code>D_OIL_LOW</code></td>
+<td>0x845C</td>
+<td>0x0080</td>
+<td>7</td>
+<td>Oil low (yellow)</td>
+</tr>
+<tr>
+<td><code>D_GLARE_WHEELS</code></td>
+<td>0x845C</td>
+<td>0x0100</td>
+<td>8</td>
+<td>Wheels (white)</td>
+</tr>
+<tr>
+<td><code>D_GLARE_LABS</code></td>
+<td>0x845C</td>
+<td>0x0200</td>
+<td>9</td>
+<td>LABS (yellow)</td>
+</tr>
+<tr>
+<td><code>D_GLARE_LAWS</code></td>
+<td>0x845C</td>
+<td>0x0400</td>
+<td>10</td>
+<td>LAWS (red)</td>
+</tr>
+<tr>
+<td><code>D_GLARE_OBST</code></td>
+<td>0x845C</td>
+<td>0x0800</td>
+<td>11</td>
+<td>OBST (yellow)</td>
+</tr>
+<tr>
+<td><code>D_GLARE_IFF</code></td>
+<td>0x845C</td>
+<td>0x1000</td>
+<td>12</td>
+<td>IFF (white)</td>
+</tr>
+<tr>
+<td><code>D_GLARE_FIRE</code></td>
+<td>0x845C</td>
+<td>0x2000</td>
+<td>13</td>
+<td>Fire (red)</td>
+</tr>
+<tr>
+<td><code>D_OXYGEN_LOW</code></td>
+<td>0x845C</td>
+<td>0x4000</td>
+<td>14</td>
+<td>Oxygen low (red)</td>
+</tr>
+<tr>
+<td><code>GEAR_LIGHT</code></td>
+<td>0x845C</td>
+<td>0x8000</td>
+<td>15</td>
+<td>Gear unsafe (red)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="aoa-advisory-ecm-indicator-lights-packed-at-0x8470">AOA / Advisory / ECM Indicator Lights (packed at 0x8470)</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Bit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AOA_GREEN</code></td>
+<td>0x8470</td>
+<td>0x0001</td>
+<td>0</td>
+<td>AOA indexer green (on-speed)</td>
+</tr>
+<tr>
+<td><code>AOA_YELLOW</code></td>
+<td>0x8470</td>
+<td>0x0002</td>
+<td>1</td>
+<td>AOA indexer yellow (slow)</td>
+</tr>
+<tr>
+<td><code>AOA_RED</code></td>
+<td>0x8470</td>
+<td>0x0004</td>
+<td>2</td>
+<td>AOA indexer red (fast)</td>
+</tr>
+<tr>
+<td><code>AWRS_POWER</code></td>
+<td>0x8470</td>
+<td>0x0008</td>
+<td>3</td>
+<td>AWRS power (yellow)</td>
+</tr>
+<tr>
+<td><code>APC_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x0010</td>
+<td>4</td>
+<td>APC indicator (red)</td>
+</tr>
+<tr>
+<td><code>D_ADVISORY_INRANGE</code></td>
+<td>0x8470</td>
+<td>0x0020</td>
+<td>5</td>
+<td>In range (yellow)</td>
+</tr>
+<tr>
+<td><code>D_ADVISORY_SETRANGE</code></td>
+<td>0x8470</td>
+<td>0x0040</td>
+<td>6</td>
+<td>Set range (yellow)</td>
+</tr>
+<tr>
+<td><code>D_ADVISORY_DIVE</code></td>
+<td>0x8470</td>
+<td>0x0080</td>
+<td>7</td>
+<td>Dive (yellow)</td>
+</tr>
+<tr>
+<td><code>APN153_MEMORYLIGHT</code></td>
+<td>0x8470</td>
+<td>0x0100</td>
+<td>8</td>
+<td>Doppler memory (yellow)</td>
+</tr>
+<tr>
+<td><code>RWR_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x0200</td>
+<td>9</td>
+<td>RWR glareshield light</td>
+</tr>
+<tr>
+<td><code>ECM_TEST_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x0400</td>
+<td>10</td>
+<td>ECM test (white)</td>
+</tr>
+<tr>
+<td><code>ECM_GO_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x0800</td>
+<td>11</td>
+<td>ECM GO (green)</td>
+</tr>
+<tr>
+<td><code>ECM_NOGO_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x1000</td>
+<td>12</td>
+<td>ECM NO GO (red)</td>
+</tr>
+<tr>
+<td><code>ECM_SAM_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x2000</td>
+<td>13</td>
+<td>ECM SAM (red)</td>
+</tr>
+<tr>
+<td><code>ECM_RPT_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x4000</td>
+<td>14</td>
+<td>ECM RPT (green)</td>
+</tr>
+<tr>
+<td><code>ECM_STBY_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x8000</td>
+<td>15</td>
+<td>ECM STBY (yellow)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="gunsight">Gunsight</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D_GUNSIGHT_REFLECTOR</code></td>
+<td>0x845A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Reflector elevation</td>
+</tr>
+<tr>
+<td><code>GUNSIGHT_BRIGHT</code></td>
+<td>0x851C</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Light control knob</td>
+</tr>
+<tr>
+<td><code>GUNSIGHT_DAY_NIGHT</code></td>
+<td>0x8512</td>
+<td>0x0010</td>
+<td>IN</td>
+<td>Day/night switch</td>
+</tr>
+<tr>
+<td><code>GUNSIGHT_KNB</code></td>
+<td>0x851E</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Elevation control knob</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="bdhi-bearing-distance-heading-indicator">BDHI (Bearing Distance Heading Indicator)</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BDHI_HDG</code></td>
+<td>0x845E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Heading card</td>
+</tr>
+<tr>
+<td><code>BDHI_NEEDLE1</code></td>
+<td>0x8460</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Needle 1</td>
+</tr>
+<tr>
+<td><code>BDHI_NEEDLE2</code></td>
+<td>0x8462</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Needle 2</td>
+</tr>
+<tr>
+<td><code>BDHI_DME_FLAG</code></td>
+<td>0x8464</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>DME flag</td>
+</tr>
+<tr>
+<td><code>BDHI_DME_X00</code></td>
+<td>0x8466</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>DME Xnn digit</td>
+</tr>
+<tr>
+<td><code>BDHI_DME_0X0</code></td>
+<td>0x8468</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>DME nXn digit</td>
+</tr>
+<tr>
+<td><code>BDHI_DME_00X</code></td>
+<td>0x846A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>DME nnX digit</td>
+</tr>
+<tr>
+<td><code>BDHI_ILS_GS</code></td>
+<td>0x846C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ILS glideslope needle</td>
+</tr>
+<tr>
+<td><code>BDHI_ILS_LOC</code></td>
+<td>0x846E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>ILS localizer needle</td>
+</tr>
+<tr>
+<td><code>BDHI_MODE</code></td>
+<td>0x8502</td>
+<td>0x0300</td>
+<td>IN</td>
+<td>BDHI mode switch</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="radar-apg-53a">Radar (APG-53A)</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>APG53A_LEFTRANGE</code></td>
+<td>0x8472</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Profile range scale</td>
+</tr>
+<tr>
+<td><code>APG53A_BOTTOMRANGE</code></td>
+<td>0x8474</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Plan range scale</td>
+</tr>
+<tr>
+<td><code>APG53A_GLOW</code></td>
+<td>0x84DE</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Scope glow light (green)</td>
+</tr>
+<tr>
+<td><code>RADAR_MODE</code></td>
+<td>0x84EA</td>
+<td>0x000E</td>
+<td>IN</td>
+<td>Mode selector (5-pos)</td>
+</tr>
+<tr>
+<td><code>RADAR_AOACOMP</code></td>
+<td>0x84EA</td>
+<td>0x0010</td>
+<td>IN</td>
+<td>AoA compensation toggle</td>
+</tr>
+<tr>
+<td><code>RADAR_ANGLE</code></td>
+<td>0x84EE</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Antenna tilt pot</td>
+</tr>
+<tr>
+<td><code>RADAR_VOL</code></td>
+<td>0x84F0</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Obstacle tone volume</td>
+</tr>
+<tr>
+<td><code>RADAR_STORAGE</code></td>
+<td>0x84F2</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Scope storage knob</td>
+</tr>
+<tr>
+<td><code>RADAR_BRILLIANCE</code></td>
+<td>0x84F4</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Scope brilliance knob</td>
+</tr>
+<tr>
+<td><code>RADAR_DETAIL</code></td>
+<td>0x84F6</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Scope detail knob</td>
+</tr>
+<tr>
+<td><code>RADAR_GAIN</code></td>
+<td>0x84F8</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Scope gain knob</td>
+</tr>
+<tr>
+<td><code>RADAR_RETICLE</code></td>
+<td>0x84FA</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Scope reticle knob</td>
+</tr>
+<tr>
+<td><code>RADAR_FILTER</code></td>
+<td>0x84EA</td>
+<td>0x0020</td>
+<td>IN</td>
+<td>Filter plate toggle</td>
+</tr>
+<tr>
+<td><code>RADAR_PROFILE</code></td>
+<td>0x8500</td>
+<td>0x8000</td>
+<td>IN</td>
+<td>Plan/profile toggle</td>
+</tr>
+<tr>
+<td><code>RADAR_RANGE</code></td>
+<td>0x8502</td>
+<td>0x0080</td>
+<td>IN</td>
+<td>Long/short range toggle</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="afcs-panel">AFCS Panel</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AFCS_HDG_100S</code></td>
+<td>0x8476</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Heading presel 100s drum</td>
+</tr>
+<tr>
+<td><code>AFCS_HDG_10S</code></td>
+<td>0x8478</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Heading presel 10s drum</td>
+</tr>
+<tr>
+<td><code>AFCS_HDG_1S</code></td>
+<td>0x847A</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Heading presel 1s drum</td>
+</tr>
+<tr>
+<td><code>AFCS_ROLL</code></td>
+<td>0x854E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>AFCS roll gauge</td>
+</tr>
+<tr>
+<td><code>AFCS_YAW</code></td>
+<td>0x8550</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>AFCS yaw gauge</td>
+</tr>
+<tr>
+<td><code>AFCS_PITCH</code></td>
+<td>0x8552</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>AFCS pitch gauge</td>
+</tr>
+<tr>
+<td><code>AFCS_STBY</code></td>
+<td>0x8502</td>
+<td>0x2000</td>
+<td>IN</td>
+<td>Standby toggle</td>
+</tr>
+<tr>
+<td><code>AFCS_ENGAGE</code></td>
+<td>0x8502</td>
+<td>0x4000</td>
+<td>IN</td>
+<td>Engage toggle</td>
+</tr>
+<tr>
+<td><code>AFCS_HDG_SEL</code></td>
+<td>0x8502</td>
+<td>0x8000</td>
+<td>IN</td>
+<td>Preselect heading toggle</td>
+</tr>
+<tr>
+<td><code>AFCS_ALT</code></td>
+<td>0x8508</td>
+<td>0x0001</td>
+<td>IN</td>
+<td>Altitude hold toggle</td>
+</tr>
+<tr>
+<td><code>AFCS_STAB_AUG</code></td>
+<td>0x8508</td>
+<td>0x0002</td>
+<td>IN</td>
+<td>Stability aug toggle</td>
+</tr>
+<tr>
+<td><code>AFCS_AIL_TRIM</code></td>
+<td>0x8508</td>
+<td>0x0004</td>
+<td>IN</td>
+<td>Aileron trim toggle</td>
+</tr>
+<tr>
+<td><code>AFCS_HDG_SET</code></td>
+<td>0x850A</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Heading selector knob</td>
+</tr>
+<tr>
+<td><code>AFCS_1N2</code></td>
+<td>0x854C</td>
+<td>0x0018</td>
+<td>IN</td>
+<td>1-N-2 guard (3-pos)</td>
+</tr>
+<tr>
+<td><code>AFCS_1N2_COVER</code></td>
+<td>0x854C</td>
+<td>0x0004</td>
+<td>IN</td>
+<td>1-N-2 guard cover</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="approach-power-compensator-apc">Approach Power Compensator (APC)</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>APC_LIGHT</code></td>
+<td>0x8470</td>
+<td>0x0010</td>
+<td>OUT</td>
+<td>APC indicator (red) — see lights table</td>
+</tr>
+<tr>
+<td><code>APC_ENABLE</code></td>
+<td>0x8508</td>
+<td>0x0018</td>
+<td>IN</td>
+<td>APC enable/stby/off (3-pos)</td>
+</tr>
+<tr>
+<td><code>APS_COLD_STD_HOT</code></td>
+<td>0x8508</td>
+<td>0x0060</td>
+<td>IN</td>
+<td>Cold/std/hot (3-pos)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="armament-panel">Armament Panel</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ARM_MASTER</code></td>
+<td>0x8500</td>
+<td>0x4000</td>
+<td>IN</td>
+<td>Master arm toggle</td>
+</tr>
+<tr>
+<td><code>ARM_GUN</code></td>
+<td>0x84EA</td>
+<td>0x8000</td>
+<td>IN</td>
+<td>Guns switch</td>
+</tr>
+<tr>
+<td><code>ARM_BOMB</code></td>
+<td>0x8500</td>
+<td>0x0018</td>
+<td>IN</td>
+<td>Bomb arm (3-pos)</td>
+</tr>
+<tr>
+<td><code>ARM_EMERG_SEL</code></td>
+<td>0x8500</td>
+<td>0x0007</td>
+<td>IN</td>
+<td>Emergency release selector (7-pos)</td>
+</tr>
+<tr>
+<td><code>ARM_FUNC_SEL</code></td>
+<td>0x8500</td>
+<td>0x1C00</td>
+<td>IN</td>
+<td>Function selector (7-pos)</td>
+</tr>
+<tr>
+<td><code>ARM_STATION1</code></td>
+<td>0x8500</td>
+<td>0x0020</td>
+<td>IN</td>
+<td>Station 1 select</td>
+</tr>
+<tr>
+<td><code>ARM_STATION2</code></td>
+<td>0x8500</td>
+<td>0x0040</td>
+<td>IN</td>
+<td>Station 2 select</td>
+</tr>
+<tr>
+<td><code>ARM_STATION3</code></td>
+<td>0x8500</td>
+<td>0x0080</td>
+<td>IN</td>
+<td>Station 3 select</td>
+</tr>
+<tr>
+<td><code>ARM_STATION4</code></td>
+<td>0x8500</td>
+<td>0x0100</td>
+<td>IN</td>
+<td>Station 4 select</td>
+</tr>
+<tr>
+<td><code>ARM_STATION5</code></td>
+<td>0x8500</td>
+<td>0x0200</td>
+<td>IN</td>
+<td>Station 5 select</td>
+</tr>
+<tr>
+<td><code>AWRS_QUANT</code></td>
+<td>0x8502</td>
+<td>0x000F</td>
+<td>IN</td>
+<td>Quantity selector (12-pos)</td>
+</tr>
+<tr>
+<td><code>AWRS_DROP_INT</code></td>
+<td>0x8504</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Drop interval pot</td>
+</tr>
+<tr>
+<td><code>AWRS_MULTI</code></td>
+<td>0x8500</td>
+<td>0x2000</td>
+<td>IN</td>
+<td>Multiplier toggle</td>
+</tr>
+<tr>
+<td><code>AWRS_MODE</code></td>
+<td>0x8502</td>
+<td>0x0070</td>
+<td>IN</td>
+<td>Mode selector (6-pos)</td>
+</tr>
+<tr>
+<td><code>MISSILE_VOL</code></td>
+<td>0x8506</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Missile volume knob</td>
+</tr>
+<tr>
+<td><code>SHRIKE_SEL_KNB</code></td>
+<td>0x8502</td>
+<td>0x1C00</td>
+<td>IN</td>
+<td>Shrike selector (5-pos)</td>
+</tr>
+<tr>
+<td><code>GUNPOD_CLEAR</code></td>
+<td>0x84EA</td>
+<td>0x00C0</td>
+<td>IN</td>
+<td>Gunpod charge/off/clear</td>
+</tr>
+<tr>
+<td><code>GUNPOD_L</code></td>
+<td>0x84EA</td>
+<td>0x0100</td>
+<td>IN</td>
+<td>Gunpod LH station</td>
+</tr>
+<tr>
+<td><code>GUNPOD_C</code></td>
+<td>0x84EA</td>
+<td>0x0200</td>
+<td>IN</td>
+<td>Gunpod CTR station</td>
+</tr>
+<tr>
+<td><code>GUNPOD_R</code></td>
+<td>0x84EA</td>
+<td>0x0400</td>
+<td>IN</td>
+<td>Gunpod RH station</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mechanical-systems">Mechanical Systems</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GEAR_HANDLE</code></td>
+<td>0x8508</td>
+<td>0x0080</td>
+<td>IN</td>
+<td>Landing gear handle</td>
+</tr>
+<tr>
+<td><code>HOOK_HANDLE</code></td>
+<td>0x8508</td>
+<td>0x0100</td>
+<td>IN</td>
+<td>Arresting hook handle</td>
+</tr>
+<tr>
+<td><code>FLAPS</code></td>
+<td>0x8508</td>
+<td>0xC000</td>
+<td>IN</td>
+<td>Flaps lever (3-pos)</td>
+</tr>
+<tr>
+<td><code>SPEEDBRAKE</code></td>
+<td>0x8508</td>
+<td>0x0400</td>
+<td>IN</td>
+<td>Speed brake toggle</td>
+</tr>
+<tr>
+<td><code>SPEEDBRAKE_EMERG</code></td>
+<td>0x8508</td>
+<td>0x1800</td>
+<td>IN</td>
+<td>Speed brake emergency (3-pos)</td>
+</tr>
+<tr>
+<td><code>SPOILER_ARM</code></td>
+<td>0x8508</td>
+<td>0x0200</td>
+<td>IN</td>
+<td>Spoiler arm toggle</td>
+</tr>
+<tr>
+<td><code>CANOPY_SW</code></td>
+<td>0x8508</td>
+<td>0x2000</td>
+<td>IN</td>
+<td>Canopy toggle</td>
+</tr>
+<tr>
+<td><code>RUDDER_TRIM</code></td>
+<td>0x850C</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Rudder trim pot</td>
+</tr>
+<tr>
+<td><code>THROTTLE_CLICK</code></td>
+<td>0x850E</td>
+<td>0x0003</td>
+<td>IN</td>
+<td>Throttle cutoff/start/idle (3-pos)</td>
+</tr>
+<tr>
+<td><code>STARTER_BTN</code></td>
+<td>0x850E</td>
+<td>0x0004</td>
+<td>IN</td>
+<td>Starter button</td>
+</tr>
+<tr>
+<td><code>JATO_ARM</code></td>
+<td>0x850E</td>
+<td>0x0008</td>
+<td>IN</td>
+<td>JATO arm toggle</td>
+</tr>
+<tr>
+<td><code>JATO_JETT_SAFE</code></td>
+<td>0x850E</td>
+<td>0x0010</td>
+<td>IN</td>
+<td>JATO jettison/safe</td>
+</tr>
+<tr>
+<td><code>SEAT_ADJ</code></td>
+<td>0x854C</td>
+<td>0x3000</td>
+<td>IN</td>
+<td>Seat adjustment (3-pos)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="fuel-systems">Fuel Systems</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DROP_PRESS_REFUEL</code></td>
+<td>0x850E</td>
+<td>0x0060</td>
+<td>IN</td>
+<td>Drop tanks press / refuel (3-pos)</td>
+</tr>
+<tr>
+<td><code>EMERG_TRANS_FUEL_DUMP</code></td>
+<td>0x850E</td>
+<td>0x0180</td>
+<td>IN</td>
+<td>Emergency transfer / wing dump (3-pos)</td>
+</tr>
+<tr>
+<td><code>FUEL_CONTROL</code></td>
+<td>0x850E</td>
+<td>0x0200</td>
+<td>IN</td>
+<td>Fuel control toggle</td>
+</tr>
+<tr>
+<td><code>MAN_FUEL_OFF_LV</code></td>
+<td>0x850E</td>
+<td>0x0400</td>
+<td>IN</td>
+<td>Manual fuel shutoff lever</td>
+</tr>
+<tr>
+<td><code>MAN_FUEL_OFF_CATCH</code></td>
+<td>0x850E</td>
+<td>0x0800</td>
+<td>IN</td>
+<td>Manual fuel shutoff catch</td>
+</tr>
+<tr>
+<td><code>FUEL_TRANS</code></td>
+<td>0x8554</td>
+<td>0x0002</td>
+<td>IN</td>
+<td>Fuel transfer bypass/normal</td>
+</tr>
+<tr>
+<td><code>FUEL_EXT_BTN</code></td>
+<td>0x8512</td>
+<td>0x0002</td>
+<td>IN</td>
+<td>Show EXT fuel button</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="avionics-misc">Avionics / Misc</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MASTER_TEST</code></td>
+<td>0x8512</td>
+<td>0x0004</td>
+<td>IN</td>
+<td>Master test button</td>
+</tr>
+<tr>
+<td><code>IAS_INDEX_BTN</code></td>
+<td>0x8512</td>
+<td>0x0008</td>
+<td>IN</td>
+<td>IAS index button</td>
+</tr>
+<tr>
+<td><code>IAS_INDEX_KNB</code></td>
+<td>0x8518</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>IAS index knob</td>
+</tr>
+<tr>
+<td><code>STBY_ATT_INDEX_BTN</code></td>
+<td>0x8512</td>
+<td>0x0001</td>
+<td>IN</td>
+<td>SAI horizon button</td>
+</tr>
+<tr>
+<td><code>STBY_ATT_INDEX_KNB</code></td>
+<td>0x8514</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>SAI horizon knob</td>
+</tr>
+<tr>
+<td><code>OXY_SW</code></td>
+<td>0x850E</td>
+<td>0x1000</td>
+<td>IN</td>
+<td>Oxygen switch</td>
+</tr>
+<tr>
+<td><code>RAIN_REMOVE</code></td>
+<td>0x8554</td>
+<td>0x0004</td>
+<td>IN</td>
+<td>Rain removal toggle</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="ecm-panel">ECM Panel</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ECM_REC_LIGHT</code></td>
+<td>0x84EA</td>
+<td>0x0001</td>
+<td>OUT</td>
+<td>REC light (red)</td>
+</tr>
+<tr>
+<td><code>ECM_AUDIO</code></td>
+<td>0x853E</td>
+<td>0x0200</td>
+<td>IN</td>
+<td>Audio APR/25-APR/27 toggle</td>
+</tr>
+<tr>
+<td><code>ECM_APR25_PW</code></td>
+<td>0x853E</td>
+<td>0x0400</td>
+<td>IN</td>
+<td>APR/25 on/off</td>
+</tr>
+<tr>
+<td><code>ECM_APR27_PW</code></td>
+<td>0x853E</td>
+<td>0x0800</td>
+<td>IN</td>
+<td>APR/27 on/off</td>
+</tr>
+<tr>
+<td><code>ECM_APR27_TEST</code></td>
+<td>0x853E</td>
+<td>0x1000</td>
+<td>IN</td>
+<td>APR/27 test button</td>
+</tr>
+<tr>
+<td><code>ECM_APR27_LIGHT</code></td>
+<td>0x853E</td>
+<td>0x2000</td>
+<td>IN</td>
+<td>APR/27 light button</td>
+</tr>
+<tr>
+<td><code>ECM_PRF_VOL</code></td>
+<td>0x8540</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>PRF volume (inner knob)</td>
+</tr>
+<tr>
+<td><code>ECM_MSL_VOL</code></td>
+<td>0x8542</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>MSL volume (outer knob)</td>
+</tr>
+<tr>
+<td><code>ECM_SEL</code></td>
+<td>0x853E</td>
+<td>0xC000</td>
+<td>IN</td>
+<td>AN/APR-25 selector (4-pos)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="uhf-radio-anarc-51">UHF Radio (AN/ARC-51)</h2>
+<h3 id="display-outputs">Display outputs</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ARC51_FREQ_XX000</code></td>
+<td>0x84CE</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Frequency XXnnn display</td>
+</tr>
+<tr>
+<td><code>ARC51_FREQ_00X00</code></td>
+<td>0x84D0</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Frequency nnXnn display</td>
+</tr>
+<tr>
+<td><code>ARC51_FREQ_000XX</code></td>
+<td>0x84D2</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Frequency nnnXX display</td>
+</tr>
+<tr>
+<td><code>ARC51_FREQ_PRESET</code></td>
+<td>0x84D4</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Preset channel display</td>
+</tr>
+</tbody>
+</table>
+<h3 id="controls">Controls</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ARC51_FREQ_PRE</code></td>
+<td>0x853A</td>
+<td>0x001F</td>
+<td>IN</td>
+<td>Preset channel selector (20-pos)</td>
+</tr>
+<tr>
+<td><code>ARC51_FREQ_10MHZ</code></td>
+<td>0x853A</td>
+<td>0x03E0</td>
+<td>IN</td>
+<td>Freq 10 MHz dial (18-pos)</td>
+</tr>
+<tr>
+<td><code>ARC51_FREQ_1MHZ</code></td>
+<td>0x853A</td>
+<td>0x3C00</td>
+<td>IN</td>
+<td>Freq 1 MHz dial (10-pos)</td>
+</tr>
+<tr>
+<td><code>ARC51_FREQ_50KHZ</code></td>
+<td>0x853E</td>
+<td>0x001F</td>
+<td>IN</td>
+<td>Freq 50 kHz dial (20-pos)</td>
+</tr>
+<tr>
+<td><code>ARC51_MODE</code></td>
+<td>0x853A</td>
+<td>0xC000</td>
+<td>IN</td>
+<td>Mode selector (4-pos)</td>
+</tr>
+<tr>
+<td><code>ARC51_XMIT_MODE</code></td>
+<td>0x8532</td>
+<td>0x3000</td>
+<td>IN</td>
+<td>Frequency mode (3-pos)</td>
+</tr>
+<tr>
+<td><code>ARC51_SQUELCH</code></td>
+<td>0x8532</td>
+<td>0x4000</td>
+<td>IN</td>
+<td>Squelch disable toggle</td>
+</tr>
+<tr>
+<td><code>ARC51_VOL</code></td>
+<td>0x853C</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Volume knob</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="tacan">TACAN</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TACAN_MODE</code></td>
+<td>0x8512</td>
+<td>0x0060</td>
+<td>IN</td>
+<td>Mode selector (4-pos)</td>
+</tr>
+<tr>
+<td><code>TACAN_CHAN_MAJ</code></td>
+<td>0x8512</td>
+<td>0x0780</td>
+<td>IN</td>
+<td>Channel major (13-pos)</td>
+</tr>
+<tr>
+<td><code>TACAN_CHAN_MIN</code></td>
+<td>0x8512</td>
+<td>0x7800</td>
+<td>IN</td>
+<td>Channel minor (10-pos)</td>
+</tr>
+<tr>
+<td><code>TACAN_VOL</code></td>
+<td>0x8520</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Volume knob</td>
+</tr>
+<tr>
+<td><code>TACAN_ANT_CONT</code></td>
+<td>0x854C</td>
+<td>0xC000</td>
+<td>IN</td>
+<td>Antenna control (3-pos)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="doppler-navigation-apn-153-asn-41">Doppler Navigation (APN-153 / ASN-41)</h2>
+<h3 id="displays">Displays</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>APN153_DRIFT_GAUGE</code></td>
+<td>0x847C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Drift gauge</td>
+</tr>
+<tr>
+<td><code>APN153_SPEED_X00</code></td>
+<td>0x847E</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Speed Xnn</td>
+</tr>
+<tr>
+<td><code>APN153_SPEED_0X0</code></td>
+<td>0x8480</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Speed nXn</td>
+</tr>
+<tr>
+<td><code>APN153_SPEED_00X</code></td>
+<td>0x8482</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Speed nnX</td>
+</tr>
+<tr>
+<td><code>NAV_CURPOS_LAT_X0000</code>–<code>_0000X</code></td>
+<td>0x8484–0x848C</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Current lat (5 digits)</td>
+</tr>
+<tr>
+<td><code>NAV_CURPOS_LON_X00000</code>–<code>_00000X</code></td>
+<td>0x848E–0x8498</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Current lon (6 digits)</td>
+</tr>
+<tr>
+<td><code>NAV_DEST_LAT_X0000</code>–<code>_0000X</code></td>
+<td>0x849A–0x84A2</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Dest lat (5 digits)</td>
+</tr>
+<tr>
+<td><code>NAV_DEST_LON_X00000</code>–<code>_00000X</code></td>
+<td>0x84A4–0x84AE</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Dest lon (6 digits)</td>
+</tr>
+<tr>
+<td><code>ASN41_WINDSPEED_X00</code>–<code>_00X</code></td>
+<td>0x84B0–0x84B4</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Wind speed (3 digits)</td>
+</tr>
+<tr>
+<td><code>ASN41_WINDDIR_X00</code>–<code>_00X</code></td>
+<td>0x84B6–0x84BA</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Wind direction (3 digits)</td>
+</tr>
+<tr>
+<td><code>ASN41_MAGVAR_X0000</code>–<code>_0000X</code></td>
+<td>0x84BC–0x84C4</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Magnetic variation (5 digits)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="controls_1">Controls</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DOPPLER_SEL</code></td>
+<td>0x8522</td>
+<td>0x0007</td>
+<td>IN</td>
+<td>APN-153 mode (5-pos)</td>
+</tr>
+<tr>
+<td><code>DOPPLER_MEM_TEST</code></td>
+<td>0x8512</td>
+<td>0x8000</td>
+<td>IN</td>
+<td>Memory light test button</td>
+</tr>
+<tr>
+<td><code>NAV_SEL</code></td>
+<td>0x8522</td>
+<td>0x0038</td>
+<td>IN</td>
+<td>ASN-41 function selector (5-pos)</td>
+</tr>
+<tr>
+<td><code>NAV_DEAD</code></td>
+<td>0x8554</td>
+<td>0x0001</td>
+<td>IN</td>
+<td>Dead reckoning/doppler toggle</td>
+</tr>
+<tr>
+<td><code>PPOS_LAT_KNB</code></td>
+<td>0x8524</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Present position lat knob</td>
+</tr>
+<tr>
+<td><code>PPOS_LAT_BTN</code></td>
+<td>0x8522</td>
+<td>0x0040</td>
+<td>IN</td>
+<td>Present position lat button</td>
+</tr>
+<tr>
+<td><code>PPOS_LON_KNB</code></td>
+<td>0x8526</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Present position lon knob</td>
+</tr>
+<tr>
+<td><code>PPOS_LON_BTN</code></td>
+<td>0x8522</td>
+<td>0x0080</td>
+<td>IN</td>
+<td>Present position lon button</td>
+</tr>
+<tr>
+<td><code>DEST_LAT_KNB</code></td>
+<td>0x8528</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Destination lat knob</td>
+</tr>
+<tr>
+<td><code>DEST_LAT_BTN</code></td>
+<td>0x8522</td>
+<td>0x0100</td>
+<td>IN</td>
+<td>Destination lat button</td>
+</tr>
+<tr>
+<td><code>DEST_LON_KNB</code></td>
+<td>0x852A</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Destination lon knob</td>
+</tr>
+<tr>
+<td><code>DEST_LON_BTN</code></td>
+<td>0x8522</td>
+<td>0x0200</td>
+<td>IN</td>
+<td>Destination lon button</td>
+</tr>
+<tr>
+<td><code>ASN41_MAGVAR_KNB</code></td>
+<td>0x852C</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Magnetic variation knob</td>
+</tr>
+<tr>
+<td><code>ASN41_MAGVAR_BTN</code></td>
+<td>0x8522</td>
+<td>0x0400</td>
+<td>IN</td>
+<td>Magnetic variation button</td>
+</tr>
+<tr>
+<td><code>ASN41_WINDSPEED_KNB</code></td>
+<td>0x852E</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Wind speed knob</td>
+</tr>
+<tr>
+<td><code>ASN41_WINDSPEED_BTN</code></td>
+<td>0x8522</td>
+<td>0x0800</td>
+<td>IN</td>
+<td>Wind speed button</td>
+</tr>
+<tr>
+<td><code>ASN41_WINDDIR_KNB</code></td>
+<td>0x8530</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Wind direction knob</td>
+</tr>
+<tr>
+<td><code>ASN41_WINDDIR_BTN</code></td>
+<td>0x8522</td>
+<td>0x1000</td>
+<td>IN</td>
+<td>Wind direction button</td>
+</tr>
+<tr>
+<td><code>ASN41_LAT_SLEW</code></td>
+<td>0x8544</td>
+<td>0x0060</td>
+<td>IN</td>
+<td>Dest lat slew (3-pos)</td>
+</tr>
+<tr>
+<td><code>ASN41_LON_SLEW</code></td>
+<td>0x8544</td>
+<td>0x0180</td>
+<td>IN</td>
+<td>Dest lon slew (3-pos)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="countermeasures">Countermeasures</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CM_BANK1_X0</code></td>
+<td>0x84C6</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Bank 1 count 10s digit</td>
+</tr>
+<tr>
+<td><code>CM_BANK1_0X</code></td>
+<td>0x84C8</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Bank 1 count 1s digit</td>
+</tr>
+<tr>
+<td><code>CM_BANK2_X0</code></td>
+<td>0x84CA</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Bank 2 count 10s digit</td>
+</tr>
+<tr>
+<td><code>CM_BANK2_0X</code></td>
+<td>0x84CC</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Bank 2 count 1s digit</td>
+</tr>
+<tr>
+<td><code>CM_BANK</code></td>
+<td>0x84EA</td>
+<td>0x1800</td>
+<td>IN</td>
+<td>Bank select (3-pos)</td>
+</tr>
+<tr>
+<td><code>CM_AUTO</code></td>
+<td>0x84EA</td>
+<td>0x2000</td>
+<td>IN</td>
+<td>Auto button</td>
+</tr>
+<tr>
+<td><code>CM_PWR</code></td>
+<td>0x84EA</td>
+<td>0x4000</td>
+<td>IN</td>
+<td>Power toggle</td>
+</tr>
+<tr>
+<td><code>CM_ADJ1</code></td>
+<td>0x84FC</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Bank 1 adjust knob</td>
+</tr>
+<tr>
+<td><code>CM_ADJ2</code></td>
+<td>0x84FE</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Bank 2 adjust knob</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cockpit-lighting">Cockpit Lighting</h2>
+<h3 id="outputs-ambient-levels-exported-by-dcs">Outputs (ambient levels exported by DCS)</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LIGHTS_FLOOD_WHITE</code></td>
+<td>0x84D6</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>White flood level</td>
+</tr>
+<tr>
+<td><code>LIGHTS_FLOOD_RED</code></td>
+<td>0x84D8</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Red flood level</td>
+</tr>
+<tr>
+<td><code>LIGHTS_INSTRUMENTS</code></td>
+<td>0x84DA</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Instrument lighting level</td>
+</tr>
+<tr>
+<td><code>LIGHTS_CONSOLE</code></td>
+<td>0x84DC</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Console lighting level</td>
+</tr>
+<tr>
+<td><code>APG53A_GLOW</code></td>
+<td>0x84DE</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Radar scope glow</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interior-light-controls">Interior light controls</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LIGHT_INT_INSTR</code></td>
+<td>0x8534</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Instrument lighting pot</td>
+</tr>
+<tr>
+<td><code>LIGHT_INT_CONSOLE</code></td>
+<td>0x8536</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Console lighting pot</td>
+</tr>
+<tr>
+<td><code>LIGHT_INT_FLOOD_WHT</code></td>
+<td>0x8538</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>White floodlight pot</td>
+</tr>
+<tr>
+<td><code>LIGHT_INT_BRIGHT</code></td>
+<td>0x8532</td>
+<td>0x0C00</td>
+<td>IN</td>
+<td>Console intensity (3-pos)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exterior-light-controls">Exterior light controls</h3>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LIGHT_EXT_MASTER</code></td>
+<td>0x8522</td>
+<td>0x6000</td>
+<td>IN</td>
+<td>Master lighting (3-pos)</td>
+</tr>
+<tr>
+<td><code>LIGHT_EXT_TAXI</code></td>
+<td>0x8522</td>
+<td>0x8000</td>
+<td>IN</td>
+<td>Taxi light</td>
+</tr>
+<tr>
+<td><code>LIGHT_EXT_PROBE</code></td>
+<td>0x8532</td>
+<td>0x0003</td>
+<td>IN</td>
+<td>Probe light (3-pos)</td>
+</tr>
+<tr>
+<td><code>LIGHT_EXT_ANTICOLL</code></td>
+<td>0x8532</td>
+<td>0x0004</td>
+<td>IN</td>
+<td>Anti-collision toggle</td>
+</tr>
+<tr>
+<td><code>LIGHT_EXT_FUSELAGE</code></td>
+<td>0x8532</td>
+<td>0x0018</td>
+<td>IN</td>
+<td>Fuselage lights (3-pos)</td>
+</tr>
+<tr>
+<td><code>LIGHT_EXT_NAV</code></td>
+<td>0x8532</td>
+<td>0x00C0</td>
+<td>IN</td>
+<td>Navigation lights (3-pos)</td>
+</tr>
+<tr>
+<td><code>LIGHT_EXT_TAIL</code></td>
+<td>0x8532</td>
+<td>0x0300</td>
+<td>IN</td>
+<td>Tail light (3-pos)</td>
+</tr>
+<tr>
+<td><code>LIGHT_EXT_FLASH_MODE</code></td>
+<td>0x8532</td>
+<td>0x0020</td>
+<td>IN</td>
+<td>Flash/steady mode toggle</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="clock">Clock</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CURRTIME_HOURS</code></td>
+<td>0x84E0</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Current hours</td>
+</tr>
+<tr>
+<td><code>CURRTIME_MINS</code></td>
+<td>0x84E2</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Current minutes</td>
+</tr>
+<tr>
+<td><code>CURRTIME_SECS</code></td>
+<td>0x84E4</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Current seconds</td>
+</tr>
+<tr>
+<td><code>STOPWATCH_MINS</code></td>
+<td>0x84E6</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Stopwatch minutes</td>
+</tr>
+<tr>
+<td><code>STOPWATCH_SECS</code></td>
+<td>0x84E8</td>
+<td>0xFFFF</td>
+<td>OUT</td>
+<td>Stopwatch seconds</td>
+</tr>
+<tr>
+<td><code>STOPWATCH</code></td>
+<td>0x850E</td>
+<td>0x4000</td>
+<td>IN</td>
+<td>Stopwatch start/stop button</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="air-conditioning">Air Conditioning</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CABIN_PRESS</code></td>
+<td>0x8544</td>
+<td>0x0001</td>
+<td>IN</td>
+<td>Cabin pressure toggle</td>
+</tr>
+<tr>
+<td><code>WINDSHLD_DEFROST</code></td>
+<td>0x8544</td>
+<td>0x0006</td>
+<td>IN</td>
+<td>Windshield defrost (3-pos)</td>
+</tr>
+<tr>
+<td><code>CABIN_TEMP</code></td>
+<td>0x8546</td>
+<td>0xFFFF</td>
+<td>IN</td>
+<td>Cabin temp knob</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="t-handles">T-Handles</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EMERG_GEAR_REL</code></td>
+<td>0x8532</td>
+<td>0x8000</td>
+<td>IN</td>
+<td>Emergency gear release</td>
+</tr>
+<tr>
+<td><code>EMERG_BOMB_REL</code></td>
+<td>0x853E</td>
+<td>0x0020</td>
+<td>IN</td>
+<td>Emergency bomb release</td>
+</tr>
+<tr>
+<td><code>EMERG_GEN_DEPLOY</code></td>
+<td>0x853E</td>
+<td>0x0040</td>
+<td>IN</td>
+<td>Emergency generator deploy</td>
+</tr>
+<tr>
+<td><code>EMERG_GEN_BYPASS</code></td>
+<td>0x853E</td>
+<td>0x0080</td>
+<td>IN</td>
+<td>Emergency generator bypass</td>
+</tr>
+<tr>
+<td><code>MAN_FLIGHT_CONTROL</code></td>
+<td>0x853E</td>
+<td>0x0100</td>
+<td>IN</td>
+<td>Manual flight control override</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="ejection-seat">Ejection Seat</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HARNESS_REEL_CONTR</code></td>
+<td>0x8544</td>
+<td>0x0008</td>
+<td>IN</td>
+<td>Shoulder harness inertia reel</td>
+</tr>
+<tr>
+<td><code>SEC_EJECT_HANDLE</code></td>
+<td>0x8544</td>
+<td>0x0010</td>
+<td>IN</td>
+<td>Secondary ejection handle</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mcl-master-caution-light-panel">MCL (Master Caution Light panel)</h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MCL_CHAN_SEL</code></td>
+<td>0x854C</td>
+<td>0x03E0</td>
+<td>IN</td>
+<td>Channel selector (20-pos)</td>
+</tr>
+<tr>
+<td><code>MCL_PWR</code></td>
+<td>0x854C</td>
+<td>0x0C00</td>
+<td>IN</td>
+<td>Power (3-pos)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="external-aircraft-model">External Aircraft Model</h2>
+<p>These are animation arguments exported for visual reference only — not used for physical cockpit outputs.</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Address</th>
+<th>Mask</th>
+<th>Dir</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EXT_SPEED_BRAKES</code></td>
+<td>0x8548</td>
+<td>0xFFFF</td>
+<td>EXT</td>
+<td>Speed brake position</td>
+</tr>
+<tr>
+<td><code>EXT_HOOK</code></td>
+<td>0x854A</td>
+<td>0xFFFF</td>
+<td>EXT</td>
+<td>Hook position</td>
+</tr>
+<tr>
+<td><code>EXT_WOW_NOSE</code></td>
+<td>0x8544</td>
+<td>0x8000</td>
+<td>EXT</td>
+<td>Weight on wheels — nose</td>
+</tr>
+<tr>
+<td><code>EXT_WOW_RIGHT</code></td>
+<td>0x854C</td>
+<td>0x0001</td>
+<td>EXT</td>
+<td>Weight on wheels — right</td>
+</tr>
+<tr>
+<td><code>EXT_WOW_LEFT</code></td>
+<td>0x854C</td>
+<td>0x0002</td>
+<td>EXT</td>
+<td>Weight on wheels — left</td>
+</tr>
+<tr>
+<td><code>EXT_POSITION_LIGHT_LEFT</code></td>
+<td>0x8544</td>
+<td>0x0200</td>
+<td>EXT</td>
+<td>Left position light (red)</td>
+</tr>
+<tr>
+<td><code>EXT_POSITION_LIGHT_RIGHT</code></td>
+<td>0x8544</td>
+<td>0x0400</td>
+<td>EXT</td>
+<td>Right position light (green)</td>
+</tr>
+<tr>
+<td><code>EXT_TAIL_LIGHT</code></td>
+<td>0x8544</td>
+<td>0x0800</td>
+<td>EXT</td>
+<td>Tail light (white)</td>
+</tr>
+<tr>
+<td><code>EXT_STROBE_TOP</code></td>
+<td>0x8544</td>
+<td>0x1000</td>
+<td>EXT</td>
+<td>Top strobe (red)</td>
+</tr>
+<tr>
+<td><code>EXT_STROBE_BOTTOM</code></td>
+<td>0x8544</td>
+<td>0x2000</td>
+<td>EXT</td>
+<td>Bottom strobe (red)</td>
+</tr>
+<tr>
+<td><code>EXT_TAXI_LIGHT</code></td>
+<td>0x8544</td>
+<td>0x4000</td>
+<td>EXT</td>
+<td>Taxi light (white)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="address-map-summary">Address Map Summary</h2>
+<p>All A-4E-C addresses fall in <code>0x8400</code>–<code>0x8554</code>. Key register boundaries:</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x8400–0x841E</td>
+<td>Engine + gear + SAI gauges</td>
+</tr>
+<tr>
+<td>0x8420–0x845A</td>
+<td>Flight instruments (IAS, radar alt, altimeter, cabin, O2, accel, VVI, ADI, compass, AoA, gunsight)</td>
+</tr>
+<tr>
+<td>0x845C–0x845C</td>
+<td>All glareshield warning lights (packed)</td>
+</tr>
+<tr>
+<td>0x845E–0x846E</td>
+<td>BDHI</td>
+</tr>
+<tr>
+<td>0x8470–0x8470</td>
+<td>AOA indexer + advisory + ECM + Doppler lights (packed)</td>
+</tr>
+<tr>
+<td>0x8472–0x8474</td>
+<td>Radar scope ranges</td>
+</tr>
+<tr>
+<td>0x8476–0x847A</td>
+<td>AFCS heading drums</td>
+</tr>
+<tr>
+<td>0x847C–0x84AE</td>
+<td>Doppler nav displays</td>
+</tr>
+<tr>
+<td>0x84B0–0x84C4</td>
+<td>ASN-41 wind/magvar displays</td>
+</tr>
+<tr>
+<td>0x84C6–0x84CC</td>
+<td>CM bank counters</td>
+</tr>
+<tr>
+<td>0x84CE–0x84D4</td>
+<td>UHF freq displays</td>
+</tr>
+<tr>
+<td>0x84D6–0x84DE</td>
+<td>Cockpit light levels + radar glow</td>
+</tr>
+<tr>
+<td>0x84E0–0x84E8</td>
+<td>Clock</td>
+</tr>
+<tr>
+<td>0x84EA–0x84FA</td>
+<td>Radar/ECM/gunpod controls + CM controls</td>
+</tr>
+<tr>
+<td>0x84EC</td>
+<td>Canopy position</td>
+</tr>
+<tr>
+<td>0x84EE–0x84FA</td>
+<td>Radar scope knobs</td>
+</tr>
+<tr>
+<td>0x84FC–0x84FE</td>
+<td>CM adj knobs</td>
+</tr>
+<tr>
+<td>0x8500–0x8508</td>
+<td>Armament + AFCS + mechanical switch states</td>
+</tr>
+<tr>
+<td>0x850A–0x850C</td>
+<td>AFCS heading set + rudder trim</td>
+</tr>
+<tr>
+<td>0x850E</td>
+<td>Misc controls (accel reset, starter, fuel, radar alt, stopwatch...)</td>
+</tr>
+<tr>
+<td>0x8510–0x851A</td>
+<td>Radar alt index, TACAN, gunsight, IAS, AOA knobs</td>
+</tr>
+<tr>
+<td>0x851C–0x851E</td>
+<td>Gunsight bright + elevation</td>
+</tr>
+<tr>
+<td>0x8520–0x8530</td>
+<td>TACAN vol + Doppler buttons + ASN-41 knobs</td>
+</tr>
+<tr>
+<td>0x8532–0x853E</td>
+<td>Ext lights + ECM + UHF</td>
+</tr>
+<tr>
+<td>0x8540–0x8542</td>
+<td>ECM volumes</td>
+</tr>
+<tr>
+<td>0x8544–0x8546</td>
+<td>Air conditioning + ext lights bits</td>
+</tr>
+<tr>
+<td>0x8548–0x854A</td>
+<td>External model</td>
+</tr>
+<tr>
+<td>0x854C–0x8554</td>
+<td>AFCS 1N2, MCL, WoW, TACAN ant, seat, misc</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  <div class="os-site-footer">
+    <div class="os-footer-grid">
+      <div class="os-footer-brand">
+        <img src="../../../assets/images/brand/footer-logo.png" alt="OpenSkyhawk" />
+      </div>
+      <div class="os-footer-col">
+        <h2>Quick Links</h2>
+        <a href="../../../claude/architecture/">Documentation</a>
+        <a href="../../../claude/controllers/Center_Armament/">Controllers</a>
+        <a href="../../../api/">API Reference</a>
+      </div>
+      <div class="os-footer-col">
+        <h2>Resources</h2>
+        <a href="../../../claude/hardware-standards/">Hardware Standards</a>
+        <a href="../../../claude/kicad/">KiCad Workflow</a>
+        <a href="../../../claude/pcb-design-rules/">PCB Rules</a>
+      </div>
+      <div class="os-footer-col">
+        <h2>Repository</h2>
+        <p>Follow the build, firmware, PCB, and CAD work in the project repository.</p>
+        <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+    <div class="os-footer-bottom">
+      OpenSkyhawk. Open hardware for community-built cockpits.
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
