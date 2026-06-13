@@ -30,7 +30,7 @@ Fabricating and wiring a panel adds the hardware toolchain:
 |------|-----|-------|
 | **[KiCad](https://www.kicad.org/)** 8+ | PCB schematic + layout review | Project tooling and CI use **v10.0.1**; open the `.kicad_pro` projects under `PCB/` |
 | **[PlatformIO](https://platformio.org/)** + **[VS Code](https://code.visualstudio.com/)** | Firmware build and upload | The firmware build system — see [PlatformIO Setup](../firmware/platformio-setup.md) |
-| **[STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html)** + ST-Link | Flashing STM32 boards over SWD | STM32 boards expose a 5-pin SWD header (PA13/PA14/NRST/GND/3.3V) |
+| **ST-Link** (or compatible SWD probe) | Flashing STM32 boards over SWD | The hardware probe. STM32 boards expose a 5-pin SWD header (PA13/PA14/NRST/GND/3.3V); PlatformIO flashes through it directly |
 | **[DCS-BIOS](https://github.com/DCS-Skunkworks/dcs-bios)** | DCS ↔ cockpit export stream | Runs on the PC; the firmware speaks its protocol |
 | **[JLCPCB](https://jlcpcb.com/) account** | PCB fabrication | Design rules are pre-loaded for JLCPCB's standard 2-layer service |
 | **Soldering iron + multimeter** | Assembly and bring-up | Surface-mount rework; continuity and voltage checks |
@@ -44,12 +44,20 @@ or modify the physical panels.
     Pi Pico). They flash over USB by drag-and-drop UF2 or directly from PlatformIO — no
     ST-Link required. Only the STM32 boards need the SWD programmer.
 
+!!! note "STM32CubeProgrammer is optional"
+    [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html)
+    is ST's standalone GUI flasher — handy for erasing or inspecting a chip, but not
+    required. PlatformIO drives the ST-Link directly for normal build-and-upload.
+
 ## To contribute firmware
 
 Everything above, plus the bench hardware to develop and verify against real boards:
 
-- **STM32F103CBT6 dev board** — a Blue Pill is fine for development. Note the firmware
-  requires an **external 8 MHz crystal** for CAN; verify your board has one populated.
+- **STM32F103 dev board** — an STM32F103C8 Blue Pill is the default and runs most of the firmware.
+  The **STM32F103CB** (128 KB flash) is only needed where flash demands
+  it — notably **PanelBridge**, which carries the full DCS-BIOS input map. Either way the
+  firmware requires an **external 8 MHz crystal** for CAN; verify your board has one
+  populated.
 - **RP2040 module** (Raspberry Pi Pico or similar) — for SimGateway work.
 - **USB-to-TTL serial adapter** — for the DiagSerial debug stream. Every STM32 board exposes
   a 3-pin header (GND / RX / TX) on **USART1 at 115200 baud** for human-readable diagnostics.
