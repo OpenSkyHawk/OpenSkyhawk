@@ -26,8 +26,8 @@
 
 // ── Outputs (DCS → hardware) ─────────────────────────────────────────────────
 // #include <LED.h>
-// OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>M, PIN_<NET>);
-// OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>M, PIN_<NET>, /*reverse=*/true);
+// OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>_AM, PIN_<NET>);
+// OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>_AM, PIN_<NET>, /*reverse=*/true);
 
 // ── Inputs → DCS-BIOS (DCSIN_* controlIds, 0x8001–0x86FF) ───────────────────
 // OpenSkyhawk::Switch2Pos     <name>(DCSIN_<ID>, PIN_<NET>);
