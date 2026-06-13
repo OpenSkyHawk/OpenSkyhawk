@@ -2,10 +2,10 @@
 
 OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus. Project notes and panel status are tracked in Notion under the "A-4E Home Cockpit" workspace.
 
-@docs/claude/architecture.md
-@docs/claude/hardware-standards.md
-@docs/claude/kicad.md
-@docs/claude/pcb-design-rules.md
+@docs/_source/architecture.md
+@docs/_source/hardware-standards.md
+@docs/_source/kicad.md
+@docs/_source/pcb-design-rules.md
 @Firmware/ScratchPad/FirmwarePlan/README.md
 @Firmware/ScratchPad/TechSpec/README.md
 
@@ -13,11 +13,11 @@ OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-pr
 
 All firmware architecture decisions, data flows, and contract boundaries are defined in
 `Firmware/ScratchPad/FirmwarePlan/` — **this is the authoritative source of truth** and
-supersedes any firmware content in `docs/claude/`. Implementation-level technical
+supersedes any firmware content in `docs/_source/`. Implementation-level technical
 specifications (public API, class structure, method signatures) live in
 `Firmware/ScratchPad/TechSpec/`.
 
-Do not rely on the Firmware Architecture section of `docs/claude/architecture.md` for
+Do not rely on the Firmware Architecture section of `docs/_source/architecture.md` for
 firmware decisions — read the FirmwarePlan instead.
 
 ## Licensing
