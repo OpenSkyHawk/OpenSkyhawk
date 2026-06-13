@@ -1745,6 +1745,7 @@
 <pre><code class="language-C++">#ifdef ARDUINO_ARCH_STM32
 
 #include &quot;LED.h&quot;
+#include &lt;STM32Board.h&gt;
 
 OpenSkyhawk::LED::LED(uint16_t controlId, uint16_t mask, PinRef pin, bool reverse)
     : _controlId(controlId), _mask(mask), _pin(pin), _reverse(reverse) {}
@@ -1757,7 +1758,15 @@ void OpenSkyhawk::LED::configure() {
 void OpenSkyhawk::LED::onControlPacket(uint16_t controlId, uint16_t value) {
     if (controlId != _controlId) return;
     bool on = (value &amp; _mask) != 0;
+    if (_hasState &amp;&amp; on == _lastOn) return;
+    _lastOn   = on;
+    _hasState = true;
     _pin.write(_reverse ? !on : on);
+    if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[LED] 0x&quot;)); d.print(_controlId, HEX);
+        d.println(on ? F(&quot;: ON&quot;) : F(&quot;: OFF&quot;));
+    }
 }
 
 #endif // ARDUINO_ARCH_STM32

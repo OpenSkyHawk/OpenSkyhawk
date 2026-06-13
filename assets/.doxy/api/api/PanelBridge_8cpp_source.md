@@ -167,6 +167,11 @@ static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
     }
 
     DcsBios::sendDcsBiosMessage(entry->name, arg);
+    if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] DCS -> \"")); d.print(entry->name);
+        d.print(F("\" \"")); d.print(arg); d.println('"');
+    }
 }
 
 static void dispatchEvtSlot(uint16_t controlId, uint16_t value) {
@@ -307,6 +312,12 @@ void onNodeDead(NodeCallback cb)  { _cbDead  = cb; }
 
 void setup() {
     STM32Board::begin();
+    if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.println(F("=============================="));
+        d.println(F("  PanelBridge  NODE_ID=0"));
+        d.println(F("=============================="));
+    }
     Serial.begin(250000);
     CANProtocol::onStatusChange(STM32Board::onCanStatus);
     CANProtocol::filterAcceptAll();

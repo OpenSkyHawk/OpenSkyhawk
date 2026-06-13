@@ -3,6 +3,7 @@
   <compounddef id="LED_8cpp" kind="file" language="C++">
     <compoundname>LED.cpp</compoundname>
     <includes refid="LED_8h" local="yes">LED.h</includes>
+    <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
     <incdepgraph>
       <node id="10">
         <label>CANProtocol.h</label>
@@ -26,6 +27,8 @@
         <label>Firmware/Libraries/PanelGroup/LED.cpp</label>
         <link refid="LED_8cpp"/>
         <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
         </childnode>
       </node>
       <node id="2">
@@ -56,6 +59,14 @@
         <childnode refid="4" relation="include">
         </childnode>
       </node>
+      <node id="13">
+        <label>STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
       <node id="8">
         <label>Adafruit_ADS1X15.h</label>
       </node>
@@ -71,6 +82,9 @@
       <node id="11">
         <label>stdint.h</label>
       </node>
+      <node id="14">
+        <label>stm32f1xx_hal_can.h</label>
+      </node>
     </incdepgraph>
     <briefdescription>
     </briefdescription>
@@ -80,22 +94,31 @@
 <codeline lineno="1"><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="2"><highlight class="normal"></highlight></codeline>
 <codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="LED_8h" kindref="compound">LED.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="4"><highlight class="normal"></highlight></codeline>
-<codeline lineno="5"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1LED_1a563c5f236ed992c8a321792b0f80ccff" kindref="member">OpenSkyhawk::LED::LED</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>mask,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>pin,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reverse)</highlight></codeline>
-<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_controlId(controlId),<sp/>_mask(mask),<sp/>_pin(pin),<sp/>_reverse(reverse)<sp/>{}</highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight></codeline>
-<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" kindref="member">OpenSkyhawk::LED::configure</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.<ref refid="classPinRef_1aaa068f47fc479c9d3b52d1ec6b3f0060" kindref="member">configureAsOutput</ref>();</highlight></codeline>
-<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.<ref refid="classPinRef_1a0936506f3842d0b761e134732e81a7d3" kindref="member">write</ref>(_reverse);<sp/></highlight><highlight class="comment">//<sp/>reverse=false<sp/>→<sp/>LOW<sp/>(off);<sp/>reverse=true<sp/>→<sp/>HIGH<sp/>(off)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="11"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341" kindref="member">OpenSkyhawk::LED::onControlPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
-<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(controlId<sp/>!=<sp/>_controlId)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>on<sp/>=<sp/>(value<sp/>&amp;<sp/>_mask)<sp/>!=<sp/>0;</highlight></codeline>
-<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.write(_reverse<sp/>?<sp/>!on<sp/>:<sp/>on);</highlight></codeline>
-<codeline lineno="17"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight></codeline>
-<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1LED_1a563c5f236ed992c8a321792b0f80ccff" kindref="member">OpenSkyhawk::LED::LED</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>mask,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>pin,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reverse)</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_controlId(controlId),<sp/>_mask(mask),<sp/>_pin(pin),<sp/>_reverse(reverse)<sp/>{}</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" kindref="member">OpenSkyhawk::LED::configure</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.<ref refid="classPinRef_1aaa068f47fc479c9d3b52d1ec6b3f0060" kindref="member">configureAsOutput</ref>();</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.<ref refid="classPinRef_1a0936506f3842d0b761e134732e81a7d3" kindref="member">write</ref>(_reverse);<sp/></highlight><highlight class="comment">//<sp/>reverse=false<sp/>→<sp/>LOW<sp/>(off);<sp/>reverse=true<sp/>→<sp/>HIGH<sp/>(off)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341" kindref="member">OpenSkyhawk::LED::onControlPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(controlId<sp/>!=<sp/>_controlId)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>on<sp/>=<sp/>(value<sp/>&amp;<sp/>_mask)<sp/>!=<sp/>0;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_hasState<sp/>&amp;&amp;<sp/>on<sp/>==<sp/>_lastOn)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastOn<sp/><sp/><sp/>=<sp/>on;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>_hasState<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>_pin.write(_reverse<sp/>?<sp/>!on<sp/>:<sp/>on);</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[LED]<sp/>0x&quot;</highlight><highlight class="normal">));<sp/>d.print(_controlId,<sp/>HEX);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.println(on<sp/>?<sp/>F(</highlight><highlight class="stringliteral">&quot;:<sp/>ON&quot;</highlight><highlight class="normal">)<sp/>:<sp/>F(</highlight><highlight class="stringliteral">&quot;:<sp/>OFF&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/LED.cpp"/>
   </compounddef>

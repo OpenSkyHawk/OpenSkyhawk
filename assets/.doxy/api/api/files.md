@@ -22,6 +22,7 @@ Here is a list of all files with brief descriptions:
             * **file** [**ADS1115.h**](ADS1115_8h.md) _Thin wrapper over Adafruit\_ADS1115 that provides a forward-declarable class name._     
             * **file** [**LED.cpp**](LED_8cpp.md) 
             * **file** [**LED.h**](LED_8h.md) _Digital LED output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+            * **file** [**OpenSkyhawk.h**](OpenSkyhawk_8h.md) _Umbrella include for_ [_**PanelGroup**_](namespacePanelGroup.md) _sketch files._
             * **file** [**PanelGroup.cpp**](PanelGroup_8cpp.md)     
             * **file** [**PanelGroup.h**](PanelGroup_8h.md) _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._    
             * **file** [**PinRef.cpp**](PinRef_8cpp.md)     

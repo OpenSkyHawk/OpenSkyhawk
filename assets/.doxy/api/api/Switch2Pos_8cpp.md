@@ -12,6 +12,7 @@
 
 * `#include <Switch2Pos.h>`
 * `#include <CANProtocol.h>`
+* `#include <STM32Board.h>`
 
 
 

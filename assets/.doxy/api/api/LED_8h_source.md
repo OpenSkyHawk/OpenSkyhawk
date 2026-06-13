@@ -28,7 +28,9 @@ private:
     uint16_t _controlId;
     uint16_t _mask;
     PinRef   _pin;
-    bool     _reverse;  
+    bool     _reverse;   
+    bool     _lastOn   = false;
+    bool     _hasState = false;  
 };
 
 } // namespace OpenSkyhawk

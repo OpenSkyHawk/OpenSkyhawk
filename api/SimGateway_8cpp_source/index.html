@@ -2044,6 +2044,12 @@ void setup(SerialUART&amp; uart, uint8_t txPin, uint8_t rxPin) {
     _uart-&gt;begin(250000);
 
     _hidBegin(); // no-op in SIMGATEWAY_TEST builds
+
+#ifndef SIMGATEWAY_TEST
+    Serial.println(F(&quot;==============================&quot;));
+    Serial.println(F(&quot;  SimGateway&quot;));
+    Serial.println(F(&quot;==============================&quot;));
+#endif
 }
 
 void loop() {

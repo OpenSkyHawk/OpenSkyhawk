@@ -9,6 +9,7 @@
     <includes refid="PinRef_8h" local="yes">PinRef.h</includes>
     <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
     <includedby refid="LED_8h" local="no">Firmware/Libraries/PanelGroup/LED.h</includedby>
+    <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
     <includedby refid="PanelGroup_8cpp" local="yes">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
     <includedby refid="Switch2Pos_8h" local="no">Firmware/Libraries/PanelGroup/Switch2Pos.h</includedby>
     <incdepgraph>
@@ -78,8 +79,14 @@
         <link refid="LED_8h"/>
         <childnode refid="3" relation="include">
         </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
       </node>
       <node id="4">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+      <node id="5">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
         <link refid="PanelGroup_8cpp"/>
       </node>
@@ -92,15 +99,19 @@
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
       </node>
-      <node id="6">
+      <node id="7">
         <label>Firmware/Libraries/PanelGroup/Switch2Pos.cpp</label>
         <link refid="Switch2Pos_8cpp"/>
       </node>
-      <node id="5">
+      <node id="6">
         <label>Firmware/Libraries/PanelGroup/Switch2Pos.h</label>
         <link refid="Switch2Pos_8h"/>
-        <childnode refid="6" relation="include">
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

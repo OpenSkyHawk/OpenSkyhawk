@@ -13,6 +13,7 @@
 
 #include <Switch2Pos.h>
 #include <CANProtocol.h>  // sendBatched, canIdEvt, ControlPacket
+#include <STM32Board.h>
 
 namespace OpenSkyhawk {
 
@@ -40,6 +41,11 @@ void Switch2Pos::forceReport() {
     _initialized     = true;
     CANProtocol::sendBatched(canIdEvt(NODE_ID),
                              ControlPacket{_controlId, static_cast<uint16_t>(current ? 1u : 0u)});
+    if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[SW2] 0x")); d.print(_controlId, HEX);
+        d.print(F(": ")); d.print(current ? 1 : 0); d.println(F(" (init)"));
+    }
 }
 
 void Switch2Pos::poll() {
@@ -53,6 +59,11 @@ void Switch2Pos::poll() {
     } else if (_pendingRaw != _lastConfirmed &&
                millis() - _debounceStartMs >= DEBOUNCE_MS) {
         _lastConfirmed = _pendingRaw;
+        if (STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[SW2] 0x")); d.print(_controlId, HEX);
+            d.print(F(": ")); d.println(_pendingRaw ? 1 : 0);
+        }
         CANProtocol::sendBatched(canIdEvt(NODE_ID),
                                  ControlPacket{_controlId, static_cast<uint16_t>(_lastConfirmed ? 1u : 0u)});
     }

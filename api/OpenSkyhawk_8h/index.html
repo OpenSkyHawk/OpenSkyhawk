@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d17/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/OpenSkyhawk_8h/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>File OpenSkyhawk.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#file-openskyhawkh" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              File OpenSkyhawk.h
             
           </span>
         </div>
@@ -1728,41 +1728,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
+  <a href="#detailed-description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Public Types
+        Detailed Description
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Types Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum ParserState
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1786,35 +1758,24 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-parserstate">enum ParserState</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserState {
-    IDLE,
-    GOT_AA,
-    IN_FRAME
-};
-</code></pre>
-<hr>
-
+<h1 id="file-openskyhawkh">File OpenSkyhawk.h</h1>
+<p><a href="../files/"><strong>FileList</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="./"><strong>OpenSkyhawk.h</strong></a></p>
+<p><a href="../OpenSkyhawk_8h_source/">Go to the source code of this file</a></p>
+<p><em>Umbrella include for</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>sketch files.</em><a href="#detailed-description">More...</a></p>
+<ul>
+<li><code>#include &lt;STM32Board.h&gt;</code></li>
+<li><code>#include &lt;PanelGroup.h&gt;</code></li>
+<li><code>#include &lt;LED.h&gt;</code></li>
+<li><code>#include &lt;Switch2Pos.h&gt;</code></li>
+<li><code>#include &lt;A4EC_CmdIds.h&gt;</code></li>
+<li><code>#include &lt;A4EC_OutputIds.h&gt;</code></li>
+</ul>
+<h2 id="detailed-description">Detailed Description</h2>
+<p>Include order matters: <a href="../PanelGroup_8h/"><strong>PanelGroup.h</strong></a> first (defines InputBase/OutputBase), then concrete classes (their <a href="../PanelGroup_8h/"><strong>PanelGroup.h</strong></a> re-include is a no-op via #pragma once). <a href="../A4EC__InputMap_8h/"><strong>A4EC_InputMap.h</strong></a> is NOT included here — it is used only by <a href="../PanelBridge_8cpp/"><strong>PanelBridge.cpp</strong></a>.</p>
+<p><strong>Copyright:</strong></p>
+<p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</code></p>
 
 
 
