@@ -302,6 +302,14 @@ void onNodeDead(NodeCallback cb)  { _cbDead  = cb; }
 
 void setup() {
     STM32Board::begin();
+    if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.println(F("=============================="));
+        d.println(F("  PanelBridge  NODE_ID=0"));
+        d.print(F("  TX: CTRL_BCAST=0x")); d.print(CAN_ID_CTRL_BCAST, HEX);
+        d.print(F("  SYNC_REQ=0x"));       d.println(CAN_ID_SYNC_REQ, HEX);
+        d.println(F("=============================="));
+    }
     Serial.begin(250000);
     CANProtocol::onStatusChange(STM32Board::onCanStatus);
     CANProtocol::filterAcceptAll();
