@@ -3985,6 +3985,13 @@ When you start a new panel group:</p>
 </ol>
 <p>One NODE_ID per physical STM32 board. See <a href="../../guides/new-panel-group/">Adding a New Panel Group</a>
 for the full workflow — claiming the ID is step one.</p>
+<div class="admonition note">
+<p class="admonition-title">CI enforces this</p>
+<p>A CI check (<code>tools/check_node_ids.py</code>) validates every production panel under
+<code>Firmware/Panels/</code> against this registry on each firmware PR: it fails the build if a board's
+NODE_ID is unregistered, duplicated, or out of range. The table above is transcluded directly
+from <code>Firmware/NODE_IDS.md</code>, so the docs can't drift from the registry.</p>
+</div>
 
 
 
