@@ -1,0 +1,140 @@
+# 04 — DCS-BIOS Integration
+
+**Owns:** `controlId` address space, `DCSIN_*` constant rationale, `DcsBiosInputEntry` struct,
+input map generator rules, value encoding by type, output address constants.
+**Does not own:** CAN frame IDs (→ 02), HID frame wire format (→ 03), PanelBridge boot/dispatch
+orchestration (→ 06), PanelGroup input class specs (→ 05).
+
+---
+
+## controlId Address Space
+
+The `controlId` field in a `ControlPacket` determines routing. Routing decisions happen at two
+points: **PanelBridge** (DCS-BIOS inputs) and **SimGateway** (HID inputs).
+
+| Range | Type | Routed by | Destination |
+|-------|------|-----------|-------------|
+| `0x0010`–`0x00FF` | HID axes and buttons | SimGateway | `HIDAxis` / `HIDButton` → `Joystick.*()` |
+| `0x8000`–`0x86FF` | DCS-BIOS compact command IDs (`DCSIN_*`) | PanelBridge | Input map lookup → `sendDcsBiosMessage()` |
+| `0xFFFF` | Reserved: TEST_SEQ trigger | — | See `02-can-protocol.md` |
+
+---
+
+## DCSIN_* — Compact Transport Aliases
+
+`DCSIN_*` constants are **compact transport aliases for DCS-BIOS command strings**. They exist
+because a classic CAN frame carries only 8 data bytes — far too little to hold a DCS-BIOS ASCII
+command like `"LIGHT_EXT_MASTER 2\n"`. The constants are generated sequentially from `0x8001`
+by the build step.
+
+They are **not** physical device IDs. Multiple PanelGroup input objects may share the same
+`DCSIN_*` constant if they should trigger the same DCS command — PanelBridge does not track
+which node sent the EVT.
+
+**Rationale (why DCSIN_* exist, not DCS output addresses):**
+DCS output addresses identify values flowing *from* DCS to the cockpit. Input controls send
+commands *to* DCS. The two are different namespaces in DCS-BIOS. `DCSIN_*` constants are the
+compact stand-in for the ASCII command name, required purely by CAN payload size constraints.
+
+---
+
+## Output Address Constants
+
+Output objects (`LED`, `AnalogOutput`, etc.) use constants from the generated
+`A4EC_OutputIds.h` header:
+
+- `A_4E_C_*` — 16-bit DCS-BIOS output address (e.g. `A_4E_C_MASTER_CAUTION`)
+- `A_4E_C_*_AM` — 16-bit bitmask for the relevant bits within that address word
+
+Example: `OpenSkyhawk::LED warn(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM, pin);`
+
+Note: DCS-BIOS's own `Addresses.h` uses an `_A` suffix convention for the same addresses.
+`A4EC_OutputIds.h` intentionally omits the `_A` suffix and adds the `_AM` mask companion —
+use `A4EC_OutputIds.h` for all OpenSkyhawk output objects.
+
+These output addresses serve a completely different purpose and are **never** used as input
+`controlId` values.
+
+---
+
+## Generated Headers (Phase 1)
+
+The build step parses the DCS-BIOS A-4E-C JSON definition files and emits two headers:
+
+| Header | Included by | Contents |
+|--------|-------------|----------|
+| `A4EC_CmdIds.h` | PanelGroup sketches | `#define DCSIN_*` constants only |
+| `A4EC_InputMap.h` | PanelBridge only | Sorted `DcsBiosInputEntry[]` table keyed by `cmdId` |
+
+PanelGroup sketches do not include the full dispatch table — only the constant definitions
+they need for control declarations.
+
+---
+
+## DcsBiosInputEntry Struct
+
+```cpp
+struct DcsBiosInputEntry {
+    uint16_t    cmdId;     // DCSIN_* compact command ID
+    uint8_t     type;      // SWITCH, ACTION, ENCODER, ACCEL_ENCODER, MULTIPOS
+    const char* name;      // DCS-BIOS control name for sendDcsBiosMessage()
+    const char* arg0;      // value=0 argument: "0", "DEC", or position string
+    const char* arg1;      // value=1 argument: "1", "INC", or null for MULTIPOS
+    const char* arg0fast;  // ACCEL_ENCODER only: fast decrement arg
+    const char* arg1fast;  // ACCEL_ENCODER only: fast increment arg
+};
+```
+
+The table is sorted by `cmdId`. Lookup is binary search: ~8–9 comparisons for the full
+A-4E-C control set (~300 entries). Flash cost: ~6–8 KB. RAM cost: zero.
+
+---
+
+## Value Encoding by Type
+
+| Type | PanelGroup sends | PanelBridge calls |
+|------|-----------------|-------------------|
+| `SWITCH` | 0 or 1 | `sendDcsBiosMessage(name, arg0_or_arg1)` |
+| `ACTION` | 1 (press only) | `sendDcsBiosMessage(name, arg0)` — no release message |
+| `ENCODER` | 0=CCW, 1=CW | `sendDcsBiosMessage(name, arg0_or_arg1)` (typically "DEC"/"INC") |
+| `ACCEL_ENCODER` | 0=slow CCW, 1=slow CW, 2=fast CCW, 3=fast CW | `sendDcsBiosMessage(name, matched_arg)` — value maps to arg0/arg1/arg0fast/arg1fast |
+
+> **Why 4 numeric values and not strings:** DCS-BIOS Arduino library sends argument strings
+> directly (e.g. `"DEC"`, `"INC"`, `"FAST_DEC"`, `"FAST_INC"`) because it runs on the same
+> MCU as the encoder. In our architecture, PanelGroup cannot send strings over CAN (4-byte
+> payload limit). The 4-value encoding is a **compact CAN transport layer** — PanelBridge
+> maps the received value to the appropriate argument string via the input map entry fields.
+| `MULTIPOS` | position index 0–N, **or any 16-bit integer** | `sendDcsBiosMessage(name, itoa(value))` — caller-managed `char` buffer ≥ 6 bytes |
+
+**Class-to-type mapping:**
+
+| Input class | Dispatch type |
+|-------------|---------------|
+| `Switch2Pos` | `SWITCH` |
+| `Switch3Pos`, `SwitchMultiPos`, `AnalogMultiPos`, `RotarySwitch` | `MULTIPOS` |
+| `ActionButton` | `ACTION` — arg1 and fast args are null |
+| `RotaryEncoder` | `ENCODER` |
+| `RotaryAcceleratedEncoder` | `ACCEL_ENCODER` |
+| `AnalogInput` (DCS-BIOS routed) | `MULTIPOS` — 16-bit ADC value sent as integer string |
+
+---
+
+## Generator Mapping Rules (Phase 1)
+
+| JSON `inputs[].interface` | Generated type | Notes |
+|--------------------|----------------|-------|
+| `action` | `ACTION` | arg0 = JSON `argument` value; arg1/fast args null |
+| `fixed_step` | `ENCODER` | arg0 = `"DEC"`, arg1 = `"INC"` |
+| `set_state`, max_value == 1 | `SWITCH` | arg0 = `"0"`, arg1 = `"1"` |
+| `set_state`, max_value > 1 | `MULTIPOS` | arg0 unused; value sent as `itoa(value)` |
+| Two `fixed_step` interfaces (slow + fast variants) | `ACCEL_ENCODER` | arg0/arg1 = slow dec/inc; arg0fast/arg1fast = fast dec/inc |
+| Paired boolean controls (guarded switch: cover + switch) | **Not generated** | Unsupported gap — skip and document in `GENERATOR_GAPS.md` |
+
+---
+
+## No Sketch Declarations for DCS-BIOS Controls
+
+The map covers all A-4E-C controls automatically. PanelBridge dispatches any
+`controlId` in the generated DCS-BIOS input range (`0x8000`-`0x86FF`) without sketch-level
+configuration. Values outside that range, including reserved IDs such as `0xFFFF`, are not
+DCS-BIOS input commands. No per-control declarations are needed in any sketch.
