@@ -207,3 +207,9 @@ plugins:
 markdown_extensions:
   - attr_list
   - md_in_html
+  - admonition
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
