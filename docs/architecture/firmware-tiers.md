@@ -12,10 +12,10 @@ PC (DCS + DCS-BIOS)
 SimGateway   (RP2040)
   │  UART @ 250 kbps
   ▼
-PanelBridge  (STM32F103CBT6, CAN master)
+PanelBridge  (STM32F103 · CB, CAN master)
   │  CAN bus @ 500 kbps
   ▼
-PanelGroup   (STM32F103CBT6, one per panel group)
+PanelGroup   (STM32F103 · C8, one per panel group)
   │  I²C over JST-XH
   ▼
 Breakout boards (MCP23017, ADS1115)
@@ -25,7 +25,7 @@ Breakout boards (MCP23017, ADS1115)
 
 | | SimGateway | PanelBridge | PanelGroup |
 |---|---|---|---|
-| **MCU** | RP2040 | STM32F103CBT6 | STM32F103CBT6 |
+| **MCU** | RP2040 | STM32F103 (CB) | STM32F103 (C8) |
 | **Library** | `SimGateway.h` | `PanelBridge.h` | `OpenSkyhawk.h` |
 | **Role** | USB bridge + HID | CAN master + DCS-BIOS | Panel I/O |
 | **Upstream** | USB to PC | UART to SimGateway | CAN to PanelBridge |
@@ -36,6 +36,12 @@ Three more libraries are shared rather than owned by a single tier: **`CANProtoc
 structs, CAN IDs, the `controlId` namespace), **`STM32Board`** (CAN/UART/status-LED hardware
 init for both STM32 tiers), and **`HIDControls`** (the HID `controlId` allocations, shared
 between SimGateway and CANProtocol).
+
+!!! note "STM32F103 variant: C8 by default, CB where flash demands it"
+    Both STM32 tiers use the STM32F103 family. The **C8** (64 KB flash) is the default and
+    runs most of the firmware. **PanelBridge** uses the **CB** (`STM32F103CBT6`, 128 KB) —
+    it carries the full DCS-BIOS input map on top of the DCS-BIOS library. PanelGroup
+    nodes only hold the `DCSIN_*` constants they use, so they fit C8.
 
 ## SimGateway (RP2040)
 
@@ -53,7 +59,7 @@ PanelBridge over UART, and intercepts HID frames coming back up to drive the joy
 
 See [SimGateway](sim-gateway.md) for the full breakdown.
 
-## PanelBridge (STM32F103CBT6)
+## PanelBridge (STM32F103)
 
 The CAN master, and the only tier that runs the DCS-BIOS library. It receives the DCS-BIOS
 stream from SimGateway over UART, fires the DCS-BIOS export listener, and broadcasts every
@@ -72,7 +78,7 @@ over UART; HID inputs are wrapped in HID frames for SimGateway.
 `NODE_ID` is always **0** for PanelBridge — reserved, and never transmitted as a heartbeat on
 the bus.
 
-## PanelGroup (STM32F103CBT6)
+## PanelGroup (STM32F103)
 
 One per panel group. Each node drives its panel hardware directly — GPIO, or MCP23017
 (digital I/O) and ADS1115 (analog) breakouts over I²C — and carries a unique `NODE_ID` (1–63)

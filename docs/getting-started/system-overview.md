@@ -22,8 +22,8 @@ collapses all of that onto **one USB connection** and a shared bus.
 | Tier | MCU | Role |
 |------|-----|------|
 | **SimGateway** | RP2040 | The single USB device the PC sees. A composite USB device: CDC for the DCS-BIOS stream, HID for flight-control axes and buttons. Relays raw bytes to PanelBridge over UART. Does **not** run the DCS-BIOS library. |
-| **PanelBridge** | STM32F103CBT6 | The CAN master. Runs the DCS-BIOS library on its UART. Broadcasts every DCS output onto the CAN bus, and routes input events coming back up from the nodes. One per cockpit. |
-| **PanelGroup** | STM32F103CBT6 | One per panel group. A CAN sub-node. Drives its panel hardware directly (GPIO, or MCP23017 / ADS1115 breakouts over I²C) and fires input events back onto the bus. Each has a unique `NODE_ID` (1–63). |
+| **PanelBridge** | STM32F103 (CB) | The CAN master. Runs the DCS-BIOS library on its UART. Broadcasts every DCS output onto the CAN bus, and routes input events coming back up from the nodes. One per cockpit. |
+| **PanelGroup** | STM32F103 (C8) | One per panel group. A CAN sub-node. Drives its panel hardware directly (GPIO, or MCP23017 / ADS1115 breakouts over I²C) and fires input events back onto the bus. Each has a unique `NODE_ID` (1–63). |
 
 Each PanelGroup node carries a `NODE_ID` baked in at compile time via `platformio.ini`. Node
 0 is reserved for PanelBridge. See the [NODE_ID registry](../firmware/node-id.md) for the
