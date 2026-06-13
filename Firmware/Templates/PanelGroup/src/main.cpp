@@ -7,7 +7,7 @@
 // Receives CAN CTRL_BCAST frames and drives outputs (LEDs, dimmers, steppers).
 // controlId range determines routing at PanelBridge:
 //   DCSIN_* (0x8001–0x86FF) → DCS-BIOS sendDcsBiosMessage()
-//   CTRL_*  (0x0010–0x009F) → HID frame → SimGateway → Joystick
+//   CTRL_*  (0x0010–0x00FF) → HID frame → SimGateway → Joystick
 
 #include <OpenSkyhawk.h>
 
@@ -36,7 +36,7 @@
 // OpenSkyhawk::ActionButton   <name>(DCSIN_<ID>, PIN_<NET>);
 // OpenSkyhawk::AnalogInput    <name>(DCSIN_<ID>, PIN_<NET>);
 
-// ── Inputs → HID (CTRL_* controlIds, 0x0010–0x009F) ─────────────────────────
+// ── Inputs → HID (CTRL_* controlIds, 0x0010–0x00FF) ─────────────────────────
 // OpenSkyhawk::Switch2Pos  <name>(CTRL_<ID>, PIN_<NET>);   // routes to HID button
 // OpenSkyhawk::AnalogInput <name>(CTRL_<ID>, PIN_<NET>);   // routes to HID axis
 

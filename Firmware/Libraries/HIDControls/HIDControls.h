@@ -9,6 +9,7 @@
  *   0x0010–0x001F  HID axes        — routed to axis setters on SimGateway
  *   0x0020–0x002F  HID hat switches — routed to hat setters on SimGateway
  *   0x0030–0x00AF  HID buttons     — routed to button setters on SimGateway
+ *   0x00B0–0x00FF  Reserved HID expansion slots
  *
  * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
@@ -37,8 +38,9 @@
 
 #define CTRL_TRIGGER    0x0030  // Trigger (button index 0) — stick grip
 // 0x0031–0x00AF: additional buttons added here as stick/throttle grip is catalogued
+// 0x00B0–0x00FF: reserved for future HID expansion beyond the current USB report
 
 // ── Range sentinels (used by CANProtocol and SimGateway for routing checks) ──
 
 #define CTRL_ID_HID_MIN 0x0010  // First valid HID controlId
-#define CTRL_ID_HID_MAX 0x00AF  // Last valid HID controlId
+#define CTRL_ID_HID_MAX 0x00FF  // Last reserved HID controlId

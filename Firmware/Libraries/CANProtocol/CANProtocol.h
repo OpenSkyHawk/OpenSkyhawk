@@ -6,6 +6,9 @@
  * Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are
  * platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks,
  * diagnostics) is STM32-only and guarded by ARDUINO_ARCH_STM32.
+ * CAN arbitration IDs (CAN_ID_*, canId*()) and payload ControlPacket::controlId
+ * values are separate namespaces; equal numeric values do not conflict because
+ * they occupy different CAN frame fields.
  *
  * Dependency: STM32Board::begin() must be called before CANProtocol::start().
  * CANProtocol owns CAN bus operation; STM32Board owns peripheral hardware init.
@@ -22,7 +25,7 @@
 
 /** @brief Primary input/output routing packet. 4 bytes; two are batched for CTRL_BCAST/EVT_n. */
 struct __attribute__((packed)) ControlPacket {
-    uint16_t controlId;  ///< Routing key — see FirmwarePlan/04-dcs-bios-integration.md
+    uint16_t controlId;  ///< Payload routing key; not a CAN arbitration ID
     uint16_t value;      ///< Payload — interpretation depends on controlId range
 };
 
@@ -58,7 +61,7 @@ enum class CanStatus {
     BUS_OFF,    ///< CAN controller halted — bus-off condition
 };
 
-// ── Fixed frame IDs (PanelBridge -> All) ─────────────────────────────────────
+// ── Fixed CAN arbitration IDs (PanelBridge -> All) ───────────────────────────
 
 static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;  ///< Broadcast ControlPacketPair to all panels
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  ///< RTT throughput test
@@ -79,14 +82,16 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
 // ── controlId namespace ───────────────────────────────────────────────────────
+// Payload controlIds live inside ControlPacket data bytes. They are intentionally
+// separate from the 11-bit CAN arbitration IDs above.
 // CTRL_ID_HID_MIN / CTRL_ID_HID_MAX are defined as macros in HIDControls.h (included above).
 // Do not redeclare them here — macro expansion would cause a syntax error.
 
 static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  ///< DCS-BIOS range start
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  ///< DCS-BIOS range end
-static constexpr uint16_t CTRL_ID_TEST_SEQ = 0xFFFF;  ///< Reserved: triggers TEST_SEQ frame
+static constexpr uint16_t CTRL_ID_TEST_SEQ = 0xFFFF;  ///< Reserved legacy payload sentinel; RTT test uses CAN_ID_TEST_SEQ.
 
-/** @deprecated Use CTRL_ID_TEST_SEQ. Kept for backward compatibility with prototype code. */
+/** @deprecated Current RTT testing uses CAN_ID_TEST_SEQ. Kept only for old prototype payload sentinels. */
 static constexpr uint16_t CTRL_TEST_SEQ    = CTRL_ID_TEST_SEQ;
 
 // ── UART diagnostic framing constants (PanelBridge -> SimGateway) ─────────────
