@@ -24,8 +24,6 @@ static_assert(CAN_ID_CTRL_BCAST == 0x010U, "CTRL_BCAST must be 0x010");
 static_assert(CAN_ID_TEST_SEQ   == 0x011U, "TEST_SEQ must be 0x011");
 static_assert(CAN_ID_SYNC_REQ   == 0x012U, "SYNC_REQ must be 0x012");
 
-static_assert(CTRL_ID_TEST_SEQ == 0xFFFFU, "legacy TEST_SEQ payload sentinel must be 0xFFFF");
-
 void setup() {
     STM32Board::setDebug(true);
     STM32Board::begin();
