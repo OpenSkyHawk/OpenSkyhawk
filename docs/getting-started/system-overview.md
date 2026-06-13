@@ -42,7 +42,7 @@ registered output objects (LEDs, stepper gauges). Input objects (switches, pots)
 input events back over CAN.
 
 Each node has a unique `NODE_ID` (1–63) assigned at compile time via `platformio.ini`.
-See [NODE_ID registry](../claude/firmware-node-ids.md) for assignments.
+See [NODE_ID registry](../firmware/node-id.md) for assignments.
 
 ## CAN Bus
 
@@ -51,4 +51,4 @@ termination resistors at the two physical endpoints only. The SN65HVD230 transce
 (SOIC-8, 3.3 V) is used on every STM32 board.
 
 **Key finding:** Blue Pill STM32 clones require SJW = 4TQ for reliable operation —
-see [Design Decisions](../architecture/design-decisions.md#can-bus-timing--sjw-must-be-4tq-on-blue-pill-clones).
+see [Design Decisions](../architecture/design-decisions.md#can-bus-timing-sjw-must-be-4tq-on-blue-pill-clones).

@@ -11,7 +11,6 @@ on:
       - "PCB/**/sym-lib-table"
       - "PCB/**/fp-lib-table"
       - "PCB/Libraries/**"
-      - "docs/claude/pcb-design-rules.md"
       - ".github/workflows/kicad-ci.yml"
 
 permissions:
@@ -21,8 +20,6 @@ jobs:
   kicad:
     name: Generate ERC/DRC reports
     runs-on: ubuntu-latest
-    container:
-      image: kicad/kicad:10.0.1
 
     steps:
       - name: Checkout
@@ -34,15 +31,15 @@ jobs:
         run: |
           set -euo pipefail
 
-          KICAD=kicad-cli
+          KICAD="docker run --rm -v $PWD:/work -w /work kicad/kicad:10.0.1 kicad-cli"
           reports_dir="$RUNNER_TEMP/kicad-reports"
           changed_file="$RUNNER_TEMP/kicad-changed-files.txt"
           projects_file="$RUNNER_TEMP/kicad-projects.txt"
           mkdir -p "$reports_dir"
 
           git fetch origin "${{ github.base_ref || 'main' }}" --depth=1
-          git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD" -- PCB docs/claude/pcb-design-rules.md |
-            grep -E '(\.kicad_(pro|sch|pcb|dru)$|/(sym-lib-table|fp-lib-table)$|^PCB/Libraries/|^docs/claude/pcb-design-rules\.md$)' |
+          git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD" -- PCB |
+            grep -E '(\.kicad_(pro|sch|pcb|dru)$|/(sym-lib-table|fp-lib-table)$|^PCB/Libraries/)' |
             grep -v '/\.history/' > "$changed_file" || true
 
           if [ ! -s "$changed_file" ]; then
@@ -51,7 +48,7 @@ jobs:
           fi
 
           : > "$projects_file"
-          if grep -Eq '^(PCB/Libraries/|docs/claude/pcb-design-rules\.md$)' "$changed_file"; then
+          if grep -Eq '^PCB/Libraries/' "$changed_file"; then
             find PCB -name '*.kicad_pro' \
               -not -path 'PCB/Libraries/*' \
               -not -path '*/.history/*' \
@@ -86,7 +83,7 @@ jobs:
 
             if [ -f "$root_sch" ]; then
               erc_report="$reports_dir/${project_name}-erc.json"
-              if "$KICAD" sch erc --output "$erc_report" "$root_sch"; then
+              if $KICAD sch erc --output "$erc_report" "$root_sch"; then
                 echo "PASS ERC $root_sch"
               else
                 failed=1
@@ -96,7 +93,7 @@ jobs:
 
             if [ -f "$board" ]; then
               drc_report="$reports_dir/${project_name}-drc.json"
-              if "$KICAD" pcb drc --output "$drc_report" "$board"; then
+              if $KICAD pcb drc --output "$drc_report" "$board"; then
                 echo "PASS DRC $board"
               else
                 failed=1
