@@ -1768,19 +1768,20 @@
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a> <em>HID axis handler. Declared at sketch scope for each joystick axis.</em> </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a> <em>HID button handler. Declared at sketch scope for each button.</em> </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a> <em>HID hat switch handler. Declared at sketch scope for each hat switch.</em> </li>
-<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a> <em>Base class for all hardware-polled input objects on a</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>board.</em>    <ul>
-<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a> <em>Debounced 2-position GPIO switch — sends a ControlPacket CAN event on change.</em> </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a> <em>Abstract base for all hardware-polled input objects.</em> </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a> <em>Abstract base for all DCS-driven output objects.</em>     <ul>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a> <em>Digital</em> <a href="../classOpenSkyhawk_1_1LED/"><em><strong>LED</strong></em></a> <em>output. Drives a pin based on a DCS-BIOS state value.</em></li>
 </ul>
 </li>
-<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a> <em>Base class for all DCS-driven output objects on a</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>board.</em>    <ul>
-<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1IntegerOutput/"><strong>OpenSkyhawk::IntegerOutput</strong></a> <em>Call an arbitrary function with the raw value from a ControlPacket.</em> </li>
-<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a> <em>Drive a GPIO pin from a single bit of a DCS-BIOS output value.</em> </li>
-</ul>
-</li>
+<li><strong>class</strong> <a href="../classPinRef/"><strong>PinRef</strong></a> <em>Hardware pin abstraction used by all</em> <a href="../namespaceOpenSkyhawk/"><em><strong>OpenSkyhawk</strong></em></a> <em>input and output classes.</em></li>
 <li><strong>struct</strong> <a href="../structBatchState/"><strong>BatchState</strong></a> </li>
 <li><strong>struct</strong> <a href="../structDcsBiosInputEntry/"><strong>DcsBiosInputEntry</strong></a> </li>
 <li><strong>struct</strong> <a href="../structRxQueueEntry/"><strong>RxQueueEntry</strong></a> </li>
 <li><strong>struct</strong> <a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a> </li>
+<li><strong>class</strong> <strong>Adafruit_ADS1115</strong>    <ul>
+<li><strong>class</strong> <a href="../classADS1115/"><strong>ADS1115</strong></a> <a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC. Inherits Adafruit_ADS1115 without modification.</em></li>
+</ul>
+</li>
 </ul>
 
 

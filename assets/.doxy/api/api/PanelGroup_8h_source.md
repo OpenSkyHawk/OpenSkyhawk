@@ -13,79 +13,86 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <Arduino.h>
-#include <STM32Board.h>
+#include <Wire.h>
+#include <MCP23017.h>
+#include "ADS1115.h"
+#include "PinRef.h"
 #include <CANProtocol.h>
 
-// ── Output objects — DCS state → panel hardware ───────────────────────────────
+// ── OpenSkyhawk base classes ──────────────────────────────────────────────────
 
 namespace OpenSkyhawk {
 
-class OutputBase {
-public:
-    static OutputBase* first; 
-    OutputBase* next;         
-
-    OutputBase();
-
-    virtual void onPacket(uint16_t controlId, uint16_t value) = 0;
-};
-
-class LED : public OutputBase {
-    uint16_t addr_; 
-    uint16_t mask_; 
-    uint8_t  pin_;  
-public:
-    LED(uint16_t addr, uint16_t mask, uint8_t pin);
-
-    void onPacket(uint16_t controlId, uint16_t value) override;
-};
-
-class IntegerOutput : public OutputBase {
-    uint16_t addr_;       
-    void (*cb_)(uint16_t); 
-public:
-    IntegerOutput(uint16_t addr, void (*cb)(uint16_t));
-
-    void onPacket(uint16_t controlId, uint16_t value) override;
-};
-
-// ── Input objects — panel hardware → DCS via CAN ─────────────────────────────
-
 class InputBase {
 public:
-    static InputBase* first; 
-    InputBase* next;         
-
-    InputBase();
+    virtual void configure() {}
 
     virtual void poll() = 0;
+
+    virtual void forceReport() = 0;
+
+    static InputBase* head();
+
+    InputBase* next() const;
+
+protected:
+    InputBase();  
+
+private:
+    static InputBase* _head;
+    InputBase* _next;
 };
 
-class Switch2Pos : public InputBase {
-    uint16_t addr_;       
-    uint8_t  pin_;        
-    bool     lastStable_; 
-    bool     lastRaw_;    
-    uint32_t debounceMs_; 
+class OutputBase {
 public:
-    Switch2Pos(uint16_t addr, uint8_t pin);
+    virtual void configure() {}
 
-    void poll() override;
+    virtual void onControlPacket(uint16_t controlId, uint16_t value) = 0;
+
+    virtual void update() {}
+
+    static OutputBase* head();
+
+    OutputBase* next() const;
+
+protected:
+    OutputBase();  
+
+private:
+    static OutputBase* _head;
+    OutputBase* _next;
 };
 
 } // namespace OpenSkyhawk
 
-// ── PanelGroup singleton ──────────────────────────────────────────────────────
+// ── PanelGroup namespace — sketch-facing API ──────────────────────────────────
 
 namespace PanelGroup {
+
+    void registerADC(ADS1115& adc, uint8_t addr = 0x48, TwoWire& wire = Wire);
+
+    void registerExpander(MCP23017& chip, uint8_t intaPin, uint8_t intbPin);
+
+    void registerExpander(MCP23017& chip);
 
     void setup();
 
     void loop();
 
-    bool sendEvent(uint16_t controlId, uint16_t value);
+    // ── Package-internal — MCP cache bridge for PinRef ───────────────────────
+    //
+    // Not sketch API. Called exclusively by PinRef::read() and PinRef::write().
+    // Direct GPIO and ADS1115 PinRefs bypass this path entirely.
+    //
+    // MCP23017 reads go through the cache (no live I2C per poll) because:
+    //   • A full readPort() at 400 kHz takes ~100 µs — too slow for every poll().
+    //   • INTCAP captures port state at interrupt time; a subsequent readPort()
+    //     may return an already-transitioned value, losing the captured snapshot.
+    //   • All poll() calls after an interrupt must see the same captured snapshot.
 
-    uint8_t nodeId();
+    bool readCachedPin(const MCP23017& chip, uint8_t port, uint8_t bit);
+
+    void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
 
 } // namespace PanelGroup
 

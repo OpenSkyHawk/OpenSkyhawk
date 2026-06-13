@@ -40,11 +40,6 @@
 
 
 
-## Public Static Attributes
-
-| Type | Name |
-| ---: | :--- |
-|  constexpr uint32\_t | [**DEBOUNCE\_MS**](#variable-debounce_ms)   = `20`<br> |
 
 
 
@@ -87,21 +82,6 @@
 
 
 
-## Public Static Attributes Documentation
-
-
-
-
-### variable DEBOUNCE\_MS 
-
-```C++
-constexpr uint32_t DEBOUNCE_MS;
-```
-
-
-
-
-<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/PanelGroup.cpp`

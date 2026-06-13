@@ -3,83 +3,100 @@
   <compounddef id="classOpenSkyhawk_1_1LED" kind="class" language="C++" prot="public">
     <compoundname>OpenSkyhawk::LED</compoundname>
     <basecompoundref refid="classOpenSkyhawk_1_1OutputBase" prot="public" virt="non-virtual">OpenSkyhawk::OutputBase</basecompoundref>
-    <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
+    <includes refid="LED_8h" local="no">LED.h</includes>
     <sectiondef kind="private-attrib">
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1LED_1a5ff246de0c4b63aae8fe3cfbb43d8699" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1LED_1ad57a3ff5da6e6065366eac585b12d244" prot="private" static="no" mutable="no">
         <type>uint16_t</type>
-        <definition>uint16_t OpenSkyhawk::LED::addr_</definition>
+        <definition>uint16_t OpenSkyhawk::LED::_controlId</definition>
         <argsstring></argsstring>
-        <name>addr_</name>
-        <qualifiedname>OpenSkyhawk::LED::addr_</qualifiedname>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::LED::_controlId</qualifiedname>
         <briefdescription>
-<para>DCS-BIOS address (= controlId) this <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> listens to. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="83" column="14" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="83" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/LED.h" line="69" column="14" bodyfile="Firmware/Libraries/PanelGroup/LED.h" bodystart="69" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1LED_1aa407be215a4cbbe0f600a7dd13fecf1e" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1LED_1a37ce6acc263068946c51c1b2e01d66ee" prot="private" static="no" mutable="no">
         <type>uint16_t</type>
-        <definition>uint16_t OpenSkyhawk::LED::mask_</definition>
+        <definition>uint16_t OpenSkyhawk::LED::_mask</definition>
         <argsstring></argsstring>
-        <name>mask_</name>
-        <qualifiedname>OpenSkyhawk::LED::mask_</qualifiedname>
+        <name>_mask</name>
+        <qualifiedname>OpenSkyhawk::LED::_mask</qualifiedname>
         <briefdescription>
-<para>Bitmask to test within the received value. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="84" column="14" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="84" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/LED.h" line="70" column="14" bodyfile="Firmware/Libraries/PanelGroup/LED.h" bodystart="70" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1LED_1a1de498ccd9390fdd8e990f5d209d3849" prot="private" static="no" mutable="no">
-        <type>uint8_t</type>
-        <definition>uint8_t OpenSkyhawk::LED::pin_</definition>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1LED_1a9421b147c1f942a1c2844e1a34e7b308" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::LED::_pin</definition>
         <argsstring></argsstring>
-        <name>pin_</name>
-        <qualifiedname>OpenSkyhawk::LED::pin_</qualifiedname>
+        <name>_pin</name>
+        <qualifiedname>OpenSkyhawk::LED::_pin</qualifiedname>
         <briefdescription>
-<para>Output GPIO pin (active HIGH). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="85" column="14" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="85" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/LED.h" line="71" column="14" bodyfile="Firmware/Libraries/PanelGroup/LED.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1LED_1aa59c4c6957aa66230828f69f6a7fb38b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::LED::_reverse</definition>
+        <argsstring></argsstring>
+        <name>_reverse</name>
+        <qualifiedname>OpenSkyhawk::LED::_reverse</qualifiedname>
+        <briefdescription>
+<para>true = current-sink wiring (LOW = on) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/LED.h" line="72" column="14" bodyfile="Firmware/Libraries/PanelGroup/LED.h" bodystart="72" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
-      <memberdef kind="function" id="classOpenSkyhawk_1_1LED_1abf9bf1f79a77257363968f7beec77272" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1LED_1a563c5f236ed992c8a321792b0f80ccff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>OpenSkyhawk::LED::LED</definition>
-        <argsstring>(uint16_t addr, uint16_t mask, uint8_t pin)</argsstring>
+        <argsstring>(uint16_t controlId, uint16_t mask, PinRef pin, bool reverse=false)</argsstring>
         <name>LED</name>
         <qualifiedname>OpenSkyhawk::LED::LED</qualifiedname>
         <param>
           <type>uint16_t</type>
-          <declname>addr</declname>
+          <declname>controlId</declname>
         </param>
         <param>
           <type>uint16_t</type>
           <declname>mask</declname>
         </param>
         <param>
-          <type>uint8_t</type>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
           <declname>pin</declname>
         </param>
+        <param>
+          <type>bool</type>
+          <declname>reverse</declname>
+          <defval>false</defval>
+        </param>
         <briefdescription>
-<para>Construct an <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> output object. </para>
+<para>Construct and register an <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> output. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername>addr</parametername>
+<parametername>controlId</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>DCS-BIOS address for this indicator (used as controlId). </para>
+<para>DCS-BIOS output address (A_4E_C_* from <ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -87,7 +104,7 @@
 <parametername>mask</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Bitmask to extract the relevant bit from the value word. </para>
+<para>Bitmask: (value &amp; mask) != 0 → on; == 0 → off. Use A_4E_C_*_AM constants, or 0xFFFF for whole-word outputs. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -95,7 +112,15 @@
 <parametername>pin</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>GPIO pin to drive (active HIGH). </para>
+<para>GPIO or MCP23017 <ref refid="classPinRef" kindref="compound">PinRef</ref> for the <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> pin. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>false (default): pin HIGH = on (current-source wiring). true: pin LOW = on (current-sink, anode to VCC). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -103,15 +128,32 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="93" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="14" bodyend="18"/>
+        <location file="Firmware/Libraries/PanelGroup/LED.h" line="49" column="5" bodyfile="Firmware/Libraries/PanelGroup/LED.cpp" bodystart="5" bodyend="6"/>
       </memberdef>
-      <memberdef kind="function" id="classOpenSkyhawk_1_1LED_1a12d8f375f38d40f78ea92fe86ff6d8fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>void OpenSkyhawk::LED::onPacket</definition>
+        <definition>void OpenSkyhawk::LED::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::LED::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301">configure</reimplements>
+        <briefdescription>
+<para>Configure pin as output and drive it to the off state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip.init(). Sets OUTPUT mode on GPIO pins; sets IODIR=0 and GPPU=0 on MCP23017 pins. Drives off immediately: LOW when reverse = false, HIGH when reverse = true. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/LED.h" line="58" column="10" bodyfile="Firmware/Libraries/PanelGroup/LED.cpp" bodystart="8" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::LED::onControlPacket</definition>
         <argsstring>(uint16_t controlId, uint16_t value) override</argsstring>
-        <name>onPacket</name>
-        <qualifiedname>OpenSkyhawk::LED::onPacket</qualifiedname>
-        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1a2f5d8b95fc224204c1ac2fe462fca3b0">onPacket</reimplements>
+        <name>onControlPacket</name>
+        <qualifiedname>OpenSkyhawk::LED::onControlPacket</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375">onControlPacket</reimplements>
         <param>
           <type>uint16_t</type>
           <declname>controlId</declname>
@@ -121,23 +163,42 @@
           <declname>value</declname>
         </param>
         <briefdescription>
-<para>Sets pin HIGH when (value &amp; mask) != 0, LOW otherwise. </para>
+<para>Update <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> state from a CTRL_BCAST ControlPacket. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incoming packet controlId. Ignored if != _controlId. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Raw 16-bit DCS-BIOS value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="96" column="10" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="20" bodyend="23"/>
+        <location file="Firmware/Libraries/PanelGroup/LED.h" line="66" column="10" bodyfile="Firmware/Libraries/PanelGroup/LED.cpp" bodystart="13" bodyend="17"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Drive a GPIO pin from a single bit of a DCS-BIOS output value. </para>
+<para>Digital <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> output. Drives a pin based on a DCS-BIOS state value. </para>
     </briefdescription>
     <detaileddescription>
-<para>Mirrors DcsBios::LED. Pin goes HIGH when (value &amp; mask) is non-zero, LOW otherwise.</para>
-<para><programlisting><codeline><highlight class="comment">//<sp/>Direct<sp/>STM32<sp/>GPIO:</highlight><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"><ref refid="classOpenSkyhawk_1_1LED" kindref="compound">OpenSkyhawk::LED</ref><sp/>warn(A_4E_C_MASTER_CAUTION,<sp/>0x4000,<sp/>PB0);</highlight></codeline>
-</programlisting> </para>
+<para>Receives state via <ref refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341" kindref="member">onControlPacket()</ref> — called by <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> when a CTRL_BCAST frame arrives. Ignores packets whose controlId does not match.</para>
+<para>The mask parameter handles DCS-BIOS bit-packed outputs, where a single 16-bit address carries multiple independent flags. For whole-word binary outputs (value is 0 or 1), use mask = 0xFFFF.</para>
+<para>The reverse parameter handles LEDs wired with current-sinking polarity — for example, an indicator <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> with its anode tied to VCC through a resistor, where the MCU or MCP23017 output sinks current (LOW = on). reverse = false (default): (value &amp; mask) != 0 → pin HIGH (on). reverse = true: (value &amp; mask) != 0 → pin LOW (on).</para>
+<para>Pin is driven to the off state during <ref refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" kindref="member">configure()</ref> and remains off until a CTRL_BCAST packet with a matching controlId is received.</para>
+<para>Works with GPIO and MCP23017 PinRefs. <ref refid="classADS1115" kindref="compound">ADS1115</ref> PinRefs are input-only — do not assign one to an <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref>. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="1">
@@ -161,22 +222,21 @@
       <node id="2">
         <label>OpenSkyhawk::OutputBase</label>
         <link refid="classOpenSkyhawk_1_1OutputBase"/>
-        <childnode refid="2" relation="usage">
-          <edgelabel>first</edgelabel>
-          <edgelabel>next</edgelabel>
-        </childnode>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="82" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="82" bodyend="97"/>
+    <location file="Firmware/Libraries/PanelGroup/LED.h" line="38" column="1" bodyfile="Firmware/Libraries/PanelGroup/LED.h" bodystart="38" bodyend="73"/>
     <listofallmembers>
-      <member refid="classOpenSkyhawk_1_1LED_1a5ff246de0c4b63aae8fe3cfbb43d8699" prot="private" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>addr_</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1a0940e964094ea28c9d085ec66d66c669" prot="public" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>first</name></member>
-      <member refid="classOpenSkyhawk_1_1LED_1abf9bf1f79a77257363968f7beec77272" prot="public" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>LED</name></member>
-      <member refid="classOpenSkyhawk_1_1LED_1aa407be215a4cbbe0f600a7dd13fecf1e" prot="private" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>mask_</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1adc3b923d0d22a0697d1f2858c38bcbea" prot="public" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>next</name></member>
-      <member refid="classOpenSkyhawk_1_1LED_1a12d8f375f38d40f78ea92fe86ff6d8fa" prot="public" virt="virtual"><scope>OpenSkyhawk::LED</scope><name>onPacket</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="public" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>OutputBase</name></member>
-      <member refid="classOpenSkyhawk_1_1LED_1a1de498ccd9390fdd8e990f5d209d3849" prot="private" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>pin_</name></member>
+      <member refid="classOpenSkyhawk_1_1LED_1ad57a3ff5da6e6065366eac585b12d244" prot="private" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1LED_1a37ce6acc263068946c51c1b2e01d66ee" prot="private" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>_mask</name></member>
+      <member refid="classOpenSkyhawk_1_1LED_1a9421b147c1f942a1c2844e1a34e7b308" prot="private" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>_pin</name></member>
+      <member refid="classOpenSkyhawk_1_1LED_1aa59c4c6957aa66230828f69f6a7fb38b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>_reverse</name></member>
+      <member refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" prot="public" virt="virtual"><scope>OpenSkyhawk::LED</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1LED_1a563c5f236ed992c8a321792b0f80ccff" prot="public" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>LED</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341" prot="public" virt="virtual"><scope>OpenSkyhawk::LED</scope><name>onControlPacket</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::LED</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" prot="public" virt="virtual"><scope>OpenSkyhawk::LED</scope><name>update</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

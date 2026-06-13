@@ -2,68 +2,66 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="classOpenSkyhawk_1_1OutputBase" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>OpenSkyhawk::OutputBase</compoundname>
-    <derivedcompoundref refid="classOpenSkyhawk_1_1IntegerOutput" prot="public" virt="non-virtual">OpenSkyhawk::IntegerOutput</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1LED" prot="public" virt="non-virtual">OpenSkyhawk::LED</derivedcompoundref>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
-    <sectiondef kind="public-static-attrib">
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1OutputBase_1a0940e964094ea28c9d085ec66d66c669" prot="public" static="yes" mutable="no">
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1OutputBase_1a46bbff177d96003351c7144d6b171afe" prot="private" static="yes" mutable="no">
         <type><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref> *</type>
-        <definition>OpenSkyhawk::OutputBase * OpenSkyhawk::OutputBase::first</definition>
+        <definition>OpenSkyhawk::OutputBase * OpenSkyhawk::OutputBase::_head</definition>
         <argsstring></argsstring>
-        <name>first</name>
-        <qualifiedname>OpenSkyhawk::OutputBase::first</qualifiedname>
+        <name>_head</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::_head</qualifiedname>
         <initializer>= nullptr</initializer>
         <briefdescription>
-<para>Head of the self-registration linked list. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="53" column="23" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="53" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="151" column="23" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="151" bodyend="-1"/>
       </memberdef>
     </sectiondef>
-    <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1OutputBase_1adc3b923d0d22a0697d1f2858c38bcbea" prot="public" static="no" mutable="no">
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1OutputBase_1a530ddec0c2b4eaed5e083bf676e14f49" prot="private" static="no" mutable="no">
         <type><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref> *</type>
-        <definition>OutputBase* OpenSkyhawk::OutputBase::next</definition>
+        <definition>OutputBase* OpenSkyhawk::OutputBase::_next</definition>
         <argsstring></argsstring>
-        <name>next</name>
-        <qualifiedname>OpenSkyhawk::OutputBase::next</qualifiedname>
+        <name>_next</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::_next</qualifiedname>
         <briefdescription>
-<para>Next object in the list. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="54" column="16" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="54" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="152" column="16" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="152" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
-      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type></type>
-        <definition>OpenSkyhawk::OutputBase::OutputBase</definition>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::OutputBase::configure</definition>
         <argsstring>()</argsstring>
-        <name>OutputBase</name>
-        <qualifiedname>OpenSkyhawk::OutputBase::OutputBase</qualifiedname>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::configure</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9">configure</reimplementedby>
         <briefdescription>
-<para>Registers this object at the head of the linked list. </para>
+<para>Configure hardware pins for this output. </para>
         </briefdescription>
         <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip.init() completes. Call _pin.configureAsOutput() here. Default is a no-op. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="57" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="10" bodyend="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="123" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="123" bodyend="123"/>
       </memberdef>
-      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1a2f5d8b95fc224204c1ac2fe462fca3b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
-        <definition>virtual void OpenSkyhawk::OutputBase::onPacket</definition>
+        <definition>virtual void OpenSkyhawk::OutputBase::onControlPacket</definition>
         <argsstring>(uint16_t controlId, uint16_t value)=0</argsstring>
-        <name>onPacket</name>
-        <qualifiedname>OpenSkyhawk::OutputBase::onPacket</qualifiedname>
-        <reimplementedby refid="classOpenSkyhawk_1_1LED_1a12d8f375f38d40f78ea92fe86ff6d8fa">onPacket</reimplementedby>
-        <reimplementedby refid="classOpenSkyhawk_1_1IntegerOutput_1a92ebb6ee889bd37bde7b78bd50b9bc0a">onPacket</reimplementedby>
+        <name>onControlPacket</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::onControlPacket</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341">onControlPacket</reimplementedby>
         <param>
           <type>uint16_t</type>
           <declname>controlId</declname>
@@ -73,16 +71,15 @@
           <declname>value</declname>
         </param>
         <briefdescription>
-<para>Called by <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> for every received ControlPacket. </para>
+<para>Called for every non-null ControlPacket in a CTRL_BCAST frame. </para>
         </briefdescription>
         <detaileddescription>
-<para>Implementations should check controlId against their own address and update hardware only on a match.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>controlId</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>controlId field from the received ControlPacket. </para>
+<para>DCS-BIOS output address from the received packet. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -90,7 +87,7 @@
 <parametername>value</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>value field from the received ControlPacket. </para>
+<para>16-bit value from DCS-BIOS. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -98,23 +95,82 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="68" column="18"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="131" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::OutputBase::update</definition>
+        <argsstring>()</argsstring>
+        <name>update</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::update</qualifiedname>
+        <briefdescription>
+<para>Called every <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> iteration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default is a no-op. Override for outputs that need continuous work between CAN frames (stepper motor step generation, PWM updates). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="139" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="139" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref> *</type>
+        <definition>OpenSkyhawk::OutputBase * OpenSkyhawk::OutputBase::next</definition>
+        <argsstring>() const</argsstring>
+        <name>next</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::next</qualifiedname>
+        <briefdescription>
+<para>Next output in the list; nullptr at end. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="145" column="16" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="113" bodyend="113"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref> *</type>
+        <definition>OpenSkyhawk::OutputBase * OpenSkyhawk::OutputBase::head</definition>
+        <argsstring>()</argsstring>
+        <name>head</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::head</qualifiedname>
+        <briefdescription>
+<para>Head of the self-registered linked list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="142" column="23" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="112" bodyend="112"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::OutputBase::OutputBase</definition>
+        <argsstring>()</argsstring>
+        <name>OutputBase</name>
+        <qualifiedname>OpenSkyhawk::OutputBase::OutputBase</qualifiedname>
+        <briefdescription>
+<para>Registers this instance into the linked list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="148" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="108" bodyend="108"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Base class for all DCS-driven output objects on a <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> board. </para>
+<para>Abstract base for all DCS-driven output objects. </para>
     </briefdescription>
     <detaileddescription>
-<para>Subclass this to create custom output handlers. Objects declared at global scope self-register into the static linked list; <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> walks the list on every received CTRL_BCAST frame. </para>
+<para>Declare concrete output objects at global scope; the constructor self-registers into a static linked list. <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> calls <ref refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" kindref="member">configure()</ref> after chip initialisation. <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> calls <ref refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375" kindref="member">onControlPacket()</ref> for every non-null slot in each received CTRL_BCAST frame and calls <ref refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" kindref="member">update()</ref> every iteration. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="2">
-        <label>OpenSkyhawk::IntegerOutput</label>
-        <link refid="classOpenSkyhawk_1_1IntegerOutput"/>
-        <childnode refid="1" relation="public-inheritance">
-        </childnode>
-      </node>
-      <node id="3">
         <label>OpenSkyhawk::LED</label>
         <link refid="classOpenSkyhawk_1_1LED"/>
         <childnode refid="1" relation="public-inheritance">
@@ -125,22 +181,16 @@
         <link refid="classOpenSkyhawk_1_1OutputBase"/>
       </node>
     </inheritancegraph>
-    <collaborationgraph>
-      <node id="1">
-        <label>OpenSkyhawk::OutputBase</label>
-        <link refid="classOpenSkyhawk_1_1OutputBase"/>
-        <childnode refid="1" relation="usage">
-          <edgelabel>first</edgelabel>
-          <edgelabel>next</edgelabel>
-        </childnode>
-      </node>
-    </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="51" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="51" bodyend="69"/>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="115" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="115" bodyend="153"/>
     <listofallmembers>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1a0940e964094ea28c9d085ec66d66c669" prot="public" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>first</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1adc3b923d0d22a0697d1f2858c38bcbea" prot="public" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>next</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1a2f5d8b95fc224204c1ac2fe462fca3b0" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>onPacket</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="public" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a46bbff177d96003351c7144d6b171afe" prot="private" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>_head</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a530ddec0c2b4eaed5e083bf676e14f49" prot="private" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>_next</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" prot="public" virt="virtual"><scope>OpenSkyhawk::OutputBase</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>onControlPacket</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::OutputBase</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" prot="public" virt="virtual"><scope>OpenSkyhawk::OutputBase</scope><name>update</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

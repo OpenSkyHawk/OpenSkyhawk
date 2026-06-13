@@ -1738,17 +1738,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#detailed-description" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Detailed Description
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1771,7 +1760,6 @@
 
 <h1 id="namespace-openskyhawk">Namespace OpenSkyhawk</h1>
 <p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>OpenSkyhawk</strong></a></p>
-<p><em>Output and input classes for</em> <a href="./"><em><strong>OpenSkyhawk</strong></em></a> <em>panel boards.</em><a href="#detailed-description">More...</a></p>
 <h2 id="classes">Classes</h2>
 <table>
 <thead>
@@ -1795,30 +1783,20 @@
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> <br><em>Base class for all hardware-polled input objects on a</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>board.</em></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> <br><em>Abstract base for all hardware-polled input objects.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1IntegerOutput/"><strong>IntegerOutput</strong></a> <br><em>Call an arbitrary function with the raw value from a ControlPacket.</em></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1LED/"><strong>LED</strong></a> <br><em>Digital</em> <a href="../classOpenSkyhawk_1_1LED/"><em><strong>LED</strong></em></a> <em>output. Drives a pin based on a DCS-BIOS state value.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1LED/"><strong>LED</strong></a> <br><em>Drive a GPIO pin from a single bit of a DCS-BIOS output value.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">class</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> <br><em>Base class for all DCS-driven output objects on a</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>board.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">class</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>Switch2Pos</strong></a> <br><em>Debounced 2-position GPIO switch — sends a ControlPacket CAN event on change.</em></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> <br><em>Abstract base for all DCS-driven output objects.</em></td>
 </tr>
 </tbody>
 </table>
-<h2 id="detailed-description">Detailed Description</h2>
-<p>Objects are declared at global scope in a sketch; constructors self-register into static linked lists. <a href="../namespacePanelGroup/#function-loop"><strong>PanelGroup::loop()</strong></a> dispatches incoming ControlPacket CAN frames to all registered <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> objects and polls all registered <a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> objects every iteration. </p>
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.h</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/LED.h</code></p>
 
 
 

@@ -3,6 +3,155 @@
   <compounddef id="namespacePanelGroup" kind="namespace" language="C++">
     <compoundname>PanelGroup</compoundname>
     <sectiondef kind="func">
+      <memberdef kind="function" id="namespacePanelGroup_1a524f38dd1f420a121532180a1347a5e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelGroup::registerADC</definition>
+        <argsstring>(ADS1115 &amp;adc, uint8_t addr=0x48, TwoWire &amp;wire=Wire)</argsstring>
+        <name>registerADC</name>
+        <qualifiedname>PanelGroup::registerADC</qualifiedname>
+        <param>
+          <type><ref refid="classADS1115" kindref="compound">ADS1115</ref> &amp;</type>
+          <declname>adc</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>addr</declname>
+          <defval>0x48</defval>
+        </param>
+        <param>
+          <type>TwoWire &amp;</type>
+          <declname>wire</declname>
+          <defval>Wire</defval>
+        </param>
+        <briefdescription>
+<para>Register an <ref refid="classADS1115" kindref="compound">ADS1115</ref> ADC. Call before <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> calls adc.begin(addr, wire) during <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup()</ref>. Register each <ref refid="classADS1115" kindref="compound">ADS1115</ref> instance exactly once — multiple AnalogInput objects may share the same chip.</para>
+<para>Adafruit_ADS1115 takes address and bus via begin(), not the constructor. Pattern: <programlisting><codeline><highlight class="normal"><ref refid="classADS1115" kindref="compound">ADS1115</ref><sp/>adc;</highlight></codeline>
+<codeline><highlight class="normal"><ref refid="namespacePanelGroup_1a524f38dd1f420a121532180a1347a5e9" kindref="member">PanelGroup::registerADC</ref>(adc,<sp/>0x48,<sp/>Wire);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x48–0x4B<sp/>via<sp/>ADDR<sp/>pin</highlight></codeline>
+</programlisting></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>adc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classADS1115" kindref="compound">ADS1115</ref> instance. Must outlive <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>addr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>I2C address (0x48–0x4B via ADDR pin). Default 0x48. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>wire</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>I2C bus. Default Wire (I2C1 on STM32). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Wire.begin() (or Wire1.begin()) must be called by the sketch before <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="119" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="119" bodyend="128" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="187" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePanelGroup_1a94edaa385234b8678e9dab702db44eb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelGroup::registerExpander</definition>
+        <argsstring>(MCP23017 &amp;chip, uint8_t intaPin, uint8_t intbPin)</argsstring>
+        <name>registerExpander</name>
+        <qualifiedname>PanelGroup::registerExpander</qualifiedname>
+        <param>
+          <type>MCP23017 &amp;</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>intaPin</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>intbPin</declname>
+        </param>
+        <briefdescription>
+<para>Register an MCP23017 expander in interrupt-driven mode. Call before <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> calls chip.init(), configures IOCON (MIRROR and/or open-drain as detected), enables interrupt-on-change on input pins only (IODIR-masked, bit 7 excluded per GPA7/GPB7 silicon erratum), reads baseline port state, and attaches STM32 ISRs.</para>
+<para>Pass the same STM32 pin for intaPin and intbPin to use MIRROR mode (IOCON.MIRROR=1), where either port interrupt asserts the shared line.</para>
+<para>If two or more chips share an interrupt line (wired-OR), <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> sets IOCON.ODR=1 (open-drain) automatically on all chips on that line.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>chip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>blemasle/MCP23017 instance. Must outlive <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>intaPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>STM32 GPIO pin connected to chip INTA. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>intbPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>STM32 GPIO pin connected to chip INTB. Same as intaPin for MIRROR. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Do not use PB14/PB15 (status LED) or PC13–PC15 (RTC/oscillator). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="130" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="130" bodyend="140" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="208" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePanelGroup_1a71d0e62897c1db5e39ce932ea8455ca6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelGroup::registerExpander</definition>
+        <argsstring>(MCP23017 &amp;chip)</argsstring>
+        <name>registerExpander</name>
+        <qualifiedname>PanelGroup::registerExpander</qualifiedname>
+        <param>
+          <type>MCP23017 &amp;</type>
+          <declname>chip</declname>
+        </param>
+        <briefdescription>
+<para>Register an MCP23017 expander in polling-fallback mode. Call before <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> reads all port registers every ~20 ms in <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop()</ref>. No STM32 interrupt pin is required. Use when interrupt lines are not wired or not needed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>chip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>blemasle/MCP23017 instance. Must outlive <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="142" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="142" bodyend="144" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="218" declcolumn="10"/>
+      </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void PanelGroup::setup</definition>
@@ -10,14 +159,27 @@
         <name>setup</name>
         <qualifiedname>PanelGroup::setup</qualifiedname>
         <briefdescription>
-<para>Initialise hardware and start the CAN bus. </para>
+<para>Initialise <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>. Call from sketch <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup()</ref> after Wire.begin(). </para>
         </briefdescription>
         <detaileddescription>
-<para>Calls <ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref>, reads the PA0 strap pin to set node_id, configures the CAN filter (CTRL_BCAST + TEST_SEQ), then calls canStart(). Call STM32Board::setDebug(true) before this to enable diagnostic output. </para>
+<para>Performs the 8-step boot sequence:<orderedlist>
+<listitem><para><ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref></para>
+</listitem><listitem><para>For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON, enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR.</para>
+</listitem><listitem><para>configure() on all InputBase and OutputBase objects.</para>
+</listitem><listitem><para>Register CAN callbacks.</para>
+</listitem><listitem><para><ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref>.</para>
+</listitem><listitem><para>forceReport() burst — one EVT per registered input.</para>
+</listitem><listitem><para>flushBatched(canIdEvt(NODE_ID)).</para>
+</listitem><listitem><para>READY_n frame (canIdReady(NODE_ID), DLC=0). Arm heartbeat timer.</para>
+</listitem></orderedlist>
+</para>
+<para><simplesect kind="note"><para>Wire.begin() must be called by the sketch before this function. <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> never calls Wire.begin() — only start buses in use. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="102" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="102" bodyend="123" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="211" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="148" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="148" bodyend="259" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="238" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -26,40 +188,126 @@
         <name>loop</name>
         <qualifiedname>PanelGroup::loop</qualifiedname>
         <briefdescription>
-<para>Service all <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> activity. Call every Arduino <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop()</ref> iteration. </para>
+<para>Run all <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> work. Call once per <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop()</ref> iteration. </para>
         </briefdescription>
         <detaileddescription>
-<para>Calls STM32Board::update(), drains the CAN RX FIFO and dispatches ControlPacket frames to registered OutputBase objects, polls all InputBase objects, and sends a heartbeat CAN frame every 500 ms. </para>
+<para>Each call:<orderedlist>
+<listitem><para>Check interrupt flags; read INTCAP; update expander port caches.</para>
+</listitem><listitem><para>Polling fallback (~20 ms): read ports for chips registered without interrupt.</para>
+</listitem><listitem><para>poll() on all InputBase objects.</para>
+</listitem><listitem><para><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">CANProtocol::drain()</ref> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.</para>
+</listitem><listitem><para>update() on all OutputBase objects.</para>
+</listitem><listitem><para>Heartbeat: send HB_n every 500 ms. </para>
+</listitem></orderedlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="125" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="125" bodyend="132" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="220" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="263" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="263" bodyend="315" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="251" declcolumn="10"/>
       </memberdef>
-      <memberdef kind="function" id="namespacePanelGroup_1a21b5d03ffa53faaa9e4a7bd9759b0443" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespacePanelGroup_1ae901405cd77bc1596e8894df9cd3e662" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
-        <definition>bool PanelGroup::sendEvent</definition>
-        <argsstring>(uint16_t controlId, uint16_t value)</argsstring>
-        <name>sendEvent</name>
-        <qualifiedname>PanelGroup::sendEvent</qualifiedname>
+        <definition>bool PanelGroup::readCachedPin</definition>
+        <argsstring>(const MCP23017 &amp;chip, uint8_t port, uint8_t bit)</argsstring>
+        <name>readCachedPin</name>
+        <qualifiedname>PanelGroup::readCachedPin</qualifiedname>
         <param>
-          <type>uint16_t</type>
-          <declname>controlId</declname>
+          <type>const MCP23017 &amp;</type>
+          <declname>chip</declname>
         </param>
         <param>
-          <type>uint16_t</type>
+          <type>uint8_t</type>
+          <declname>port</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <briefdescription>
+<para>Return cached MCP23017 pin state. Called by <ref refid="classPinRef_1a2f38bed5de65575b4e243d8cb9349f90" kindref="member">PinRef::read()</ref>. No I2C. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>chip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Chip reference — used as key to locate the ExpanderEntry. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>port</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>PORT_A (0) or PORT_B (1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bit index 0–7. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Cached logical level (true = HIGH). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="319" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="319" bodyend="328" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="19" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePanelGroup_1ae8692730dbfd3bce4ea3c7dcff6e8141" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PanelGroup::writeCachedPin</definition>
+        <argsstring>(MCP23017 &amp;chip, uint8_t port, uint8_t bit, bool value)</argsstring>
+        <name>writeCachedPin</name>
+        <qualifiedname>PanelGroup::writeCachedPin</qualifiedname>
+        <param>
+          <type>MCP23017 &amp;</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>port</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <param>
+          <type>bool</type>
           <declname>value</declname>
         </param>
         <briefdescription>
-<para>Send a hardware input event over CAN to the master node. </para>
+<para>Write MCP23017 pin and update cache. Called by <ref refid="classPinRef_1a0936506f3842d0b761e134732e81a7d3" kindref="member">PinRef::write()</ref>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Packs controlId and value into an 8-byte CAN frame on CAN_ID_EVT_n (where n = <ref refid="namespacePanelGroup_1aecfca5a88d5758bb09efa658a633d0c6" kindref="member">nodeId()</ref>). Intended to be called by InputBase subclasses.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername>controlId</parametername>
+<parametername>chip</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Identifies the physical control (HID range 0x0010–0x00FF, or DCS-BIOS address 0x8000+). </para>
+<para>Chip reference. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>port</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>PORT_A (0) or PORT_B (1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bit index 0–7. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -67,44 +315,23 @@
 <parametername>value</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Current control value (0/1 for switches, 0–65535 for axes). </para>
+<para>Logical level to write. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>true on successful TX, false if the CAN mailbox was full. </para>
-</simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="134" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="134" bodyend="142" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="233" declcolumn="10"/>
-      </memberdef>
-      <memberdef kind="function" id="namespacePanelGroup_1aecfca5a88d5758bb09efa658a633d0c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>uint8_t</type>
-        <definition>uint8_t PanelGroup::nodeId</definition>
-        <argsstring>()</argsstring>
-        <name>nodeId</name>
-        <qualifiedname>PanelGroup::nodeId</qualifiedname>
-        <briefdescription>
-<para>Return the node ID read from the PA0 strap pin at boot. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><simplesect kind="return"><para>1 if PA0 was HIGH, 2 if PA0 was LOW. </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="144" column="9" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="144" bodyend="144" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="239" declcolumn="13"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="330" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="330" bodyend="340" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="20" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Static singleton for CAN sub-node (<ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>) firmware. </para>
     </briefdescription>
     <detaileddescription>
-<para>Reads node_id from the PA0 strap pin at boot, configures the CAN receive filter for CTRL_BCAST and TEST_SEQ frames, dispatches incoming frames to registered <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> output objects, polls registered input objects, and sends heartbeat frames every 500 ms.</para>
-<para>Node ID strapping: tie PA0 to 3.3 V for node_id=1; leave floating (internal pull-down) for node_id=2. </para>
+<para>Manages MCP23017 expander registration and cache, <ref refid="classADS1115" kindref="compound">ADS1115</ref> registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL_BCAST dispatch, SYNC_REQ response, and the 500 ms HB_n heartbeat. </para>
     </detaileddescription>
-    <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="100" column="1"/>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="117" column="1"/>
   </compounddef>
 </doxygen>

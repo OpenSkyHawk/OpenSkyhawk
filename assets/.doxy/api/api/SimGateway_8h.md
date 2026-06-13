@@ -29,7 +29,7 @@ _RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Output and input classes for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._ |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br> |
 | namespace | [**SimGateway**](namespaceSimGateway.md) <br> |
 
 

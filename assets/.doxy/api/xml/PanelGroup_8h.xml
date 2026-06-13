@@ -3,21 +3,31 @@
   <compounddef id="PanelGroup_8h" kind="file" language="C++">
     <compoundname>PanelGroup.h</compoundname>
     <includes local="no">Arduino.h</includes>
-    <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
+    <includes local="no">Wire.h</includes>
+    <includes local="no">MCP23017.h</includes>
+    <includes refid="ADS1115_8h" local="yes">ADS1115.h</includes>
+    <includes refid="PinRef_8h" local="yes">PinRef.h</includes>
     <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
+    <includedby refid="LED_8h" local="no">Firmware/Libraries/PanelGroup/LED.h</includedby>
     <includedby refid="PanelGroup_8cpp" local="yes">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
     <incdepgraph>
-      <node id="5">
+      <node id="8">
         <label>CANProtocol.h</label>
         <link refid="CANProtocol_8h"/>
-        <childnode refid="6" relation="include">
+        <childnode refid="9" relation="include">
         </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="10" relation="include">
         </childnode>
       </node>
-      <node id="7">
+      <node id="10">
         <label>HIDControls.h</label>
         <link refid="HIDControls_8h"/>
+      </node>
+      <node id="5">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
       </node>
       <node id="1">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.h</label>
@@ -26,29 +36,49 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-      </node>
-      <node id="3">
-        <label>STM32Board.h</label>
-        <link refid="STM32Board_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
         <childnode refid="4" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Adafruit_ADS1X15.h</label>
       </node>
       <node id="2">
         <label>Arduino.h</label>
       </node>
-      <node id="6">
-        <label>stdint.h</label>
-      </node>
       <node id="4">
-        <label>stm32f1xx_hal_can.h</label>
+        <label>MCP23017.h</label>
+      </node>
+      <node id="3">
+        <label>Wire.h</label>
+      </node>
+      <node id="9">
+        <label>stdint.h</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/LED.cpp</label>
+        <link refid="LED_8cpp"/>
+      </node>
       <node id="2">
+        <label>Firmware/Libraries/PanelGroup/LED.h</label>
+        <link refid="LED_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
         <link refid="PanelGroup_8cpp"/>
       </node>
@@ -57,30 +87,43 @@
         <link refid="PanelGroup_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
       </node>
     </invincdepgraph>
-    <innerclass refid="classOpenSkyhawk_1_1OutputBase" prot="public">OpenSkyhawk::OutputBase</innerclass>
-    <innerclass refid="classOpenSkyhawk_1_1LED" prot="public">OpenSkyhawk::LED</innerclass>
-    <innerclass refid="classOpenSkyhawk_1_1IntegerOutput" prot="public">OpenSkyhawk::IntegerOutput</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1InputBase" prot="public">OpenSkyhawk::InputBase</innerclass>
-    <innerclass refid="classOpenSkyhawk_1_1Switch2Pos" prot="public">OpenSkyhawk::Switch2Pos</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1OutputBase" prot="public">OpenSkyhawk::OutputBase</innerclass>
     <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
     <innernamespace refid="namespacePanelGroup">PanelGroup</innernamespace>
     <briefdescription>
 <para>CAN sub-node domain layer for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> panel boards. </para>
     </briefdescription>
     <detaileddescription>
-<para>Provides the <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> singleton namespace and the <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> output and input object classes that panel sketches declare at global scope — mirroring the DCS-BIOS design pattern.</para>
-<para>A production panel sketch looks like this:</para>
-<para><programlisting><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<para>Provides the <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> namespace (expander registration, setup, loop, MCP cache bridge) and the <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> base classes that input and output objects inherit from. All input/output objects are declared at global scope in a sketch so their constructors self-register before setup() runs.</para>
+<para>Sketch pattern: <programlisting><codeline><highlight class="preprocessor">#include<sp/>&lt;Wire.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;MCP23017.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="LED_8h" kindref="compound">LED.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"><ref refid="classOpenSkyhawk_1_1LED" kindref="compound">OpenSkyhawk::LED</ref><sp/><sp/><sp/><sp/><sp/>armLed(<ref refid="A4EC__OutputIds_8h_1a859f51d1eefbba326f6a9909319a424f" kindref="member">A_4E_C_ARM_MASTER</ref>,<sp/>0x4000,<sp/>PB0);</highlight></codeline>
-<codeline><highlight class="normal"><ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">OpenSkyhawk::Switch2Pos</ref><sp/>ejSafe(A_4E_C_SEAT_EJECT_SAFE,<sp/>PA1);</highlight></codeline>
+<codeline><highlight class="normal">MCP23017<sp/>exp1(0x20,<sp/>Wire);</highlight></codeline>
+<codeline><highlight class="normal"><ref refid="classADS1115" kindref="compound">ADS1115</ref><sp/><sp/>adc1;</highlight></codeline>
 <codeline><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" kindref="member">setup</ref>()<sp/>{<sp/><ref refid="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" kindref="member">STM32Board::setDebug</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/><ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup</ref>();<sp/>}</highlight></codeline>
-<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/><sp/>{<sp/><ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop</ref>();<sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>PIN_MASTER_ARM<sp/><sp/>=<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>(exp1,<sp/><ref refid="PinRef_8h_1adcf1287504559377c3122c1d3ca92a03" kindref="member">PORT_A</ref>,<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>PIN_CAUTION_LED<sp/>=<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>(PB0);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><ref refid="classOpenSkyhawk_1_1LED" kindref="compound">OpenSkyhawk::LED</ref><sp/>masterCaution(A_4E_C_MASTER_CAUTION,<sp/>A_4E_C_MASTER_CAUTION_AM,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PIN_CAUTION_LED);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" kindref="member">setup</ref>()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Wire.begin();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacePanelGroup_1a94edaa385234b8678e9dab702db44eb5" kindref="member">PanelGroup::registerExpander</ref>(exp1,<sp/>PB3,<sp/>PB4);<sp/><sp/></highlight><highlight class="comment">//<sp/>INTA→PB3,<sp/>INTB→PB4</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacePanelGroup_1a524f38dd1f420a121532180a1347a5e9" kindref="member">PanelGroup::registerADC</ref>(adc1,<sp/>0x48,<sp/>Wire);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup</ref>();</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/>{<sp/><ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop</ref>();<sp/>}</highlight></codeline>
 </programlisting></para>
-<para><simplesect kind="version"><para>0.1.0 </para>
+<para><simplesect kind="version"><para>0.3.0 </para>
 </simplesect>
 <simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
 </simplesect>
@@ -88,87 +131,94 @@
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Output<sp/>objects<sp/>—<sp/>DCS<sp/>state<sp/>→<sp/>panel<sp/>hardware<sp/>───────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="42" refid="namespaceOpenSkyhawk" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight></codeline>
-<codeline lineno="51" refid="classOpenSkyhawk_1_1OutputBase" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref><sp/>{</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="53" refid="classOpenSkyhawk_1_1OutputBase_1a0940e964094ea28c9d085ec66d66c669" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1a0940e964094ea28c9d085ec66d66c669" kindref="member">first</ref>;<sp/></highlight></codeline>
-<codeline lineno="54" refid="classOpenSkyhawk_1_1OutputBase_1adc3b923d0d22a0697d1f2858c38bcbea" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1adc3b923d0d22a0697d1f2858c38bcbea" kindref="member">next</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"></highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" kindref="member">OutputBase</ref>();</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"></highlight></codeline>
-<codeline lineno="68" refid="classOpenSkyhawk_1_1OutputBase_1a2f5d8b95fc224204c1ac2fe462fca3b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1a2f5d8b95fc224204c1ac2fe462fca3b0" kindref="member">onPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="69"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"></highlight></codeline>
-<codeline lineno="82" refid="classOpenSkyhawk_1_1LED" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref><sp/>{</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>addr_;<sp/></highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>mask_;<sp/></highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>pin_;<sp/><sp/></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref>(uint16_t<sp/>addr,<sp/>uint16_t<sp/>mask,<sp/>uint8_t<sp/>pin);</highlight></codeline>
-<codeline lineno="94"><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1LED_1a12d8f375f38d40f78ea92fe86ff6d8fa" kindref="member">onPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="97"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Wire.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;MCP23017.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ADS1115_8h" kindref="compound">ADS1115.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PinRef_8h" kindref="compound">PinRef.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>OpenSkyhawk<sp/>base<sp/>classes<sp/>──────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="classOpenSkyhawk_1_1InputBase" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref><sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="73" refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" kindref="member">configure</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" kindref="member">forceReport</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="98"><highlight class="normal"></highlight></codeline>
-<codeline lineno="111" refid="classOpenSkyhawk_1_1IntegerOutput" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1IntegerOutput" kindref="compound">IntegerOutput</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref><sp/>{</highlight></codeline>
-<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>addr_;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>(*cb_)(uint16_t);<sp/></highlight></codeline>
-<codeline lineno="114"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1IntegerOutput" kindref="compound">IntegerOutput</ref>(uint16_t<sp/>addr,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*cb)(uint16_t));</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"></highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1IntegerOutput_1a92ebb6ee889bd37bde7b78bd50b9bc0a" kindref="member">onPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="124"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"></highlight></codeline>
-<codeline lineno="126"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Input<sp/>objects<sp/>—<sp/>panel<sp/>hardware<sp/>→<sp/>DCS<sp/>via<sp/>CAN<sp/>─────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="127"><highlight class="normal"></highlight></codeline>
-<codeline lineno="134" refid="classOpenSkyhawk_1_1InputBase" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref><sp/>{</highlight></codeline>
-<codeline lineno="135"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="136" refid="classOpenSkyhawk_1_1InputBase_1afa37c73dc476686a141ce4e41bd036c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1InputBase_1afa37c73dc476686a141ce4e41bd036c0" kindref="member">first</ref>;<sp/></highlight></codeline>
-<codeline lineno="137" refid="classOpenSkyhawk_1_1InputBase_1ad29900282f4dadab1b3ff8b10507f2e0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1InputBase_1ad29900282f4dadab1b3ff8b10507f2e0" kindref="member">next</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="138"><highlight class="normal"></highlight></codeline>
-<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" kindref="member">InputBase</ref>();</highlight></codeline>
-<codeline lineno="141"><highlight class="normal"></highlight></codeline>
-<codeline lineno="148" refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll</ref>()<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="149"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="150"><highlight class="normal"></highlight></codeline>
-<codeline lineno="164" refid="classOpenSkyhawk_1_1Switch2Pos" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref><sp/>{</highlight></codeline>
-<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>addr_;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>pin_;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>lastStable_;<sp/></highlight></codeline>
-<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>lastRaw_;<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>debounceMs_;<sp/></highlight></codeline>
-<codeline lineno="170"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref>(uint16_t<sp/>addr,<sp/>uint8_t<sp/>pin);</highlight></codeline>
-<codeline lineno="177"><highlight class="normal"></highlight></codeline>
-<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f" kindref="member">poll</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="185"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="186"><highlight class="normal"></highlight></codeline>
-<codeline lineno="187"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" kindref="member">InputBase</ref>();<sp/><sp/></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref>*<sp/>_next;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115" refid="classOpenSkyhawk_1_1OutputBase" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref><sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="123" refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" kindref="member">configure</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131" refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375" kindref="member">onControlPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139" refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" kindref="member">update</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>*<sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" kindref="member">OutputBase</ref>();<sp/><sp/></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>*<sp/>_next;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>PanelGroup<sp/>namespace<sp/>—<sp/>sketch-facing<sp/>API<sp/>──────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref><sp/>{</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1a524f38dd1f420a121532180a1347a5e9" kindref="member">registerADC</ref>(<ref refid="classADS1115" kindref="compound">ADS1115</ref>&amp;<sp/>adc,<sp/>uint8_t<sp/>addr<sp/>=<sp/>0x48,<sp/>TwoWire&amp;<sp/>wire<sp/>=<sp/>Wire);</highlight></codeline>
 <codeline lineno="188"><highlight class="normal"></highlight></codeline>
-<codeline lineno="189"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>PanelGroup<sp/>singleton<sp/>──────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="190"><highlight class="normal"></highlight></codeline>
-<codeline lineno="202"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref><sp/>{</highlight></codeline>
-<codeline lineno="203"><highlight class="normal"></highlight></codeline>
-<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup</ref>();</highlight></codeline>
-<codeline lineno="212"><highlight class="normal"></highlight></codeline>
-<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop</ref>();</highlight></codeline>
-<codeline lineno="221"><highlight class="normal"></highlight></codeline>
-<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1a21b5d03ffa53faaa9e4a7bd9759b0443" kindref="member">sendEvent</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value);</highlight></codeline>
-<codeline lineno="234"><highlight class="normal"></highlight></codeline>
-<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="namespacePanelGroup_1aecfca5a88d5758bb09efa658a633d0c6" kindref="member">nodeId</ref>();</highlight></codeline>
-<codeline lineno="240"><highlight class="normal"></highlight></codeline>
-<codeline lineno="241"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelGroup</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="242"><highlight class="normal"></highlight></codeline>
-<codeline lineno="243"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1a94edaa385234b8678e9dab702db44eb5" kindref="member">registerExpander</ref>(MCP23017&amp;<sp/>chip,<sp/>uint8_t<sp/>intaPin,<sp/>uint8_t<sp/>intbPin);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1a94edaa385234b8678e9dab702db44eb5" kindref="member">registerExpander</ref>(MCP23017&amp;<sp/>chip);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">setup</ref>();</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Package-internal<sp/>—<sp/>MCP<sp/>cache<sp/>bridge<sp/>for<sp/>PinRef<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Not<sp/>sketch<sp/>API.<sp/>Called<sp/>exclusively<sp/>by<sp/>PinRef::read()<sp/>and<sp/>PinRef::write().</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Direct<sp/>GPIO<sp/>and<sp/>ADS1115<sp/>PinRefs<sp/>bypass<sp/>this<sp/>path<sp/>entirely.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>MCP23017<sp/>reads<sp/>go<sp/>through<sp/>the<sp/>cache<sp/>(no<sp/>live<sp/>I2C<sp/>per<sp/>poll)<sp/>because:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>•<sp/>A<sp/>full<sp/>readPort()<sp/>at<sp/>400<sp/>kHz<sp/>takes<sp/>~100<sp/>µs<sp/>—<sp/>too<sp/>slow<sp/>for<sp/>every<sp/>poll().</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>•<sp/>INTCAP<sp/>captures<sp/>port<sp/>state<sp/>at<sp/>interrupt<sp/>time;<sp/>a<sp/>subsequent<sp/>readPort()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>may<sp/>return<sp/>an<sp/>already-transitioned<sp/>value,<sp/>losing<sp/>the<sp/>captured<sp/>snapshot.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>•<sp/>All<sp/>poll()<sp/>calls<sp/>after<sp/>an<sp/>interrupt<sp/>must<sp/>see<sp/>the<sp/>same<sp/>captured<sp/>snapshot.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1ae901405cd77bc1596e8894df9cd3e662" kindref="member">readCachedPin</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MCP23017&amp;<sp/>chip,<sp/>uint8_t<sp/>port,<sp/>uint8_t<sp/>bit);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1ae8692730dbfd3bce4ea3c7dcff6e8141" kindref="member">writeCachedPin</ref>(MCP23017&amp;<sp/>chip,<sp/>uint8_t<sp/>port,<sp/>uint8_t<sp/>bit,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelGroup</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/PanelGroup.h"/>
   </compounddef>

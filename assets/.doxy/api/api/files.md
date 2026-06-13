@@ -19,8 +19,13 @@ Here is a list of all files with brief descriptions:
             * **file** [**PanelBridge.cpp**](PanelBridge_8cpp.md)     
             * **file** [**PanelBridge.h**](PanelBridge_8h.md) _STM32 CAN master and DCS-BIOS processing node for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
         * **dir** [**PanelGroup**](dir_54a06c409a6161127d200302d3061b3f.md)     
+            * **file** [**ADS1115.h**](ADS1115_8h.md) _Thin wrapper over Adafruit\_ADS1115 that provides a forward-declarable class name._     
+            * **file** [**LED.cpp**](LED_8cpp.md) 
+            * **file** [**LED.h**](LED_8h.md) _Digital LED output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
             * **file** [**PanelGroup.cpp**](PanelGroup_8cpp.md)     
             * **file** [**PanelGroup.h**](PanelGroup_8h.md) _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._    
+            * **file** [**PinRef.cpp**](PinRef_8cpp.md)     
+            * **file** [**PinRef.h**](PinRef_8h.md) _Hardware pin abstraction for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel controls._    
         * **dir** [**STM32Board**](dir_aa1816754c0645981f9c7af905857f7d.md)     
             * **file** [**STM32Board.cpp**](STM32Board_8cpp.md)     
             * **file** [**STM32Board.h**](STM32Board_8h.md) _Shared STM32F103 hardware initialisation for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _avionics nodes._    

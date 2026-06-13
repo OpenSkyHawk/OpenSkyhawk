@@ -8,7 +8,7 @@
 
 
 
-_Base class for all hardware-polled input objects on a_ [_**PanelGroup**_](namespacePanelGroup.md) _board._[More...](#detailed-description)
+_Abstract base for all hardware-polled input objects._ [More...](#detailed-description)
 
 * `#include <PanelGroup.h>`
 
@@ -16,7 +16,6 @@ _Base class for all hardware-polled input objects on a_ [_**PanelGroup**_](names
 
 
 
-Inherited by the following classes: [OpenSkyhawk::Switch2Pos](classOpenSkyhawk_1_1Switch2Pos.md)
 
 
 
@@ -33,18 +32,8 @@ Inherited by the following classes: [OpenSkyhawk::Switch2Pos](classOpenSkyhawk_1
 
 
 
-## Public Attributes
-
-| Type | Name |
-| ---: | :--- |
-|  [**InputBase**](classOpenSkyhawk_1_1InputBase.md) \* | [**next**](#variable-next)  <br>_Next object in the list._  |
 
 
-## Public Static Attributes
-
-| Type | Name |
-| ---: | :--- |
-|  [**InputBase**](classOpenSkyhawk_1_1InputBase.md) \* | [**first**](#variable-first)   = `nullptr`<br>_Head of the self-registration linked list._  |
 
 
 
@@ -63,8 +52,17 @@ Inherited by the following classes: [OpenSkyhawk::Switch2Pos](classOpenSkyhawk_1
 
 | Type | Name |
 | ---: | :--- |
-|   | [**InputBase**](#function-inputbase) () <br>_Registers this object at the head of the linked list._  |
-| virtual void | [**poll**](#function-poll) () = 0<br>_Read hardware state and call_ [_**PanelGroup::sendEvent()**_](namespacePanelGroup.md#function-sendevent) _on change._ |
+| virtual void | [**configure**](#function-configure) () <br>_Configure hardware pins for this input._  |
+| virtual void | [**forceReport**](#function-forcereport) () = 0<br>_Read hardware state and emit a CAN EVT unconditionally._  |
+|  [**InputBase**](classOpenSkyhawk_1_1InputBase.md) \* | [**next**](#function-next) () const<br>_Next input in the list; nullptr at end._  |
+| virtual void | [**poll**](#function-poll) () = 0<br>_Read hardware state and emit a CAN EVT if state changed._  |
+
+
+## Public Static Functions
+
+| Type | Name |
+| ---: | :--- |
+|  [**InputBase**](classOpenSkyhawk_1_1InputBase.md) \* | [**head**](#function-head) () <br>_Head of the self-registered linked list._  |
 
 
 
@@ -87,8 +85,11 @@ Inherited by the following classes: [OpenSkyhawk::Switch2Pos](classOpenSkyhawk_1
 
 
 
+## Protected Functions
 
-
+| Type | Name |
+| ---: | :--- |
+|   | [**InputBase**](#function-inputbase) () <br>_Registers this instance into the linked list._  |
 
 
 
@@ -96,52 +97,59 @@ Inherited by the following classes: [OpenSkyhawk::Switch2Pos](classOpenSkyhawk_1
 ## Detailed Description
 
 
-Subclass this to create custom input handlers. Objects self-register at construction; [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) calls [**poll()**](classOpenSkyhawk_1_1InputBase.md#function-poll) on every object each iteration. 
+Declare concrete input objects at global scope; the constructor self-registers into a static linked list. [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) calls [**configure()**](classOpenSkyhawk_1_1InputBase.md#function-configure) on every registered input after chip initialisation, then calls [**forceReport()**](classOpenSkyhawk_1_1InputBase.md#function-forcereport) for the boot EVT burst. [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) calls [**poll()**](classOpenSkyhawk_1_1InputBase.md#function-poll) every iteration. 
 
 
     
-## Public Attributes Documentation
-
-
-
-
-### variable next 
-
-_Next object in the list._ 
-```C++
-InputBase* OpenSkyhawk::InputBase::next;
-```
-
-
-
-
-<hr>
-## Public Static Attributes Documentation
-
-
-
-
-### variable first 
-
-_Head of the self-registration linked list._ 
-```C++
-OpenSkyhawk::InputBase * OpenSkyhawk::InputBase::first;
-```
-
-
-
-
-<hr>
 ## Public Functions Documentation
 
 
 
 
-### function InputBase 
+### function configure 
 
-_Registers this object at the head of the linked list._ 
+_Configure hardware pins for this input._ 
 ```C++
-OpenSkyhawk::InputBase::InputBase () 
+inline virtual void OpenSkyhawk::InputBase::configure () 
+```
+
+
+
+Called by [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) after chip.init() completes. Call \_pin.configureAsInput() here — not in the constructor — because MCP23017 register writes require chip.init() to have run first.
+
+
+Default is a no-op. Override in every input class that owns a [**PinRef**](classPinRef.md). 
+
+
+        
+
+<hr>
+
+
+
+### function forceReport 
+
+_Read hardware state and emit a CAN EVT unconditionally._ 
+```C++
+virtual void OpenSkyhawk::InputBase::forceReport () = 0
+```
+
+
+
+Called during the boot EVT burst and on every SYNC\_REQ. Bypasses debounce. Establishes the current reading as the new baseline so subsequent [**poll()**](classOpenSkyhawk_1_1InputBase.md#function-poll) calls have a valid comparison point. 
+
+
+        
+
+<hr>
+
+
+
+### function next 
+
+_Next input in the list; nullptr at end._ 
+```C++
+InputBase * OpenSkyhawk::InputBase::next () const
 ```
 
 
@@ -153,17 +161,49 @@ OpenSkyhawk::InputBase::InputBase ()
 
 ### function poll 
 
-_Read hardware state and call_ [_**PanelGroup::sendEvent()**_](namespacePanelGroup.md#function-sendevent) _on change._
+_Read hardware state and emit a CAN EVT if state changed._ 
 ```C++
 virtual void OpenSkyhawk::InputBase::poll () = 0
 ```
 
 
 
-Called by [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) every iteration. Implementations must be non-blocking and handle their own debounce. 
+Called by [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) every iteration. Must be non-blocking. Implementations apply their own debounce / filtering and call [**CANProtocol::sendBatched()**](namespaceCANProtocol.md#function-sendbatched) only on confirmed state change. 
 
 
         
+
+<hr>
+## Public Static Functions Documentation
+
+
+
+
+### function head 
+
+_Head of the self-registered linked list._ 
+```C++
+static InputBase * OpenSkyhawk::InputBase::head () 
+```
+
+
+
+
+<hr>
+## Protected Functions Documentation
+
+
+
+
+### function InputBase 
+
+_Registers this instance into the linked list._ 
+```C++
+OpenSkyhawk::InputBase::InputBase () 
+```
+
+
+
 
 <hr>
 

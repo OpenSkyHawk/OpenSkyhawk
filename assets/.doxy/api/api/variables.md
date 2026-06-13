@@ -31,7 +31,6 @@
 * **DIAG\_HB** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **DIAG\_MAGIC** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **DIAG\_RTT** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **DEBOUNCE\_MS** ([**PanelGroup.cpp**](PanelGroup_8cpp.md))
 
 
 ## l
@@ -43,6 +42,13 @@
 
 * **MAX\_FILTER\_IDS** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **MAX\_TX\_ATTEMPTS** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+
+
+## p
+
+* **PIN\_NC** ([**PinRef.cpp**](PinRef_8cpp.md), [**PinRef.h**](PinRef_8h.md))
+* **PORT\_A** ([**PinRef.h**](PinRef_8h.md))
+* **PORT\_B** ([**PinRef.h**](PinRef_8h.md))
 
 
 ## r

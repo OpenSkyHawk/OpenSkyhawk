@@ -2878,6 +2878,14 @@ violating them causes functional failures that cannot be fixed after fabrication
 <p><strong>MCP23017 input capacity: 14 pins per chip</strong> (GPA0–GPA6 + GPB0–GPB6).<br />
 GPA7 and GPB7 may drive LEDs, enables, or any other output load without restriction.<br />
 Source: Microchip support article <em>"GPA7 &amp; GPB7 Cannot Be Used as Inputs In MCP23017"</em></p>
+<p><strong>Firmware consequence — GPINTEN must exclude bit 7 on both ports.</strong>
+<code>chip.interrupt(port, CHANGE)</code> (blemasle library) enables GPINTEN for all 8 bits. Do not use it directly. Instead, read IODIR after <code>configure()</code> and write it masked (<code>&amp; 0x7F</code>) to GPINTEN:</p>
+<pre><code class="language-cpp">uint8_t gpintenA = chip.readRegister(MCP23017Register::IODIR_A) &amp; 0x7Fu;
+uint8_t gpintenB = chip.readRegister(MCP23017Register::IODIR_B) &amp; 0x7Fu;
+chip.writeRegister(MCP23017Register::GPINTEN_A, gpintenA);
+chip.writeRegister(MCP23017Register::GPINTEN_B, gpintenB);
+</code></pre>
+<p>This also ensures interrupts are never enabled on output pins — redundant per datasheet (output pins cannot fire GPINTEN), but explicit.</p>
 <hr />
 <h2 id="standard-circuit-blocks-design-library">Standard Circuit Blocks (Design Library)</h2>
 <p>These subcircuits repeat on every MCU board and are candidates for KiCad hierarchical sheet templates (<code>PCB/Libraries/sheets/</code>).</p>

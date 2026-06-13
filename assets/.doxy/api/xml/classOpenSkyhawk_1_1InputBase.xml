@@ -2,58 +2,57 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="classOpenSkyhawk_1_1InputBase" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>OpenSkyhawk::InputBase</compoundname>
-    <derivedcompoundref refid="classOpenSkyhawk_1_1Switch2Pos" prot="public" virt="non-virtual">OpenSkyhawk::Switch2Pos</derivedcompoundref>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
-    <sectiondef kind="public-static-attrib">
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1InputBase_1afa37c73dc476686a141ce4e41bd036c0" prot="public" static="yes" mutable="no">
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1InputBase_1a142fd89c2bdb94646013b04f6c107aaf" prot="private" static="yes" mutable="no">
         <type><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> *</type>
-        <definition>OpenSkyhawk::InputBase * OpenSkyhawk::InputBase::first</definition>
+        <definition>OpenSkyhawk::InputBase * OpenSkyhawk::InputBase::_head</definition>
         <argsstring></argsstring>
-        <name>first</name>
-        <qualifiedname>OpenSkyhawk::InputBase::first</qualifiedname>
+        <name>_head</name>
+        <qualifiedname>OpenSkyhawk::InputBase::_head</qualifiedname>
         <initializer>= nullptr</initializer>
         <briefdescription>
-<para>Head of the self-registration linked list. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="136" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="136" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="103" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="103" bodyend="-1"/>
       </memberdef>
     </sectiondef>
-    <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1InputBase_1ad29900282f4dadab1b3ff8b10507f2e0" prot="public" static="no" mutable="no">
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1InputBase_1a3622edc9b321fe7abc09b54bf087e45c" prot="private" static="no" mutable="no">
         <type><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> *</type>
-        <definition>InputBase* OpenSkyhawk::InputBase::next</definition>
+        <definition>InputBase* OpenSkyhawk::InputBase::_next</definition>
         <argsstring></argsstring>
-        <name>next</name>
-        <qualifiedname>OpenSkyhawk::InputBase::next</qualifiedname>
+        <name>_next</name>
+        <qualifiedname>OpenSkyhawk::InputBase::_next</qualifiedname>
         <briefdescription>
-<para>Next object in the list. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="137" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="137" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="104" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="104" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
-      <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type></type>
-        <definition>OpenSkyhawk::InputBase::InputBase</definition>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::InputBase::configure</definition>
         <argsstring>()</argsstring>
-        <name>InputBase</name>
-        <qualifiedname>OpenSkyhawk::InputBase::InputBase</qualifiedname>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::InputBase::configure</qualifiedname>
         <briefdescription>
-<para>Registers this object at the head of the linked list. </para>
+<para>Configure hardware pins for this input. </para>
         </briefdescription>
         <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip.init() completes. Call _pin.configureAsInput() here — not in the constructor — because MCP23017 register writes require chip.init() to have run first.</para>
+<para>Default is a no-op. Override in every input class that owns a <ref refid="classPinRef" kindref="compound">PinRef</ref>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="140" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="11" bodyend="11"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="73" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="73" bodyend="73"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -61,51 +60,97 @@
         <argsstring>()=0</argsstring>
         <name>poll</name>
         <qualifiedname>OpenSkyhawk::InputBase::poll</qualifiedname>
-        <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f">poll</reimplementedby>
         <briefdescription>
-<para>Read hardware state and call <ref refid="namespacePanelGroup_1a21b5d03ffa53faaa9e4a7bd9759b0443" kindref="member">PanelGroup::sendEvent()</ref> on change. </para>
+<para>Read hardware state and emit a CAN EVT if state changed. </para>
         </briefdescription>
         <detaileddescription>
-<para>Called by <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> every iteration. Implementations must be non-blocking and handle their own debounce. </para>
+<para>Called by <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> every iteration. Must be non-blocking. Implementations apply their own debounce / filtering and call <ref refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kindref="member">CANProtocol::sendBatched()</ref> only on confirmed state change. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="148" column="18"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="82" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::InputBase::forceReport</definition>
+        <argsstring>()=0</argsstring>
+        <name>forceReport</name>
+        <qualifiedname>OpenSkyhawk::InputBase::forceReport</qualifiedname>
+        <briefdescription>
+<para>Read hardware state and emit a CAN EVT unconditionally. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called during the boot EVT burst and on every SYNC_REQ. Bypasses debounce. Establishes the current reading as the new baseline so subsequent <ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll()</ref> calls have a valid comparison point. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="91" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> *</type>
+        <definition>OpenSkyhawk::InputBase * OpenSkyhawk::InputBase::next</definition>
+        <argsstring>() const</argsstring>
+        <name>next</name>
+        <qualifiedname>OpenSkyhawk::InputBase::next</qualifiedname>
+        <briefdescription>
+<para>Next input in the list; nullptr at end. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="97" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="111" bodyend="111"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> *</type>
+        <definition>OpenSkyhawk::InputBase * OpenSkyhawk::InputBase::head</definition>
+        <argsstring>()</argsstring>
+        <name>head</name>
+        <qualifiedname>OpenSkyhawk::InputBase::head</qualifiedname>
+        <briefdescription>
+<para>Head of the self-registered linked list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="94" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="110" bodyend="110"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::InputBase::InputBase</definition>
+        <argsstring>()</argsstring>
+        <name>InputBase</name>
+        <qualifiedname>OpenSkyhawk::InputBase::InputBase</qualifiedname>
+        <briefdescription>
+<para>Registers this instance into the linked list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="100" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="107" bodyend="107"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Base class for all hardware-polled input objects on a <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> board. </para>
+<para>Abstract base for all hardware-polled input objects. </para>
     </briefdescription>
     <detaileddescription>
-<para>Subclass this to create custom input handlers. Objects self-register at construction; <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> calls <ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll()</ref> on every object each iteration. </para>
+<para>Declare concrete input objects at global scope; the constructor self-registers into a static linked list. <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> calls <ref refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" kindref="member">configure()</ref> on every registered input after chip initialisation, then calls <ref refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" kindref="member">forceReport()</ref> for the boot EVT burst. <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> calls <ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll()</ref> every iteration. </para>
     </detaileddescription>
-    <inheritancegraph>
-      <node id="1">
-        <label>OpenSkyhawk::InputBase</label>
-        <link refid="classOpenSkyhawk_1_1InputBase"/>
-      </node>
-      <node id="2">
-        <label>OpenSkyhawk::Switch2Pos</label>
-        <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
-        <childnode refid="1" relation="public-inheritance">
-        </childnode>
-      </node>
-    </inheritancegraph>
-    <collaborationgraph>
-      <node id="1">
-        <label>OpenSkyhawk::InputBase</label>
-        <link refid="classOpenSkyhawk_1_1InputBase"/>
-        <childnode refid="1" relation="usage">
-          <edgelabel>first</edgelabel>
-          <edgelabel>next</edgelabel>
-        </childnode>
-      </node>
-    </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="134" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="134" bodyend="149"/>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="62" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="62" bodyend="105"/>
     <listofallmembers>
-      <member refid="classOpenSkyhawk_1_1InputBase_1afa37c73dc476686a141ce4e41bd036c0" prot="public" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>first</name></member>
-      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>InputBase</name></member>
-      <member refid="classOpenSkyhawk_1_1InputBase_1ad29900282f4dadab1b3ff8b10507f2e0" prot="public" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a142fd89c2bdb94646013b04f6c107aaf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>_head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3622edc9b321fe7abc09b54bf087e45c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>_next</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" prot="public" virt="virtual"><scope>OpenSkyhawk::InputBase</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::InputBase</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>next</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::InputBase</scope><name>poll</name></member>
     </listofallmembers>
   </compounddef>

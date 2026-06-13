@@ -2,6 +2,11 @@
 # Class Index
 
 
+## a
+
+* [**ADS1115**](classADS1115.md)
+
+
 ## b
 
 * [**BatchState**](structBatchState.md)
@@ -26,8 +31,6 @@
 
 * [**InputBase**](classOpenSkyhawk_1_1InputBase.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
-* [**IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md)
-([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## l
@@ -42,15 +45,14 @@
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
+## p
+
+* [**PinRef**](classPinRef.md)
+
+
 ## r
 
 * [**RxQueueEntry**](structRxQueueEntry.md)
-
-
-## s
-
-* [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md)
-([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## t

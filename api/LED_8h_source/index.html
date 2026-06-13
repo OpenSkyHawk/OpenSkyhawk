@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d10/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/LED_8h_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>File LED.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#file-ledh" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              File LED.h
             
           </span>
         </div>
@@ -1721,53 +1721,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Types Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum ParserState
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1786,35 +1739,36 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-parserstate">enum ParserState</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserState {
-    IDLE,
-    GOT_AA,
-    IN_FRAME
-};
-</code></pre>
-<hr>
+<h1 id="file-ledh">File LED.h</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../LED_8h/"><strong>LED.h</strong></a></p>
+<p><a href="../LED_8h/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+#include &lt;PanelGroup.h&gt;  // OutputBase, PinRef
+
+namespace OpenSkyhawk {
+
+class LED : public OutputBase {
+public:
+    LED(uint16_t controlId, uint16_t mask, PinRef pin, bool reverse = false);
+
+    void configure() override;
+
+    void onControlPacket(uint16_t controlId, uint16_t value) override;
+
+private:
+    uint16_t _controlId;
+    uint16_t _mask;
+    PinRef   _pin;
+    bool     _reverse;  
+};
+
+} // namespace OpenSkyhawk
+
+#endif // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

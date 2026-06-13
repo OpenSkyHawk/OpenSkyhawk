@@ -8,7 +8,7 @@
 
 
 
-_Base class for all DCS-driven output objects on a_ [_**PanelGroup**_](namespacePanelGroup.md) _board._[More...](#detailed-description)
+_Abstract base for all DCS-driven output objects._ [More...](#detailed-description)
 
 * `#include <PanelGroup.h>`
 
@@ -16,7 +16,7 @@ _Base class for all DCS-driven output objects on a_ [_**PanelGroup**_](namespace
 
 
 
-Inherited by the following classes: [OpenSkyhawk::IntegerOutput](classOpenSkyhawk_1_1IntegerOutput.md),  [OpenSkyhawk::LED](classOpenSkyhawk_1_1LED.md)
+Inherited by the following classes: [OpenSkyhawk::LED](classOpenSkyhawk_1_1LED.md)
 
 
 
@@ -33,18 +33,8 @@ Inherited by the following classes: [OpenSkyhawk::IntegerOutput](classOpenSkyhaw
 
 
 
-## Public Attributes
-
-| Type | Name |
-| ---: | :--- |
-|  [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) \* | [**next**](#variable-next)  <br>_Next object in the list._  |
 
 
-## Public Static Attributes
-
-| Type | Name |
-| ---: | :--- |
-|  [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) \* | [**first**](#variable-first)   = `nullptr`<br>_Head of the self-registration linked list._  |
 
 
 
@@ -63,8 +53,17 @@ Inherited by the following classes: [OpenSkyhawk::IntegerOutput](classOpenSkyhaw
 
 | Type | Name |
 | ---: | :--- |
-|   | [**OutputBase**](#function-outputbase) () <br>_Registers this object at the head of the linked list._  |
-| virtual void | [**onPacket**](#function-onpacket) (uint16\_t controlId, uint16\_t value) = 0<br>_Called by_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _for every received ControlPacket._ |
+| virtual void | [**configure**](#function-configure) () <br>_Configure hardware pins for this output._  |
+|  [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) \* | [**next**](#function-next) () const<br>_Next output in the list; nullptr at end._  |
+| virtual void | [**onControlPacket**](#function-oncontrolpacket) (uint16\_t controlId, uint16\_t value) = 0<br>_Called for every non-null ControlPacket in a CTRL\_BCAST frame._  |
+| virtual void | [**update**](#function-update) () <br>_Called every_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
+
+
+## Public Static Functions
+
+| Type | Name |
+| ---: | :--- |
+|  [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) \* | [**head**](#function-head) () <br>_Head of the self-registered linked list._  |
 
 
 
@@ -87,8 +86,11 @@ Inherited by the following classes: [OpenSkyhawk::IntegerOutput](classOpenSkyhaw
 
 
 
+## Protected Functions
 
-
+| Type | Name |
+| ---: | :--- |
+|   | [**OutputBase**](#function-outputbase) () <br>_Registers this instance into the linked list._  |
 
 
 
@@ -96,52 +98,38 @@ Inherited by the following classes: [OpenSkyhawk::IntegerOutput](classOpenSkyhaw
 ## Detailed Description
 
 
-Subclass this to create custom output handlers. Objects declared at global scope self-register into the static linked list; [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) walks the list on every received CTRL\_BCAST frame. 
+Declare concrete output objects at global scope; the constructor self-registers into a static linked list. [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) calls [**configure()**](classOpenSkyhawk_1_1OutputBase.md#function-configure) after chip initialisation. [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) calls [**onControlPacket()**](classOpenSkyhawk_1_1OutputBase.md#function-oncontrolpacket) for every non-null slot in each received CTRL\_BCAST frame and calls [**update()**](classOpenSkyhawk_1_1OutputBase.md#function-update) every iteration. 
 
 
     
-## Public Attributes Documentation
-
-
-
-
-### variable next 
-
-_Next object in the list._ 
-```C++
-OutputBase* OpenSkyhawk::OutputBase::next;
-```
-
-
-
-
-<hr>
-## Public Static Attributes Documentation
-
-
-
-
-### variable first 
-
-_Head of the self-registration linked list._ 
-```C++
-OpenSkyhawk::OutputBase * OpenSkyhawk::OutputBase::first;
-```
-
-
-
-
-<hr>
 ## Public Functions Documentation
 
 
 
 
-### function OutputBase 
+### function configure 
 
-_Registers this object at the head of the linked list._ 
+_Configure hardware pins for this output._ 
 ```C++
-OpenSkyhawk::OutputBase::OutputBase () 
+inline virtual void OpenSkyhawk::OutputBase::configure () 
+```
+
+
+
+Called by [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) after chip.init() completes. Call \_pin.configureAsOutput() here. Default is a no-op. 
+
+
+        
+
+<hr>
+
+
+
+### function next 
+
+_Next output in the list; nullptr at end._ 
+```C++
+OutputBase * OpenSkyhawk::OutputBase::next () const
 ```
 
 
@@ -151,11 +139,11 @@ OpenSkyhawk::OutputBase::OutputBase ()
 
 
 
-### function onPacket 
+### function onControlPacket 
 
-_Called by_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _for every received ControlPacket._
+_Called for every non-null ControlPacket in a CTRL\_BCAST frame._ 
 ```C++
-virtual void OpenSkyhawk::OutputBase::onPacket (
+virtual void OpenSkyhawk::OutputBase::onControlPacket (
     uint16_t controlId,
     uint16_t value
 ) = 0
@@ -163,21 +151,68 @@ virtual void OpenSkyhawk::OutputBase::onPacket (
 
 
 
-Implementations should check controlId against their own address and update hardware only on a match.
-
-
 
 
 **Parameters:**
 
 
-* `controlId` controlId field from the received ControlPacket. 
-* `value` value field from the received ControlPacket. 
+* `controlId` DCS-BIOS output address from the received packet. 
+* `value` 16-bit value from DCS-BIOS. 
 
 
 
 
         
+
+<hr>
+
+
+
+### function update 
+
+_Called every_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _iteration._
+```C++
+inline virtual void OpenSkyhawk::OutputBase::update () 
+```
+
+
+
+Default is a no-op. Override for outputs that need continuous work between CAN frames (stepper motor step generation, PWM updates). 
+
+
+        
+
+<hr>
+## Public Static Functions Documentation
+
+
+
+
+### function head 
+
+_Head of the self-registered linked list._ 
+```C++
+static OutputBase * OpenSkyhawk::OutputBase::head () 
+```
+
+
+
+
+<hr>
+## Protected Functions Documentation
+
+
+
+
+### function OutputBase 
+
+_Registers this instance into the linked list._ 
+```C++
+OpenSkyhawk::OutputBase::OutputBase () 
+```
+
+
+
 
 <hr>
 

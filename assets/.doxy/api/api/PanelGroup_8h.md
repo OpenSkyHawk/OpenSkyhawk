@@ -11,7 +11,10 @@
 _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._[More...](#detailed-description)
 
 * `#include <Arduino.h>`
-* `#include <STM32Board.h>`
+* `#include <Wire.h>`
+* `#include <MCP23017.h>`
+* `#include "ADS1115.h"`
+* `#include "PinRef.h"`
 * `#include <CANProtocol.h>`
 
 
@@ -30,7 +33,7 @@ _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pa
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Output and input classes for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._ |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br> |
 | namespace | [**PanelGroup**](namespacePanelGroup.md) <br>_Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._ |
 
 
@@ -38,11 +41,8 @@ _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pa
 
 | Type | Name |
 | ---: | :--- |
-| class | [**InputBase**](classOpenSkyhawk_1_1InputBase.md) <br>_Base class for all hardware-polled input objects on a_ [_**PanelGroup**_](namespacePanelGroup.md) _board._ |
-| class | [**IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md) <br>_Call an arbitrary function with the raw value from a ControlPacket._  |
-| class | [**LED**](classOpenSkyhawk_1_1LED.md) <br>_Drive a GPIO pin from a single bit of a DCS-BIOS output value._  |
-| class | [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) <br>_Base class for all DCS-driven output objects on a_ [_**PanelGroup**_](namespacePanelGroup.md) _board._ |
-| class | [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md) <br>_Debounced 2-position GPIO switch — sends a ControlPacket CAN event on change._  |
+| class | [**InputBase**](classOpenSkyhawk_1_1InputBase.md) <br>_Abstract base for all hardware-polled input objects._  |
+| class | [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) <br>_Abstract base for all DCS-driven output objects._  |
 
 
 
@@ -96,21 +96,33 @@ _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pa
 ## Detailed Description
 
 
-Provides the [**PanelGroup**](namespacePanelGroup.md) singleton namespace and the [**OpenSkyhawk**](namespaceOpenSkyhawk.md) output and input object classes that panel sketches declare at global scope — mirroring the DCS-BIOS design pattern.
+Provides the [**PanelGroup**](namespacePanelGroup.md) namespace (expander registration, setup, loop, MCP cache bridge) and the [**OpenSkyhawk**](namespaceOpenSkyhawk.md) base classes that input and output objects inherit from. All input/output objects are declared at global scope in a sketch so their constructors self-register before setup() runs.
 
 
-A production panel sketch looks like this:
-
-
-
+Sketch pattern: 
 ```C++
+#include <Wire.h>
+#include <MCP23017.h>
 #include <PanelGroup.h>
+#include <LED.h>
+#include <A4EC_OutputIds.h>
 
-OpenSkyhawk::LED     armLed(A_4E_C_ARM_MASTER, 0x4000, PB0);
-OpenSkyhawk::Switch2Pos ejSafe(A_4E_C_SEAT_EJECT_SAFE, PA1);
+MCP23017 exp1(0x20, Wire);
+ADS1115  adc1;
 
-void setup() { STM32Board::setDebug(true); PanelGroup::setup(); }
-void loop()  { PanelGroup::loop(); }
+const PinRef PIN_MASTER_ARM  = PinRef(exp1, PORT_A, 3);
+const PinRef PIN_CAUTION_LED = PinRef(PB0);
+
+OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM,
+                               PIN_CAUTION_LED);
+
+void setup() {
+    Wire.begin();
+    PanelGroup::registerExpander(exp1, PB3, PB4);  // INTA→PB3, INTB→PB4
+    PanelGroup::registerADC(adc1, 0x48, Wire);
+    PanelGroup::setup();
+}
+void loop() { PanelGroup::loop(); }
 ```
 
 
@@ -119,7 +131,7 @@ void loop()  { PanelGroup::loop(); }
 
 **Version:**
 
-0.1.0 
+0.3.0 
 
 
 

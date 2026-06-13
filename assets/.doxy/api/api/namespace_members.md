@@ -61,7 +61,6 @@
 ## n
 
 * **NodeCallback** ([**PanelBridge**](namespacePanelBridge.md))
-* **nodeId** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 ## o
@@ -78,12 +77,15 @@
 
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d10.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d15.md))
 
 
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
+* **readCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
+* **registerADC** ([**PanelGroup**](namespacePanelGroup.md))
+* **registerExpander** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 ## s
@@ -94,7 +96,6 @@
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
 * **SWITCH** ([**InputType**](namespaceInputType.md))
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
-* **sendEvent** ([**PanelGroup**](namespacePanelGroup.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
 * **setWarning** ([**STM32Board**](namespaceSTM32Board.md))
 
@@ -105,6 +106,11 @@
 * **txDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
 * **tryToSendDcsBiosMessage** ([**DcsBios**](namespaceDcsBios.md))
 * **tick** ([**STM32Board**](namespaceSTM32Board.md))
+
+
+## w
+
+* **writeCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 

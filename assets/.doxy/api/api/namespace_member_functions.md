@@ -43,11 +43,6 @@
 * **makeHeartbeatPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 
 
-## n
-
-* **nodeId** ([**PanelGroup**](namespacePanelGroup.md))
-
-
 ## o
 
 * **onReceive** ([**CANProtocol**](namespaceCANProtocol.md))
@@ -61,6 +56,9 @@
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
+* **readCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
+* **registerADC** ([**PanelGroup**](namespacePanelGroup.md))
+* **registerExpander** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 ## s
@@ -70,7 +68,6 @@
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
-* **sendEvent** ([**PanelGroup**](namespacePanelGroup.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
 * **setWarning** ([**STM32Board**](namespaceSTM32Board.md))
 
@@ -81,6 +78,11 @@
 * **txDropCount** ([**CANProtocol**](namespaceCANProtocol.md))
 * **tryToSendDcsBiosMessage** ([**DcsBios**](namespaceDcsBios.md))
 * **tick** ([**STM32Board**](namespaceSTM32Board.md))
+
+
+## w
+
+* **writeCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 

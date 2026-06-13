@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d8/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/LED_8cpp_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp} - OpenSkyhawk</title>
+        <title>File LED.cpp - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp" class="md-skip">
+        <a href="#file-ledcpp" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+              File LED.cpp
             
           </span>
         </div>
@@ -1739,10 +1739,29 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp">Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a></p>
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp</code></p>
+<h1 id="file-ledcpp">File LED.cpp</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../LED_8cpp/"><strong>LED.cpp</strong></a></p>
+<p><a href="../LED_8cpp/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">#ifdef ARDUINO_ARCH_STM32
+
+#include &quot;LED.h&quot;
+
+OpenSkyhawk::LED::LED(uint16_t controlId, uint16_t mask, PinRef pin, bool reverse)
+    : _controlId(controlId), _mask(mask), _pin(pin), _reverse(reverse) {}
+
+void OpenSkyhawk::LED::configure() {
+    _pin.configureAsOutput();
+    _pin.write(_reverse); // reverse=false → LOW (off); reverse=true → HIGH (off)
+}
+
+void OpenSkyhawk::LED::onControlPacket(uint16_t controlId, uint16_t value) {
+    if (controlId != _controlId) return;
+    bool on = (value &amp; _mask) != 0;
+    _pin.write(_reverse ? !on : on);
+}
+
+#endif // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

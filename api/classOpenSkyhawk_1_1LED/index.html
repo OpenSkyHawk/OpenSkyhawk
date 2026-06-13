@@ -1728,28 +1728,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#public-attributes-inherited-from-openskyhawkoutputbase" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Attributes inherited from OpenSkyhawk::OutputBase
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-static-attributes-inherited-from-openskyhawkoutputbase" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Static Attributes inherited from OpenSkyhawk::OutputBase
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#public-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1765,6 +1743,28 @@
     <span class="md-ellipsis">
       
         Public Functions inherited from OpenSkyhawk::OutputBase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-functions-inherited-from-openskyhawkoutputbase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions inherited from OpenSkyhawk::OutputBase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions-inherited-from-openskyhawkoutputbase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions inherited from OpenSkyhawk::OutputBase
       
     </span>
   </a>
@@ -1806,10 +1806,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-onpacket" class="md-nav__link">
+  <a href="#function-configure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function onPacket
+        function configure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-oncontrolpacket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function onControlPacket
       
     </span>
   </a>
@@ -1843,43 +1854,11 @@
 
 <h1 id="class-openskyhawkled">Class OpenSkyhawk::LED</h1>
 <p><a href="../annotated/"><strong>ClassList</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>LED</strong></a></p>
-<p><em>Drive a GPIO pin from a single bit of a DCS-BIOS output value.</em> <a href="#detailed-description">More...</a></p>
+<p><em>Digital</em> <a href="./"><em><strong>LED</strong></em></a> <em>output. Drives a pin based on a DCS-BIOS state value.</em><a href="#detailed-description">More...</a></p>
 <ul>
-<li><code>#include &lt;PanelGroup.h&gt;</code></li>
+<li><code>#include &lt;LED.h&gt;</code></li>
 </ul>
 <p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
-<h2 id="public-attributes-inherited-from-openskyhawkoutputbase">Public Attributes inherited from OpenSkyhawk::OutputBase</h2>
-<p>See <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> *</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#variable-next"><strong>next</strong></a>  <br><em>Next object in the list.</em></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-static-attributes-inherited-from-openskyhawkoutputbase">Public Static Attributes inherited from OpenSkyhawk::OutputBase</h2>
-<p>See <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> *</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#variable-first"><strong>first</strong></a>   = <code>nullptr</code><br><em>Head of the self-registration linked list.</em></td>
-</tr>
-</tbody>
-</table>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -1891,11 +1870,15 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-led"><strong>LED</strong></a> (uint16_t addr, uint16_t mask, uint8_t pin) <br><em>Construct an</em> <a href="./"><em><strong>LED</strong></em></a> <em>output object.</em></td>
+<td style="text-align: left;"><a href="#function-led"><strong>LED</strong></a> (uint16_t controlId, uint16_t mask, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, bool reverse=false) <br><em>Construct and register an</em> <a href="./"><em><strong>LED</strong></em></a> <em>output.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
-<td style="text-align: left;"><a href="#function-onpacket"><strong>onPacket</strong></a> (uint16_t controlId, uint16_t value) override<br><em>Sets pin HIGH when (value &amp; mask) != 0, LOW otherwise.</em></td>
+<td style="text-align: left;"><a href="#function-configure"><strong>configure</strong></a> () override<br><em>Configure pin as output and drive it to the off state.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="#function-oncontrolpacket"><strong>onControlPacket</strong></a> (uint16_t controlId, uint16_t value) override<br><em>Update</em> <a href="./"><em><strong>LED</strong></em></a> <em>state from a CTRL_BCAST ControlPacket.</em></td>
 </tr>
 </tbody>
 </table>
@@ -1910,49 +1893,105 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-outputbase"><strong>OutputBase</strong></a> () <br><em>Registers this object at the head of the linked list.</em></td>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><strong>configure</strong></a> () <br><em>Configure hardware pins for this output.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> *</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-next"><strong>next</strong></a> () const<br><em>Next output in the list; nullptr at end.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-onpacket"><strong>onPacket</strong></a> (uint16_t controlId, uint16_t value) = 0<br><em>Called by</em> <a href="../namespacePanelGroup/#function-loop"><em><strong>PanelGroup::loop()</strong></em></a> <em>for every received ControlPacket.</em></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-oncontrolpacket"><strong>onControlPacket</strong></a> (uint16_t controlId, uint16_t value) = 0<br><em>Called for every non-null ControlPacket in a CTRL_BCAST frame.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-update"><strong>update</strong></a> () <br><em>Called every</em> <a href="../namespacePanelGroup/#function-loop"><em><strong>PanelGroup::loop()</strong></em></a> <em>iteration.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-functions-inherited-from-openskyhawkoutputbase">Public Static Functions inherited from OpenSkyhawk::OutputBase</h2>
+<p>See <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> *</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-head"><strong>head</strong></a> () <br><em>Head of the self-registered linked list.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="protected-functions-inherited-from-openskyhawkoutputbase">Protected Functions inherited from OpenSkyhawk::OutputBase</h2>
+<p>See <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-outputbase"><strong>OutputBase</strong></a> () <br><em>Registers this instance into the linked list.</em></td>
 </tr>
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>Mirrors DcsBios::LED. Pin goes HIGH when (value &amp; mask) is non-zero, LOW otherwise.</p>
-<pre><code class="language-C++">// Direct STM32 GPIO:
-OpenSkyhawk::LED warn(A_4E_C_MASTER_CAUTION, 0x4000, PB0);
-</code></pre>
+<p>Receives state via <a href="./#function-oncontrolpacket"><strong>onControlPacket()</strong></a> — called by <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> when a CTRL_BCAST frame arrives. Ignores packets whose controlId does not match.</p>
+<p>The mask parameter handles DCS-BIOS bit-packed outputs, where a single 16-bit address carries multiple independent flags. For whole-word binary outputs (value is 0 or 1), use mask = 0xFFFF.</p>
+<p>The reverse parameter handles LEDs wired with current-sinking polarity — for example, an indicator <a href="./"><strong>LED</strong></a> with its anode tied to VCC through a resistor, where the MCU or MCP23017 output sinks current (LOW = on). reverse = false (default): (value &amp; mask) != 0 → pin HIGH (on). reverse = true: (value &amp; mask) != 0 → pin LOW (on).</p>
+<p>Pin is driven to the off state during <a href="./#function-configure"><strong>configure()</strong></a> and remains off until a CTRL_BCAST packet with a matching controlId is received.</p>
+<p>Works with GPIO and MCP23017 PinRefs. <a href="../classADS1115/"><strong>ADS1115</strong></a> PinRefs are input-only — do not assign one to an <a href="./"><strong>LED</strong></a>. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-led">function LED</h3>
-<p><em>Construct an</em> <a href="./"><em><strong>LED</strong></em></a> <em>output object.</em></p>
+<p><em>Construct and register an</em> <a href="./"><em><strong>LED</strong></em></a> <em>output.</em></p>
 <pre><code class="language-C++">OpenSkyhawk::LED::LED (
-    uint16_t addr,
+    uint16_t controlId,
     uint16_t mask,
-    uint8_t pin
+    PinRef pin,
+    bool reverse=false
 ) 
 </code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>addr</code> DCS-BIOS address for this indicator (used as controlId). </li>
-<li><code>mask</code> Bitmask to extract the relevant bit from the value word. </li>
-<li><code>pin</code> GPIO pin to drive (active HIGH). </li>
+<li><code>controlId</code> DCS-BIOS output address (A_4E_C_* from <a href="../A4EC__OutputIds_8h/"><strong>A4EC_OutputIds.h</strong></a>). </li>
+<li><code>mask</code> Bitmask: (value &amp; mask) != 0 → on; == 0 → off. Use A_4E_C_*_AM constants, or 0xFFFF for whole-word outputs. </li>
+<li><code>pin</code> GPIO or MCP23017 <a href="../classPinRef/"><strong>PinRef</strong></a> for the <a href="./"><strong>LED</strong></a> pin. </li>
+<li><code>reverse</code> false (default): pin HIGH = on (current-source wiring). true: pin LOW = on (current-sink, anode to VCC). </li>
 </ul>
 <hr>
 
-<h3 id="function-onpacket">function onPacket</h3>
-<p><em>Sets pin HIGH when (value &amp; mask) != 0, LOW otherwise.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::LED::onPacket (
+<h3 id="function-configure">function configure</h3>
+<p><em>Configure pin as output and drive it to the off state.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::LED::configure () override
+</code></pre>
+<p>Called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip.init(). Sets OUTPUT mode on GPIO pins; sets IODIR=0 and GPPU=0 on MCP23017 pins. Drives off immediately: LOW when reverse = false, HIGH when reverse = true. </p>
+<p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><em>OpenSkyhawk::OutputBase::configure</em></a></p>
+<hr>
+
+<h3 id="function-oncontrolpacket">function onControlPacket</h3>
+<p><em>Update</em> <a href="./"><em><strong>LED</strong></em></a> <em>state from a CTRL_BCAST ControlPacket.</em></p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::LED::onControlPacket (
     uint16_t controlId,
     uint16_t value
 ) override
 </code></pre>
-<p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-onpacket"><em>OpenSkyhawk::OutputBase::onPacket</em></a></p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>controlId</code> Incoming packet controlId. Ignored if != _controlId. </li>
+<li><code>value</code> Raw 16-bit DCS-BIOS value. </li>
+</ul>
+<p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-oncontrolpacket"><em>OpenSkyhawk::OutputBase::onControlPacket</em></a></p>
 <hr>
 
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.h</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/LED.h</code></p>
 
 
 

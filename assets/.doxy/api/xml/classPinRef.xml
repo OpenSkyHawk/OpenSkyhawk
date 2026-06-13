@@ -1,0 +1,586 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classPinRef" kind="class" language="C++" prot="public">
+    <compoundname>PinRef</compoundname>
+    <includes refid="PinRef_8h" local="no">PinRef.h</includes>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60" prot="private" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>Type</name>
+        <qualifiedname>PinRef::Type</qualifiedname>
+        <enumvalue id="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60aa4b03abff0e37da035d6fc0f9a4b1235" prot="private">
+          <name>GPIO</name>
+          <briefdescription>
+<para>Direct STM32 GPIO pin. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60aaaad5def9c9014028bbdba28e341feb7" prot="private">
+          <name>MCP</name>
+          <briefdescription>
+<para>MCP23017 expander GPIO. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60af657a47bbdb90f97364138eb933d13cb" prot="private">
+          <name>ADS</name>
+          <briefdescription>
+<para><ref refid="classADS1115" kindref="compound">ADS1115</ref> ADC channel. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60a90581d96b500fd2d3fd701a583409cb8" prot="private">
+          <name>NC</name>
+          <briefdescription>
+<para>No-connect sentinel. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Backing source type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="177" column="5" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="177" bodyend="182"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classPinRef_1a36ae609316307230881dd49321c3a45c" prot="private" static="no" mutable="no">
+        <type>Type</type>
+        <definition>Type PinRef::_type</definition>
+        <argsstring></argsstring>
+        <name>_type</name>
+        <qualifiedname>PinRef::_type</qualifiedname>
+        <briefdescription>
+<para>Discriminator for the union below. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="184" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="184" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1a169d76bc37d58d27f6ec5157555ec0e9" prot="private" static="no" mutable="no">
+        <type>union <ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>union PinRef PinRef::_src</definition>
+        <argsstring></argsstring>
+        <name>_src</name>
+        <qualifiedname>PinRef::_src</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="190" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classPinRef_1a2991db1deea943cb3356e61308238a54" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t PinRef::pin</definition>
+        <argsstring></argsstring>
+        <name>pin</name>
+        <qualifiedname>PinRef::pin</qualifiedname>
+        <briefdescription>
+<para>GPIO pin number. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="187" column="17" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1abbc6d9f9ea7b00388804e84fc950309d" prot="public" static="no" mutable="no">
+        <type>MCP23017 *</type>
+        <definition>MCP23017* PinRef::chip</definition>
+        <argsstring></argsstring>
+        <name>chip</name>
+        <qualifiedname>PinRef::chip</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="188" column="24" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="188" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1aa5eee03a45c9b0422c68220706c76b1d" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t PinRef::port</definition>
+        <argsstring></argsstring>
+        <name>port</name>
+        <qualifiedname>PinRef::port</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="188" column="37" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="188" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1ac678ec020877487e1b33a7f14bd23324" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t PinRef::bit</definition>
+        <argsstring></argsstring>
+        <name>bit</name>
+        <qualifiedname>PinRef::bit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="188" column="50" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="188" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1a7fe530229713c48d1ec10c4cf78701ad" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>struct PinRef PinRef::mcp</definition>
+        <argsstring></argsstring>
+        <name>mcp</name>
+        <qualifiedname>PinRef::mcp</qualifiedname>
+        <briefdescription>
+<para>MCP23017 source. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="188" column="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1a44f250ed3f1327876adc437f797127a5" prot="public" static="no" mutable="no">
+        <type><ref refid="classADS1115" kindref="compound">ADS1115</ref> *</type>
+        <definition>ADS1115* PinRef::adc</definition>
+        <argsstring></argsstring>
+        <name>adc</name>
+        <qualifiedname>PinRef::adc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="189" column="24" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1a9ded8eb8756032181d243e81d6486ba5" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t PinRef::channel</definition>
+        <argsstring></argsstring>
+        <name>channel</name>
+        <qualifiedname>PinRef::channel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="189" column="37" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classPinRef_1af49bbd360a2e5834cad1b1b054b06c86" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>struct PinRef PinRef::ads</definition>
+        <argsstring></argsstring>
+        <name>ads</name>
+        <qualifiedname>PinRef::ads</qualifiedname>
+        <briefdescription>
+<para><ref refid="classADS1115" kindref="compound">ADS1115</ref> source. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="189" column="25"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classPinRef_1a1a39e46cfc347bdfebf78fabd37e8d57" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PinRef::PinRef</definition>
+        <argsstring>(uint8_t pin)</argsstring>
+        <name>PinRef</name>
+        <qualifiedname>PinRef::PinRef</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>pin</declname>
+        </param>
+        <briefdescription>
+<para>Direct STM32 GPIO pin. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Arduino pin number (e.g. PA0, PB5). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="46" column="14" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="29" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1ab04330ae4e468f50efac724e7b230740" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PinRef::PinRef</definition>
+        <argsstring>(MCP23017 &amp;chip, uint8_t port, uint8_t bit)</argsstring>
+        <name>PinRef</name>
+        <qualifiedname>PinRef::PinRef</qualifiedname>
+        <param>
+          <type>MCP23017 &amp;</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>port</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <briefdescription>
+<para>MCP23017 expander GPIO. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>chip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the registered MCP23017 instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>port</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>PORT_A (0) or PORT_B (1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bit within the port, 0–7. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="54" column="5" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="33" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1a94a6a5253fef0b8c33d7caa514e55dd4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PinRef::PinRef</definition>
+        <argsstring>(ADS1115 &amp;adc, uint8_t channel)</argsstring>
+        <name>PinRef</name>
+        <qualifiedname>PinRef::PinRef</qualifiedname>
+        <param>
+          <type><ref refid="classADS1115" kindref="compound">ADS1115</ref> &amp;</type>
+          <declname>adc</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>channel</declname>
+        </param>
+        <briefdescription>
+<para><ref refid="classADS1115" kindref="compound">ADS1115</ref> ADC channel. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>adc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the <ref refid="classADS1115" kindref="compound">ADS1115</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Channel number, 0–3. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="61" column="5" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="37" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1adadada577c72fb0b3534a3354387ddd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PinRef::PinRef</definition>
+        <argsstring>()</argsstring>
+        <name>PinRef</name>
+        <qualifiedname>PinRef::PinRef</qualifiedname>
+        <briefdescription>
+<para>No-connect sentinel — represents a position with no physical pin. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>All reads return false / 0. All writes are no-ops. Equivalent to PIN_NC. Provided for use in array initialisers. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="69" column="5" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="42" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1a2f38bed5de65575b4e243d8cb9349f90" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PinRef::read</definition>
+        <argsstring>() const</argsstring>
+        <name>read</name>
+        <qualifiedname>PinRef::read</qualifiedname>
+        <briefdescription>
+<para>Digital read. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s last INTCAP or port read. No I2C. <ref refid="classADS1115" kindref="compound">ADS1115</ref>: true if <ref refid="classPinRef_1a08e3c8b54a3c18ae352c50d5e75cd2b2" kindref="member">readAnalog()</ref> &gt; 32767 (half-scale threshold). NC: always false.</para>
+<para><simplesect kind="return"><para>true = HIGH, false = LOW. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="83" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="48" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1a08e3c8b54a3c18ae352c50d5e75cd2b2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t PinRef::readAnalog</definition>
+        <argsstring>() const</argsstring>
+        <name>readAnalog</name>
+        <qualifiedname>PinRef::readAnalog</qualifiedname>
+        <briefdescription>
+<para>Analog read, normalised to 16-bit (0–65535). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO: analogRead(pin) × 16 → 0–65520 (12-bit ADC scaled to 16-bit). <ref refid="classADS1115" kindref="compound">ADS1115</ref>: readADC_SingleEnded(channel) × 2 → 0–65534 (15-bit single-ended scaled). MCP23017: always 0; debug assertion fires if PINREF_DEBUG is defined. NC: always 0.</para>
+<para><simplesect kind="return"><para>Normalised 16-bit ADC value. </para>
+</simplesect>
+<simplesect kind="note"><para>Do not call from an ISR on <ref refid="classADS1115" kindref="compound">ADS1115</ref> pins — blocks ~8 ms per conversion. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="96" column="14" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="64" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1a0936506f3842d0b761e134732e81a7d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PinRef::write</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>write</name>
+        <qualifiedname>PinRef::write</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Digital write. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO: digitalWrite(pin, value ? HIGH : LOW). MCP23017: sets the output bit via <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s expander write path and cache. <ref refid="classADS1115" kindref="compound">ADS1115</ref>: no-op; debug assertion fires if PINREF_DEBUG is defined. NC: no-op.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true = HIGH, false = LOW. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="108" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="88" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1ad68f7414ce0f3f99f252cf94159dc534" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PinRef::writeAnalog</definition>
+        <argsstring>(uint16_t val)</argsstring>
+        <name>writeAnalog</name>
+        <qualifiedname>PinRef::writeAnalog</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Analog write (PWM). GPIO only. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO: analogWrite(pin, val &gt;&gt; 8) — maps 16-bit value to 8-bit duty cycle. MCP23017: no-op; debug assertion fires if PINREF_DEBUG is defined. <ref refid="classADS1115" kindref="compound">ADS1115</ref>: no-op; debug assertion fires if PINREF_DEBUG is defined. NC: no-op.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>16-bit value (0–65535); upper 8 bits used as PWM duty cycle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Pin must be a PWM-capable STM32 GPIO. No runtime check is performed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="121" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="109" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1ad51eae7d77cc3ec606471f314aa8dd57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PinRef::configureAsInput</definition>
+        <argsstring>()</argsstring>
+        <name>configureAsInput</name>
+        <qualifiedname>PinRef::configureAsInput</qualifiedname>
+        <briefdescription>
+<para>Configure this pin as a digital input. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO: calls pinMode(pin, INPUT). Bias is provided by board wiring. MCP23017: sets IODIR bit to 1 (input) and GPPU bit to 0 (pull-up disabled) for this pin only via <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s expander management path. <ref refid="classADS1115" kindref="compound">ADS1115</ref>: no-op — always an analog input. NC: no-op.</para>
+<para><simplesect kind="note"><para>Must be called after chip.begin() — i.e. from an InputBase::configure() override called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>, not from a constructor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="135" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="133" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1aaa068f47fc479c9d3b52d1ec6b3f0060" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PinRef::configureAsOutput</definition>
+        <argsstring>()</argsstring>
+        <name>configureAsOutput</name>
+        <qualifiedname>PinRef::configureAsOutput</qualifiedname>
+        <briefdescription>
+<para>Configure this pin as a digital output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>GPIO: calls pinMode(pin, OUTPUT). MCP23017: sets IODIR bit to 0 (output) and GPPU bit to 0 (pull-up disabled) for this pin only via <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s expander management path. <ref refid="classADS1115" kindref="compound">ADS1115</ref>: no-op; debug assertion fires if PINREF_DEBUG is defined. NC: no-op.</para>
+<para><simplesect kind="note"><para>Must be called after chip.begin() — i.e. from an OutputBase::configure() override called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>, not from a constructor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="149" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="151" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1a71e09b7334dd00fe246dd2e3d9b53154" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PinRef::isNC</definition>
+        <argsstring>() const</argsstring>
+        <name>isNC</name>
+        <qualifiedname>PinRef::isNC</qualifiedname>
+        <briefdescription>
+<para>Returns true if this is the NC (no-connect) sentinel. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="154" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="173" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1ae6528461c2bb1e094fd7aa5e038705f6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PinRef::isGpio</definition>
+        <argsstring>() const</argsstring>
+        <name>isGpio</name>
+        <qualifiedname>PinRef::isGpio</qualifiedname>
+        <briefdescription>
+<para>Returns true if this <ref refid="classPinRef" kindref="compound">PinRef</ref> wraps a direct STM32 GPIO pin. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Used by direct-only output classes (AnalogOutput, ServoOutput) to reject MCP23017, <ref refid="classADS1115" kindref="compound">ADS1115</ref>, and NC pins at construction time. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="162" column="10" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="174" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="classPinRef_1a406129046366bd4362c3c7bdb72c900c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t PinRef::gpioPin</definition>
+        <argsstring>() const</argsstring>
+        <name>gpioPin</name>
+        <qualifiedname>PinRef::gpioPin</qualifiedname>
+        <briefdescription>
+<para>Return the raw Arduino pin number for GPIO PinRefs. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Used by output classes that must call APIs requiring a raw pin number, such as Servo::attach().</para>
+<para><simplesect kind="return"><para>Arduino pin number (e.g. PA0, PB9), or 0 for non-GPIO PinRefs. </para>
+</simplesect>
+<simplesect kind="note"><para>Debug builds log if called on non-GPIO PinRefs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="173" column="13" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="176" bodyend="182"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Hardware pin abstraction used by all <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> input and output classes. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides read, write, readAnalog, and writeAnalog behind a uniform interface regardless of whether the backing pin is a direct STM32 GPIO, an MCP23017 expander bit, or an <ref refid="classADS1115" kindref="compound">ADS1115</ref> ADC channel. Size: ~12 bytes (1-byte type tag + largest union member). </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>ADS1115</label>
+        <link refid="classADS1115"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Adafruit_ADS1115</label>
+      </node>
+      <node id="1">
+        <label>PinRef</label>
+        <link refid="classPinRef"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>adc</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="37" column="1" bodyfile="Firmware/Libraries/PanelGroup/PinRef.h" bodystart="37" bodyend="191"/>
+    <listofallmembers>
+      <member refid="classPinRef_1a169d76bc37d58d27f6ec5157555ec0e9" prot="private" virt="non-virtual"><scope>PinRef</scope><name>_src</name></member>
+      <member refid="classPinRef_1a36ae609316307230881dd49321c3a45c" prot="private" virt="non-virtual"><scope>PinRef</scope><name>_type</name></member>
+      <member refid="classPinRef_1a44f250ed3f1327876adc437f797127a5" prot="public" virt="non-virtual"><scope>PinRef</scope><name>adc</name></member>
+      <member refid="classPinRef_1af49bbd360a2e5834cad1b1b054b06c86" prot="public" virt="non-virtual"><scope>PinRef</scope><name>ads</name></member>
+      <member refid="classPinRef_1ac678ec020877487e1b33a7f14bd23324" prot="public" virt="non-virtual"><scope>PinRef</scope><name>bit</name></member>
+      <member refid="classPinRef_1a9ded8eb8756032181d243e81d6486ba5" prot="public" virt="non-virtual"><scope>PinRef</scope><name>channel</name></member>
+      <member refid="classPinRef_1abbc6d9f9ea7b00388804e84fc950309d" prot="public" virt="non-virtual"><scope>PinRef</scope><name>chip</name></member>
+      <member refid="classPinRef_1ad51eae7d77cc3ec606471f314aa8dd57" prot="public" virt="non-virtual"><scope>PinRef</scope><name>configureAsInput</name></member>
+      <member refid="classPinRef_1aaa068f47fc479c9d3b52d1ec6b3f0060" prot="public" virt="non-virtual"><scope>PinRef</scope><name>configureAsOutput</name></member>
+      <member refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" prot="public" virt="non-virtual"><scope>PinRef</scope><name>gpioPin</name></member>
+      <member refid="classPinRef_1ae6528461c2bb1e094fd7aa5e038705f6" prot="public" virt="non-virtual"><scope>PinRef</scope><name>isGpio</name></member>
+      <member refid="classPinRef_1a71e09b7334dd00fe246dd2e3d9b53154" prot="public" virt="non-virtual"><scope>PinRef</scope><name>isNC</name></member>
+      <member refid="classPinRef_1a7fe530229713c48d1ec10c4cf78701ad" prot="public" virt="non-virtual"><scope>PinRef</scope><name>mcp</name></member>
+      <member refid="classPinRef_1a2991db1deea943cb3356e61308238a54" prot="public" virt="non-virtual"><scope>PinRef</scope><name>pin</name></member>
+      <member refid="classPinRef_1a1a39e46cfc347bdfebf78fabd37e8d57" prot="public" virt="non-virtual"><scope>PinRef</scope><name>PinRef</name></member>
+      <member refid="classPinRef_1ab04330ae4e468f50efac724e7b230740" prot="public" virt="non-virtual"><scope>PinRef</scope><name>PinRef</name></member>
+      <member refid="classPinRef_1a94a6a5253fef0b8c33d7caa514e55dd4" prot="public" virt="non-virtual"><scope>PinRef</scope><name>PinRef</name></member>
+      <member refid="classPinRef_1adadada577c72fb0b3534a3354387ddd2" prot="public" virt="non-virtual"><scope>PinRef</scope><name>PinRef</name></member>
+      <member refid="classPinRef_1aa5eee03a45c9b0422c68220706c76b1d" prot="public" virt="non-virtual"><scope>PinRef</scope><name>port</name></member>
+      <member refid="classPinRef_1a2f38bed5de65575b4e243d8cb9349f90" prot="public" virt="non-virtual"><scope>PinRef</scope><name>read</name></member>
+      <member refid="classPinRef_1a08e3c8b54a3c18ae352c50d5e75cd2b2" prot="public" virt="non-virtual"><scope>PinRef</scope><name>readAnalog</name></member>
+      <member refid="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60" prot="private" virt="non-virtual"><scope>PinRef</scope><name>Type</name></member>
+      <member refid="classPinRef_1a0936506f3842d0b761e134732e81a7d3" prot="public" virt="non-virtual"><scope>PinRef</scope><name>write</name></member>
+      <member refid="classPinRef_1ad68f7414ce0f3f99f252cf94159dc534" prot="public" virt="non-virtual"><scope>PinRef</scope><name>writeAnalog</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

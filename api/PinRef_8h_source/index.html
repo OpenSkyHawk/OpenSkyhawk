@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/classOpenSkyhawk_1_1Switch2Pos/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/PinRef_8h_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Class OpenSkyhawk::Switch2Pos - OpenSkyhawk</title>
+        <title>File PinRef.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-openskyhawkswitch2pos" class="md-skip">
+        <a href="#file-pinrefh" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Class OpenSkyhawk::Switch2Pos
+              File PinRef.h
             
           </span>
         </div>
@@ -1721,108 +1721,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#public-attributes-inherited-from-openskyhawkinputbase" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Attributes inherited from OpenSkyhawk::InputBase
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-static-attributes-inherited-from-openskyhawkinputbase" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Static Attributes inherited from OpenSkyhawk::InputBase
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-functions-inherited-from-openskyhawkinputbase" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Functions inherited from OpenSkyhawk::InputBase
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#detailed-description" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Detailed Description
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-functions-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Functions Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Functions Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#function-switch2pos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function Switch2Pos
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-poll" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        function poll
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1841,114 +1739,77 @@
   
 
 
-<h1 id="class-openskyhawkswitch2pos">Class OpenSkyhawk::Switch2Pos</h1>
-<p><a href="../annotated/"><strong>ClassList</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>Switch2Pos</strong></a></p>
-<p><em>Debounced 2-position GPIO switch — sends a ControlPacket CAN event on change.</em> <a href="#detailed-description">More...</a></p>
-<ul>
-<li><code>#include &lt;PanelGroup.h&gt;</code></li>
-</ul>
-<p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
-<h2 id="public-attributes-inherited-from-openskyhawkinputbase">Public Attributes inherited from OpenSkyhawk::InputBase</h2>
-<p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> *</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#variable-next"><strong>next</strong></a>  <br><em>Next object in the list.</em></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-static-attributes-inherited-from-openskyhawkinputbase">Public Static Attributes inherited from OpenSkyhawk::InputBase</h2>
-<p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> *</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#variable-first"><strong>first</strong></a>   = <code>nullptr</code><br><em>Head of the self-registration linked list.</em></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-functions">Public Functions</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-switch2pos"><strong>Switch2Pos</strong></a> (uint16_t addr, uint8_t pin) <br><em>Construct a</em> <a href="./"><em><strong>Switch2Pos</strong></em></a> <em>input object.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">virtual void</td>
-<td style="text-align: left;"><a href="#function-poll"><strong>poll</strong></a> () override<br><em>Read pin, debounce, and call</em> <a href="../namespacePanelGroup/#function-sendevent"><em><strong>PanelGroup::sendEvent()</strong></em></a> <em>on state change.</em></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-functions-inherited-from-openskyhawkinputbase">Public Functions inherited from OpenSkyhawk::InputBase</h2>
-<p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-inputbase"><strong>InputBase</strong></a> () <br><em>Registers this object at the head of the linked list.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">virtual void</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><strong>poll</strong></a> () = 0<br><em>Read hardware state and call</em> <a href="../namespacePanelGroup/#function-sendevent"><em><strong>PanelGroup::sendEvent()</strong></em></a> <em>on change.</em></td>
-</tr>
-</tbody>
-</table>
-<h2 id="detailed-description">Detailed Description</h2>
-<p>Mirrors DcsBios::Switch2Pos but sends a CAN packet via <a href="../namespacePanelGroup/#function-sendevent"><strong>PanelGroup::sendEvent()</strong></a> instead of writing to DCS-BIOS directly. The matching OpenSkyhawk::DCSInput on the <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> translates the packet to a DCS-BIOS message.</p>
-<p>Value sent: 1 when pin is LOW (switch closed to GND), 0 when HIGH.</p>
-<pre><code class="language-C++">OpenSkyhawk::Switch2Pos ejSafe(A_4E_C_SEAT_EJECT_SAFE, PA1);
-</code></pre>
-<h2 id="public-functions-documentation">Public Functions Documentation</h2>
-<h3 id="function-switch2pos">function Switch2Pos</h3>
-<p><em>Construct a</em> <a href="./"><em><strong>Switch2Pos</strong></em></a> <em>input object.</em></p>
-<pre><code class="language-C++">OpenSkyhawk::Switch2Pos::Switch2Pos (
-    uint16_t addr,
-    uint8_t pin
-) 
-</code></pre>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>addr</code> controlId to send in the CAN event (typically the DCS-BIOS address). </li>
-<li><code>pin</code> GPIO pin to read (configured INPUT_PULLUP by the constructor). </li>
-</ul>
-<hr>
+<h1 id="file-pinrefh">File PinRef.h</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../PinRef_8h/"><strong>PinRef.h</strong></a></p>
+<p><a href="../PinRef_8h/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<h3 id="function-poll">function poll</h3>
-<p><em>Read pin, debounce, and call</em> <a href="../namespacePanelGroup/#function-sendevent"><em><strong>PanelGroup::sendEvent()</strong></em></a> <em>on state change.</em></p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::Switch2Pos::poll () override
-</code></pre>
-<p>Debounce window is 20 ms. Sends value=1 when pin is LOW (active), value=0 when HIGH. </p>
-<p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><em>OpenSkyhawk::InputBase::poll</em></a></p>
-<hr>
+#include &lt;Arduino.h&gt;
 
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.h</code></p>
+// Forward declarations — PinRef.h stores pointers; full types are not needed here.
+// Complete definitions: MCP23017 via &lt;MCP23017.h&gt;, ADS1115 via &lt;ADS1115.h&gt;.
+class MCP23017;  
+class ADS1115;   
+
+static constexpr uint8_t PORT_A = 0;  
+static constexpr uint8_t PORT_B = 1;  
+
+class PinRef {
+public:
+
+    // ── Constructors ──────────────────────────────────────────────────────────────
+
+    explicit PinRef(uint8_t pin);
+
+    PinRef(MCP23017&amp; chip, uint8_t port, uint8_t bit);
+
+    PinRef(ADS1115&amp; adc, uint8_t channel);
+
+    PinRef();
+
+    // ── Interface ─────────────────────────────────────────────────────────────────
+
+    bool read() const;
+
+    uint16_t readAnalog() const;
+
+    void write(bool value);
+
+    void writeAnalog(uint16_t val);
+
+    void configureAsInput();
+
+    void configureAsOutput();
+
+    bool isNC() const;
+
+    bool isGpio() const;
+
+    uint8_t gpioPin() const;
+
+private:
+    enum class Type : uint8_t {
+        GPIO,  
+        MCP,   
+        ADS,   
+        NC,    
+    };
+
+    Type _type;  
+
+    union {
+        uint8_t pin;                                                
+        struct { MCP23017* chip; uint8_t port; uint8_t bit; } mcp; 
+        struct { ADS1115*  adc;  uint8_t channel;           } ads; 
+    } _src;
+};
+
+extern const PinRef PIN_NC;
+
+#endif // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

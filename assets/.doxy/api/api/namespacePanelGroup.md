@@ -51,10 +51,13 @@ _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md)
 
 | Type | Name |
 | ---: | :--- |
-|  void | [**loop**](#function-loop) () <br>_Service all_ [_**PanelGroup**_](namespacePanelGroup.md) _activity. Call every Arduino_[_**loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
-|  uint8\_t | [**nodeId**](#function-nodeid) () <br>_Return the node ID read from the PA0 strap pin at boot._  |
-|  bool | [**sendEvent**](#function-sendevent) (uint16\_t controlId, uint16\_t value) <br>_Send a hardware input event over CAN to the master node._  |
-|  void | [**setup**](#function-setup) () <br>_Initialise hardware and start the CAN bus._  |
+|  void | [**loop**](#function-loop) () <br>_Run all_ [_**PanelGroup**_](namespacePanelGroup.md) _work. Call once per_[_**loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
+|  bool | [**readCachedPin**](#function-readcachedpin) (const MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_Return cached MCP23017 pin state. Called by_ [_**PinRef::read()**_](classPinRef.md#function-read) _. No I2C._ |
+|  void | [**registerADC**](#function-registeradc) ([**ADS1115**](classADS1115.md) & adc, uint8\_t addr=0x48, TwoWire & wire=Wire) <br>_Register an_ [_**ADS1115**_](classADS1115.md) _ADC. Call before_[_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
+|  void | [**registerExpander**](#function-registerexpander) (MCP23017 & chip, uint8\_t intaPin, uint8\_t intbPin) <br>_Register an MCP23017 expander in interrupt-driven mode. Call before_ [_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
+|  void | [**registerExpander**](#function-registerexpander) (MCP23017 & chip) <br>_Register an MCP23017 expander in polling-fallback mode. Call before_ [_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
+|  void | [**setup**](#function-setup) () <br>_Initialise_ [_**PanelGroup**_](namespacePanelGroup.md) _. Call from sketch_[_**setup()**_](namespacePanelGroup.md#function-setup) _after Wire.begin()._ |
+|  void | [**writeCachedPin**](#function-writecachedpin) (MCP23017 & chip, uint8\_t port, uint8\_t bit, bool value) <br>_Write MCP23017 pin and update cache. Called by_ [_**PinRef::write()**_](classPinRef.md#function-write) _._ |
 
 
 
@@ -86,10 +89,7 @@ _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md)
 ## Detailed Description
 
 
-Reads node\_id from the PA0 strap pin at boot, configures the CAN receive filter for CTRL\_BCAST and TEST\_SEQ frames, dispatches incoming frames to registered [**OpenSkyhawk**](namespaceOpenSkyhawk.md) output objects, polls registered input objects, and sends heartbeat frames every 500 ms.
-
-
-Node ID strapping: tie PA0 to 3.3 V for node\_id=1; leave floating (internal pull-down) for node\_id=2. 
+Manages MCP23017 expander registration and cache, [**ADS1115**](classADS1115.md) registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL\_BCAST dispatch, SYNC\_REQ response, and the 500 ms HB\_n heartbeat. 
 
 
     
@@ -100,37 +100,20 @@ Node ID strapping: tie PA0 to 3.3 V for node\_id=1; leave floating (internal pul
 
 ### function loop 
 
-_Service all_ [_**PanelGroup**_](namespacePanelGroup.md) _activity. Call every Arduino_[_**loop()**_](namespacePanelGroup.md#function-loop) _iteration._
+_Run all_ [_**PanelGroup**_](namespacePanelGroup.md) _work. Call once per_[_**loop()**_](namespacePanelGroup.md#function-loop) _iteration._
 ```C++
 void PanelGroup::loop () 
 ```
 
 
 
-Calls STM32Board::update(), drains the CAN RX FIFO and dispatches ControlPacket frames to registered OutputBase objects, polls all InputBase objects, and sends a heartbeat CAN frame every 500 ms. 
-
-
-        
-
-<hr>
-
-
-
-### function nodeId 
-
-_Return the node ID read from the PA0 strap pin at boot._ 
-```C++
-uint8_t PanelGroup::nodeId () 
-```
-
-
-
-
-
-**Returns:**
-
-1 if PA0 was HIGH, 2 if PA0 was LOW. 
-
+Each call:
+* Check interrupt flags; read INTCAP; update expander port caches.
+* Polling fallback (~20 ms): read ports for chips registered without interrupt.
+* poll() on all InputBase objects.
+* [**CANProtocol::drain()**](namespaceCANProtocol.md#function-drain) — dispatches CTRL\_BCAST, SYNC\_REQ, TEST\_SEQ echo.
+* update() on all OutputBase objects.
+* Heartbeat: send HB\_n every 500 ms. 
 
 
 
@@ -141,19 +124,17 @@ uint8_t PanelGroup::nodeId ()
 
 
 
-### function sendEvent 
+### function readCachedPin 
 
-_Send a hardware input event over CAN to the master node._ 
+_Return cached MCP23017 pin state. Called by_ [_**PinRef::read()**_](classPinRef.md#function-read) _. No I2C._
 ```C++
-bool PanelGroup::sendEvent (
-    uint16_t controlId,
-    uint16_t value
+bool PanelGroup::readCachedPin (
+    const MCP23017 & chip,
+    uint8_t port,
+    uint8_t bit
 ) 
 ```
 
-
-
-Packs controlId and value into an 8-byte CAN frame on CAN\_ID\_EVT\_n (where n = [**nodeId()**](namespacePanelGroup.md#function-nodeid)). Intended to be called by InputBase subclasses.
 
 
 
@@ -161,15 +142,142 @@ Packs controlId and value into an 8-byte CAN frame on CAN\_ID\_EVT\_n (where n =
 **Parameters:**
 
 
-* `controlId` Identifies the physical control (HID range 0x0010–0x00FF, or DCS-BIOS address 0x8000+). 
-* `value` Current control value (0/1 for switches, 0–65535 for axes). 
+* `chip` Chip reference — used as key to locate the ExpanderEntry. 
+* `port` PORT\_A (0) or PORT\_B (1). 
+* `bit` Bit index 0–7. 
 
 
 
 **Returns:**
 
-true on successful TX, false if the CAN mailbox was full. 
+Cached logical level (true = HIGH). 
 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function registerADC 
+
+_Register an_ [_**ADS1115**_](classADS1115.md) _ADC. Call before_[_**setup()**_](namespacePanelGroup.md#function-setup) _._
+```C++
+void PanelGroup::registerADC (
+    ADS1115 & adc,
+    uint8_t addr=0x48,
+    TwoWire & wire=Wire
+) 
+```
+
+
+
+[**PanelGroup**](namespacePanelGroup.md) calls adc.begin(addr, wire) during [**setup()**](namespacePanelGroup.md#function-setup). Register each [**ADS1115**](classADS1115.md) instance exactly once — multiple AnalogInput objects may share the same chip.
+
+
+Adafruit\_ADS1115 takes address and bus via begin(), not the constructor. Pattern: 
+```C++
+ADS1115 adc;
+PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `adc` [**ADS1115**](classADS1115.md) instance. Must outlive [**PanelGroup**](namespacePanelGroup.md). 
+* `addr` I2C address (0x48–0x4B via ADDR pin). Default 0x48. 
+* `wire` I2C bus. Default Wire (I2C1 on STM32). 
+
+
+
+**Note:**
+
+Wire.begin() (or Wire1.begin()) must be called by the sketch before [**setup()**](namespacePanelGroup.md#function-setup). 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function registerExpander 
+
+_Register an MCP23017 expander in interrupt-driven mode. Call before_ [_**setup()**_](namespacePanelGroup.md#function-setup) _._
+```C++
+void PanelGroup::registerExpander (
+    MCP23017 & chip,
+    uint8_t intaPin,
+    uint8_t intbPin
+) 
+```
+
+
+
+[**PanelGroup**](namespacePanelGroup.md) calls chip.init(), configures IOCON (MIRROR and/or open-drain as detected), enables interrupt-on-change on input pins only (IODIR-masked, bit 7 excluded per GPA7/GPB7 silicon erratum), reads baseline port state, and attaches STM32 ISRs.
+
+
+Pass the same STM32 pin for intaPin and intbPin to use MIRROR mode (IOCON.MIRROR=1), where either port interrupt asserts the shared line.
+
+
+If two or more chips share an interrupt line (wired-OR), [**PanelGroup**](namespacePanelGroup.md) sets IOCON.ODR=1 (open-drain) automatically on all chips on that line.
+
+
+
+
+**Parameters:**
+
+
+* `chip` blemasle/MCP23017 instance. Must outlive [**PanelGroup**](namespacePanelGroup.md). 
+* `intaPin` STM32 GPIO pin connected to chip INTA. 
+* `intbPin` STM32 GPIO pin connected to chip INTB. Same as intaPin for MIRROR. 
+
+
+
+**Note:**
+
+Do not use PB14/PB15 (status LED) or PC13–PC15 (RTC/oscillator). 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function registerExpander 
+
+_Register an MCP23017 expander in polling-fallback mode. Call before_ [_**setup()**_](namespacePanelGroup.md#function-setup) _._
+```C++
+void PanelGroup::registerExpander (
+    MCP23017 & chip
+) 
+```
+
+
+
+[**PanelGroup**](namespacePanelGroup.md) reads all port registers every ~20 ms in [**loop()**](namespacePanelGroup.md#function-loop). No STM32 interrupt pin is required. Use when interrupt lines are not wired or not needed.
+
+
+
+
+**Parameters:**
+
+
+* `chip` blemasle/MCP23017 instance. Must outlive [**PanelGroup**](namespacePanelGroup.md). 
 
 
 
@@ -182,14 +290,67 @@ true on successful TX, false if the CAN mailbox was full.
 
 ### function setup 
 
-_Initialise hardware and start the CAN bus._ 
+_Initialise_ [_**PanelGroup**_](namespacePanelGroup.md) _. Call from sketch_[_**setup()**_](namespacePanelGroup.md#function-setup) _after Wire.begin()._
 ```C++
 void PanelGroup::setup () 
 ```
 
 
 
-Calls [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin), reads the PA0 strap pin to set node\_id, configures the CAN filter (CTRL\_BCAST + TEST\_SEQ), then calls canStart(). Call STM32Board::setDebug(true) before this to enable diagnostic output. 
+Performs the 8-step boot sequence:
+* [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin)
+* For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON, enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR.
+* configure() on all InputBase and OutputBase objects.
+* Register CAN callbacks.
+* [**CANProtocol::start()**](namespaceCANProtocol.md#function-start).
+* forceReport() burst — one EVT per registered input.
+* flushBatched(canIdEvt(NODE\_ID)).
+* READY\_n frame (canIdReady(NODE\_ID), DLC=0). Arm heartbeat timer.
+
+
+
+
+
+
+**Note:**
+
+Wire.begin() must be called by the sketch before this function. [**PanelGroup**](namespacePanelGroup.md) never calls Wire.begin() — only start buses in use. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function writeCachedPin 
+
+_Write MCP23017 pin and update cache. Called by_ [_**PinRef::write()**_](classPinRef.md#function-write) _._
+```C++
+void PanelGroup::writeCachedPin (
+    MCP23017 & chip,
+    uint8_t port,
+    uint8_t bit,
+    bool value
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `chip` Chip reference. 
+* `port` PORT\_A (0) or PORT\_B (1). 
+* `bit` Bit index 0–7. 
+* `value` Logical level to write. 
+
+
 
 
         

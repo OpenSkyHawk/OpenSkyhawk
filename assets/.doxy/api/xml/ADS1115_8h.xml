@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="ADS1115_8h" kind="file" language="C++">
+    <compoundname>ADS1115.h</compoundname>
+    <includes local="no">Adafruit_ADS1X15.h</includes>
+    <includedby refid="PanelGroup_8h" local="yes">Firmware/Libraries/PanelGroup/PanelGroup.h</includedby>
+    <includedby refid="PinRef_8cpp" local="yes">Firmware/Libraries/PanelGroup/PinRef.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PanelGroup/LED.cpp</label>
+        <link refid="LED_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/LED.h</label>
+        <link refid="LED_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
+        <link refid="PanelGroup_8cpp"/>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PanelGroup/PinRef.cpp</label>
+        <link refid="PinRef_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classADS1115" prot="public">ADS1115</innerclass>
+    <briefdescription>
+<para>Thin wrapper over Adafruit_ADS1115 that provides a forward-declarable class name. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="PinRef_8h" kindref="compound">PinRef.h</ref> forward-declares <computeroutput>class <ref refid="classADS1115" kindref="compound">ADS1115</ref></computeroutput>. A typedef alias cannot be forward-declared with <computeroutput>class</computeroutput>, so this file defines a concrete wrapper class that inherits every constructor and method from Adafruit_ADS1115 without adding any logic.</para>
+<para>Adafruit_ADS1115 takes address and bus via begin(), not the constructor. Pattern: <ref refid="classADS1115" kindref="compound">ADS1115</ref> adc; PanelGroup::registerADC(adc, 0x48, Wire);</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Adafruit_ADS1X15.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="classADS1115" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classADS1115" kindref="compound">ADS1115</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>Adafruit_ADS1115<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">Adafruit_ADS1115::Adafruit_ADS1115;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/ADS1115.h"/>
+  </compounddef>
+</doxygen>

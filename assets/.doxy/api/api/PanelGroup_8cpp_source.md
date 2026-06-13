@@ -13,145 +13,341 @@
 #include "PanelGroup.h"
 #include <STM32Board.h>
 
-// ── Static linked-list roots ──────────────────────────────────────────────────
-OpenSkyhawk::OutputBase* OpenSkyhawk::OutputBase::first = nullptr;
-OpenSkyhawk::InputBase*  OpenSkyhawk::InputBase::first  = nullptr;
+// ── Internal state ────────────────────────────────────────────────────────────
 
-OpenSkyhawk::OutputBase::OutputBase() : next(first) { first = this; }
-OpenSkyhawk::InputBase::InputBase()   : next(first) { first = this; }
-
-// ── OpenSkyhawk::LED ──────────────────────────────────────────────────────────
-OpenSkyhawk::LED::LED(uint16_t addr, uint16_t mask, uint8_t pin)
-    : addr_(addr), mask_(mask), pin_(pin) {
-    pinMode(pin_, OUTPUT);
-    digitalWrite(pin_, LOW);
-}
-
-void OpenSkyhawk::LED::onPacket(uint16_t controlId, uint16_t value) {
-    if (controlId != addr_) return;
-    digitalWrite(pin_, (value & mask_) ? HIGH : LOW);
-}
-
-// ── OpenSkyhawk::IntegerOutput ────────────────────────────────────────────────
-OpenSkyhawk::IntegerOutput::IntegerOutput(uint16_t addr, void (*cb)(uint16_t))
-    : addr_(addr), cb_(cb) {}
-
-void OpenSkyhawk::IntegerOutput::onPacket(uint16_t controlId, uint16_t value) {
-    if (controlId != addr_) return;
-    cb_(value);
-}
-
-// ── OpenSkyhawk::Switch2Pos ───────────────────────────────────────────────────
-static constexpr uint32_t DEBOUNCE_MS = 20;
-
-OpenSkyhawk::Switch2Pos::Switch2Pos(uint16_t addr, uint8_t pin)
-    : addr_(addr), pin_(pin), debounceMs_(0) {
-    pinMode(pin_, INPUT_PULLUP);
-    lastRaw_    = digitalRead(pin_);
-    lastStable_ = lastRaw_;
-}
-
-void OpenSkyhawk::Switch2Pos::poll() {
-    bool raw = digitalRead(pin_);
-    uint32_t now = millis();
-    if (raw != lastRaw_) {
-        debounceMs_ = now;
-        lastRaw_    = raw;
-    }
-    if ((now - debounceMs_) >= DEBOUNCE_MS && lastRaw_ != lastStable_) {
-        lastStable_ = lastRaw_;
-        PanelGroup::sendEvent(addr_, lastStable_ == LOW ? 1 : 0);
-    }
-}
-
-// ── PanelGroup internals ──────────────────────────────────────────────────────
 namespace {
-    static uint8_t  _nodeId   = 1;
-    static uint32_t _hbTxId   = canIdHb(1);
-    static uint32_t _evtTxId  = canIdEvt(1);
-    static uint32_t _rxCount  = 0;
-    static uint32_t _startMs  = 0;
-    static uint32_t _lastHbMs = 0;
 
-    void sendHeartbeat(uint32_t now) {
-        if (now - _lastHbMs < 500) return;
-        _lastHbMs = now;
+static constexpr uint8_t MAX_EXPANDERS = 8;
+static constexpr uint8_t MAX_ADCS      = 8;
+static constexpr uint8_t MAX_INT_PINS  = 8;  // max unique STM32 interrupt pins
+static constexpr uint8_t NO_INT_PIN    = 0xFF; // polling-fallback sentinel
 
-        HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(_nodeId, (uint16_t)(_rxCount & 0xFFFF));
+struct ExpanderEntry {
+    MCP23017* chip;
+    uint8_t   intaPin;
+    uint8_t   intbPin;
+    bool      mirrored;   // intaPin == intbPin at registration; MIRROR mode
+    bool      openDrain;  // shares interrupt line; IOCON.ODR = 1
+    uint8_t   portAcache; // last-known GPA0–7 state
+    uint8_t   portBcache; // last-known GPB0–7 state
+};
 
-        if (STM32Board::isDebug()) {
-            auto& d = STM32Board::diagSerial();
-            d.print(F("[HB] node="));   d.print(_nodeId);
-            d.print(F(" TEC="));        d.print(hb.esr & 0xFF);
-            d.print(F(" REC="));        d.print(hb.esr >> 8);
-            d.print(F(" flags=0x"));    d.print(hb.flags, HEX);
-            d.print(F(" rx="));         d.println(_rxCount);
-        }
+struct ADCEntry {
+    ADS1115*  adc;
+    uint8_t   addr;
+    TwoWire*  wire;
+};
 
-        CANProtocol::send(_hbTxId, reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
+static ExpanderEntry _expanders[MAX_EXPANDERS];
+static uint8_t       _expanderCount = 0;
+
+static ADCEntry _adcs[MAX_ADCS];
+static uint8_t  _adcCount = 0;
+
+// Unique STM32 interrupt pins and their flags
+static uint8_t          _intPins[MAX_INT_PINS];
+static uint8_t          _intPinCount = 0;
+static volatile bool    _intFlags[MAX_INT_PINS];
+
+// Timers
+static uint32_t _lastHeartbeatMs  = 0;
+static uint32_t _lastFallbackMs   = 0;
+static uint16_t _rxCount          = 0; // diagnostic only; wraps at 65535 (~131 s at full bus load)
+
+// ── ISR functions — one static function per interrupt-pin slot ───────────────
+// No dynamic ISR registration; each slot has a dedicated handler.
+// _intFlags is volatile; ISR writes are single-byte — atomic on ARM Cortex-M3.
+
+static void isr0() { _intFlags[0] = true; }
+static void isr1() { _intFlags[1] = true; }
+static void isr2() { _intFlags[2] = true; }
+static void isr3() { _intFlags[3] = true; }
+static void isr4() { _intFlags[4] = true; }
+static void isr5() { _intFlags[5] = true; }
+static void isr6() { _intFlags[6] = true; }
+static void isr7() { _intFlags[7] = true; }
+
+static constexpr void (*_isrTable[MAX_INT_PINS])() = {
+    isr0, isr1, isr2, isr3, isr4, isr5, isr6, isr7
+};
+
+// Returns the slot index for the given STM32 pin, adding it if not yet seen.
+// Returns 0xFF if the slot table is full.
+static uint8_t findOrAddIntPin(uint8_t pin) {
+    for (uint8_t i = 0; i < _intPinCount; i++)
+        if (_intPins[i] == pin) return i;
+    if (_intPinCount < MAX_INT_PINS) {
+        _intPins[_intPinCount] = pin;
+        _intFlags[_intPinCount] = false;
+        return _intPinCount++;
     }
-
-    void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
-        if (canId != CAN_ID_CTRL_BCAST) return;
-        _rxCount++;
-        ControlPacketPair pair;
-        memcpy(&pair, data, 8);
-        auto dispatch = [](const ControlPacket& pkt) {
-            if (pkt.controlId == 0x0000) return;
-            for (auto* o = OpenSkyhawk::OutputBase::first; o; o = o->next)
-                o->onPacket(pkt.controlId, pkt.value);
-        };
-        dispatch(pair.a);
-        dispatch(pair.b);
-    }
+    return 0xFF;
 }
 
-// ── PanelGroup public API ─────────────────────────────────────────────────────
+// ── CAN callbacks ─────────────────────────────────────────────────────────────
+
+static void onCanReceive(uint32_t canId, const uint8_t* data, uint8_t len) {
+    if (canId != CAN_ID_CTRL_BCAST) return;
+    if (len != sizeof(ControlPacketPair)) return; // malformed — discard
+    _rxCount++;
+    ControlPacketPair pair;
+    memcpy(&pair, data, sizeof(pair));
+    auto dispatch = [](const ControlPacket& pkt) {
+        if (pkt.controlId == 0x0000) return;
+        for (auto* o = OpenSkyhawk::OutputBase::head(); o; o = o->next())
+            o->onControlPacket(pkt.controlId, pkt.value);
+    };
+    dispatch(pair.a);
+    dispatch(pair.b);
+}
+
+static void onSyncReq() {
+    for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next())
+        p->forceReport();
+    CANProtocol::flushBatched(canIdEvt(NODE_ID));
+}
+
+} // anonymous namespace
+
+// ── OpenSkyhawk::InputBase ────────────────────────────────────────────────────
+
+OpenSkyhawk::InputBase*  OpenSkyhawk::InputBase::_head  = nullptr;
+OpenSkyhawk::OutputBase* OpenSkyhawk::OutputBase::_head = nullptr;
+
+OpenSkyhawk::InputBase::InputBase() : _next(_head) { _head = this; }
+OpenSkyhawk::OutputBase::OutputBase() : _next(_head) { _head = this; }
+
+OpenSkyhawk::InputBase*  OpenSkyhawk::InputBase::head()        { return _head; }
+OpenSkyhawk::InputBase*  OpenSkyhawk::InputBase::next()  const { return _next; }
+OpenSkyhawk::OutputBase* OpenSkyhawk::OutputBase::head()       { return _head; }
+OpenSkyhawk::OutputBase* OpenSkyhawk::OutputBase::next() const { return _next; }
+
+// ── PanelGroup::registerADC / registerExpander ────────────────────────────────
+
 namespace PanelGroup {
 
+void registerADC(ADS1115& adc, uint8_t addr, TwoWire& wire) {
+    if (_adcCount >= MAX_ADCS) return;
+    // Deduplicate: skip if already registered
+    for (uint8_t i = 0; i < _adcCount; i++)
+        if (_adcs[i].adc == &adc) return;
+    auto& e = _adcs[_adcCount++];
+    e.adc  = &adc;
+    e.addr = addr;
+    e.wire = &wire;
+}
+
+void registerExpander(MCP23017& chip, uint8_t intaPin, uint8_t intbPin) {
+    if (_expanderCount >= MAX_EXPANDERS) return;
+    auto& e    = _expanders[_expanderCount++];
+    e.chip      = &chip;
+    e.intaPin   = intaPin;
+    e.intbPin   = intbPin;
+    e.mirrored  = (intaPin == intbPin);
+    e.openDrain = false; // resolved in setup()
+    e.portAcache = 0xFF;
+    e.portBcache = 0xFF;
+}
+
+void registerExpander(MCP23017& chip) {
+    registerExpander(chip, NO_INT_PIN, NO_INT_PIN);
+}
+
+// ── PanelGroup::setup ─────────────────────────────────────────────────────────
+
 void setup() {
-    _startMs = millis();
+    // Step 1 — STM32Board init
     STM32Board::begin();
     CANProtocol::onStatusChange(STM32Board::onCanStatus);
-    CANProtocol::onReceive(onCanRx);
 
-    // Strap pin PA0: HIGH → node_id=1 (tied to 3.3V), LOW → node_id=2 (floating)
-    pinMode(PA0, INPUT_PULLDOWN);
-    delay(10);
-    _nodeId  = digitalRead(PA0) ? 1 : 2;
-    _hbTxId  = canIdHb(_nodeId);
-    _evtTxId = canIdEvt(_nodeId);
+    // Step 2a — ADC begin (address and bus were captured at registerADC time)
+    for (uint8_t i = 0; i < _adcCount; i++)
+        _adcs[i].adc->begin(_adcs[i].addr, _adcs[i].wire);
 
-    if (STM32Board::isDebug()) {
-        STM32Board::diagSerial().print(F("PanelGroup ready. node_id="));
-        STM32Board::diagSerial().println(_nodeId);
+    // Step 2b — determine open-drain: any two expanders sharing an interrupt pin
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        if (_expanders[i].intaPin == NO_INT_PIN) continue;
+        for (uint8_t j = 0; j < _expanderCount; j++) {
+            if (i == j) continue;
+            if (_expanders[j].intaPin == NO_INT_PIN) continue;
+            bool shared = (_expanders[i].intaPin == _expanders[j].intaPin)
+                       || (_expanders[i].intaPin == _expanders[j].intbPin)
+                       || (_expanders[i].intbPin != NO_INT_PIN &&
+                           (_expanders[i].intbPin == _expanders[j].intaPin
+                         || _expanders[i].intbPin == _expanders[j].intbPin));
+            if (shared) { _expanders[i].openDrain = true; break; }
+        }
     }
 
-    // CTRL_BCAST, TEST_SEQ, and SYNC_REQ are added by start() automatically.
+    // Step 2c — chip init and IOCON configuration
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        auto& e = _expanders[i];
+        e.chip->init();
+
+        if (e.mirrored) {
+            e.chip->interruptMode(MCP23017InterruptMode::Or);
+        }
+        if (e.openDrain) {
+            uint8_t iocon = e.chip->readRegister(MCP23017Register::IOCON);
+            e.chip->writeRegister(MCP23017Register::IOCON, iocon | 0x04u); // ODR bit
+        }
+    }
+
+    // Step 3 — configure each pin via its owning input/output object
+    for (auto* p = OpenSkyhawk::InputBase::head();  p; p = p->next()) p->configure();
+    for (auto* p = OpenSkyhawk::OutputBase::head(); p; p = p->next()) p->configure();
+
+    // Step 2d — enable interrupt-on-change, read baseline, attach STM32 ISRs
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        auto& e = _expanders[i];
+
+        // Enable interrupt-on-change only on input pins, excluding GPA7/GPB7.
+        // GPA7/GPB7 must be outputs per Microchip silicon bug (Rev D erratum):
+        // asserting GPINTEN on them while in input mode corrupts SDA mid-transfer.
+        // IODIR bit=1 means input; mask to 0x7F to exclude bit 7 on both ports.
+        uint8_t gpintenA = e.chip->readRegister(MCP23017Register::IODIR_A) & 0x7Fu;
+        uint8_t gpintenB = e.chip->readRegister(MCP23017Register::IODIR_B) & 0x7Fu;
+        e.chip->writeRegister(MCP23017Register::GPINTEN_A, gpintenA);
+        e.chip->writeRegister(MCP23017Register::GPINTEN_B, gpintenB);
+
+        // Baseline read — captures initial state after configure() sets IODIR
+        e.portAcache = e.chip->readPort(MCP23017Port::A);
+        e.portBcache = e.chip->readPort(MCP23017Port::B);
+
+        if (e.intaPin == NO_INT_PIN) continue; // polling-fallback chip
+
+        uint8_t slotA = findOrAddIntPin(e.intaPin);
+        if (slotA == 0xFF) {
+            STM32Board::log("[PanelGroup] MAX_INT_PINS exceeded — chip falls back to polling");
+            continue;
+        }
+        // Attach INTA ISR if this is the first chip claiming this pin
+        if (_intPins[slotA] == e.intaPin) {
+            bool firstClaim = true;
+            for (uint8_t k = 0; k < i; k++) {
+                if (_expanders[k].intaPin == e.intaPin || _expanders[k].intbPin == e.intaPin) {
+                    firstClaim = false; break;
+                }
+            }
+            if (firstClaim) {
+                pinMode(e.intaPin, INPUT_PULLUP);
+                attachInterrupt(digitalPinToInterrupt(e.intaPin), _isrTable[slotA], FALLING);
+            }
+        }
+
+        if (!e.mirrored && e.intbPin != NO_INT_PIN) {
+            uint8_t slotB = findOrAddIntPin(e.intbPin);
+            if (slotB != 0xFF) {
+                bool firstClaim = true;
+                for (uint8_t k = 0; k < i; k++) {
+                    if (_expanders[k].intaPin == e.intbPin || _expanders[k].intbPin == e.intbPin) {
+                        firstClaim = false; break;
+                    }
+                }
+                if (firstClaim) {
+                    pinMode(e.intbPin, INPUT_PULLUP);
+                    attachInterrupt(digitalPinToInterrupt(e.intbPin), _isrTable[slotB], FALLING);
+                }
+            }
+        }
+    }
+
+    // Step 4/5 — CAN callbacks and start
+    CANProtocol::onReceive(onCanReceive);
+    CANProtocol::onSyncReq(onSyncReq);
     CANProtocol::start();
-    STM32Board::log("CAN ready.");
+
+    // Step 6 — boot EVT burst
+    for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next()) p->forceReport();
+
+    // Step 7 — flush trailing batch
+    CANProtocol::flushBatched(canIdEvt(NODE_ID));
+
+    // Step 8 — READY frame + arm heartbeat timer
+    CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    _lastHeartbeatMs = millis();
 }
+
+// ── PanelGroup::loop ──────────────────────────────────────────────────────────
 
 void loop() {
     uint32_t now = millis();
-    STM32Board::tick();
+
+    // 1. Interrupt dispatch: check flags, read INTCAP, update caches
+    for (uint8_t slot = 0; slot < _intPinCount; slot++) {
+        if (!_intFlags[slot]) continue;
+        _intFlags[slot] = false;
+        uint8_t pin = _intPins[slot];
+
+        // All chips on this line — must visit all to clear open-drain assertion
+        for (uint8_t j = 0; j < _expanderCount; j++) {
+            auto& e = _expanders[j];
+            if (e.intaPin != pin && e.intbPin != pin) continue;
+
+            uint8_t intfA = 0, intfB = 0;
+            e.chip->interruptedBy(intfA, intfB);
+            if (intfA == 0 && intfB == 0) continue;
+
+            uint8_t capA = 0, capB = 0;
+            e.chip->clearInterrupts(capA, capB);
+            if (intfA) e.portAcache = capA;
+            if (intfB) e.portBcache = capB;
+        }
+    }
+
+    // 2. Polling fallback (~20 ms) for chips with no interrupt pin
+    if (now - _lastFallbackMs >= 20) {
+        _lastFallbackMs = now;
+        for (uint8_t i = 0; i < _expanderCount; i++) {
+            auto& e = _expanders[i];
+            if (e.intaPin != NO_INT_PIN) continue;
+            e.portAcache = e.chip->readPort(MCP23017Port::A);
+            e.portBcache = e.chip->readPort(MCP23017Port::B);
+        }
+    }
+
+    // 3. Poll all inputs
+    for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next()) p->poll();
+
+    // 4. CAN drain: CTRL_BCAST → onControlPacket; SYNC_REQ → onSyncReq; TEST_SEQ → echo
     CANProtocol::drain();
-    for (auto* i = OpenSkyhawk::InputBase::first; i; i = i->next)
-        i->poll();
-    sendHeartbeat(now);
+
+    // 5. Update all outputs (steppers, PWM)
+    for (auto* p = OpenSkyhawk::OutputBase::head(); p; p = p->next()) p->update();
+
+    // 6. Heartbeat every 500 ms
+    if (now - _lastHeartbeatMs >= 500) {
+        _lastHeartbeatMs = now;
+        HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(NODE_ID, _rxCount);
+        CANProtocol::send(canIdHb(NODE_ID),
+                          reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
+    }
 }
 
-bool sendEvent(uint16_t controlId, uint16_t value) {
-    uint8_t buf[8] = {};
-    memcpy(buf,     &controlId, 2);
-    memcpy(buf + 2, &value,     2);
-    uint32_t now = millis();
-    memcpy(buf + 4, &now, 4);
-    CANProtocol::send(_evtTxId, buf, 8);
-    return true;
+// ── MCP cache bridge ──────────────────────────────────────────────────────────
+
+bool readCachedPin(const MCP23017& chip, uint8_t port, uint8_t bit) {
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        if (_expanders[i].chip == &chip) {
+            uint8_t cache = (port == 0) ? _expanders[i].portAcache
+                                        : _expanders[i].portBcache;
+            return (cache >> bit) & 1u;
+        }
+    }
+    return false;
 }
 
-uint8_t nodeId() { return _nodeId; }
+void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value) {
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        if (_expanders[i].chip != &chip) continue;
+        uint8_t& cache = (port == 0) ? _expanders[i].portAcache
+                                     : _expanders[i].portBcache;
+        if (value) cache |=  (1u << bit);
+        else       cache &= ~(1u << bit);
+        chip.digitalWrite(port * 8 + bit, value ? HIGH : LOW);
+        return;
+    }
+}
 
 } // namespace PanelGroup
 
