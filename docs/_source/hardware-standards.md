@@ -72,7 +72,7 @@ PlatformIO with `earlephilhower/arduino-pico` platform (preferred) or Arduino ID
 |-------|------|---------|-------|
 | Main bus | PC ATX PSU | — | 12 V and 5 V distributed via Molex Mini-Fit Jr bus connectors |
 | 5 V → 3.3 V | AMS1117-3.3 | SOT-223 | LDO on every MCU and breakout board; 5→3.3 V drop (1.7 V) acceptable at ≤175 mA load |
-| 5 V rail | also feeds | — | DRV8835 VM (stepper driver motor supply) |
+| 5 V rail | also feeds | — | DRV8833 VM (stepper driver motor supply) |
 | 12 V → 5 V | AP63205WU | SOT-23-6 | **Only on high-5V-current boards** (future actuator/high-power boards). Not used on standard MCU or breakout boards. Typical BOM: C_in 10 µF, C_bypass 100 nF, L 4.7 µH, C_out 2×22 µF |
 
 Local decoupling required on every board: 100 nF + 10 µF per rail, placed close to each IC. Never use a linear regulator for 12 V → 5 V conversion.
