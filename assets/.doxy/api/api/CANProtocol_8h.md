@@ -57,7 +57,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 |  constexpr uint32\_t | [**CAN\_ID\_TEST\_SEQ**](#variable-can_id_test_seq)   = `0x011`<br>_RTT throughput test._  |
 |  constexpr uint16\_t | [**CTRL\_ID\_DCS\_MAX**](#variable-ctrl_id_dcs_max)   = `0x86FF`<br>_DCS-BIOS range end._  |
 |  constexpr uint16\_t | [**CTRL\_ID\_DCS\_MIN**](#variable-ctrl_id_dcs_min)   = `0x8000`<br>_DCS-BIOS range start._  |
-|  constexpr uint16\_t | [**CTRL\_ID\_TEST\_SEQ**](#variable-ctrl_id_test_seq)   = `0xFFFF`<br>_Reserved: triggers TEST\_SEQ frame._  |
+|  constexpr uint16\_t | [**CTRL\_ID\_TEST\_SEQ**](#variable-ctrl_id_test_seq)   = `0xFFFF`<br>_Reserved legacy payload sentinel; RTT test uses CAN\_ID\_TEST\_SEQ._  |
 |  constexpr uint16\_t | [**CTRL\_TEST\_SEQ**](#variable-ctrl_test_seq)   = `[**CTRL\_ID\_TEST\_SEQ**](CANProtocol_8h.md#variable-ctrl_id_test_seq)`<br> |
 |  constexpr uint8\_t | [**DIAG\_ERR**](#variable-diag_err)   = `0x03`<br>_CAN error counter frame._  |
 |  constexpr uint8\_t | [**DIAG\_EVT**](#variable-diag_evt)   = `0x04`<br>_Sub-node input event forwarded upstream._  |
@@ -118,7 +118,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 ## Detailed Description
 
 
-Owns all CAN bus interaction for [**PanelGroup**](namespacePanelGroup.md) and [**PanelBridge**](namespacePanelBridge.md) nodes. Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks, diagnostics) is STM32-only and guarded by ARDUINO\_ARCH\_STM32.
+Owns all CAN bus interaction for [**PanelGroup**](namespacePanelGroup.md) and [**PanelBridge**](namespacePanelBridge.md) nodes. Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks, diagnostics) is STM32-only and guarded by ARDUINO\_ARCH\_STM32. CAN arbitration IDs (CAN\_ID\_\*, canId\*()) and payload ControlPacket::controlId values are separate namespaces; equal numeric values do not conflict because they occupy different CAN frame fields.
 
 
 Dependency: [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin) must be called before [**CANProtocol::start()**](namespaceCANProtocol.md#function-start). [**CANProtocol**](namespaceCANProtocol.md) owns CAN bus operation; [**STM32Board**](namespaceSTM32Board.md) owns peripheral hardware init.
@@ -282,7 +282,7 @@ constexpr uint16_t CTRL_ID_DCS_MIN;
 
 ### variable CTRL\_ID\_TEST\_SEQ 
 
-_Reserved: triggers TEST\_SEQ frame._ 
+_Reserved legacy payload sentinel; RTT test uses CAN\_ID\_TEST\_SEQ._ 
 ```C++
 constexpr uint16_t CTRL_ID_TEST_SEQ;
 ```
@@ -306,7 +306,7 @@ constexpr uint16_t CTRL_TEST_SEQ;
 
 **Deprecated**
 
-Use CTRL\_ID\_TEST\_SEQ. Kept for backward compatibility with prototype code. 
+Current RTT testing uses CAN\_ID\_TEST\_SEQ. Kept only for old prototype payload sentinels. 
 
 
 

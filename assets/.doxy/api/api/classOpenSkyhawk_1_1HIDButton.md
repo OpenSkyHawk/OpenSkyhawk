@@ -118,7 +118,7 @@ OpenSkyhawk::HIDButton::HIDButton (
 **Parameters:**
 
 
-* `controlId` CTRL\_\* constant from [**HIDControls.h**](HIDControls_8h.md) (0x0030–0x00AF range). 
+* `controlId` CTRL\_\* button constant from [**HIDControls.h**](HIDControls_8h.md) (0x0030–0x00AF range). 
 * `buttonIndex` OpenSkyhawkJoystick button index (0–127). 
 
 

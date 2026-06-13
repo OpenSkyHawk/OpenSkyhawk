@@ -1,0 +1,2227 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/RECON-RESULTS-CODEX/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>RECON RESULTS CODEX - OpenSkyhawk</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-firmware-plan-completeness" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="OpenSkyhawk" class="md-header__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenSkyhawk
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RECON RESULTS CODEX
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-header-nav" aria-label="Primary navigation">
+      <a href=".." class="">Home</a>
+      <a href="..#projects">Projects</a>
+      <a href="../claude/architecture/" class="">Documentation</a>
+      <a href="../claude/hardware-standards/" class="">Hardware</a>
+      <a href="../api/" class="">API Reference</a>
+    </div>
+
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../claude/architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../claude/controllers/Center_Armament/" class="md-tabs__link">
+          
+  
+  
+  Controllers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="OpenSkyhawk" class="md-nav__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    OpenSkyhawk
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/hardware-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/pcb-design-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN Bus / PCB Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/kicad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KiCad Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/dcsbios-stm32-debug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS STM32 Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/docs-site-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs Site Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controllers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controllers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/controllers/Center_Armament/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Center Armament
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/controllers/AWRS_Panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWRS Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/controllers/Misc_Switch_Panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Misc Switch Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude/controllers/a4e-c-dcsbios-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A-4E-C DCS-BIOS Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deprecated List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/namespaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3_2" id="__nav_4_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespace Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/namespace_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/namespace_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/namespace_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/namespace_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/namespace_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/annotated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/hierarchy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4_4" id="__nav_4_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Class Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/class_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/class_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/class_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/class_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/class_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-firmware-plan-completeness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Firmware Plan completeness
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-can-message-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. CAN message format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-firmware-implementation-vs-plan-drift-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Firmware implementation vs plan - drift check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-dcs-bios-address-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. DCS-BIOS address coverage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-supported-control-types-confirmed-vs-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Supported control types - confirmed vs planned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-simgateway-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. SimGateway implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pcb-and-schematic-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. PCB and schematic status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-repo-structure-anything-unexpected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Repo structure - anything unexpected
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-docs-site-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Docs site configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-open-questions-to-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Open questions to flag
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>RECON RESULTS CODEX</h1>
+
+<h2 id="1-firmware-plan-completeness">1. Firmware Plan completeness</h2>
+<p><strong>Files found:</strong> <code>Firmware/ScratchPad/FirmwarePlan/README.md</code> is the master index. It says the directory is the authoritative firmware spec split by contract boundary, describes the PC/RP2040 SimGateway/STM32 PanelBridge/CAN PanelGroup topology, and maps each document to a responsibility (<code>Firmware/ScratchPad/FirmwarePlan/README.md:1-40</code>). It also says <code>Firmware/ScratchPad/REQUIREMENTS.md</code> is superseded by FirmwarePlan (<code>Firmware/ScratchPad/FirmwarePlan/README.md:58-66</code>).</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00-decisions.md</code></td>
+<td>Architecture decisions: SimGateway byte relay, PanelBridge owns DCS-BIOS, <code>controlId</code> routing, <code>NODE_ID</code> build flags, batching, and reserved heartbeat behavior (<code>Firmware/ScratchPad/FirmwarePlan/00-decisions.md:12-40</code>, <code>Firmware/ScratchPad/FirmwarePlan/00-decisions.md:157-205</code>).</td>
+</tr>
+<tr>
+<td><code>01-system-overview.md</code></td>
+<td>System goal, topology, library roles, and data flow. Listed by README as the system overview (<code>Firmware/ScratchPad/FirmwarePlan/README.md:22-25</code>).</td>
+</tr>
+<tr>
+<td><code>02-can-protocol.md</code></td>
+<td>CAN frame IDs, payloads, <code>NODE_ID</code>, <code>ControlPacket</code>, <code>ControlPacketPair</code>, filters, queueing, and bus config (<code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:1-4</code>, <code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:8-28</code>, <code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:32-57</code>, <code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:75-86</code>).</td>
+</tr>
+<tr>
+<td><code>03-uart-usb-hid-protocol.md</code></td>
+<td>PanelBridge to SimGateway UART protocol, HID frame format, resync behavior, USB identity, and TinyUSB HID backend (<code>Firmware/ScratchPad/FirmwarePlan/03-uart-usb-hid-protocol.md:10-91</code>).</td>
+</tr>
+<tr>
+<td><code>04-dcs-bios-integration.md</code></td>
+<td>DCS/HID <code>controlId</code> ranges, <code>DCSIN_*</code> IDs, generated headers, input map, value encoding, and generator rules (<code>Firmware/ScratchPad/FirmwarePlan/04-dcs-bios-integration.md:10-140</code>).</td>
+</tr>
+<tr>
+<td><code>05-panelgroup-api.md</code></td>
+<td><code>PinRef</code>, MCP23017/ADS1115 support, PanelGroup routing, implemented <code>Switch2Pos</code>/<code>LED</code>, and planned input/output classes (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:12-149</code>, <code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:151-451</code>).</td>
+</tr>
+<tr>
+<td><code>06-panelbridge-api.md</code></td>
+<td>Node tracking, DCS-BIOS export listener, DCS/HID dispatch, <code>SYNC_REQ</code>, and test sequence behavior (<code>Firmware/ScratchPad/FirmwarePlan/06-panelbridge-api.md:10-183</code>).</td>
+</tr>
+<tr>
+<td><code>07-simgateway-api.md</code></td>
+<td>RP2040 SimGateway role, HID axes/buttons/hats, allocation, platform compatibility, HID dispatch, relay contract, UART pins, and testing contract (<code>Firmware/ScratchPad/FirmwarePlan/07-simgateway-api.md:10-225</code>).</td>
+</tr>
+<tr>
+<td><code>08-hardware-firmware-contracts.md</code></td>
+<td>STM32 reserved pins, UART pins, DRV8833 sleep, MCP constraints, ADS1115 assumptions, CAN transceiver, diagnostic serial, and status LEDs (<code>Firmware/ScratchPad/FirmwarePlan/08-hardware-firmware-contracts.md:10-156</code>).</td>
+</tr>
+<tr>
+<td><code>09-startup-resync-diagnostics.md</code></td>
+<td>PanelGroup/PanelBridge/SimGateway boot flow, sync behavior, timing races, and diagnostic frames (<code>Firmware/ScratchPad/FirmwarePlan/09-startup-resync-diagnostics.md:10-146</code>).</td>
+</tr>
+<tr>
+<td><code>10-implementation-plan.md</code></td>
+<td>Implementation phases 0-6 and completion status (<code>Firmware/ScratchPad/FirmwarePlan/10-implementation-plan.md:8-200</code>).</td>
+</tr>
+<tr>
+<td><code>11-open-issues.md</code></td>
+<td>No active open issues, plus resolved decisions and deferred PS3/PS4 compatibility note (<code>Firmware/ScratchPad/FirmwarePlan/11-open-issues.md:10-50</code>).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Master index:</strong> Yes. The README is the index and states the FirmwarePlan is authoritative for current firmware work (<code>Firmware/ScratchPad/FirmwarePlan/README.md:1-5</code>, <code>Firmware/ScratchPad/FirmwarePlan/README.md:58-66</code>).</p>
+<p><strong>Complete sections:</strong> <code>10-implementation-plan.md</code> marks Phase 0, Phase 1, Phase 2, and Phase 3 as done (<code>Firmware/ScratchPad/FirmwarePlan/10-implementation-plan.md:8-162</code>). <code>11-open-issues.md</code> says there are no active open issues (<code>Firmware/ScratchPad/FirmwarePlan/11-open-issues.md:10</code>).</p>
+<p><strong>Deferred/TBD:</strong> Phase 4 through Phase 6 remain backlog/future work: more control types, hardware/output implementations, tests, docs, and first full panel integration (<code>Firmware/ScratchPad/FirmwarePlan/10-implementation-plan.md:165-200</code>). <code>07-simgateway-api.md</code> still treats PlayStation 3/4 HID compatibility as optional future work (<code>Firmware/ScratchPad/FirmwarePlan/07-simgateway-api.md:99-142</code>), and <code>11-open-issues.md</code> keeps that as explicitly deferred (<code>Firmware/ScratchPad/FirmwarePlan/11-open-issues.md:39-50</code>).</p>
+<p><strong>Contradictions with TechSpec:</strong> Several FirmwarePlan statements are stale relative to <code>Firmware/ScratchPad/TechSpec/</code> and source:</p>
+<ul>
+<li><code>Switch2Pos</code> is still described as needing a <code>PinRef</code> update in the plan (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:151-158</code>) and as deferred in Phase 3 (<code>Firmware/ScratchPad/FirmwarePlan/10-implementation-plan.md:129-132</code>), but the TechSpec marks it done and the implementation now uses <code>PinRef</code> (<code>Firmware/ScratchPad/TechSpec/PanelGroup/Inputs/Switch2Pos.md:3</code>, <code>Firmware/Libraries/PanelGroup/Switch2Pos.cpp:14-64</code>).</li>
+<li><code>IntegerOutput</code> is planned, not implemented. FirmwarePlan and <code>PanelGroup/README.md</code> still describe it as existing, but its TechSpec says not started and no OpenSkyhawk implementation class was found (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:374-381</code>, <code>Firmware/Libraries/PanelGroup/README.md:37-60</code>, <code>Firmware/ScratchPad/TechSpec/PanelGroup/Outputs/IntegerOutput.md:3</code>).</li>
+<li>The plan says the generator has 149 inputs and one unsupported paired boolean gap (<code>Firmware/ScratchPad/FirmwarePlan/10-implementation-plan.md:65-66</code>), while generated metadata currently says 150 controls and no unsupported controls (<code>Firmware/Libraries/A4EC/A4EC_CmdIds.h:1-6</code>, <code>Firmware/Libraries/A4EC/GENERATOR_GAPS.md:7-9</code>).</li>
+</ul>
+<p><strong>Owner clarification:</strong> FirmwarePlan is internal planning material, not public docs, but it should be updated wherever it conflicts with TechSpec/source because it will be used as input for better future docs.</p>
+<h2 id="2-can-message-format">2. CAN message format</h2>
+<p><strong>Formal spec:</strong> Yes. <code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md</code> owns the CAN contract (<code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:1-4</code>). The implementation mirrors it in <code>Firmware/Libraries/CANProtocol/CANProtocol.h</code>.</p>
+<p><strong>Frame ID structure:</strong> Fixed frames are <code>CTRL_BCAST = 0x010</code>, <code>TEST_SEQ = 0x011</code>, and <code>SYNC_REQ = 0x012</code>. Per-node frames are computed ranges for <code>HB</code>, <code>EVT</code>, <code>ECHO</code>, and <code>READY</code> (<code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:61-86</code>, <code>Firmware/Libraries/CANProtocol/CANProtocol.h:61-79</code>).</p>
+<p><strong>Payload layout:</strong> <code>ControlPacket</code> is 4 bytes: little-endian <code>uint16_t controlId</code> plus little-endian <code>uint16_t value</code>. <code>ControlPacketPair</code> is 8 bytes and batches two <code>ControlPacket</code> entries. Heartbeat payload is 8 bytes: <code>nodeId</code>, flags, uptime seconds, accepted RX count, and shifted CAN error-status register (<code>esr</code>) (<code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:32-57</code>, <code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:93-155</code>, <code>Firmware/Libraries/CANProtocol/CANProtocol.h:23-51</code>).</p>
+<p><strong>Address envelope:</strong> DCS-BIOS compact input IDs are <code>0x8000-0x86FF</code> in the implementation (<code>Firmware/Libraries/CANProtocol/CANProtocol.h:81-92</code>). HID now reserves the broader <code>0x0010-0x00FF</code> envelope: axes <code>0x0010-0x001F</code>, hats <code>0x0020-0x002F</code>, buttons <code>0x0030-0x00AF</code>, and reserved HID expansion <code>0x00B0-0x00FF</code> (<code>Firmware/Libraries/HIDControls/HIDControls.h:8-45</code>). Double-check result: no current <code>CTRL_*</code> constants occupy <code>0x00B0-0x00FF</code>, and there is no conflict with DCS (<code>&gt;=0x8000</code>), null sentinel (<code>0x0000</code>), or <code>CTRL_ID_TEST_SEQ</code> (<code>0xFFFF</code>). The broader range is safe as a HID routing envelope, but docs should avoid implying all remaining slots are USB buttons because the current HID descriptor exposes 128 buttons.</p>
+<p><strong>CAN ID namespace:</strong> System/test CAN arbitration IDs do not conflict with HID/DCS <code>controlId</code> values because they are separate namespaces. <code>CAN_ID_TEST_SEQ = 0x011</code> numerically overlaps <code>CTRL_PITCH = 0x0011</code>, but the former is the CAN frame ID and the latter lives inside the <code>ControlPacket</code> payload; <code>CANProtocol::drain()</code> handles TEST_SEQ by <code>frame.canId == CAN_ID_TEST_SEQ</code>. <code>CTRL_ID_TEST_SEQ = 0xFFFF</code> remains only as a legacy payload sentinel.</p>
+<p><strong>DCS vs HID routing:</strong> PanelBridge routes by payload <code>controlId</code>, not by CAN frame ID alone. If <code>controlId</code> is in <code>0x8000-0x86FF</code>, it dispatches to DCS-BIOS input handling; if it is below <code>0x8000</code>, it emits a HID frame to SimGateway; other values are dropped (<code>Firmware/Libraries/PanelBridge/PanelBridge.cpp:167-179</code>). SimGateway only acts on HID handlers registered in its axis/button/hat linked lists (<code>Firmware/Libraries/SimGateway/SimGateway.cpp:248-275</code>).</p>
+<p><strong>CAN frame ID routing:</strong> CAN frame ID chooses the transport class and node source/destination: PanelGroups listen for <code>CTRL_BCAST</code>; PanelBridge receives <code>HB</code>, <code>EVT</code>, <code>ECHO</code>, and <code>READY</code>; <code>SYNC_REQ</code> is broadcast (<code>Firmware/Libraries/PanelGroup/PanelGroup.cpp:79-99</code>, <code>Firmware/Libraries/PanelBridge/PanelBridge.cpp:203-245</code>). Logical control routing is still done on <code>controlId</code>.</p>
+<p><strong>NODE_ID scheme:</strong> <code>NODE_ID</code> is a compile-time build flag. <code>0</code> is reserved for PanelBridge, <code>1-63</code> are PanelGroup nodes, and SimGateway has no CAN <code>NODE_ID</code> (<code>Firmware/ScratchPad/FirmwarePlan/02-can-protocol.md:8-28</code>, <code>Firmware/Libraries/STM32Board/STM32Board.h:28-29</code>). Current assignments found:</p>
+<ul>
+<li>E2E and template PanelBridge projects use <code>NODE_ID=0</code>.</li>
+<li>E2E and template PanelGroup projects use <code>NODE_ID=1</code>.</li>
+<li>Prototype CAN master/subnode projects use <code>NODE_ID=0</code> and <code>NODE_ID=1</code>.</li>
+<li>The production <code>Center_Armament</code> docs still say its CAN node ID is TBD (<code>docs/claude/controllers/Center_Armament.md:13</code>), and its current sketch is a stub that does not include <code>STM32Board</code> or require <code>NODE_ID</code> (<code>Firmware/Center_Armament/src/main.cpp:1-12</code>).</li>
+</ul>
+<h2 id="3-firmware-implementation-vs-plan-drift-check">3. Firmware implementation vs plan - drift check</h2>
+<p><strong>Projects found outside ScratchPad:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Project</th>
+<th>Role</th>
+<th>Current state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Firmware/Center_Armament</code></td>
+<td>Intended production STM32 CAN controller for the Armament group. It should host Armament plus AWRS/Misc breakouts (<code>Firmware/Center_Armament/README.md:1-9</code>).</td>
+<td>Compiles, but source is stub only with TODO setup/loop (<code>Firmware/Center_Armament/src/main.cpp:1-12</code>).</td>
+</tr>
+<tr>
+<td><code>Firmware/Prototype/E2E_DCS_Test/PanelBridge</code></td>
+<td>Current E2E PanelBridge sketch: DCS-BIOS on USB serial, CAN bridge, UART to SimGateway (<code>Firmware/Prototype/E2E_DCS_Test/PanelBridge/src/main.cpp:1-10</code>).</td>
+<td>Compiles. Implements current three-tier bridge skeleton (<code>Firmware/Prototype/E2E_DCS_Test/PanelBridge/src/main.cpp:12-35</code>).</td>
+</tr>
+<tr>
+<td><code>Firmware/Prototype/E2E_DCS_Test/PanelGroup</code></td>
+<td>Current E2E PanelGroup node: button input to <code>DCSIN_MASTER_TEST</code>, LED output from <code>GEAR_LIGHT</code> (<code>Firmware/Prototype/E2E_DCS_Test/PanelGroup/src/main.cpp:1-14</code>).</td>
+<td>Compiles. Minimal E2E node, not full panel integration (<code>Firmware/Prototype/E2E_DCS_Test/PanelGroup/src/main.cpp:16-23</code>).</td>
+</tr>
+<tr>
+<td><code>Firmware/Prototype/E2E_DCS_Test/SimGateway</code></td>
+<td>Current E2E RP2040 SimGateway sketch for DCS-BIOS byte relay (<code>Firmware/Prototype/E2E_DCS_Test/SimGateway/src/main.cpp:1-6</code>).</td>
+<td>Compiles. DCS-only test sketch; no HID axes/buttons declared in the sketch (<code>Firmware/Prototype/E2E_DCS_Test/SimGateway/src/main.cpp:14-23</code>).</td>
+</tr>
+<tr>
+<td><code>Firmware/Templates/PanelBridge</code></td>
+<td>Reusable PanelBridge template.</td>
+<td>Compiles and follows the three-tier architecture.</td>
+</tr>
+<tr>
+<td><code>Firmware/Templates/PanelGroup</code></td>
+<td>Reusable PanelGroup template.</td>
+<td>Compiles and follows the three-tier architecture.</td>
+</tr>
+<tr>
+<td><code>Firmware/Templates/SimGateway</code></td>
+<td>Reusable SimGateway template.</td>
+<td>Compiles and follows the three-tier architecture.</td>
+</tr>
+<tr>
+<td><code>Firmware/Prototype/CAN_Test_Arduino</code></td>
+<td>Legacy Arduino CAN prototype.</td>
+<td>Prototype only; not part of current three-tier architecture. Owner clarification: can be archived; git history is enough if needed later.</td>
+</tr>
+<tr>
+<td><code>Firmware/Prototype/CAN_Test_Master</code></td>
+<td>Legacy/experimental STM32 CAN master prototype.</td>
+<td>Prototype only; not current PanelBridge implementation. Owner clarification: can be archived; git history is enough if needed later.</td>
+</tr>
+<tr>
+<td><code>Firmware/Prototype/CAN_Test_SubNode</code></td>
+<td>Legacy/experimental STM32 CAN subnode prototype.</td>
+<td>Prototype only; not current PanelGroup implementation. Owner clarification: can be archived; git history is enough if needed later.</td>
+</tr>
+<tr>
+<td><code>Firmware/Tests/*</code></td>
+<td>PlatformIO test projects for core libraries.</td>
+<td>CI/test support projects, not deployed firmware images.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Compile checks run during recon:</strong> <code>Firmware/Center_Armament</code>, the three <code>Firmware/Prototype/E2E_DCS_Test/*</code> projects, and the three <code>Firmware/Templates/*</code> projects all compile successfully with PlatformIO. This confirms buildability, not sim behavior.</p>
+<p><strong>Architecture match:</strong> The implementation matches the FirmwarePlan's three-tier architecture in the shared libraries: PanelGroup nodes own local I/O and CAN reports (<code>Firmware/Libraries/PanelGroup/PanelGroup.cpp:120-324</code>), PanelBridge owns DCS-BIOS integration and DCS/HID dispatch (<code>Firmware/Libraries/PanelBridge/PanelBridge.cpp:72-179</code>, <code>Firmware/Libraries/PanelBridge/PanelBridge.cpp:282-344</code>), and SimGateway is a byte relay plus USB HID endpoint, not a DCS-BIOS parser (<code>Firmware/Libraries/SimGateway/SimGateway.h:1-12</code>, <code>Firmware/Libraries/SimGateway/SimGateway.cpp:287-324</code>).</p>
+<p><strong>E2E success criterion:</strong> Owner clarification: the first full end-to-end sim test should validate the full lifecycle, not just a single control. It should include sending and receiving data from DCS, data traveling through the CAN network, and PanelBridge/SimGateway/PanelGroup intercepting or routing it as needed. Hardware scope is the <code>Firmware/Prototype/E2E_DCS_Test</code> sketches on breadboards only; no PCBs have been manufactured yet.</p>
+<p><strong>Deviations or gaps:</strong> Production <code>Center_Armament</code> has not yet been integrated beyond a stub. The current E2E PanelGroup uses PC13 as a dev-board LED shortcut (<code>Firmware/Prototype/E2E_DCS_Test/PanelGroup/src/main.cpp:1-14</code>), while the hardware contract says PC13/PC14/PC15 are not production GPIO and production status LEDs should use PB14/PB15 (<code>Firmware/ScratchPad/FirmwarePlan/08-hardware-firmware-contracts.md:121-146</code>). The shared SimGateway library supports HID, but the current E2E SimGateway sketch is DCS-only and declares no HID controls (<code>Firmware/Prototype/E2E_DCS_Test/SimGateway/src/main.cpp:1-6</code>).</p>
+<p><strong>Contracts not fully reflected yet:</strong> Stepper-driver sleep/control, ADS1115-backed analog classes, stepper/servo outputs, and most planned input classes are specified but not implemented in firmware classes yet (<code>Firmware/ScratchPad/FirmwarePlan/08-hardware-firmware-contracts.md:55-93</code>, <code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:160-451</code>). The STM32 fixed-pin contract for CAN, status LEDs, diagnostic serial, and analog resolution is reflected in <code>STM32Board</code> (<code>Firmware/Libraries/STM32Board/STM32Board.h:9-44</code>, <code>Firmware/Libraries/STM32Board/STM32Board.cpp:71-117</code>). Owner clarification: the final stepper driver choice is not yet validated because stepper drivers have not been prototyped.</p>
+<h2 id="4-dcs-bios-address-coverage">4. DCS-BIOS address coverage</h2>
+<p><strong>Completeness:</strong> The generated A4EC headers are the current source of truth because they are generated from DCS-BIOS. The generated metadata currently has no generator gaps (<code>Firmware/Libraries/A4EC/GENERATOR_GAPS.md:7-9</code>), with 150 input controls and 313 output constants (<code>Firmware/Libraries/A4EC/A4EC_CmdIds.h:1-6</code>, <code>Firmware/Libraries/A4EC/A4EC_OutputIds.h:1-6</code>). <code>docs/claude/controllers/a4e-c-dcsbios-addresses.md</code> is a broad A-4E-C reference with additional context, but it should be treated as potentially stale until compared against the generated headers (<code>docs/claude/controllers/a4e-c-dcsbios-addresses.md:1-20</code>, <code>docs/claude/controllers/a4e-c-dcsbios-addresses.md:517-550</code>).</p>
+<p><strong>Confirmed working vs researched vs placeholder:</strong> DCS-BIOS-extracted addresses and masks are assumed valid. That is separate from "confirmed through OpenSkyhawk hardware/firmware E2E." The current E2E sketch exercises one output (<code>GEAR_LIGHT</code>) and one input (<code>MASTER_TEST</code>) (<code>Firmware/Prototype/E2E_DCS_Test/PanelGroup/src/main.cpp:1-14</code>). Placeholder/TBD control details remain in panel docs, especially AWRS switch types and Misc panel notes (<code>docs/claude/controllers/AWRS_Panel.md:9-15</code>, <code>docs/claude/controllers/Misc_Switch_Panel.md:22-26</code>).</p>
+<p><strong>Consistency with firmware:</strong> Generated firmware constants agree with many documented controls. For example, <code>GEAR_LIGHT</code> is documented at address <code>0x845C</code> mask <code>0x8000</code> and generated as <code>A_4E_C_GEAR_LIGHT = 0x845c</code> plus <code>A_4E_C_GEAR_LIGHT_AM = 0x8000</code> (<code>docs/claude/controllers/a4e-c-dcsbios-addresses.md:117-138</code>, <code>Firmware/Libraries/A4EC/A4EC_OutputIds.h:629-630</code>). <code>MASTER_TEST</code> is documented at <code>0x8512</code> mask <code>0x0004</code> and generated as matching output constants, while its input command ID is <code>DCSIN_MASTER_TEST</code> (<code>docs/claude/controllers/a4e-c-dcsbios-addresses.md:296-305</code>, <code>Firmware/Libraries/A4EC/A4EC_OutputIds.h:737-738</code>, <code>Firmware/Libraries/A4EC/A4EC_CmdIds.h:119</code>).</p>
+<p><strong>Armament Group mapping:</strong> <code>docs/claude/controllers/Center_Armament.md</code> maps Armament Panel IDs 700-710 and Misc Switch Panel IDs 720-727 to DCS-BIOS names (<code>docs/claude/controllers/Center_Armament.md:103-136</code>, <code>docs/claude/controllers/Center_Armament.md:166-177</code>). The generated input map includes representative Armament/AWRS/Misc controls such as <code>ARM_MASTER</code>, <code>AWRS_QUANT</code>, <code>MISSILE_VOL</code>, <code>SHRIKE_SEL_KNB</code>, and <code>MASTER_TEST</code> (<code>Firmware/Libraries/A4EC/A4EC_InputMap.h:62-171</code>). AWRS docs still mark switch type details TBD (<code>docs/claude/controllers/AWRS_Panel.md:9-15</code>).</p>
+<p><strong>Naming typo:</strong> <code>_A</code> in the DCS-BIOS address reference and older examples is a typo/stale convention. The canonical generated output style is <code>A_4E_C_*</code> for the address and <code>A_4E_C_*_AM</code> for the address mask (<code>docs/claude/controllers/a4e-c-dcsbios-addresses.md:5-12</code>, <code>Firmware/ScratchPad/FirmwarePlan/04-dcs-bios-integration.md:41-56</code>, <code>Firmware/Libraries/A4EC/A4EC_OutputIds.h:13-18</code>, <code>Firmware/Libraries/A4EC/A4EC_OutputIds.h:629-630</code>).</p>
+<h2 id="5-supported-control-types-confirmed-vs-planned">5. Supported control types - confirmed vs planned</h2>
+<p><strong>Currently implemented in firmware source:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>How it is read/driven</th>
+<th>Upstream/downstream report</th>
+<th>Current use found</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PinRef</code></td>
+<td>GPIO, MCP23017 cached digital, or ADS1115 analog abstraction (<code>Firmware/Libraries/PanelGroup/PinRef.h:5-149</code>, <code>Firmware/Libraries/PanelGroup/PinRef.cpp:48-169</code>).</td>
+<td>Helper only; no direct upstream report.</td>
+<td>Used by <code>Switch2Pos</code> and <code>LED</code>.</td>
+</tr>
+<tr>
+<td><code>Switch2Pos</code></td>
+<td>Digital input through <code>PinRef</code>; debounced in <code>poll()</code>. MCP inputs can be interrupt-updated, then polled from cache; fallback polling runs every 20 ms (<code>Firmware/Libraries/PanelGroup/Switch2Pos.cpp:26-64</code>, <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp:270-310</code>).</td>
+<td>Sends batched <code>ControlPacket</code> on <code>canIdEvt(NODE_ID)</code>; PanelBridge routes by <code>controlId</code> to DCS-BIOS or HID (<code>Firmware/Libraries/PanelGroup/Switch2Pos.cpp:30-64</code>, <code>Firmware/Libraries/PanelBridge/PanelBridge.cpp:167-179</code>).</td>
+<td>E2E PanelGroup uses it for <code>DCSIN_MASTER_TEST</code> (<code>Firmware/Prototype/E2E_DCS_Test/PanelGroup/src/main.cpp:8-14</code>).</td>
+</tr>
+<tr>
+<td><code>LED</code></td>
+<td>Digital output through <code>PinRef</code>; matches DCS-BIOS output address/mask (<code>Firmware/Libraries/PanelGroup/LED.h:16-74</code>, <code>Firmware/Libraries/PanelGroup/LED.cpp:9-26</code>).</td>
+<td>Consumes <code>CTRL_BCAST</code> output packets from PanelBridge (<code>Firmware/Libraries/PanelGroup/PanelGroup.cpp:79-92</code>).</td>
+<td>E2E PanelGroup uses it for <code>A_4E_C_GEAR_LIGHT</code> (<code>Firmware/Prototype/E2E_DCS_Test/PanelGroup/src/main.cpp:8-14</code>).</td>
+</tr>
+<tr>
+<td><code>HIDAxis</code>, <code>HIDButton</code>, <code>HIDHatSwitch</code></td>
+<td>SimGateway linked-list handlers receive HID frames from UART parser (<code>Firmware/Libraries/SimGateway/SimGateway.h:26-123</code>, <code>Firmware/Libraries/SimGateway/SimGateway.cpp:140-190</code>, <code>Firmware/Libraries/SimGateway/SimGateway.cpp:248-275</code>).</td>
+<td>Updates TinyUSB HID report (<code>Firmware/Libraries/SimGateway/SimGateway.cpp:16-112</code>).</td>
+<td>Implemented in library; not used by current DCS-only E2E sketch.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Referenced but not implemented yet:</strong> Planned inputs include <code>Switch3Pos</code>, <code>SwitchMultiPos</code>, <code>AnalogMultiPos</code>, <code>ActionButton</code>, <code>RotaryEncoder</code>, <code>RotaryAcceleratedEncoder</code>, <code>RotarySwitch</code>, <code>AnalogInput</code>, <code>AngleSensorInput</code>, and <code>SwitchWithCover2Pos</code> (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:160-344</code>, <code>Firmware/ScratchPad/TechSpec/PanelGroup/Inputs/SwitchWithCover2Pos.md:3</code>). Planned outputs include <code>IntegerOutput</code>, <code>AnalogOutput</code>, <code>SwitecX25Output</code>, <code>AccelStepperOutput</code>, and <code>ServoOutput</code> (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:374-451</code>, <code>Firmware/ScratchPad/TechSpec/PanelGroup/Outputs/IntegerOutput.md:3</code>).</p>
+<p><strong>Rotary encoders:</strong> Rotary encoders are planned as incremental inputs with direction/speed handling. <code>RotaryEncoder</code> sends <code>DEC/INC</code> values, <code>RotaryAcceleratedEncoder</code> adds speed-based acceleration, and <code>RotarySwitch</code> handles absolute quadrature-style switches but has a boot ambiguity called out in the plan (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:222-280</code>).</p>
+<p><strong>Multi-position handling:</strong> Multi-position controls are planned as distinct classes rather than simple toggles: <code>SwitchMultiPos</code> uses one active-low pin per position, <code>AnalogMultiPos</code> uses an ADC resistor ladder, and <code>RotarySwitch</code> uses quadrature-like position encoding (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:174-210</code>, <code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:265-280</code>). PanelBridge already knows how to dispatch generated <code>MULTIPOS</code> and <code>ANALOG</code> input map entries, but PanelGroup source only has <code>Switch2Pos</code> implemented today (<code>Firmware/Libraries/PanelBridge/PanelBridge.cpp:80-165</code>).</p>
+<h2 id="6-simgateway-implementation">6. SimGateway implementation</h2>
+<p><strong>Current state:</strong> SimGateway is implemented as an RP2040 library and template/E2E firmware target. The library provides CDC-to-UART byte relay and HID demux; it does not run DCS-BIOS, parse DCS addresses, or talk CAN (<code>Firmware/Libraries/SimGateway/SimGateway.h:1-12</code>). The current E2E sketch is intentionally DCS-BIOS-only and declares no HID controls (<code>Firmware/Prototype/E2E_DCS_Test/SimGateway/src/main.cpp:1-6</code>).</p>
+<p><strong>DCS vs HID distinction:</strong> PanelBridge sends HID over UART as fixed 6-byte frames starting with <code>0xAA 0x55</code>, followed by little-endian <code>controlId</code> and value (<code>Firmware/ScratchPad/FirmwarePlan/03-uart-usb-hid-protocol.md:27-45</code>, <code>Firmware/Libraries/PanelBridge/PanelBridge.cpp:63-70</code>). SimGateway treats non-<code>0xAA</code> bytes as raw DCS-BIOS bytes and forwards them to USB CDC; <code>0xAA 0x55</code> starts HID frame parsing; <code>0xAA</code> followed by anything else is forwarded/resynced (<code>Firmware/Libraries/SimGateway/SimGateway.cpp:225-275</code>).</p>
+<p><strong>TinyUSB classes:</strong> The production path uses a composite USB device: CDC serial plus TinyUSB HID report via <code>Adafruit_USBD_HID</code> (<code>Firmware/ScratchPad/FirmwarePlan/03-uart-usb-hid-protocol.md:76-91</code>, <code>Firmware/Libraries/SimGateway/SimGateway.cpp:11-13</code>, <code>Firmware/Libraries/SimGateway/SimGateway.cpp:23-86</code>).</p>
+<p><strong>UART baud/protocol:</strong> UART between SimGateway and PanelBridge is 250000 baud on RP2040 default pins GP0 TX / GP1 RX (<code>Firmware/ScratchPad/FirmwarePlan/03-uart-usb-hid-protocol.md:10-23</code>, <code>Firmware/Libraries/SimGateway/SimGateway.h:127-149</code>, <code>Firmware/Libraries/SimGateway/SimGateway.cpp:287-309</code>). SimGateway-to-PanelBridge carries raw DCS-BIOS binary bytes; PanelBridge-to-SimGateway carries raw DCS-BIOS bytes plus HID frames (<code>Firmware/ScratchPad/FirmwarePlan/03-uart-usb-hid-protocol.md:15-23</code>).</p>
+<p><strong>Seven HID axes:</strong> The canonical planned HID axes are roll, pitch, throttle, rudder, left brake, right brake, and zoom (<code>Firmware/Libraries/HIDControls/HIDControls.h:21-28</code>). Speed brake is not an axis. FirmwarePlan also lists the same seven source constants as roll, pitch, throttle, rudder, brake left, brake right, and zoom (<code>Firmware/ScratchPad/FirmwarePlan/07-simgateway-api.md:24-42</code>).</p>
+<h2 id="7-pcb-and-schematic-status">7. PCB and schematic status</h2>
+<p><strong>KiCad projects found under <code>PCB/</code>:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+<th>Status found</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PCB/Center_Console/Center_Armament/Armament_MCU</code></td>
+<td>Main MCU/CAN board for Armament group, with sheets for MCU/CAN, backlighting, gauges, and switches (<code>PCB/Center_Console/Center_Armament/Armament_MCU/Armament_MCU.kicad_sch:8-11</code>, <code>PCB/Center_Console/Center_Armament/Armament_MCU/Armament_MCU.kicad_sch:240-529</code>).</td>
+<td>Real/in progress. ERC is not clean: 2 errors for unconnected U1 PB10/PB11 and 2 unconnected-wire warnings. No board file found for DRC in this project.</td>
+</tr>
+<tr>
+<td><code>PCB/Center_Console/Center_Armament/AWRS_Panel</code></td>
+<td>AWRS breakout/control board with controls and backlighting sheets (<code>PCB/Center_Console/Center_Armament/AWRS_Panel/AWRS_Panel.kicad_sch:8</code>, <code>PCB/Center_Console/Center_Armament/AWRS_Panel/AWRS_Panel.kicad_sch:5098-5155</code>).</td>
+<td>Real/in progress. ERC is not clean: 1 error for SW1 pin 13 not connected and 23 off-grid warnings.</td>
+</tr>
+<tr>
+<td><code>PCB/Center_Console/Center_Armament/Misc_Switch_Panel</code></td>
+<td>Misc Switch Panel breakout with backlight/switch sheets and PCB (<code>PCB/Center_Console/Center_Armament/Misc_Switch_Panel/Misc_Switch_Panel.kicad_sch:7551-7628</code>).</td>
+<td>ERC clean with 0 violations. DRC could not be obtained during recon because <code>kicad-cli pcb drc</code> aborted with exit 134 and produced no report.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Armament Group schematic completion:</strong> All three Armament Group boards have real schematics rather than stubs. <code>Misc_Switch_Panel</code> is ERC-clean; <code>Armament_MCU</code> and <code>AWRS_Panel</code> are still in-progress because ERC reports errors/warnings. Owner clarification: PCB work should be treated as schematic exploration/in-progress and not validated by fabrication. Detailed progress is tracked internally for now; public tracking may later move to GitHub Issues or Projects after the format is decided.</p>
+<p><strong>Shared symbols/footprints:</strong> <code>PCB/Libraries/OpenSkyhawk.kicad_sym</code> contains project-specific symbols such as <code>IRLML2502</code>, <code>LED_5050_Red</code>, <code>X27.168</code>, and <code>X27.589</code> (<code>PCB/Libraries/OpenSkyhawk.kicad_sym:5-25</code>, <code>PCB/Libraries/OpenSkyhawk.kicad_sym:304-355</code>, <code>PCB/Libraries/OpenSkyhawk.kicad_sym:502-533</code>, <code>PCB/Libraries/OpenSkyhawk.kicad_sym:824-855</code>). Matching footprints exist under <code>PCB/Libraries/OpenSkyhawk.pretty/</code>, including <code>LED_5050_Red.kicad_mod</code>, <code>X27.168_Stepper.kicad_mod</code>, and <code>X27.589_Stepper.kicad_mod</code>.</p>
+<p><strong>KiCad template:</strong> A project template exists under <code>PCB/Libraries/project-template/</code>. It uses project-local library tables pointing to <code>${KIPRJMOD}/../../../Libraries/...</code> (<code>PCB/Libraries/project-template/sym-lib-table:3</code>, <code>PCB/Libraries/project-template/fp-lib-table:3</code>) and preloads JLCPCB-oriented design rules, library pins, net classes, and auto net-class patterns (<code>PCB/Libraries/project-template/template.kicad_pro:52-68</code>, <code>PCB/Libraries/project-template/template.kicad_pro:143-148</code>, <code>PCB/Libraries/project-template/template.kicad_pro:205-274</code>). <code>jlcpcb-standard.kicad_dru</code> also exists (<code>PCB/Libraries/design-rules/jlcpcb-standard.kicad_dru:1-45</code>).</p>
+<p><strong>Template-sheet gap:</strong> <code>PCB/Libraries/sheets/README.md</code> documents reusable sheet templates (<code>PCB/Libraries/sheets/README.md:3-23</code>), but no <code>.kicad_sch</code> sheet template files were found in that directory. Owner clarification: several KiCad templates are still needed, probably one per board type; the PanelGroup template is the highest priority.</p>
+<h2 id="8-repo-structure-anything-unexpected">8. Repo structure - anything unexpected</h2>
+<p><strong>Top-level structure:</strong> The root includes the expected <code>CAD/</code>, <code>PCB/</code>, <code>Firmware/</code>, and <code>docs/</code> folders described in the architecture overview (<code>docs/claude/architecture.md:1-9</code>). Additional top-level entries found include <code>.github/</code>, <code>.claude/</code>, <code>.claire/</code>, <code>.pytest_cache/</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>CODE_OF_CONDUCT.md</code>, <code>OpenSkyhawk.code-workspace</code>, <code>site/</code>, and <code>tools/</code>.</p>
+<p><strong>CAD status:</strong> The committed <code>CAD/</code> tree currently contains only console/shared placeholder directories with <code>.gitkeep</code> files. Owner clarification: CAD work is still very early, with only a couple of local panel sketches so far. Future docs should not imply CAD models are mature or complete.</p>
+<p><strong>Docs mismatch:</strong> The root README describes the older high-level structure but does not account for current <code>Firmware/Prototype</code>, <code>Firmware/Templates</code>, <code>Firmware/Tests</code>, <code>.github</code>, <code>tools</code>, or <code>site</code> folders (<code>README.md:12-47</code>). The architecture overview is closer to the current structure but intentionally summarizes only the major discipline folders (<code>docs/claude/architecture.md:1-39</code>).</p>
+<p><strong>GitHub Actions:</strong> <code>.github/workflows/</code> exists. Docs-specific workflows include:</p>
+<ul>
+<li><code>docs-deploy.yml</code>: on pushes to <code>main</code> affecting docs/Firmware libraries/workflow files, installs MkDocs dependencies and publishes with <code>mkdocs gh-deploy -f docs/mkdocs.yml --force --remote-branch gh-pages</code> (<code>.github/workflows/docs-deploy.yml:1-41</code>).</li>
+<li><code>docs-ci.yml</code>: PR docs checks, including Markdown link validation while excluding generated API docs (<code>.github/workflows/docs-ci.yml:1-91</code>).</li>
+<li>Additional CI exists for firmware, KiCad, A4EC metadata refresh/generator checks, and PR hygiene (<code>.github/workflows/firmware-ci.yml:1-107</code>, <code>.github/workflows/kicad-ci.yml:1-117</code>, <code>.github/workflows/a4ec-ci.yml:1-84</code>, <code>.github/workflows/a4ec-refresh.yml:1-233</code>, <code>.github/workflows/pr-hygiene.yml:1-46</code>).</li>
+</ul>
+<p><strong>Root conduct/contributing files:</strong> <code>CODE_OF_CONDUCT.md</code> exists at the root. <code>CONTRIBUTING.md</code> was not found.</p>
+<p><strong>Unexpected workflow issue:</strong> <code>pr-hygiene.yml</code> refers to <code>find Tools</code>, but the repo folder is <code>tools</code>, lower-case (<code>.github/workflows/pr-hygiene.yml:38-46</code>). Owner clarification: <code>tools</code> is the correct path, so the workflow should be updated to lowercase.</p>
+<h2 id="9-docs-site-configuration">9. Docs site configuration</h2>
+<p><strong>Site/repo URLs:</strong> <code>docs/mkdocs.yml</code> sets <code>site_url</code> to <code>https://openskyhawk.github.io/OpenSkyhawk/</code> and <code>repo_url</code> to <code>https://github.com/OpenSkyhawk/OpenSkyhawk</code> (<code>docs/mkdocs.yml:1-6</code>).</p>
+<p><strong>Plugins:</strong> The configured plugins are <code>search</code> and <code>mkdoxy</code>; no additional plugins beyond mkdoxy/search were found (<code>docs/mkdocs.yml:88-109</code>).</p>
+<p><strong>Theme overrides/hooks:</strong> The Material theme uses <code>custom_dir: overrides</code>, and <code>docs/overrides/partials/header.html</code> defines a custom header/nav/search/source layout (<code>docs/mkdocs.yml:8-19</code>, <code>docs/overrides/partials/header.html:1-72</code>). No MkDocs hooks entry was found in <code>mkdocs.yml</code>.</p>
+<p><strong>Current nav:</strong> <code>mkdocs.yml</code> currently includes Home, Architecture pages, Controller pages, and generated API Reference pages (<code>docs/mkdocs.yml:24-66</code>). <code>not_in_nav</code> and <code>exclude_docs</code> suppress scratch/reference/generated inputs from nav/build (<code>docs/mkdocs.yml:67-87</code>).</p>
+<p><strong>Proposed nav comparison:</strong> The provided proposed nav is an aspirational replacement <code>nav:</code> block, not a standalone <code>mkdocs-nav.yml</code> file and not a drop-in change today (<code>/Users/mhoresh/.codex/attachments/59d5d575-5112-40e4-abf9-97eeba9edc8d/pasted-text.txt:1-6</code>). It reorganizes the site into reader-journey sections: Getting Started, Architecture, Hardware Reference, Firmware Reference, console/panel pages, HOTAS, Kit Assembly, Build Guides, Contributing, and API Reference (<code>/Users/mhoresh/.codex/attachments/59d5d575-5112-40e4-abf9-97eeba9edc8d/pasted-text.txt:8-114</code>). Owner clarification: keep the current nested API Reference structure to support the generated API docs format. Kit Assembly should be planned as a future docs category, but should not imply kits are currently available. Kits are expected to be released incrementally as each panel group is completed; Armament Group is the first intended target if E2E and follow-on validation go well.</p>
+<p><strong>Audience guidance:</strong> Owner clarification: current docs should target builders and contributors first, while being clear and polished enough to attract people who may want to contribute to the project.</p>
+<p><strong>Future platform direction:</strong> Owner clarification: OpenSkyhawk is A-4E-focused today, but the firmware/hardware architecture could be useful for other DCS cockpit projects later. A possible future generic kit could split into two boards: a basic PanelGroup essentials board exposing all open pins, and a custom STM32F103 MCU/bridge board with a pluggable RP2040 module to avoid soldering the RP2040 directly. This is conceptual future direction and should remain private/internal until developed, though it may be prototyped early because it would help validate more complex networks.</p>
+<p><strong>Migration risk:</strong> Aside from <code>index.md</code> and <code>api/index.md</code>, the proposed target paths live under new directories that do not currently exist, such as <code>getting-started/</code>, <code>architecture/</code>, <code>hardware/</code>, <code>firmware/</code>, <code>panels/</code>, <code>flight-controls/</code>, <code>kits/</code>, <code>guides/</code>, and <code>contributing/</code> (<code>/Users/mhoresh/.codex/attachments/59d5d575-5112-40e4-abf9-97eeba9edc8d/pasted-text.txt:8-114</code>). If applied as-is, MkDocs strict builds would fail until content is moved or redirects/stubs are created. Current docs can be mapped conceptually, but not by path:</p>
+<ul>
+<li><code>claude/architecture.md</code> likely becomes <code>architecture/index.md</code> or <code>getting-started/system-overview.md</code>.</li>
+<li><code>claude/hardware-standards.md</code>, <code>claude/pcb-design-rules.md</code>, and <code>claude/kicad.md</code> likely move under <code>hardware/</code>.</li>
+<li><code>claude/dcsbios-stm32-debug.md</code> likely becomes <code>firmware/debugging.md</code>.</li>
+<li><code>claude/docs-site-workflow.md</code> likely becomes <code>contributing/docs-workflow.md</code>.</li>
+<li><code>claude/controllers/Center_Armament.md</code>, <code>AWRS_Panel.md</code>, and <code>Misc_Switch_Panel.md</code> likely split into the proposed Armament Group pages (<code>/Users/mhoresh/.codex/attachments/59d5d575-5112-40e4-abf9-97eeba9edc8d/pasted-text.txt:39-48</code>).</li>
+<li><code>claude/controllers/a4e-c-dcsbios-addresses.md</code> has no direct proposed nav entry. Since it may be stale relative to generated A4EC headers, compare it against <code>A4EC_CmdIds.h</code>, <code>A4EC_InputMap.h</code>, and <code>A4EC_OutputIds.h</code>; keep only matching/additional context in the future docs.</li>
+<li>The current API nav exposes generated subsections for namespaces, classes, files, modules, and pages (<code>docs/mkdocs.yml:37-66</code>). Preserve that nested API structure even if the rest of the proposed nav migrates.</li>
+</ul>
+<p><strong>Generated site note:</strong> <code>docs/claude/docs-site-workflow.md</code> says <code>site/</code> is generated output and should not be committed (<code>docs/claude/docs-site-workflow.md:15-23</code>, <code>docs/claude/docs-site-workflow.md:51-59</code>). Owner clarification: a local <code>site/</code> folder is expected for preview and is gitignored; GitHub Actions generates and publishes the actual site to the publishing branch.</p>
+<h2 id="10-open-questions-to-flag">10. Open questions to flag</h2>
+<ul>
+<li><strong>Switch2Pos status is stale in FirmwarePlan.</strong> FirmwarePlan says it needs a <code>PinRef</code> update/deferred work, but TechSpec and source show it is done (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:151-158</code>, <code>Firmware/ScratchPad/FirmwarePlan/10-implementation-plan.md:129-132</code>, <code>Firmware/ScratchPad/TechSpec/PanelGroup/Inputs/Switch2Pos.md:3</code>, <code>Firmware/Libraries/PanelGroup/Switch2Pos.cpp:14-64</code>).</li>
+<li><strong>IntegerOutput is planned, not implemented.</strong> FirmwarePlan and <code>PanelGroup/README.md</code> are stale where they say/show it as existing; TechSpec and source search confirm no OpenSkyhawk implementation class yet (<code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:374-381</code>, <code>Firmware/Libraries/PanelGroup/README.md:37-60</code>, <code>Firmware/ScratchPad/TechSpec/PanelGroup/Outputs/IntegerOutput.md:3</code>).</li>
+<li><strong>A4EC generator status is stale.</strong> FirmwarePlan says 149 inputs and one unsupported paired boolean control; current generated metadata says 150 controls and no generator gaps (<code>Firmware/ScratchPad/FirmwarePlan/10-implementation-plan.md:65-66</code>, <code>Firmware/Libraries/A4EC/A4EC_CmdIds.h:1-6</code>, <code>Firmware/Libraries/A4EC/GENERATOR_GAPS.md:7-9</code>).</li>
+<li><strong>FirmwarePlan should be corrected, not merely archived.</strong> It is internal planning material, but future docs will be derived from it, so conflicts with TechSpec/source should be resolved in FirmwarePlan.</li>
+<li><strong>HID range is standardized on the broader envelope.</strong> Source/docs now reserve <code>0x0010-0x00FF</code> as the HID routing envelope, with <code>0x00B0-0x00FF</code> reserved for future expansion rather than current USB button slots (<code>Firmware/Libraries/HIDControls/HIDControls.h:8-45</code>, <code>Firmware/ScratchPad/FirmwarePlan/04-dcs-bios-integration.md:10-20</code>).</li>
+<li><strong><code>_A</code> is a typo/stale suffix.</strong> Standardize docs on generated <code>A_4E_C_*</code> address constants plus <code>A_4E_C_*_AM</code> masks; update old <code>_A</code> examples (<code>docs/claude/controllers/a4e-c-dcsbios-addresses.md:5-12</code>, <code>Firmware/ScratchPad/FirmwarePlan/04-dcs-bios-integration.md:41-56</code>, <code>Firmware/Libraries/A4EC/A4EC_OutputIds.h:13-18</code>, <code>Firmware/ScratchPad/FirmwarePlan/05-panelgroup-api.md:366-398</code>).</li>
+<li><strong><code>PanelGroup/README.md</code> appears stale.</strong> It still refers to PA0 node strap behavior, <code>IntegerOutput</code>, and older <code>sendEvent</code>/<code>nodeId</code> style APIs, while current code uses compile-time <code>NODE_ID</code>, <code>PinRef</code>, and <code>CANProtocol::sendBatched</code> (<code>Firmware/Libraries/PanelGroup/README.md:20-37</code>, <code>Firmware/Libraries/PanelGroup/README.md:60-64</code>, <code>Firmware/Libraries/PanelGroup/README.md:90-93</code>, <code>Firmware/Libraries/PanelGroup/Switch2Pos.cpp:36-62</code>).</li>
+<li><strong>Center Armament firmware is not integrated yet.</strong> The production sketch compiles but is stub-only, and the controller docs still have CAN node ID TBD (<code>Firmware/Center_Armament/src/main.cpp:1-12</code>, <code>docs/claude/controllers/Center_Armament.md:13</code>).</li>
+<li><strong>Legacy CAN prototype projects can be archived.</strong> <code>CAN_Test_Arduino</code>, <code>CAN_Test_Master</code>, and <code>CAN_Test_SubNode</code> predate the current firmware architecture and do not need user-facing docs coverage; git history is sufficient for recovery if needed.</li>
+<li><strong>E2E LED pin is prototype-only.</strong> The E2E PanelGroup uses PC13 for a dev-board LED, while the hardware contract says PC13/PC14/PC15 are not production GPIO (<code>Firmware/Prototype/E2E_DCS_Test/PanelGroup/src/main.cpp:1-14</code>, <code>Firmware/ScratchPad/FirmwarePlan/08-hardware-firmware-contracts.md:121-146</code>).</li>
+<li><strong>CAD is very early.</strong> The committed <code>CAD/</code> tree is placeholder-only; only a couple local panel sketches exist so far, so future docs should present CAD as planned/early.</li>
+<li><strong>Reusable KiCad sheet templates are planned but absent.</strong> <code>PCB/Libraries/sheets/README.md</code> lists available templates, but no <code>.kicad_sch</code> templates were found in that directory. Several templates are needed, likely one per board type, with PanelGroup as the priority (<code>PCB/Libraries/sheets/README.md:3-23</code>).</li>
+<li><strong><code>pr-hygiene.yml</code> has a case typo.</strong> It checks <code>Tools</code> but the correct repo path is lowercase <code>tools</code> (<code>.github/workflows/pr-hygiene.yml:38-46</code>).</li>
+<li><strong>Stepper driver choice is not yet validated.</strong> Docs currently conflict between DRV8835 and DRV8833PW wording, but the final driver should remain TBD until stepper-driver prototypes are tested (<code>docs/claude/hardware-standards.md:75-95</code>, <code>docs/claude/kicad.md:31-42</code>, <code>docs/claude/pcb-design-rules.md:43-149</code>).</li>
+<li><strong>The proposed MkDocs nav is aspirational, not drop-in.</strong> It points mostly at new paths that do not exist yet; keep the current nested API Reference structure, and compare <code>a4e-c-dcsbios-addresses.md</code> against generated A4EC headers before deciding what context to carry forward (<code>docs/mkdocs.yml:24-66</code>, <code>/Users/mhoresh/.codex/attachments/59d5d575-5112-40e4-abf9-97eeba9edc8d/pasted-text.txt:8-114</code>).</li>
+<li><strong>Misc Switch Panel DRC is unknown.</strong> ERC is clean, but KiCad CLI DRC aborted with exit 134 and produced no usable report.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  <div class="os-site-footer">
+    <div class="os-footer-grid">
+      <div class="os-footer-brand">
+        <img src="../assets/images/brand/footer-logo.png" alt="OpenSkyhawk" />
+      </div>
+      <div class="os-footer-col">
+        <h2>Quick Links</h2>
+        <a href="../claude/architecture/">Documentation</a>
+        <a href="../claude/controllers/Center_Armament/">Controllers</a>
+        <a href="../api/">API Reference</a>
+      </div>
+      <div class="os-footer-col">
+        <h2>Resources</h2>
+        <a href="../claude/hardware-standards/">Hardware Standards</a>
+        <a href="../claude/kicad/">KiCad Workflow</a>
+        <a href="../claude/pcb-design-rules/">PCB Rules</a>
+      </div>
+      <div class="os-footer-col">
+        <h2>Repository</h2>
+        <p>Follow the build, firmware, PCB, and CAD work in the project repository.</p>
+        <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+    <div class="os-footer-bottom">
+      OpenSkyhawk. Open hardware for community-built cockpits.
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

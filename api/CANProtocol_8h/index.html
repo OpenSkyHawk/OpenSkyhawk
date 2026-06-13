@@ -2165,7 +2165,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-ctrl_id_test_seq"><strong>CTRL_ID_TEST_SEQ</strong></a>   = <code>0xFFFF</code><br><em>Reserved: triggers TEST_SEQ frame.</em></td>
+<td style="text-align: left;"><a href="#variable-ctrl_id_test_seq"><strong>CTRL_ID_TEST_SEQ</strong></a>   = <code>0xFFFF</code><br><em>Reserved legacy payload sentinel; RTT test uses CAN_ID_TEST_SEQ.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
@@ -2225,7 +2225,7 @@
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>Owns all CAN bus interaction for <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> nodes. Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks, diagnostics) is STM32-only and guarded by ARDUINO_ARCH_STM32.</p>
+<p>Owns all CAN bus interaction for <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> nodes. Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks, diagnostics) is STM32-only and guarded by ARDUINO_ARCH_STM32. CAN arbitration IDs (CAN_ID_*, canId*()) and payload ControlPacket::controlId values are separate namespaces; equal numeric values do not conflict because they occupy different CAN frame fields.</p>
 <p>Dependency: <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> must be called before <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>. <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> owns CAN bus operation; <a href="../namespaceSTM32Board/"><strong>STM32Board</strong></a> owns peripheral hardware init.</p>
 <p><strong>Version:</strong></p>
 <p>0.2.0 </p>
@@ -2292,7 +2292,7 @@
 <hr>
 
 <h3 id="variable-ctrl_id_test_seq">variable CTRL_ID_TEST_SEQ</h3>
-<p><em>Reserved: triggers TEST_SEQ frame.</em> </p>
+<p><em>Reserved legacy payload sentinel; RTT test uses CAN_ID_TEST_SEQ.</em> </p>
 <pre><code class="language-C++">constexpr uint16_t CTRL_ID_TEST_SEQ;
 </code></pre>
 <hr>
@@ -2301,7 +2301,7 @@
 <pre><code class="language-C++">constexpr uint16_t CTRL_TEST_SEQ;
 </code></pre>
 <p><strong>Deprecated</strong></p>
-<p>Use CTRL_ID_TEST_SEQ. Kept for backward compatibility with prototype code. </p>
+<p>Current RTT testing uses CAN_ID_TEST_SEQ. Kept only for old prototype payload sentinels. </p>
 <hr>
 
 <h3 id="variable-diag_err">variable DIAG_ERR</h3>

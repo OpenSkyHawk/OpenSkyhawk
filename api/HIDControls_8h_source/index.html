@@ -1766,11 +1766,12 @@
 
 #define CTRL_TRIGGER    0x0030  // Trigger (button index 0) — stick grip
 // 0x0031–0x00AF: additional buttons added here as stick/throttle grip is catalogued
+// 0x00B0–0x00FF: reserved for future HID expansion beyond the current USB report
 
 // ── Range sentinels (used by CANProtocol and SimGateway for routing checks) ──
 
 #define CTRL_ID_HID_MIN 0x0010  // First valid HID controlId
-#define CTRL_ID_HID_MAX 0x00AF  // Last valid HID controlId
+#define CTRL_ID_HID_MAX 0x00FF  // Last reserved HID controlId
 </code></pre>
 
 

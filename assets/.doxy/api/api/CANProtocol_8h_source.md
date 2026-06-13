@@ -40,7 +40,7 @@ enum class CanStatus {
     BUS_OFF,    
 };
 
-// ── Fixed frame IDs (PanelBridge -> All) ─────────────────────────────────────
+// ── Fixed CAN arbitration IDs (PanelBridge -> All) ───────────────────────────
 
 static constexpr uint32_t CAN_ID_CTRL_BCAST = 0x010;  
 static constexpr uint32_t CAN_ID_TEST_SEQ   = 0x011;  
@@ -57,6 +57,8 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
 // ── controlId namespace ───────────────────────────────────────────────────────
+// Payload controlIds live inside ControlPacket data bytes. They are intentionally
+// separate from the 11-bit CAN arbitration IDs above.
 // CTRL_ID_HID_MIN / CTRL_ID_HID_MAX are defined as macros in HIDControls.h (included above).
 // Do not redeclare them here — macro expansion would cause a syntax error.
 

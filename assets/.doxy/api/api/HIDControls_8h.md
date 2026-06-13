@@ -81,7 +81,7 @@ _CAN controlId constants for HID axes and buttons._ [More...](#detailed-descript
 | define  | [**CTRL\_BRAKE\_L**](HIDControls_8h.md#define-ctrl_brake_l)  `0x0014`<br> |
 | define  | [**CTRL\_BRAKE\_R**](HIDControls_8h.md#define-ctrl_brake_r)  `0x0015`<br> |
 | define  | [**CTRL\_HAT\_0**](HIDControls_8h.md#define-ctrl_hat_0)  `0x0020`<br> |
-| define  | [**CTRL\_ID\_HID\_MAX**](HIDControls_8h.md#define-ctrl_id_hid_max)  `0x00AF`<br> |
+| define  | [**CTRL\_ID\_HID\_MAX**](HIDControls_8h.md#define-ctrl_id_hid_max)  `0x00FF`<br> |
 | define  | [**CTRL\_ID\_HID\_MIN**](HIDControls_8h.md#define-ctrl_id_hid_min)  `0x0010`<br> |
 | define  | [**CTRL\_PITCH**](HIDControls_8h.md#define-ctrl_pitch)  `0x0011`<br> |
 | define  | [**CTRL\_ROLL**](HIDControls_8h.md#define-ctrl_roll)  `0x0010`<br> |
@@ -96,7 +96,7 @@ _CAN controlId constants for HID axes and buttons._ [More...](#detailed-descript
 Shared between STM32 (via [**CANProtocol**](namespaceCANProtocol.md)) and RP2040 ([**SimGateway**](namespaceSimGateway.md) sketches). Contains only `#define` constants — no classes, no functions, no state.
 
 
-controlId routing by range: 0x0010–0x001F HID axes — routed to axis setters on [**SimGateway**](namespaceSimGateway.md) 0x0020–0x002F HID hat switches — routed to hat setters on [**SimGateway**](namespaceSimGateway.md) 0x0030–0x00AF HID buttons — routed to button setters on [**SimGateway**](namespaceSimGateway.md)
+controlId routing by range: 0x0010–0x001F HID axes — routed to axis setters on [**SimGateway**](namespaceSimGateway.md) 0x0020–0x002F HID hat switches — routed to hat setters on [**SimGateway**](namespaceSimGateway.md) 0x0030–0x00AF HID buttons — routed to button setters on [**SimGateway**](namespaceSimGateway.md) 0x00B0–0x00FF Reserved HID expansion slots
 
 
 
@@ -165,7 +165,7 @@ GPL-2.0-only — see Firmware/LICENSE
 ### define CTRL\_ID\_HID\_MAX 
 
 ```C++
-#define CTRL_ID_HID_MAX `0x00AF`
+#define CTRL_ID_HID_MAX `0x00FF`
 ```
 
 
