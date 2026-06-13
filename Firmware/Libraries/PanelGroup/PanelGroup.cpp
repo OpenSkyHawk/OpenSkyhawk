@@ -153,11 +153,6 @@ void setup() {
         auto& d = STM32Board::diagSerial();
         d.println(F("=============================="));
         d.print(F("  PanelGroup   NODE_ID=")); d.println((int)NODE_ID);
-        d.print(F("  TX: HB=0x"));        d.print(canIdHb(NODE_ID), HEX);
-        d.print(F("  EVT=0x"));           d.print(canIdEvt(NODE_ID), HEX);
-        d.print(F("  READY=0x"));         d.println(canIdReady(NODE_ID), HEX);
-        d.print(F("  RX: CTRL_BCAST=0x")); d.print(CAN_ID_CTRL_BCAST, HEX);
-        d.print(F("  SYNC_REQ=0x"));      d.println(CAN_ID_SYNC_REQ, HEX);
         d.println(F("=============================="));
     }
     CANProtocol::onStatusChange(STM32Board::onCanStatus);

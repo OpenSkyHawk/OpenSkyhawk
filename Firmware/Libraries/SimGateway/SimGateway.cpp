@@ -304,7 +304,6 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
 #ifndef SIMGATEWAY_TEST
     Serial.println(F("=============================="));
     Serial.println(F("  SimGateway"));
-    Serial.println(F("  USB-CDC <-> UART  HID joystick"));
     Serial.println(F("=============================="));
 #endif
 }
