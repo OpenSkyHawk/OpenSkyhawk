@@ -4,6 +4,8 @@ OpenSkyhawk connects a physical A-4E-C cockpit to DCS over a single USB cable. B
 cable is a three-tier firmware stack joined by a CAN bus. This section explains how that
 stack is built and — just as importantly — *why* it's built that way.
 
+OpenSkyhawk covers three disciplines: firmware, PCB hardware, and CAD/mechanical design. Each panel group has coverage across all three.
+
 The short version: a [SimGateway](sim-gateway.md) on an RP2040 owns the one USB connection
 to the PC. It relays the DCS-BIOS stream to a [PanelBridge](firmware-tiers.md) (STM32), which
 runs the DCS-BIOS library and acts as CAN master. The PanelBridge distributes everything to

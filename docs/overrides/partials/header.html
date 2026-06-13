@@ -39,10 +39,9 @@
 
     <div class="os-header-nav" aria-label="Primary navigation">
       <a href="{{ nav.homepage.url | url }}" class="{% if current_url == nav.homepage.url %}os-header-nav__link--active{% endif %}">Home</a>
-      <a href="{{ 'getting-started/overview/' | url }}" class="{% if current_url.startswith('getting-started/') or current_url.startswith('architecture/') %}os-header-nav__link--active{% endif %}">Documentation</a>
-      <a href="{{ 'guides/' | url }}" class="{% if current_url.startswith('guides/') %}os-header-nav__link--active{% endif %}">Build Guides</a>
-      <a href="{{ 'panels/center-console/armament/' | url }}" class="{% if current_url.startswith('panels/') %}os-header-nav__link--active{% endif %}">Panels</a>
-      <a href="{{ 'kits/' | url }}" class="{% if current_url.startswith('kits/') %}os-header-nav__link--active{% endif %}">Kit Assembly</a>
+      <a href="{{ 'getting-started/overview/' | url }}" class="{% if current_url.startswith('getting-started/') %}os-header-nav__link--active{% endif %}">Getting Started</a>
+      <a href="{{ 'architecture/' | url }}" class="{% if current_url.startswith('architecture/') or current_url.startswith('firmware/') %}os-header-nav__link--active{% endif %}">Documentation</a>
+      <a href="{{ 'hardware/standards/' | url }}" class="{% if current_url.startswith('hardware/') %}os-header-nav__link--active{% endif %}">Hardware</a>
       <a href="{{ 'api/' | url }}" class="{% if current_url.startswith('api/') %}os-header-nav__link--active{% endif %}">API Reference</a>
     </div>
 

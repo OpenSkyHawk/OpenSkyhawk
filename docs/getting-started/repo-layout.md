@@ -13,7 +13,11 @@ status: new
 OpenSkyhawk/
 ├── .github/
 │   └── workflows/          ← CI: docs, firmware, KiCad, A4EC generator
-├── CAD/                    ← Fusion 360 sources (.f3d) — early stage
+├── CAD/                    ← panel enclosures, bezels, knobs (scaffolded, early stage)
+│   ├── Center_Console/
+│   ├── Left_Console/
+│   ├── Right_Console/
+│   └── Shared/             ← reusable knobs, guards, light rings
 ├── Firmware/
 │   ├── Examples/
 │   │   └── E2E_DCS_Test/   ← working reference sketch (LED + Switch2Pos + real DCS-BIOS)
@@ -43,11 +47,16 @@ OpenSkyhawk/
 | Directory | What's in it |
 |-----------|--------------|
 | `.github/workflows/` | CI pipelines — docs build/deploy, firmware builds, KiCad ERC/DRC, and the A4EC generator. |
-| `CAD/` | Fusion 360 panel sources (`.f3d`). STLs and STEP exports are generated, not committed. Early stage. |
+| `CAD/` | Panel enclosures, bezels, and shared printed parts. Source files committed; STL/STEP exports generated, not committed. Scaffolded, early stage. |
 | `Firmware/` | All firmware — shared libraries, the three tier sketches, panel groups, templates, and tests. |
 | `PCB/` | One KiCad project per physical board, organised by console then controller group. Shared parts live in `PCB/Libraries/`. |
 | `docs/` | This documentation site. |
 | `tools/gen_a4ec/` | The Python generator that turns A-4E-C DCS-BIOS definitions into firmware headers. Maintainer-only — see below. |
+
+!!! note "CAD source vs exports"
+    CAD source files (`.f3d` or `.FCStd`) are committed to the repo under `CAD/`. **STL and
+    STEP exports are gitignored** and published via **GitHub Releases**. CAD tooling is
+    currently being evaluated between Fusion 360 and FreeCAD.
 
 ## Key directories for contributors
 
