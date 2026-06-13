@@ -23,21 +23,114 @@ extra_css:
 
 nav:
   - Home: index.md
+
   - Getting Started:
-    - System Overview: getting-started/system-overview.md
+    - What is OpenSkyhawk?: getting-started/overview.md
+    - How the System Works: getting-started/system-overview.md
+    - What You'll Need: getting-started/prerequisites.md
+    - Repo Layout: getting-started/repo-layout.md
+
   - Architecture:
-    - Overview: claude/architecture.md
-    - Hardware Standards: claude/hardware-standards.md
-    - CAN Bus / PCB Rules: claude/pcb-design-rules.md
-    - KiCad Workflow: claude/kicad.md
+    - Overview: architecture/index.md
     - Design Decisions: architecture/design-decisions.md
-    - DCS-BIOS STM32 Debugging: claude/dcsbios-stm32-debug.md
-    - Docs Site Workflow: claude/docs-site-workflow.md
-  - Controllers:
-    - Center Armament: claude/controllers/Center_Armament.md
-    - AWRS Panel: claude/controllers/AWRS_Panel.md
-    - Misc Switch Panel: claude/controllers/Misc_Switch_Panel.md
-    - A-4E-C DCS-BIOS Addresses: claude/controllers/a4e-c-dcsbios-addresses.md
+    - Firmware Tiers: architecture/firmware-tiers.md
+    - CAN Bus Protocol: architecture/can-bus.md
+    - SimGateway: architecture/sim-gateway.md
+    - DCS-BIOS vs HID: architecture/dcsbios-vs-hid.md
+    - Power Architecture: architecture/power.md
+
+  - Hardware Reference:
+    - Hardware Standards: hardware/standards.md
+    - PCB Design Rules: hardware/pcb-design-rules.md
+    - KiCad Workflow: hardware/kicad-workflow.md
+    - Connector & Harness Guide: hardware/connectors.md
+    - Component Library: hardware/components.md
+
+  - Firmware Reference:
+    - Overview: firmware/index.md
+    - PlatformIO Setup: firmware/platformio-setup.md
+    - NODE_ID & CAN Addressing: firmware/node-id.md
+    - DCS-BIOS Integration: firmware/dcsbios-integration.md
+    - HID Controls: firmware/hid-controls.md
+    - Control Types: firmware/control-types.md
+    - Debugging on STM32: firmware/debugging.md
+
+  - Center Console:
+    - Overview: panels/center-console/index.md
+    - Armament Group:
+      - Overview: panels/center-console/armament/index.md
+      - Armament Panel: panels/center-console/armament/armament-panel.md
+      - AWRS Panel: panels/center-console/armament/awrs-panel.md
+      - Misc Switch Panel: panels/center-console/armament/misc-switch-panel.md
+      - Gunpod Panel: panels/center-console/armament/gunpod-panel.md
+      - Gunsight Panel: panels/center-console/armament/gunsight-panel.md
+      - Chaff Panel: panels/center-console/armament/chaff-panel.md
+    - Flight Instruments:
+      - Overview: panels/center-console/instruments/index.md
+      - Wheels & Flaps Indicator: panels/center-console/instruments/wheels-flaps.md
+      - Caution Panel: panels/center-console/instruments/caution-panel.md
+      - Pilot Advisory Lights: panels/center-console/instruments/advisory-lights.md
+      - Radar Indicator: panels/center-console/instruments/radar-indicator.md
+
+  - Left Console:
+    - Overview: panels/left-console/index.md
+    - Navigation & Comms:
+      - Overview: panels/left-console/nav-comms/index.md
+      - AN/APG-53A Radar Control: panels/left-console/nav-comms/radar-control.md
+      - AN/ARC-51A UHF Radio: panels/left-console/nav-comms/uhf-radio.md
+      - AN/ARN-52 TACAN: panels/left-console/nav-comms/tacan.md
+      - Compass Control: panels/left-console/nav-comms/compass.md
+    - Lighting:
+      - Overview: panels/left-console/lighting/index.md
+      - Interior Lights: panels/left-console/lighting/interior-lights.md
+      - Exterior Lights: panels/left-console/lighting/exterior-lights.md
+
+  - Right Console:
+    - Overview: panels/right-console/index.md
+    - Flight Controls:
+      - Overview: panels/right-console/flight-controls/index.md
+      - AFCS / Autopilot: panels/right-console/flight-controls/afcs.md
+      - AFCS Test Panel: panels/right-console/flight-controls/afcs-test.md
+      - Flap Handle: panels/right-console/flight-controls/flap-handle.md
+      - Throttle Panel: panels/right-console/flight-controls/throttle-panel.md
+    - Engine & Systems:
+      - Overview: panels/right-console/engine-systems/index.md
+      - Engine Control: panels/right-console/engine-systems/engine-control.md
+      - ECM Panel: panels/right-console/engine-systems/ecm.md
+
+  - Flight Controls (HOTAS):
+    - Overview: flight-controls/index.md
+    - Replica Stick: flight-controls/stick.md
+    - Replica Throttle: flight-controls/throttle.md
+    - Rudder Pedals: flight-controls/rudder-pedals.md
+    - HID Axis Reference: flight-controls/hid-axes.md
+
+  - Kit Assembly:
+    - Overview: kits/index.md
+    - What's in the Box: kits/whats-in-the-box.md
+    - Armament Group Kit:
+      - Assembly Guide: kits/armament/assembly.md
+      - Flashing Firmware: kits/armament/flashing.md
+      - DCS Setup: kits/armament/dcs-setup.md
+      - Testing & Troubleshooting: kits/armament/testing.md
+
+  - Build Guides:
+    - Overview: guides/index.md
+    - Your First Panel: guides/first-panel.md
+    - PCB Ordering (JLCPCB): guides/pcb-ordering.md
+    - Assembly & Soldering: guides/assembly.md
+    - Flashing Firmware: guides/flashing.md
+    - Bring-Up & Testing: guides/bring-up.md
+    - Adding a New Panel Group: guides/new-panel-group.md
+    - Adding a New Control Type: guides/new-control-type.md
+
+  - Contributing:
+    - How to Contribute: contributing/index.md
+    - Design Conventions: contributing/conventions.md
+    - Docs Workflow: contributing/docs-workflow.md
+    - Adding a Controller: contributing/adding-controller.md
+
+  # DO NOT MODIFY BELOW THIS LINE — API Reference is auto-generated by mkdoxy
   - API Reference:
     - Overview: api/index.md
     - Deprecated List: api/deprecated.md
@@ -68,6 +161,7 @@ nav:
     - Pages: api/pages.md
 
 not_in_nav: |
+  _source/**
   api/_*.md
   api/class_open_skyhawk_*.md
   api/dir_*.md
