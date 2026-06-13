@@ -42,7 +42,7 @@ static volatile bool    _intFlags[MAX_INT_PINS];
 // Timers
 static uint32_t _lastHeartbeatMs  = 0;
 static uint32_t _lastFallbackMs   = 0;
-static uint16_t _rxCount          = 0;
+static uint16_t _rxCount          = 0; // diagnostic only; wraps at 65535 (~131 s at full bus load)
 
 // ── ISR functions — one static function per interrupt-pin slot ───────────────
 // No dynamic ISR registration; each slot has a dedicated handler.
@@ -207,8 +207,12 @@ void setup() {
         if (e.intaPin == NO_INT_PIN) continue; // polling-fallback chip
 
         uint8_t slotA = findOrAddIntPin(e.intaPin);
+        if (slotA == 0xFF) {
+            STM32Board::log("[PanelGroup] MAX_INT_PINS exceeded — chip falls back to polling");
+            continue;
+        }
         // Attach INTA ISR if this is the first chip claiming this pin
-        if (slotA != 0xFF && _intPins[slotA] == e.intaPin) {
+        if (_intPins[slotA] == e.intaPin) {
             bool firstClaim = true;
             for (uint8_t k = 0; k < i; k++) {
                 if (_expanders[k].intaPin == e.intaPin || _expanders[k].intbPin == e.intaPin) {

@@ -100,8 +100,8 @@ void setup() {
     // Allow ±10% variation between two back-to-back reads
     uint16_t tolerance = val / 10 + 200;
     check("Second read within ±10% of first",
-          val2 >= (val > tolerance ? val - tolerance : 0) &&
-          val2 <= val + tolerance);
+          val2 >= (val > tolerance ? val - tolerance : 0u) &&
+          (uint32_t)val2 <= (uint32_t)val + tolerance);
 
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
