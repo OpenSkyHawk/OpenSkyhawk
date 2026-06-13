@@ -15,8 +15,8 @@ PC ──USB CDC── RP2040 (gateway) ──UART── STM32 CAN master ──
 ```
 
 During prototyping, a Tiny2040 stood in for the RP2040 gateway and a Blue Pill
-stood in for the STM32 CAN master. The bridge firmware lives at
-`Firmware/HID_Controllers/DCS_BIOS_Bridge/`.
+stood in for the STM32 CAN master. The bridge firmware (`DCS_BIOS_Bridge`) was
+removed in the prototype cleanup — see git history if needed.
 
 ## Blue Pill (STM32F103C8T6) Gotchas
 
@@ -89,7 +89,7 @@ for anything beyond a one-off proto session.
 The Mega's TX line (Mega Pin 18 → STM32 PA3) drives 5 V into a 3.3 V input.
 
 **Planned replacement:** Tiny2040 (or any RP2040 module) — both sides 3.3 V,
-no level shifter needed. Firmware: `Firmware/HID_Controllers/DCS_BIOS_Bridge/`.
+no level shifter needed.
 
 ### PC13 onboard LED
 
