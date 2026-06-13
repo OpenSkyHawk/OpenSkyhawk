@@ -1428,13 +1428,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1462,13 +1455,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1498,13 +1484,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1528,6 +1507,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS Integration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1542,15 +1539,71 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-controlid-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The controlId range
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dcsin_-compact-command-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCSIN_* — compact command IDs
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-addresses-a_4e_c_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output addresses — A_4E_C_*
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generated-a4ec-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated A4EC headers
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1577,13 +1630,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1613,13 +1659,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1647,13 +1686,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3972,6 +4004,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-controlid-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The controlId range
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dcsin_-compact-command-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCSIN_* — compact command IDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-addresses-a_4e_c_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output addresses — A_4E_C_*
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generated-a4ec-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated A4EC headers
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3991,10 +4075,78 @@
 
 
 <h1 id="dcs-bios-integration">DCS-BIOS Integration</h1>
+<p>Most cockpit controls talk to DCS through <strong>DCS-BIOS</strong>. This page covers how that path is wired
+in firmware: the compact command IDs that cross the CAN bus, the generated headers, and the
+output addresses that drive LEDs and gauges. PanelBridge is the only tier that runs the
+DCS-BIOS library — see <a href="../../architecture/firmware-tiers/">Firmware Tiers</a>.</p>
+<h2 id="the-controlid-range">The controlId range</h2>
+<p>A control routes by its <code>controlId</code>. DCS-BIOS controls live in <strong><code>0x8000</code>–<code>0x86FF</code></strong>;
+PanelBridge looks the ID up in its input map and calls <code>sendDcsBiosMessage()</code>. (Values below
+<code>0x8000</code> are HID — handled by SimGateway. See <a href="../hid-controls/">HID Controls</a>.)</p>
+<h2 id="dcsin_-compact-command-ids">DCSIN_* — compact command IDs</h2>
+<p>A CAN frame carries only 8 data bytes — far too little for a DCS-BIOS ASCII command like
+<code>"ARM_MASTER 1\n"</code>. So inputs send a compact <strong><code>DCSIN_*</code></strong> constant instead, generated
+sequentially from <code>0x8001</code>. PanelBridge maps it back to the real command string.</p>
+<pre><code class="language-cpp">// PanelGroup sketch — fire a compact ID, not a string:
+OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
+</code></pre>
+<p><code>DCSIN_*</code> constants are <strong>transport aliases</strong>, not device IDs. Multiple controls may share one
+<code>DCSIN_*</code> if they trigger the same DCS command — PanelBridge doesn't track which node sent it.</p>
+<h2 id="output-addresses-a_4e_c_">Output addresses — A_4E_C_*</h2>
+<p>Outputs (LEDs, gauges) go the other way: DCS-BIOS streams a state word, PanelBridge broadcasts
+it, and output objects pick out their value by <strong>address + bitmask</strong> from the generated
+headers:</p>
+<ul>
+<li><code>A_4E_C_&lt;NAME&gt;</code> — the 16-bit DCS-BIOS output address</li>
+<li><code>A_4E_C_&lt;NAME&gt;_AM</code> — the bitmask for the relevant bits</li>
+</ul>
+<pre><code class="language-cpp">OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM, PinRef(PB0));
+</code></pre>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">No <code>_A</code> suffix</p>
+<p>DCS-BIOS's own <code>Addresses.h</code> uses an <code>_A</code> suffix for these. The generated <code>A4EC</code> headers
+deliberately <strong>drop it</strong> and add the <code>_AM</code> mask companion. Always use <code>A_4E_C_*</code> /
+<code>A_4E_C_*_AM</code> — never the old <code>_A</code> form.</p>
+</div>
+<p>Input <code>DCSIN_*</code> IDs and output <code>A_4E_C_*</code> addresses are <strong>separate namespaces</strong> — an output
+address is never used as an input <code>controlId</code>.</p>
+<h2 id="generated-a4ec-headers">Generated A4EC headers</h2>
+<p>The A4EC generator parses the A-4E-C DCS-BIOS JSON and emits committed headers under
+<code>Firmware/Libraries/A4EC/</code> (currently <strong>150</strong> <code>DCSIN_*</code> constants):</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Included by</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A4EC_CmdIds.h</code></td>
+<td>PanelGroup sketches</td>
+<td><code>DCSIN_*</code> command-ID <code>#define</code>s</td>
+</tr>
+<tr>
+<td><code>A4EC_InputMap.h</code></td>
+<td>PanelBridge only</td>
+<td>Sorted <code>DcsBiosInputEntry[]</code> lookup table</td>
+</tr>
+<tr>
+<td><code>A4EC_OutputIds.h</code></td>
+<td>Output objects</td>
+<td><code>A_4E_C_*</code> addresses + <code>_AM</code> masks</td>
+</tr>
+</tbody>
+</table>
+<p>PanelBridge looks up each incoming <code>DCSIN_*</code> in <code>A4EC_InputMap.h</code> by binary search, then calls
+<code>sendDcsBiosMessage()</code> with the matched command name and the right argument for the control
+type (switch → <code>"0"</code>/<code>"1"</code>, encoder → <code>"DEC"</code>/<code>"INC"</code>, multipos → the integer, etc.).</p>
+<div class="admonition note">
+<p class="admonition-title">The generator is maintainer tooling</p>
+<p>The generated headers are <strong>committed</strong> — contributors do not run the generator. Refreshing
+them when a new A-4E-C release ships is a maintainer task (<code>tools/gen_a4ec/</code>). There is no
+DCS-BIOS version pinning today; refresh is manual.</p>
 </div>
 
 
@@ -4002,9 +4154,6 @@
 
 
 
-
-  
-  
 
 
 

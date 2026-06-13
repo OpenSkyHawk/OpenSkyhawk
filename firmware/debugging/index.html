@@ -1428,13 +1428,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1462,13 +1455,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1498,13 +1484,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1532,13 +1511,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1568,13 +1540,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1603,13 +1568,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1633,6 +1591,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging on STM32
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1647,15 +1623,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#diagserial-the-debug-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DiagSerial — the debug stream
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-status-led" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The status LED
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bench-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bench gotchas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3972,6 +3993,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#diagserial-the-debug-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DiagSerial — the debug stream
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-status-led" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The status LED
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bench-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bench gotchas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3991,20 +4053,118 @@
 
 
 <h1 id="debugging-on-stm32">Debugging on STM32</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>Two things tell you what an STM32 board is doing: the <strong>DiagSerial</strong> debug stream and the
+<strong>bi-color status LED</strong>. Neither touches the DCS data path, so you can watch a board in
+isolation. This page covers both, plus the bench gotchas that cost the most time.</p>
+<h2 id="diagserial-the-debug-stream">DiagSerial — the debug stream</h2>
+<p>Every STM32 board exposes a debug UART, standard across the project:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Peripheral</td>
+<td>USART1 (<code>Serial1</code>)</td>
+</tr>
+<tr>
+<td>Pins</td>
+<td>PA9 (TX) / PA10 (RX)</td>
+</tr>
+<tr>
+<td>Baud</td>
+<td>115200</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>3-pin (GND / RX / TX) on every board</td>
+</tr>
+</tbody>
+</table>
+<p>Connect a USB-to-TTL adapter to the 3-pin header and open a serial monitor at 115200
+(<code>pio device monitor</code>). Enable output by calling <code>STM32Board::setDebug(true)</code> in <code>setup()</code>;
+production builds leave it <code>false</code> (default) — the pins stay available but silent.</p>
+<p>USART1 is used because PanelBridge already uses UART2 (<code>Serial</code>, PA2/PA3) for the RP2040 link —
+the two never conflict.</p>
+<h2 id="the-status-led">The status LED</h2>
+<p>Each custom OpenSkyhawk STM32 board has a bi-color red/green LED on fixed pins (<strong>PB14 = red,
+PB15 = green</strong>), initialised automatically by <code>STM32Board::begin()</code>. Read the board's state at
+a glance:</p>
+<table>
+<thead>
+<tr>
+<th>LED</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Off</td>
+<td>Not powered</td>
+</tr>
+<tr>
+<td>Red blinking</td>
+<td>Booting / initialising</td>
+</tr>
+<tr>
+<td>Green blinking</td>
+<td>Normal — CAN bus healthy</td>
+</tr>
+<tr>
+<td>Red fast blink</td>
+<td>TEC &gt; 0 — transmit errors accumulating</td>
+</tr>
+<tr>
+<td>Red solid</td>
+<td>Bus-off — CAN controller halted</td>
+</tr>
+<tr>
+<td>Amber flicker (alternating)</td>
+<td>Warning / degraded state</td>
+</tr>
+</tbody>
+</table>
+<p>CAN faults are driven from the <code>CanStatus</code> callback. For non-CAN faults (SYNC timeout, missing
+heartbeat, I²C hang, application fault), call <code>STM32Board::setWarning()</code> to get the amber state.</p>
+<div class="admonition note">
+<p class="admonition-title">PB14/PB15 are reserved</p>
+<p>The status-LED pins are owned by <code>STM32Board</code> — don't use PB14/PB15 for panel I/O or
+MCP23017 interrupts. PC13/PC14/PC15 are also off-limits on custom boards.</p>
 </div>
+<h2 id="bench-gotchas">Bench gotchas</h2>
+<div class="admonition warning">
+<p class="admonition-title">Blue Pill clone — ST-Link 'tap not found'</p>
+<p>Many clones report JTAG ID <code>0x2ba01477</code> (standard is <code>0x1ba01477</code>) and ST-Link refuses to
+connect. Override it in <code>platformio.ini</code>:</p>
+<p><code>ini
+upload_flags =
+    -c
+    set CPUTAPID 0x2ba01477
+debug_extra_cmds = set CPUTAPID 0x2ba01477</code></p>
+<p>The <code>-c set CPUTAPID</code> pair must come before the OpenOCD target config loads.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Don't use STM32 USB CDC for DCS-BIOS</p>
+<p>Enabling STM32 native USB CDC (<code>PIO_FRAMEWORK_ARDUINO_ENABLE_CDC</code>) and running DCS-BIOS
+traffic over it <strong>crashes the port</strong> consistently — it becomes unusable until replug. This
+is the whole reason the <a href="../../architecture/sim-gateway/">SimGateway</a> exists. Use UART; let
+the RP2040 handle USB. (Also: USB and CAN share PA11/PA12 and can't both be active.)</p>
+</div>
+<ul>
+<li><strong>Don't remap <code>Serial</code> to <code>Serial1</code></strong> via <code>#define Serial Serial1</code> — it causes "multiple
+  definition of Serial2" or runtime failures depending on the STM32duino version. With no CDC
+  flag, <code>Serial</code> maps to UART2 (PA2/PA3) natively, which is what PanelBridge uses for the
+  RP2040 link.</li>
+</ul>
 
 
 
 
 
 
-
-  
-  
 
 
 

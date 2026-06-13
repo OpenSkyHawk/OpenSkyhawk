@@ -1428,13 +1428,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1463,13 +1456,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1493,6 +1479,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NODE_ID & CAN Addressing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1507,15 +1511,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The scheme
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The registry
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-claim-a-new-node_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to claim a new NODE_ID
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1542,13 +1591,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1578,13 +1620,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1613,13 +1648,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1647,13 +1675,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3972,6 +3993,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The scheme
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The registry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-claim-a-new-node_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to claim a new NODE_ID
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3991,20 +4053,70 @@
 
 
 <h1 id="node_id-can-addressing">NODE_ID &amp; CAN Addressing</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>Every STM32 board on the CAN bus has a <strong>NODE_ID</strong> — a small integer that defines which CAN
+frames it owns. It's how PanelBridge tells one PanelGroup node from another, and it's baked in
+at compile time. Get it right once and it never changes.</p>
+<h2 id="the-scheme">The scheme</h2>
+<ul>
+<li><strong>Set at compile time</strong> via <code>build_flags = -DNODE_ID=N</code> in <code>platformio.ini</code> — <strong>not</strong> a
+  <code>#define</code> in <code>main.cpp</code>.</li>
+<li><strong>Range 0–63.</strong></li>
+<li><strong>0</strong> — PanelBridge (the CAN master). Reserved; its heartbeat <code>HB_0</code> is never transmitted.</li>
+<li><strong>1–63</strong> — PanelGroup nodes, assigned incrementally, <strong>permanent once assigned</strong>.</li>
+<li><strong>SimGateway has no NODE_ID</strong> — it's not on the CAN bus.</li>
+</ul>
+<p>A node's frame IDs are computed from its NODE_ID with the helper functions — heartbeat
+<code>canIdHb(n)</code>, events <code>canIdEvt(n)</code>, echo <code>canIdEcho(n)</code>, ready <code>canIdReady(n)</code>. Never hard-code
+these. The full frame map is in <a href="../../architecture/can-bus/">CAN Bus Protocol</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Why build_flags and not <code>#define</code></p>
+<p>A <code>#define NODE_ID</code> in <code>main.cpp</code> is visible only in that translation unit. The CAN
+protocol library and other units need <code>NODE_ID</code> to compute frame IDs. <code>build_flags</code>
+injects it as a compiler flag visible to <strong>every</strong> translation unit in the project.</p>
 </div>
+<h2 id="the-registry">The registry</h2>
+<p>The authoritative record lives in <code>Firmware/NODE_IDS.md</code> at the repo root. Current state:</p>
+<table>
+<thead>
+<tr>
+<th>NODE_ID</th>
+<th>Panel Group</th>
+<th>Console</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>PanelBridge</td>
+<td>—</td>
+<td>Reserved — CAN master, never transmitted on bus</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Center_Armament</td>
+<td>Center</td>
+<td>Active</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-claim-a-new-node_id">How to claim a new NODE_ID</h2>
+<p>IDs are permanent — <strong>never reuse one</strong>, even if a panel is retired (mark it Retired instead).
+When you start a new panel group:</p>
+<ol>
+<li>Open <code>Firmware/NODE_IDS.md</code> and take the <strong>next available</strong> number (currently <strong>2</strong>).</li>
+<li>Add a row with your panel group, console, and status.</li>
+<li>Set <code>build_flags = -DNODE_ID=N</code> in your board's <code>platformio.ini</code>.</li>
+<li>Commit the registry change <strong>in the same PR</strong> that creates the panel sketch.</li>
+</ol>
+<p>One NODE_ID per physical STM32 board. See <a href="../../guides/new-panel-group/">Adding a New Panel Group</a>
+for the full workflow — claiming the ID is step one.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

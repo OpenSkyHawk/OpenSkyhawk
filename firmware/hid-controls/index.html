@@ -1428,13 +1428,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1462,13 +1455,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1498,13 +1484,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1533,13 +1512,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1563,6 +1535,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HID Controls
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1577,15 +1567,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#controlid-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        controlId ranges
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-ctrl_-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The CTRL_* constants
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-hid-controls-are-declared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How HID controls are declared
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1612,13 +1647,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1647,13 +1675,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3972,6 +3993,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#controlid-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        controlId ranges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-ctrl_-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The CTRL_* constants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-hid-controls-are-declared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How HID controls are declared
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3991,20 +4053,135 @@
 
 
 <h1 id="hid-controls">HID Controls</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
-</div>
+<p>Some controls don't go through DCS-BIOS — flight-control axes, and momentary controls with no
+DCS-BIOS address. These take the <strong>HID path</strong>: they appear to the PC as a standard USB joystick,
+handled entirely by <a href="../../architecture/sim-gateway/">SimGateway</a>. PanelBridge never sees them.
+This page is the <code>controlId</code> reference for that path. For <em>when</em> to use HID vs DCS-BIOS, see
+<a href="../../architecture/dcsbios-vs-hid/">DCS-BIOS vs HID</a>.</p>
+<h2 id="controlid-ranges">controlId ranges</h2>
+<p>HID controls use <code>controlId</code> values <strong>below <code>0x8000</code></strong>, allocated in <code>HIDControls.h</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Type</th>
+<th>Handler</th>
+<th>USB capacity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x0010</code>–<code>0x001F</code></td>
+<td>Axes</td>
+<td><code>HIDAxis</code></td>
+<td>8 axes</td>
+</tr>
+<tr>
+<td><code>0x0020</code>–<code>0x002F</code></td>
+<td>Hat switches</td>
+<td><code>HIDHatSwitch</code></td>
+<td>4 hats</td>
+</tr>
+<tr>
+<td><code>0x0030</code>–<code>0x00AF</code></td>
+<td>Buttons</td>
+<td><code>HIDButton</code></td>
+<td>128 buttons</td>
+</tr>
+<tr>
+<td><code>0x00B0</code>–<code>0x00FF</code></td>
+<td>Reserved HID expansion</td>
+<td>—</td>
+<td>not exposed</td>
+</tr>
+</tbody>
+</table>
+<p><code>CTRL_ID_HID_MIN = 0x0010</code>, <code>CTRL_ID_HID_MAX = 0x00FF</code>.</p>
+<h2 id="the-ctrl_-constants">The CTRL_* constants</h2>
+<p>From <code>Firmware/Libraries/HIDControls/HIDControls.h</code> — the authoritative source:</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Value</th>
+<th>Control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CTRL_ROLL</code></td>
+<td><code>0x0010</code></td>
+<td>Roll axis — stick sub-node</td>
+</tr>
+<tr>
+<td><code>CTRL_PITCH</code></td>
+<td><code>0x0011</code></td>
+<td>Pitch axis — stick sub-node</td>
+</tr>
+<tr>
+<td><code>CTRL_THROTTLE</code></td>
+<td><code>0x0012</code></td>
+<td>Throttle lever — throttle sub-node</td>
+</tr>
+<tr>
+<td><code>CTRL_RUDDER</code></td>
+<td><code>0x0013</code></td>
+<td>Rudder axis — pedal sub-node</td>
+</tr>
+<tr>
+<td><code>CTRL_BRAKE_L</code></td>
+<td><code>0x0014</code></td>
+<td>Left toe brake — pedal sub-node</td>
+</tr>
+<tr>
+<td><code>CTRL_BRAKE_R</code></td>
+<td><code>0x0015</code></td>
+<td>Right toe brake — pedal sub-node</td>
+</tr>
+<tr>
+<td><code>CTRL_ZOOM</code></td>
+<td><code>0x0016</code></td>
+<td>Zoom axis</td>
+</tr>
+<tr>
+<td><code>CTRL_HAT_0</code></td>
+<td><code>0x0020</code></td>
+<td>Hat switch 0 — stick grip</td>
+</tr>
+<tr>
+<td><code>CTRL_TRIGGER</code></td>
+<td><code>0x0030</code></td>
+<td>Trigger — button index 0</td>
+</tr>
+</tbody>
+</table>
+<p>That's 7 of the 8 available axes — the planned out-of-console HOTAS allocation (stick, rudder
+pedals, replica throttle). The throttle <em>panel</em> is a separate Left Console DCS-BIOS panel; only
+the throttle <em>axis</em> is HID. The speed brake is a DCS-BIOS switch, not an axis.</p>
+<h2 id="how-hid-controls-are-declared">How HID controls are declared</h2>
+<p>Unlike DCS-BIOS controls (which need no sketch declaration — the input map covers them), HID
+controls are declared on the <strong>SimGateway</strong> sketch, binding a <code>controlId</code> to a joystick slot:</p>
+<pre><code class="language-cpp">OpenSkyhawk::HIDAxis   roll   (CTRL_ROLL,    0);  // axis index 0
+OpenSkyhawk::HIDAxis   throttle(CTRL_THROTTLE, 2);
+OpenSkyhawk::HIDButton trigger(CTRL_TRIGGER,  0);  // button index 0
+OpenSkyhawk::HIDHatSwitch hat (CTRL_HAT_0,    0);  // hat index 0
+</code></pre>
+<p>The matching PanelGroup input fires the same <code>controlId</code>; SimGateway maps it to the joystick
+report:</p>
+<ul>
+<li><strong><code>HIDAxis</code></strong> — incoming 0–65535 mapped to ±32767 (<code>value − 32768</code>)</li>
+<li><strong><code>HIDButton</code></strong> — <code>value != 0</code> → pressed</li>
+<li><strong><code>HIDHatSwitch</code></strong> — direction nibble (0 = centered, 1–8 = N…NW)</li>
+</ul>
+<p>After draining all HID frames in a loop, SimGateway calls <code>OsJoystick.send()</code> once. The USB HID
+profile is 8 axes / 128 buttons / 4 hats — see <a href="../../architecture/sim-gateway/">SimGateway</a> for
+the descriptor and platform limits.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

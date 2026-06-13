@@ -1423,6 +1423,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1437,15 +1455,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libraries
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation status
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In this section
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1472,13 +1535,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1508,13 +1564,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1542,13 +1591,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1578,13 +1620,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1613,13 +1648,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1647,13 +1675,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3972,6 +3993,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libraries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In this section
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3991,20 +4053,104 @@
 
 
 <h1 id="firmware-overview">Firmware Overview</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../contributing/">contribute to the docs</a>.</p>
+<p>OpenSkyhawk firmware runs across three tiers — a <a href="../architecture/sim-gateway/">SimGateway</a>
+on an RP2040, a <a href="../architecture/firmware-tiers/">PanelBridge</a> STM32 acting as CAN master,
+and one <a href="../architecture/firmware-tiers/">PanelGroup</a> STM32 per panel group. This section is
+the practical reference for working on that firmware: how to set up a project, how addressing
+works, what control types exist, and how to debug a board on the bench.</p>
+<p>If you haven't yet, read <a href="../architecture/firmware-tiers/">Firmware Tiers</a> for the tier model
+and <a href="../architecture/can-bus/">CAN Bus Protocol</a> for the wire protocol — this section
+assumes them.</p>
+<h2 id="libraries">Libraries</h2>
+<p>All firmware is built from shared libraries under <code>Firmware/Libraries/</code> — the <strong>authoritative
+source</strong> for any constant or API. When a doc and a header disagree, the header wins.</p>
+<table>
+<thead>
+<tr>
+<th>Library</th>
+<th>MCU</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CANProtocol</code></td>
+<td>STM32</td>
+<td>Packet structs (<code>ControlPacket</code>, <code>ControlPacketPair</code>), CAN IDs, the <code>controlId</code> namespace, TX/RX queues</td>
+</tr>
+<tr>
+<td><code>STM32Board</code></td>
+<td>STM32</td>
+<td>Hardware init — CAN, UART, the bi-color status LED. Used by both STM32 tiers</td>
+</tr>
+<tr>
+<td><code>HIDControls</code></td>
+<td>shared</td>
+<td>HID <code>controlId</code> allocations (<code>CTRL_*</code>), shared between SimGateway and CANProtocol</td>
+</tr>
+<tr>
+<td><code>PanelGroup</code></td>
+<td>STM32</td>
+<td>CAN sub-node: <code>PinRef</code>, MCP23017 management, input and output control classes</td>
+</tr>
+<tr>
+<td><code>PanelBridge</code></td>
+<td>STM32</td>
+<td>CAN master + DCS-BIOS processor</td>
+</tr>
+<tr>
+<td><code>SimGateway</code></td>
+<td>RP2040</td>
+<td>USB byte relay + HID (<code>HIDAxis</code>, <code>HIDButton</code>, <code>HIDHatSwitch</code>)</td>
+</tr>
+<tr>
+<td><code>A4EC</code></td>
+<td>shared</td>
+<td>Generated A-4E-C DCS-BIOS headers (<code>DCSIN_*</code> command IDs, <code>A_4E_C_*</code> output addresses)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="implementation-status">Implementation status</h2>
+<p>Be honest about what's built. Firmware is at the end of <strong>Phase 3</strong>, hardware-verified on
+2026-06-12 (11/11 tests pass).</p>
+<div class="admonition note">
+<p class="admonition-title">What's implemented</p>
+<ul>
+<li>PlatformIO templates for all three tiers</li>
+<li><code>CANProtocol</code>, <code>STM32Board</code>, <code>HIDControls</code></li>
+<li>PanelBridge backbone (DCS-BIOS integration, <code>SYNC_REQ</code>, <code>TEST_SEQ</code>)</li>
+<li>SimGateway (HID demux: <code>HIDAxis</code>, <code>HIDButton</code>, <code>HIDHatSwitch</code>)</li>
+<li><code>PinRef</code> abstraction, PanelGroup core, MCP23017 management</li>
+<li><strong>LED</strong> output and <strong>Switch2Pos</strong> input (both confirmed on PinRef)</li>
+</ul>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Not yet implemented</p>
+<ul>
+<li><strong>Phase 4 input types</strong> — Switch3Pos, SwitchMultiPos, ActionButton, AnalogInput,
+  RotaryEncoder, RotaryAcceleratedEncoder, RotarySwitch, AnalogMultiPos, AngleSensorInput,
+  SwitchWithCover2Pos</li>
+<li><strong>Phase 5 output types</strong> — AnalogOutput, IntegerOutput, SwitecX25Output,
+  AccelStepperOutput, ServoOutput</li>
+<li><strong>Phase 6</strong> — the Center_Armament PanelGroup sketch rewrite and end-to-end integration</li>
+</ul>
+<p>See <a href="control-types/">Control Types</a> for the full list with status.</p>
+</div>
+<h2 id="in-this-section">In this section</h2>
+<ul>
+<li><strong><a href="platformio-setup/">PlatformIO Setup</a></strong> — start a firmware project from the templates</li>
+<li><strong><a href="node-id/">NODE_ID &amp; CAN Addressing</a></strong> — the NODE_ID scheme, registry, and how to claim one</li>
+<li><strong><a href="dcsbios-integration/">DCS-BIOS Integration</a></strong> — <code>DCSIN_*</code> IDs, the A4EC headers, output addresses</li>
+<li><strong><a href="hid-controls/">HID Controls</a></strong> — the <code>CTRL_*</code> axis/button/hat allocations</li>
+<li><strong><a href="control-types/">Control Types</a></strong> — every input and output class, with Phase status</li>
+<li><strong><a href="debugging/">Debugging on STM32</a></strong> — DiagSerial, the status LED, and bench gotchas</li>
+</ul>
 
 
 
 
 
 
-
-  
-  
 
 
 

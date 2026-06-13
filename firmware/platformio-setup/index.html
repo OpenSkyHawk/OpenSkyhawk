@@ -1428,13 +1428,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1458,6 +1451,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PlatformIO Setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1472,15 +1483,71 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#start-from-a-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start from a template
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-panelgroup-platformioini-annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A PanelGroup platformio.ini, annotated
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flashing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#serial-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serial monitor
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1507,13 +1574,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1543,13 +1603,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1577,13 +1630,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1613,13 +1659,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1647,13 +1686,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3972,6 +4004,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#start-from-a-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start from a template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-panelgroup-platformioini-annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A PanelGroup platformio.ini, annotated
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flashing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#serial-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serial monitor
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3991,20 +4075,75 @@
 
 
 <h1 id="platformio-setup">PlatformIO Setup</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>OpenSkyhawk firmware builds with <a href="https://platformio.org/">PlatformIO</a>. Each board is its own
+project. Start from the templates in <code>Firmware/Templates/</code> — <strong>not</strong> from an existing panel's
+<code>platformio.ini</code>, which may carry stale dependencies.</p>
+<h2 id="start-from-a-template">Start from a template</h2>
+<p><code>Firmware/Templates/</code> has a ready project per tier: <code>PanelGroup/</code>, <code>PanelBridge/</code>, and
+<code>SimGateway/</code>. Copy the one you need into place (a PanelGroup goes under
+<code>Firmware/Panels/&lt;YourPanel&gt;/</code>) and edit its <code>platformio.ini</code>.</p>
+<h2 id="a-panelgroup-platformioini-annotated">A PanelGroup platformio.ini, annotated</h2>
+<pre><code class="language-ini">[env:PanelGroup]
+platform = ststm32
+board = genericSTM32F103C8        ; STM32F103C8 for nodes (see board note below)
+framework = arduino
+board_build.f_cpu = 72000000L
+
+build_flags =
+    -DNODE_ID=1                   ; unique per board, 1–63 — set this!
+    -DHAL_CAN_MODULE_ENABLED      ; enable the bxCAN peripheral
+    -DUSB_NONE                    ; USB off — CAN owns PA11/PA12
+    -DHSE_VALUE=8000000           ; external 8 MHz crystal, required for CAN timing
+
+lib_extra_dirs = ${PROJECT_DIR}/../../Libraries
+lib_ldf_mode = deep+              ; needed so Adafruit BusIO finds framework headers
+lib_deps =
+    HIDControls
+    STM32Board
+    PanelGroup
+    CANProtocol
+    A4EC
+    blemasle/MCP23017@^2.0.0
+    adafruit/Adafruit ADS1X15@^2.0.0
+
+upload_protocol = stlink
+monitor_speed = 115200
+</code></pre>
+<p>The two build flags people forget: <strong><code>-DNODE_ID</code></strong> (every board needs a unique value — see
+<a href="../node-id/">NODE_ID &amp; CAN Addressing</a>) and <strong><code>-DHSE_VALUE=8000000</code></strong> (selects the external
+crystal; the internal RC oscillator is not accurate enough for 500 kbps CAN).</p>
+<div class="admonition note">
+<p class="admonition-title">Which STM32 variant</p>
+<p>Per the <a href="../../getting-started/prerequisites/">variant policy</a>, PanelGroup nodes default to
+<strong><code>genericSTM32F103C8</code></strong> (64 KB) and <strong>PanelBridge</strong> uses <strong><code>genericSTM32F103CB</code></strong> (128 KB,
+for the DCS-BIOS input map). Note: the in-tree <code>Templates/PanelGroup</code> currently still
+targets <code>genericSTM32F103CB</code> — set it to <code>C8</code> unless your panel actually needs the extra
+flash.</p>
 </div>
+<h2 id="flashing">Flashing</h2>
+<p>STM32 boards flash over <strong>SWD with an ST-Link</strong> (<code>upload_protocol = stlink</code>). PlatformIO drives
+the probe directly — <code>pio run -t upload</code>. SimGateway (RP2040) flashes over USB by UF2 or
+straight from PlatformIO; no ST-Link.</p>
+<div class="admonition warning">
+<p class="admonition-title">Blue Pill clone won't connect? Override the tap ID</p>
+<p>Many clones report a non-standard JTAG ID and ST-Link refuses to connect with "tap not
+found." Uncomment the override in the template:</p>
+<p><code>ini
+upload_flags =
+    -c
+    set CPUTAPID 0x2ba01477</code></p>
+<p>The standard ID is <code>0x1ba01477</code>; the common clone is <code>0x2ba01477</code>.</p>
+</div>
+<h2 id="serial-monitor">Serial monitor</h2>
+<p><code>monitor_speed = 115200</code> matches the <strong>DiagSerial</strong> debug stream (USART1, PA9/PA10). Attach a
+USB-to-TTL adapter to the board's 3-pin debug header and <code>pio device monitor</code>. See
+<a href="../debugging/">Debugging on STM32</a>.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

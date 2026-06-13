@@ -1428,13 +1428,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1462,13 +1455,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1498,13 +1484,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1532,13 +1511,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1568,13 +1540,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1598,6 +1563,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Types
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1612,15 +1595,71 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pinref-the-hardware-abstraction-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PinRef — the hardware abstraction (implemented)
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input classes
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-map-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring map convention
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1647,13 +1686,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3972,6 +4004,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pinref-the-hardware-abstraction-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PinRef — the hardware abstraction (implemented)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-map-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring map convention
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3991,20 +4075,195 @@
 
 
 <h1 id="control-types">Control Types</h1>
+<p>A PanelGroup sketch is mostly a list of <strong>control objects</strong> — one per physical switch, knob,
+LED, or gauge. Inputs read hardware and fire CAN events; outputs receive DCS state and drive
+hardware. This page is the catalogue, with honest Phase status: most types are <strong>specified but
+not yet implemented</strong>.</p>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Most control types are not implemented yet</p>
+<p>Only <strong>LED</strong> (output) and <strong>Switch2Pos</strong> (input), plus the <strong>PinRef</strong> abstraction, are
+implemented and hardware-verified (Phase 3). Everything marked <em>Phase 4</em> or <em>Phase 5</em>
+below is specified but <strong>not yet written</strong> — don't expect it to compile today.</p>
 </div>
+<h2 id="pinref-the-hardware-abstraction-implemented">PinRef — the hardware abstraction <em>(implemented)</em></h2>
+<p>Every input and output takes a <code>PinRef</code>, not a raw pin number. One interface over three
+hardware backends:</p>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>Constructor</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STM32 GPIO</td>
+<td><code>PinRef(pin)</code></td>
+<td>direct <code>digitalRead</code>/<code>Write</code>, <code>analogRead</code>/<code>Write</code></td>
+</tr>
+<tr>
+<td>MCP23017</td>
+<td><code>PinRef(chip, PORT_A\|PORT_B, bit)</code></td>
+<td>digital I/O expander</td>
+</tr>
+<tr>
+<td>ADS1115</td>
+<td><code>PinRef(adc, channel)</code></td>
+<td>analog input, channels 0–3</td>
+</tr>
+</tbody>
+</table>
+<p>Only direct STM32 GPIO can do PWM or servo output — <code>isGpio()</code> reports the backend type.</p>
+<p><strong>Routing is by <code>controlId</code>, not by class.</strong> The same input class drives a DCS-BIOS control or
+a HID button depending on the <code>controlId</code> you give it:</p>
+<pre><code class="language-cpp">// DCS-BIOS route — controlId in 0x8000–0x86FF
+OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
+
+// HID route — controlId &lt; 0x8000
+OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
+</code></pre>
+<p>See <a href="../../architecture/dcsbios-vs-hid/">DCS-BIOS vs HID</a> for which to use.</p>
+<h2 id="input-classes">Input classes</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Status</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Switch2Pos</code></td>
+<td><strong>Implemented</strong></td>
+<td>Debounced 2-position switch (20 ms). value 0/1</td>
+</tr>
+<tr>
+<td><code>Switch3Pos</code></td>
+<td>Phase 4 — not started</td>
+<td>3-position (ON-OFF-ON). value 0/1/2</td>
+</tr>
+<tr>
+<td><code>SwitchMultiPos</code></td>
+<td>Phase 4 — not started</td>
+<td>N-pin rotary, one active. value = index</td>
+</tr>
+<tr>
+<td><code>AnalogMultiPos</code></td>
+<td>Phase 4 — not started</td>
+<td>Resistor-ladder selector on one analog pin</td>
+</tr>
+<tr>
+<td><code>ActionButton</code></td>
+<td>Phase 4 — not started</td>
+<td>Momentary; fires on press only</td>
+</tr>
+<tr>
+<td><code>RotaryEncoder</code></td>
+<td>Phase 4 — not started</td>
+<td>Quadrature encoder. value 0=CCW, 1=CW</td>
+</tr>
+<tr>
+<td><code>RotaryAcceleratedEncoder</code></td>
+<td>Phase 4 — not started</td>
+<td>Encoder with slow/fast (4-value scheme)</td>
+</tr>
+<tr>
+<td><code>RotarySwitch</code></td>
+<td>Phase 4 — not started</td>
+<td>Encoder used as an N-position absolute switch</td>
+</tr>
+<tr>
+<td><code>AnalogInput</code></td>
+<td>Phase 4 — not started</td>
+<td>Continuous analog, normalised to 16-bit</td>
+</tr>
+<tr>
+<td><code>AngleSensorInput</code></td>
+<td>Phase 4 — not started</td>
+<td>Hall angle sensor (AS5600/MT6701) for flight axes</td>
+</tr>
+<tr>
+<td><code>SwitchWithCover2Pos</code></td>
+<td>Phase 4 — not started</td>
+<td>Guarded switch (cover + switch)</td>
+</tr>
+</tbody>
+</table>
+<p>All inputs normalise analog sources to <strong>16-bit (0–65535)</strong> before sending. Inputs self-register
+at global scope; <code>PanelGroup::loop()</code> polls them and batches events into <code>EVT_n</code> CAN frames.</p>
+<div class="admonition note">
+<p class="admonition-title">AngleSensor base class is a documented gap</p>
+<p><code>AngleSensorInput</code> wraps an <code>AngleSensor</code> abstract base (concrete <code>AS5600Sensor</code> /
+<code>MT6701Sensor</code>). The base-class TechSpec is <strong>missing</strong> — it's a known gap, not yet
+specified. Don't assume the API beyond <code>begin()</code> / <code>readAngle()</code>.</p>
+</div>
+<h2 id="output-classes">Output classes</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Status</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LED</code></td>
+<td><strong>Implemented</strong></td>
+<td>GPIO pin driven from one bit of a DCS value</td>
+</tr>
+<tr>
+<td><code>AnalogOutput</code></td>
+<td>Phase 5 — not started</td>
+<td>16-bit DCS value → PWM duty (backlighting)</td>
+</tr>
+<tr>
+<td><code>IntegerOutput</code></td>
+<td>Phase 5 — not started</td>
+<td>Raw 16-bit value to a user callback</td>
+</tr>
+<tr>
+<td><code>SwitecX25Output</code></td>
+<td>Phase 5 — not started</td>
+<td>Gauge needle stepper (X27 family), SwitecX25 lib</td>
+</tr>
+<tr>
+<td><code>AccelStepperOutput</code></td>
+<td>Phase 5 — not started</td>
+<td>Gauge stepper with a physical home sensor</td>
+</tr>
+<tr>
+<td><code>ServoOutput</code></td>
+<td>Phase 5 — not started</td>
+<td>Standard RC servo</td>
+</tr>
+</tbody>
+</table>
+<p>Outputs use DCS-BIOS <strong>output addresses</strong> from the generated <code>A4EC</code> headers — the address
+constant plus its bitmask. Example for the implemented <code>LED</code>:</p>
+<pre><code class="language-cpp">OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM, PinRef(PB0));
+</code></pre>
+<p>Note the naming: <code>A_4E_C_&lt;NAME&gt;</code> for the address and <code>A_4E_C_&lt;NAME&gt;_AM</code> for the mask — <strong>not</strong>
+the old <code>_A</code> suffix. See <a href="../dcsbios-integration/">DCS-BIOS Integration</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Stepper driver part is TBD</p>
+<p>The <code>SwitecX25Output</code> / <code>AccelStepperOutput</code> motor driver IC is still being validated on
+the bench — don't document a specific driver part yet. See
+<a href="../../hardware/standards/">Hardware Standards</a> once written.</p>
+</div>
+<h2 id="wiring-map-convention">Wiring map convention</h2>
+<p><code>PinRef</code> bit positions and mask values must be <strong>named constants</strong>, never inline literals.
+Define a wiring-map block at the top of each sketch — one named <code>PinRef</code> per physical
+connection, matching the schematic net label — so every pin appears exactly once and traces
+back to the schematic.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 
