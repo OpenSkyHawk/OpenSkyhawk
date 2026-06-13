@@ -2762,13 +2762,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2796,13 +2789,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2832,13 +2818,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2862,6 +2841,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a Controller
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2876,15 +2873,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-shape-of-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of it
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-how-each-control-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing how each control routes
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#follow-the-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow the conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3881,6 +3923,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-shape-of-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shape of it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-how-each-control-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing how each control routes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#follow-the-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow the conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3900,10 +3983,39 @@
 
 
 <h1 id="adding-a-controller">Adding a Controller</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../">contribute to the docs</a>.</p>
+<p>Adding a new panel controller — a new PanelGroup node for a cockpit panel — touches all three
+disciplines. This page is the map of how they fit together; each step links to the detailed
+reference or guide.</p>
+<h2 id="the-shape-of-it">The shape of it</h2>
+<p>A panel controller is one STM32 board (the PanelGroup node) plus its breakouts, running a
+sketch, mounted in a printed enclosure. Bringing one to life:</p>
+<ol>
+<li><strong>Claim a NODE_ID.</strong> Take the next free number in <code>Firmware/NODE_IDS.md</code> and commit it in the
+   PR that starts the work. This is always step one — see
+   <a href="../../firmware/node-id/">NODE_ID &amp; CAN Addressing</a>.</li>
+<li><strong>Design the PCB.</strong> Scaffold a KiCad project with <code>/new-kicad-project</code>, capture the schematic,
+   lay out the board (LEDs front, everything else back), and get ERC/DRC clean. See the
+   <a href="../../hardware/kicad-workflow/">KiCad Workflow</a> and <a href="../../hardware/pcb-design-rules/">PCB Design Rules</a>.</li>
+<li><strong>Write the firmware.</strong> Copy a template from <code>Firmware/Templates/</code>, set <code>-DNODE_ID</code>, build the
+   wiring map, and declare your control objects. See <a href="../../firmware/platformio-setup/">PlatformIO Setup</a>
+   and <a href="../../firmware/control-types/">Control Types</a>.</li>
+<li><strong>Model the enclosure.</strong> The printed panel, bezel, and any knobs. CAD tooling is still under
+   evaluation — see <a href="../../hardware/cad-workflow/">CAD Workflow</a>.</li>
+</ol>
+<h2 id="choosing-how-each-control-routes">Choosing how each control routes</h2>
+<p>For every switch, knob, LED, and gauge, decide the path: <strong>DCS-BIOS</strong> (default — anything with a
+DCS-BIOS address) or <strong>HID</strong> (flight-control axes and momentary controls with no DCS-BIOS
+address). This is the single most important per-control decision — read
+<a href="../../architecture/dcsbios-vs-hid/">DCS-BIOS vs HID</a> before you start declaring controls.</p>
+<h2 id="follow-the-conventions">Follow the conventions</h2>
+<p>Named constants and a wiring map, permanent NODE_IDs, <code>A_4E_C_*</code> / <code>_AM</code> naming, honest status
+badges — all in <a href="../conventions/">Design Conventions</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Detailed step-by-step guides are coming</p>
+<p>The full worked walkthroughs — <a href="../../guides/first-panel/">Your First Panel</a>,
+<a href="../../guides/new-panel-group/">Adding a New Panel Group</a>, and
+<a href="../../guides/new-control-type/">Adding a New Control Type</a> — are in the Build Guides section
+and being written. This page is the orientation; those are the recipes.</p>
 </div>
 
 
@@ -3911,9 +4023,6 @@
 
 
 
-
-  
-  
 
 
 

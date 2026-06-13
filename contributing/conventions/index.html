@@ -2762,13 +2762,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2792,6 +2785,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Conventions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2806,15 +2817,104 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#node_ids-are-permanent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NODE_IDs are permanent
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Naming
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-magic-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No magic numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-map-per-sketch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring map per sketch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-badges-in-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status badges in docs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cad-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAD files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-commit-build-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Don't commit build output
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2841,13 +2941,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2876,13 +2969,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3881,6 +3967,91 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#node_ids-are-permanent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NODE_IDs are permanent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Naming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-magic-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No magic numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-map-per-sketch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring map per sketch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-badges-in-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status badges in docs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cad-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAD files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-commit-build-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Don't commit build output
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3900,20 +4071,78 @@
 
 
 <h1 id="design-conventions">Design Conventions</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../">contribute to the docs</a>.</p>
-</div>
+<p>The conventions that keep OpenSkyhawk consistent across boards, firmware, and contributors.
+None of these are negotiable in a PR — they're what makes one person's panel interchangeable
+with another's.</p>
+<h2 id="node_ids-are-permanent">NODE_IDs are permanent</h2>
+<p>Every CAN board has a unique <code>NODE_ID</code> (1–63; 0 is PanelBridge). Set it via
+<code>build_flags = -DNODE_ID=N</code>, never a <code>#define</code> in <code>main.cpp</code>. Claim it in <code>Firmware/NODE_IDS.md</code>
+<strong>before</strong> you start, in the same PR that creates the sketch, and <strong>never reuse one</strong> — retire,
+don't recycle. Full rules: <a href="../../firmware/node-id/">NODE_ID &amp; CAN Addressing</a>.</p>
+<h2 id="naming">Naming</h2>
+<ul>
+<li><strong>DCS-BIOS output addresses:</strong> <code>A_4E_C_&lt;NAME&gt;</code> for the address, <code>A_4E_C_&lt;NAME&gt;_AM</code> for the
+  mask. <strong>Never</strong> the old <code>_A</code> suffix that DCS-BIOS's own headers use.</li>
+<li><strong>DCS-BIOS input commands:</strong> the compact <code>DCSIN_*</code> constants from <code>A4EC_CmdIds.h</code>.</li>
+<li><strong>HID controls:</strong> the <code>CTRL_*</code> constants from <code>HIDControls.h</code> (the authoritative source — if
+  a doc disagrees with the header, the header wins).</li>
+</ul>
+<h2 id="no-magic-numbers">No magic numbers</h2>
+<p>Always use the named helper functions for CAN IDs (<code>canIdHb(n)</code>, <code>canIdEvt(n)</code>, …) — never the
+raw <code>0x100 + n</code> arithmetic. The deprecated fixed constants (<code>CAN_ID_HB_1 = 0x100</code>, etc.) are
+off-by-one against the helpers; don't use them.</p>
+<h2 id="wiring-map-per-sketch">Wiring map per sketch</h2>
+<p>Every <code>PinRef</code> bit position and bitmask must be a <strong>named constant</strong>, never an inline literal.
+Define a wiring-map block at the top of each sketch — one named <code>PinRef</code> per physical
+connection, matching the schematic net label. Every pin then appears exactly once and traces
+straight back to the schematic.</p>
+<h2 id="status-badges-in-docs">Status badges in docs</h2>
+<p>Pages and panels carry a consistent status (front-matter <code>status:</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Badge</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>(none)</em></td>
+<td>Complete — real hardware exists and is tested</td>
+</tr>
+<tr>
+<td><code>new</code></td>
+<td>Recently added, in active development</td>
+</tr>
+<tr>
+<td><code>planned</code></td>
+<td>Designed but not yet built</td>
+</tr>
+<tr>
+<td><code>stub</code></td>
+<td>Placeholder, contributions welcome</td>
+</tr>
+</tbody>
+</table>
+<p>Don't present Phase 4/5 control types, planned panels, or the stepper driver as available — mark
+them honestly.</p>
+<h2 id="cad-files">CAD files</h2>
+<ul>
+<li><strong>Source files</strong> (<code>.f3d</code> or <code>.FCStd</code>) are <strong>committed</strong> to the repo under <code>CAD/</code>.</li>
+<li><strong>STL and STEP exports are gitignored</strong> and published via <strong>GitHub Releases</strong> — never commit
+  them, and never describe STLs as living in the repo.</li>
+<li>Keep CAD docs <strong>tool-agnostic</strong> until the Fusion-vs-FreeCAD decision is final — no
+  tool-specific how-to yet.</li>
+</ul>
+<h2 id="dont-commit-build-output">Don't commit build output</h2>
+<p><code>site/</code> (MkDocs build) and generated <code>docs/api/</code> detail pages are gitignored — don't commit
+them. See <a href="../docs-workflow/">Docs Workflow</a>.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

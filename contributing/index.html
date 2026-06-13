@@ -2757,6 +2757,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to Contribute
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2771,15 +2789,71 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#three-disciplines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three disciplines
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ways-to-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ways to help
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In this section
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2806,13 +2880,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2842,13 +2909,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2876,13 +2936,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3881,6 +3934,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#three-disciplines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three disciplines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ways-to-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ways to help
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In this section
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3900,20 +4005,54 @@
 
 
 <h1 id="how-to-contribute">How to Contribute</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="./">contribute to the docs</a>.</p>
-</div>
+<p>OpenSkyhawk is built in the open and there's plenty to do. Whether you write firmware, lay out
+PCBs, model panels, or just want to improve the docs, this section explains how the project
+works and the conventions to follow.</p>
+<h2 id="three-disciplines">Three disciplines</h2>
+<p>A cockpit panel is three things at once, and the project is organised the same way:</p>
+<ul>
+<li><strong>Firmware</strong> — the control logic on STM32/RP2040. Start with the
+  <a href="../firmware/">Firmware Reference</a>.</li>
+<li><strong>PCB hardware</strong> — KiCad schematics and boards. Start with
+  <a href="../hardware/standards/">Hardware Reference</a> and the
+  <a href="../hardware/kicad-workflow/">KiCad Workflow</a>.</li>
+<li><strong>CAD / mechanical</strong> — the printed/machined panel enclosures, bezels, and knobs. See
+  <a href="../hardware/cad-workflow/">CAD Workflow</a> (tooling still being decided).</li>
+</ul>
+<p>Most panels need all three. The <a href="adding-controller/">Adding a Controller</a> page walks through
+how they fit together.</p>
+<h2 id="ways-to-help">Ways to help</h2>
+<ul>
+<li><strong>Build a planned panel.</strong> The left and right consoles are open ground — pick a panel group
+  and own it. The <a href="../panels/center-console/armament/">Armament Group</a> is the worked
+  example to follow.</li>
+<li><strong>Implement a control type.</strong> Most input/output types are specified but not yet written — see
+  <a href="../firmware/control-types/">Control Types</a> for what's open.</li>
+<li><strong>Improve the docs.</strong> Every stub page is an invitation. See <a href="docs-workflow/">Docs Workflow</a>.</li>
+</ul>
+<h2 id="before-you-start">Before you start</h2>
+<p>The canonical setup and PR essentials live in <strong><code>CONTRIBUTING.md</code></strong> at the repo root — toolchain
+install, claiming a NODE_ID, the PR process, and the
+<a href="https://github.com/OpenSkyhawk/OpenSkyhawk/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a>. The
+short version:</p>
+<ul>
+<li>Branch from <code>main</code> with a <code>feat/</code> <code>fix/</code> <code>chore/</code> <code>docs/</code> <code>ci/</code> prefix; one focused change per PR.</li>
+<li>Firmware: <code>pio run</code> must compile. PCB: ERC clean (DRC clean for layout PRs).</li>
+<li><strong>CI must pass — never merge with failing checks.</strong></li>
+<li>Claim your <code>NODE_ID</code> in <code>Firmware/NODE_IDS.md</code> <em>before</em> starting firmware work.</li>
+</ul>
+<h2 id="in-this-section">In this section</h2>
+<ul>
+<li><strong><a href="conventions/">Design Conventions</a></strong> — naming, NODE_IDs, wiring maps, CAD files, the rules that keep things consistent</li>
+<li><strong><a href="docs-workflow/">Docs Workflow</a></strong> — how to build, preview, and ship a docs change</li>
+<li><strong><a href="adding-controller/">Adding a Controller</a></strong> — the cross-discipline path for a new panel</li>
+</ul>
 
 
 
 
 
 
-
-  
-  
 
 
 
