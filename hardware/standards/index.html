@@ -1051,6 +1051,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Standards
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1065,15 +1083,93 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#component-packages-must-be-inspectable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component packages — must be inspectable
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCU
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Power
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-transceiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAN transceiver
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#led-backlighting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LED backlighting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-other-reference-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The other reference pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1100,13 +1196,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1136,13 +1225,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1170,13 +1252,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1276,13 +1351,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1310,13 +1378,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3923,6 +3984,80 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#component-packages-must-be-inspectable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component packages — must be inspectable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCU
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Power
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-transceiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAN transceiver
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#led-backlighting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LED backlighting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-other-reference-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The other reference pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3942,10 +4077,83 @@
 
 
 <h1 id="hardware-standards">Hardware Standards</h1>
+<p>The rules every OpenSkyhawk board follows. These aren't preferences — they're the constraints
+that keep boards buildable, inspectable, and interchangeable across the cockpit. This page is
+the hub; the detail lives on the pages it links.</p>
+<h2 id="component-packages-must-be-inspectable">Component packages — must be inspectable</h2>
+<p><strong>Every package must be visually inspectable after reflow.</strong> A T962 reflow oven handles the
+soldering; the limit is <em>inspection</em>, not soldering. So bottom-terminated parts are out.</p>
+<table>
+<thead>
+<tr>
+<th>Acceptable</th>
+<th>Not acceptable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOIC, SSOP, TSSOP, HTSSOP</td>
+<td>QFN, DFN, WSON</td>
+</tr>
+<tr>
+<td>LQFP</td>
+<td>BGA, LGA</td>
+</tr>
+<tr>
+<td>SOT-23, SOT-223</td>
+<td>any fully bottom-terminated package</td>
+</tr>
+<tr>
+<td>Through-hole</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>HTSSOP is fine — its side leads are the critical joints; the exposed thermal pad is verified by
+continuity check.</p>
+<h2 id="mcu">MCU</h2>
+<ul>
+<li><strong>CAN nodes: STM32F103</strong> (LQFP48). PanelGroup nodes use the <strong><code>STM32F103C8</code></strong> (64 KB);
+  <strong>PanelBridge</strong> uses the <strong><code>STM32F103CB</code></strong> (128 KB, for the DCS-BIOS input map).</li>
+<li>Requires an <strong>external 8 MHz crystal</strong> — the internal RC oscillator isn't accurate enough for
+  500 kbps CAN.</li>
+<li><strong>PA11/PA12</strong> are shared between USB and CAN; pick one at init (CAN, in production).</li>
+<li><strong>HID controls: RP2040</strong> off-the-shelf modules (flight stick, throttle, pedals, button boxes).
+  No custom PCB.</li>
+</ul>
+<h2 id="power">Power</h2>
+<p>A PC ATX supply distributes <strong>12 V and 5 V</strong> on the main bus; <strong>each board makes its own 3.3 V</strong>
+locally with an AMS1117-3.3. Local decoupling (100 nF + 10 µF per rail) is required on every
+board. Full detail — rails, budgets, the switching buck for high-current boards — is on the
+<a href="../../architecture/power/">Power Architecture</a> page.</p>
+<h2 id="can-transceiver">CAN transceiver</h2>
+<p><strong>SN65HVD230</strong> (SOIC-8, 3.3 V), one per STM32 board, on PA11 (RX) / PA12 (TX). 120 Ω
+termination across CANH/CANL at the <strong>two end nodes only</strong>. See
+<a href="../../architecture/can-bus/">CAN Bus Protocol</a> for the protocol side.</p>
+<h2 id="led-backlighting">LED backlighting</h2>
+<p>Confirmed by bench testing: <strong>5-LED series strings</strong>, MOSFET-switched per zone, one
+current-limiting resistor per string.</p>
+<ul>
+<li>5 × 5050 red LEDs in series per string (~10 V at 12 V supply, ~2 V resistor headroom)</li>
+<li>One resistor per string — <strong>120 Ω default</strong> (≈18 mA); 100 Ω for bright panels, 180 Ω for
+  dim/night zones. (47 Ω was rejected — the resistor overheated.)</li>
+<li>One <strong>IRLML2502</strong> N-channel MOSFET per zone, low-side, gate driven directly by STM32 3.3 V PWM
+  (no gate driver). PWM duty sets average brightness.</li>
+<li><strong>LEDs on the front face; resistors, MOSFETs, and everything else on the back.</strong></li>
+</ul>
+<h2 id="the-other-reference-pages">The other reference pages</h2>
+<ul>
+<li><strong><a href="../mechanical-standards/">Mechanical Standards</a></strong> — screws, gauges, switch sizes, panel dims</li>
+<li><strong><a href="../pcb-design-rules/">PCB Design Rules</a></strong> — JLCPCB constraints, net classes, stackup</li>
+<li><strong><a href="../connectors/">Connector &amp; Harness Guide</a></strong> — Molex Mini-Fit Jr, JST-XH, wire gauge</li>
+<li><strong><a href="../components/">Component Library</a></strong> — the selected parts and their KiCad symbols</li>
+<li><strong><a href="../kicad-workflow/">KiCad Workflow</a></strong> — shared libraries, design rules, the CLI</li>
+</ul>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">MCP23017 GPA7 / GPB7 — output only</p>
+<p>A confirmed silicon bug means <strong>GPA7 and GPB7 must never be configured as inputs</strong> — the SDA
+signal can be corrupted if the pin voltage changes mid-transmission. That leaves <strong>14 input
+pins per chip</strong> (GPA0–GPA6, GPB0–GPB6). GPA7/GPB7 may drive LEDs or other outputs freely.</p>
 </div>
 
 
@@ -3953,9 +4161,6 @@
 
 
 
-
-  
-  
 
 
 

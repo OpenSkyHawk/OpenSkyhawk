@@ -1056,13 +1056,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1090,13 +1083,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1126,13 +1112,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1160,13 +1139,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1261,6 +1233,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connector & Harness Guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1275,15 +1265,77 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#molex-mini-fit-jr-42-mm-main-bus-led-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Molex Mini-Fit Jr (4.2 mm) — main bus + LED power
+      
+    </span>
+  </a>
   
-
+    <nav class="md-nav" aria-label="Molex Mini-Fit Jr (4.2 mm) — main bus + LED power">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#main-bus-24-8-pin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main bus — 2×4 (8-pin)
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#led-power-2-pin-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LED power — 2-pin (1×2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jst-xh-254-mm-signal-switch-harnesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JST-XH (2.54 mm) — signal + switch harnesses
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1310,13 +1362,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3923,6 +3968,64 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#molex-mini-fit-jr-42-mm-main-bus-led-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Molex Mini-Fit Jr (4.2 mm) — main bus + LED power
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Molex Mini-Fit Jr (4.2 mm) — main bus + LED power">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#main-bus-24-8-pin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main bus — 2×4 (8-pin)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#led-power-2-pin-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LED power — 2-pin (1×2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jst-xh-254-mm-signal-switch-harnesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JST-XH (2.54 mm) — signal + switch harnesses
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3942,10 +4045,133 @@
 
 
 <h1 id="connector-harness-guide">Connector &amp; Harness Guide</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>Two connector families cover the whole cockpit: <strong>Molex Mini-Fit Jr</strong> for power and the main
+bus, <strong>JST-XH</strong> for signal and switch wiring. Nothing smaller than <strong>2.54 mm pitch</strong> is used
+anywhere, and wiring is <strong>24 AWG throughout</strong>.</p>
+<h2 id="molex-mini-fit-jr-42-mm-main-bus-led-power">Molex Mini-Fit Jr (4.2 mm) — main bus + LED power</h2>
+<p>Carries the inter-board bus (CAN + power) and the LED backlight power on every board.
+Through-hole, vertical, polarized (one insertion orientation). Crimp tool: JRready ST6490-ACT.</p>
+<h3 id="main-bus-24-8-pin">Main bus — 2×4 (8-pin)</h3>
+<p><code>Connector_Molex:Molex_Minifit_Jr_5557-08A2_2x04_P4.20mm_Vertical</code>. <strong>Two identical connectors
+per MCU board</strong> (<code>J_BUS_IN</code> + <code>J_BUS_OUT</code>) — the bus passes straight through.</p>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>+12V</td>
+<td>always-on 12 V from PSU</td>
+</tr>
+<tr>
+<td>2</td>
+<td>+12V</td>
+<td>parallel with pin 1 — lowers connector resistance for LED current</td>
+</tr>
+<tr>
+<td>3</td>
+<td>+5V</td>
+<td>from PSU; 3.3 V generated locally</td>
+</tr>
+<tr>
+<td>4</td>
+<td>GND</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>CANH</td>
+<td>differential pair with pin 6</td>
+</tr>
+<tr>
+<td>6</td>
+<td>CANL</td>
+<td>differential pair with pin 5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>GND</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>GND</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>CANH/CANL share a row (pins 5/6) for clean differential routing.</p>
+<h3 id="led-power-2-pin-12">LED power — 2-pin (1×2)</h3>
+<p><code>Connector_Molex:Molex_Mini-Fit_Jr_5566-02A2_2x01_P4.20mm_Vertical</code>. One per lighting zone,
+separate from the signal harness:</p>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>BACKLIGHT_SW_RETURN</code> (MOSFET drain — near GND when LEDs on)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>+12V_BACKLIGHT</code> (always-on 12 V to the LED string tops)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="jst-xh-254-mm-signal-switch-harnesses">JST-XH (2.54 mm) — signal + switch harnesses</h2>
+<p>Intra-group wiring — MCU ↔ breakout (I²C, interrupts, analog) and switch harnesses.
+Through-hole, single-row, vertical, polarized. Rated 3 A/pin. Crimp tool: Engineer PA-09.
+Standard sizes <strong>4 / 6 / 8 pin</strong> — pick by pin count, leave no pins empty.</p>
+<p>Standard 6-pin signal harness:</p>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>SDA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SCL</td>
+</tr>
+<tr>
+<td>3</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>4</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>5</td>
+<td>3.3 V (chip power)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>spare</td>
+</tr>
+</tbody>
+</table>
+<p>Breakouts with analog outputs or interrupts use the 8-pin variant with extra signals on pins
+6–8. Switches share a common GND within each connector group (one GND pin per connector).</p>
+<div class="admonition note">
+<p class="admonition-title">LED power is never on the signal harness</p>
+<p>Backlight power always rides its own 2-pin Mini-Fit Jr connector — never mixed into the
+JST-XH signal harness.</p>
 </div>
 
 
@@ -3953,9 +4179,6 @@
 
 
 
-
-  
-  
 
 
 

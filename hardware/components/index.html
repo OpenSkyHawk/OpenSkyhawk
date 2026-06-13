@@ -1056,13 +1056,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1090,13 +1083,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1126,13 +1112,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1160,13 +1139,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -1266,13 +1238,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -1296,6 +1261,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component Library
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1310,15 +1293,71 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#active-parts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active parts
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gauge-steppers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gauge steppers
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-current-boards-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-current boards only
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3923,6 +3962,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#active-parts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active parts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gauge-steppers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gauge steppers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-current-boards-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-current boards only
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3942,20 +4033,134 @@
 
 
 <h1 id="component-library">Component Library</h1>
+<p>The standard parts that recur across OpenSkyhawk boards, with their KiCad symbols. Most are
+KiCad built-ins; a few are in the shared <code>OpenSkyhawk</code> library. For how the library is wired up,
+see <a href="../kicad-workflow/">KiCad Workflow</a>.</p>
+<h2 id="active-parts">Active parts</h2>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Package</th>
+<th>Role</th>
+<th>KiCad symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STM32F103C8 / CB</td>
+<td>LQFP48</td>
+<td>CAN node MCU (C8 nodes, CB PanelBridge)</td>
+<td><code>MCU_ST_STM32F1:STM32F103CBTx</code></td>
+</tr>
+<tr>
+<td>SN65HVD230</td>
+<td>SOIC-8</td>
+<td>CAN transceiver, 3.3 V</td>
+<td><code>Interface_CAN_LIN:SN65HVD230</code></td>
+</tr>
+<tr>
+<td>MCP23017</td>
+<td>SOIC-28</td>
+<td>I²C digital I/O expander (16-bit)</td>
+<td><code>Interface_Expansion:MCP23017x-x-SO</code></td>
+</tr>
+<tr>
+<td>ADS1115</td>
+<td>—</td>
+<td>I²C 16-bit ADC, 4 channels</td>
+<td><code>Analog_ADC:ADS1115</code></td>
+</tr>
+<tr>
+<td>AMS1117-3.3</td>
+<td>SOT-223</td>
+<td>5 V → 3.3 V LDO (every board)</td>
+<td><code>Regulator_Linear:AMS1117-3.3_SOT223</code></td>
+</tr>
+<tr>
+<td>IRLML2502</td>
+<td>SOT-23</td>
+<td>LED zone MOSFET (low-side, logic-level)</td>
+<td><code>OpenSkyhawk:IRLML2502</code></td>
+</tr>
+<tr>
+<td>8 MHz crystal</td>
+<td>—</td>
+<td>HSE for CAN timing</td>
+<td><code>Device:Crystal</code></td>
+</tr>
+<tr>
+<td>LED 5050 (red)</td>
+<td>6-pad 5050</td>
+<td>Panel backlight (5-in-series strings)</td>
+<td><code>OpenSkyhawk:LED_5050_Red</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="gauge-steppers">Gauge steppers</h2>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Role</th>
+<th>KiCad symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X27.589</td>
+<td>Gauge needle stepper (e.g. cabin pressure)</td>
+<td><code>OpenSkyhawk:X27.589_Stepper</code></td>
+</tr>
+<tr>
+<td>X27.168</td>
+<td>Gauge needle stepper (single-mount variant)</td>
+<td><code>OpenSkyhawk:X27.168_Stepper</code></td>
+</tr>
+</tbody>
+</table>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Stepper driver IC — TBD</p>
+<p>The motor driver for the gauge steppers is <strong>not yet finalised</strong> — it's under bench
+evaluation. Don't design a board around a specific driver part until that's resolved; the
+motor supply rail (5 V) is settled, the driver IC is not.</p>
 </div>
+<h2 id="high-current-boards-only">High-current boards only</h2>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Package</th>
+<th>Role</th>
+<th>KiCad symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AP63205WU</td>
+<td>SOT-23-6</td>
+<td>12 V → 5 V switching buck</td>
+<td><code>OpenSkyhawk:AP63205WU</code> <em>(pending — add when first needed)</em></td>
+</tr>
+</tbody>
+</table>
+<p>Standard MCU and breakout boards do <strong>not</strong> carry this — they draw 5 V from the bus. It's only
+for future high-5V-current boards. See <a href="../../architecture/power/">Power Architecture</a>.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>The custom <code>OpenSkyhawk</code> symbols (LED 5050, IRLML2502, the steppers) live in
+  <code>PCB/Libraries/OpenSkyhawk.kicad_sym</code> + <code>OpenSkyhawk.pretty/</code>. Everything else is a KiCad
+  built-in — no custom entry needed.</li>
+<li>SN65HVD230 3.3 V clones (e.g. VP230) are acceptable for JLCPCB assembly.</li>
+<li>The <strong>MCP23017 GPA7/GPB7 input restriction</strong> (silicon bug — output only) is covered in
+  <a href="../standards/">Hardware Standards</a>.</li>
+</ul>
 
 
 
 
 
 
-
-  
-  
 
 
 
