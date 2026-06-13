@@ -290,8 +290,11 @@ void loop() {
 
             uint8_t capA = 0, capB = 0;
             e.chip->clearInterrupts(capA, capB);
-            if (intfA) e.portAcache = capA;
-            if (intfB) e.portBcache = capB;
+            // INTCAP (capA/capB) holds the pin state at interrupt time, not now.
+            // A fast bounce can clear before loop() runs, leaving the cache stale.
+            // Read live GPIO to guarantee cache matches current pin state.
+            if (intfA) e.portAcache = e.chip->readPort(MCP23017Port::A);
+            if (intfB) e.portBcache = e.chip->readPort(MCP23017Port::B);
         }
     }
 
