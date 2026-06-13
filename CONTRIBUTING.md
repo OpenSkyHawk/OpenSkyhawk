@@ -35,7 +35,7 @@ Every panel group board needs a unique `NODE_ID` (1–63). NODE_IDs are permanen
 
 ## AI-Assisted Development
 
-This project uses Claude Code (Anthropic) for firmware and PCB work. See `AGENTS.md` for conventions and context that apply when working with AI coding assistants in this repo.
+This project uses Claude Code (Anthropic) for firmware, PCB, and panel-research work. Discipline reference is packaged as **skills** under `.claude/skills/` (`panel-mapping`, `pcb-design`, `firmware`, `full-stack`, `cad`) that load automatically by task; `CLAUDE.md` holds the always-on project rules and the skill map, and `AGENTS.md` points other agents at the same sources. See the [AI-Assisted Development](https://openskyhawk.github.io/OpenSkyhawk/contributing/ai-assisted-development/) page for the full rundown.
 
 ## Code of Conduct
 

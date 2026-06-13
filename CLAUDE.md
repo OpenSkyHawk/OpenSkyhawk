@@ -2,37 +2,39 @@
 
 OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus. Project notes and panel status are tracked in Notion under the "A-4E Home Cockpit" workspace.
 
-@docs/_source/architecture.md
-@docs/_source/hardware-standards.md
-@docs/_source/kicad.md
-@docs/_source/pcb-design-rules.md
-@Firmware/ScratchPad/FirmwarePlan/README.md
-@Firmware/ScratchPad/TechSpec/README.md
+## Repository structure
 
-## Firmware
+Organized by discipline, then by console position (Left / Center / Right):
 
-All firmware architecture decisions, data flows, and contract boundaries are defined in
-`Firmware/ScratchPad/FirmwarePlan/` — **this is the authoritative source of truth** and
-supersedes any firmware content in `docs/_source/`. Implementation-level technical
-specifications (public API, class structure, method signatures) live in
-`Firmware/ScratchPad/TechSpec/`.
+- `CAD/` — source CAD models (`.f3d` or `.FCStd`; tooling under evaluation, Fusion 360 vs FreeCAD — design decision D8). STL/STEP exports are gitignored; generate from source.
+- `PCB/` — KiCad projects, one per physical PCB under `PCB/<Console>/<Group>/<Board>/`. `PCB/Libraries/` holds shared symbols, footprints, and sheet templates.
+- `Firmware/` — PlatformIO projects. `Firmware/Libraries/` (shared code, STM32 + RP2040 split), `Firmware/Panels/` (production sketches), `Firmware/Tests/` (per-library test projects). The authoritative firmware spec lives in `Firmware/ScratchPad/FirmwarePlan/` (+ `TechSpec/`).
+- `docs/` — MkDocs Material site (GitHub Pages). `docs/_source/` holds the canonical discipline reference material (not in the published nav); `docs/api/` is mkdoxy-generated.
 
-Do not rely on the Firmware Architecture section of `docs/_source/architecture.md` for
-firmware decisions — read the FirmwarePlan instead.
+## Skills — discipline reference loads on demand
 
-## Licensing
+Deep, discipline-specific reference lives in **model-invoked skills** under `.claude/skills/`,
+which load automatically when you work on that aspect (don't paste their content here):
 
-| Layer | License |
+| Working on… | Skill |
 |---|---|
-| CAD, PCB, Docs | CC BY-NC-SA 4.0 (root `LICENSE`) |
-| Firmware | GPL v2 (`Firmware/LICENSE`) |
+| KiCad schematics / PCB layout, part & package selection, connectors, DRC, wiring & board review | `pcb-design` |
+| Firmware — PanelGroup / PanelBridge / SimGateway, CAN, NODE_ID, DCS-BIOS, HID, libraries & tests | `firmware` |
+| How the whole stack fits together / cross-layer questions / onboarding / debugging across layers | `full-stack` |
+| CAD panel & bezel modeling, STL/STEP export, mechanical fit | `cad` |
+| Researching a new panel — DCS Model Viewer, control inventory & types, panel sizing | `panel-mapping` |
 
-## MCP Servers Available
+Contributor-facing version: [AI-Assisted Development](docs/contributing/ai-assisted-development.md).
 
-- **Autodesk Fusion** — can read, execute, and update Fusion 360 designs directly
-- **Notion** — all project notes live under the "A-4E Home Cockpit" page (Notion ID: `301575ac53b180b6a1b7cce9ba40ac79`), with two databases: **Panels** (one page per physical panel) and **Tasks** (non-panel work items)
+**Firmware source of truth:** `Firmware/ScratchPad/FirmwarePlan/` is authoritative for all firmware behaviour and **supersedes** any firmware content in `docs/_source/`. The `firmware` skill carries the routing and conventions.
 
-### Notion Workflow Rules
+## Source of truth & tracking
+
+Two external systems hold living project state. Keep them in sync as work lands.
+
+### Notion — "A-4E Home Cockpit" workspace (Notion ID: `301575ac53b180b6a1b7cce9ba40ac79`)
+
+Two databases: **Panels** (one page per physical panel) and **Tasks** (non-panel work items).
 
 **Always search before creating.** Before calling `notion-create-pages`, search the target database for an existing page with the same or similar name. Update it instead of creating a duplicate.
 
@@ -40,7 +42,7 @@ firmware decisions — read the FirmwarePlan instead.
 
 **Finding a page:** use `notion-search` with the panel or task name, then `notion-fetch` on the result URL to read its current content before editing.
 
-### Panels Database
+#### Panels Database
 
 Tracks every physical panel in the cockpit — one page per panel. Purpose: specification and implementation record (components, PCB repo path, wiring, DCS-BIOS IDs). Not for general task tracking.
 
@@ -49,7 +51,7 @@ Tracks every physical panel in the cockpit — one page per panel. Purpose: spec
 - **Key properties:** `Task name` (title), `Status`, `Console Position`, `Controller`, `Panel Type`, `Priority`
 - **Status pipeline:** Not started → Research → Schematics → CAD → PCB Layout → Ordering → Assembly → Testing → Done
   - **Schematics** — KiCad schematic complete, ERC clean
-  - **CAD** — Fusion 360 panel model in progress or complete
+  - **CAD** — panel model in progress or complete
   - **PCB Layout** — KiCad PCB layout in progress or complete
   - **Ordering** — PCB sent to JLCPCB, components sourced
   - **Assembly** — board soldered and installed in panel
@@ -57,7 +59,7 @@ Tracks every physical panel in the cockpit — one page per panel. Purpose: spec
 - **When a KiCad project is scaffolded:** find the existing panel page, set Status to `Not started` (unchanged if already set), and add the repo path + scaffolding note to the **page body** under the Task description section.
 - **When schematics are complete:** update page body with sheet structure, key ICs, harness connectors, and DCS-BIOS IDs. Advance Status to `Schematics`.
 
-### Tasks Database
+#### Tasks Database
 
 Tracks non-panel work items — firmware milestones, architecture decisions, library updates, CAN integration, and other build tasks. Use this instead of the Panels database for anything that isn't tied to a specific panel.
 
@@ -68,6 +70,22 @@ Tracks non-panel work items — firmware milestones, architecture decisions, lib
 - **Category options:** Firmware, Hardware, Architecture, Library, PCB, Documentation, Other
 - **Notes go in the page body**, not in any property field.
 - **When starting a new non-panel work item:** search Tasks first, then create a new page if none exists. Set Category and Priority at creation time.
+
+### GitHub issues — docs drift
+
+The weekly docs-drift review (`tools/docs-drift/REVIEW.md`) opens/updates a single issue labelled `docs-drift` when the published docs fall behind a source of truth. Triage from there; don't open duplicates.
+
+## Licensing
+
+| Layer | License |
+|---|---|
+| CAD, PCB, Docs | CC BY-NC-SA 4.0 (root `LICENSE`) |
+| Firmware | GPL v2 (`Firmware/LICENSE`) |
+
+## MCP servers available
+
+- **Autodesk Fusion** — read, execute, and update Fusion 360 designs directly (CAD tooling still under evaluation — see D8).
+- **Notion** — the project workspace above; edit rules in the *Source of truth & tracking* section.
 
 ## Git
 
