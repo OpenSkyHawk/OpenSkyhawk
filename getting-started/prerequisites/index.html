@@ -119,10 +119,9 @@
 
     <div class="os-header-nav" aria-label="Primary navigation">
       <a href="../.." class="">Home</a>
-      <a href="../overview/" class="os-header-nav__link--active">Documentation</a>
-      <a href="../../guides/" class="">Build Guides</a>
-      <a href="../../panels/center-console/armament/" class="">Panels</a>
-      <a href="../../kits/" class="">Kit Assembly</a>
+      <a href="../overview/" class="os-header-nav__link--active">Getting Started</a>
+      <a href="../../architecture/" class="">Documentation</a>
+      <a href="../../hardware/standards/" class="">Hardware</a>
       <a href="../../api/" class="">API Reference</a>
     </div>
 
@@ -1165,6 +1164,41 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/mechanical-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanical Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/pcb-design-rules/" class="md-nav__link">
         
   
@@ -1235,6 +1269,76 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/cad-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAD Workflow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/3d-printing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Printing Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/connectors/" class="md-nav__link">
         
   
@@ -1278,6 +1382,41 @@
     
   
     Component Library
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/printed-parts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Printed Parts Library
   
 
     
@@ -5403,9 +5542,13 @@ in the <a href="../../guides/">build guides</a>.</p>
 </tr>
 </tbody>
 </table>
-<p>CAD is optional for panel building — the <strong><code>.f3d</code></strong> Fusion 360 sources under <code>CAD/</code> open in
-<strong><a href="https://www.autodesk.com/products/fusion-360/">Autodesk Fusion 360</a></strong> if you want to print
-or modify the physical panels.</p>
+<p><strong>CAD (evaluation in progress)</strong> is optional for panel building:</p>
+<ul>
+<li><strong>Fusion 360 or FreeCAD</strong> — CAD tooling is currently being evaluated (FreeCAD is the
+  preferred direction). The <code>CAD/</code> sources open in whichever tool is chosen.</li>
+<li>Either tool can open and export <strong>STEP</strong> files for the KiCad fit-check.</li>
+<li><strong>STL</strong> files for 3D printing are released via <strong>GitHub Releases</strong>, not committed to the repo.</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">RP2040 boards need no special flasher</p>
 <p>The SimGateway and any HID boards run on off-the-shelf RP2040 modules (e.g. a Raspberry
@@ -5482,9 +5625,9 @@ required. PlatformIO drives the ST-Link directly for normal build-and-upload.</p
       </div>
       <div class="os-footer-col">
         <h2>Reference</h2>
+        <a href="../../architecture/">Architecture</a>
         <a href="../../hardware/standards/">Hardware Standards</a>
         <a href="../../hardware/pcb-design-rules/">PCB Design Rules</a>
-        <a href="../../hardware/kicad-workflow/">KiCad Workflow</a>
         <a href="../../firmware/">Firmware Reference</a>
         <a href="../../api/">API Reference</a>
       </div>

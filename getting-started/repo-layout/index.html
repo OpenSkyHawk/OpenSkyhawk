@@ -119,10 +119,9 @@
 
     <div class="os-header-nav" aria-label="Primary navigation">
       <a href="../.." class="">Home</a>
-      <a href="../overview/" class="os-header-nav__link--active">Documentation</a>
-      <a href="../../guides/" class="">Build Guides</a>
-      <a href="../../panels/center-console/armament/" class="">Panels</a>
-      <a href="../../kits/" class="">Kit Assembly</a>
+      <a href="../overview/" class="os-header-nav__link--active">Getting Started</a>
+      <a href="../../architecture/" class="">Documentation</a>
+      <a href="../../hardware/standards/" class="">Hardware</a>
       <a href="../../api/" class="">API Reference</a>
     </div>
 
@@ -1165,6 +1164,41 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/mechanical-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanical Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/pcb-design-rules/" class="md-nav__link">
         
   
@@ -1235,6 +1269,76 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/cad-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAD Workflow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/3d-printing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Printing Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/connectors/" class="md-nav__link">
         
   
@@ -1278,6 +1382,41 @@
     
   
     Component Library
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/printed-parts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Printed Parts Library
   
 
     
@@ -5354,7 +5493,11 @@ are headed — so contributors orient against the intended layout, not transient
 <pre><code>OpenSkyhawk/
 ├── .github/
 │   └── workflows/          ← CI: docs, firmware, KiCad, A4EC generator
-├── CAD/                    ← Fusion 360 sources (.f3d) — early stage
+├── CAD/                    ← panel enclosures, bezels, knobs (scaffolded, early stage)
+│   ├── Center_Console/
+│   ├── Left_Console/
+│   ├── Right_Console/
+│   └── Shared/             ← reusable knobs, guards, light rings
 ├── Firmware/
 │   ├── Examples/
 │   │   └── E2E_DCS_Test/   ← working reference sketch (LED + Switch2Pos + real DCS-BIOS)
@@ -5393,7 +5536,7 @@ are headed — so contributors orient against the intended layout, not transient
 </tr>
 <tr>
 <td><code>CAD/</code></td>
-<td>Fusion 360 panel sources (<code>.f3d</code>). STLs and STEP exports are generated, not committed. Early stage.</td>
+<td>Panel enclosures, bezels, and shared printed parts. Source files committed; STL/STEP exports generated, not committed. Scaffolded, early stage.</td>
 </tr>
 <tr>
 <td><code>Firmware/</code></td>
@@ -5413,6 +5556,12 @@ are headed — so contributors orient against the intended layout, not transient
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">CAD source vs exports</p>
+<p>CAD source files (<code>.f3d</code> or <code>.FCStd</code>) are committed to the repo under <code>CAD/</code>. <strong>STL and
+STEP exports are gitignored</strong> and published via <strong>GitHub Releases</strong>. CAD tooling is
+currently being evaluated between Fusion 360 and FreeCAD.</p>
+</div>
 <h2 id="key-directories-for-contributors">Key directories for contributors</h2>
 <p>Three places matter most if you're writing firmware:</p>
 <ul>
@@ -5484,9 +5633,9 @@ maintainer documentation for that workflow.</p>
       </div>
       <div class="os-footer-col">
         <h2>Reference</h2>
+        <a href="../../architecture/">Architecture</a>
         <a href="../../hardware/standards/">Hardware Standards</a>
         <a href="../../hardware/pcb-design-rules/">PCB Design Rules</a>
-        <a href="../../hardware/kicad-workflow/">KiCad Workflow</a>
         <a href="../../firmware/">Firmware Reference</a>
         <a href="../../api/">API Reference</a>
       </div>

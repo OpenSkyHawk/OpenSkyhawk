@@ -119,10 +119,9 @@
 
     <div class="os-header-nav" aria-label="Primary navigation">
       <a href="../.." class="">Home</a>
-      <a href="../../getting-started/overview/" class="os-header-nav__link--active">Documentation</a>
-      <a href="../../guides/" class="">Build Guides</a>
-      <a href="../../panels/center-console/armament/" class="">Panels</a>
-      <a href="../../kits/" class="">Kit Assembly</a>
+      <a href="../../getting-started/overview/" class="">Getting Started</a>
+      <a href="../" class="os-header-nav__link--active">Documentation</a>
+      <a href="../../hardware/standards/" class="">Hardware</a>
       <a href="../../api/" class="">API Reference</a>
     </div>
 
@@ -955,6 +954,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#d8-cad-tooling-fusion-360-vs-freecad-pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D8 — CAD tooling: Fusion 360 vs FreeCAD (pending)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1213,6 +1223,41 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/mechanical-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanical Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/pcb-design-rules/" class="md-nav__link">
         
   
@@ -1283,6 +1328,76 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/cad-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAD Workflow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/3d-printing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Printing Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/connectors/" class="md-nav__link">
         
   
@@ -1326,6 +1441,41 @@
     
   
     Component Library
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/printed-parts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Printed Parts Library
   
 
     
@@ -5417,6 +5567,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#d8-cad-tooling-fusion-360-vs-freecad-pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D8 — CAD tooling: Fusion 360 vs FreeCAD (pending)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5688,6 +5849,13 @@ time</strong>. That's exactly why USB lives on the separate RP2040 SimGateway
 dedicate those pins to CAN. Each board also needs an external 8 MHz crystal for CAN timing
 (<a href="#d5-sjw-4tq-empirically-determined">D5</a>).</p>
 <hr />
+<h2 id="d8-cad-tooling-fusion-360-vs-freecad-pending">D8 — CAD tooling: Fusion 360 vs FreeCAD (pending)</h2>
+<p><strong>Decision:</strong> <em>Pending.</em> Currently evaluating both tools. <strong>FreeCAD</strong> is preferred for
+alignment with the open source nature of the project, and it has a KiCad StepUp plugin for a
+direct PCB → CAD fit-check workflow. The decision will be documented here once finalised.</p>
+<p>The file-management policy holds regardless of tool choice: CAD <strong>source</strong> files are committed
+to the repo, while <strong>STL/STEP exports</strong> are gitignored and published via GitHub Releases.</p>
+<hr />
 <h2 id="related-reading">Related reading</h2>
 <ul>
 <li><a href="../can-bus/">CAN Bus Protocol</a> — the full frame ID table, <code>ControlPacket</code> wire format,
@@ -5739,9 +5907,9 @@ dedicate those pins to CAN. Each board also needs an external 8 MHz crystal for 
       </div>
       <div class="os-footer-col">
         <h2>Reference</h2>
+        <a href="../">Architecture</a>
         <a href="../../hardware/standards/">Hardware Standards</a>
         <a href="../../hardware/pcb-design-rules/">PCB Design Rules</a>
-        <a href="../../hardware/kicad-workflow/">KiCad Workflow</a>
         <a href="../../firmware/">Firmware Reference</a>
         <a href="../../api/">API Reference</a>
       </div>

@@ -119,10 +119,9 @@
 
     <div class="os-header-nav" aria-label="Primary navigation">
       <a href=".." class="">Home</a>
-      <a href="../getting-started/overview/" class="os-header-nav__link--active">Documentation</a>
-      <a href="../guides/" class="">Build Guides</a>
-      <a href="../panels/center-console/armament/" class="">Panels</a>
-      <a href="../kits/" class="">Kit Assembly</a>
+      <a href="../getting-started/overview/" class="">Getting Started</a>
+      <a href="./" class="os-header-nav__link--active">Documentation</a>
+      <a href="../hardware/standards/" class="">Hardware</a>
       <a href="../api/" class="">API Reference</a>
     </div>
 
@@ -1136,6 +1135,41 @@
   
   
     <li class="md-nav__item">
+      <a href="../hardware/mechanical-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanical Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../hardware/pcb-design-rules/" class="md-nav__link">
         
   
@@ -1206,6 +1240,76 @@
   
   
     <li class="md-nav__item">
+      <a href="../hardware/cad-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAD Workflow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hardware/3d-printing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Printing Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../hardware/connectors/" class="md-nav__link">
         
   
@@ -1249,6 +1353,41 @@
     
   
     Component Library
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hardware/printed-parts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Printed Parts Library
   
 
     
@@ -5297,6 +5436,7 @@
 <p>OpenSkyhawk connects a physical A-4E-C cockpit to DCS over a single USB cable. Behind that
 cable is a three-tier firmware stack joined by a CAN bus. This section explains how that
 stack is built and — just as importantly — <em>why</em> it's built that way.</p>
+<p>OpenSkyhawk covers three disciplines: firmware, PCB hardware, and CAD/mechanical design. Each panel group has coverage across all three.</p>
 <p>The short version: a <a href="sim-gateway/">SimGateway</a> on an RP2040 owns the one USB connection
 to the PC. It relays the DCS-BIOS stream to a <a href="firmware-tiers/">PanelBridge</a> (STM32), which
 runs the DCS-BIOS library and acts as CAN master. The PanelBridge distributes everything to
@@ -5367,9 +5507,9 @@ before contributing firmware are <a href="design-decisions/">Design Decisions</a
       </div>
       <div class="os-footer-col">
         <h2>Reference</h2>
+        <a href="./">Architecture</a>
         <a href="../hardware/standards/">Hardware Standards</a>
         <a href="../hardware/pcb-design-rules/">PCB Design Rules</a>
-        <a href="../hardware/kicad-workflow/">KiCad Workflow</a>
         <a href="../firmware/">Firmware Reference</a>
         <a href="../api/">API Reference</a>
       </div>
