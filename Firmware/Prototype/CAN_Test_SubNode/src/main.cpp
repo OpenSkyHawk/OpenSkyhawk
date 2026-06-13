@@ -18,7 +18,7 @@ static void checkButton() {
     bool state = digitalRead(BTN_PIN);
     if (state == lastBtnState) return;
     lastBtnState = state;
-    PanelGroup::sendEvent(0x0001, (state == LOW) ? 1 : 0);
+    CANProtocol::sendBatched(canIdEvt(NODE_ID), ControlPacket{0x0001, (uint16_t)((state == LOW) ? 1 : 0)});
 }
 
 void setup() {

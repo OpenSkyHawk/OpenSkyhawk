@@ -96,6 +96,7 @@ void begin() {
     _setLedState(LedState::BOOTING);
 
     _diag.begin(115200);
+    analogReadResolution(16);  // STM32duino defaults to 10-bit; 16-bit fills uint16_t directly for PinRef
 
     // 500 kbps on APB1 @ 36 MHz: prescaler=4, BS1=13TQ, BS2=4TQ → 18TQ total.
     // SJW=4TQ required for Blue Pill clone crystal tolerance (validated Experiment B).

@@ -241,6 +241,16 @@ violating them causes functional failures that cannot be fixed after fabrication
 GPA7 and GPB7 may drive LEDs, enables, or any other output load without restriction.  
 Source: Microchip support article *"GPA7 & GPB7 Cannot Be Used as Inputs In MCP23017"*
 
+**Firmware consequence — GPINTEN must exclude bit 7 on both ports.**
+`chip.interrupt(port, CHANGE)` (blemasle library) enables GPINTEN for all 8 bits. Do not use it directly. Instead, read IODIR after `configure()` and write it masked (`& 0x7F`) to GPINTEN:
+```cpp
+uint8_t gpintenA = chip.readRegister(MCP23017Register::IODIR_A) & 0x7Fu;
+uint8_t gpintenB = chip.readRegister(MCP23017Register::IODIR_B) & 0x7Fu;
+chip.writeRegister(MCP23017Register::GPINTEN_A, gpintenA);
+chip.writeRegister(MCP23017Register::GPINTEN_B, gpintenB);
+```
+This also ensures interrupts are never enabled on output pins — redundant per datasheet (output pins cannot fire GPINTEN), but explicit.
+
 ---
 
 ## Standard Circuit Blocks (Design Library)
