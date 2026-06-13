@@ -26,6 +26,8 @@ Here is a list of all files with brief descriptions:
             * **file** [**PanelGroup.h**](PanelGroup_8h.md) _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._    
             * **file** [**PinRef.cpp**](PinRef_8cpp.md)     
             * **file** [**PinRef.h**](PinRef_8h.md) _Hardware pin abstraction for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel controls._    
+            * **file** [**Switch2Pos.cpp**](Switch2Pos_8cpp.md)     
+            * **file** [**Switch2Pos.h**](Switch2Pos_8h.md) _Debounced 2-position switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
         * **dir** [**STM32Board**](dir_aa1816754c0645981f9c7af905857f7d.md)     
             * **file** [**STM32Board.cpp**](STM32Board_8cpp.md)     
             * **file** [**STM32Board.h**](STM32Board_8h.md) _Shared STM32F103 hardware initialisation for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _avionics nodes._    

@@ -10,6 +10,7 @@
     <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
     <includedby refid="LED_8h" local="no">Firmware/Libraries/PanelGroup/LED.h</includedby>
     <includedby refid="PanelGroup_8cpp" local="yes">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
+    <includedby refid="Switch2Pos_8h" local="no">Firmware/Libraries/PanelGroup/Switch2Pos.h</includedby>
     <incdepgraph>
       <node id="8">
         <label>CANProtocol.h</label>
@@ -88,6 +89,18 @@
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PanelGroup/Switch2Pos.cpp</label>
+        <link refid="Switch2Pos_8cpp"/>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PanelGroup/Switch2Pos.h</label>
+        <link refid="Switch2Pos_8h"/>
+        <childnode refid="6" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

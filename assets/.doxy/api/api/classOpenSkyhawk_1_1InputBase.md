@@ -16,6 +16,7 @@ _Abstract base for all hardware-polled input objects._ [More...](#detailed-descr
 
 
 
+Inherited by the following classes: [OpenSkyhawk::Switch2Pos](classOpenSkyhawk_1_1Switch2Pos.md)
 
 
 

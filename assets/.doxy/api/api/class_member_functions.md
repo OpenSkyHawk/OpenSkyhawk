@@ -6,7 +6,7 @@
 ## c
 
 * **controlId** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md))
-* **configure** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
+* **configure** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 * **configureAsInput** ([**PinRef**](classPinRef.md))
 * **configureAsOutput** ([**PinRef**](classPinRef.md))
 
@@ -18,7 +18,7 @@
 
 ## f
 
-* **forceReport** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md))
+* **forceReport** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 
 
 ## g
@@ -59,7 +59,7 @@
 
 ## p
 
-* **poll** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md))
+* **poll** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 * **PinRef** ([**PinRef**](classPinRef.md))
 
 
@@ -67,6 +67,11 @@
 
 * **read** ([**PinRef**](classPinRef.md))
 * **readAnalog** ([**PinRef**](classPinRef.md))
+
+
+## s
+
+* **Switch2Pos** ([**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 
 
 ## u

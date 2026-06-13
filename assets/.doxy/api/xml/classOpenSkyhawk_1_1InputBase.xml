@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="classOpenSkyhawk_1_1InputBase" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>OpenSkyhawk::InputBase</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1Switch2Pos" prot="public" virt="non-virtual">OpenSkyhawk::Switch2Pos</derivedcompoundref>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
     <sectiondef kind="private-static-attrib">
       <memberdef kind="variable" id="classOpenSkyhawk_1_1InputBase_1a142fd89c2bdb94646013b04f6c107aaf" prot="private" static="yes" mutable="no">
@@ -43,6 +44,7 @@
         <argsstring>()</argsstring>
         <name>configure</name>
         <qualifiedname>OpenSkyhawk::InputBase::configure</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520">configure</reimplementedby>
         <briefdescription>
 <para>Configure hardware pins for this input. </para>
         </briefdescription>
@@ -60,6 +62,7 @@
         <argsstring>()=0</argsstring>
         <name>poll</name>
         <qualifiedname>OpenSkyhawk::InputBase::poll</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f">poll</reimplementedby>
         <briefdescription>
 <para>Read hardware state and emit a CAN EVT if state changed. </para>
         </briefdescription>
@@ -76,6 +79,7 @@
         <argsstring>()=0</argsstring>
         <name>forceReport</name>
         <qualifiedname>OpenSkyhawk::InputBase::forceReport</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891">forceReport</reimplementedby>
         <briefdescription>
 <para>Read hardware state and emit a CAN EVT unconditionally. </para>
         </briefdescription>
@@ -142,6 +146,18 @@
     <detaileddescription>
 <para>Declare concrete input objects at global scope; the constructor self-registers into a static linked list. <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> calls <ref refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" kindref="member">configure()</ref> on every registered input after chip initialisation, then calls <ref refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" kindref="member">forceReport()</ref> for the boot EVT burst. <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> calls <ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll()</ref> every iteration. </para>
     </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::Switch2Pos</label>
+        <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
     <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="62" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="62" bodyend="105"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1InputBase_1a142fd89c2bdb94646013b04f6c107aaf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>_head</name></member>

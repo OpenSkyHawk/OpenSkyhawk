@@ -55,6 +55,12 @@
 * [**RxQueueEntry**](structRxQueueEntry.md)
 
 
+## s
+
+* [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## t
 
 * [**TxQueueEntry**](structTxQueueEntry.md)
