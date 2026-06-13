@@ -6,10 +6,12 @@ NODE_IDs are assigned at compile time via `platformio.ini` `build_flags = -DNODE
 old assignment stays in this file marked Retired. Before starting a new panel group,
 claim the next available NODE_ID here.
 
+<!-- --8<-- [start:registry] -->
 | NODE_ID | Panel Group       | Console | Status |
 |---------|-------------------|---------|--------|
 | 0       | PanelBridge       | —       | Reserved — CAN master, never transmitted on bus |
 | 1       | Center_Armament   | Center  | Active |
+<!-- --8<-- [end:registry] -->
 
 ## Rules
 
