@@ -37,6 +37,7 @@ void setup() {
     };
 
     CANProtocol::onReceive(onCan);
+    CANProtocol::filterAcceptAll();  // test covers drain routing, not filtering
     CANProtocol::startLoopback();
 
     // ── Drain with nothing queued — must not hang ───────────────────────────
@@ -48,9 +49,11 @@ void setup() {
     check("No spurious frames on empty drain",    rxCount == 0);
 
     // ── Single frame roundtrip ───────────────────────────────────────────────
+    // delay(2): CAN frame takes ~100 µs to loop back at 500 kbps.
 
     const uint8_t payload1[] = { 0xA1, 0xB2, 0xC3, 0xD4 };
     CANProtocol::send(canIdEvt(NODE_ID), payload1, sizeof(payload1));
+    delay(2);
     CANProtocol::drain();
 
     check("Single frame received",              rxCount == 1);
@@ -62,7 +65,9 @@ void setup() {
     // ── Zero-length frame (READY / SYNC_REQ style) ──────────────────────────
 
     rxCount = 0;
-    CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    static const uint8_t kEmpty[1] = {};
+    CANProtocol::send(canIdReady(NODE_ID), kEmpty, 0);
+    delay(2);
     CANProtocol::drain();
 
     check("DLC=0 frame received",   rxCount == 1);
@@ -75,6 +80,7 @@ void setup() {
     const uint8_t p3[] = { 0x33, 0x44, 0x55 };
     CANProtocol::send(canIdEvt(NODE_ID),  p2, sizeof(p2));
     CANProtocol::send(canIdHb(NODE_ID),   p3, sizeof(p3));
+    delay(2);
     CANProtocol::drain();
 
     check("Both frames delivered (rxCount=2)", rxCount == 2);

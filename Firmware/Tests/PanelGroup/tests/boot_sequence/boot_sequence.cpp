@@ -44,8 +44,9 @@ void setup() {
     // Emit boot sequence tail (no expanders/ADCs, no inputs for EVT burst)
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
     CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
-    // Two drain() calls: first flushes TX into CAN hardware, second reads loopback RX.
-    CANProtocol::drain();
+    // At 500 kbps, a CAN frame takes ~100 µs to complete and appear in FIFO0.
+    // delay(2) ensures the hardware loopback completes before drain() polls FIFO0.
+    delay(2);
     CANProtocol::drain();
 
     check("READY frame received via loopback", readyReceived);

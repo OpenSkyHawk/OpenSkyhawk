@@ -4,7 +4,7 @@
 // PanelGroup::setup() initialises the expander in polling-fallback mode
 // (NO_INT_PIN). Polling fallback reads live ports every 20 ms.
 //
-// Hardware: STM32 + MCP23017 on I2C1 (PB6=SCL, PB7=SDA, addr 0x20).
+// Hardware: STM32 + MCP23017 on I2C1 remap (PB8=SCL, PB9=SDA, addr 0x20).
 // Connect a switch between GPA0 and GND (active-low per project standard).
 // 10 kΩ pull-up to 3.3V on GPA0 required on the breakout board.
 //
@@ -28,7 +28,9 @@ void setup() {
     STM32Board::diagSerial().println("=== PanelGroup interrupt_dispatch ===");
     STM32Board::diagSerial().println("Hardware: MCP23017 @ 0x20 required");
 
-    Wire.begin();
+    Wire.setSDA(PB9);
+    Wire.setSCL(PB8);
+    Wire.begin(); // Bench workaround: production PCB uses Wire.begin() default (PB6/PB7).
 
     // Register in polling-fallback mode (no interrupt pin required)
     PanelGroup::registerExpander(gExpander);

@@ -6,14 +6,11 @@
 //   Registering the same ADS1115 instance twice is deduplicated (no double-begin).
 //   A PinRef(adc, channel) reads a valid value after setup() has initialised the chip.
 //
-// Hardware: ADS1115 dev board on I2C1 (PB6=SCL, PB7=SDA), addr 0x48 (ADDR→GND).
+// Hardware: ADS1115 dev board on I2C1 remap (PB8=SCL, PB9=SDA), addr 0x48 (ADDR→GND).
 //   A0 connected to ~1.65 V mid-rail (10 kΩ + 10 kΩ voltage divider, 3.3 V → GND).
-//   No MCP23017 required. CAN loopback mode used so no CAN bus needed.
+//   No MCP23017 required. CAN loopback used so no physical bus needed.
 //
-// Note: PanelGroup::setup() calls CANProtocol::start() internally. This test calls
-// CANProtocol::startLoopback() first via the onReceive hook path so loopback frames
-// echo correctly if needed. READY and EVT frames are attempted; if CAN is in loopback
-// they succeed; any BUS_OFF condition from a missing bus does not affect ADS1115 init.
+// Note: CAN startup (READY frame) is verified in test_boot_sequence — not checked here.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -21,12 +18,6 @@
 #include <PanelGroup.h>
 
 static ADS1115 gAdc;
-
-// Capture CAN frames sent during setup() — READY frame expected
-static bool readyReceived = false;
-static void onCan(uint32_t id, const uint8_t*, uint8_t) {
-    if (id == canIdReady(NODE_ID)) readyReceived = true;
-}
 
 void setup() {
     STM32Board::setDebug(true);
@@ -42,26 +33,20 @@ void setup() {
     };
 
     // Register ADC before setup() — pattern identical to sketch usage
-    Wire.begin();
+    Wire.setSDA(PB9);
+    Wire.setSCL(PB8);
+    Wire.begin(); // Bench workaround: production PCB uses Wire.begin() default (PB6/PB7).
     PanelGroup::registerADC(gAdc, 0x48, Wire);
 
     // Register same instance again — must be deduplicated (no crash, no double-init)
     PanelGroup::registerADC(gAdc, 0x48, Wire);
     STM32Board::diagSerial().println("Double-register: did not crash");
 
-    // Start CAN in loopback so setup() does not hang on bus-off
-    CANProtocol::onReceive(onCan);
+    // Start CAN in loopback so setup() does not hang waiting for bus
     CANProtocol::startLoopback();
 
     // setup() calls adc.begin(0x48, &Wire) for every registered ADC
     PanelGroup::setup();
-
-    // Drain any loopback frames (READY, EVT burst)
-    for (uint8_t i = 0; i < 10; i++) {
-        CANProtocol::drain();
-        delay(1);
-    }
-    check("READY frame sent during setup()", readyReceived);
 
     // After setup(), the ADS1115 is initialised — PinRef can read
     PinRef pin(gAdc, 0); // channel 0 = A0
@@ -78,5 +63,5 @@ void setup() {
 }
 
 void loop() {
-    PanelGroup::loop(); // drives heartbeat; not required for the test but exercises loop path
+    PanelGroup::loop();
 }

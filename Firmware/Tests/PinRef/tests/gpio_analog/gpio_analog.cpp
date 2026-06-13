@@ -1,11 +1,11 @@
 // PinRef — GPIO analog read test
 //
 // Hardware: PA1 connected to a known voltage via resistor divider.
-// Verifies: readAnalog() returns a 16-bit scaled value (12-bit ADC × 16).
+// Verifies: readAnalog() returns a 16-bit value via analogReadResolution(16) set in
+// STM32Board::begin(). STM32duino scales 12-bit ADC (0–4095) → 0–65520 internally.
 // Expected range for ~1.65 V on a 3.3 V reference: ~26000–36000.
 //
-// Scale verification: check that the reported value is consistent with 12-bit × 16 scaling
-// by confirming it lies between 0 and 65520 (4095 × 16 = 65520, not 65535).
+// Scale verification: confirm value ≤ 65520 (4095 << 4 = 65520 — framework ceiling).
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -18,9 +18,12 @@ void setup() {
     STM32Board::diagSerial().println("Hardware: PA1 connected to ~1.65 V (mid-rail divider).");
 
     PinRef adc(PA1);
-    uint16_t val = adc.readAnalog();
+    uint16_t val    = adc.readAnalog();
+    uint16_t rawAdc = analogRead(PA1);  // 0–65520 — analogReadResolution(16) set in STM32Board::begin()
 
-    STM32Board::diagSerial().print("PA1 readAnalog() = ");
+    STM32Board::diagSerial().print("PA1 analogRead() 16-bit = ");
+    STM32Board::diagSerial().println(rawAdc);
+    STM32Board::diagSerial().print("PA1 readAnalog() scaled = ");
     STM32Board::diagSerial().println(val);
 
     bool pass = true;

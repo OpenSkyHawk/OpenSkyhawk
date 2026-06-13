@@ -36,6 +36,7 @@ PinRef::PinRef(MCP23017& chip, uint8_t port, uint8_t bit) : _type(Type::MCP) {
 
 PinRef::PinRef(ADS1115& adc, uint8_t channel) : _type(Type::ADS) {
     _src.ads = { &adc, channel };
+    adc.setGain(GAIN_ONE); // ±4.096V FSR — best resolution for 0–3.3V inputs
 }
 
 PinRef::PinRef() : _type(Type::NC) {
@@ -63,8 +64,8 @@ bool PinRef::read() const {
 uint16_t PinRef::readAnalog() const {
     switch (_type) {
     case Type::GPIO:
-        // 12-bit ADC × 16 → 0–65520
-        return static_cast<uint16_t>(analogRead(_src.pin)) << 4;
+        // analogReadResolution(16) set in STM32Board::begin(); framework scales 12-bit → 16-bit
+        return static_cast<uint16_t>(analogRead(_src.pin));
     case Type::ADS: {
         // 15-bit single-ended × 2 → 0–65534; clamp negatives (should not occur)
         int16_t raw = _src.ads.adc->readADC_SingleEnded(_src.ads.channel);
