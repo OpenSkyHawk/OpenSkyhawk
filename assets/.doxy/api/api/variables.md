@@ -16,8 +16,6 @@
 * **CAN\_ID\_TEST\_SEQ** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CTRL\_ID\_DCS\_MAX** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CTRL\_ID\_DCS\_MIN** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CTRL\_ID\_TEST\_SEQ** ([**CANProtocol.h**](CANProtocol_8h.md))
-* **CTRL\_TEST\_SEQ** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CanRxCallback** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CanStatus** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **CanStatusCallback** ([**CANProtocol.h**](CANProtocol_8h.md))

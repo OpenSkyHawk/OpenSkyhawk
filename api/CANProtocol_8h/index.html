@@ -956,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deprecated/" class="md-nav__link">
+      <a href="../deprecated.md" class="md-nav__link">
         
   
   
@@ -2044,28 +2044,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#variable-ctrl_id_test_seq" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CTRL_ID_TEST_SEQ
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#variable-ctrl_test_seq" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        variable CTRL_TEST_SEQ
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#variable-diag_err" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2297,14 +2275,6 @@
 <td style="text-align: left;"><a href="#variable-ctrl_id_dcs_min"><strong>CTRL_ID_DCS_MIN</strong></a>   = <code>0x8000</code><br><em>DCS-BIOS range start.</em></td>
 </tr>
 <tr>
-<td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-ctrl_id_test_seq"><strong>CTRL_ID_TEST_SEQ</strong></a>   = <code>0xFFFF</code><br><em>Reserved legacy payload sentinel; RTT test uses CAN_ID_TEST_SEQ.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-ctrl_test_seq"><strong>CTRL_TEST_SEQ</strong></a>   = <code>[**CTRL\_ID\_TEST\_SEQ**](CANProtocol_8h.md#variable-ctrl_id_test_seq)</code><br></td>
-</tr>
-<tr>
 <td style="text-align: right;">constexpr uint8_t</td>
 <td style="text-align: left;"><a href="#variable-diag_err"><strong>DIAG_ERR</strong></a>   = <code>0x03</code><br><em>CAN error counter frame.</em></td>
 </tr>
@@ -2422,19 +2392,6 @@
 <p><em>DCS-BIOS range start.</em> </p>
 <pre><code class="language-C++">constexpr uint16_t CTRL_ID_DCS_MIN;
 </code></pre>
-<hr>
-
-<h3 id="variable-ctrl_id_test_seq">variable CTRL_ID_TEST_SEQ</h3>
-<p><em>Reserved legacy payload sentinel; RTT test uses CAN_ID_TEST_SEQ.</em> </p>
-<pre><code class="language-C++">constexpr uint16_t CTRL_ID_TEST_SEQ;
-</code></pre>
-<hr>
-
-<h3 id="variable-ctrl_test_seq">variable CTRL_TEST_SEQ</h3>
-<pre><code class="language-C++">constexpr uint16_t CTRL_TEST_SEQ;
-</code></pre>
-<p><strong>Deprecated</strong></p>
-<p>Current RTT testing uses CAN_ID_TEST_SEQ. Kept only for old prototype payload sentinels. </p>
 <hr>
 
 <h3 id="variable-diag_err">variable DIAG_ERR</h3>

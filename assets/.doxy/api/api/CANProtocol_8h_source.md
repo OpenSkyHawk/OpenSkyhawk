@@ -64,9 +64,6 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
 static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  
-static constexpr uint16_t CTRL_ID_TEST_SEQ = 0xFFFF;  
-
-static constexpr uint16_t CTRL_TEST_SEQ    = CTRL_ID_TEST_SEQ;
 
 // ── UART diagnostic framing constants (PanelBridge -> SimGateway) ─────────────
 // Used by SimGateway to parse the UART diagnostic stream from PanelBridge.
