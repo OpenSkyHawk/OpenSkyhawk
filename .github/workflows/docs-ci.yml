@@ -35,7 +35,7 @@ jobs:
           set -euo pipefail
           git fetch origin "${{ github.base_ref || 'main' }}" --depth=1
           mapfile -t files < <(
-            git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD" |
+            git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref || 'main' }}...HEAD" |
               grep -E '\.(md|markdown)$' |
               grep -v '^docs/api/' || true
           )
