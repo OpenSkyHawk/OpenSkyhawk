@@ -27,10 +27,17 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Cache PlatformIO packages
+      - name: Cache PlatformIO toolchain
         uses: actions/cache@v5
         with:
-          path: ~/.platformio/.cache
+          # See firmware-ci.yml: cache the extracted STM32/RP2040 toolchains
+          # (packages/ + platforms/), never project .pio/build. Core-library edits
+          # always recompile from source; only the toolchain is reused. The shared
+          # "-platformio-" restore-key lets this seed from the firmware-ci cache.
+          path: |
+            ~/.platformio/packages
+            ~/.platformio/platforms
+            ~/.platformio/.cache
           key: ${{ runner.os }}-platformio-a4ec-${{ hashFiles('Firmware/**/platformio.ini') }}
           restore-keys: |
             ${{ runner.os }}-platformio-a4ec-

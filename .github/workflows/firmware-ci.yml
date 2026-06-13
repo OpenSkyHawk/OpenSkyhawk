@@ -67,11 +67,22 @@ jobs:
               --github-output "$GITHUB_OUTPUT"
           fi
 
-      - name: Cache PlatformIO packages
+      - name: Cache PlatformIO toolchain
         if: steps.select.outputs.project_count != '0'
         uses: actions/cache@v5
         with:
-          path: ~/.platformio/.cache
+          # Cache the EXTRACTED toolchains (packages/ + platforms/) — the STM32 +
+          # RP2040 compiler/framework install that was previously redone every run,
+          # not just the .cache download archives. This is the multi-minute win.
+          # We deliberately do NOT cache any project .pio/build: in-repo libraries
+          # (Firmware/Libraries/*) recompile from source on every run, so a core-
+          # library edit can never reuse a stale object — only the toolchain is
+          # reused. The key still busts on any platformio.ini change
+          # (board / platform / lib_deps).
+          path: |
+            ~/.platformio/packages
+            ~/.platformio/platforms
+            ~/.platformio/.cache
           key: ${{ runner.os }}-platformio-firmware-${{ hashFiles('Firmware/**/platformio.ini') }}
           restore-keys: |
             ${{ runner.os }}-platformio-firmware-
