@@ -8,9 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/LED_8cpp_source/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/architecture/design-decisions/">
       
       
+        <link rel="prev" href="../../claude/kicad/">
+      
+      
+        <link rel="next" href="../../claude/dcsbios-stm32-debug/">
       
       
         
@@ -21,7 +25,7 @@
     
     
       
-        <title>File LED.cpp - OpenSkyhawk</title>
+        <title>Design Decisions - OpenSkyhawk</title>
       
     
     
@@ -72,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#file-ledcpp" class="md-skip">
+        <a href="#design-decisions" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              File LED.cpp
+              Design Decisions
             
           </span>
         </div>
@@ -118,7 +122,7 @@
       <a href="../..#projects">Projects</a>
       <a href="../../claude/architecture/" class="">Documentation</a>
       <a href="../../claude/hardware-standards/" class="">Hardware</a>
-      <a href="../" class="os-header-nav__link--active">API Reference</a>
+      <a href="../../api/" class="">API Reference</a>
     </div>
 
     
@@ -217,10 +221,12 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../../claude/architecture/" class="md-tabs__link">
           
   
@@ -261,7 +267,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../" class="md-tabs__link">
+        <a href="../../api/" class="md-tabs__link">
           
   
   
@@ -348,24 +354,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -383,7 +394,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -510,10 +521,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../architecture/design-decisions/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -529,6 +567,87 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#can-bus-timing-sjw-must-be-4tq-on-blue-pill-clones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAN Bus Timing — SJW Must Be 4TQ on Blue Pill Clones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CAN Bus Timing — SJW Must Be 4TQ on Blue Pill Clones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-crystal-required-for-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Crystal Required for CAN
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -823,7 +942,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../api/" class="md-nav__link">
         
   
   
@@ -851,7 +970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deprecated/" class="md-nav__link">
+      <a href="../../api/deprecated/" class="md-nav__link">
         
   
   
@@ -929,7 +1048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../namespaces/" class="md-nav__link">
+      <a href="../../api/namespaces/" class="md-nav__link">
         
   
   
@@ -1007,7 +1126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../namespace_members/" class="md-nav__link">
+      <a href="../../api/namespace_members/" class="md-nav__link">
         
   
   
@@ -1035,7 +1154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../namespace_member_functions/" class="md-nav__link">
+      <a href="../../api/namespace_member_functions/" class="md-nav__link">
         
   
   
@@ -1063,7 +1182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../namespace_member_variables/" class="md-nav__link">
+      <a href="../../api/namespace_member_variables/" class="md-nav__link">
         
   
   
@@ -1091,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../namespace_member_typedefs/" class="md-nav__link">
+      <a href="../../api/namespace_member_typedefs/" class="md-nav__link">
         
   
   
@@ -1119,7 +1238,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../namespace_member_enums/" class="md-nav__link">
+      <a href="../../api/namespace_member_enums/" class="md-nav__link">
         
   
   
@@ -1213,7 +1332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../annotated/" class="md-nav__link">
+      <a href="../../api/annotated/" class="md-nav__link">
         
   
   
@@ -1241,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/" class="md-nav__link">
+      <a href="../../api/classes/" class="md-nav__link">
         
   
   
@@ -1269,7 +1388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../hierarchy/" class="md-nav__link">
+      <a href="../../api/hierarchy/" class="md-nav__link">
         
   
   
@@ -1347,7 +1466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../class_members/" class="md-nav__link">
+      <a href="../../api/class_members/" class="md-nav__link">
         
   
   
@@ -1375,7 +1494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../class_member_functions/" class="md-nav__link">
+      <a href="../../api/class_member_functions/" class="md-nav__link">
         
   
   
@@ -1403,7 +1522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../class_member_variables/" class="md-nav__link">
+      <a href="../../api/class_member_variables/" class="md-nav__link">
         
   
   
@@ -1431,7 +1550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../class_member_typedefs/" class="md-nav__link">
+      <a href="../../api/class_member_typedefs/" class="md-nav__link">
         
   
   
@@ -1459,7 +1578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../class_member_enums/" class="md-nav__link">
+      <a href="../../api/class_member_enums/" class="md-nav__link">
         
   
   
@@ -1553,7 +1672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../files/" class="md-nav__link">
+      <a href="../../api/files/" class="md-nav__link">
         
   
   
@@ -1581,7 +1700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/" class="md-nav__link">
+      <a href="../../api/functions/" class="md-nav__link">
         
   
   
@@ -1609,7 +1728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../variables/" class="md-nav__link">
+      <a href="../../api/variables/" class="md-nav__link">
         
   
   
@@ -1637,7 +1756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../macros/" class="md-nav__link">
+      <a href="../../api/macros/" class="md-nav__link">
         
   
   
@@ -1673,7 +1792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/" class="md-nav__link">
+      <a href="../../api/modules/" class="md-nav__link">
         
   
   
@@ -1701,7 +1820,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pages/" class="md-nav__link">
+      <a href="../../api/pages/" class="md-nav__link">
         
   
   
@@ -1749,6 +1868,75 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#can-bus-timing-sjw-must-be-4tq-on-blue-pill-clones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAN Bus Timing — SJW Must Be 4TQ on Blue Pill Clones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CAN Bus Timing — SJW Must Be 4TQ on Blue Pill Clones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-crystal-required-for-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Crystal Required for CAN
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1767,38 +1955,80 @@
   
 
 
-<h1 id="file-ledcpp">File LED.cpp</h1>
-<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../LED_8cpp/"><strong>LED.cpp</strong></a></p>
-<p><a href="../LED_8cpp/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">#ifdef ARDUINO_ARCH_STM32
-
-#include &quot;LED.h&quot;
-#include &lt;STM32Board.h&gt;
-
-OpenSkyhawk::LED::LED(uint16_t controlId, uint16_t mask, PinRef pin, bool reverse)
-    : _controlId(controlId), _mask(mask), _pin(pin), _reverse(reverse) {}
-
-void OpenSkyhawk::LED::configure() {
-    _pin.configureAsOutput();
-    _pin.write(_reverse); // reverse=false → LOW (off); reverse=true → HIGH (off)
-}
-
-void OpenSkyhawk::LED::onControlPacket(uint16_t controlId, uint16_t value) {
-    if (controlId != _controlId) return;
-    bool on = (value &amp; _mask) != 0;
-    if (_hasState &amp;&amp; on == _lastOn) return;
-    _lastOn   = on;
-    _hasState = true;
-    _pin.write(_reverse ? !on : on);
-    if (STM32Board::isDebug()) {
-        auto&amp; d = STM32Board::diagSerial();
-        d.print(F(&quot;[LED] 0x&quot;)); d.print(_controlId, HEX);
-        d.println(on ? F(&quot;: ON&quot;) : F(&quot;: OFF&quot;));
-    }
-}
-
-#endif // ARDUINO_ARCH_STM32
-</code></pre>
+<h1 id="design-decisions">Design Decisions</h1>
+<p>Empirically-derived findings and architectural decisions made during development.
+Each entry records the observation, the test context, and the resulting design rule.</p>
+<hr />
+<h2 id="can-bus-timing-sjw-must-be-4tq-on-blue-pill-clones">CAN Bus Timing — SJW Must Be 4TQ on Blue Pill Clones</h2>
+<p><strong>Date:</strong> 2026-05-20 | <strong>Source:</strong> Prototype Experiment B Step 2 — two-node CAN bus bench test</p>
+<h3 id="finding">Finding</h3>
+<p>STM32F103CBT6 Blue Pill clones running at 72 MHz (8 MHz crystal + PLL) require
+<strong>SJW = 4TQ</strong> for reliable CAN communication at 500 kbps. Using SJW = 1TQ produced
+intermittent CRC errors due to crystal frequency tolerance mismatch between boards.</p>
+<h3 id="test-context">Test context</h3>
+<p>Two-node bus: master + one sub-node, daisy-chained over ~30 cm of 24 AWG twisted pair
+with 120 Ω termination at each physical endpoint.</p>
+<p><strong>Pass result (SJW = 4TQ, 2026-05-20):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soak duration</td>
+<td>21 minutes</td>
+</tr>
+<tr>
+<td>Packets injected</td>
+<td>1257 @ 1 pkt/sec</td>
+</tr>
+<tr>
+<td>Average RTT</td>
+<td>1 ms</td>
+</tr>
+<tr>
+<td>Min / Max RTT</td>
+<td>1 ms / 1 ms</td>
+</tr>
+<tr>
+<td>Packets lost</td>
+<td>0</td>
+</tr>
+<tr>
+<td>TEC</td>
+<td>0</td>
+</tr>
+<tr>
+<td>REC</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Bus-off events</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Failure mode (SJW = 1TQ):</strong> Intermittent CRC errors. TEC climbed on both master and
+sub-node within minutes of starting injection. Errors cleared immediately when SJW was
+raised to 4TQ — no other change made.</p>
+<h3 id="design-rule">Design rule</h3>
+<p>All production <code>platformio.ini</code> files must set the CAN bit timing with SJW = 4TQ.
+The <code>CANProtocol</code> library initialises CAN with this setting. Do not override it.</p>
+<p>The internal RC oscillator is not acceptable for CAN timing — all MCU boards require an
+<strong>external 8 MHz crystal</strong>. The crystal tolerance is the source of inter-board skew that
+SJW = 4TQ absorbs.</p>
+<hr />
+<h2 id="external-crystal-required-for-can">External Crystal Required for CAN</h2>
+<p><strong>Related to:</strong> SJW = 4TQ finding above</p>
+<p>The STM32F103CBT6 internal RC oscillator (HSI, 8 MHz ±1%) is not accurate enough for
+500 kbps CAN timing. Crystal tolerance mismatch between boards is the root cause of the
+SJW sensitivity described above.</p>
+<p><strong>Design rule:</strong> Every MCU board schematic must include an external 8 MHz crystal.
+<code>platformio.ini</code> must set <code>-DHSE_VALUE=8000000</code> in <code>build_flags</code> to activate the HSE clock
+source at firmware init.</p>
 
 
 
@@ -1837,7 +2067,7 @@ void OpenSkyhawk::LED::onControlPacket(uint16_t controlId, uint16_t value) {
         <h2>Quick Links</h2>
         <a href="../../claude/architecture/">Documentation</a>
         <a href="../../claude/controllers/Center_Armament/">Controllers</a>
-        <a href="../">API Reference</a>
+        <a href="../../api/">API Reference</a>
       </div>
       <div class="os-footer-col">
         <h2>Resources</h2>
