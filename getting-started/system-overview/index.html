@@ -5437,12 +5437,12 @@ collapses all of that onto <strong>one USB connection</strong> and a shared bus.
 </tr>
 <tr>
 <td><strong>PanelBridge</strong></td>
-<td>STM32F103CBT6</td>
+<td>STM32F103CB</td>
 <td>The CAN master. Runs the DCS-BIOS library on its UART. Broadcasts every DCS output onto the CAN bus, and routes input events coming back up from the nodes. One per cockpit.</td>
 </tr>
 <tr>
 <td><strong>PanelGroup</strong></td>
-<td>STM32F103CBT6</td>
+<td>STM32F103C8</td>
 <td>One per panel group. A CAN sub-node. Drives its panel hardware directly (GPIO, or MCP23017 / ADS1115 breakouts over I²C) and fires input events back onto the bus. Each has a unique <code>NODE_ID</code> (1–63).</td>
 </tr>
 </tbody>

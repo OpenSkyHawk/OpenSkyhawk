@@ -944,10 +944,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#d7-stm32f103cbt6-for-the-can-nodes" class="md-nav__link">
+  <a href="#d7-stm32f103-for-the-can-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        D7 — STM32F103CBT6 for the CAN nodes
+        D7 — STM32F103 for the CAN nodes
       
     </span>
   </a>
@@ -5406,10 +5406,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#d7-stm32f103cbt6-for-the-can-nodes" class="md-nav__link">
+  <a href="#d7-stm32f103-for-the-can-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        D7 — STM32F103CBT6 for the CAN nodes
+        D7 — STM32F103 for the CAN nodes
       
     </span>
   </a>
@@ -5665,9 +5665,13 @@ Add a control type and you change the gateway, not every node.</p>
 <p>The practical guidance that falls out of this — when to use DCS-BIOS and when to use HID — is
 on the <a href="../dcsbios-vs-hid/">DCS-BIOS vs HID</a> page.</p>
 <hr />
-<h2 id="d7-stm32f103cbt6-for-the-can-nodes">D7 — STM32F103CBT6 for the CAN nodes</h2>
-<p><strong>Decision:</strong> Both PanelBridge and every PanelGroup node use the <strong>STM32F103CBT6</strong> (LQFP48,
-128 KB flash, 20 KB RAM).</p>
+<h2 id="d7-stm32f103-for-the-can-nodes">D7 — STM32F103 for the CAN nodes</h2>
+<p><strong>Decision:</strong> The CAN nodes — PanelBridge and every PanelGroup node — use the <strong>STM32F103</strong>
+family (LQFP48, 20 KB RAM). The <strong>STM32F103C8</strong> (64 KB flash) is the default; the
+<strong>STM32F103CB</strong> (128 KB flash) is used only where flash demands it.
+<strong>PanelBridge</strong> is the STM32F103CB case — it runs the DCS-BIOS library plus the full generated
+input map (~300 entries). PanelGroup nodes carry only the <code>DCSIN_*</code> constants they use,
+so they fit the STM32F103C8.</p>
 <p><strong>Reasoning:</strong></p>
 <ul>
 <li><strong>Native bxCAN peripheral</strong> — CAN is the backbone of the whole system; a built-in
