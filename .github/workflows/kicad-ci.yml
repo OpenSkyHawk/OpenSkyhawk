@@ -20,13 +20,8 @@ jobs:
   kicad:
     name: Generate ERC/DRC reports
     runs-on: ubuntu-latest
-    container:
-      image: kicad/kicad:10.0.1
 
     steps:
-      - name: Fix runner temp permissions
-        run: chmod -R 777 "$RUNNER_TEMP"
-
       - name: Checkout
         uses: actions/checkout@v6
         with:
@@ -36,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          KICAD=kicad-cli
+          KICAD="docker run --rm -v $PWD:/work -w /work kicad/kicad:10.0.1 kicad-cli"
           reports_dir="$RUNNER_TEMP/kicad-reports"
           changed_file="$RUNNER_TEMP/kicad-changed-files.txt"
           projects_file="$RUNNER_TEMP/kicad-projects.txt"
@@ -88,7 +83,7 @@ jobs:
 
             if [ -f "$root_sch" ]; then
               erc_report="$reports_dir/${project_name}-erc.json"
-              if "$KICAD" sch erc --output "$erc_report" "$root_sch"; then
+              if $KICAD sch erc --output "$erc_report" "$root_sch"; then
                 echo "PASS ERC $root_sch"
               else
                 failed=1
@@ -98,7 +93,7 @@ jobs:
 
             if [ -f "$board" ]; then
               drc_report="$reports_dir/${project_name}-drc.json"
-              if "$KICAD" pcb drc --output "$drc_report" "$board"; then
+              if $KICAD pcb drc --output "$drc_report" "$board"; then
                 echo "PASS DRC $board"
               else
                 failed=1
