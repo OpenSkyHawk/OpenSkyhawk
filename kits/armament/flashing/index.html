@@ -2103,7 +2103,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2138,7 +2138,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2225,7 +2225,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2252,6 +2252,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashing Firmware
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2269,12 +2294,42 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#if-you-need-to-flash-it-yourself-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If you need to flash it yourself (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2305,7 +2360,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2340,7 +2395,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -3799,6 +3854,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#if-you-need-to-flash-it-yourself-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If you need to flash it yourself (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3819,10 +3893,26 @@
 
 <h1 id="armament-group-kit-flashing-firmware">Armament Group Kit — Flashing Firmware</h1>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Planned kit — not yet available</p>
+<p>Final flashing instructions ship with the kit. Details below are <strong>TBD</strong>.</p>
 </div>
+<p>The kit's controller runs OpenSkyhawk firmware. Whether boards arrive <strong>pre-flashed</strong> or you
+flash them yourself is still TBD for the first release — likely pre-flashed so the kit is
+assemble-and-go.</p>
+<h2 id="if-you-need-to-flash-it-yourself-planned">If you need to flash it yourself (planned)</h2>
+<ol>
+<li>Install the firmware toolchain (PlatformIO) — see <a href="../../../getting-started/prerequisites/">What You'll Need</a>.</li>
+<li>Open the Armament Group firmware project.</li>
+<li>Flash the controller over its SWD header with an ST-Link.</li>
+</ol>
+<p>The detailed mechanics (ST-Link, <code>pio run -t upload</code>, clone quirks) are in the builder guide:
+<a href="../../../guides/flashing/">Flashing Firmware</a>. Kit buyers shouldn't normally need it.</p>
+<div class="admonition note">
+<p class="admonition-title">NODE_ID is already set</p>
+<p>The Armament Group is <strong>NODE_ID 1</strong>. The kit firmware is built for it — you don't choose or
+change it.</p>
+</div>
+<p>Next: <a href="../dcs-setup/">DCS Setup</a>.</p>
 
 
 

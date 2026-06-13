@@ -2103,7 +2103,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2138,7 +2138,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2225,7 +2225,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2260,7 +2260,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2295,7 +2295,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2322,6 +2322,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2339,12 +2364,53 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verify-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3799,6 +3865,36 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#verify-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3819,9 +3915,53 @@
 
 <h1 id="armament-group-kit-testing-troubleshooting">Armament Group Kit — Testing &amp; Troubleshooting</h1>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Planned kit — not yet available</p>
+<p>Final test steps and troubleshooting ship with the kit, informed by end-to-end validation.
+Details below are <strong>TBD</strong>.</p>
+</div>
+<h2 id="verify-it-works">Verify it works</h2>
+<p>With the <a href="../dcs-setup/">DCS setup</a> done and a mission running in the A-4E-C:</p>
+<ol>
+<li><strong>Status light</strong> — the controller's status LED should be <strong>blinking green</strong> (CAN bus
+   healthy). <em>(photo TBD)</em></li>
+<li><strong>Inputs</strong> — flip each armament switch and confirm the matching control moves in the cockpit.</li>
+<li><strong>Outputs</strong> — trigger the relevant sim states and confirm the panel's indicators / lights
+   follow.</li>
+</ol>
+<h2 id="troubleshooting-planned">Troubleshooting (planned)</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>First thing to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status light solid red</td>
+<td>CAN bus / termination — is the panel connected to the SimGateway + PanelBridge backbone?</td>
+</tr>
+<tr>
+<td>Nothing happens in DCS</td>
+<td>Is DCS-BIOS export running? Is the USB cable connected?</td>
+</tr>
+<tr>
+<td>Some controls work, others don't</td>
+<td>Connector seated fully? Check the JST-XH harness to that breakout</td>
+</tr>
+<tr>
+<td>No power / no lights</td>
+<td>Power harness orientation; is the bus supplying 12 V / 5 V?</td>
+</tr>
+</tbody>
+</table>
+<p>For deeper diagnostics (DiagSerial, error counters, the status-LED states), the builder
+reference is <a href="../../../guides/bring-up/">Bring-Up &amp; Testing</a> — but a kit buyer shouldn't normally
+need it.</p>
+<div class="admonition note">
+<p class="admonition-title">Help improve this</p>
+<p>Once kits are in the wild, real failure cases will be folded into this table. If you hit
+something, report it — see <a href="../../../contributing/">How to Contribute</a>.</p>
 </div>
 
 

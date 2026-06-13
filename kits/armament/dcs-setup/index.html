@@ -2103,7 +2103,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2138,7 +2138,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2225,7 +2225,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2260,7 +2260,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2287,6 +2287,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2304,12 +2329,53 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#steps-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-working-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What "working" looks like
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2340,7 +2406,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -3799,6 +3865,36 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#steps-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-working-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What "working" looks like
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3819,10 +3915,29 @@
 
 <h1 id="armament-group-kit-dcs-setup">Armament Group Kit — DCS Setup</h1>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Planned kit — not yet available</p>
+<p>Final setup steps ship with the kit. Details below are <strong>TBD</strong> pending validation.</p>
 </div>
+<p>This is where the OpenSkyhawk approach pays off: the Armament Group's controls are <strong>DCS-BIOS</strong>
+controls, so there's <strong>no per-switch binding</strong> to do in DCS. Run the export, plug in, fly.</p>
+<h2 id="steps-planned">Steps (planned)</h2>
+<ol>
+<li><strong>Install the A-4E-C module</strong> — the free A-4E-C Skyhawk community mod for DCS World.</li>
+<li><strong>Install and run DCS-BIOS</strong> — the export bridge between DCS and your cockpit. This is the
+   one piece of PC-side setup.</li>
+<li><strong>Plug in the cockpit's USB cable</strong> — the single connection from the SimGateway to the PC.</li>
+<li><strong>Start a mission</strong> in the A-4E-C. Your panel's switches and indicators sync automatically.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">No joystick binding for armament controls</p>
+<p>Because the armament panels use the DCS-BIOS path, you do <strong>not</strong> open DCS controls settings
+and map switches. DCS-BIOS handles state both ways. (HID binding only matters for the
+out-of-console flight controls — stick, rudder pedals — not this kit.)</p>
+</div>
+<h2 id="what-working-looks-like">What "working" looks like</h2>
+<p>Flip a switch on the panel and watch it move in the cockpit; trigger a sim state (e.g. a caution
+condition) and watch the panel indicator follow. If it doesn't, see
+<a href="../testing/">Testing &amp; Troubleshooting</a>.</p>
 
 
 

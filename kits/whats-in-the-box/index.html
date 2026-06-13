@@ -2103,7 +2103,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2130,6 +2130,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What's in the Box
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2147,12 +2172,53 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#planned-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#youll-also-need-not-in-the-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        You'll also need (not in the kit)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2233,7 +2299,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2268,7 +2334,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2303,7 +2369,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2338,7 +2404,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -3797,6 +3863,36 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#planned-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#youll-also-need-not-in-the-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        You'll also need (not in the kit)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3817,10 +3913,65 @@
 
 <h1 id="whats-in-the-box">What's in the Box</h1>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Planned kit — not yet available</p>
+<p>This describes the <strong>planned</strong> Armament Group kit. Contents are not final and the kit is not
+yet for sale — it's pending end-to-end validation. Final bill of materials and quantities
+are <strong>TBD</strong>.</p>
 </div>
+<p>The Armament Group kit is planned to cover the Center Console armament panels on a single CAN
+node (<strong>NODE_ID 1</strong>).</p>
+<h2 id="planned-contents">Planned contents</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Armament Panel host board</td>
+<td>The STM32 MCU board (the panel group controller)</td>
+</tr>
+<tr>
+<td>AWRS breakout board</td>
+<td>Analog inputs via ADS1115</td>
+</tr>
+<tr>
+<td>Misc Switch breakout board</td>
+<td>Digital I/O via MCP23017</td>
+</tr>
+<tr>
+<td>Panel hardware</td>
+<td>Switches, knobs, indicators <em>(final list TBD)</em></td>
+</tr>
+<tr>
+<td>Harnesses</td>
+<td>JST-XH signal + Molex Mini-Fit Jr power/bus, pre-crimped <em>(TBD)</em></td>
+</tr>
+<tr>
+<td>Printed panel parts</td>
+<td>Enclosure, bezels, knobs <em>(TBD — CAD in progress)</em></td>
+</tr>
+<tr>
+<td>Fasteners</td>
+<td>M2–M5 per the build <em>(TBD)</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="youll-also-need-not-in-the-kit">You'll also need (not in the kit)</h2>
+<ul>
+<li>A PC running <strong>DCS World</strong> with the free <strong>A-4E-C</strong> community module</li>
+<li>The shared cockpit backbone — a <strong>SimGateway</strong> (RP2040) and a <strong>PanelBridge</strong> (STM32) — if
+  this is your first panel group. (These are one-per-cockpit; later panel groups reuse them.)</li>
+<li>A USB cable to the PC</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Photos TBD</p>
+<p>An unboxing photo and a labelled parts-layout image will be added here once the kit is
+finalised. <strong>(photo TBD)</strong></p>
+</div>
+<p>When your contents are confirmed, continue to the <a href="../armament/assembly/">Assembly Guide</a>.</p>
 
 
 

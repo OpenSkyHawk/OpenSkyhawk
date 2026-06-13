@@ -2095,6 +2095,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2112,12 +2137,64 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-kit-buyer-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The kit-buyer journey
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-makes-this-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What makes this different
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#want-to-help-get-kits-shipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Want to help get kits shipped?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2148,7 +2225,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2233,7 +2310,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2268,7 +2345,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2303,7 +2380,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2338,7 +2415,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -3797,6 +3874,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-kit-buyer-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The kit-buyer journey
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-makes-this-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What makes this different
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#want-to-help-get-kits-shipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Want to help get kits shipped?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3816,11 +3934,32 @@
 
 
 <h1 id="kit-assembly">Kit Assembly</h1>
+<p>OpenSkyhawk plans to sell <strong>panel and PCB kits</strong> so you can build a cockpit without sourcing
+parts or laying out boards yourself. This section is the assembly track for kit buyers — it
+stands on its own. You won't need to read PCB design rules or firmware internals to put a kit
+together and fly it.</p>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">No kits are available yet</p>
+<p>The <strong>Armament Group</strong> is the planned <strong>first kit release</strong>, pending successful end-to-end
+validation. Nothing is for sale today. Follow the
+<a href="https://github.com/OpenSkyhawk/OpenSkyhawk">repository</a> to track progress.</p>
 </div>
+<h2 id="the-kit-buyer-journey">The kit-buyer journey</h2>
+<p>When the Armament Group kit ships, getting it working is four steps — each its own page:</p>
+<ol>
+<li><strong><a href="whats-in-the-box/">What's in the Box</a></strong> — check your kit contents</li>
+<li><strong><a href="armament/assembly/">Assembly Guide</a></strong> — put the boards and panel together</li>
+<li><strong><a href="armament/flashing/">Flashing Firmware</a></strong> — load the firmware</li>
+<li><strong><a href="armament/dcs-setup/">DCS Setup</a></strong> — connect to the sim</li>
+<li><strong><a href="armament/testing/">Testing &amp; Troubleshooting</a></strong> — verify everything works</li>
+</ol>
+<h2 id="what-makes-this-different">What makes this different</h2>
+<p>The whole point of OpenSkyhawk: <strong>one USB cable</strong> for the entire cockpit, and <strong>DCS-BIOS does
+the binding for you</strong> — no per-switch mapping in DCS. A kit is meant to be assemble-flash-fly,
+not an electronics project.</p>
+<h2 id="want-to-help-get-kits-shipped">Want to help get kits shipped?</h2>
+<p>Kits are gated on end-to-end validation of the Armament Group firmware. If you want to help get
+there, see <a href="../contributing/">How to Contribute</a>.</p>
 
 
 

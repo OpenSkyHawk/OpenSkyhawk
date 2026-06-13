@@ -2103,7 +2103,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2138,7 +2138,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2217,6 +2217,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2234,12 +2259,42 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#steps-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2270,7 +2325,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2305,7 +2360,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -2340,7 +2395,7 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--planned"></span>
   
 
   
@@ -3799,6 +3854,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#steps-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3819,10 +3893,31 @@
 
 <h1 id="armament-group-kit-assembly-guide">Armament Group Kit — Assembly Guide</h1>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Planned kit — not yet available</p>
+<p>This guide will be finalised with the kit. Steps and photos are <strong>TBD</strong> pending the first
+release. Don't follow it as a build recipe yet.</p>
 </div>
+<p>Assembling the Armament Group kit comes down to: prepare the boards, mount them in the printed
+panel, and connect the harnesses. No soldering of fine-pitch ICs is expected at the buyer level —
+the kit aims to be component-and-connector assembly.</p>
+<h2 id="steps-planned">Steps (planned)</h2>
+<ol>
+<li><strong>Check your contents</strong> against <a href="../../whats-in-the-box/">What's in the Box</a>.</li>
+<li><strong>Mount the switches, knobs, and indicators</strong> into the printed panel. <em>(photo TBD)</em></li>
+<li><strong>Fit the host board and the two breakout boards</strong> (AWRS, Misc Switch). <em>(photo TBD)</em></li>
+<li><strong>Connect the signal harnesses</strong> — JST-XH between the host board and each breakout. They're
+   keyed; they only go in one way. <em>(photo TBD)</em></li>
+<li><strong>Connect power/bus</strong> — the Molex Mini-Fit Jr connectors carry 12 V / 5 V and CAN to the rest
+   of the cockpit. <em>(photo TBD)</em></li>
+<li><strong>Double-check orientation</strong> on the keyed connectors before powering anything.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">First panel group in your cockpit?</p>
+<p>The Armament Group is a CAN node — it needs the shared <strong>SimGateway</strong> and <strong>PanelBridge</strong>
+backbone to reach the PC. If this is your first OpenSkyhawk panel, you'll set those up once;
+every later panel group reuses them.</p>
+</div>
+<p>Next: <a href="../flashing/">Flashing Firmware</a>.</p>
 
 
 
