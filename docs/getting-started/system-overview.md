@@ -18,32 +18,7 @@ collapses all of that onto **one USB connection** and a shared bus.
 
 ## The three tiers
 
-```mermaid
-flowchart TD
-    PC["PC — DCS + DCS-BIOS"]
-
-    subgraph SG["SimGateway · RP2040"]
-        CDC["USB CDC<br/>DCS-BIOS stream"]
-        HID["USB HID<br/>joystick axes + buttons"]
-    end
-
-    PB["PanelBridge · STM32F103CBT6<br/>CAN master · runs DCS-BIOS library"]
-
-    subgraph NODES["PanelGroup nodes · STM32F103CBT6"]
-        N1["Node 1<br/>Center Armament"]
-        N2["Node 2<br/>(planned)"]
-        NN["Node N<br/>(up to ~20)"]
-    end
-
-    BRK["Breakout boards<br/>MCP23017 · ADS1115"]
-
-    PC <-->|"USB — single cable<br/>composite CDC + HID"| SG
-    SG <-->|"UART @ 250 kbps"| PB
-    PB <-->|"CAN bus @ 500 kbps"| N1
-    PB <-->|"CAN bus"| N2
-    PB <-->|"CAN bus"| NN
-    N1 <-->|"I²C over JST-XH"| BRK
-```
+![OpenSkyhawk system architecture — SimGateway (RP2040) to PanelBridge (STM32) over UART, then to PanelGroup nodes over the CAN bus, with the USB connection to the PC and the DCS-BIOS / HID split](../assets/images/diagrams/system-architecture.svg)
 
 | Tier | MCU | Role |
 |------|-----|------|
