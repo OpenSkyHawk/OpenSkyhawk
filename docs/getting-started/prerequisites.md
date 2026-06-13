@@ -53,8 +53,11 @@ or modify the physical panels.
 
 Everything above, plus the bench hardware to develop and verify against real boards:
 
-- **STM32F103CBT6 dev board** — a Blue Pill is fine for development. Note the firmware
-  requires an **external 8 MHz crystal** for CAN; verify your board has one populated.
+- **STM32F103 dev board** — a C8 Blue Pill is the default and runs most of the firmware.
+  The **CB** variant (`STM32F103CBT6`, 128 KB flash) is only needed where flash demands
+  it — notably **PanelBridge**, which carries the full DCS-BIOS input map. Either way the
+  firmware requires an **external 8 MHz crystal** for CAN; verify your board has one
+  populated.
 - **RP2040 module** (Raspberry Pi Pico or similar) — for SimGateway work.
 - **USB-to-TTL serial adapter** — for the DiagSerial debug stream. Every STM32 board exposes
   a 3-pin header (GND / RX / TX) on **USART1 at 115200 baud** for human-readable diagnostics.
