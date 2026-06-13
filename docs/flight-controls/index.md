@@ -8,10 +8,11 @@ This section covers the replica **out-of-console** flight hardware — the stand
 sit outside the cockpit panels: the control **stick** and the **rudder pedals**. These are
 their own physical builds, separate from the console panels.
 
-!!! note "The throttle is a Right Console panel"
-    The throttle lever is **not** part of this section — it lives on the
-    [Right Console](../panels/right-console/index.md) as a console panel. This section is the
-    stick and rudder pedals only.
+!!! note "Throttle: panel vs. axis — two different things"
+    The **throttle panel** (the quadrant with its switches and indicators) is a
+    [Left Console](../panels/left-console/index.md) panel and goes through DCS-BIOS. The
+    **throttle axis** (analog lever position, `CTRL_THROTTLE`) is one of the HID axes below.
+    Don't conflate them.
 
 ## HID axes
 
@@ -19,15 +20,17 @@ The replica flight controls connect to the PC over the HID path (not DCS-BIOS), 
 A-4E-C exposes no axis exports through DCS-BIOS. The planned axis allocation uses 7 of the 8
 DirectInput axis slots:
 
-| Axis | Control |
-|------|---------|
-| Roll | Stick |
-| Pitch | Stick |
-| Rudder | Pedals |
-| Speed Brake | Throttle (Right Console) |
-| Left Brake | Pedals |
-| Throttle | Throttle (Right Console) |
-| Zoom | — |
+| Axis | CTRL constant | Control |
+|------|---------------|---------|
+| 0 | `CTRL_ROLL` | Roll — replica stick |
+| 1 | `CTRL_PITCH` | Pitch — replica stick |
+| 2 | `CTRL_THROTTLE` | Throttle position — replica throttle |
+| 3 | `CTRL_RUDDER` | Rudder — rudder pedals |
+| 4 | `CTRL_LEFT_BRAKE` | Left toe brake — rudder pedals |
+| 5 | `CTRL_RIGHT_BRAKE` | Right toe brake — rudder pedals |
+| 6 | `CTRL_ZOOM` | Zoom |
+
+The **speed brake** is a DCS-BIOS on/off switch, not a HID axis.
 
 See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for why these go through HID.
 

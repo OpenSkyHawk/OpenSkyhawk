@@ -67,8 +67,9 @@ HID is correct in exactly two situations:
 2. **Momentary controls with no DCS-BIOS address.** A purely stateless button (trigger,
    pickle) that the A-4E-C only accepts as a raw input, with no DCS-BIOS command behind it.
 
-The seven planned HID axes are Roll, Pitch, Rudder, Speed Brake, Left Brake, Throttle, and
-Zoom — 7 of the 8 DirectInput axis slots.
+The seven planned HID axes are Roll, Pitch, Throttle, Rudder, Left Brake, Right Brake, and
+Zoom — 7 of the 8 DirectInput axis slots. The speed brake is **not** an axis — it's a
+DCS-BIOS on/off switch.
 
 ## The controlId ranges
 
