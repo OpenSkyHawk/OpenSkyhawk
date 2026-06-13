@@ -602,6 +602,31 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is OpenSkyhawk?
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -619,12 +644,86 @@
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <span class="md-status md-status--new"></span>
   
 
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-a-usb-hub-full-of-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The problem: a USB hub full of controllers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-solution-one-cable-one-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The solution: one cable, one bus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-project-is-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the project is today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-involved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get involved
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -651,6 +750,13 @@
     
   </span>
   
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
   
 
       </a>
@@ -4345,7 +4451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/deprecated.md" class="md-nav__link">
+      <a href="../../api/deprecated/" class="md-nav__link">
         
   
   
@@ -5243,6 +5349,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-a-usb-hub-full-of-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The problem: a USB hub full of controllers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-solution-one-cable-one-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The solution: one cable, one bus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-can-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you can build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-project-is-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the project is today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-involved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get involved
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -5262,9 +5431,63 @@
 
 
 <h1 id="what-is-openskyhawk">What is OpenSkyhawk?</h1>
-<p>!!! warning "Work in Progress"
-    This page is being written. Check back soon or
-    <a href="../../contributing/">contribute to the docs</a>.</p>
+<p>OpenSkyhawk is an open source project to build a fully modular replica cockpit for the
+DCS World <strong>A-4E-C Skyhawk</strong>. It covers the panel hardware, the PCBs behind it, the
+firmware that ties it together, and — eventually — a replica stick, throttle, and rudder.</p>
+<h2 id="the-problem-a-usb-hub-full-of-controllers">The problem: a USB hub full of controllers</h2>
+<p>Build a home sim pit the usual way and you end up with a drawer full of separate USB
+devices — a button box here, an encoder panel there, a third board for the gauges. Ten or
+fifteen HID controllers, each with its own COM port, its own DCS bindings, its own profile
+to maintain. Add a panel and you add another device to the pile. Windows gives each HID device only eight axes to begin with. The wiring sprawls, the bindings drift, and
+every rebuild is an afternoon of re-mapping.</p>
+<h2 id="the-solution-one-cable-one-bus">The solution: one cable, one bus</h2>
+<p><strong>OpenSkyhawk replaces that pile with a single USB connection to the PC.</strong></p>
+<p>Every panel, switch, knob, and gauge in the cockpit hangs off one shared <strong>CAN bus</strong> —
+the same kind of robust, daisy-chained network a car uses to connect dozens of modules
+over a single twisted pair. A small gateway board turns that bus into one tidy USB device
+the PC sees as a single connection. Plug in one cable and the whole cockpit comes alive.</p>
+<p>The result:</p>
+<ul>
+<li><strong>One USB connection</strong> instead of 10–15 separate controllers</li>
+<li><strong>Add a panel by adding a node</strong> on the bus — no new USB device, no PC-side rewiring</li>
+<li><strong>DCS-BIOS for everything that has an address</strong> — switch positions and gauge values sync
+  with the sim automatically, with zero manual binding</li>
+<li><strong>HID only where it's actually needed</strong> — the flight stick, throttle, and rudder axes</li>
+</ul>
+<p>If you want the full picture of how the three firmware tiers fit together, read
+<a href="../system-overview/">How the System Works</a>.</p>
+<h2 id="what-you-can-build">What you can build</h2>
+<p>The end goal is the complete A-4E-C cockpit: the center, left, and right consoles, the
+instrument panel, lit panels and working gauges, and a replica HOTAS. Panels are organised
+into <strong>panel groups</strong>, each driven by its own controller board on the CAN bus.</p>
+<h2 id="where-the-project-is-today">Where the project is today</h2>
+<p>OpenSkyhawk is early and building in the open. Being honest about state:</p>
+<ul>
+<li><strong>Firmware backbone — working and hardware-verified.</strong> The three-tier architecture
+  (SimGateway, PanelBridge, PanelGroup), the CAN protocol, DCS-BIOS integration, and the
+  first input and output types are implemented and tested on real hardware.</li>
+<li><strong>Armament Group — real hardware exists.</strong> The Center Console Armament Group has a host
+  board and two breakout boards with completed schematics. Its panel firmware is still a
+  stub pending end-to-end integration.</li>
+<li><strong>Everything else — planned.</strong> The rest of the consoles, the instruments, and the HOTAS
+  are designed or scoped but not yet built.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">No kits for sale yet</p>
+<p>The Armament Group is planned to be the first kit release, <strong>pending successful
+end-to-end validation</strong>. Nothing is for sale today. Follow the repository to track
+progress.</p>
+</div>
+<h2 id="get-involved">Get involved</h2>
+<p>OpenSkyhawk serves three kinds of people. Pick the path that fits you.</p>
+<p><strong>Build a panel</strong> — want to fabricate hardware and wire up your own pit? Start with
+<a href="../prerequisites/">What You'll Need</a> and the <a href="../repo-layout/">Repo Layout</a>, then work
+through <a href="../../guides/first-panel/">Your First Panel</a>.</p>
+<p><strong>Contribute</strong> — comfortable with firmware or PCB work? Read <a href="../system-overview/">How the System
+Works</a> and the <a href="../../architecture/design-decisions/">Design Decisions</a>
+first — they explain how it all fits together and why.</p>
+<p><strong>Buy a kit</strong> — want a kit you can assemble and fly? The Armament Group is slated to be the
+first release. <a href="../../kits/">Kit Assembly</a> docs are being written ahead of that.</p>
 
 
 
