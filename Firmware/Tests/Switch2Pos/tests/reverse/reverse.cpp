@@ -17,17 +17,15 @@ static constexpr uint16_t CTRL_REV = 0xAA02;  // reverse=true
 static constexpr uint8_t  PIN_CTRL = PB0;
 static constexpr uint8_t  PIN_SW   = PA0;
 
-static uint8_t  gFwdCount = 0;
-static uint16_t gFwdVal   = 0xFFFF;
-static uint8_t  gRevCount = 0;
-static uint16_t gRevVal   = 0xFFFF;
+static uint16_t gFwdVal = 0xFFFF;
+static uint16_t gRevVal = 0xFFFF;
 
 static void onCan(uint32_t canId, const uint8_t* data, uint8_t len) {
     if (canId != canIdEvt(NODE_ID) || len < 8) return;
     const ControlPacketPair* pair = reinterpret_cast<const ControlPacketPair*>(data);
     auto check_slot = [&](const ControlPacket& pkt) {
-        if (pkt.controlId == CTRL_FWD) { gFwdCount++; gFwdVal = pkt.value; }
-        if (pkt.controlId == CTRL_REV) { gRevCount++; gRevVal = pkt.value; }
+        if (pkt.controlId == CTRL_FWD) gFwdVal = pkt.value;
+        if (pkt.controlId == CTRL_REV) gRevVal = pkt.value;
     };
     check_slot(pair->a);
     check_slot(pair->b);
@@ -92,11 +90,6 @@ void setup() {
 
     // ── poll() respects reverse flag ──────────────────────────────────────────
     // Transition pin HIGH. After debounce, reverse=false → value 0, reverse=true → value 1.
-
-    uint16_t prevFwdVal = gFwdVal;
-    uint16_t prevRevVal = gRevVal;
-    (void)prevFwdVal;
-    (void)prevRevVal;
 
     digitalWrite(PIN_CTRL, HIGH);
     delayMicroseconds(100);
