@@ -9,10 +9,7 @@
 //   DCSIN_* (0x8001–0x86FF) → DCS-BIOS sendDcsBiosMessage()
 //   CTRL_*  (0x0010–0x009F) → HID frame → SimGateway → Joystick
 
-#include <STM32Board.h>
-#include <PanelGroup.h>
-#include <A4EC_CmdIds.h>     // generated: #define DCSIN_* constants
-#include <A4EC_OutputIds.h>  // generated: #define A_4E_C_*_A address + _AM mask constants
+#include <OpenSkyhawk.h>
 
 // ── Hardware ──────────────────────────────────────────────────────────────────
 // Declare MCP23017 expanders and ADS1115 ADCs here.
@@ -29,8 +26,8 @@
 
 // ── Outputs (DCS → hardware) ─────────────────────────────────────────────────
 // #include <LED.h>
-// OpenSkyhawk::LED <name>(A_4E_C_<ID>_A, A_4E_C_<ID>_AM, PIN_<NET>);
-// OpenSkyhawk::LED <name>(A_4E_C_<ID>_A, A_4E_C_<ID>_AM, PIN_<NET>, /*reverse=*/true);
+// OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>_AM, PIN_<NET>);
+// OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>_AM, PIN_<NET>, /*reverse=*/true);
 
 // ── Inputs → DCS-BIOS (DCSIN_* controlIds, 0x8001–0x86FF) ───────────────────
 // OpenSkyhawk::Switch2Pos     <name>(DCSIN_<ID>, PIN_<NET>);

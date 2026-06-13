@@ -300,6 +300,12 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
     _uart->begin(250000);
 
     _hidBegin(); // no-op in SIMGATEWAY_TEST builds
+
+#ifndef SIMGATEWAY_TEST
+    Serial.println(F("=============================="));
+    Serial.println(F("  SimGateway"));
+    Serial.println(F("=============================="));
+#endif
 }
 
 void loop() {

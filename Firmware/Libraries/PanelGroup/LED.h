@@ -69,7 +69,9 @@ private:
     uint16_t _controlId;
     uint16_t _mask;
     PinRef   _pin;
-    bool     _reverse;  ///< true = current-sink wiring (LOW = on)
+    bool     _reverse;   ///< true = current-sink wiring (LOW = on)
+    bool     _lastOn   = false;
+    bool     _hasState = false;  ///< false until first matching CTRL_BCAST received
 };
 
 } // namespace OpenSkyhawk

@@ -92,6 +92,7 @@ static void onCanReceive(uint32_t canId, const uint8_t* data, uint8_t len) {
 }
 
 static void onSyncReq() {
+    STM32Board::log("[PanelGroup] SYNC_REQ -> forceReport burst");
     for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next())
         p->forceReport();
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
@@ -148,6 +149,12 @@ void registerExpander(MCP23017& chip) {
 void setup() {
     // Step 1 — STM32Board init
     STM32Board::begin();
+    if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.println(F("=============================="));
+        d.print(F("  PanelGroup   NODE_ID=")); d.println((int)NODE_ID);
+        d.println(F("=============================="));
+    }
     CANProtocol::onStatusChange(STM32Board::onCanStatus);
 
     // Step 2a — ADC begin (address and bus were captured at registerADC time)
