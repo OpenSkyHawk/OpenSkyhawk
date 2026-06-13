@@ -35,9 +35,12 @@ Fabricating and wiring a panel adds the hardware toolchain:
 | **[JLCPCB](https://jlcpcb.com/) account** | PCB fabrication | Design rules are pre-loaded for JLCPCB's standard 2-layer service |
 | **Soldering iron + multimeter** | Assembly and bring-up | Surface-mount rework; continuity and voltage checks |
 
-CAD is optional for panel building — the **`.f3d`** Fusion 360 sources under `CAD/` open in
-**[Autodesk Fusion 360](https://www.autodesk.com/products/fusion-360/)** if you want to print
-or modify the physical panels.
+**CAD (evaluation in progress)** is optional for panel building:
+
+- **Fusion 360 or FreeCAD** — CAD tooling is currently being evaluated (FreeCAD is the
+  preferred direction). The `CAD/` sources open in whichever tool is chosen.
+- Either tool can open and export **STEP** files for the KiCad fit-check.
+- **STL** files for 3D printing are released via **GitHub Releases**, not committed to the repo.
 
 !!! note "RP2040 boards need no special flasher"
     The SimGateway and any HID boards run on off-the-shelf RP2040 modules (e.g. a Raspberry

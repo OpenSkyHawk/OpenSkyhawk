@@ -204,6 +204,17 @@ dedicate those pins to CAN. Each board also needs an external 8 MHz crystal for 
 
 ---
 
+## D8 — CAD tooling: Fusion 360 vs FreeCAD (pending)
+
+**Decision:** *Pending.* Currently evaluating both tools. **FreeCAD** is preferred for
+alignment with the open source nature of the project, and it has a KiCad StepUp plugin for a
+direct PCB → CAD fit-check workflow. The decision will be documented here once finalised.
+
+The file-management policy holds regardless of tool choice: CAD **source** files are committed
+to the repo, while **STL/STEP exports** are gitignored and published via GitHub Releases.
+
+---
+
 ## Related reading
 
 - [CAN Bus Protocol](can-bus.md) — the full frame ID table, `ControlPacket` wire format,
