@@ -11,7 +11,7 @@ You need:
 
 - **PlatformIO** — firmware builds. Install via VS Code extension or `pip install platformio`.
 - **KiCad 10.x** — PCB and schematic work. Download from [kicad.org](https://www.kicad.org/).
-- **Fusion 360** — CAD panel models (free for hobbyists).
+- **CAD tool** — for panel models. Tooling is under evaluation (Fusion 360 vs FreeCAD); FreeCAD is the preferred direction.
 - **Python 3.12+** — tools in `tools/`.
 - **ST-Link v2** — STM32 flashing.
 
