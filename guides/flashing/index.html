@@ -2425,13 +2425,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2459,13 +2452,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2495,13 +2481,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2530,13 +2509,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2560,6 +2532,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashing Firmware
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2574,15 +2564,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stm32-panelbridge-panelgroup-st-link-over-swd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STM32 (PanelBridge, PanelGroup) — ST-Link over SWD
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rp2040-simgateway-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RP2040 (SimGateway) — USB
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-flashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After flashing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2609,13 +2644,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2645,13 +2673,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2679,13 +2700,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3853,6 +3867,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stm32-panelbridge-panelgroup-st-link-over-swd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STM32 (PanelBridge, PanelGroup) — ST-Link over SWD
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rp2040-simgateway-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RP2040 (SimGateway) — USB
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-flashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After flashing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3872,20 +3927,43 @@
 
 
 <h1 id="flashing-firmware">Flashing Firmware</h1>
+<p>How to get firmware onto a board. STM32 boards use an ST-Link over SWD; RP2040 boards use USB.
+PlatformIO drives both.</p>
+<h2 id="stm32-panelbridge-panelgroup-st-link-over-swd">STM32 (PanelBridge, PanelGroup) — ST-Link over SWD</h2>
+<p>Every custom STM32 board exposes a 5-pin SWD header (PA13/PA14/NRST/GND/3.3 V). Connect an
+ST-Link and:</p>
+<pre><code class="language-bash">pio run -t upload          # build + flash the default env
+pio run -e PanelGroup -t upload   # a specific env
+</code></pre>
+<p><code>upload_protocol = stlink</code> is already set in the templates. No separate flasher GUI is needed —
+PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
+<a href="../../firmware/platformio-setup/">PlatformIO Setup</a>.</p>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Clone reports 'tap not found'?</p>
+<p>Many Blue Pill clones use JTAG ID <code>0x2ba01477</code> (standard is <code>0x1ba01477</code>) and ST-Link
+refuses to connect. Uncomment the override in <code>platformio.ini</code>:</p>
+<p><code>ini
+upload_flags =
+    -c
+    set CPUTAPID 0x2ba01477</code></p>
 </div>
+<h2 id="rp2040-simgateway-usb">RP2040 (SimGateway) — USB</h2>
+<p>No ST-Link needed. Either:</p>
+<ul>
+<li><strong>From PlatformIO:</strong> <code>pio run -t upload</code> — it resets the board into the bootloader and copies
+  the firmware over USB, or</li>
+<li><strong>By hand:</strong> hold BOOTSEL while plugging in, then drag the built <code>.uf2</code> onto the
+  <code>RPI-RP2</code> drive that appears.</li>
+</ul>
+<h2 id="after-flashing">After flashing</h2>
+<p>Watch the board come up on DiagSerial (115200) and check the status LED. See
+<a href="../bring-up/">Bring-Up &amp; Testing</a> and <a href="../../firmware/debugging/">Debugging on STM32</a>.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

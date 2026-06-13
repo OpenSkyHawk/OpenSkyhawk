@@ -2425,13 +2425,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2455,6 +2448,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your First Panel
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2469,15 +2480,71 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it does
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#then-go-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Then go further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2504,13 +2571,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2540,13 +2600,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2574,13 +2627,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2610,13 +2656,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2645,13 +2684,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2679,13 +2711,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3853,6 +3878,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#then-go-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Then go further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3872,20 +3949,80 @@
 
 
 <h1 id="your-first-panel">Your First Panel</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
-</div>
+<p>The fastest way to understand OpenSkyhawk is to run the reference example. <code>E2E_DCS_Test</code> is a
+minimal, working PanelGroup sketch — <strong>one LED and one switch</strong>, wired to real A-4E-C DCS-BIOS
+IDs. Get this blinking and you understand the whole input/output path.</p>
+<h2 id="what-it-does">What it does</h2>
+<p>The example lives at <code>Firmware/Examples/E2E_DCS_Test/PanelGroup/</code>. The entire sketch:</p>
+<pre><code class="language-cpp">#include &lt;OpenSkyhawk.h&gt;
+
+const PinRef PIN_LED(PC13);   // dev-board built-in LED (active-LOW) — use an external LED in production
+const PinRef PIN_BTN(PB0);    // pushbutton to GND; 10 kΩ pull-up to 3.3V
+
+OpenSkyhawk::LED        gearLight (A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PIN_LED, /*reverse=*/true);
+OpenSkyhawk::Switch2Pos masterTest(DCSIN_MASTER_TEST, PIN_BTN);
+
+void setup() {
+    STM32Board::setDebug(true);
+    PanelGroup::setup();
+}
+
+void loop() {
+    PanelGroup::loop();
+}
+</code></pre>
+<p>Two control objects, declared at global scope (they self-register), and a two-line
+<code>setup()</code>/<code>loop()</code>. That's a panel.</p>
+<ul>
+<li><strong>Output:</strong> <code>gearLight</code> watches the DCS-BIOS gear-light address (<code>A_4E_C_GEAR_LIGHT</code> + its mask
+  <code>_AM</code>) and drives the LED. <code>reverse=true</code> because the dev-board LED is active-LOW.</li>
+<li><strong>Input:</strong> <code>masterTest</code> reads the button and fires the compact <code>DCSIN_MASTER_TEST</code> command — in
+  DCS, holding Master Test illuminates the gear light, so pressing the button lights the LED
+  through the full round trip.</li>
+</ul>
+<h2 id="wiring">Wiring</h2>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Pin</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LED</td>
+<td>PC13</td>
+<td>dev-board built-in, active-LOW (use an external LED + resistor on a real panel)</td>
+</tr>
+<tr>
+<td>Button</td>
+<td>PB0</td>
+<td>other side to GND; <strong>10 kΩ pull-up to 3.3 V</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="run-it">Run it</h2>
+<ol>
+<li>Open <code>Firmware/Examples/E2E_DCS_Test/PanelGroup/</code> in PlatformIO.</li>
+<li>Confirm <code>-DNODE_ID=1</code> in <code>platformio.ini</code> (this example is NODE 1).</li>
+<li>Flash over ST-Link — see <a href="../flashing/">Flashing Firmware</a>.</li>
+<li>Watch DiagSerial at 115200 (<code>STM32Board::setDebug(true)</code> is on) — see
+   <a href="../../firmware/debugging/">Debugging on STM32</a>.</li>
+<li>With the full stack (PanelBridge + SimGateway) connected and DCS-BIOS running, press the
+   button: the LED follows Master Test. See <a href="../bring-up/">Bring-Up &amp; Testing</a>.</li>
+</ol>
+<h2 id="then-go-further">Then go further</h2>
+<p>You've now seen the two halves — an <code>LED</code> output and a <code>Switch2Pos</code> input, routed by their IDs.
+To build your own panel group from here, follow
+<a href="../new-panel-group/">Adding a New Panel Group</a>. For what each control class can do, see
+<a href="../../firmware/control-types/">Control Types</a>.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

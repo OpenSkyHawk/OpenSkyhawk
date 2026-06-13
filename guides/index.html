@@ -2420,6 +2420,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2434,15 +2452,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start here
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building a panel
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending the project
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2469,13 +2532,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2505,13 +2561,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2539,13 +2588,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2575,13 +2617,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2609,13 +2644,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2645,13 +2673,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2679,13 +2700,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3853,6 +3867,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building a panel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending the project
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3872,10 +3927,31 @@
 
 
 <h1 id="build-guides">Build Guides</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../contributing/">contribute to the docs</a>.</p>
+<p>The how-to section: step-by-step recipes for getting hardware built, flashed, and talking to
+DCS. Where the <a href="../firmware/">reference sections</a> explain <em>what</em> things are, these
+guides walk you through <em>doing</em> them.</p>
+<h2 id="start-here">Start here</h2>
+<ul>
+<li><strong><a href="first-panel/">Your First Panel</a></strong> — the end-to-end walkthrough using the working
+  <code>E2E_DCS_Test</code> example: one LED, one switch, real DCS-BIOS IDs. Do this first.</li>
+</ul>
+<h2 id="building-a-panel">Building a panel</h2>
+<ul>
+<li><strong><a href="pcb-ordering/">PCB Ordering (JLCPCB)</a></strong> — export fab files and place an order</li>
+<li><strong><a href="assembly/">Assembly &amp; Soldering</a></strong> — populate and inspect a board</li>
+<li><strong><a href="flashing/">Flashing Firmware</a></strong> — get firmware onto STM32 and RP2040 boards</li>
+<li><strong><a href="bring-up/">Bring-Up &amp; Testing</a></strong> — first power-on through a verified DCS connection</li>
+</ul>
+<h2 id="extending-the-project">Extending the project</h2>
+<ul>
+<li><strong><a href="new-panel-group/">Adding a New Panel Group</a></strong> — a new CAN node, NODE_ID first</li>
+<li><strong><a href="new-control-type/">Adding a New Control Type</a></strong> — a new input/output firmware class</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Some guides are partial</p>
+<p>The assembly and bring-up guides need real build photos, which are still being produced —
+photo placeholders are marked TBD. Kit-specific assembly lives separately under
+<a href="../kits/">Kit Assembly</a>.</p>
 </div>
 
 
@@ -3883,9 +3959,6 @@
 
 
 
-
-  
-  
 
 
 

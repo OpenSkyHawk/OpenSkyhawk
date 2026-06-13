@@ -2425,13 +2425,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2459,13 +2452,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2495,13 +2481,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2525,6 +2504,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly & Soldering
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2539,15 +2536,82 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you need
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-everything-is-inspectable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why everything is inspectable
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Placement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#order-of-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Order of work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connectors-harnesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectors &amp; harnesses
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2574,13 +2638,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2610,13 +2667,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2645,13 +2695,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2679,13 +2722,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3853,6 +3889,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you need
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-everything-is-inspectable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why everything is inspectable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Placement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#order-of-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Order of work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connectors-harnesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectors &amp; harnesses
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3872,10 +3971,48 @@
 
 
 <h1 id="assembly-soldering">Assembly &amp; Soldering</h1>
+<p>How an OpenSkyhawk board goes from bare PCB to populated and inspected. The part choices are all
+deliberately reflow-and-inspect friendly, so a hobbyist setup handles them.</p>
+<div class="admonition note">
+<p class="admonition-title">Photos coming</p>
+<p>This guide is text-complete but the step-by-step photos are still being produced — image
+placeholders are marked <strong>(photo TBD)</strong>.</p>
+</div>
+<h2 id="what-you-need">What you need</h2>
+<ul>
+<li>Soldering iron (fine tip) and/or a <strong>T962 reflow oven</strong> with solder paste and a stencil</li>
+<li>Multimeter (continuity + voltage)</li>
+<li>Flux, solder wick, tweezers, magnification for inspection</li>
+</ul>
+<h2 id="why-everything-is-inspectable">Why everything is inspectable</h2>
+<p>Every package on these boards is chosen so the joints are <strong>visible after reflow</strong> — SOIC, SSOP,
+TSSOP, HTSSOP, LQFP, SOT-23/223, through-hole. No QFN/DFN/BGA. That means you can verify every
+critical joint by eye (and the HTSSOP thermal pad by continuity). See
+<a href="../../hardware/standards/">Hardware Standards</a>.</p>
+<h2 id="placement">Placement</h2>
+<ul>
+<li><strong>LEDs on the front face; everything else on the back</strong> — ICs, passives, connectors, MOSFETs.</li>
+<li>Through-hole connectors are vertical and accessible from the panel side.</li>
+<li><em>(photo TBD — populated front and back)</em></li>
+</ul>
+<h2 id="order-of-work">Order of work</h2>
+<ol>
+<li><strong>Paste + reflow the back-side SMD</strong> (ICs, passives, MOSFETs, regulator). <em>(photo TBD)</em></li>
+<li><strong>Inspect</strong> every joint — bridges, tombstones, the AMS1117 and any HTSSOP thermal pad
+   (continuity-check the pad to GND). <em>(photo TBD)</em></li>
+<li><strong>Hand-solder through-hole</strong> — connectors, headers, crystal.</li>
+<li><strong>Front-side LEDs</strong> last (5050 strings; mind the anode notch — the chamfered corner is the
+   anode on the project's 5050 part).</li>
+<li><strong>Power-on check before anything else</strong> — verify the 3.3 V rail and look for shorts before
+   the first flash. Continue at <a href="../bring-up/">Bring-Up &amp; Testing</a>.</li>
+</ol>
+<h2 id="connectors-harnesses">Connectors &amp; harnesses</h2>
+<p>Crimp harnesses per the <a href="../../hardware/connectors/">Connector &amp; Harness Guide</a> — Molex Mini-Fit
+Jr for power/bus, JST-XH for signal. 24 AWG throughout.</p>
 <div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p class="admonition-title">Don't power a board you haven't inspected</p>
+<p>A solder bridge on the 3.3 V rail can take out the regulator or the MCU. Inspect and
+continuity-check first, then power.</p>
 </div>
 
 
@@ -3883,9 +4020,6 @@
 
 
 
-
-  
-  
 
 
 

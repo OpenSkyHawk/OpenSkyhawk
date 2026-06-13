@@ -2425,13 +2425,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2459,13 +2452,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2495,13 +2481,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2529,13 +2508,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2565,13 +2537,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2599,13 +2564,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2635,13 +2593,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2665,6 +2616,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a New Control Type
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2679,15 +2648,82 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-goes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it goes
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pattern
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-encoding-and-panelbridge-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Value encoding and PanelBridge dispatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#then-document-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Then document it
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -3853,6 +3889,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-goes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it goes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-encoding-and-panelbridge-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Value encoding and PanelBridge dispatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#then-document-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Then document it
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3872,20 +3971,49 @@
 
 
 <h1 id="adding-a-new-control-type">Adding a New Control Type</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>Most input and output <a href="../../firmware/control-types/">control types</a> are specified but not yet
+implemented (Phase 4 inputs, Phase 5 outputs). If your panel needs one that doesn't exist, you
+may be the one writing it. This guide is the pattern; the per-class spec lives in the
+FirmwarePlan TechSpec.</p>
+<div class="admonition note">
+<p class="admonition-title">Read the spec first</p>
+<p>Each control type has a detailed specification in the project's TechSpec (value encoding,
+debounce, polling rate, edge cases). Implement to the spec — don't improvise behaviour.
+<code>AngleSensor</code>'s base class is a documented gap with no spec yet; don't invent it.</p>
 </div>
+<h2 id="where-it-goes">Where it goes</h2>
+<p>Control classes live in the <strong><code>PanelGroup</code></strong> library (<code>Firmware/Libraries/PanelGroup/</code>). Inputs
+derive from the input base, outputs from the output base.</p>
+<h2 id="the-pattern">The pattern</h2>
+<ul>
+<li><strong>Self-registration.</strong> Constructors register the object into a static linked list — the
+  sketch just declares globals; <code>PanelGroup::loop()</code> walks the list. No manual registration.</li>
+<li><strong>Take a <code>PinRef</code>, not a raw pin.</strong> Support GPIO / MCP23017 / ADS1115 backends through
+  <code>PinRef</code>. PWM/servo outputs must check <code>isGpio()</code> (only direct GPIO can do PWM).</li>
+<li><strong>Inputs fire a <code>ControlPacket</code></strong> via <code>CANProtocol::sendBatched(canIdEvt(NODE_ID), pkt)</code> — the
+  <code>controlId</code> (passed to your constructor) decides routing, not the class. Honour the batch
+  flush rules (slot B <code>0x0000</code>; flush a half-full batch within two <code>loop()</code> iterations).</li>
+<li><strong>Outputs receive <code>CTRL_BCAST</code> packets</strong> dispatched by <code>PanelGroup::loop()</code>; pick out your
+  value by address + mask.</li>
+<li><strong>Normalise analog to 16-bit (0–65535)</strong> at the source — no rescaling downstream.</li>
+</ul>
+<h2 id="value-encoding-and-panelbridge-dispatch">Value encoding and PanelBridge dispatch</h2>
+<p>Inputs send a numeric <code>value</code>; PanelBridge maps it to a DCS-BIOS argument by <strong>dispatch type</strong>
+(<code>SWITCH</code>, <code>ACTION</code>, <code>ENCODER</code>, <code>ACCEL_ENCODER</code>, <code>MULTIPOS</code>). When you add an input class, decide
+which dispatch type it uses and make sure the generator/input-map handles it — see
+<a href="../../firmware/dcsbios-integration/">DCS-BIOS Integration</a>.</p>
+<h2 id="tests">Tests</h2>
+<p>Every control type ships with a test project under <code>Firmware/Tests/</code>. Add one that exercises the
+value semantics and edge cases from the spec, on real hardware where the type needs it.</p>
+<h2 id="then-document-it">Then document it</h2>
+<p>Update <a href="../../firmware/control-types/">Control Types</a>: move the type from "not started" to
+implemented, and add an example. Honesty in the status table matters.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

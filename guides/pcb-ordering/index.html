@@ -2425,13 +2425,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2460,13 +2453,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2490,6 +2476,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PCB Ordering (JLCPCB)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -2504,15 +2508,60 @@
   </span>
   
   
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
   
   
-    <span class="md-status md-status--stub"></span>
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-export-the-fab-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Export the fab files
+      
+    </span>
+  </a>
   
-
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-upload-and-configure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Upload and configure
+      
+    </span>
+  </a>
   
-
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-assembly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Assembly
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2539,13 +2588,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2575,13 +2617,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2609,13 +2644,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -2645,13 +2673,6 @@
   </span>
   
   
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
-  
 
       </a>
     </li>
@@ -2679,13 +2700,6 @@
     
   </span>
   
-  
-    
-  
-  
-    <span class="md-status md-status--stub"></span>
-  
-
   
 
       </a>
@@ -3853,6 +3867,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-export-the-fab-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Export the fab files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-upload-and-configure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Upload and configure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-assembly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Assembly
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3872,10 +3927,79 @@
 
 
 <h1 id="pcb-ordering-jlcpcb">PCB Ordering (JLCPCB)</h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This page is being written. Check back soon or
-<a href="../../contributing/">contribute to the docs</a>.</p>
+<p>OpenSkyhawk boards are designed for <strong>JLCPCB's standard 2-layer service</strong>. The design rules are
+already tuned for it (<a href="../../hardware/pcb-design-rules/">PCB Design Rules</a>); this guide is how to
+get from a finished layout to an order.</p>
+<h2 id="1-export-the-fab-files">1. Export the fab files</h2>
+<p>From a clean, DRC-passing layout, export Gerbers and drill data with the KiCad CLI:</p>
+<pre><code class="language-bash">KICAD=/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli
+
+$KICAD pcb export gerbers --output ./gerbers/ &lt;board.kicad_pcb&gt;
+$KICAD pcb export drill   --output ./gerbers/ &lt;board.kicad_pcb&gt;
+</code></pre>
+<p>Run DRC first — fix everything before ordering:</p>
+<pre><code class="language-bash">$KICAD pcb drc --output drc.json &lt;board.kicad_pcb&gt;
+</code></pre>
+<p>Zip the <code>gerbers/</code> directory. (Gerbers and drill files are generated output — <strong>gitignored</strong>,
+not committed.)</p>
+<h2 id="2-upload-and-configure">2. Upload and configure</h2>
+<p>Upload the zip to JLCPCB. The cost-optimised settings, all under <strong>High-Spec Options</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layers</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Outer copper weight</td>
+<td>1 oz</td>
+</tr>
+<tr>
+<td>Via covering</td>
+<td>Tented</td>
+</tr>
+<tr>
+<td>Min via</td>
+<td>0.3 mm</td>
+</tr>
+<tr>
+<td>Outline tolerance</td>
+<td>±0.2 mm (Regular)</td>
+</tr>
+<tr>
+<td>Electrical test</td>
+<td>Flying-probe (included)</td>
+</tr>
+<tr>
+<td>Mark on PCB</td>
+<td>Remove mark</td>
+</tr>
+<tr>
+<td>Confirm production file</td>
+<td>No (faster lead time)</td>
+</tr>
+<tr>
+<td>Gold fingers / castellation / edge plating</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>These match the constraints the boards are designed to, so the order should pass review without
+back-and-forth.</p>
+<h2 id="3-assembly">3. Assembly</h2>
+<p>Most OpenSkyhawk boards are hand-/reflow-assembled rather than ordered with JLCPCB SMT
+assembly — the package choices are all reflow-and-inspect friendly by design. See
+<a href="../assembly/">Assembly &amp; Soldering</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Panel cutout template</p>
+<p>Need a panel cutout to match the board outline? Export a DXF:
+<code>kicad-cli pcb export dxf --output cutout.dxf &lt;board.kicad_pcb&gt;</code>.</p>
 </div>
 
 
@@ -3883,9 +4007,6 @@
 
 
 
-
-  
-  
 
 
 
