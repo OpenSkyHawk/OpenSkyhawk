@@ -3797,11 +3797,11 @@
 <h1 id="repository-structure">Repository Structure</h1>
 <p>Organized by discipline, then by console position (Left / Center / Right):</p>
 <ul>
-<li><code>CAD/</code> — Fusion 360 source files (<code>.f3d</code>). STLs and STEP exports are gitignored; generate from source.</li>
+<li><code>CAD/</code> — source CAD models (<code>.f3d</code> or <code>.FCStd</code>; tooling under evaluation, Fusion 360 vs FreeCAD — see design decision D8). STLs and STEP exports are gitignored; generate from source.</li>
 <li><code>PCB/</code> — KiCad projects. <code>PCB/&lt;Console&gt;/&lt;Controller&gt;/</code> holds one KiCad project per physical PCB. <code>PCB/Libraries/</code> holds shared symbols and footprints.</li>
 <li><code>Firmware/</code> — PlatformIO projects (preferred) or Arduino sketches. <code>Firmware/&lt;name&gt;/</code> — one production firmware sketch per folder (STM32 or RP2040, flat — no MCU-type subdirectory). <code>Firmware/Libraries/</code> — shared code; STM32 and RP2040 libraries in separate subdirectories.</li>
 <li><code>docs/References/</code> — cockpit photos, manuals, screenshots. <code>docs/Datasheets/</code> — component datasheets.</li>
-<li><code>docs/claude/controllers/</code> — per-controller reference docs (pinout, I²C addresses, CAN IDs).</li>
+<li><code>docs/_source/controllers/</code> — per-controller reference docs (pinout, I²C addresses, CAN IDs).</li>
 </ul>
 <h1 id="firmware-architecture">Firmware Architecture</h1>
 <p><strong>Authoritative spec:</strong> <code>Firmware/ScratchPad/FirmwarePlan/README.md</code><br />
@@ -3809,7 +3809,7 @@
 <p>Three-tier architecture: <strong>SimGateway</strong> (RP2040) ↔ <strong>PanelBridge</strong> (STM32, CAN master) ↔ <strong>PanelGroup</strong> nodes (STM32, CAN sub-nodes). The FirmwarePlan documents are split by contract boundary and are the source of truth for all firmware behaviour.</p>
 <p>Key facts that affect PCB and hardware decisions:</p>
 <ul>
-<li><strong>MCUs:</strong> STM32F103CBT6 (LQFP48) for CAN avionics nodes; RP2040 off-the-shelf modules for SimGateway and HID flight controls (no custom PCB for RP2040)</li>
+<li><strong>MCUs:</strong> STM32F103C8 (LQFP48) for CAN avionics nodes — STM32F103CB only where extra flash is needed (PanelBridge); RP2040 off-the-shelf modules for SimGateway and HID flight controls (no custom PCB for RP2040)</li>
 <li><strong>CAN transceiver:</strong> SN65HVD230 on PA11/PA12 per STM32 board</li>
 <li><strong>NODE_ID:</strong> assigned per board via <code>platformio.ini</code> <code>build_flags = -DNODE_ID=N</code>; visible to all translation units as a compile-time constant</li>
 <li><strong>Reserved STM32 pins:</strong> see <code>FirmwarePlan/08-hardware-firmware-contracts.md</code></li>
