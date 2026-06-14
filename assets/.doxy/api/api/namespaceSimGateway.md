@@ -135,7 +135,8 @@ void SimGateway::setup (
 Must be the first call in the sketch's [**setup()**](namespaceSimGateway.md#function-setup). Sets USB identity before the TinyUSB stack enumerates:
 * Manufacturer: "OpenSkyhawk"
 * Product: "A-4E Skyhawk"
-* VID/PID: 0x2E8A / 0x4134 Configures the UART pins and calls uart.begin(250000), then calls OsJoystick.begin() to initialise the HID descriptor and enumerate.
+* VID/PID: 0x2E8A / 0x4134
+* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then calls OsJoystick.begin() to initialise the HID descriptor and enumerate.
 
 
 

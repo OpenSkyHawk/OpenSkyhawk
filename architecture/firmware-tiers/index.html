@@ -4079,8 +4079,10 @@ nodes only hold the <code>DCSIN_*</code> constants they use, so they fit the STM
 </div>
 <h2 id="simgateway-rp2040">SimGateway (RP2040)</h2>
 <p>The single USB device the PC sees. A composite device: USB CDC for the DCS-BIOS stream, USB
-HID for flight-control axes and buttons. It relays the DCS-BIOS byte stream transparently to
-PanelBridge over UART, and intercepts HID frames coming back up to drive the joystick report.</p>
+HID for flight-control axes and buttons. The CDC interface advertises its own name —
+<code>A-4E Skyhawk DCS-BIOS</code> (<code>iInterface</code>) — so the serial port is self-identifying, not just a
+generic VID/PID + CDC class. It relays the DCS-BIOS byte stream transparently to PanelBridge
+over UART, and intercepts HID frames coming back up to drive the joystick report.</p>
 <p><strong>What it does <em>not</em> do:</strong></p>
 <ul>
 <li>It does <strong>not</strong> run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream

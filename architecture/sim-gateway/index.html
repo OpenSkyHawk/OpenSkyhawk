@@ -4047,7 +4047,11 @@ Pico USB stack):</p>
 <pre><code class="language-cpp">TinyUSBDevice.setID(0x2E8A, 0x4134);   // VID = Raspberry Pi, PID = A-4E Skyhawk
 TinyUSBDevice.setManufacturerDescriptor(&quot;OpenSkyhawk&quot;);
 TinyUSBDevice.setProductDescriptor(&quot;A-4E Skyhawk&quot;);
+Serial.setStringDescriptor(&quot;A-4E Skyhawk DCS-BIOS&quot;); // CDC interface name (iInterface)
 </code></pre>
+<p>The product string names the HID joystick, but the CDC serial interface advertises its own
+name (<code>iInterface</code>) — <code>A-4E Skyhawk DCS-BIOS</code> — so host tooling such as OpenSkyhawk Client can
+match the port by name, not just VID/PID + CDC class.</p>
 <h2 id="hid-device-profile">HID device profile</h2>
 <p>The HID descriptor is built on the Adafruit TinyUSB library and frozen:</p>
 <table>
