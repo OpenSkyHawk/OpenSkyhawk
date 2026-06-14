@@ -38,6 +38,15 @@ namespace PanelBridge {
 
     void testHandleExport(uint16_t address, uint16_t value);
 
+#ifdef PANELBRIDGE_NODE_STATUS
+    void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
+                           uint16_t rxCount, uint16_t esr);
+
+    void testRequestNodeStatus();
+
+    void testCheckTimeouts(uint32_t now);
+#endif // PANELBRIDGE_NODE_STATUS
+
 } // namespace PanelBridge
 #endif // PANELBRIDGE_TEST
 

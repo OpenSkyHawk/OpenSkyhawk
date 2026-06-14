@@ -107,6 +107,13 @@ Per call:
 
 **Note:**
 
+Node-status reporting (#86) needs no handling here: [**PanelBridge**](namespacePanelBridge.md)'s `_NODE_STATUS` DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.
+
+
+
+
+**Note:**
+
 Parser state persists across calls — frames split across iterations assemble correctly. 
 
 

@@ -4101,6 +4101,11 @@ silently — no error, no crash. The production report is 34 bytes; keep it well
 <p>The two streams share one UART because they can't collide: DCS-BIOS text is pure printable
 ASCII + LF (every byte ≤ <code>0x7F</code>), while HID frames start with the magic bytes <code>0xAA 0x55</code>
 (both have bit 7 set).</p>
+<p>This "dumb relay" is also why <strong>node-status reporting</strong> (<a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86">#86</a>)
+needs no SimGateway change: PanelBridge reports connected PanelGroup nodes to the host over
+DCS-BIOS itself — <code>_NODE_STATUS</code> ASCII command messages downstream, and a roster request as a
+DCS-BIOS export write to reserved address <code>0x86FE</code> upstream. Both ride the existing streams and
+transit SimGateway transparently; PanelBridge owns the feature.</p>
 <h2 id="controlid-routing-logic">controlId routing logic</h2>
 <p>Incoming HID frames (PanelBridge → SimGateway) are fixed 6-byte little-endian:</p>
 <table>

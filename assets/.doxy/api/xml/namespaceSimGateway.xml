@@ -115,13 +115,15 @@
 </listitem><listitem><para>If any HID setter fired, call OsJoystick.send() exactly once.</para>
 </listitem></orderedlist>
 </para>
-<para><simplesect kind="note"><para>Parser state persists across calls — frames split across iterations assemble correctly. </para>
+<para><simplesect kind="note"><para>Node-status reporting (#86) needs no handling here: <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>&apos;s <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host&apos;s roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.</para>
+</simplesect>
+<simplesect kind="note"><para>Parser state persists across calls — frames split across iterations assemble correctly. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="316" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="316" bodyend="330" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="165" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="316" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="316" bodyend="330" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="169" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

@@ -89,6 +89,10 @@ _CAN controlId constants for HID axes and buttons._ [More...](#detailed-descript
 | define  | [**CTRL\_THROTTLE**](HIDControls_8h.md#define-ctrl_throttle)  `0x0012`<br> |
 | define  | [**CTRL\_TRIGGER**](HIDControls_8h.md#define-ctrl_trigger)  `0x0030`<br> |
 | define  | [**CTRL\_ZOOM**](HIDControls_8h.md#define-ctrl_zoom)  `0x0016`<br> |
+| define  | [**NODE\_STATUS\_END\_MSG\_NAME**](HIDControls_8h.md#define-node_status_end_msg_name)  `"\_NODE\_STATUS\_END"`<br> |
+| define  | [**NODE\_STATUS\_MSG\_NAME**](HIDControls_8h.md#define-node_status_msg_name)  `"\_NODE\_STATUS"`<br> |
+| define  | [**NODE\_STATUS\_PROTO\_VERSION**](HIDControls_8h.md#define-node_status_proto_version)  `1`<br> |
+| define  | [**NODE\_STATUS\_REQ\_ADDR**](HIDControls_8h.md#define-node_status_req_addr)  `0x86FE`<br> |
 
 ## Detailed Description
 
@@ -257,6 +261,58 @@ GPL-2.0-only — see Firmware/LICENSE
 
 ```C++
 #define CTRL_ZOOM `0x0016`
+```
+
+
+
+
+<hr>
+
+
+
+### define NODE\_STATUS\_END\_MSG\_NAME 
+
+```C++
+#define NODE_STATUS_END_MSG_NAME `"_NODE_STATUS_END"`
+```
+
+
+
+
+<hr>
+
+
+
+### define NODE\_STATUS\_MSG\_NAME 
+
+```C++
+#define NODE_STATUS_MSG_NAME `"_NODE_STATUS"`
+```
+
+
+
+
+<hr>
+
+
+
+### define NODE\_STATUS\_PROTO\_VERSION 
+
+```C++
+#define NODE_STATUS_PROTO_VERSION `1`
+```
+
+
+
+
+<hr>
+
+
+
+### define NODE\_STATUS\_REQ\_ADDR 
+
+```C++
+#define NODE_STATUS_REQ_ADDR `0x86FE`
 ```
 
 

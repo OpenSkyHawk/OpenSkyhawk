@@ -4097,7 +4097,11 @@ over UART, and intercepts HID frames coming back up to drive the joystick report
 stream from SimGateway over UART, fires the DCS-BIOS export listener, and broadcasts every
 DCS output onto the CAN bus as <code>CTRL_BCAST</code> frames. In the other direction it collects input
 events (<code>EVT_n</code>) from the nodes and routes each one: DCS-BIOS inputs go out as ASCII commands
-over UART; HID inputs are wrapped in HID frames for SimGateway.</p>
+over UART; HID inputs are wrapped in HID frames for SimGateway. It also tracks which PanelGroup
+nodes are alive (from their heartbeats) and — behind a build flag — reports that roster + health
+to the host over DCS-BIOS itself (<code>_NODE_STATUS</code> messages; request address <code>0x86FE</code>), so the client
+can show connected panels without any SimGateway change
+(<a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86">#86</a>).</p>
 <p><strong>What it does <em>not</em> do:</strong></p>
 <ul>
 <li>It does <strong>not</strong> touch USB at runtime. (USB and CAN share pins PA11/PA12 on the STM32 — they

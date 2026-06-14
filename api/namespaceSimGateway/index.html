@@ -3911,6 +3911,8 @@
 * Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE
 * If any HID setter fired, call OsJoystick.send() exactly once.</p>
 <p><strong>Note:</strong></p>
+<p>Node-status reporting (#86) needs no handling here: <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>'s <code>_NODE_STATUS</code> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.</p>
+<p><strong>Note:</strong></p>
 <p>Parser state persists across calls — frames split across iterations assemble correctly. </p>
 <hr>
 
