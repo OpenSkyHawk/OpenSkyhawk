@@ -40,7 +40,8 @@ forwards host→device; the response is ASCII it forwards device→host). PanelB
 fixed-width uppercase hex (most-significant nibble first)**:
 `nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)` (the 8-byte `HeartbeatPayload` plus
 `present`). `present`: `01` alive, `00` removed. `flags`: bit0 BOFF, bit1 EPVF. `esr`: low byte
-TEC, high byte REC. `nodeId` 1–63.
+TEC, high byte REC. `nodeId` 1–63. `uptime`/`rxCount` are uint16 — wrap at 65535 (~18 h /
+65 k frames); treat as health indicators, not monotonic counters.
 
 **Emission semantics:**
 - A single bare `_NODE_STATUS` is a **live delta** — emitted on each node alive/dead transition

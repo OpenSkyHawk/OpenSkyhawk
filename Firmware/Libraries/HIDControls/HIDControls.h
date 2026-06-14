@@ -67,6 +67,8 @@
 //   nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)
 //   present: 01 alive, 00 removed.  flags: bit0 BOFF, bit1 EPVF.
 //   esr: low byte TEC, high byte REC.  nodeId range 1–63.
+//   uptime/rxCount are uint16 — wrap at 65535 (~18 h / 65 k frames). Treat as
+//   health indicators, not monotonic counters.
 //
 // Emission: a single bare _NODE_STATUS is a live delta (apply immediately). A
 // request/boot reply is N _NODE_STATUS messages followed by _NODE_STATUS_END <count>;
