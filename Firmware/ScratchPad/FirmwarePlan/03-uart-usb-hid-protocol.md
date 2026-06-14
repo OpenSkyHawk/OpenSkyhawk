@@ -69,7 +69,14 @@ not `USB.*` (the latter belongs to the default stack):
 TinyUSBDevice.setID(0x2E8A, 0x4134);                    // VID = Raspberry Pi; PID = A-4E Skyhawk
 TinyUSBDevice.setManufacturerDescriptor("OpenSkyhawk");
 TinyUSBDevice.setProductDescriptor("A-4E Skyhawk");
+Serial.setStringDescriptor("A-4E Skyhawk DCS-BIOS");    // CDC iInterface — names the serial port
 ```
+
+The device-level `iProduct` ("A-4E Skyhawk") names the HID joystick, but the CDC serial
+interface needs its own `iInterface` string to advertise a friendly port name (otherwise it
+falls back to the library default "TinyUSB Serial"). Set it **after** `Serial.begin()`, which
+initialises that default. This lets OpenSkyhawk Client identify the port by name, not just
+VID/PID + CDC class.
 
 ---
 

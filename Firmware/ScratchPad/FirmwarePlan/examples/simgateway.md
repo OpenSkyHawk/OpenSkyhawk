@@ -28,11 +28,8 @@ OpenSkyhawk::HIDAxis brakeL  (CTRL_BRAKE_L,  [](uint16_t v){ Joystick.sliderRigh
 // OpenSkyhawk::HIDButton <name>(controlId, buttonNumber);
 
 void setup() {
-    // USB identity — set before Joystick.begin()
-    USB.setManufacturer("OpenSkyhawk");
-    USB.setProduct("A-4E Skyhawk");
-    USB.setVIDPID(0x2E8A, 0x4134);
-
+    // USB identity is owned entirely by SimGateway::setup() — VID/PID, manufacturer, product,
+    // and the CDC interface name "A-4E Skyhawk DCS-BIOS" (iInterface). The sketch sets none of it.
     Joystick.use16bit(true);        // 0–65535 range
     Joystick.useManualSend(true);   // batch setters; call send() once per drain cycle
 
