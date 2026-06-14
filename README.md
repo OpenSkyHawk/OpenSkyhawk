@@ -75,10 +75,15 @@ DCS communication: DCS-BIOS cockpit state flows PC → USB CDC → RP2040 bridge
 
 ## Licensing
 
+Copyright (c) 2026 OpenSkyHawk.
+
 | Layer | License |
 |-------|---------|
-| CAD, PCB, Docs | CC BY-NC-SA 4.0 |
-| Firmware | GPL v2 (DCS-BIOS dependency) |
+| CAD, PCB, Docs | CC BY-NC-SA 4.0 — root [LICENSE](./LICENSE) |
+| Firmware | GPL v2 (DCS-BIOS dependency) — [Firmware/LICENSE](./Firmware/LICENSE) |
+
+GitHub's repo-level badge reflects the root `LICENSE` (CC BY-NC-SA 4.0); the
+firmware is GPL v2 under `Firmware/LICENSE`.
 
 ## References
 
