@@ -122,6 +122,11 @@ REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC.
 **rxCount field:** node-owned receive counter for diagnostics. PanelGroup uses accepted
 `CTRL_BCAST` frames received since boot.
 
+**Host node-status reporting (#86):** this same `HeartbeatPayload` is the source for the roster +
+health that PanelBridge reports to the host. No new CAN frame is added — PanelBridge caches the
+last `HB_n` per node and re-serializes it into a DCS-BIOS `_OSH_NODE` message
+(see `04-dcs-bios-integration.md` and `06-panelbridge-api.md`).
+
 ---
 
 ## ControlPacketPair Frame Payload

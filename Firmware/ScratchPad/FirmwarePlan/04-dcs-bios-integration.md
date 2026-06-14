@@ -20,6 +20,29 @@ points: **PanelBridge** (DCS-BIOS inputs) and **SimGateway** (HID inputs).
 
 ---
 
+## Node-Status Reporting (#86)
+
+PanelBridge surfaces connected PanelGroup nodes + their health to the host (OpenSkyhawk Client)
+**over the existing DCS-BIOS protocol**, using two reserved A-4E-C-namespace identifiers. No
+bespoke sideband; SimGateway relays both directions verbatim (the request is binary export it
+forwards host→device; the response is ASCII it forwards device→host). PanelBridge owns it.
+
+| Reserved ID | Direction | Purpose |
+|-------------|-----------|---------|
+| Export address `0x86FE` (`OSH_NODE_REQ_ADDR`) | host→device | Client writes it (value ignored) to request the roster. Above every real A-4E-C output (~`0x8554`), so DCS never exports it. Excluded from the CAN broadcast in `handleDcsBiosExport()`. |
+| Command name `_OSH_NODE` (`OSH_NODE_MSG_NAME`) | device→host | One DCS-BIOS command message per node. Leading underscore — no A-4E-C control collides; DCS-BIOS ignores it as an unknown control if a copy leaks. |
+
+**Request** — client writes a DCS-BIOS export frame to `0x86FE`. PanelBridge's
+`NodeStatusReqListener` (an `ExportStreamListener`) fires → emits one `_OSH_NODE` per alive node.
+
+**Response** — `_OSH_NODE <hex>` where `<hex>` is 18 hex chars, big-endian nibble order:
+`nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)` (the 8-byte `HeartbeatPayload` plus
+`present`). `present`: `01` alive, `00` removed. `flags`: bit0 BOFF, bit1 EPVF. Emitted on node
+alive/dead transitions, at PanelBridge boot, and per request. Reserved constants live in
+`HIDControls.h`; the whole feature is gated behind `-DPANELBRIDGE_NODE_STATUS` (default off).
+
+---
+
 ## DCSIN_* — Compact Transport Aliases
 
 `DCSIN_*` constants are **compact transport aliases for DCS-BIOS command strings**. They exist

@@ -48,6 +48,19 @@ READY event, updates `lastSeenMs` like a heartbeat, marks the node alive if need
 broadcasts `SYNC_REQ`. The READY frame carries no input state itself; the following EVTs
 emitted in response to `SYNC_REQ` are the state snapshot.
 
+**Node-status reporting to the host (#86, behind `-DPANELBRIDGE_NODE_STATUS`, default off):**
+PanelBridge surfaces the roster + per-node health to OpenSkyhawk Client over DCS-BIOS (see
+`04-dcs-bios-integration.md`). It caches each node's last `HeartbeatPayload` (an added
+`NodeState::last` field, populated in the `HB_n` handler) and emits a `_OSH_NODE <hex>` DCS-BIOS
+command message:
+
+- on every alive/dead transition (the changed node — `present` 01/00),
+- at boot (the current roster), and
+- in response to a host request — a DCS-BIOS export write to `OSH_NODE_REQ_ADDR` (`0x86FE`),
+  handled by a dedicated `ExportStreamListener` and excluded from the CAN broadcast.
+
+SimGateway is unchanged — the ASCII messages and the binary request pass through transparently.
+
 ---
 
 ## ExportStreamListener
