@@ -46,8 +46,10 @@ between SimGateway and CANProtocol).
 ## SimGateway (RP2040)
 
 The single USB device the PC sees. A composite device: USB CDC for the DCS-BIOS stream, USB
-HID for flight-control axes and buttons. It relays the DCS-BIOS byte stream transparently to
-PanelBridge over UART, and intercepts HID frames coming back up to drive the joystick report.
+HID for flight-control axes and buttons. The CDC interface advertises its own name —
+`A-4E Skyhawk DCS-BIOS` (`iInterface`) — so the serial port is self-identifying, not just a
+generic VID/PID + CDC class. It relays the DCS-BIOS byte stream transparently to PanelBridge
+over UART, and intercepts HID frames coming back up to drive the joystick report.
 
 **What it does *not* do:**
 

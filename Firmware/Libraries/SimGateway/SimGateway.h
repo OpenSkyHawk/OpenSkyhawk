@@ -137,6 +137,7 @@ static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from Pane
  *   - Manufacturer: "OpenSkyhawk"
  *   - Product:      "A-4E Skyhawk"
  *   - VID/PID:      0x2E8A / 0x4134
+ *   - CDC port:     "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port)
  * Configures the UART pins and calls uart.begin(250000), then calls
  * OsJoystick.begin() to initialise the HID descriptor and enumerate.
  *

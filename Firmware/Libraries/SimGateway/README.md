@@ -45,6 +45,10 @@ void loop() {
 | Product | A-4E Skyhawk |
 | VID | 0x2E8A (Raspberry Pi) |
 | PID | 0x4134 |
+| CDC port (iInterface) | A-4E Skyhawk DCS-BIOS |
+
+The `Product` string names the HID joystick; the CDC interface carries its own `iInterface`
+string so the serial port is identifiable by name (not just VID/PID + CDC class).
 
 ## UART pins
 
@@ -128,3 +132,32 @@ UART pins by writing bytes to `Serial1` TX and reading them back through `Serial
 
 ADC and sensor normalisation belongs in PanelGroup / AnalogInput tests. SimGateway receives only
 already-normalised `uint16_t` HID payloads.
+
+### Manual: USB CDC interface name (Mac + Windows)
+
+Verifies the CDC `iInterface` string descriptor ([#85](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/85)).
+No special test sketch — flash the base production template and inspect the host.
+
+1. **Build & flash** the base template:
+   ```
+   cd Firmware/Templates/SimGateway
+   pio run -t upload        # board = rpipico by default; set `board` to match your module
+   ```
+2. Plug the RP2040 into the host; wait ~1 s for enumeration (TinyUSB drops HID reports until
+   enumerated — see FirmwarePlan §09).
+3. **macOS** — expect a CDC interface named `A-4E Skyhawk DCS-BIOS`:
+   ```
+   system_profiler SPUSBDataType | grep -A12 "A-4E Skyhawk"
+   ls /dev/cu.usbmodem*                       # the serial node
+   # alt: ioreg -p IOUSB -l -w0 | grep -i "DCS-BIOS"
+   ```
+4. **Windows** — Device Manager → Ports (COM & LPT) → the OpenSkyhawk port → Properties →
+   Details → **Bus reported device description** → expect `A-4E Skyhawk DCS-BIOS`. Confirm the
+   joystick still shows **A-4E Skyhawk** in `joy.cpl`.
+5. Record the result below.
+
+| Date | Host OS | Tool used | Observed CDC name | HID name (joy.cpl) | Pass/Fail | Notes |
+|------|---------|-----------|-------------------|--------------------|-----------|-------|
+|      |         |           |                   |                    |           |       |
+
+Expected: CDC interface = `A-4E Skyhawk DCS-BIOS`; HID device = `A-4E Skyhawk`, on both OSes.

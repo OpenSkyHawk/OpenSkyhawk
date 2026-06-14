@@ -292,7 +292,12 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
     TinyUSBDevice.setID(0x2E8A, 0x4134);
     TinyUSBDevice.setManufacturerDescriptor("OpenSkyhawk");
     TinyUSBDevice.setProductDescriptor("A-4E Skyhawk");
-    Serial.begin(115200); // start Adafruit_USBD_CDC; required before available()/write() work
+    Serial.begin(250000); // start Adafruit_USBD_CDC; required before available()/write() work
+                          // (baud arg ignored by USB CDC; set to nominal 250000 to match docs)
+    // Name the CDC interface (iInterface) so the serial port is identifiable by name, not just
+    // VID/PID + CDC class. Must follow Serial.begin(), which otherwise leaves the library
+    // default "TinyUSB Serial".
+    Serial.setStringDescriptor("A-4E Skyhawk DCS-BIOS");
 #endif
 
     _uart->setTX(txPin);
