@@ -48,17 +48,32 @@
 // ── OpenSkyhawk reserved DCS-BIOS identifiers (node-status reporting, #86) ────
 //
 // Node presence/health is surfaced to the host (OpenSkyhawk Client) over the
-// existing DCS-BIOS protocol, not a bespoke sideband. Two reserved IDs in the
-// A-4E-C namespace, owned by PanelBridge (SimGateway relays them transparently):
+// existing DCS-BIOS protocol, not a bespoke sideband. Owned by PanelBridge
+// (SimGateway relays everything transparently). This header is the canonical
+// contract source the client's sync-a4ec.ts parses — bump OSH_NODE_PROTO_VERSION
+// on any wire change so the client's sync assertion fails loudly.
 //
-//   OSH_NODE_REQ_ADDR  host→device DCS-BIOS export address the client writes to
-//                      request the roster. Above every real A-4E-C output
-//                      (~0x8554), so DCS never exports it — no false trigger.
-//   OSH_NODE_MSG_NAME  device→host DCS-BIOS command name carrying one node's
-//                      status. Leading underscore — no A-4E-C control collides.
+//   OSH_NODE_REQ_ADDR     host→device DCS-BIOS export address the client writes
+//                         to request the roster. Above every real A-4E-C output
+//                         (~0x8554), so DCS never exports it — no false trigger.
+//   OSH_NODE_MSG_NAME     device→host per-node status command name. Leading
+//                         underscore — no A-4E-C control collides.
+//   OSH_NODE_END_MSG_NAME device→host burst terminator (request/boot replies).
+//                         Argument = node count in the burst. Lets the client
+//                         know a roster reply is complete and reconcile/prune.
 //
-// Wire format of the _OSH_NODE argument (18 hex chars, big-endian nibble order):
+// _OSH_NODE argument: 18 chars, each field its numeric value as fixed-width
+// uppercase hex (most-significant nibble first):
 //   nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)
 //   present: 01 alive, 00 removed.  flags: bit0 BOFF, bit1 EPVF.
-#define OSH_NODE_REQ_ADDR 0x86FE
-#define OSH_NODE_MSG_NAME "_OSH_NODE"
+//   esr: low byte TEC, high byte REC.  nodeId range 1–63.
+//
+// Emission: a single bare _OSH_NODE is a live delta (apply immediately). A
+// request/boot reply is N _OSH_NODE messages followed by _OSH_NODE_END <count>;
+// that set is the authoritative present-roster — prune nodes absent from it.
+// Silent death (yank / bus-off) is reported as present=00 by PanelBridge's 3 s
+// heartbeat timeout; a periodic client request reconciles any lost delta.
+#define OSH_NODE_PROTO_VERSION 1
+#define OSH_NODE_REQ_ADDR      0x86FE
+#define OSH_NODE_MSG_NAME      "_OSH_NODE"
+#define OSH_NODE_END_MSG_NAME  "_OSH_NODE_END"

@@ -17,18 +17,22 @@
 //   1. pio run -e test_node_status -t upload
 //   2. Open USB-UART @ 250000 (the _OSH_NODE messages) and DiagSerial @ 115200 (phase log).
 //
+// Also at boot: _OSH_NODE_END 0 (empty roster seed).
+//
 // Expected on USB-UART (250000), repeating each cycle:
-//   Phase A — two nodes go alive (transition emit):
+//   Phase A — two nodes go alive (bare delta emits, no terminator):
 //     _OSH_NODE 0101000A00120000
 //     _OSH_NODE 0201001400340002
-//   Phase B — host request (full roster):
+//   Phase B — host request (full roster, terminated):
 //     _OSH_NODE 0101000A00120000
 //     _OSH_NODE 0201001400340002
-//   Phase C — heartbeat timeout (~3 s after Phase A) removes both (present=00):
+//     _OSH_NODE_END 2
+//   Phase C — heartbeat timeout (~3 s after Phase A) removes both (present=00 deltas):
 //     _OSH_NODE 0100000A00120000
 //     _OSH_NODE 0200001400340002
 //
-// hex = nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4), big-endian nibbles.
+// hex = nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4); each field a
+// fixed-width hex number (most-significant nibble first).
 
 #define DCSBIOS_DEFAULT_SERIAL
 #include <DcsBios.h>

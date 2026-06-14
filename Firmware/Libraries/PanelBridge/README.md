@@ -88,8 +88,10 @@ Behind `-DPANELBRIDGE_NODE_STATUS` (default off), PanelBridge surfaces the roste
 health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway untouched:
 
 - **Response:** a DCS-BIOS command message `_OSH_NODE <hex>` per node (`hex` =
-  `nodeId present flags uptime rxCount esr`, 18 chars), emitted on each alive/dead transition,
-  at boot, and per request. PanelBridge caches the last `HeartbeatPayload` for the health bytes.
+  `nodeId present flags uptime rxCount esr`, 18 chars). A bare message is a live delta (on each
+  alive/dead transition; a 3 s heartbeat timeout reports `present=00` for silent death). A
+  request/boot reply is the full roster terminated by `_OSH_NODE_END <count>` so the host can
+  reconcile/prune. PanelBridge caches the last `HeartbeatPayload` for the health bytes.
 - **Request:** the client writes a DCS-BIOS export to the reserved address `0x86FE`
   (`OSH_NODE_REQ_ADDR`); a dedicated `ExportStreamListener` replies with the full roster.
 

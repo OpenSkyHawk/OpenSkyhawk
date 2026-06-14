@@ -63,10 +63,16 @@ static void emitNode(uint8_t nodeId, bool present) {
     DcsBios::sendDcsBiosMessage(OSH_NODE_MSG_NAME, hex);
 }
 
-// Emit every currently-alive node (request response / boot seed).
+// Emit the full roster (request response / boot seed): one _OSH_NODE per alive
+// node, then _OSH_NODE_END <count> so the host knows the burst is complete and
+// can reconcile (prune nodes absent from it). count=0 = no panels connected.
 static void emitAllNodes() {
+    uint8_t count = 0;
     for (uint8_t i = 0; i < MAX_NODE_ID; i++)
-        if (_nodes[i].alive) emitNode(i + 1, true);
+        if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
+    char arg[4];
+    snprintf(arg, sizeof(arg), "%u", (unsigned)count);
+    DcsBios::sendDcsBiosMessage(OSH_NODE_END_MSG_NAME, arg);
 }
 #endif // PANELBRIDGE_NODE_STATUS
 
