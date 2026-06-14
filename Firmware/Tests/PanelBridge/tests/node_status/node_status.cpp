@@ -1,7 +1,7 @@
 // PanelBridge — node_status test (#86)
 //
 // Purpose: verify node-status reporting. PanelBridge surfaces connected PanelGroup
-// nodes + health to the host as `_OSH_NODE` DCS-BIOS command messages, emitted on:
+// nodes + health to the host as `_NODE_STATUS` DCS-BIOS command messages, emitted on:
 //   - node alive (dead/unseen → alive transition),
 //   - host request (full roster), and
 //   - node removal (heartbeat timeout, present=00, cached health retained).
@@ -15,21 +15,21 @@
 //
 // HOW TO USE:
 //   1. pio run -e test_node_status -t upload
-//   2. Open USB-UART @ 250000 (the _OSH_NODE messages) and DiagSerial @ 115200 (phase log).
+//   2. Open USB-UART @ 250000 (the _NODE_STATUS messages) and DiagSerial @ 115200 (phase log).
 //
-// Also at boot: _OSH_NODE_END 0 (empty roster seed).
+// Also at boot: _NODE_STATUS_END 0 (empty roster seed).
 //
 // Expected on USB-UART (250000), repeating each cycle:
 //   Phase A — two nodes go alive (bare delta emits, no terminator):
-//     _OSH_NODE 0101000A00120000
-//     _OSH_NODE 0201001400340002
+//     _NODE_STATUS 0101000A00120000
+//     _NODE_STATUS 0201001400340002
 //   Phase B — host request (full roster, terminated):
-//     _OSH_NODE 0101000A00120000
-//     _OSH_NODE 0201001400340002
-//     _OSH_NODE_END 2
+//     _NODE_STATUS 0101000A00120000
+//     _NODE_STATUS 0201001400340002
+//     _NODE_STATUS_END 2
 //   Phase C — heartbeat timeout (~3 s after Phase A) removes both (present=00 deltas):
-//     _OSH_NODE 0100000A00120000
-//     _OSH_NODE 0200001400340002
+//     _NODE_STATUS 0100000A00120000
+//     _NODE_STATUS 0200001400340002
 //
 // hex = nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4); each field a
 // fixed-width hex number (most-significant nibble first).
@@ -48,7 +48,7 @@ void setup() {
     STM32Board::setDebug(true);
     PanelBridge::setup();   // starts Serial @ 250000 + CAN
     DcsBios::setup();
-    STM32Board::diagSerial().println(F("[TEST] watch USB-UART (250000) for _OSH_NODE lines"));
+    STM32Board::diagSerial().println(F("[TEST] watch USB-UART (250000) for _NODE_STATUS lines"));
 }
 
 void loop() {
@@ -62,13 +62,13 @@ void loop() {
 
     switch (_phase) {
     case 0:  // Phase A — inject heartbeats; both nodes transition to alive
-        d.println(F("[TEST] A: feed HB node 1 & 2 -> expect 2x _OSH_NODE ...01..."));
+        d.println(F("[TEST] A: feed HB node 1 & 2 -> expect 2x _NODE_STATUS ...01..."));
         PanelBridge::testFeedHeartbeat(1, 0x00, 10, 18, 0x0000);
         PanelBridge::testFeedHeartbeat(2, 0x02, 20, 52, 0x0002);
         _phase = 1;
         break;
     case 1:  // Phase B — host roster request
-        d.println(F("[TEST] B: request -> expect 2x _OSH_NODE roster"));
+        d.println(F("[TEST] B: request -> expect 2x _NODE_STATUS roster"));
         PanelBridge::testRequestNodeStatus();
         d.println(F("[TEST] C: stop feeding -> ~3 s timeout removes both (present=00)"));
         _phase = 2;

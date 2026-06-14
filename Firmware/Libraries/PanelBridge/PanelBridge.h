@@ -113,13 +113,13 @@ namespace PanelBridge {
      * @brief Cache a heartbeat and mark a node alive (bypassing CAN) (#86).
      *
      * Mirrors the HB branch of onCanRx: stores the payload as the node's last
-     * heartbeat, then transitions it to alive — which emits one `_OSH_NODE`
+     * heartbeat, then transitions it to alive — which emits one `_NODE_STATUS`
      * status message on Serial on the dead/unseen → alive edge.
      */
     void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
                            uint16_t rxCount, uint16_t esr);
 
-    /** @brief Emit the current roster (one `_OSH_NODE` per alive node) — the request/boot path. */
+    /** @brief Emit the current roster (one `_NODE_STATUS` per alive node) — the request/boot path. */
     void testRequestNodeStatus();
 
     /** @brief Run the timeout sweep with an injected clock; expires nodes and emits removals. */

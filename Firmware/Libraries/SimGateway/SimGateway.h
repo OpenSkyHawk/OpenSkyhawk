@@ -160,7 +160,7 @@ void setup(SerialUART& uart,
  *        0xAA + non-0x55         → forward 0xAA + byte to USB CDC; resume IDLE
  *   3. If any HID setter fired, call OsJoystick.send() exactly once.
  *
- * @note Node-status reporting (#86) needs no handling here: PanelBridge's `_OSH_NODE` DCS-BIOS
+ * @note Node-status reporting (#86) needs no handling here: PanelBridge's `_NODE_STATUS` DCS-BIOS
  *       messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a
  *       DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.
  *

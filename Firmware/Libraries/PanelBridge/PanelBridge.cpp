@@ -24,7 +24,7 @@ namespace DcsBios {
 #include <CANProtocol.h>
 #include <STM32Board.h>
 #include <A4EC_InputMap.h>
-#include <HIDControls.h>   // OSH_NODE_REQ_ADDR / OSH_NODE_MSG_NAME (node-status reporting, #86)
+#include <HIDControls.h>   // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <string.h>
 
 namespace {
@@ -53,18 +53,18 @@ static void (*_cbDead)(uint8_t)           = nullptr;
 // command messages on a reserved control name. Owned entirely by PanelBridge;
 // SimGateway relays the ASCII verbatim. See HIDControls.h for the wire format.
 
-// Emit one node's status: _OSH_NODE <nodeId present flags uptime rxCount esr> (18 hex chars).
+// Emit one node's status: _NODE_STATUS <nodeId present flags uptime rxCount esr> (18 hex chars).
 static void emitNode(uint8_t nodeId, bool present) {
     const HeartbeatPayload& hb = _nodes[nodeId - 1].last;
     char hex[19];
     snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X",
              (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
              (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr);
-    DcsBios::sendDcsBiosMessage(OSH_NODE_MSG_NAME, hex);
+    DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
 }
 
-// Emit the full roster (request response / boot seed): one _OSH_NODE per alive
-// node, then _OSH_NODE_END <count> so the host knows the burst is complete and
+// Emit the full roster (request response / boot seed): one _NODE_STATUS per alive
+// node, then _NODE_STATUS_END <count> so the host knows the burst is complete and
 // can reconcile (prune nodes absent from it). count=0 = no panels connected.
 static void emitAllNodes() {
     uint8_t count = 0;
@@ -72,7 +72,7 @@ static void emitAllNodes() {
         if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
     char arg[4];
     snprintf(arg, sizeof(arg), "%u", (unsigned)count);
-    DcsBios::sendDcsBiosMessage(OSH_NODE_END_MSG_NAME, arg);
+    DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
 }
 #endif // PANELBRIDGE_NODE_STATUS
 
@@ -107,7 +107,7 @@ void handleDcsBiosExport(uint16_t address, uint16_t value) {
 #ifdef PANELBRIDGE_NODE_STATUS
     // Reserved: the host's node-status request — handled by NodeStatusReqListener,
     // never broadcast onto CAN.
-    if (address == OSH_NODE_REQ_ADDR) return;
+    if (address == NODE_STATUS_REQ_ADDR) return;
 #endif
     ControlPacket pkt;
     pkt.controlId = address;
@@ -341,13 +341,13 @@ static BridgeExportListener     _exportListener;
 static DcsBios::StringBuffer<5> _modelTimeBuf(CommonData_MOD_TIME_A, onModelTimeChange);
 
 #ifdef PANELBRIDGE_NODE_STATUS
-// Host roster request (#86): the client writes OSH_NODE_REQ_ADDR on the DCS-BIOS
+// Host roster request (#86): the client writes NODE_STATUS_REQ_ADDR on the DCS-BIOS
 // export stream; PanelBridge replies with the full roster. handleDcsBiosExport()
 // drops this address so it is never broadcast onto CAN.
 class NodeStatusReqListener : public DcsBios::ExportStreamListener {
 public:
     NodeStatusReqListener()
-        : DcsBios::ExportStreamListener(OSH_NODE_REQ_ADDR, OSH_NODE_REQ_ADDR) {}
+        : DcsBios::ExportStreamListener(NODE_STATUS_REQ_ADDR, NODE_STATUS_REQ_ADDR) {}
     void onDcsBiosWrite(unsigned int, unsigned int) override { emitAllNodes(); }
 };
 static NodeStatusReqListener _nodeStatusReqListener;

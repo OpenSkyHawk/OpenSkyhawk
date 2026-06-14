@@ -23,29 +23,29 @@ points: **PanelBridge** (DCS-BIOS inputs) and **SimGateway** (HID inputs).
 ## Node-Status Reporting (#86)
 
 PanelBridge surfaces connected PanelGroup nodes + their health to the host (OpenSkyhawk Client)
-**over the existing DCS-BIOS protocol**, using two reserved A-4E-C-namespace identifiers. No
+**over the existing DCS-BIOS protocol**, using reserved A-4E-C-namespace identifiers. No
 bespoke sideband; SimGateway relays both directions verbatim (the request is binary export it
 forwards host→device; the response is ASCII it forwards device→host). PanelBridge owns it.
 
 | Reserved ID | Direction | Purpose |
 |-------------|-----------|---------|
-| Export address `0x86FE` (`OSH_NODE_REQ_ADDR`) | host→device | Client writes it (value ignored) to request the roster. Above every real A-4E-C output (~`0x8554`), so DCS never exports it. Excluded from the CAN broadcast in `handleDcsBiosExport()`. |
-| Command name `_OSH_NODE` (`OSH_NODE_MSG_NAME`) | device→host | One DCS-BIOS command message per node. Leading underscore — no A-4E-C control collides; DCS-BIOS ignores it as an unknown control if a copy leaks. |
-| Command name `_OSH_NODE_END` (`OSH_NODE_END_MSG_NAME`) | device→host | Burst terminator for request/boot replies; argument = node count. Lets the client know a roster reply is complete and reconcile/prune. |
+| Export address `0x86FE` (`NODE_STATUS_REQ_ADDR`) | host→device | Client writes it (value ignored) to request the roster. Above every real A-4E-C output (~`0x8554`), so DCS never exports it. Excluded from the CAN broadcast in `handleDcsBiosExport()`. |
+| Command name `_NODE_STATUS` (`NODE_STATUS_MSG_NAME`) | device→host | One DCS-BIOS command message per node. Leading underscore — no A-4E-C control collides; DCS-BIOS ignores it as an unknown control if a copy leaks. |
+| Command name `_NODE_STATUS_END` (`NODE_STATUS_END_MSG_NAME`) | device→host | Burst terminator for request/boot replies; argument = node count. Lets the client know a roster reply is complete and reconcile/prune. |
 
 **Request** — client writes a DCS-BIOS export frame to `0x86FE`. PanelBridge's
 `NodeStatusReqListener` (an `ExportStreamListener`) fires → emits the full roster.
 
-**Response** — `_OSH_NODE <hex>` where `<hex>` is 18 chars, **each field its numeric value as
+**Response** — `_NODE_STATUS <hex>` where `<hex>` is 18 chars, **each field its numeric value as
 fixed-width uppercase hex (most-significant nibble first)**:
 `nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)` (the 8-byte `HeartbeatPayload` plus
 `present`). `present`: `01` alive, `00` removed. `flags`: bit0 BOFF, bit1 EPVF. `esr`: low byte
 TEC, high byte REC. `nodeId` 1–63.
 
 **Emission semantics:**
-- A single bare `_OSH_NODE` is a **live delta** — emitted on each node alive/dead transition
+- A single bare `_NODE_STATUS` is a **live delta** — emitted on each node alive/dead transition
   (`present` 01/00); the host applies it immediately.
-- A **request/boot reply** is N `_OSH_NODE` messages followed by `_OSH_NODE_END <count>`. That
+- A **request/boot reply** is N `_NODE_STATUS` messages followed by `_NODE_STATUS_END <count>`. That
   set is the **authoritative present-roster** — the host reconciles (prunes nodes absent from
   it). `count=0` = no panels connected.
 - **Silent death** (node yanked / CAN bus-off) is reported as `present=00` by PanelBridge's
@@ -54,7 +54,7 @@ TEC, high byte REC. `nodeId` 1–63.
 
 Both directions ride the serial/CDC, so this works in the client's **Bridge mode only** (no
 serial in Monitor/Replay). Reserved constants + the wire format live in `HIDControls.h` (the
-canonical contract source the client syncs against; `OSH_NODE_PROTO_VERSION` bumps on any wire
+canonical contract source the client syncs against; `NODE_STATUS_PROTO_VERSION` bumps on any wire
 change). The whole feature is gated behind `-DPANELBRIDGE_NODE_STATUS` (default off).
 
 ---
