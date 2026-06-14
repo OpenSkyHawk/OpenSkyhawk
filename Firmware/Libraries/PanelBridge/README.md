@@ -82,6 +82,21 @@ PanelBridge tracks up to 63 PanelGroup nodes. A node is marked alive on first he
 or READY frame; dead after 3 s without a heartbeat. On each alive transition, PanelBridge
 broadcasts `SYNC_REQ` so the node re-polls and sends its current input state.
 
+### Reporting nodes to the host (#86)
+
+Behind `-DPANELBRIDGE_NODE_STATUS` (default off), PanelBridge surfaces the roster + per-node
+health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway untouched:
+
+- **Response:** a DCS-BIOS command message `_NODE_STATUS <hex>` per node (`hex` =
+  `nodeId present flags uptime rxCount esr`, 18 chars). A bare message is a live delta (on each
+  alive/dead transition; a 3 s heartbeat timeout reports `present=00` for silent death). A
+  request/boot reply is the full roster terminated by `_NODE_STATUS_END <count>` so the host can
+  reconcile/prune. PanelBridge caches the last `HeartbeatPayload` for the health bytes.
+- **Request:** the client writes a DCS-BIOS export to the reserved address `0x86FE`
+  (`NODE_STATUS_REQ_ADDR`); a dedicated `ExportStreamListener` replies with the full roster.
+
+Reserved IDs live in `HIDControls.h`. See `FirmwarePlan/04-dcs-bios-integration.md`.
+
 ## DiagSerial test sequence
 
 Sending `'T'` on DiagSerial (USART1, PA9/PA10, 115200) triggers a `TEST_SEQ` CAN frame

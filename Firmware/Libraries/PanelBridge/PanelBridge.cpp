@@ -24,6 +24,7 @@ namespace DcsBios {
 #include <CANProtocol.h>
 #include <STM32Board.h>
 #include <A4EC_InputMap.h>
+#include <HIDControls.h>   // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <string.h>
 
 namespace {
@@ -37,11 +38,43 @@ struct NodeState {
     bool     alive;
     bool     everSeen;
     uint32_t lastSeenMs;
+#ifdef PANELBRIDGE_NODE_STATUS
+    HeartbeatPayload last;   // last HB payload, surfaced to the host (#86)
+#endif
 };
 
 static NodeState      _nodes[MAX_NODE_ID] = {};   // index = nodeId - 1
 static void (*_cbAlive)(uint8_t)          = nullptr;
 static void (*_cbDead)(uint8_t)           = nullptr;
+
+#ifdef PANELBRIDGE_NODE_STATUS
+// ── Node-status reporting (#86) ──────────────────────────────────────────────
+// Surface node presence + health to the host (OpenSkyhawk Client) as DCS-BIOS
+// command messages on a reserved control name. Owned entirely by PanelBridge;
+// SimGateway relays the ASCII verbatim. See HIDControls.h for the wire format.
+
+// Emit one node's status: _NODE_STATUS <nodeId present flags uptime rxCount esr> (18 hex chars).
+static void emitNode(uint8_t nodeId, bool present) {
+    const HeartbeatPayload& hb = _nodes[nodeId - 1].last;
+    char hex[19];
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X",
+             (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
+             (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr);
+    DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
+}
+
+// Emit the full roster (request response / boot seed): one _NODE_STATUS per alive
+// node, then _NODE_STATUS_END <count> so the host knows the burst is complete and
+// can reconcile (prune nodes absent from it). count=0 = no panels connected.
+static void emitAllNodes() {
+    uint8_t count = 0;
+    for (uint8_t i = 0; i < MAX_NODE_ID; i++)
+        if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
+    char arg[4];
+    snprintf(arg, sizeof(arg), "%u", (unsigned)count);
+    DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
+}
+#endif // PANELBRIDGE_NODE_STATUS
 
 // ── TEST_SEQ state ─────────────────────────────────────────────────────────────
 
@@ -71,6 +104,11 @@ static void sendHidFrame(uint16_t controlId, uint16_t value) {
 
 // Internal helper called by BridgeExportListener — separated for testability.
 void handleDcsBiosExport(uint16_t address, uint16_t value) {
+#ifdef PANELBRIDGE_NODE_STATUS
+    // Reserved: the host's node-status request — handled by NodeStatusReqListener,
+    // never broadcast onto CAN.
+    if (address == NODE_STATUS_REQ_ADDR) return;
+#endif
     ControlPacket pkt;
     pkt.controlId = address;
     pkt.value     = value;
@@ -192,6 +230,9 @@ static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
             d.print(F("[BRIDGE] node=")); d.print(nodeId); d.println(F(" alive"));
         }
         if (_cbAlive) _cbAlive(nodeId);
+#ifdef PANELBRIDGE_NODE_STATUS
+        emitNode(nodeId, true);   // push presence on dead/unseen → alive (#86)
+#endif
         return true;
     }
     return false;
@@ -203,6 +244,9 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     // HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition
     if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODE_ID)) {
         uint8_t nodeId = (uint8_t)(canId - canIdHb(0));
+#ifdef PANELBRIDGE_NODE_STATUS
+        if (len >= 8) memcpy(&_nodes[nodeId - 1].last, data, 8);  // cache health for #86 reporting
+#endif
         if (markNodeAlive(nodeId, now)) broadcastSyncReq();
         return;
     }
@@ -257,6 +301,9 @@ static void checkNodeTimeouts(uint32_t now) {
                 d.print(F("[BRIDGE] node=")); d.print(nodeId); d.println(F(" dead"));
             }
             if (_cbDead) _cbDead(nodeId);
+#ifdef PANELBRIDGE_NODE_STATUS
+            emitNode(nodeId, false);   // push removal on alive → dead (#86)
+#endif
         }
     }
 }
@@ -293,6 +340,19 @@ public:
 static BridgeExportListener     _exportListener;
 static DcsBios::StringBuffer<5> _modelTimeBuf(CommonData_MOD_TIME_A, onModelTimeChange);
 
+#ifdef PANELBRIDGE_NODE_STATUS
+// Host roster request (#86): the client writes NODE_STATUS_REQ_ADDR on the DCS-BIOS
+// export stream; PanelBridge replies with the full roster. handleDcsBiosExport()
+// drops this address so it is never broadcast onto CAN.
+class NodeStatusReqListener : public DcsBios::ExportStreamListener {
+public:
+    NodeStatusReqListener()
+        : DcsBios::ExportStreamListener(NODE_STATUS_REQ_ADDR, NODE_STATUS_REQ_ADDR) {}
+    void onDcsBiosWrite(unsigned int, unsigned int) override { emitAllNodes(); }
+};
+static NodeStatusReqListener _nodeStatusReqListener;
+#endif
+
 } // anonymous namespace
 
 namespace PanelBridge {
@@ -314,6 +374,9 @@ void setup() {
     CANProtocol::onReceive(onCanRx);
     CANProtocol::start();
     broadcastSyncReq();
+#ifdef PANELBRIDGE_NODE_STATUS
+    emitAllNodes();   // seed the host with the current roster (empty at cold boot) (#86)
+#endif
 }
 
 void loop() {
@@ -355,6 +418,19 @@ void testDispatchEvt(uint16_t controlId, uint16_t value) {
 void testHandleExport(uint16_t address, uint16_t value) {
     handleDcsBiosExport(address, value);
 }
+
+#ifdef PANELBRIDGE_NODE_STATUS
+void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
+                       uint16_t rxCount, uint16_t esr) {
+    HeartbeatPayload hb{ nodeId, flags, uptime, rxCount, esr };
+    memcpy(&_nodes[nodeId - 1].last, &hb, sizeof(hb));
+    markNodeAlive(nodeId, millis());
+}
+
+void testRequestNodeStatus() { emitAllNodes(); }
+
+void testCheckTimeouts(uint32_t now) { checkNodeTimeouts(now); }
+#endif // PANELBRIDGE_NODE_STATUS
 
 } // namespace PanelBridge
 #endif // PANELBRIDGE_TEST
