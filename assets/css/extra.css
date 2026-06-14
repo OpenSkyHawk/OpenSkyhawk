@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@500;600;700;800;900&display=swap');
+
 :root {
+  --os-display: "Saira", "Saira Variable", ui-sans-serif, system-ui, sans-serif;
   --os-bg: #050a12;
   --os-bg-2: #0a0e1a;
   --os-panel: #0d1626;
@@ -31,9 +34,7 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at 75% 4rem, rgba(30, 143, 255, 0.16), transparent 30rem),
-    linear-gradient(180deg, var(--os-bg) 0%, var(--os-bg-2) 34rem, var(--os-bg-2) 100%);
+  background: linear-gradient(180deg, var(--os-bg) 0%, var(--os-bg-2) 30rem, var(--os-bg-2) 100%);
 }
 
 .md-grid {
@@ -42,7 +43,7 @@ body {
 
 .md-header {
   position: relative;
-  min-height: 5.15rem;
+  min-height: 8rem;
   background: rgba(5, 10, 18, 0.94);
   border-bottom: 1px solid var(--os-line);
   box-shadow: none;
@@ -51,7 +52,7 @@ body {
 
 .md-header__inner {
   column-gap: 1rem;
-  min-height: 5.15rem;
+  min-height: 8rem;
 }
 
 .md-header__button.md-logo {
@@ -59,18 +60,19 @@ body {
   order: 0;
   flex-shrink: 0;
   align-items: center;
-  width: 15rem;
-  height: 5.15rem;
+  width: auto;
+  max-width: 15rem;
+  height: 8rem;
   margin: 0 0.55rem 0 0;
   padding: 0;
 }
 
 .md-header__button.md-logo img,
 .md-header__button.md-logo svg {
-  width: 14.2rem;
-  height: auto;
-  max-height: 4.7rem;
-  filter: drop-shadow(0 0 12px rgba(30, 143, 255, 0.35));
+  width: auto;
+  height: 7.6rem;
+  max-height: 7.6rem;
+  max-width: 18rem;
 }
 
 .md-header__title {
@@ -94,6 +96,12 @@ body {
   font-size: 0.48rem;
   font-weight: 700;
   letter-spacing: 0.12em;
+}
+
+/* Below the desktop-nav breakpoint, Material's hamburger + search are in normal
+   flow; push them to the right edge so they don't float mid-header. */
+.md-header__button[for="__drawer"] {
+  margin-left: auto;
 }
 
 .os-header-nav {
@@ -137,26 +145,9 @@ body {
   line-height: 0;
 }
 
-.md-header__button[for="__search"] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  margin: 0;
-  color: rgba(246, 248, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.045);
-  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
-}
-
-.md-header__button[for="__search"]:hover,
-.md-header__button[for="__search"]:focus {
-  color: #fff;
-  border-color: rgba(59, 139, 235, 0.55);
-  background: rgba(30, 143, 255, 0.1);
-}
+/* The search toggle icon is styled in the desktop block (>= 76.25em). Below that,
+   Material's default search applies: an inline field on tablet, an overlay on mobile —
+   one affordance, no doubled icon. */
 
 .md-search__form {
   background: rgba(255, 255, 255, 0.06);
@@ -170,34 +161,9 @@ body {
   border-color: var(--os-line-soft);
 }
 
-.md-search {
-  order: 21;
-  flex-shrink: 0;
-  width: 2.5rem;
-  margin-left: 0;
-}
-
-.md-search__input {
-  width: 2.5rem;
-  padding-left: 2.4rem;
-  color: transparent;
-  transition: width 160ms ease, color 160ms ease;
-}
-
-.md-search__input::placeholder {
-  color: transparent;
-}
-
-.md-search__form:hover .md-search__input,
-.md-search__input:focus {
-  width: 13rem;
-  color: var(--os-text);
-}
-
-.md-search__form:hover .md-search__input::placeholder,
-.md-search__input:focus::placeholder {
-  color: var(--os-muted);
-}
+/* Search visibility/expand is handled in the desktop block (>= 76.25em).
+   Below that, Material's default toggle-overlay applies — a single search icon,
+   no always-visible mini-form (which previously doubled the icon on tablet). */
 
 .md-tabs {
   background: rgba(5, 10, 18, 0.82);
@@ -232,13 +198,11 @@ body {
 }
 
 .md-main {
-  background:
-    radial-gradient(circle at 90% 5rem, rgba(30, 143, 255, 0.08), transparent 28rem),
-    var(--os-bg-2);
+  background: var(--os-bg-2);
 }
 
 .md-content__inner {
-  padding-top: 2.2rem;
+  padding-top: 0.6rem;
 }
 
 .md-typeset h1,
@@ -279,9 +243,8 @@ body {
 }
 
 .md-sidebar__scrollwrap {
-  background: rgba(13, 22, 38, 0.82);
-  border: 1px solid var(--os-line-soft);
-  border-radius: 0;
+  background: transparent;
+  border: 0;
 }
 
 .md-nav__title,
@@ -326,6 +289,13 @@ body {
   font-size: 0.82rem;
 }
 
+/* Mobile nav drawer: remove Material's bright source bar behind the "Get Involved"
+   pill so it sits cleanly on the drawer background. */
+.md-nav--primary .md-nav__source {
+  background: transparent;
+  padding: 0.5rem 0.75rem;
+}
+
 @media screen and (min-width: 76.25em) {
   .md-nav--lifted > .md-nav__list > .md-nav__item:has(> .md-nav a[href="../annotated/"]),
   .md-nav--lifted > .md-nav__list > .md-nav__item:has(> .md-nav a[href="../classes/"]),
@@ -353,7 +323,7 @@ body {
 /* Landing page */
 .os-landing {
   box-sizing: border-box;
-  margin: -2.2rem calc(50% - 50vw) 0;
+  margin: -0.6rem calc(50% - 50vw) 0;
   background: var(--os-bg-2);
 }
 
@@ -372,20 +342,12 @@ body {
   overflow: hidden;
   padding: 4.8rem max(2rem, calc((100vw - 74rem) / 2)) 4.2rem;
   background:
-    linear-gradient(90deg, rgba(5, 10, 18, 0.98) 0%, rgba(5, 10, 18, 0.92) 43%, rgba(5, 10, 18, 0.35) 100%),
-    radial-gradient(circle at 76% 48%, rgba(30, 143, 255, 0.19), transparent 19rem),
+    linear-gradient(90deg, var(--os-bg) 0%, rgba(5, 10, 18, 0.82) 38%, rgba(5, 10, 18, 0) 66%),
     var(--os-bg);
 }
 
 .os-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.3;
-  background:
-    radial-gradient(circle at 84% 48%, rgba(30, 143, 255, 0.18), transparent 21rem),
-    linear-gradient(90deg, transparent 0%, rgba(59, 139, 235, 0.08) 72%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, #000 42%, #000 86%, transparent 100%);
+  content: none;
 }
 
 .os-hero::after {
@@ -397,9 +359,9 @@ body {
   height: min(30rem, 42vw);
   transform: translateY(-50%);
   background: url("../images/brand/hero-art.png") center / contain no-repeat;
-  filter: drop-shadow(0 0 24px rgba(30, 143, 255, 0.5));
-  mask-image: radial-gradient(ellipse at 56% 50%, #000 0 55%, transparent 78%);
-  opacity: 0.95;
+  filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.5));
+  mask-image: radial-gradient(ellipse at 56% 50%, #000 0 72%, transparent 90%);
+  opacity: 1;
 }
 
 .os-eyebrow,
@@ -420,14 +382,26 @@ body {
   text-transform: uppercase;
 }
 
-.os-hero-title {
-  max-width: 33rem;
+.os-landing .os-hero-title {
+  max-width: 46rem;
   margin: 0;
   color: #fff;
-  font-size: 3.35rem;
+  font-family: var(--os-display);
+  font-size: 4rem;
   font-weight: 900;
-  line-height: 1.08;
+  line-height: 0.97;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
+}
+
+.os-eyebrow,
+.os-feature strong,
+.os-section-kicker,
+.os-footer-col h2,
+.os-section-head h2,
+.os-header-nav a,
+.md-tabs__link {
+  font-family: var(--os-display);
 }
 
 .os-accent {
@@ -445,13 +419,13 @@ body {
 }
 
 .os-divider::after {
-  content: "*";
+  content: "★";
   position: absolute;
   left: 50%;
-  top: -0.05rem;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   color: var(--os-gold);
-  font-size: 1.15rem;
+  font-size: 1rem;
   line-height: 1;
 }
 
@@ -467,6 +441,13 @@ body {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.os-btn-icon {
+  width: 1em;
+  height: 1em;
+  margin-left: 0.55em;
+  flex: 0 0 auto;
 }
 
 .os-button,
@@ -493,6 +474,21 @@ body {
   background: rgba(255, 255, 255, 0.04);
   border-color: rgba(255, 255, 255, 0.35);
   color: #fff;
+}
+
+/* Ghost buttons sitting on the light About/Projects band need dark ink */
+.os-light-band .os-button--ghost,
+.os-light-band .md-typeset .os-button--ghost,
+.os-light-band .md-button:not(.md-button--primary) {
+  background: transparent;
+  border-color: rgba(11, 19, 32, 0.3);
+  color: #0b1320;
+}
+
+.os-light-band .os-button--ghost:hover,
+.os-light-band .md-button:not(.md-button--primary):hover {
+  border-color: #1474cf;
+  color: #1474cf;
 }
 
 .os-features {
@@ -696,9 +692,7 @@ body {
 }
 
 .md-footer {
-  background:
-    radial-gradient(circle at 18% 24%, rgba(30, 143, 255, 0.12), transparent 22rem),
-    var(--os-bg);
+  background: var(--os-bg);
   border-top: 1px solid var(--os-line);
 }
 
@@ -710,20 +704,28 @@ body {
 
 .os-footer-grid {
   display: grid;
-  grid-template-columns: minmax(14rem, 1.5fr) repeat(3, minmax(8rem, 1fr));
+  grid-template-columns: minmax(13rem, 1.5fr) minmax(8rem, 1fr) minmax(8rem, 1fr) minmax(13rem, 1.4fr);
   gap: 2rem;
 }
 
 .os-footer-brand {
   display: flex;
-  gap: 1rem;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
 }
 
 .os-footer-brand img {
-  width: min(18rem, 100%);
+  width: min(14rem, 100%);
   height: auto;
-  filter: drop-shadow(0 0 16px rgba(30, 143, 255, 0.38));
+}
+
+.os-footer-tagline {
+  margin: 0;
+  max-width: 17rem;
+  color: var(--os-muted);
+  font-size: 0.72rem;
+  line-height: 1.55;
 }
 
 .os-footer-brand strong {
@@ -768,6 +770,62 @@ body {
   font-size: 0.65rem;
 }
 
+.os-footer-community p {
+  margin: 0 0 1rem;
+  max-width: 17rem;
+  color: rgba(232, 236, 244, 0.72);
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.os-footer-community .os-footer-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 2.4rem;
+  margin: 0 0 0.95rem;
+  padding: 0 1.2rem;
+  color: #fff !important;
+  font-size: 0.74rem;
+  font-weight: 800;
+  background: linear-gradient(180deg, #1f93f0, #1474cf);
+  border: 1px solid #2f9bf5;
+  border-radius: 4px;
+  transition: filter 160ms ease;
+}
+
+.os-footer-community .os-footer-cta:hover {
+  filter: brightness(1.08);
+}
+
+.os-footer-link {
+  display: block;
+  margin: 0.4rem 0;
+  color: var(--os-blue-2) !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+@media (max-width: 76.2375em) {
+  /* The tall 8rem header + 320px logo are desktop-only. Below the desktop nav
+     breakpoint, shrink them so the logo doesn't dominate mobile/tablet. */
+  .md-header,
+  .md-header__inner {
+    min-height: 128px;
+  }
+
+  .md-header__button.md-logo {
+    height: 128px;
+  }
+
+  .md-header__button.md-logo img,
+  .md-header__button.md-logo svg {
+    height: 112px;
+    max-height: 112px;
+  }
+}
+
 @media (max-width: 960px) {
   .os-hero {
     min-height: 32rem;
@@ -780,8 +838,8 @@ body {
     opacity: 0.24;
   }
 
-  .os-hero-title {
-    font-size: 2.65rem;
+  .os-landing .os-hero-title {
+    font-size: 2.95rem;
   }
 
   .os-features-grid {
@@ -805,17 +863,31 @@ body {
   }
 }
 
-@media (min-width: 961px) {
+@media (min-width: 76.25em) {
+  /* 76.25em is where Material fixes the sidebar and hides the hamburger.
+     Swap in the custom top nav exactly here so the two never coexist. */
+  .md-header__button[for="__drawer"] {
+    display: none;
+  }
+
+  /* Match the logo's left inset to the source's right inset (same 2rem edge
+     floor) so the header is symmetric instead of the logo hugging the edge. */
+  .md-header__inner {
+    max-width: none;
+    padding-left: max(2rem, calc((100vw - 74rem) / 2));
+    padding-right: max(2rem, calc((100vw - 74rem) / 2));
+  }
+
   .os-header-nav {
     position: absolute;
     top: 0;
     right: max(13.2rem, calc((100vw - 74rem) / 2 + 11.2rem));
-    left: max(17rem, calc((100vw - 74rem) / 2 + 17rem));
+    left: max(19.5rem, calc((100vw - 74rem) / 2 + 19.5rem));
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: clamp(1rem, 2.1vw, 2rem);
-    height: 5.15rem;
+    gap: clamp(0.7rem, 1.5vw, 1.7rem);
+    height: 8rem;
     z-index: 6;
     pointer-events: none;
   }
@@ -824,11 +896,11 @@ body {
     position: relative;
     display: inline-flex;
     align-items: center;
-    height: 5.15rem;
+    height: 8rem;
     color: rgba(246, 248, 255, 0.88);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.07em;
+    font-size: clamp(0.66rem, 0.92vw, 0.86rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
     pointer-events: auto;
@@ -844,7 +916,7 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 1.55rem;
+    bottom: 3rem;
     height: 2px;
     background: var(--os-blue);
     box-shadow: 0 0 8px rgba(30, 143, 255, 0.7);
@@ -852,22 +924,40 @@ body {
 
   .md-header__source {
     position: absolute;
-    top: 1.55rem;
+    top: 3rem;
     right: max(2rem, calc((100vw - 74rem) / 2));
     z-index: 3;
     margin-left: 0;
   }
 
   .md-header__button[for="__search"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    top: 1.55rem;
+    top: 3rem;
     right: max(10rem, calc((100vw - 74rem) / 2 + 8rem));
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
     z-index: 4;
+    color: rgba(246, 248, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.045);
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  .md-header__button[for="__search"]:hover,
+  .md-header__button[for="__search"]:focus {
+    color: #fff;
+    border-color: rgba(59, 139, 235, 0.55);
+    background: rgba(30, 143, 255, 0.1);
   }
 
   .md-search {
     position: absolute;
-    top: 1.55rem;
+    top: 3rem;
     right: max(10rem, calc((100vw - 74rem) / 2 + 8rem));
     z-index: 5;
     width: 2rem;
@@ -916,11 +1006,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  .md-header__button.md-logo img,
-  .md-header__button.md-logo svg {
-    width: 10.2rem;
-  }
-
   .md-header__topic:first-child .md-ellipsis::after {
     display: none;
   }
@@ -958,8 +1043,8 @@ body {
     justify-content: center;
   }
 
-  .os-hero-title {
-    font-size: 2.1rem;
+  .os-landing .os-hero-title {
+    font-size: 2.2rem;
   }
 
   .os-features,
