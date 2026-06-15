@@ -44,25 +44,56 @@ The client runs in one of three modes, selected on the Connection tab:
 
 ## Tabs
 
+### Connection
+
+Where you choose how to connect and watch the link come up. The **device card** shows the
+auto-detected SimGateway — identity (*A-4E Skyhawk*), USB **VID/PID `0x2E8A / 0x4134`**, the
+serial port (`scanning…` until the device is found), the **CDC serial + HID** interfaces, and
+a **Relaying / Stopped** indicator. An **Auto-reconnect** toggle re-opens the port
+automatically if the cockpit is unplugged and replugged.
+
+The **Source Mode**, **DCS Link** (host + transport), and **Record** controls live on this
+tab too — covered under [Getting started](#getting-started) and
+[Recording and replay](#recording-and-replay).
+
+A **Connected nodes** card lists the PanelGroup controllers reported over the CAN bus — node
+id, uptime, receive count, and bus-health flags (BOFF / EPVF / TEC / REC). This is **Bridge
+mode only** and depends on a firmware node-reporting feature still in progress, so it
+currently shows *"No nodes reported"* until that firmware ships.
+
 ### Overview
 
-Shows aircraft name (from `_ACFT_NAME` metadata, or inferred from the address range),
-connection state, and five live telemetry gauges: **RPM, IAS (kt), Flap, Press Alt (ft),
-Fuel**. The gauges update in real time while a session is active.
+The landing tab — a single glance confirms the cockpit is alive. Three status tiles across
+the top show **Link** (idle / connecting / connected), **Aircraft** (the live module name —
+from `_ACFT_NAME` metadata, or inferred from the address range when metadata is absent), and
+**DCS Link** (the active transport and host).
+
+**Sim Telemetry** below is five live gauges — **RPM, IAS (kt), Flap, Press Alt (ft), Fuel** —
+with a command-activity readout alongside (`commands/sec · total · last command sent`). A
+gauge reads **—** for any value the sim isn't exporting.
+
+At the bottom, **Stream Health** tracks the relay itself: **Bytes In / Bytes Out** (each
+direction), **Frames/s**, parse **Errors**, **Uptime**, and **Reconnects**.
+
+If a non-A-4E module loads, an amber **warning banner** appears — named decode is A-4E-C only,
+but **relaying and stats continue** and the log falls back to raw addresses.
 
 ![Overview tab showing telemetry gauges with A-4E-C connected via multicast](../assets/images/client/overview.webp)
 
 ### Log
 
 A decoded DCS-BIOS event stream — control name, address, value, and direction — updated live.
-Filter by name or address, pause autoscroll, export to TSV, or toggle raw hex mode.
+Filter by name or address, pause autoscroll, clear the buffer, export to TSV, or toggle raw
+hex mode.
 
 ![Log tab showing decoded DCS-BIOS control names and values](../assets/images/client/logs.webp)
 
 ### HID
 
-Live status of every axis, button, and hat switch on the SimGateway's HID interface.
-Useful for verifying the SimGateway is outputting the correct values before binding in DCS.
+Live status of every axis, button, and hat switch on the SimGateway's HID interface, plus the
+**report rate**. Reports are sent on change, so the panel shows an **idle** state ("no recent
+report") when nothing is moving. Useful for verifying the SimGateway is outputting the correct
+values before binding in DCS.
 
 ![HID tab showing axes, hats, and button grid](../assets/images/client/hid.webp)
 
