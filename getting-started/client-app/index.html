@@ -805,6 +805,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4050,6 +4061,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4198,18 +4220,42 @@ certificate.</p>
 <li>Press <strong>Start relay</strong> (Bridge/Monitor) or <strong>Start</strong> (Replay).</li>
 </ol>
 <h2 id="tabs">Tabs</h2>
+<h3 id="connection">Connection</h3>
+<p>Where you choose how to connect and watch the link come up. The <strong>device card</strong> shows the
+auto-detected SimGateway — identity (<em>A-4E Skyhawk</em>), USB <strong>VID/PID <code>0x2E8A / 0x4134</code></strong>, the
+serial port (<code>scanning…</code> until the device is found), the <strong>CDC serial + HID</strong> interfaces, and
+a <strong>Relaying / Stopped</strong> indicator. An <strong>Auto-reconnect</strong> toggle re-opens the port
+automatically if the cockpit is unplugged and replugged.</p>
+<p>The <strong>Source Mode</strong>, <strong>DCS Link</strong> (host + transport), and <strong>Record</strong> controls live on this
+tab too — covered under <a href="#getting-started">Getting started</a> and
+<a href="#recording-and-replay">Recording and replay</a>.</p>
+<p>A <strong>Connected nodes</strong> card lists the PanelGroup controllers reported over the CAN bus — node
+id, uptime, receive count, and bus-health flags (BOFF / EPVF / TEC / REC). This is <strong>Bridge
+mode only</strong> and depends on a firmware node-reporting feature still in progress, so it
+currently shows <em>"No nodes reported"</em> until that firmware ships.</p>
 <h3 id="overview">Overview</h3>
-<p>Shows aircraft name (from <code>_ACFT_NAME</code> metadata, or inferred from the address range),
-connection state, and five live telemetry gauges: <strong>RPM, IAS (kt), Flap, Press Alt (ft),
-Fuel</strong>. The gauges update in real time while a session is active.</p>
+<p>The landing tab — a single glance confirms the cockpit is alive. Three status tiles across
+the top show <strong>Link</strong> (idle / connecting / connected), <strong>Aircraft</strong> (the live module name —
+from <code>_ACFT_NAME</code> metadata, or inferred from the address range when metadata is absent), and
+<strong>DCS Link</strong> (the active transport and host).</p>
+<p><strong>Sim Telemetry</strong> below is five live gauges — <strong>RPM, IAS (kt), Flap, Press Alt (ft), Fuel</strong> —
+with a command-activity readout alongside (<code>commands/sec · total · last command sent</code>). A
+gauge reads <strong>—</strong> for any value the sim isn't exporting.</p>
+<p>At the bottom, <strong>Stream Health</strong> tracks the relay itself: <strong>Bytes In / Bytes Out</strong> (each
+direction), <strong>Frames/s</strong>, parse <strong>Errors</strong>, <strong>Uptime</strong>, and <strong>Reconnects</strong>.</p>
+<p>If a non-A-4E module loads, an amber <strong>warning banner</strong> appears — named decode is A-4E-C only,
+but <strong>relaying and stats continue</strong> and the log falls back to raw addresses.</p>
 <p><img alt="Overview tab showing telemetry gauges with A-4E-C connected via multicast" src="../../assets/images/client/overview.webp" /></p>
 <h3 id="log">Log</h3>
 <p>A decoded DCS-BIOS event stream — control name, address, value, and direction — updated live.
-Filter by name or address, pause autoscroll, export to TSV, or toggle raw hex mode.</p>
+Filter by name or address, pause autoscroll, clear the buffer, export to TSV, or toggle raw
+hex mode.</p>
 <p><img alt="Log tab showing decoded DCS-BIOS control names and values" src="../../assets/images/client/logs.webp" /></p>
 <h3 id="hid">HID</h3>
-<p>Live status of every axis, button, and hat switch on the SimGateway's HID interface.
-Useful for verifying the SimGateway is outputting the correct values before binding in DCS.</p>
+<p>Live status of every axis, button, and hat switch on the SimGateway's HID interface, plus the
+<strong>report rate</strong>. Reports are sent on change, so the panel shows an <strong>idle</strong> state ("no recent
+report") when nothing is moving. Useful for verifying the SimGateway is outputting the correct
+values before binding in DCS.</p>
 <p><img alt="HID tab showing axes, hats, and button grid" src="../../assets/images/client/hid.webp" /></p>
 <h3 id="serial">Serial</h3>
 <p>Raw TX/RX hex + ASCII monitor for the CDC serial link (Bridge mode only). Toggle it on to
