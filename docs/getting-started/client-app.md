@@ -50,10 +50,14 @@ Shows aircraft name (from `_ACFT_NAME` metadata, or inferred from the address ra
 connection state, and five live telemetry gauges: **RPM, IAS (kt), Flap, Press Alt (ft),
 Fuel**. The gauges update in real time while a session is active.
 
+![Overview tab showing telemetry gauges with A-4E-C connected via multicast](../assets/images/client/overview.webp)
+
 ### Log
 
 A decoded DCS-BIOS event stream — control name, address, value, and direction — updated live.
 Filter by name or address, pause autoscroll, export to TSV, or toggle raw hex mode.
+
+![Log tab showing decoded DCS-BIOS control names and values](../assets/images/client/logs.webp)
 
 ### HID
 
@@ -64,6 +68,14 @@ Useful for verifying the SimGateway is outputting the correct values before bind
 
 Raw TX/RX hex + ASCII monitor for the CDC serial link (Bridge mode only). Toggle it on to
 watch the DCS-BIOS byte stream directly, or to confirm the SimGateway is receiving commands.
+
+![Serial tab showing raw DCS-BIOS frames as hex and ASCII](../assets/images/client/serial.webp)
+
+### Settings
+
+Developer and diagnostic controls: debug logging toggle (writes `<userData>/debug.log`),
+serial port dump (logs all detected ports and their metadata), and a Reveal button to open
+the log file. Most users will never need this tab.
 
 ## Recording and replay
 
