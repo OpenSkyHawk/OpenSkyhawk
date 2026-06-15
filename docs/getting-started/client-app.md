@@ -4,10 +4,14 @@ status: new
 
 # OpenSkyhawk Client
 
-**OpenSkyhawk Client** is the desktop app that connects your cockpit to DCS. It replaces
-the legacy `connect-serial-port.cmd` / `socat` relay with a single GUI that is both the
-bridge and the monitor — auto-detecting the SimGateway, relaying the DCS-BIOS stream both
-ways, and surfacing live connection, aircraft, and telemetry status.
+**OpenSkyhawk Client** is the recommended way to connect your cockpit to DCS. It is a
+cross-platform GUI that is both the bridge and the monitor — auto-detecting the SimGateway,
+relaying the DCS-BIOS stream both ways, and surfacing live connection, aircraft, and
+telemetry status.
+
+The alternative is the legacy `connect-serial-port.cmd` / `socat` relay shipped with
+DCS-BIOS. That script still works but is Windows-only, has no UI, and requires selecting the
+COM port manually. The client replaces it on both Windows and macOS.
 
 Download from [GitHub Releases](https://github.com/OpenSkyHawk/SkyHawkClient/releases).
 Windows (`.exe` installer) and macOS (`.dmg`) builds are provided.

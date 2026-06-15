@@ -18,9 +18,13 @@ You can read the whole site and follow the architecture with nothing installed. 
 - **[DCS World](https://www.digitalcombatsimulator.com/)** with the **A-4E-C Skyhawk
   Community Mod** installed. The A-4E-C is a free community module — OpenSkyhawk targets it
   specifically.
-- **[OpenSkyhawk Client](client-app.md)** — the desktop app that bridges DCS-BIOS to the
-  cockpit hardware. Download from
-  [GitHub Releases](https://github.com/OpenSkyHawk/SkyHawkClient/releases) (Windows + macOS).
+- **A DCS-BIOS relay** — something to bridge the sim and the SimGateway serial port.
+  Two options:
+    - **[OpenSkyhawk Client](client-app.md)** *(recommended)* — cross-platform GUI, auto-detects
+      the SimGateway, adds live monitoring and replay. Download from
+      [GitHub Releases](https://github.com/OpenSkyHawk/SkyHawkClient/releases).
+    - **DCS-BIOS serial relay** — the legacy `connect-serial-port.cmd` / `socat` script
+      shipped with DCS-BIOS. Windows-only, no GUI, requires manual COM port selection.
 - **Basic electronics familiarity** — you should be comfortable with the idea of a
   microcontroller, a serial link, and reading a schematic. You do not need to know CAN bus,
   DCS-BIOS, or STM32 development going in; the docs explain those.
