@@ -64,6 +64,8 @@ Filter by name or address, pause autoscroll, export to TSV, or toggle raw hex mo
 Live status of every axis, button, and hat switch on the SimGateway's HID interface.
 Useful for verifying the SimGateway is outputting the correct values before binding in DCS.
 
+![HID tab showing axes, hats, and button grid](../assets/images/client/hid.webp)
+
 ### Serial
 
 Raw TX/RX hex + ASCII monitor for the CDC serial link (Bridge mode only). Toggle it on to
