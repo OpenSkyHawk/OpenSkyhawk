@@ -18,6 +18,9 @@ You can read the whole site and follow the architecture with nothing installed. 
 - **[DCS World](https://www.digitalcombatsimulator.com/)** with the **A-4E-C Skyhawk
   Community Mod** installed. The A-4E-C is a free community module — OpenSkyhawk targets it
   specifically.
+- **[OpenSkyhawk Client](client-app.md)** — the desktop app that bridges DCS-BIOS to the
+  cockpit hardware. Download from
+  [GitHub Releases](https://github.com/OpenSkyHawk/SkyHawkClient/releases) (Windows + macOS).
 - **Basic electronics familiarity** — you should be comfortable with the idea of a
   microcontroller, a serial link, and reading a schematic. You do not need to know CAN bus,
   DCS-BIOS, or STM32 development going in; the docs explain those.
