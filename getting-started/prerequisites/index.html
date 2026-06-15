@@ -14,7 +14,7 @@
         <link rel="prev" href="../system-overview/">
       
       
-        <link rel="next" href="../repo-layout/">
+        <link rel="next" href="../client-app/">
       
       
         
@@ -772,6 +772,41 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client-app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenSkyhawk Client
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
     </li>
   
 
@@ -3973,6 +4008,15 @@ in the <a href="../../guides/">build guides</a>.</p>
 <li><strong><a href="https://www.digitalcombatsimulator.com/">DCS World</a></strong> with the <strong>A-4E-C Skyhawk
   Community Mod</strong> installed. The A-4E-C is a free community module — OpenSkyhawk targets it
   specifically.</li>
+<li><strong>A DCS-BIOS relay</strong> — something to bridge the sim and the SimGateway serial port.
+  Two options:<ul>
+<li><strong><a href="../client-app/">OpenSkyhawk Client</a></strong> <em>(recommended)</em> — cross-platform GUI, auto-detects
+  the SimGateway, adds live monitoring and replay. Download from
+  <a href="https://github.com/OpenSkyHawk/SkyHawkClient/releases">GitHub Releases</a>.</li>
+<li><strong>DCS-BIOS serial relay</strong> — the legacy <code>connect-serial-port.cmd</code> / <code>socat</code> script
+  shipped with DCS-BIOS. Windows-only, no GUI, requires manual COM port selection.</li>
+</ul>
+</li>
 <li><strong>Basic electronics familiarity</strong> — you should be comfortable with the idea of a
   microcontroller, a serial link, and reading a schematic. You do not need to know CAN bus,
   DCS-BIOS, or STM32 development going in; the docs explain those.</li>
