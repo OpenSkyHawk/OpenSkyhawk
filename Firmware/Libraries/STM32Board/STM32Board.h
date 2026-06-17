@@ -28,6 +28,21 @@ enum class CanStatus;
 static_assert(NODE_ID <= 63,
     "NODE_ID must be 0-63. 0 is reserved for PanelBridge; 1-63 for PanelGroup nodes.");
 
+#ifdef STM32BOARD_TEST
+// Effective status-LED state. Normally an internal type defined in STM32Board.cpp;
+// exposed here (and mirrored in the .cpp) only for on-target test assertions —
+// see Firmware/Tests/STM32Board/. Keep both definitions in sync.
+enum class LedState {
+    OFF,       ///< Both LEDs off — pre-begin() only
+    BOOTING,   ///< Red slow blink (1000 ms) — initialising
+    NORMAL,    ///< Green slow blink (1000 ms) — CAN healthy, no data flowing
+    CONNECTED, ///< Green solid — CAN healthy and data flowing (DCS exports / CTRL_BCAST)
+    CAN_ERROR, ///< Red fast blink (250 ms) — TEC > 0, errors accumulating
+    BUS_OFF,   ///< Red solid — CAN controller halted
+    WARNING,   ///< Red/green alternating (500 ms) — app-layer degraded state
+};
+#endif
+
 namespace STM32Board {
 
     static constexpr uint8_t PIN_LED_RED   = PB14; ///< Red LED pin — same on all STM32 boards
@@ -70,12 +85,29 @@ namespace STM32Board {
     void onCanStatus(CanStatus status);
 
     /**
-     * @brief Enter WARNING LED state — red/green alternating at 500 ms.
+     * @brief Raise or clear the WARNING condition — red/green alternating at 500 ms.
      *
      * Call when a degraded condition is detected that is not represented by CanStatus
-     * (e.g. SYNC timeout, missing heartbeat, application-layer fault).
+     * (e.g. SYNC timeout, dead PanelGroup node, lost master heartbeat). WARNING outranks
+     * CONNECTED/NORMAL but is masked by any CAN fault (CAN_ERROR/BUS_OFF). Clear it with
+     * setWarning(false) once the condition recovers.
+     *
+     * @param on True to raise WARNING (default); false to clear it.
      */
-    void setWarning();
+    void setWarning(bool on = true);
+
+    /**
+     * @brief Signal that application data is actively flowing → CONNECTED (green solid).
+     *
+     * Call setLinkActive(true) on each unit of inbound data (PanelBridge: a DCS-BIOS
+     * export seen; PanelGroup: a CTRL_BCAST received). The link auto-decays back to
+     * NORMAL after ~500 ms with no further calls. CONNECTED is only shown while the CAN
+     * bus is healthy; a CAN fault masks it and it re-engages automatically on recovery
+     * if data is still flowing.
+     *
+     * @param active True to (re)assert the data-flowing link; false to drop it immediately.
+     */
+    void setLinkActive(bool active);
 
     /**
      * @brief Returns true when debug output is enabled.
@@ -107,6 +139,17 @@ namespace STM32Board {
      * @returns Pointer to the internal CAN_HandleTypeDef.
      */
     CAN_HandleTypeDef* canHandle();
+
+#ifdef STM32BOARD_TEST
+    /**
+     * @brief Test-only: the current effective status-LED state.
+     *
+     * Gated by STM32BOARD_TEST so production builds keep LedState internal. Used by the
+     * on-target test sketches under Firmware/Tests/STM32Board/ to assert state transitions,
+     * precedence, and link decay without racing the blink animator.
+     */
+    LedState currentState();
+#endif
 
 } // namespace STM32Board
 

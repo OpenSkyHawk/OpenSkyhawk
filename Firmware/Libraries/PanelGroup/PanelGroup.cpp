@@ -39,9 +39,15 @@ static uint8_t          _intPins[MAX_INT_PINS];
 static uint8_t          _intPinCount = 0;
 static volatile bool    _intFlags[MAX_INT_PINS];
 
+// Master-loss watchdog: HB_0 (PanelBridge master heartbeat) timeout → WARNING.
+// 3× the 500 ms HB_0 cadence, matching the Bridge's own HB_TIMEOUT/HB ratio (3000/500).
+static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
+
 // Timers
 static uint32_t _lastHeartbeatMs  = 0;
 static uint32_t _lastFallbackMs   = 0;
+static uint32_t _lastMasterMs     = 0;     // millis() of last HB_0 seen
+static bool     _everSawMaster    = false; // arm the timeout only after the first HB_0
 static uint16_t _rxCount          = 0; // diagnostic only; wraps at 65535 (~131 s at full bus load)
 
 // ── ISR functions — one static function per interrupt-pin slot ───────────────
@@ -77,8 +83,17 @@ static uint8_t findOrAddIntPin(uint8_t pin) {
 // ── CAN callbacks ─────────────────────────────────────────────────────────────
 
 static void onCanReceive(uint32_t canId, const uint8_t* data, uint8_t len) {
+    // HB_0 — PanelBridge master heartbeat. An unconditional liveness beacon (independent
+    // of DCS data flow): refresh the master watchdog and clear any no-master WARNING.
+    if (canId == canIdHb(0)) {
+        _lastMasterMs  = millis();
+        _everSawMaster = true;
+        STM32Board::setWarning(false);
+        return;
+    }
     if (canId != CAN_ID_CTRL_BCAST) return;
     if (len != sizeof(ControlPacketPair)) return; // malformed — discard
+    STM32Board::setLinkActive(true);  // valid CTRL_BCAST → data flowing → CONNECTED (green solid)
     _rxCount++;
     ControlPacketPair pair;
     memcpy(&pair, data, sizeof(pair));
@@ -252,6 +267,7 @@ void setup() {
     // Step 4/5 — CAN callbacks and start
     CANProtocol::onReceive(onCanReceive);
     CANProtocol::onSyncReq(onSyncReq);
+    CANProtocol::filterAcceptId(canIdHb(0));  // accept the master heartbeat (HB_0)
     CANProtocol::start();
 
     // Step 6 — boot EVT burst
@@ -260,9 +276,10 @@ void setup() {
     // Step 7 — flush trailing batch
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
 
-    // Step 8 — READY frame + arm heartbeat timer
+    // Step 8 — READY frame + arm heartbeat / master-watchdog timers
     CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
     _lastHeartbeatMs = millis();
+    _lastMasterMs    = millis();  // seed; timeout stays disarmed until first HB_0 seen
 }
 
 // ── PanelGroup::loop ──────────────────────────────────────────────────────────
@@ -321,6 +338,12 @@ void loop() {
         HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(NODE_ID, _rxCount);
         CANProtocol::send(canIdHb(NODE_ID),
                           reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
+    }
+
+    // 7. Master-loss watchdog: once a master has been seen, raise WARNING if HB_0 stops.
+    // Cleared in onCanReceive() when the next HB_0 arrives.
+    if (_everSawMaster && now - _lastMasterMs > MASTER_TIMEOUT_MS) {
+        STM32Board::setWarning(true);
     }
 }
 

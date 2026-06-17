@@ -12,6 +12,10 @@
 //   CanStatus::TX_ERROR  → CAN_ERROR : red  fast blink 4 Hz
 //   CanStatus::BUS_OFF   → BUS_OFF   : red  solid on, green off
 //
+// Note: CONNECTED (green solid) is NOT a CanStatus — it is a role-driven overlay on the
+// NORMAL CAN state, asserted via setLinkActive(). Its precedence vs CONNECTED/WARNING and
+// its decay are covered by test_state_precedence / test_link_decay / test_animation_timing.
+//
 // After all four, loops back. Dwell time: 5 seconds per state.
 
 #include <STM32Board.h>
