@@ -3941,10 +3941,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#variable-link_decay_ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable LINK_DECAY_MS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_begun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _begun
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-_blinkphase" class="md-nav__link">
     <span class="md-ellipsis">
       
         variable _blinkPhase
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_canstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _canStatus
       
     </span>
   </a>
@@ -3985,10 +4018,43 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-_linkactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _linkActive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_linklastms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _linkLastMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-_state" class="md-nav__link">
     <span class="md-ellipsis">
       
         variable _state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _warning
       
     </span>
   </a>
@@ -4074,10 +4140,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-_setledstate" class="md-nav__link">
+  <a href="#function-_recompute" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function _setLedState
+        function _recompute
       
     </span>
   </a>
@@ -4156,8 +4222,20 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-link_decay_ms"><strong>LINK_DECAY_MS</strong></a>   = <code>500</code><br><em>CONNECTED → NORMAL after this idle gap.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_begun"><strong>_begun</strong></a>   = <code>false</code><br><em>false → OFF (pre-begin)</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#variable-_blinkphase"><strong>_blinkPhase</strong></a>   = <code>false</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../CANProtocol_8h/#enum-canstatus"><strong>CanStatus</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_canstatus"><strong>_canStatus</strong></a>   = <code>CanStatus::STARTING</code><br><em>Last value from onCanStatus()</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
@@ -4172,8 +4250,20 @@
 <td style="text-align: left;"><a href="#variable-_ledlastms"><strong>_ledLastMs</strong></a>   = <code>0</code><br></td>
 </tr>
 <tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_linkactive"><strong>_linkActive</strong></a>   = <code>false</code><br><em>Data flowing (set by setLinkActive)</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#variable-_linklastms"><strong>_linkLastMs</strong></a>   = <code>0</code><br><em>millis() of last setLinkActive(true)</em></td>
+</tr>
+<tr>
 <td style="text-align: right;"><a href="./#enum-ledstate"><strong>LedState</strong></a></td>
 <td style="text-align: left;"><a href="#variable-_state"><strong>_state</strong></a>   = <code>LedState::OFF</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_warning"><strong>_warning</strong></a>   = <code>false</code><br><em>App-layer warning latch.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4215,7 +4305,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-_setledstate"><strong>_setLedState</strong></a> (<a href="./#enum-ledstate"><strong>LedState</strong></a> s) <br></td>
+<td style="text-align: left;"><a href="#function-_recompute"><strong>_recompute</strong></a> () <br></td>
 </tr>
 </tbody>
 </table>
@@ -4225,6 +4315,7 @@
     OFF,
     BOOTING,
     NORMAL,
+    CONNECTED,
     CAN_ERROR,
     BUS_OFF,
     WARNING
@@ -4232,8 +4323,26 @@
 </code></pre>
 <hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-link_decay_ms">variable LINK_DECAY_MS</h3>
+<p><em>CONNECTED → NORMAL after this idle gap.</em> </p>
+<pre><code class="language-C++">constexpr uint32_t LINK_DECAY_MS;
+</code></pre>
+<hr>
+
+<h3 id="variable-_begun">variable _begun</h3>
+<p><em>false → OFF (pre-begin)</em> </p>
+<pre><code class="language-C++">bool _begun;
+</code></pre>
+<hr>
+
 <h3 id="variable-_blinkphase">variable _blinkPhase</h3>
 <pre><code class="language-C++">bool _blinkPhase;
+</code></pre>
+<hr>
+
+<h3 id="variable-_canstatus">variable _canStatus</h3>
+<p><em>Last value from onCanStatus()</em> </p>
+<pre><code class="language-C++">CanStatus _canStatus;
 </code></pre>
 <hr>
 
@@ -4252,8 +4361,26 @@
 </code></pre>
 <hr>
 
+<h3 id="variable-_linkactive">variable _linkActive</h3>
+<p><em>Data flowing (set by setLinkActive)</em> </p>
+<pre><code class="language-C++">bool _linkActive;
+</code></pre>
+<hr>
+
+<h3 id="variable-_linklastms">variable _linkLastMs</h3>
+<p><em>millis() of last setLinkActive(true)</em> </p>
+<pre><code class="language-C++">uint32_t _linkLastMs;
+</code></pre>
+<hr>
+
 <h3 id="variable-_state">variable _state</h3>
 <pre><code class="language-C++">LedState _state;
+</code></pre>
+<hr>
+
+<h3 id="variable-_warning">variable _warning</h3>
+<p><em>App-layer warning latch.</em> </p>
+<pre><code class="language-C++">bool _warning;
 </code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
@@ -4284,10 +4411,8 @@
 </code></pre>
 <hr>
 
-<h3 id="function-_setledstate">function _setLedState</h3>
-<pre><code class="language-C++">static void _setLedState (
-    LedState s
-) 
+<h3 id="function-_recompute">function _recompute</h3>
+<pre><code class="language-C++">static void _recompute () 
 </code></pre>
 <hr>
 

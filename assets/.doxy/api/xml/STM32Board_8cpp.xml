@@ -67,7 +67,15 @@
         <enumvalue id="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" prot="public">
           <name>NORMAL</name>
           <briefdescription>
-<para>Green slow blink (1000 ms) — CAN bus healthy. </para>
+<para>Green slow blink (1000 ms) — CAN healthy, no data flowing. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaa5afd6edd5336d91316964e493936858" prot="public">
+          <name>CONNECTED</name>
+          <briefdescription>
+<para>Green solid — CAN healthy and data flowing (DCS exports / CTRL_BCAST) </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -91,7 +99,7 @@
         <enumvalue id="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" prot="public">
           <name>WARNING</name>
           <briefdescription>
-<para>Red/green alternating (500 ms) — degraded state. </para>
+<para>Red/green alternating (500 ms) — app-layer degraded state. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -102,7 +110,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="8" column="1" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="8" bodyend="15"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="11" column="1" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="11" bodyend="19"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -118,7 +126,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="19" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="19" bodyend="-1"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="24" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="24" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" prot="public" static="yes" mutable="no">
         <type>bool</type>
@@ -132,7 +140,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="20" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="20" bodyend="-1"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="25" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="25" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" prot="public" static="yes" mutable="no">
         <type>uint32_t</type>
@@ -146,7 +154,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="21" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="21" bodyend="-1"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="26" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="26" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" prot="public" static="yes" mutable="no">
         <type>bool</type>
@@ -160,7 +168,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="22" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="22" bodyend="-1"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="27" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="27" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" prot="public" static="yes" mutable="no">
         <type>CAN_HandleTypeDef</type>
@@ -173,7 +181,97 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="24" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="24" bodyend="-1"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="29" column="26" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" prot="public" static="yes" mutable="no">
+        <type><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref></type>
+        <definition>CanStatus _canStatus</definition>
+        <argsstring></argsstring>
+        <name>_canStatus</name>
+        <initializer>= <ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kindref="member">CanStatus::STARTING</ref></initializer>
+        <briefdescription>
+<para>Last value from onCanStatus() </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="34" column="18" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool _linkActive</definition>
+        <argsstring></argsstring>
+        <name>_linkActive</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Data flowing (set by setLinkActive) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="35" column="18" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="STM32Board_8cpp_1abd3ddcff64aba4ac51518710f4172372" prot="public" static="yes" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t _linkLastMs</definition>
+        <argsstring></argsstring>
+        <name>_linkLastMs</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>millis() of last setLinkActive(true) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="36" column="18" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="STM32Board_8cpp_1af62afc3c5d68fa22ec96782c68fab19d" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool _warning</definition>
+        <argsstring></argsstring>
+        <name>_warning</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>App-layer warning latch. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="37" column="18" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool _begun</definition>
+        <argsstring></argsstring>
+        <name>_begun</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>false → OFF (pre-begin) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="38" column="18" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="STM32Board_8cpp_1ad359be02b3792450318a2400a2e46b22" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t LINK_DECAY_MS</definition>
+        <argsstring></argsstring>
+        <name>LINK_DECAY_MS</name>
+        <initializer>= 500</initializer>
+        <briefdescription>
+<para>CONNECTED → NORMAL after this idle gap. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="40" column="27" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="40" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -194,7 +292,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="23" column="26" declfile="Firmware/Libraries/STM32Board/STM32Board.cpp" declline="23" declcolumn="26"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="28" column="26" declfile="Firmware/Libraries/STM32Board/STM32Board.cpp" declline="28" declcolumn="26"/>
       </memberdef>
       <memberdef kind="function" id="STM32Board_8cpp_1ab2b97ae2da0a36f52044d7b879bb8d7b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint16_t</type>
@@ -211,7 +309,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="28" column="17" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="28" bodyend="36"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="44" column="17" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="44" bodyend="52"/>
       </memberdef>
       <memberdef kind="function" id="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -224,24 +322,20 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="38" column="13" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="38" bodyend="62"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="54" column="13" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="54" bodyend="82"/>
       </memberdef>
-      <memberdef kind="function" id="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
-        <definition>static void _setLedState</definition>
-        <argsstring>(LedState s)</argsstring>
-        <name>_setLedState</name>
-        <param>
-          <type><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref></type>
-          <declname>s</declname>
-        </param>
+        <definition>static void _recompute</definition>
+        <argsstring>()</argsstring>
+        <name>_recompute</name>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="64" column="13" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="64" bodyend="69"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="95" column="13" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="95" bodyend="111"/>
       </memberdef>
       <memberdef kind="function" id="STM32Board_8cpp_1a8c0692bb888fac48d4f282517265262d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -258,7 +352,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="72" column="17" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="72" bodyend="87"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="114" column="17" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="114" bodyend="129"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -273,153 +367,215 @@
 <codeline lineno="5"><highlight class="normal"></highlight></codeline>
 <codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Private<sp/>types<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="7"><highlight class="normal"></highlight></codeline>
-<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>{</highlight></codeline>
-<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kindref="member">OFF</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">BOOTING</ref>,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">NORMAL</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">CAN_ERROR</ref>,<sp/></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">BUS_OFF</ref>,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">WARNING</ref>,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="15"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight></codeline>
-<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Private<sp/>state<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight></codeline>
-<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kindref="member">LedState::OFF</ref>;</highlight></codeline>
-<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref><sp/><sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>HardwareSerial<sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>(PA10,<sp/>PA9);<sp/><sp/></highlight><highlight class="comment">//<sp/>USART1:<sp/>RX=PA10,<sp/>TX=PA9</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>CAN_HandleTypeDef<sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>;</highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Private<sp/>helpers<sp/>───────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="STM32Board_8cpp_1ab2b97ae2da0a36f52044d7b879bb8d7b" kindref="member">_blinkPeriodFor</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>s)<sp/>{</highlight></codeline>
-<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(s)<sp/>{</highlight></codeline>
-<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">LedState::BOOTING</ref>:<sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1000;</highlight></codeline>
-<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">LedState::NORMAL</ref>:<sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1000;</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">LedState::CAN_ERROR</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>250;</highlight></codeline>
-<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">LedState::WARNING</ref>:<sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>500;</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/><sp/></highlight><highlight class="comment">//<sp/>solid<sp/>or<sp/>off<sp/>—<sp/>no<sp/>timer<sp/>needed</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" kindref="member">_applyLed</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>)<sp/>{</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kindref="member">LedState::OFF</ref>:</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/>LOW);</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/>LOW);</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">LedState::BOOTING</ref>:</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">LedState::CAN_ERROR</ref>:</highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>HIGH<sp/>:<sp/>LOW);</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/>LOW);</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">LedState::NORMAL</ref>:</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/>LOW);</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>HIGH<sp/>:<sp/>LOW);</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">LedState::BUS_OFF</ref>:</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/>HIGH);</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/>LOW);</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">LedState::WARNING</ref>:</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>HIGH<sp/>:<sp/>LOW);</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>LOW<sp/><sp/>:<sp/>HIGH);</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight></codeline>
-<codeline lineno="64"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kindref="member">_setLedState</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>s)<sp/>{</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>s;</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref><sp/><sp/>=<sp/>millis();</highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" kindref="member">_applyLed</ref>();</highlight></codeline>
-<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//<sp/>HAL<sp/>weak-symbol<sp/>override<sp/>—<sp/>defines<sp/>CAN<sp/>GPIO<sp/>once<sp/>for<sp/>all<sp/>OpenSkyhawk<sp/>STM32<sp/>boards.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="72"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a8c0692bb888fac48d4f282517265262d" kindref="member">HAL_CAN_MspInit</ref>(CAN_HandleTypeDef*<sp/>hcan_p)<sp/>{</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(hcan_p-&gt;Instance<sp/>!=<sp/>CAN1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>__HAL_RCC_CAN1_CLK_ENABLE();</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>__HAL_RCC_GPIOA_CLK_ENABLE();</highlight></codeline>
-<codeline lineno="76"><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_InitTypeDef<sp/>gpio<sp/>=<sp/>{};</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Pin<sp/><sp/><sp/>=<sp/>GPIO_PIN_12;</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Mode<sp/><sp/>=<sp/>GPIO_MODE_AF_PP;</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Speed<sp/>=<sp/>GPIO_SPEED_FREQ_HIGH;</highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_GPIO_Init(GPIOA,<sp/>&amp;gpio);</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Pin<sp/><sp/>=<sp/>GPIO_PIN_11;</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Mode<sp/>=<sp/>GPIO_MODE_INPUT;</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Pull<sp/>=<sp/>GPIO_NOPULL;</highlight></codeline>
-<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_GPIO_Init(GPIOA,<sp/>&amp;gpio);</highlight></codeline>
-<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight></codeline>
-<codeline lineno="89"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Public<sp/>API<sp/>────────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="90"><highlight class="normal"></highlight></codeline>
-<codeline lineno="91" refid="namespaceSTM32Board" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSTM32Board" kindref="compound">STM32Board</ref><sp/>{</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">begin</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">PIN_LED_RED</ref>,<sp/><sp/><sp/>OUTPUT);</highlight></codeline>
-<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">PIN_LED_GREEN</ref>,<sp/>OUTPUT);</highlight></codeline>
-<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kindref="member">_setLedState</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">LedState::BOOTING</ref>);</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>.begin(115200);</highlight></codeline>
-<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>analogReadResolution(16);<sp/><sp/></highlight><highlight class="comment">//<sp/>STM32duino<sp/>defaults<sp/>to<sp/>10-bit;<sp/>16-bit<sp/>fills<sp/>uint16_t<sp/>directly<sp/>for<sp/>PinRef</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal"></highlight></codeline>
-<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>500<sp/>kbps<sp/>on<sp/>APB1<sp/>@<sp/>36<sp/>MHz:<sp/>prescaler=4,<sp/>BS1=13TQ,<sp/>BS2=4TQ<sp/>→<sp/>18TQ<sp/>total.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SJW=4TQ<sp/>required<sp/>for<sp/>Blue<sp/>Pill<sp/>clone<sp/>crystal<sp/>tolerance<sp/>(validated<sp/>Experiment<sp/>B).</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Instance<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN1;</highlight></codeline>
-<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.Prescaler<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>4;</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.Mode<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_MODE_NORMAL;</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.SyncJumpWidth<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_SJW_4TQ;</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TimeSeg1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_BS1_13TQ;</highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TimeSeg2<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_BS2_4TQ;</highlight></codeline>
-<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TimeTriggeredMode<sp/><sp/><sp/><sp/>=<sp/>DISABLE;</highlight></codeline>
-<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.AutoBusOff<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>ENABLE;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>hardware<sp/>recovery<sp/>~3<sp/>ms,<sp/>no<sp/>firmware<sp/>action<sp/>needed</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.AutoWakeUp<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>DISABLE;</highlight></codeline>
-<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.AutoRetransmission<sp/><sp/><sp/>=<sp/>DISABLE;<sp/><sp/></highlight><highlight class="comment">//<sp/>prevents<sp/>runaway<sp/>bus-off<sp/>on<sp/>unACKed<sp/>frames</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.ReceiveFifoLocked<sp/><sp/><sp/><sp/>=<sp/>DISABLE;</highlight></codeline>
-<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TransmitFifoPriority<sp/>=<sp/>DISABLE;</highlight></codeline>
-<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_CAN_Init(&amp;<ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>);</highlight></codeline>
-<codeline lineno="116"><highlight class="normal"></highlight></codeline>
-<codeline lineno="117"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Under<sp/>STM32BOARD_TEST<sp/>this<sp/>enum<sp/>lives<sp/>in<sp/>the<sp/>header<sp/>(so<sp/>currentState()<sp/>can<sp/>return<sp/>it);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/>keep<sp/>the<sp/>two<sp/>definitions<sp/>identical.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>STM32BOARD_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kindref="member">OFF</ref>,<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">BOOTING</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">NORMAL</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaa5afd6edd5336d91316964e493936858" kindref="member">CONNECTED</ref>,<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">CAN_ERROR</ref>,<sp/></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">BUS_OFF</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">WARNING</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Private<sp/>state<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kindref="member">LedState::OFF</ref>;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>HardwareSerial<sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>(PA10,<sp/>PA9);<sp/><sp/></highlight><highlight class="comment">//<sp/>USART1:<sp/>RX=PA10,<sp/>TX=PA9</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>CAN_HandleTypeDef<sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Derived-state<sp/>inputs<sp/>—<sp/>arbitrated<sp/>by<sp/>_recompute()<sp/>into<sp/>the<sp/>effective<sp/>_state.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Storing<sp/>inputs<sp/>(not<sp/>the<sp/>final<sp/>state)<sp/>lets<sp/>CONNECTED<sp/>survive<sp/>a<sp/>transient<sp/>CAN<sp/>fault<sp/>and</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//<sp/>re-engage<sp/>on<sp/>recovery,<sp/>and<sp/>lets<sp/>WARNING<sp/>be<sp/>cleared<sp/>independently.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/><ref refid="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" kindref="member">_canStatus</ref><sp/><sp/>=<sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kindref="member">CanStatus::STARTING</ref>;<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" kindref="member">_linkActive</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint32_t<sp/><sp/><ref refid="STM32Board_8cpp_1abd3ddcff64aba4ac51518710f4172372" kindref="member">_linkLastMs</ref><sp/>=<sp/>0;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1af62afc3c5d68fa22ec96782c68fab19d" kindref="member">_warning</ref><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kindref="member">_begun</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="STM32Board_8cpp_1ad359be02b3792450318a2400a2e46b22" kindref="member">LINK_DECAY_MS</ref><sp/>=<sp/>500;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Private<sp/>helpers<sp/>───────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="STM32Board_8cpp_1ab2b97ae2da0a36f52044d7b879bb8d7b" kindref="member">_blinkPeriodFor</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>s)<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(s)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">LedState::BOOTING</ref>:<sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1000;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">LedState::NORMAL</ref>:<sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1000;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">LedState::CAN_ERROR</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>250;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">LedState::WARNING</ref>:<sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>500;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/><sp/></highlight><highlight class="comment">//<sp/>solid<sp/>or<sp/>off<sp/>—<sp/>no<sp/>timer<sp/>needed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" kindref="member">_applyLed</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kindref="member">LedState::OFF</ref>:</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/>LOW);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/>LOW);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">LedState::BOOTING</ref>:</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">LedState::CAN_ERROR</ref>:</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>HIGH<sp/>:<sp/>LOW);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/>LOW);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">LedState::NORMAL</ref>:</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/>LOW);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>HIGH<sp/>:<sp/>LOW);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaa5afd6edd5336d91316964e493936858" kindref="member">LedState::CONNECTED</ref>:</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/>LOW);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/>HIGH);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">LedState::BUS_OFF</ref>:</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/>HIGH);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/>LOW);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">LedState::WARNING</ref>:</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">STM32Board::PIN_LED_RED</ref>,<sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>HIGH<sp/>:<sp/>LOW);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>digitalWrite(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">STM32Board::PIN_LED_GREEN</ref>,<sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>?<sp/>LOW<sp/><sp/>:<sp/>HIGH);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Arbitrate<sp/>the<sp/>inputs<sp/>into<sp/>the<sp/>effective<sp/>LED<sp/>state<sp/>by<sp/>fixed<sp/>precedence<sp/>(highest<sp/>first).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Sole<sp/>writer<sp/>of<sp/>_state.<sp/>Resets<sp/>the<sp/>blink<sp/>phase<sp/>and<sp/>repaints<sp/>only<sp/>on<sp/>an<sp/>actual<sp/>transition,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="comment">//<sp/>preserving<sp/>the<sp/>invariant<sp/>that<sp/>the<sp/>phase<sp/>resets<sp/>only<sp/>when<sp/>the<sp/>state<sp/>genuinely<sp/>changes.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>not<sp/>begun<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>→<sp/>OFF</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>CAN<sp/>BUS_OFF<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>→<sp/>BUS_OFF<sp/><sp/><sp/><sp/>(solid<sp/>red)<sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>CAN<sp/>faults<sp/>outrank<sp/>everything<sp/>—</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>CAN<sp/>TX_ERROR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>→<sp/>CAN_ERROR<sp/><sp/>(fast<sp/>red)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>a<sp/>dead/erroring<sp/>bus<sp/>must<sp/>not<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>CAN<sp/>STARTING<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>→<sp/>BOOTING<sp/><sp/><sp/><sp/>(slow<sp/>red)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>masked<sp/>by<sp/>an<sp/>app-layer<sp/>warning.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>warning<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>→<sp/>WARNING<sp/><sp/><sp/><sp/>(amber<sp/>alt)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>NORMAL<sp/>+<sp/>linkActive<sp/><sp/>→<sp/>CONNECTED<sp/><sp/>(solid<sp/>green)<sp/><sp/><sp/><sp/>←<sp/>only<sp/>reachable<sp/>when<sp/>CAN<sp/>is<sp/>NORMAL</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>NORMAL<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>→<sp/>NORMAL<sp/><sp/><sp/><sp/><sp/>(slow<sp/>green)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" kindref="member">_recompute</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>next;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(!<ref refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kindref="member">_begun</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next<sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kindref="member">LedState::OFF</ref>;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" kindref="member">_canStatus</ref><sp/>==<sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728aea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">CanStatus::BUS_OFF</ref>)<sp/><sp/><sp/>next<sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">LedState::BUS_OFF</ref>;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" kindref="member">_canStatus</ref><sp/>==<sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a39374db5533b6f88ff25658b2d6c7316" kindref="member">CanStatus::TX_ERROR</ref>)<sp/><sp/>next<sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">LedState::CAN_ERROR</ref>;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" kindref="member">_canStatus</ref><sp/>==<sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kindref="member">CanStatus::STARTING</ref>)<sp/><sp/>next<sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">LedState::BOOTING</ref>;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1af62afc3c5d68fa22ec96782c68fab19d" kindref="member">_warning</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next<sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">LedState::WARNING</ref>;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" kindref="member">_linkActive</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next<sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaa5afd6edd5336d91316964e493936858" kindref="member">LedState::CONNECTED</ref>;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next<sp/>=<sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">LedState::NORMAL</ref>;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(next<sp/>!=<sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>next;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref><sp/><sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" kindref="member">_applyLed</ref>();</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">//<sp/>HAL<sp/>weak-symbol<sp/>override<sp/>—<sp/>defines<sp/>CAN<sp/>GPIO<sp/>once<sp/>for<sp/>all<sp/>OpenSkyhawk<sp/>STM32<sp/>boards.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a8c0692bb888fac48d4f282517265262d" kindref="member">HAL_CAN_MspInit</ref>(CAN_HandleTypeDef*<sp/>hcan_p)<sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(hcan_p-&gt;Instance<sp/>!=<sp/>CAN1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>__HAL_RCC_CAN1_CLK_ENABLE();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>__HAL_RCC_GPIOA_CLK_ENABLE();</highlight></codeline>
 <codeline lineno="118"><highlight class="normal"></highlight></codeline>
-<codeline lineno="119"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" kindref="member">setDebug</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>on)<sp/>{<sp/><ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref><sp/>=<sp/>on;<sp/>}</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">isDebug</ref>()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref>;<sp/>}</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"></highlight></codeline>
-<codeline lineno="122"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">tick</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/><sp/><sp/><sp/>=<sp/>millis();</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>period<sp/>=<sp/><ref refid="STM32Board_8cpp_1ab2b97ae2da0a36f52044d7b879bb8d7b" kindref="member">_blinkPeriodFor</ref>(<ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>);</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(period<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>(now<sp/>-<sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref>)<sp/>&gt;=<sp/>(uint32_t)(period<sp/>/<sp/>2))<sp/>{</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>=<sp/>!<ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref>;</highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref><sp/><sp/>=<sp/>now;</highlight></codeline>
-<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" kindref="member">_applyLed</ref>();</highlight></codeline>
-<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="130"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="131"><highlight class="normal"></highlight></codeline>
-<codeline lineno="132"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a25f2a41dba3a3e6ac8d2d551a0b3a5ee" kindref="member">onCanStatus</ref>(<ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/>status)<sp/>{</highlight></codeline>
-<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(status)<sp/>{</highlight></codeline>
-<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kindref="member">CanStatus::STARTING</ref>:<sp/><sp/><ref refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kindref="member">_setLedState</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kindref="member">LedState::BOOTING</ref>);<sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a1e23852820b9154316c7c06e2b7ba051" kindref="member">CanStatus::NORMAL</ref>:<sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kindref="member">_setLedState</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kindref="member">LedState::NORMAL</ref>);<sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a39374db5533b6f88ff25658b2d6c7316" kindref="member">CanStatus::TX_ERROR</ref>:<sp/><sp/><ref refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kindref="member">_setLedState</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kindref="member">LedState::CAN_ERROR</ref>);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728aea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">CanStatus::BUS_OFF</ref>:<sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kindref="member">_setLedState</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">LedState::BUS_OFF</ref>);<sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="140"><highlight class="normal"></highlight></codeline>
-<codeline lineno="141"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a1add5f5bdf098c7f056e712ad2a7f6c7" kindref="member">setWarning</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kindref="member">_setLedState</ref>(<ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kindref="member">LedState::WARNING</ref>);</highlight></codeline>
-<codeline lineno="143"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>GPIO_InitTypeDef<sp/>gpio<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Pin<sp/><sp/><sp/>=<sp/>GPIO_PIN_12;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Mode<sp/><sp/>=<sp/>GPIO_MODE_AF_PP;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Speed<sp/>=<sp/>GPIO_SPEED_FREQ_HIGH;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_GPIO_Init(GPIOA,<sp/>&amp;gpio);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Pin<sp/><sp/>=<sp/>GPIO_PIN_11;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Mode<sp/>=<sp/>GPIO_MODE_INPUT;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio.Pull<sp/>=<sp/>GPIO_NOPULL;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_GPIO_Init(GPIOA,<sp/>&amp;gpio);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Public<sp/>API<sp/>────────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133" refid="namespaceSTM32Board" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSTM32Board" kindref="compound">STM32Board</ref><sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">begin</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(<ref refid="namespaceSTM32Board_1ac34d2a80fcc3118d7382c1fbd16a25b8" kindref="member">PIN_LED_RED</ref>,<sp/><sp/><sp/>OUTPUT);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(<ref refid="namespaceSTM32Board_1a9ce5145bb16341d75e8055efe52b5dae" kindref="member">PIN_LED_GREEN</ref>,<sp/>OUTPUT);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kindref="member">_begun</ref><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" kindref="member">_canStatus</ref><sp/>=<sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kindref="member">CanStatus::STARTING</ref>;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" kindref="member">_recompute</ref>();<sp/><sp/></highlight><highlight class="comment">//<sp/>→<sp/>BOOTING</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>.begin(115200);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>analogReadResolution(16);<sp/><sp/></highlight><highlight class="comment">//<sp/>STM32duino<sp/>defaults<sp/>to<sp/>10-bit;<sp/>16-bit<sp/>fills<sp/>uint16_t<sp/>directly<sp/>for<sp/>PinRef</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="144"><highlight class="normal"></highlight></codeline>
-<codeline lineno="145"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kindref="member">log</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>msg)<sp/>{</highlight></codeline>
-<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref>)<sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>.println(msg);</highlight></codeline>
-<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="148"><highlight class="normal"></highlight></codeline>
-<codeline lineno="149"><highlight class="normal">HardwareSerial&amp;<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">diagSerial</ref>()<sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>;<sp/>}</highlight></codeline>
-<codeline lineno="150"><highlight class="normal">CAN_HandleTypeDef*<sp/><ref refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kindref="member">canHandle</ref>()<sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;<ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>;<sp/>}</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"></highlight></codeline>
-<codeline lineno="152"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>STM32Board</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="153"><highlight class="normal"></highlight></codeline>
-<codeline lineno="154"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>500<sp/>kbps<sp/>on<sp/>APB1<sp/>@<sp/>36<sp/>MHz:<sp/>prescaler=4,<sp/>BS1=13TQ,<sp/>BS2=4TQ<sp/>→<sp/>18TQ<sp/>total.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SJW=4TQ<sp/>required<sp/>for<sp/>Blue<sp/>Pill<sp/>clone<sp/>crystal<sp/>tolerance<sp/>(validated<sp/>Experiment<sp/>B).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Instance<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN1;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.Prescaler<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>4;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.Mode<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_MODE_NORMAL;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.SyncJumpWidth<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_SJW_4TQ;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TimeSeg1<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_BS1_13TQ;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TimeSeg2<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>CAN_BS2_4TQ;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TimeTriggeredMode<sp/><sp/><sp/><sp/>=<sp/>DISABLE;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.AutoBusOff<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>ENABLE;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>hardware<sp/>recovery<sp/>~3<sp/>ms,<sp/>no<sp/>firmware<sp/>action<sp/>needed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.AutoWakeUp<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>DISABLE;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.AutoRetransmission<sp/><sp/><sp/>=<sp/>DISABLE;<sp/><sp/></highlight><highlight class="comment">//<sp/>prevents<sp/>runaway<sp/>bus-off<sp/>on<sp/>unACKed<sp/>frames</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.ReceiveFifoLocked<sp/><sp/><sp/><sp/>=<sp/>DISABLE;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>.Init.TransmitFifoPriority<sp/>=<sp/>DISABLE;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_CAN_Init(&amp;<ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" kindref="member">setDebug</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>on)<sp/>{<sp/><ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref><sp/>=<sp/>on;<sp/>}</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">isDebug</ref>()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">tick</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Decay<sp/>the<sp/>data-flowing<sp/>link<sp/>→<sp/>drop<sp/>CONNECTED<sp/>back<sp/>to<sp/>NORMAL<sp/>after<sp/>a<sp/>quiet<sp/>gap.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" kindref="member">_linkActive</ref><sp/>&amp;&amp;<sp/>(now<sp/>-<sp/><ref refid="STM32Board_8cpp_1abd3ddcff64aba4ac51518710f4172372" kindref="member">_linkLastMs</ref>)<sp/>&gt;=<sp/><ref refid="STM32Board_8cpp_1ad359be02b3792450318a2400a2e46b22" kindref="member">LINK_DECAY_MS</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" kindref="member">_linkActive</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" kindref="member">_recompute</ref>();</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>period<sp/>=<sp/><ref refid="STM32Board_8cpp_1ab2b97ae2da0a36f52044d7b879bb8d7b" kindref="member">_blinkPeriodFor</ref>(<ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(period<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>(now<sp/>-<sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref>)<sp/>&gt;=<sp/>(uint32_t)(period<sp/>/<sp/>2))<sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref><sp/>=<sp/>!<ref refid="STM32Board_8cpp_1ac194d2bd133c08915c9f21122f7d84ed" kindref="member">_blinkPhase</ref>;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kindref="member">_ledLastMs</ref><sp/><sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" kindref="member">_applyLed</ref>();</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a25f2a41dba3a3e6ac8d2d551a0b3a5ee" kindref="member">onCanStatus</ref>(<ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/>status)<sp/>{</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" kindref="member">_canStatus</ref><sp/>=<sp/>status;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" kindref="member">_recompute</ref>();</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a14e66f7f149f5a8bd694e7bdd19ea6cb" kindref="member">setWarning</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>on)<sp/>{</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1af62afc3c5d68fa22ec96782c68fab19d" kindref="member">_warning</ref><sp/>=<sp/>on;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" kindref="member">_recompute</ref>();</highlight></codeline>
+<codeline lineno="191"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a6426e0a4ad70c59e258245fcb8e044f0" kindref="member">setLinkActive</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>active)<sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(active)<sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" kindref="member">_linkActive</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1abd3ddcff64aba4ac51518710f4172372" kindref="member">_linkLastMs</ref><sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" kindref="member">_linkActive</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" kindref="member">_recompute</ref>();</highlight></codeline>
+<codeline lineno="201"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kindref="member">log</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>msg)<sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kindref="member">_debugOn</ref>)<sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>.println(msg);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal">HardwareSerial&amp;<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">diagSerial</ref>()<sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kindref="member">_diag</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal">CAN_HandleTypeDef*<sp/><ref refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kindref="member">canHandle</ref>()<sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;<ref refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kindref="member">_hcan</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>STM32BOARD_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>currentState()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>STM32Board</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/STM32Board/STM32Board.cpp"/>
   </compounddef>

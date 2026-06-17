@@ -33,6 +33,7 @@
 
 ## l
 
+* **LINK\_DECAY\_MS** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **LedState** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
 
@@ -76,11 +77,16 @@
 * **\_txHead** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_txRing** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_txTail** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_begun** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_blinkPhase** ([**STM32Board.cpp**](STM32Board_8cpp.md))
+* **\_canStatus** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_debugOn** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_hcan** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_ledLastMs** ([**STM32Board.cpp**](STM32Board_8cpp.md))
+* **\_linkActive** ([**STM32Board.cpp**](STM32Board_8cpp.md))
+* **\_linkLastMs** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_state** ([**STM32Board.cpp**](STM32Board_8cpp.md))
+* **\_warning** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
 
 

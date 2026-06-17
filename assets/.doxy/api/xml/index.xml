@@ -227,7 +227,8 @@
     <member refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kind="function"><name>isDebug</name></member>
     <member refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kind="function"><name>tick</name></member>
     <member refid="namespaceSTM32Board_1a25f2a41dba3a3e6ac8d2d551a0b3a5ee" kind="function"><name>onCanStatus</name></member>
-    <member refid="namespaceSTM32Board_1a1add5f5bdf098c7f056e712ad2a7f6c7" kind="function"><name>setWarning</name></member>
+    <member refid="namespaceSTM32Board_1a14e66f7f149f5a8bd694e7bdd19ea6cb" kind="function"><name>setWarning</name></member>
+    <member refid="namespaceSTM32Board_1a6426e0a4ad70c59e258245fcb8e044f0" kind="function"><name>setLinkActive</name></member>
     <member refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kind="function"><name>log</name></member>
     <member refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kind="function"><name>diagSerial</name></member>
     <member refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kind="function"><name>canHandle</name></member>
@@ -1127,6 +1128,7 @@
     <member refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea88559a0cfd8250c9d65970cc145c92d4" kind="enumvalue"><name>OFF</name></member>
     <member refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ead32cbe23a48d1576416d9eb314876c6d" kind="enumvalue"><name>BOOTING</name></member>
     <member refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea1e23852820b9154316c7c06e2b7ba051" kind="enumvalue"><name>NORMAL</name></member>
+    <member refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaa5afd6edd5336d91316964e493936858" kind="enumvalue"><name>CONNECTED</name></member>
     <member refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea593d8f952ccfa1db5491c12cf3e9dd81" kind="enumvalue"><name>CAN_ERROR</name></member>
     <member refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46eaea3c14b559f5e4065a5bf09df4a9d9f0" kind="enumvalue"><name>BUS_OFF</name></member>
     <member refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46ea059e9861e0400dfbe05c98a841f3f96b" kind="enumvalue"><name>WARNING</name></member>
@@ -1135,10 +1137,16 @@
     <member refid="STM32Board_8cpp_1a63c7f83cf0a62e23065bf0020a85f1da" kind="variable"><name>_ledLastMs</name></member>
     <member refid="STM32Board_8cpp_1ae1db4e9bfc532dd38efb9b07845f5084" kind="variable"><name>_debugOn</name></member>
     <member refid="STM32Board_8cpp_1a8b00314d3da1d32a168769961ebae6a5" kind="variable"><name>_hcan</name></member>
+    <member refid="STM32Board_8cpp_1ab3278e550080a5860a6df98529f48297" kind="variable"><name>_canStatus</name></member>
+    <member refid="STM32Board_8cpp_1aacf7a2de3c792c2e0a03a125e06cc6a0" kind="variable"><name>_linkActive</name></member>
+    <member refid="STM32Board_8cpp_1abd3ddcff64aba4ac51518710f4172372" kind="variable"><name>_linkLastMs</name></member>
+    <member refid="STM32Board_8cpp_1af62afc3c5d68fa22ec96782c68fab19d" kind="variable"><name>_warning</name></member>
+    <member refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kind="variable"><name>_begun</name></member>
+    <member refid="STM32Board_8cpp_1ad359be02b3792450318a2400a2e46b22" kind="variable"><name>LINK_DECAY_MS</name></member>
     <member refid="STM32Board_8cpp_1a9e92ddffb1240628eebdcb62d6eb83d1" kind="function"><name>_diag</name></member>
     <member refid="STM32Board_8cpp_1ab2b97ae2da0a36f52044d7b879bb8d7b" kind="function"><name>_blinkPeriodFor</name></member>
     <member refid="STM32Board_8cpp_1afc289debbd44eb2d0db521d00c2be21a" kind="function"><name>_applyLed</name></member>
-    <member refid="STM32Board_8cpp_1a45882f5bcec3d3c076cb6211846b2db3" kind="function"><name>_setLedState</name></member>
+    <member refid="STM32Board_8cpp_1aae5b5fce0b92c3d3b674e3170de5a67d" kind="function"><name>_recompute</name></member>
     <member refid="STM32Board_8cpp_1a8c0692bb888fac48d4f282517265262d" kind="function"><name>HAL_CAN_MspInit</name></member>
   </compound>
   <compound refid="STM32Board_8h" kind="file"><name>STM32Board.h</name>

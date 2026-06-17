@@ -49,11 +49,17 @@
 
 | Type | Name |
 | ---: | :--- |
+|  constexpr uint32\_t | [**LINK\_DECAY\_MS**](#variable-link_decay_ms)   = `500`<br>_CONNECTED → NORMAL after this idle gap._  |
+|  bool | [**\_begun**](#variable-_begun)   = `false`<br>_false → OFF (pre-begin)_  |
 |  bool | [**\_blinkPhase**](#variable-_blinkphase)   = `false`<br> |
+|  [**CanStatus**](CANProtocol_8h.md#enum-canstatus) | [**\_canStatus**](#variable-_canstatus)   = `CanStatus::STARTING`<br>_Last value from onCanStatus()_  |
 |  bool | [**\_debugOn**](#variable-_debugon)   = `false`<br> |
 |  CAN\_HandleTypeDef | [**\_hcan**](#variable-_hcan)  <br> |
 |  uint32\_t | [**\_ledLastMs**](#variable-_ledlastms)   = `0`<br> |
+|  bool | [**\_linkActive**](#variable-_linkactive)   = `false`<br>_Data flowing (set by setLinkActive)_  |
+|  uint32\_t | [**\_linkLastMs**](#variable-_linklastms)   = `0`<br>_millis() of last setLinkActive(true)_  |
 |  [**LedState**](STM32Board_8cpp.md#enum-ledstate) | [**\_state**](#variable-_state)   = `LedState::OFF`<br> |
+|  bool | [**\_warning**](#variable-_warning)   = `false`<br>_App-layer warning latch._  |
 
 
 
@@ -82,7 +88,7 @@
 |  void | [**\_applyLed**](#function-_applyled) () <br> |
 |  uint16\_t | [**\_blinkPeriodFor**](#function-_blinkperiodfor) ([**LedState**](STM32Board_8cpp.md#enum-ledstate) s) <br> |
 |  HardwareSerial | [**\_diag**](#function-_diag) (PA10, PA9) <br> |
-|  void | [**\_setLedState**](#function-_setledstate) ([**LedState**](STM32Board_8cpp.md#enum-ledstate) s) <br> |
+|  void | [**\_recompute**](#function-_recompute) () <br> |
 
 
 
@@ -121,6 +127,7 @@ enum LedState {
     OFF,
     BOOTING,
     NORMAL,
+    CONNECTED,
     CAN_ERROR,
     BUS_OFF,
     WARNING
@@ -136,10 +143,52 @@ enum LedState {
 
 
 
+### variable LINK\_DECAY\_MS 
+
+_CONNECTED → NORMAL after this idle gap._ 
+```C++
+constexpr uint32_t LINK_DECAY_MS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_begun 
+
+_false → OFF (pre-begin)_ 
+```C++
+bool _begun;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_blinkPhase 
 
 ```C++
 bool _blinkPhase;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_canStatus 
+
+_Last value from onCanStatus()_ 
+```C++
+CanStatus _canStatus;
 ```
 
 
@@ -188,10 +237,52 @@ uint32_t _ledLastMs;
 
 
 
+### variable \_linkActive 
+
+_Data flowing (set by setLinkActive)_ 
+```C++
+bool _linkActive;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_linkLastMs 
+
+_millis() of last setLinkActive(true)_ 
+```C++
+uint32_t _linkLastMs;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_state 
 
 ```C++
 LedState _state;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_warning 
+
+_App-layer warning latch._ 
+```C++
+bool _warning;
 ```
 
 
@@ -264,12 +355,10 @@ static HardwareSerial _diag (
 
 
 
-### function \_setLedState 
+### function \_recompute 
 
 ```C++
-static void _setLedState (
-    LedState s
-) 
+static void _recompute () 
 ```
 
 

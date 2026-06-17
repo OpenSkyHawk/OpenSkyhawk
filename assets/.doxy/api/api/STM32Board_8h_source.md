@@ -22,6 +22,21 @@ enum class CanStatus;
 static_assert(NODE_ID <= 63,
     "NODE_ID must be 0-63. 0 is reserved for PanelBridge; 1-63 for PanelGroup nodes.");
 
+#ifdef STM32BOARD_TEST
+// Effective status-LED state. Normally an internal type defined in STM32Board.cpp;
+// exposed here (and mirrored in the .cpp) only for on-target test assertions —
+// see Firmware/Tests/STM32Board/. Keep both definitions in sync.
+enum class LedState {
+    OFF,       
+    BOOTING,   
+    NORMAL,    
+    CONNECTED, 
+    CAN_ERROR, 
+    BUS_OFF,   
+    WARNING,   
+};
+#endif
+
 namespace STM32Board {
 
     static constexpr uint8_t PIN_LED_RED   = PB14; 
@@ -35,7 +50,9 @@ namespace STM32Board {
 
     void onCanStatus(CanStatus status);
 
-    void setWarning();
+    void setWarning(bool on = true);
+
+    void setLinkActive(bool active);
 
     bool isDebug();
 
@@ -44,6 +61,10 @@ namespace STM32Board {
     HardwareSerial& diagSerial();
 
     CAN_HandleTypeDef* canHandle();
+
+#ifdef STM32BOARD_TEST
+    LedState currentState();
+#endif
 
 } // namespace STM32Board
 

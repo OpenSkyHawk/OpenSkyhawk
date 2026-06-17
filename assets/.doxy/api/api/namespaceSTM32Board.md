@@ -64,7 +64,8 @@
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
 |  void | [**onCanStatus**](#function-oncanstatus) ([**CanStatus**](CANProtocol_8h.md#enum-canstatus) status) <br>_CAN bus status event handler — maps CanStatus to LED state._  |
 |  void | [**setDebug**](#function-setdebug) (bool on) <br>_Enable or disable DiagSerial output._  |
-|  void | [**setWarning**](#function-setwarning) () <br>_Enter WARNING LED state — red/green alternating at 500 ms._  |
+|  void | [**setLinkActive**](#function-setlinkactive) (bool active) <br>_Signal that application data is actively flowing → CONNECTED (green solid)._  |
+|  void | [**setWarning**](#function-setwarning) (bool on=true) <br>_Raise or clear the WARNING condition — red/green alternating at 500 ms._  |
 |  void | [**tick**](#function-tick) () <br>_Drive LED animations. Call once per loop() iteration._  |
 
 
@@ -312,16 +313,58 @@ DiagSerial is always initialised by [**begin()**](namespaceSTM32Board.md#functio
 
 
 
-### function setWarning 
+### function setLinkActive 
 
-_Enter WARNING LED state — red/green alternating at 500 ms._ 
+_Signal that application data is actively flowing → CONNECTED (green solid)._ 
 ```C++
-void STM32Board::setWarning () 
+void STM32Board::setLinkActive (
+    bool active
+) 
 ```
 
 
 
-Call when a degraded condition is detected that is not represented by CanStatus (e.g. SYNC timeout, missing heartbeat, application-layer fault). 
+Call setLinkActive(true) on each unit of inbound data ([**PanelBridge**](namespacePanelBridge.md): a DCS-BIOS export seen; [**PanelGroup**](namespacePanelGroup.md): a CTRL\_BCAST received). The link auto-decays back to NORMAL after ~500 ms with no further calls. CONNECTED is only shown while the CAN bus is healthy; a CAN fault masks it and it re-engages automatically on recovery if data is still flowing.
+
+
+
+
+**Parameters:**
+
+
+* `active` True to (re)assert the data-flowing link; false to drop it immediately. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function setWarning 
+
+_Raise or clear the WARNING condition — red/green alternating at 500 ms._ 
+```C++
+void STM32Board::setWarning (
+    bool on=true
+) 
+```
+
+
+
+Call when a degraded condition is detected that is not represented by CanStatus (e.g. SYNC timeout, dead [**PanelGroup**](namespacePanelGroup.md) node, lost master heartbeat). WARNING outranks CONNECTED/NORMAL but is masked by any CAN fault (CAN\_ERROR/BUS\_OFF). Clear it with setWarning(false) once the condition recovers.
+
+
+
+
+**Parameters:**
+
+
+* `on` True to raise WARNING (default); false to clear it. 
+
+
 
 
         

@@ -15,14 +15,19 @@
 
 // ── Private types ─────────────────────────────────────────────────────────────
 
+// Under STM32BOARD_TEST this enum lives in the header (so currentState() can return it);
+// keep the two definitions identical.
+#ifndef STM32BOARD_TEST
 enum class LedState {
     OFF,       
     BOOTING,   
     NORMAL,    
+    CONNECTED, 
     CAN_ERROR, 
     BUS_OFF,   
     WARNING,   
 };
+#endif
 
 // ── Private state ─────────────────────────────────────────────────────────────
 
@@ -32,6 +37,17 @@ static uint32_t          _ledLastMs  = 0;
 static bool              _debugOn    = false;
 static HardwareSerial    _diag(PA10, PA9);  // USART1: RX=PA10, TX=PA9
 static CAN_HandleTypeDef _hcan;
+
+// Derived-state inputs — arbitrated by _recompute() into the effective _state.
+// Storing inputs (not the final state) lets CONNECTED survive a transient CAN fault and
+// re-engage on recovery, and lets WARNING be cleared independently.
+static CanStatus _canStatus  = CanStatus::STARTING; 
+static bool      _linkActive = false;               
+static uint32_t  _linkLastMs = 0;                   
+static bool      _warning    = false;               
+static bool      _begun      = false;               
+
+static constexpr uint32_t LINK_DECAY_MS = 500;      
 
 // ── Private helpers ───────────────────────────────────────────────────────────
 
@@ -60,6 +76,10 @@ static void _applyLed() {
             digitalWrite(STM32Board::PIN_LED_RED,   LOW);
             digitalWrite(STM32Board::PIN_LED_GREEN, _blinkPhase ? HIGH : LOW);
             break;
+        case LedState::CONNECTED:
+            digitalWrite(STM32Board::PIN_LED_RED,   LOW);
+            digitalWrite(STM32Board::PIN_LED_GREEN, HIGH);
+            break;
         case LedState::BUS_OFF:
             digitalWrite(STM32Board::PIN_LED_RED,   HIGH);
             digitalWrite(STM32Board::PIN_LED_GREEN, LOW);
@@ -71,11 +91,33 @@ static void _applyLed() {
     }
 }
 
-static void _setLedState(LedState s) {
-    _state      = s;
-    _blinkPhase = false;
-    _ledLastMs  = millis();
-    _applyLed();
+// Arbitrate the inputs into the effective LED state by fixed precedence (highest first).
+// Sole writer of _state. Resets the blink phase and repaints only on an actual transition,
+// preserving the invariant that the phase resets only when the state genuinely changes.
+//
+//   not begun            → OFF
+//   CAN BUS_OFF          → BUS_OFF    (solid red)      } CAN faults outrank everything —
+//   CAN TX_ERROR         → CAN_ERROR  (fast red)       } a dead/erroring bus must not be
+//   CAN STARTING         → BOOTING    (slow red)       } masked by an app-layer warning.
+//   warning              → WARNING    (amber alt)
+//   NORMAL + linkActive  → CONNECTED  (solid green)    ← only reachable when CAN is NORMAL
+//   NORMAL               → NORMAL     (slow green)
+static void _recompute() {
+    LedState next;
+    if      (!_begun)                            next = LedState::OFF;
+    else if (_canStatus == CanStatus::BUS_OFF)   next = LedState::BUS_OFF;
+    else if (_canStatus == CanStatus::TX_ERROR)  next = LedState::CAN_ERROR;
+    else if (_canStatus == CanStatus::STARTING)  next = LedState::BOOTING;
+    else if (_warning)                           next = LedState::WARNING;
+    else if (_linkActive)                        next = LedState::CONNECTED;
+    else                                         next = LedState::NORMAL;
+
+    if (next != _state) {
+        _state      = next;
+        _blinkPhase = false;
+        _ledLastMs  = millis();
+        _applyLed();
+    }
 }
 
 // HAL weak-symbol override — defines CAN GPIO once for all OpenSkyhawk STM32 boards.
@@ -103,7 +145,9 @@ namespace STM32Board {
 void begin() {
     pinMode(PIN_LED_RED,   OUTPUT);
     pinMode(PIN_LED_GREEN, OUTPUT);
-    _setLedState(LedState::BOOTING);
+    _begun     = true;
+    _canStatus = CanStatus::STARTING;
+    _recompute();  // → BOOTING
 
     _diag.begin(115200);
     analogReadResolution(16);  // STM32duino defaults to 10-bit; 16-bit fills uint16_t directly for PinRef
@@ -130,7 +174,14 @@ void setDebug(bool on) { _debugOn = on; }
 bool isDebug()         { return _debugOn; }
 
 void tick() {
-    uint32_t now    = millis();
+    uint32_t now = millis();
+
+    // Decay the data-flowing link → drop CONNECTED back to NORMAL after a quiet gap.
+    if (_linkActive && (now - _linkLastMs) >= LINK_DECAY_MS) {
+        _linkActive = false;
+        _recompute();
+    }
+
     uint16_t period = _blinkPeriodFor(_state);
     if (period > 0 && (now - _ledLastMs) >= (uint32_t)(period / 2)) {
         _blinkPhase = !_blinkPhase;
@@ -140,16 +191,23 @@ void tick() {
 }
 
 void onCanStatus(CanStatus status) {
-    switch (status) {
-        case CanStatus::STARTING:  _setLedState(LedState::BOOTING);   break;
-        case CanStatus::NORMAL:    _setLedState(LedState::NORMAL);    break;
-        case CanStatus::TX_ERROR:  _setLedState(LedState::CAN_ERROR); break;
-        case CanStatus::BUS_OFF:   _setLedState(LedState::BUS_OFF);   break;
-    }
+    _canStatus = status;
+    _recompute();
 }
 
-void setWarning() {
-    _setLedState(LedState::WARNING);
+void setWarning(bool on) {
+    _warning = on;
+    _recompute();
+}
+
+void setLinkActive(bool active) {
+    if (active) {
+        _linkActive = true;
+        _linkLastMs = millis();
+    } else {
+        _linkActive = false;
+    }
+    _recompute();
 }
 
 void log(const char* msg) {
@@ -158,6 +216,10 @@ void log(const char* msg) {
 
 HardwareSerial& diagSerial()     { return _diag; }
 CAN_HandleTypeDef* canHandle()   { return &_hcan; }
+
+#ifdef STM32BOARD_TEST
+LedState currentState() { return _state; }
+#endif
 
 } // namespace STM32Board
 

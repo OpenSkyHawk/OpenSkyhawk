@@ -3996,6 +3996,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-setlinkactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function setLinkActive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-setwarning" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4102,7 +4113,11 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-setwarning"><strong>setWarning</strong></a> () <br><em>Enter WARNING LED state — red/green alternating at 500 ms.</em></td>
+<td style="text-align: left;"><a href="#function-setlinkactive"><strong>setLinkActive</strong></a> (bool active) <br><em>Signal that application data is actively flowing → CONNECTED (green solid).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-setwarning"><strong>setWarning</strong></a> (bool on=true) <br><em>Raise or clear the WARNING condition — red/green alternating at 500 ms.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -4194,11 +4209,30 @@
 </ul>
 <hr>
 
-<h3 id="function-setwarning">function setWarning</h3>
-<p><em>Enter WARNING LED state — red/green alternating at 500 ms.</em> </p>
-<pre><code class="language-C++">void STM32Board::setWarning () 
+<h3 id="function-setlinkactive">function setLinkActive</h3>
+<p><em>Signal that application data is actively flowing → CONNECTED (green solid).</em> </p>
+<pre><code class="language-C++">void STM32Board::setLinkActive (
+    bool active
+) 
 </code></pre>
-<p>Call when a degraded condition is detected that is not represented by CanStatus (e.g. SYNC timeout, missing heartbeat, application-layer fault). </p>
+<p>Call setLinkActive(true) on each unit of inbound data (<a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>: a DCS-BIOS export seen; <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>: a CTRL_BCAST received). The link auto-decays back to NORMAL after ~500 ms with no further calls. CONNECTED is only shown while the CAN bus is healthy; a CAN fault masks it and it re-engages automatically on recovery if data is still flowing.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>active</code> True to (re)assert the data-flowing link; false to drop it immediately. </li>
+</ul>
+<hr>
+
+<h3 id="function-setwarning">function setWarning</h3>
+<p><em>Raise or clear the WARNING condition — red/green alternating at 500 ms.</em> </p>
+<pre><code class="language-C++">void STM32Board::setWarning (
+    bool on=true
+) 
+</code></pre>
+<p>Call when a degraded condition is detected that is not represented by CanStatus (e.g. SYNC timeout, dead <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> node, lost master heartbeat). WARNING outranks CONNECTED/NORMAL but is masked by any CAN fault (CAN_ERROR/BUS_OFF). Clear it with setWarning(false) once the condition recovers.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>on</code> True to raise WARNING (default); false to clear it. </li>
+</ul>
 <hr>
 
 <h3 id="function-tick">function tick</h3>

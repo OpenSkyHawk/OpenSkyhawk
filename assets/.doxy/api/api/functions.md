@@ -33,7 +33,7 @@
 * **\_applyLed** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_blinkPeriodFor** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_diag** ([**STM32Board.cpp**](STM32Board_8cpp.md))
-* **\_setLedState** ([**STM32Board.cpp**](STM32Board_8cpp.md))
+* **\_recompute** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
 
 
