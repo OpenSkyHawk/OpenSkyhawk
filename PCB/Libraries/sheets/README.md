@@ -2,6 +2,15 @@
 
 KiCad `.kicad_sch` files in this directory are reusable standard circuit blocks for OpenSkyhawk boards.
 
+> **⚠️ Approach under revision — see [#43](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/43).**
+> The project now runs **KiCad 10**, which has native **Design Blocks** — reusable, cross-project
+> schematic chunks (KiCad 9) plus **PCB layout fragments** (KiCad 10). That supersedes the manual
+> *Place → Add Sheet* hierarchical-sheet workflow below (hierarchical sheets aren't portable across
+> projects). When #43 is implemented — after the #95 base-board prototypes are validated — the
+> standard blocks should be captured as **KiCad 10 Design Blocks (schematic + validated layout)**
+> extracted from the finalized base boards, not as the loose `.kicad_sch` files described here.
+> Treat the instructions below as the interim/manual fallback only.
+
 ## How to use
 
 In KiCad Schematic Editor: **Place → Add Sheet**, set filename to the path of the template here, then assign hierarchical labels to match your net names.
