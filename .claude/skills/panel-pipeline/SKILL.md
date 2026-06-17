@@ -85,7 +85,11 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
 - **Part selection** per control; detailed **control → MCP23017-pin / ADS1115-channel** map.
 - **Gap analysis** — for each control type, check the OpenSkyhawk building block exists: **both**
   the **firmware class** (e.g. `OpenSkyhawk::Switch3Pos`) **and** the **KiCad symbol / Design
-  Block**. Flag any missing → **prerequisite items** that block **B2** (symbol) and **B6** (class).
+  Block**. For each missing piece, **create a per-board prerequisite ticket** — a **blocker on this
+  specific controller**. A missing **class** blocks **B6**; a missing **symbol** blocks **B2**.
+  **Implementing a new control type is OUT OF SCOPE of this pipeline** — it is its own firmware /
+  KiCad effort (TechSpec + prototype, e.g. how `Switch2Pos` was built). The pipeline only flags it,
+  tickets it, and blocks the board until it lands.
   Implemented today: `Switch2Pos`, `LED`, `PinRef`. Planned/missing: `Switch3Pos`, `ActionButton`,
   `SwitchMultiPos`/`RotarySwitch`, `AnalogInput`, `RotaryEncoder`, `ServoOutput`, `SwitecX25Output`,
   `AccelStepperOutput`, `AngleSensor`, `SwitchWithCover2Pos`.
@@ -129,10 +133,13 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
   with the backplate passthrough holes.
 - Gate: DRC clean + gerbers.
 
-### B6 — Firmware · `firmware` · *AI drafts → human review* · **parallelizable**
+### B6 — Firmware · `firmware` · *AI drafts → human review* · **parallelizable\***
 
-- **Gated by B1, not B5** — needs the I/O map + cleared B1 prerequisites, *not* the physical board.
-  Runs in parallel with B2–B5; only needs the board at B9.
+- **Gated by B1, not B5** — needs the I/O map, *not* the physical board. Runs in parallel with
+  B2–B5; only needs the board at B9.
+- **\*Conditional:** parallelizable **only if no building blocks are missing**. If B1's gap analysis
+  ticketed a missing firmware class, B6 is **blocked** on that prerequisite (building it is out of
+  scope — a separate ticket) until it lands.
 - In: B1 inventory (control → type → pin, DCS-BIOS / HID routing) + NODE_ID + cleared prerequisites.
 - PanelGroup sketch (`registerExpander` / `registerADC`, an input/output object per control) +
   A4EC input-map entries + tests.
@@ -151,8 +158,11 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
 
 - **B4 → B2** — set the LED-array count → re-ERC.
 - **B3 ↔ B5** — mechanical/electrical co-design (board outline + LED-hole alignment).
-- **B1 prerequisites → B2 + B6** — a missing class/symbol blocks both; spin each off as its own work.
-- **B6 ∥ B2–B5** — firmware is parallelizable once B1 is done.
+- **B1 prerequisites → B2 + B6** — a missing class/symbol gets a per-board blocker ticket;
+  implementing it is out of scope (its own firmware/KiCad effort). Missing class → blocks B6;
+  missing symbol → blocks B2.
+- **B6 ∥ B2–B5** — firmware is parallelizable once B1 is done, **unless** a prerequisite ticket
+  blocks it.
 
 ## Conventions
 
