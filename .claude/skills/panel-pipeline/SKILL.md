@@ -38,6 +38,22 @@ A **controller** = one STM32 PanelGroup MCU = one CAN **NODE_ID**, hosting a **h
 breakouts within ~12–18"**. Notion keeps **one page per physical panel**; the build pipeline runs
 **per controller**. The grouping rule + budgets are summarized in A2 below.
 
+## Readiness — pick what's buildable now
+
+A panel/controller is **Ready** when every control type it uses already has an implemented
+OpenSkyhawk building block (firmware class **and** KiCad symbol / Design Block); **Blocked** when one
+or more are missing.
+
+From the A1 inventory + the implemented-block list, classify the portfolio:
+
+- **Ready** → can run B1–B9 end-to-end with today's toolkit. **Prefer these — build them now.**
+- **Blocked** → list the missing blocks (each → a per-board prerequisite ticket, out of scope to
+  build here); defer the controller until its blocks land.
+
+This is the main **scheduling lever**: maximize throughput by building everything the current toolkit
+supports, while the missing control types are prototyped separately (in parallel). Invoke with
+*"what can I build now?"* to get the **Ready** set and pick the next controller.
+
 ---
 
 ## Phase A — project pre-step (ONCE, before any per-panel mapping)
@@ -57,7 +73,10 @@ positions}`:
   `DCSIN_*` ≥ 0x8000 → DCS-BIOS via PanelBridge; `CTRL_*` < 0x8000 → HID via SimGateway.)
 - **positions** — from the mod files (not manual Model Viewer) → feed A2 distances.
 
-Output: per-panel I/O + actuator budget, recorded in the Notion panel page body.
+Output: per-panel I/O + actuator budget, recorded in the Notion panel page body. Also run a **bulk
+readiness check** — map each control's estimated type → required OpenSkyhawk block → does it exist?
+→ mark each panel **Ready** (all blocks exist) or **Blocked** (list missing blocks). Provisional
+(estimated types); confirmed at B1 once types are sim-verified. Feeds the Readiness scheduling above.
 
 ### A2 — Grouping · *owner: AI proposes → human confirms*
 
@@ -93,6 +112,7 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
   Implemented today: `Switch2Pos`, `LED`, `PinRef`. Planned/missing: `Switch3Pos`, `ActionButton`,
   `SwitchMultiPos`/`RotarySwitch`, `AnalogInput`, `RotaryEncoder`, `ServoOutput`, `SwitecX25Output`,
   `AccelStepperOutput`, `AngleSensor`, `SwitchWithCover2Pos`.
+  This **confirms the A1 provisional Ready/Blocked** classification now that types are sim-verified.
 - Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Notion body +
   `docs/_source/controllers/<Panel>.md`.
 
