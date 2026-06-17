@@ -16,7 +16,7 @@ breakout boards wired over I²C.
 | Panel | PCB Status | Firmware Status |
 |-------|------------|-----------------|
 | Armament Panel (MCU host) | Schematic complete | Phase 6 stub |
-| AWRS Panel | Schematic complete (ADS1115 @ 0x48) | Phase 6 stub |
+| AWRS Panel | ERC clean (ADS1115 @ 0x48); MODE SEL wiper → A2 not yet routed | Phase 6 stub |
 | Misc Switch Panel | ERC clean, DRC unverified (MCP23017 @ 0x22) | Phase 6 stub |
 | Gunpod Panel | Planned | Planned |
 | Gunsight Panel | Planned | Planned |
