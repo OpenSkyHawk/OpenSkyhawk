@@ -414,7 +414,9 @@ Value mapping: `steps = map(dcsValue, 0, 65535, 0, maxSteps)`. All A-4E gauges a
 
 `SwitecX25Output::update()` must be called every `PanelGroup::loop()` iteration (non-blocking).
 
-**Two motors on one DRV8833:** pass the same `SLEEP_PIN` to both instances.
+**One DRV8833 per stepper** — its dual H-bridge drives the two coils of a single bipolar
+motor. To save GPIO, multiple drivers may share one `~SLEEP` line: pass the same `SLEEP_PIN`
+to each instance (or tie all `~SLEEP` pins to one STM32 GPIO).
 
 ```cpp
 SwitecX25 needle(600, PIN_A1, PIN_A2, PIN_B1, PIN_B2);  // 600 steps = 315°
