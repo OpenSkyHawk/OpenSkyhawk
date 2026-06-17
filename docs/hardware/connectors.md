@@ -11,8 +11,9 @@ Through-hole, vertical, polarized (one insertion orientation). Crimp tool: JRrea
 
 ### Main bus — 2×4 (8-pin)
 
-`Connector_Molex:Molex_Minifit_Jr_5557-08A2_2x04_P4.20mm_Vertical`. **Two identical connectors
-per MCU board** (`J_BUS_IN` + `J_BUS_OUT`) — the bus passes straight through.
+`Connector_Molex:Molex_Mini-Fit_Jr_5566-08A2_2x04_P4.20mm_Vertical`. **Two identical connectors
+per MCU board** (`J_BUS_IN` + `J_BUS_OUT`) — the bus passes straight through. (5566 = vertical
+PCB header; the mating cable side is the 5557 receptacle housing — see the wiring/harness notes.)
 
 | Pin | Signal | Notes |
 |-----|--------|-------|

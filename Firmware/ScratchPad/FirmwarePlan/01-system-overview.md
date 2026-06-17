@@ -14,8 +14,8 @@ DCS-BIOS. The firmware runs across three categories of nodes:
 | Node type | MCU | Count |
 |-----------|-----|-------|
 | SimGateway | RP2040 | 1 (per cockpit) |
-| PanelBridge | STM32F103CBT6 | 1 (per cockpit) |
-| PanelGroup | STM32F103CBT6 | up to ~20 |
+| PanelBridge | STM32F103C8T6 | 1 (per cockpit) |
+| PanelGroup | STM32F103C8T6 | up to ~20 |
 
 ---
 

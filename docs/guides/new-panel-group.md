@@ -16,7 +16,7 @@ Copy `Firmware/Templates/PanelGroup/` to `Firmware/Panels/<YourPanel>/`. In `pla
 
 - Set `-DNODE_ID=N` to the number you just claimed.
 - Set `board` per the [variant policy](../firmware/platformio-setup.md) — `genericSTM32F103C8`
-  for a node, unless it needs the extra flash.
+  is the default for every board.
 
 Don't copy an existing panel's `platformio.ini` — use the template.
 

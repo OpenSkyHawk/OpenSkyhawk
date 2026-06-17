@@ -1,0 +1,34 @@
+Category,Item,Value,Package,Per Gateway,Per PanelGroup,Need (5 of each),Order Qty (incl spares),LCSC#,Spec / suggested MPN,Notes
+Resistor,R,3.3k,0805,5,3,40,50,,0805 1% 1/8W,LED + power-LED series
+Resistor,R,4.7k,0805,4,4,40,50,,0805 1%,I2C pull-ups (2 per bus)
+Resistor,R,10k,0805,2,2,20,30,,0805 1%,NRST + BOOT0 pulldown (R6 + R_BOOT1)
+Resistor,R,33,0805,7,5,60,75,,0805 1%,I2C/SWDIO/UART series
+Resistor,R,100,0805,0,6,30,50,,0805 1%,PanelGroup INT lines + MOSFET gate series
+Resistor,R,120,0805,1,1,10,20,,0805 1%,CAN termination (behind J_CAN_TERM jumper)
+Resistor,R,100k,0805,0,2,10,20,,0805 1%,PanelGroup MOSFET gate pulldown
+Capacitor,C,100nF,0805,8,8,80,100,,X7R 50V,Decoupling + bus-entry HF; normalize C1 "100nf" -> 100nF
+Capacitor,C,22pF,0805,2,2,20,30,,C0G/NP0 50V,Crystal load caps - C0G dielectric only
+Capacitor,C,1uF,0805,1,1,10,20,,X7R,VDDA filter
+Capacitor,C,10uF,0805,2,2,20,30,,X5R 25V,"Bus-entry bulk C14(+5V)/C15(+12V). 25V for +12V DC-bias derating. X5R = cheaper/Basic, fine here"
+Capacitor (polarized),C,10uF,Elec 4x5.4 SMD,1,1,10,15,,Alu electrolytic >=16V,AMS1117 input bulk - mind polarity
+Capacitor (polarized),C,22uF,Elec 4x5.4 SMD,1,1,10,15,,Alu electrolytic >=10V,AMS1117 output bulk (loop stability) - mind polarity
+LED,D,Green,0805,3,2,25,35,,Yellow-green ~2.1V Vf,NOT pure-green (~3.1V wont light on 3.3V rail)
+LED,D,Red,0805,2,1,15,25,,Standard red 0805,
+IC,U1,STM32F103C8T6,LQFP-48,1,1,10,12,,STM32F103C8T6,+2 spare (reflow risk). Often LCSC Extended
+IC,U2,SN65HVD230DR,SOIC-8,1,1,10,12,,SN65HVD230DR,CAN transceiver. Rs=GND high-speed
+IC,U3,AMS1117-3.3,SOT-223,1,1,10,13,,AMS1117-3.3,LDO. LCSC Basic
+MOSFET,Q,IRLML2502,SOT-23,0,2,10,15,,IRLML2502,Logic-level N-ch backlight driver (PanelGroup only)
+Module,U4,RP2040-Zero,Waveshare module,1,0,5,6,,Waveshare RP2040-Zero,May NOT be on LCSC - order Waveshare/Amazon. THT hand-solder
+Crystal,Y1,8MHz,SMD 5.0x3.2mm 2-pad,1,1,10,13,,8MHz CL~18-20pF,Match load to the 22pF caps
+Switch,SW1,Tactile RESET,6mm THT,1,1,10,13,,6mm THT tactile,THT - hand-solder
+Connector,J,JST-XH 3-pin,B3B-XH-A vert,1,1,10,13,,JST B3B-XH-A,J_DIAG. THT. Need mating housing + crimps (separate)
+Connector,J,JST-XH 4-pin,B4B-XH-A vert,2,0,10,13,,JST B4B-XH-A,Gateway I2C display headers. THT
+Connector,J,JST-XH 8-pin,B8B-XH-A vert,0,2,10,13,,JST B8B-XH-A,PanelGroup I2C+INT headers. THT
+Connector,J,Pin header 1x2,2.54mm vert,1,1,10 conn,from strips,,1x40 breakaway,J_CAN_TERM. Snap from 1x40 strip
+Connector,J,Pin header 1x5,2.54mm vert,1,1,10 conn,from strips,,1x40 breakaway,J_SWD. Snap from 1x40 strip
+Connector,J,Pin header 1x20,2.54mm vert,1,0,5 conn,from strips,,1x40 breakaway,Gateway STM32 breakout. Snap from 1x40 strip
+Connector,J,Pin header 2x7,2.54mm vert,0,1,5 conn,from strips,,2x40 dual breakaway,PanelGroup breakout. Snap from 2x40 strip
+Connector,J,Molex Mini-Fit Jr 2x4,5566 vertical,2,2,20,24,,Molex 5566-08A (or 08A2 w/ pegs),Bus in/out. THT. Need mating receptacle + crimps (separate)
+Connector,J,Molex Mini-Fit Jr 2x01,5566 vertical,0,2,10,14,,Molex 5566-02A (or 02A2 w/ pegs),PanelGroup backlight feed. THT. Need mating + crimps
+Header strip,-,Pin header strip 1x40,2.54mm,-,-,-,5,,1x40 2.54mm breakaway,Covers all 1xN single-row headers (170 pins needed)
+Header strip,-,Pin header strip 2x40,2.54mm,-,-,-,2,,2x40 2.54mm dual breakaway,Covers the 2x7 breakouts (70 pins needed)

@@ -247,7 +247,7 @@ src_dir = tests
 
 [env_base]
 platform = ststm32
-board = genericSTM32F103CB
+board = genericSTM32F103C8
 framework = arduino
 build_flags = -DNODE_ID=1
 lib_extra_dirs = ${PROJECT_DIR}/../../Libraries

@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 860" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .bg    { fill:#ffffff; }
+    .frame { fill:none; stroke:#cbd5e1; stroke-width:1.5; }
+    .blk   { fill:#eef2f7; stroke:#334155; stroke-width:1.5; rx:6; }
+    .mcu   { fill:#fff7ed; stroke:#c2410c; stroke-width:2; rx:8; }
+    .mod   { fill:#eff6ff; stroke:#1d4ed8; stroke-width:2; rx:8; }
+    .pwr   { fill:#fef2f2; stroke:#b91c1c; stroke-width:1.5; rx:6; }
+    .led   { fill:#f0fdf4; stroke:#15803d; stroke-width:1.5; rx:6; }
+    .i2c   { fill:#f5f3ff; stroke:#6d28d9; stroke-width:1.5; rx:6; }
+    .title { font-size:22px; font-weight:700; fill:#0f172a; }
+    .sub   { font-size:13px; fill:#475569; }
+    .lbl   { font-size:13px; font-weight:600; fill:#0f172a; }
+    .pin   { font-size:12px; fill:#1e293b; }
+    .net   { font-size:11px; fill:#334155; font-family:"SF Mono",Consolas,monospace; }
+    .netp  { font-size:11px; fill:#b91c1c; font-family:"SF Mono",Consolas,monospace; }
+    .wire  { stroke:#475569; stroke-width:1.4; fill:none; }
+    .wirep { stroke:#dc2626; stroke-width:1.6; fill:none; }
+    .wirec { stroke:#7c3aed; stroke-width:1.6; fill:none; }
+    .dash  { stroke:#1d4ed8; stroke-width:1.5; stroke-dasharray:6 4; fill:none; }
+    .note  { font-size:12px; fill:#64748b; font-style:italic; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1220" height="860"/>
+  <text class="title" x="30" y="40">Board 1 — Gateway / Bridge</text>
+  <text class="sub"   x="30" y="62">SimGateway (RP2040-Zero, USB-HID) + PanelBridge (STM32F103C8T6, CAN master, NODE_ID 0) · manual connectivity diagram</text>
+
+  <!-- ===== Bus connectors ===== -->
+  <rect class="blk" x="30" y="110" width="150" height="120"/>
+  <text class="lbl" x="105" y="132" text-anchor="middle">J_BUS_IN</text>
+  <text class="net" x="42" y="152">1,2 +12V  3 +5V</text>
+  <text class="net" x="42" y="170">4,7,8 GND</text>
+  <text class="net" x="42" y="188">5 CANH  6 CANL</text>
+  <text class="note" x="42" y="214">Molex Mini-Fit Jr 2×4</text>
+
+  <rect class="blk" x="30" y="270" width="150" height="120"/>
+  <text class="lbl" x="105" y="292" text-anchor="middle">J_BUS_OUT</text>
+  <text class="net" x="42" y="312">1,2 +12V  3 +5V</text>
+  <text class="net" x="42" y="330">4,7,8 GND</text>
+  <text class="net" x="42" y="348">5 CANH  6 CANL</text>
+  <text class="note" x="42" y="374">pass-through (nets shared)</text>
+
+  <!-- pass-through link -->
+  <path class="wire" d="M105 230 L105 270"/>
+  <text class="note" x="115" y="254">bus passes through</text>
+
+  <!-- ===== Power rail ===== -->
+  <rect class="pwr" x="30" y="430" width="150" height="92"/>
+  <text class="lbl" x="105" y="452" text-anchor="middle">AMS1117-3.3</text>
+  <text class="netp" x="42" y="474">+5V  →  +3V3</text>
+  <text class="net" x="42" y="494">10µF in / 22µF out (elec)</text>
+  <text class="note" x="42" y="512">STM32 domain only</text>
+  <path class="wirep" d="M180 470 L210 470 L210 360 L260 360"/>
+  <text class="netp" x="186" y="356">+5V</text>
+
+  <!-- ===== CAN transceiver ===== -->
+  <rect class="blk" x="260" y="150" width="170" height="150"/>
+  <text class="lbl" x="345" y="172" text-anchor="middle">SN65HVD230</text>
+  <text class="sub" x="345" y="190" text-anchor="middle">CAN transceiver</text>
+  <text class="net" x="272" y="216">D  ← CAN_TX (PA12)</text>
+  <text class="net" x="272" y="236">R  → CAN_RX (PA11)</text>
+  <text class="net" x="272" y="262">CANH / CANL ↔ bus</text>
+  <!-- termination -->
+  <rect class="blk" x="260" y="318" width="170" height="58"/>
+  <text class="lbl" x="345" y="340" text-anchor="middle">120 Ω + J_TERM</text>
+  <text class="note" x="345" y="360" text-anchor="middle">jumper = end-node term</text>
+
+  <!-- bus -> transceiver CAN -->
+  <path class="wirec" d="M180 188 L240 188 L240 256 L260 256"/>
+  <text class="net" x="186" y="182">CANH/CANL</text>
+
+  <!-- ===== STM32 MCU ===== -->
+  <rect class="mcu" x="540" y="110" width="270" height="430"/>
+  <text class="lbl" x="675" y="136" text-anchor="middle">STM32F103C8T6</text>
+  <text class="sub" x="675" y="154" text-anchor="middle">PanelBridge · LQFP48 · 64 KB</text>
+
+  <text class="pin" x="554" y="186">PA2  USART2_TX  → RP2040 GP1</text>
+  <text class="pin" x="554" y="208">PA3  USART2_RX  ← RP2040 GP0</text>
+  <text class="pin" x="554" y="238">PA11 CAN_RX</text>
+  <text class="pin" x="554" y="260">PA12 CAN_TX</text>
+  <text class="pin" x="554" y="290">PA9  USART1_TX  (diag)</text>
+  <text class="pin" x="554" y="312">PA10 USART1_RX  (diag)</text>
+  <text class="pin" x="554" y="342">PA13 SWDIO</text>
+  <text class="pin" x="554" y="364">PA14 SWCLK</text>
+  <text class="pin" x="554" y="394">PB14 STATUS_LED_RED</text>
+  <text class="pin" x="554" y="416">PB15 STATUS_LED_GRN</text>
+  <text class="pin" x="554" y="446">PD0/PD1  8 MHz crystal</text>
+  <text class="pin" x="554" y="468">PB6/7,10/11 I2C1/2 (display 4-pin)</text>
+  <text class="pin" x="554" y="490">BOOT0 10k↓ · PC13-15 NC</text>
+  <text class="note" x="554" y="514">spare → breakout · most ADC/PWM-capable</text>
+  <text class="note" x="554" y="530">PB12 digital-only (full map in doc)</text>
+
+  <!-- crystal -->
+  <rect class="blk" x="540" y="560" width="120" height="46"/>
+  <text class="lbl" x="600" y="588" text-anchor="middle">Y1 8 MHz</text>
+  <path class="wire" d="M600 540 L600 560"/>
+
+  <!-- CAN wires to MCU -->
+  <path class="wirec" d="M430 220 L500 220 L500 234 L540 234"/>
+  <path class="wirec" d="M430 232 L490 232 L490 256 L540 256"/>
+
+  <!-- ===== RP2040-Zero module ===== -->
+  <rect class="mod" x="900" y="150" width="280" height="250"/>
+  <text class="lbl" x="1040" y="176" text-anchor="middle">RP2040-Zero (Waveshare)</text>
+  <text class="sub" x="1040" y="194" text-anchor="middle">SimGateway · user-supplied symbol</text>
+  <text class="pin" x="914" y="224">GP0 UART0 TX → STM32 PA3</text>
+  <text class="pin" x="914" y="246">GP1 UART0 RX ← STM32 PA2</text>
+  <text class="pin" x="914" y="270">GND → common (shared)</text>
+  <text class="pin" x="914" y="294">USB-C → PC (HID, own LDO)</text>
+  <text class="pin" x="914" y="318">GP2/GP3 → SimGateway LEDs grn/red (SIMGW)</text>
+  <text class="note" x="914" y="346">3.3 V NOT shared with STM32 —</text>
+  <text class="note" x="914" y="362">module LDO on VBUS; share GND only</text>
+  <text class="note" x="914" y="382">GP2/GP3 = status LEDs · spare GP4-15, GP26-29(ADC) stay on module (no board breakout)</text>
+
+  <!-- USB to PC -->
+  <rect class="blk" x="1040" y="60" width="100" height="40"/>
+  <text class="lbl" x="1090" y="85" text-anchor="middle">PC (USB)</text>
+  <path class="wire" d="M1090 100 L1090 150"/>
+  <text class="net" x="1098" y="128">USB-C</text>
+
+  <!-- UART link MCU <-> RP2040 -->
+  <path class="wire" d="M810 192 L855 192 L855 230 L900 230"/>
+  <path class="wire" d="M810 204 L845 204 L845 244 L900 244"/>
+  <text class="net" x="820" y="186">UART 250k</text>
+
+  <!-- GND-only domain divider -->
+  <path class="dash" d="M868 130 L868 560"/>
+  <text class="note" x="824" y="600" transform="rotate(-90 824 600)">domain boundary — GND only</text>
+
+  <!-- ===== SWD + Diag headers ===== -->
+  <rect class="blk" x="900" y="410" width="130" height="70"/>
+  <text class="lbl" x="965" y="430" text-anchor="middle">J_SWD 1×5</text>
+  <text class="net" x="912" y="448">3V3 SWDIO SWCLK</text>
+  <text class="net" x="912" y="466">NRST GND</text>
+  <path class="wire" d="M810 352 L965 352 L965 410"/>
+
+  <rect class="blk" x="1050" y="410" width="130" height="70"/>
+  <text class="lbl" x="1115" y="432" text-anchor="middle">J_DIAG 1×3</text>
+  <text class="net" x="1062" y="452">TX RX GND</text>
+  <text class="net" x="1062" y="470">USART1 115200</text>
+  <path class="wire" d="M810 300 L1115 300 L1115 410"/>
+
+  <!-- ===== LEDs ===== -->
+  <rect class="led" x="900" y="510" width="280" height="64"/>
+  <text class="lbl" x="1040" y="532" text-anchor="middle">Status / Power LEDs (grouped, silk-labeled)</text>
+  <text class="net" x="914" y="554">PanelBridge RED PB14 · GRN PB15 · PWR=+3V3</text>
+  <text class="net" x="914" y="568">SimGateway SIMGW red/grn (GP3/GP2) — all 0805 board-mounted</text>
+  <path class="wire" d="M810 405 L880 405 L880 540 L900 540"/>
+
+  <!-- ===== I2C headers (both buses) ===== -->
+  <rect class="i2c" x="250" y="420" width="280" height="100"/>
+  <text class="lbl" x="390" y="442" text-anchor="middle">J_I2C1 / J_I2C2 (JST-XH 4-pin)</text>
+  <text class="net" x="262" y="464">I2C1 PB6/PB7 · I2C2 PB10/PB11</text>
+  <text class="net" x="262" y="482">1 SDA 2 SCL 3 +3V3 4 GND</text>
+  <text class="note" x="262" y="500">display/sensor (OLED/LCD) · no INT</text>
+  <text class="note" x="262" y="516">4.7k pull-ups · 33Ω SDA/SCL</text>
+  <path class="wire" d="M540 466 L530 466"/>
+  <text class="net" x="448" y="412">I2C ×2 → STM32</text>
+
+  <text class="note" x="30" y="620">All nets here trace to the pin-assignment table in base-boards.md. No PSU-input connector — 12V/5V/GND injected on the bus and passed through.</text>
+</svg>

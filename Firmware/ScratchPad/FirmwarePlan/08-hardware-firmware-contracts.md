@@ -7,7 +7,7 @@ boot sequence (→ 09), CAN protocol (→ 02).
 
 ---
 
-## STM32F103CBT6 — Reserved Pin Table
+## STM32F103C8 — Reserved Pin Table
 
 The following pins are reserved across **all** STM32 boards. No panel-specific schematic may
 assign these pins to other functions.

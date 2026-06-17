@@ -44,14 +44,14 @@ PCB/
 
 | Component | Library reference |
 |-----------|------------------|
-| STM32F103CBT6 | `MCU_ST_STM32F1:STM32F103CBTx` |
+| STM32F103C8T6 | `MCU_ST_STM32F1:STM32F103CBTx` (same symbol covers C8/CB) |
 | AMS1117-3.3 | `Regulator_Linear:AMS1117-3.3_SOT223` |
 | MCP23017 | `Interface_Expansion:MCP23017x-x-SO` (SOIC-28) |
 | DRV8833PW | `Driver_Motor:DRV8833PW` (HTSSOP-16) |
 | ADS1115 | `Analog_ADC:ADS1115` |
 | Crystal 8 MHz | `Device:Crystal` |
 | JST-XH connectors | `Connector_JST:JST_XH_*` |
-| Molex Mini-Fit Jr (main bus) | `Connector_Molex:Molex_Minifit_Jr_5557-*` (dual-row) |
+| Molex Mini-Fit Jr (main bus) | `Connector_Molex:Molex_Mini-Fit_Jr_5566-*` (dual-row PCB header) |
 | Molex Mini-Fit Jr (LED power, 2-pin) | `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A2_2x01_P4.20mm_Vertical` |
 
 ## Adding new components

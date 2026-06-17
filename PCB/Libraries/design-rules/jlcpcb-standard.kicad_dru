@@ -44,3 +44,12 @@
     (net_filter "CAN?")
     (constraint diff_pair_gap (min 0.2mm) (max 0.4mm))
 )
+
+# ── PTH pad annular ring ────────────────────────────────────────────────────
+# Backstop bad through-hole footprints: copper ring around the drill >= 0.15mm.
+# (Vias are covered by the board min_via_annular_width; this adds component pads.)
+
+(rule "JLCPCB_pth_pad_annular"
+    (condition "A.Pad_Type == 'Through-hole'")
+    (constraint annular_width (min 0.15mm))
+)

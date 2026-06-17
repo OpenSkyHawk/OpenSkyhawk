@@ -17,7 +17,7 @@ Three-tier architecture: **SimGateway** (RP2040) ↔ **PanelBridge** (STM32, CAN
 
 Key facts that affect PCB and hardware decisions:
 
-- **MCUs:** STM32F103C8 (LQFP48) for CAN avionics nodes — STM32F103CB only where extra flash is needed (PanelBridge); RP2040 off-the-shelf modules for SimGateway and HID flight controls (no custom PCB for RP2040)
+- **MCUs:** STM32F103C8 (LQFP48) for **all** CAN avionics nodes — incl. PanelBridge (compiled ≈26 KB, fits C8's 64 KB). STM32F103CB (128 KB) is a drop-in fallback (same footprint) only if a build ever exceeds 64 KB — not currently needed by any board. RP2040 off-the-shelf modules for SimGateway and HID flight controls (no custom PCB for RP2040)
 - **CAN transceiver:** SN65HVD230 on PA11/PA12 per STM32 board
 - **NODE_ID:** assigned per board via `platformio.ini` `build_flags = -DNODE_ID=N`; visible to all translation units as a compile-time constant
 - **Reserved STM32 pins:** see `FirmwarePlan/08-hardware-firmware-contracts.md`

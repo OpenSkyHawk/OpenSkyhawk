@@ -45,11 +45,12 @@ The two build flags people forget: **`-DNODE_ID`** (every board needs a unique v
 crystal; the internal RC oscillator is not accurate enough for 500 kbps CAN).
 
 !!! note "Which STM32 variant"
-    Per the [variant policy](../getting-started/prerequisites.md), PanelGroup nodes default to
-    **`genericSTM32F103C8`** (64 KB) and **PanelBridge** uses **`genericSTM32F103CB`** (128 KB,
-    for the DCS-BIOS input map). Note: the in-tree `Templates/PanelGroup` currently still
-    targets `genericSTM32F103CB` — set it to `C8` unless your panel actually needs the extra
-    flash.
+    Per the [variant policy](../getting-started/prerequisites.md), **all** STM32 boards default to
+    **`genericSTM32F103C8`** (64 KB) — both PanelGroup nodes and **PanelBridge**. PanelBridge
+    carries the full DCS-BIOS input map yet still compiles to ~26 KB flash, so it fits the C8
+    comfortably. **`genericSTM32F103CB`** (128 KB) is a drop-in fallback (identical LQFP48
+    footprint) for any future build that ever exceeds 64 KB — no board currently needs it. Note:
+    the in-tree `Templates/PanelGroup` should target `genericSTM32F103C8`.
 
 ## Flashing
 
