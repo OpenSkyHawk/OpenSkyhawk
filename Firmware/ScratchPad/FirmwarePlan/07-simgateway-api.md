@@ -167,6 +167,67 @@ only — no additional SimGateway processing latency.
 
 ---
 
+## Status LEDs
+
+Two board-mounted LEDs on the `Gateway_Bridge` board report the gateway state: **GREEN = GP2,
+RED = GP3**, active-high (HIGH = on). A non-blocking `millis()` animator is ticked from
+`SimGateway::loop()`; `SimGateway::setup()` calls `statusLedBegin()` (pin config), so the sketch
+needs no LED code. The RP2040 module's onboard WS2812 (GP16) is not used.
+
+This is a **SimGateway-local** state machine (issue #94) — it shares only the animation
+vocabulary with `STM32Board` (issue #93), not the engine; the MCU-agnostic `StatusLedAnimator`
+was not adopted.
+
+States, highest priority first (the topmost active state wins):
+
+| Pri | State | Trigger | LED |
+|---|---|---|---|
+| 1 | `FAULT` | uart0 RX hardware error — RSR overrun/framing/parity/break | RED fast (4 Hz) |
+| 2 | `NO_HOST` | USB not enumerated (`TinyUSBDevice.mounted()` false), or unplugged after a mount | RED solid |
+| 3 | `STREAMING` | DCS-BIOS bytes forwarded CDC→UART within the last 500 ms | GREEN solid |
+| 4 | `USB_IDLE` | USB mounted, no recent DCS data | GREEN slow (1 Hz) |
+| 5 | `INIT` | booted, never mounted, within the 2 s init window | RED slow (brief) |
+
+Animation vocabulary (shared with STM32Board): OFF / SOLID / SLOW 1 Hz / FAST 4 Hz / ALT 500 ms /
+PULSE ~50 ms. PULSE-on-traffic is implemented but disabled by default (STREAMING is plain solid).
+Non-blocking — `millis()`, never `delay()`.
+
+### Signal sources
+
+- **STREAMING vs USB_IDLE** — the CDC→UART forward (relay step 1) timestamps the last PC→cockpit
+  byte; STREAMING while `now − lastCdcRx ≤ 500 ms`.
+- **NO_HOST / INIT** — `TinyUSBDevice.mounted()` polled each tick. A sticky "ever-mounted" flag
+  distinguishes INIT (never mounted, `now < 2000 ms`) from NO_HOST (unplugged after a mount, or
+  init window expired with no mount).
+- **FAULT** — read directly from the `uart0` PL011 error register (`uart_get_hw(uart0)->rsr`,
+  bits OE/BE/PE/FE), cleared on every read (write-to-clear). The arduino-pico `SerialUART` RX IRQ
+  drops framing/parity bytes and ignores overrun without ever touching RSR, so RSR is the only
+  reliable error source. `Serial1 == uart0` on this board; a board wiring the link to uart1 must
+  change the hardware pointer.
+
+### FAULT latch / recovery
+
+FAULT is latched, not momentary. On any error bit it latches and re-stamps; it clears only when
+**both** (a) ≥ 2 s have elapsed since the last error (a visibility floor, ~8 fast flashes) **and**
+(b) an error-free byte has arrived on uart0 RX *after* the fault. A silent bus therefore holds
+FAULT until clean PanelBridge data resumes — recovery is proven by traffic, not elapsed time.
+
+### Public API (additions)
+
+```cpp
+void SimGateway::statusLedBegin(); // configure GP2/GP3 outputs (both off); called by setup()
+void SimGateway::statusTick();     // advance the state machine + animation; called by loop()
+enum class SimGateway::LedState : uint8_t { FAULT, NO_HOST, STREAMING, USB_IDLE, INIT };
+enum class SimGateway::Anim     : uint8_t { OFF, SOLID, SLOW, FAST, ALT, PULSE };
+```
+
+`SIMGATEWAY_TEST` builds add injection/readback hooks (`statusInject`, `statusResolve`,
+`statusFaultStep`, `statusState`, `statusAnim`, `statusRedLevel`, `statusGreenLevel`,
+`statusResetForTest`) that exercise the pure state/animation/latch logic with no GPIO, TinyUSB,
+or register access. See `Firmware/Tests/SimGateway/tests/led_state/`.
+
+---
+
 ## UART Pin Contract
 
 The standard SimGateway link uses RP2040 `Serial1` / UART0:

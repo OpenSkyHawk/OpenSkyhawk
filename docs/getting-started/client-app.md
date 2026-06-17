@@ -52,6 +52,12 @@ serial port (`scanning…` until the device is found), the **CDC serial + HID** 
 a **Relaying / Stopped** indicator. An **Auto-reconnect** toggle re-opens the port
 automatically if the cockpit is unplugged and replugged.
 
+!!! tip "Reading the SimGateway LEDs"
+    The gateway board has two status LEDs you can read at a glance: **green solid** = DCS-BIOS
+    data flowing, **green slow blink** = connected but idle, **red solid** = no PC connected,
+    **red fast blink** = a UART link fault. See
+    [SimGateway → Status LEDs](../architecture/sim-gateway.md#status-leds) for the full table.
+
 The **Source Mode**, **DCS Link** (host + transport), and **Record** controls live on this
 tab too — covered under [Getting started](#getting-started) and
 [Recording and replay](#recording-and-replay).

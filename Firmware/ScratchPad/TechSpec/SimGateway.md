@@ -15,6 +15,7 @@ RP2040 firmware library. Owns:
 - **`HIDAxis`, `HIDButton`, `HIDHatSwitch` classes** — declared in the sketch; self-register into linked lists at construction
 - **`OsJoystick.send()` batching** — called once per `loop()` iteration after draining all UART bytes, only if any HID setter fired
 - **TinyUSB HID descriptor** — 8 axes, 128 buttons, 4 hat switches; embedded in `SimGateway.cpp` under `#ifndef SIMGATEWAY_TEST`
+- **Status-LED state machine** — drives the two board-mounted `Gateway_Bridge` LEDs (GREEN = GP2, RED = GP3, active-high) with a non-blocking `millis()` animator ticked from `loop()`; reports USB / data / fault state (issue #94)
 
 Does **not** run the DCS-BIOS library. Does **not** parse DCS-BIOS addresses or control names. Has no knowledge of CAN frame formats, PanelBridge internals, or the CAN cluster topology.
 
@@ -78,8 +79,12 @@ Firmware/Tests/SimGateway/
     ├── cdc_forwarding.cpp   — every non-HID UART byte is forwarded to USB CDC in order;
     │                          valid HID frames are consumed and not forwarded; 0xAA followed
     │                          by non-0x55 forwards both bytes before resuming scan
-    └── uart_loopback.cpp    — public SimGateway::loop() path through the configured RP2040
-                               UART TX/RX pins; requires GP0→GP1 jumper by default
+    ├── uart_loopback.cpp    — public SimGateway::loop() path through the configured RP2040
+    │                          UART TX/RX pins; requires GP0→GP1 jumper by default
+    └── led_state.cpp        — status-LED state machine: state→colour/animation mapping,
+                               priority precedence, STREAMING↔USB_IDLE 500 ms decay, INIT→NO_HOST
+                               2 s window, FAULT latch/recovery, animation phase timing.
+                               Pure logic via SIMGATEWAY_TEST hooks — no GPIO/TinyUSB/registers
 ```
 
 Tests are intended to run on a real RP2040 board as on-device harness tests. They simulate
@@ -173,6 +178,10 @@ build_src_filter = -<*> +<cdc_forwarding/cdc_forwarding.cpp>
 [env:test_uart_loopback]
 extends = env_base
 build_src_filter = -<*> +<uart_loopback/uart_loopback.cpp>
+
+[env:test_led_state]
+extends = env_base
+build_src_filter = -<*> +<led_state/led_state.cpp>
 ```
 
 ---
@@ -286,6 +295,13 @@ namespace SimGateway {
      */
     void loop();
 
+    // ── Status LEDs (Gateway_Bridge: GREEN = GP2, RED = GP3, active-high) ─────
+    enum class LedState : uint8_t { FAULT, NO_HOST, STREAMING, USB_IDLE, INIT };
+    enum class Anim     : uint8_t { OFF, SOLID, SLOW, FAST, ALT, PULSE };
+
+    void statusLedBegin(); ///< Configure GP2/GP3 outputs (both off); called by setup().
+    void statusTick();     ///< Advance the state machine + animation; called by loop().
+
 } // namespace SimGateway
 ```
 
@@ -387,6 +403,42 @@ _hidSetAxis(_axisIndex, (int16_t)(value - 32768));
 
 In test builds (`SIMGATEWAY_TEST`), all helpers are no-ops. No TinyUSB code is compiled or linked.
 The sketch has no knowledge of the HID backend or value scaling.
+
+### Status-LED state machine (issue #94)
+
+Drives the two `Gateway_Bridge` board LEDs (GREEN = GP2, RED = GP3, active-high) with a
+non-blocking `millis()` animator. `SimGateway::setup()` calls `statusLedBegin()`; `loop()` calls
+`statusTick()` after the relay/drain. SimGateway-**local** engine — shares the animation
+vocabulary with `STM32Board` (issue #93) but not the code (the shared `StatusLedAnimator` was not
+adopted). The RP2040 module's onboard WS2812 is not used.
+
+States (priority highest-first): `FAULT` (red fast 4 Hz) > `NO_HOST` (red solid) >
+`STREAMING` (green solid) > `USB_IDLE` (green slow 1 Hz) > `INIT` (red slow, brief). Vocabulary:
+OFF / SOLID / SLOW 1 Hz / FAST 4 Hz / ALT 500 ms / PULSE ~50 ms (PULSE disabled by default).
+
+Signal sources:
+
+- **STREAMING / USB_IDLE** — CDC→UART forward (relay step 1) timestamps the last PC byte;
+  STREAMING while `now − lastCdcRx ≤ 500 ms`.
+- **NO_HOST / INIT** — `TinyUSBDevice.mounted()` polled each tick; a sticky ever-mounted flag
+  splits INIT (never mounted, `now < 2000 ms`) from NO_HOST (unplugged after a mount, or init
+  window expired).
+- **FAULT** — read from the `uart0` PL011 error register (`uart_get_hw(uart0)->rsr`, bits
+  OE/BE/PE/FE), cleared on every read (write-to-clear). The arduino-pico `SerialUART` RX IRQ drops
+  framing/parity bytes and ignores overrun without touching RSR, so RSR is the only reliable error
+  source. `Serial1 == uart0` on this board.
+
+**FAULT latch / recovery:** latched on any error and re-stamped while errors persist; clears only
+when **both** (a) ≥ 2 s have elapsed since the last error and (b) an error-free byte arrived on
+uart0 RX *after* the fault. A silent bus holds FAULT until clean data resumes.
+
+**Design / testability:** the state-selection, animation-phase, and latch logic are pure functions
+taking `now` as a parameter (no `millis()`, GPIO, TinyUSB, or register access inside) — only
+`_applyLed()` touches the pins, and the mount poll + RSR read sit behind `#ifndef SIMGATEWAY_TEST`.
+`SIMGATEWAY_TEST` builds add hooks (`statusInject` / `statusResolve` / `statusFaultStep` +
+`statusState` / `statusAnim` / `statusRedLevel` / `statusGreenLevel` / `statusResetForTest`) that
+drive the machine with injected inputs and read back the resolved state + captured pin levels,
+mirroring the `feedByte` / `cdcCapture` pattern. Verified by `tests/led_state/`.
 
 ### HIDControls.h — standalone library
 

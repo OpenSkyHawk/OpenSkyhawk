@@ -168,6 +168,53 @@ void setup(SerialUART& uart,
  */
 void loop();
 
+// ── Status LEDs (Gateway_Bridge board) ────────────────────────────────────────
+//
+// Two board-mounted status LEDs report the gateway's USB / data / fault state at a
+// glance: RED = GP3, GREEN = GP2, board-mounted 0805, active-high (HIGH = on). The
+// animator is non-blocking (millis(), never delay()) and is ticked from loop(), so
+// sketches need no LED code. The RP2040 module's onboard WS2812 is not used.
+// See docs/architecture/sim-gateway.md for the user-facing table.
+
+/**
+ * @brief SimGateway status states, highest priority first.
+ *
+ * Resolved each tick; the highest-priority active state wins.
+ */
+enum class LedState : uint8_t {
+    FAULT,     ///< uart0 hardware error (RSR) — RED FAST. Latched until clean data resumes (≥2 s hold).
+    NO_HOST,   ///< USB not enumerated, or unplugged after a mount — RED SOLID.
+    STREAMING, ///< DCS-BIOS bytes from the PC within the last 500 ms — GREEN SOLID.
+    USB_IDLE,  ///< USB mounted, no recent DCS data — GREEN SLOW (1 Hz).
+    INIT,      ///< Booted, never mounted, within the init window — RED SLOW (brief).
+};
+
+/** @brief Non-blocking animation patterns (millis()-based). */
+enum class Anim : uint8_t {
+    OFF,   ///< Both off.
+    SOLID, ///< Steady on.
+    SLOW,  ///< 1 Hz blink (1000 ms period).
+    FAST,  ///< 4 Hz blink (250 ms period).
+    ALT,   ///< Red/green alternate (500 ms) — reserved; no state uses it yet.
+    PULSE, ///< Brief ~50 ms off-blip on traffic — disabled by default (STREAMING is SOLID).
+};
+
+/**
+ * @brief Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from setup().
+ *
+ * Called automatically by SimGateway::setup(); sketches do not call it directly.
+ */
+void statusLedBegin();
+
+/**
+ * @brief Advance the status-LED state machine and animation. Call once per loop().
+ *
+ * Samples USB-mount, recent DCS-BIOS activity, and the uart0 PL011 error flags, then
+ * drives GP2/GP3 for the current state. Non-blocking. Called automatically by
+ * SimGateway::loop(); sketches do not call it directly.
+ */
+void statusTick();
+
 #ifdef SIMGATEWAY_TEST
 /**
  * @brief Feed one byte into the parser (test builds only).
@@ -190,6 +237,46 @@ uint8_t cdcCaptureByte(size_t index);
 
 /** @brief True if more CDC bytes were forwarded than the test capture buffer can hold. */
 bool cdcCaptureOverflow();
+
+// ── Status-LED test hooks (test builds only) ──────────────────────────────────
+// The pure state-selection + animation logic is exercised without GPIO, TinyUSB,
+// or PL011 register reads by injecting inputs and reading back the resolved state /
+// captured pin levels. Mirrors the feedByte/cdcCapture pattern above.
+
+/**
+ * @brief Inject fully-resolved status inputs (test builds). Pairs with statusResolve().
+ * @param now          Fake millis() timestamp.
+ * @param mounted      Fake USB-mounted flag (sticks _everMounted once true).
+ * @param lastCdcRxMs  Timestamp of the last CDC→UART activity.
+ * @param faultActive  Resolved FAULT-latch flag (use statusFaultStep() to derive it).
+ */
+void statusInject(uint32_t now, bool mounted, uint32_t lastCdcRxMs, bool faultActive);
+
+/** @brief Resolve + apply the injected inputs; updates statusState/Anim/Red/Green. */
+void statusResolve();
+
+/**
+ * @brief Drive the FAULT latch one tick (test builds). Returns the resolved faultActive.
+ * @param now          Fake millis() timestamp.
+ * @param rsrError     A PL011 error bit was set this tick (overrun/framing/parity/break).
+ * @param uartRxMoved  ≥1 error-free byte was read from the UART this tick.
+ */
+bool statusFaultStep(uint32_t now, bool rsrError, bool uartRxMoved);
+
+/** @brief Last resolved LedState from statusResolve() (test builds). */
+LedState statusState();
+
+/** @brief Last resolved Anim from statusResolve() (test builds). */
+Anim statusAnim();
+
+/** @brief Captured GP3 (red) level from the last statusResolve() (test builds). */
+bool statusRedLevel();
+
+/** @brief Captured GP2 (green) level from the last statusResolve() (test builds). */
+bool statusGreenLevel();
+
+/** @brief Reset all status-LED latches/timestamps between test cases (test builds). */
+void statusResetForTest();
 #endif
 
 } // namespace SimGateway

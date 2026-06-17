@@ -6,6 +6,7 @@ Owns:
 - **USB CDC ↔ UART relay** — forwards the DCS-BIOS byte stream between PC and PanelBridge transparently
 - **HID frame demultiplexer** — intercepts `0xAA 0x55` binary frames on the UART RX path; dispatches `controlId` + `value` to registered `HIDAxis` / `HIDButton` objects
 - **HID report batching** — one TinyUSB HID report sent per `loop()` iteration after draining all UART bytes
+- **Status-LED state machine** — drives the two board LEDs (GREEN = GP2, RED = GP3, active-high) with a non-blocking `millis()` animator ticked from `loop()`
 
 Does **not** run DCS-BIOS. Does **not** parse DCS-BIOS addresses. Has no CAN knowledge.
 
@@ -83,12 +84,34 @@ controlId ranges (from `HIDControls.h`):
 
 Axis value mapping: 0–65535 (from PanelGroup) → ±32767 (`value − 32768` internally).
 
+## Status LEDs
+
+Two board-mounted LEDs on the `Gateway_Bridge` board — **GREEN = GP2, RED = GP3**, active-high —
+report the gateway state. `SimGateway::setup()` configures the pins and `SimGateway::loop()` ticks
+a non-blocking `millis()` animator; the sketch needs no LED code. The RP2040 module's onboard
+WS2812 is not used.
+
+| State | Trigger | LED |
+|---|---|---|
+| `FAULT` | uart0 RX hardware error (RSR overrun/framing/parity) | red fast (4 Hz) |
+| `NO_HOST` | USB not enumerated, or unplugged after a mount | red solid |
+| `STREAMING` | DCS-BIOS bytes from the PC within last ~500 ms | green solid |
+| `USB_IDLE` | USB mounted, no recent DCS data | green slow (1 Hz) |
+| `INIT` | booted, pre-USB-mount (brief) | red slow |
+
+Priority is highest-first (`FAULT` wins). `FAULT` is read from the `uart0` PL011 `RSR` register
+(the arduino-pico `SerialUART` surfaces no error flags), latched for ≥2 s, and clears only when
+clean PanelBridge data resumes after the fault — a silent bus holds it. This is a SimGateway-local
+engine; it shares the animation vocabulary with `STM32Board` (PB14/PB15) but not the code.
+
 ## API
 
 | Function | Description |
 |---|---|
-| `SimGateway::setup(uart)` | Init USB identity, TinyUSB HID, UART |
-| `SimGateway::loop()` | Relay CDC↔UART, parse HID frames, Send() |
+| `SimGateway::setup(uart)` | Init USB identity, TinyUSB HID, UART, status LEDs |
+| `SimGateway::loop()` | Relay CDC↔UART, parse HID frames, Send(), tick status LEDs |
+| `SimGateway::statusLedBegin()` | Configure GP2/GP3 outputs (called by `setup()`) |
+| `SimGateway::statusTick()` | Advance the status-LED state machine (called by `loop()`) |
 
 See `SimGateway.h` for full Doxygen documentation.
 
@@ -129,6 +152,11 @@ the full `Adafruit_USBD_HID` descriptor and report struct in the same file.
 
 `uart_loopback` verifies the same parser and forwarding behavior through the configured physical
 UART pins by writing bytes to `Serial1` TX and reading them back through `Serial1` RX.
+
+`led_state` verifies the status-LED state machine — state→colour/animation mapping, priority
+precedence, the STREAMING↔USB_IDLE 500 ms decay, the INIT→NO_HOST 2 s window, FAULT latch/recovery
+(including the silent-bus hold), and animation phase timing — entirely through `SIMGATEWAY_TEST`
+hooks, with no GPIO, TinyUSB, or register access.
 
 ADC and sensor normalisation belongs in PanelGroup / AnalogInput tests. SimGateway receives only
 already-normalised `uint16_t` HID payloads.

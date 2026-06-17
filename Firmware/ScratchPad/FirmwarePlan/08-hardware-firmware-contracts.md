@@ -147,6 +147,36 @@ WARNING value; CAN bus faults are communicated via `onCanStatus()` only.
 
 ---
 
+## Status LED — SimGateway (RP2040)
+
+The `Gateway_Bridge` board also carries two SimGateway status LEDs on the RP2040, separate from
+the STM32 bi-color LED above. Pins are fixed and configured by `SimGateway::statusLedBegin()`
+(called from `setup()`); ticked by `SimGateway::statusTick()` from `loop()`. Active-high. The
+RP2040 module's onboard WS2812 is not used.
+
+| Pin | LED channel |
+|-----|-------------|
+| GP2 | Green |
+| GP3 | Red |
+
+| State | Trigger | Red | Green | Visible |
+|-------|---------|-----|-------|---------|
+| `FAULT` | uart0 RX hardware error (RSR overrun/framing/parity/break) | Fast blink | OFF | Red fast (4 Hz) |
+| `NO_HOST` | USB not enumerated, or unplugged after a mount | ON | OFF | Red solid |
+| `STREAMING` | DCS-BIOS bytes from the PC within last 500 ms | OFF | ON | Green solid |
+| `USB_IDLE` | USB mounted, no recent DCS data | OFF | Slow blink | Green slow (1 Hz) |
+| `INIT` | booted, pre-USB-mount (brief) | Slow blink | OFF | Red slow |
+
+Priority is highest-first (`FAULT` > `NO_HOST` > `STREAMING` > `USB_IDLE` > `INIT`). This is a
+**SimGateway-local** engine (issue #94); it shares the animation vocabulary (OFF / SOLID / SLOW
+1 Hz / FAST 4 Hz / ALT / PULSE) with `STM32Board` (issue #93) but not the code — the shared
+`StatusLedAnimator` was not adopted. `FAULT` is read from the `uart0` PL011 `RSR` register
+(arduino-pico `SerialUART` surfaces no error flags), latched for ≥2 s, and clears only when clean
+UART data resumes after the fault — a silent bus holds it. Full behaviour:
+`07-simgateway-api.md` → *Status LEDs*.
+
+---
+
 ## Cross-Document Issues
 
 See `11-open-issues.md` for the full list. Active hardware/firmware discrepancy:
