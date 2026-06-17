@@ -40,7 +40,7 @@ These are pre-loaded in `template.kicad_pro` and appear in the "Interactive Rout
 
 Current capacity estimates at 1oz copper, 10°C temperature rise (IPC-2221B).
 
-**Package compatibility note:** LQFP48 (STM32) and HTSSOP-16 (DRV8835) have pad gaps of 0.28mm and 0.35mm respectively — too narrow to route between pads at 0.2mm clearance regardless. Use pad-end escape routing for both (best practice anyway). SOIC-8/28 (1.27mm pitch, 0.67mm gap) routes comfortably between pads at 0.2mm clearance.
+**Package compatibility note:** LQFP48 (STM32) and HTSSOP-16 (DRV8833PW) have pad gaps of 0.28mm and 0.35mm respectively — too narrow to route between pads at 0.2mm clearance regardless. Use pad-end escape routing for both (best practice anyway). SOIC-8/28 (1.27mm pitch, 0.67mm gap) routes comfortably between pads at 0.2mm clearance.
 
 ### Via sizes
 
@@ -146,7 +146,7 @@ Target: **≤ 500 mA at 12V input per board.**
 | 12V → LEDs | 54–180 mA (3–10 strings) | ~360 mA (20 strings, large panel) |
 | 12V → AP63205 input | ~100 mA | ~150 mA |
 | **Total 12V per board** | ~160–280 mA | ~510 mA (large panel edge case) |
-| 5V (DRV8835 stepper VM) | 15–30 mA | 50 mA |
+| 5V (DRV8833 stepper VM) | 15–30 mA | 50 mA |
 | 3.3V (STM32 + MCP23017 + CAN) | ~125 mA | ~175 mA |
 
 **System total (full cockpit ~20 boards):** ~2.3 A at 12V. PC ATX 500–600W supply provides 35–40A on 12V — <7% utilisation.
@@ -157,7 +157,7 @@ Target: **≤ 500 mA at 12V input per board.**
 
 - [ ] Solenoid / electromagnetic switch: confirm coil resistance, voltage, duty cycle, and whether flyback protection is needed (it almost certainly is — add TVS or flyback diode)
 - [ ] Servo: confirm supply voltage (5V or dedicated), stall current, and whether a separate high-current supply rail is needed
-- [ ] Large stepper (NEMA 14/17): confirm driver IC (DRV8835 is **not** suitable — max 1.5A; use DRV8825, TMC2209, or similar), current per phase, and microstepping requirements
+- [ ] Large stepper (NEMA 14/17): confirm driver IC (the DRV8833 gauge driver is **not** suitable — max ~1.5A/phase; use DRV8825, TMC2209, or similar), current per phase, and microstepping requirements
 - [ ] Decide: high-current actuator load on same board as logic, or dedicated driver board with separate power connector?
 
 ---
