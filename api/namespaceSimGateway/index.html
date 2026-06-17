@@ -3890,6 +3890,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-statusledbegin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function statusLedBegin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-statustick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function statusTick
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3934,6 +3956,14 @@
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-setup"><strong>setup</strong></a> (SerialUART &amp; uart, uint8_t txPin=DEFAULT_UART_TX_PIN, uint8_t rxPin=DEFAULT_UART_RX_PIN) <br><em>Initialise USB identity, OpenSkyhawkJoystick, and UART link to</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></td>
 </tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-statusledbegin"><strong>statusLedBegin</strong></a> () <br><em>Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from</em> <a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-statustick"><strong>statusTick</strong></a> () <br><em>Advance the status-LED state machine and animation. Call once per</em> <a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>.</em></td>
+</tr>
 </tbody>
 </table>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
@@ -3970,6 +4000,20 @@
 <li><code>txPin</code> RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3. </li>
 <li><code>rxPin</code> RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2. </li>
 </ul>
+<hr>
+
+<h3 id="function-statusledbegin">function statusLedBegin</h3>
+<p><em>Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from</em> <a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em></p>
+<pre><code class="language-C++">void SimGateway::statusLedBegin () 
+</code></pre>
+<p>Called automatically by <a href="./#function-setup"><strong>SimGateway::setup()</strong></a>; sketches do not call it directly. </p>
+<hr>
+
+<h3 id="function-statustick">function statusTick</h3>
+<p><em>Advance the status-LED state machine and animation. Call once per</em> <a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>.</em></p>
+<pre><code class="language-C++">void SimGateway::statusTick () 
+</code></pre>
+<p>Samples USB-mount, recent DCS-BIOS activity, and the uart0 PL011 error flags, then drives GP2/GP3 for the current state. Non-blocking. Called automatically by <a href="./#function-loop"><strong>SimGateway::loop()</strong></a>; sketches do not call it directly. </p>
 <hr>
 
 <hr />

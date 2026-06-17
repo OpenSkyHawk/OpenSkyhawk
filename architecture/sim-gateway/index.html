@@ -1061,6 +1061,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#status-leds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status LEDs
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4035,6 +4046,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#status-leds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status LEDs
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4211,6 +4233,70 @@ avoids redundant USB packets.</p>
 <code>Serial1.begin(250000)</code>, and TinyUSB HID enumeration. The sketch only declares its <code>HIDAxis</code>
 / <code>HIDButton</code> / <code>HIDHatSwitch</code> objects and calls <code>setup()</code> / <code>loop()</code> — DCS-BIOS relay is
 automatic and needs no declarations.</p>
+<h2 id="status-leds">Status LEDs</h2>
+<p>The gateway carries two board-mounted status LEDs on the <code>Gateway_Bridge</code> board — <strong>GREEN on
+GP2, RED on GP3</strong> — so you can read its USB / data / fault state at a glance without a host. They
+are active-high (HIGH = on) and driven by a non-blocking <code>millis()</code> animator ticked from
+<code>SimGateway::loop()</code>; the RP2040 module's onboard WS2812 is not used. State priority runs highest
+to lowest — the topmost active row wins:</p>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>State</th>
+<th>What it means</th>
+<th>LED</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 (highest)</td>
+<td><code>FAULT</code></td>
+<td>A UART hardware error on the PanelBridge link (overrun / framing / parity)</td>
+<td><strong>Red, fast blink</strong> (4 Hz)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>NO_HOST</code></td>
+<td>USB not enumerated — no PC, or the cable was unplugged</td>
+<td><strong>Red, solid</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>STREAMING</code></td>
+<td>DCS-BIOS data flowing from the PC (seen within the last ~500 ms)</td>
+<td><strong>Green, solid</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>USB_IDLE</code></td>
+<td>USB connected, but no recent DCS-BIOS data</td>
+<td><strong>Green, slow blink</strong> (1 Hz)</td>
+</tr>
+<tr>
+<td>5 (lowest)</td>
+<td><code>INIT</code></td>
+<td>Just booted, USB not yet mounted (brief)</td>
+<td><strong>Red, slow blink</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">When the fault light clears</p>
+<p><code>FAULT</code> is latched, not momentary: it stays on for at least ~2 s (so a single glitch is
+visible) and then clears <strong>only once clean PanelBridge data resumes</strong> on the UART — an
+error-free byte received <em>after</em> the fault. A fault on an otherwise-silent link therefore
+stays lit until traffic returns error-free, rather than timing out on its own. The error is
+read straight from the RP2040's <code>uart0</code> PL011 error register (<code>RSR</code>), because the
+arduino-pico <code>SerialUART</code> driver doesn't surface overrun/framing flags any other way.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Active-high, separate power domain</p>
+<p>Both LEDs are active-high (HIGH = lit) and sit on the RP2040 module's own 3V3 LDO, isolated
+from the STM32 rail — so they reflect the <em>gateway's</em> state even if the STM32 side is
+unpowered or held in reset. The two <code>BRIDGE</code> LEDs next to them (PB14/PB15) are driven
+separately by the STM32 firmware.</p>
+</div>
 
 
 

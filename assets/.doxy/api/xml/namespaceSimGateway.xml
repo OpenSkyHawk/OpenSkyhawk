@@ -2,6 +2,123 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="namespaceSimGateway" kind="namespace" language="C++">
     <compoundname>SimGateway</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bd" prot="private" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>LedState</name>
+        <qualifiedname>SimGateway::LedState</qualifiedname>
+        <enumvalue id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bda893b3aaf1661e3717b18e8335ff93a72" prot="private">
+          <name>FAULT</name>
+          <briefdescription>
+<para>uart0 hardware error (RSR) — RED FAST. Latched until clean data resumes (≥2 s hold). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bda9ebe56d6c5914e76aa7038db483165fb" prot="private">
+          <name>NO_HOST</name>
+          <briefdescription>
+<para>USB not enumerated, or unplugged after a mount — RED SOLID. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bdab8f87bd0ae829f0fa0fcaa1a0a2bf91e" prot="private">
+          <name>STREAMING</name>
+          <briefdescription>
+<para>DCS-BIOS bytes from the PC within the last 500 ms — GREEN SOLID. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bda17f450265db43b163a9db90baf7aba19" prot="private">
+          <name>USB_IDLE</name>
+          <briefdescription>
+<para>USB mounted, no recent DCS data — GREEN SLOW (1 Hz). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bdafaee4ca3c30ee18148ce3ada37466498" prot="private">
+          <name>INIT</name>
+          <briefdescription>
+<para>Booted, never mounted, within the init window — RED SLOW (brief). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref> status states, highest priority first. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Resolved each tick; the highest-priority active state wins. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="184" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="184" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783" prot="private" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>Anim</name>
+        <qualifiedname>SimGateway::Anim</qualifiedname>
+        <enumvalue id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783a88559a0cfd8250c9d65970cc145c92d4" prot="private">
+          <name>OFF</name>
+          <briefdescription>
+<para>Both off. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783ad0dea69649a83749aa6bdf176092e8c9" prot="private">
+          <name>SOLID</name>
+          <briefdescription>
+<para>Steady on. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783a0e3066cbbd284dce8b76e7c4620d6d75" prot="private">
+          <name>SLOW</name>
+          <briefdescription>
+<para>1 Hz blink (1000 ms period). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783adca6e617f6fb54033deb311e7e7c93cc" prot="private">
+          <name>FAST</name>
+          <briefdescription>
+<para>4 Hz blink (250 ms period). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783adfbfc9cc7a235560f04cb1a5faf1ec3e" prot="private">
+          <name>ALT</name>
+          <briefdescription>
+<para>Red/green alternate (500 ms) — reserved; no state uses it yet. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783a4712174b138f092655be88673fc2a070" prot="private">
+          <name>PULSE</name>
+          <briefdescription>
+<para>Brief ~50 ms off-blip on traffic — disabled by default (STREAMING is SOLID). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Non-blocking animation patterns (millis()-based). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="193" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="193" bodyend="200"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="var">
       <memberdef kind="variable" id="namespaceSimGateway_1a5130d15328037ded5720f8c9dd28b908" prot="private" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -97,7 +214,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="287" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="287" bodyend="314" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="148" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="436" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="436" bodyend="465" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="148" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -123,13 +240,45 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="316" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="316" bodyend="330" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="169" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="467" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="467" bodyend="491" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="169" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSimGateway_1ae18de25981235d01df1935695a286476" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SimGateway::statusLedBegin</definition>
+        <argsstring>()</argsstring>
+        <name>statusLedBegin</name>
+        <qualifiedname>SimGateway::statusLedBegin</qualifiedname>
+        <briefdescription>
+<para>Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called automatically by <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">SimGateway::setup()</ref>; sketches do not call it directly. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="493" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="493" bodyend="500" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="207" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSimGateway_1a1a82d4907b44c0e0cf33238fc34c8ae7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SimGateway::statusTick</definition>
+        <argsstring>()</argsstring>
+        <name>statusTick</name>
+        <qualifiedname>SimGateway::statusTick</qualifiedname>
+        <briefdescription>
+<para>Advance the status-LED state machine and animation. Call once per <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Samples USB-mount, recent DCS-BIOS activity, and the uart0 PL011 error flags, then drives GP2/GP3 for the current state. Non-blocking. Called automatically by <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">SimGateway::loop()</ref>; sketches do not call it directly. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="502" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="502" bodyend="528" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="216" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="285" column="1"/>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="434" column="1"/>
   </compounddef>
 </doxygen>

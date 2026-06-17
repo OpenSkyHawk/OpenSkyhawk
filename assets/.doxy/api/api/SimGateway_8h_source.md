@@ -78,6 +78,35 @@ void setup(SerialUART& uart,
 
 void loop();
 
+// ── Status LEDs (Gateway_Bridge board) ────────────────────────────────────────
+//
+// Two board-mounted status LEDs report the gateway's USB / data / fault state at a
+// glance: RED = GP3, GREEN = GP2, board-mounted 0805, active-high (HIGH = on). The
+// animator is non-blocking (millis(), never delay()) and is ticked from loop(), so
+// sketches need no LED code. The RP2040 module's onboard WS2812 is not used.
+// See docs/architecture/sim-gateway.md for the user-facing table.
+
+enum class LedState : uint8_t {
+    FAULT,     
+    NO_HOST,   
+    STREAMING, 
+    USB_IDLE,  
+    INIT,      
+};
+
+enum class Anim : uint8_t {
+    OFF,   
+    SOLID, 
+    SLOW,  
+    FAST,  
+    ALT,   
+    PULSE, 
+};
+
+void statusLedBegin();
+
+void statusTick();
+
 #ifdef SIMGATEWAY_TEST
 bool feedByte(uint8_t b);
 
@@ -90,6 +119,27 @@ size_t cdcCaptureCount();
 uint8_t cdcCaptureByte(size_t index);
 
 bool cdcCaptureOverflow();
+
+// ── Status-LED test hooks (test builds only) ──────────────────────────────────
+// The pure state-selection + animation logic is exercised without GPIO, TinyUSB,
+// or PL011 register reads by injecting inputs and reading back the resolved state /
+// captured pin levels. Mirrors the feedByte/cdcCapture pattern above.
+
+void statusInject(uint32_t now, bool mounted, uint32_t lastCdcRxMs, bool faultActive);
+
+void statusResolve();
+
+bool statusFaultStep(uint32_t now, bool rsrError, bool uartRxMoved);
+
+LedState statusState();
+
+Anim statusAnim();
+
+bool statusRedLevel();
+
+bool statusGreenLevel();
+
+void statusResetForTest();
 #endif
 
 } // namespace SimGateway

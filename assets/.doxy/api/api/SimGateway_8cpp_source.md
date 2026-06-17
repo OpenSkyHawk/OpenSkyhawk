@@ -290,6 +290,155 @@ bool _processByte(uint8_t b) {
 
 } // anonymous namespace
 
+// ── Status LED state machine ──────────────────────────────────────────────────
+//
+// Drives the two board-mounted SimGateway status LEDs (RED = GP3, GREEN = GP2,
+// active-high) with a non-blocking millis() animator, ticked from loop().
+//
+// The state-selection + animation-phase logic is PURE: it takes `now` as a
+// parameter, touches no hardware, and never calls millis() internally — so
+// SIMGATEWAY_TEST builds unit-test it with injected inputs (statusInject /
+// statusFaultStep). Only _applyLed() touches GPIO, and the TinyUSBDevice.mounted()
+// poll + PL011 RSR read live behind #ifndef SIMGATEWAY_TEST.
+
+#ifndef SIMGATEWAY_TEST
+#include "hardware/structs/uart.h" // uart0_hw — PL011 registers
+#include "hardware/regs/uart.h"    // UART_UARTRSR_*_BITS error-flag masks
+#endif
+
+namespace {
+
+using SimGateway::Anim;
+using SimGateway::LedState;
+
+enum class LedColor : uint8_t { NONE, RED, GREEN };
+
+constexpr uint8_t  PIN_LED_GREEN     = 2;    // GP2
+constexpr uint8_t  PIN_LED_RED       = 3;    // GP3
+constexpr uint32_t STREAM_WINDOW_MS  = 500;  // CDC-RX recency → STREAMING
+constexpr uint32_t INIT_WINDOW_MS    = 2000; // boot grace before NO_HOST if never mounted
+constexpr uint32_t FAULT_MIN_HOLD_MS = 2000; // FAULT visibility floor (~8 fast flashes)
+constexpr uint32_t SLOW_PERIOD_MS    = 1000; // 1 Hz
+constexpr uint32_t FAST_PERIOD_MS    = 250;  // 4 Hz
+constexpr uint32_t ALT_PERIOD_MS     = 500;  // reserved
+constexpr bool     ENABLE_TRAFFIC_PULSE = false; // STREAMING is plain SOLID per AC
+
+struct StatusInputs {
+    uint32_t now;
+    bool     mounted;
+    uint32_t lastCdcRxMs;
+    bool     everMounted;
+    bool     faultActive;
+};
+
+struct LedOutput {
+    LedState state;
+    LedColor color;
+    Anim     anim;
+    bool     redOn;
+    bool     greenOn;
+};
+
+// Sampled signal state (updated by loop() / statusTick()).
+uint32_t _lastCdcRxMs      = 0;
+bool     _uartMovedThisTick = false;
+bool     _everMounted      = false;
+
+// FAULT latch state.
+bool     _faultLatched  = false;
+bool     _faultEverSeen = false;
+uint32_t _lastFaultMs   = 0;
+uint32_t _lastUartRxMs  = 0;
+
+// Pure: pick the active state from sampled inputs (priority high → low).
+LedState _selectState(const StatusInputs& in) {
+    if (in.faultActive) return LedState::FAULT;
+    if (!in.mounted && (in.everMounted || in.now >= INIT_WINDOW_MS)) return LedState::NO_HOST;
+    if (in.mounted && (uint32_t)(in.now - in.lastCdcRxMs) <= STREAM_WINDOW_MS) return LedState::STREAMING;
+    if (in.mounted) return LedState::USB_IDLE;
+    return LedState::INIT;
+}
+
+// Pure: map a state to its colour + animation.
+void _animFor(LedState s, LedColor& color, Anim& anim) {
+    switch (s) {
+        case LedState::FAULT:     color = LedColor::RED;   anim = Anim::FAST;  break;
+        case LedState::NO_HOST:   color = LedColor::RED;   anim = Anim::SOLID; break;
+        case LedState::STREAMING: color = LedColor::GREEN; anim = ENABLE_TRAFFIC_PULSE ? Anim::PULSE : Anim::SOLID; break;
+        case LedState::USB_IDLE:  color = LedColor::GREEN; anim = Anim::SLOW;  break;
+        case LedState::INIT:      color = LedColor::RED;   anim = Anim::SLOW;  break;
+    }
+}
+
+// Pure: on/off for an animation at time `now` (50% duty for blinks).
+bool _animOn(Anim anim, uint32_t now) {
+    switch (anim) {
+        case Anim::OFF:   return false;
+        case Anim::SOLID: return true;
+        case Anim::SLOW:  return (now % SLOW_PERIOD_MS) < (SLOW_PERIOD_MS / 2);
+        case Anim::FAST:  return (now % FAST_PERIOD_MS) < (FAST_PERIOD_MS / 2);
+        case Anim::ALT:   return (now % ALT_PERIOD_MS)  < (ALT_PERIOD_MS / 2);
+        case Anim::PULSE: return true; // baseline solid; PULSE off-blip disabled by default
+    }
+    return false;
+}
+
+// Pure: resolve full LED output (state + colour + anim + pin levels) for `now`.
+LedOutput _resolveStatus(const StatusInputs& in) {
+    LedOutput out{};
+    out.state = _selectState(in);
+    _animFor(out.state, out.color, out.anim);
+    bool on = _animOn(out.anim, in.now);
+    out.redOn   = (out.color == LedColor::RED)   && on;
+    out.greenOn = (out.color == LedColor::GREEN) && on;
+    return out;
+}
+
+// Update the FAULT latch from this tick's signals. Shared by production sampling
+// (statusTick) and the SIMGATEWAY_TEST statusFaultStep() hook.
+//   rsrError    — a PL011 error bit was set this tick.
+//   uartRxMoved — ≥1 error-free byte was read from the UART this tick.
+// FAULT latches on any error and re-stamps while errors persist; it clears only
+// when (a) ≥ FAULT_MIN_HOLD_MS has elapsed since the last error AND (b) an
+// error-free byte arrived on the UART *after* that error. A silent bus therefore
+// holds FAULT until clean data resumes. Returns the resolved faultActive flag.
+bool _updateFaultLatch(uint32_t now, bool rsrError, bool uartRxMoved) {
+    if (rsrError) {
+        _faultEverSeen = true;
+        _faultLatched  = true;
+        _lastFaultMs   = now;
+    } else if (uartRxMoved) {
+        _lastUartRxMs = now;
+    }
+    if (_faultLatched &&
+        (uint32_t)(now - _lastFaultMs) >= FAULT_MIN_HOLD_MS &&
+        (int32_t)(_lastUartRxMs - _lastFaultMs) > 0) {
+        _faultLatched = false;
+    }
+    return _faultLatched;
+}
+
+#ifdef SIMGATEWAY_TEST
+bool      _sgtest_redLevel   = false;
+bool      _sgtest_greenLevel = false;
+StatusInputs _sgtest_inputs  = {};
+LedOutput    _sgtest_out     = {};
+#endif
+
+// The only function that touches the LED GPIO (active-high). In test builds it
+// captures the resolved levels instead of writing pins.
+void _applyLed(const LedOutput& out) {
+#ifdef SIMGATEWAY_TEST
+    _sgtest_redLevel   = out.redOn;
+    _sgtest_greenLevel = out.greenOn;
+#else
+    digitalWrite(PIN_LED_RED,   out.redOn   ? HIGH : LOW);
+    digitalWrite(PIN_LED_GREEN, out.greenOn ? HIGH : LOW);
+#endif
+}
+
+} // anonymous namespace
+
 // ── SimGateway ────────────────────────────────────────────────────────────────
 
 namespace SimGateway {
@@ -316,6 +465,8 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
 
     _hidBegin(); // no-op in SIMGATEWAY_TEST builds
 
+    statusLedBegin(); // configure GP2/GP3 status LEDs (both off)
+
 #ifndef SIMGATEWAY_TEST
     Serial.println(F("=============================="));
     Serial.println(F("  SimGateway"));
@@ -324,19 +475,66 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
 }
 
 void loop() {
-    // 1. Forward CDC → UART (PC DCS-BIOS stream to PanelBridge)
+    // 1. Forward CDC → UART (PC DCS-BIOS stream to PanelBridge).
+    //    Bytes moving here is the "host is talking" signal that drives STREAMING.
+    bool cdcMoved = false;
     while (Serial.available()) {
         _uart->write(Serial.read());
+        cdcMoved = true;
     }
+    if (cdcMoved) _lastCdcRxMs = millis();
 
-    // 2. Drain UART; HID frames dispatched, DCS-BIOS bytes forwarded to CDC
+    // 2. Drain UART; HID frames dispatched, DCS-BIOS bytes forwarded to CDC.
+    //    UART RX moving (error-free) is the proof-of-recovery signal for FAULT.
     bool anyFired = false;
     while (_uart->available()) {
         anyFired |= _processByte(_uart->read());
+        _uartMovedThisTick = true;
     }
 
     // 3. Flush one HID report if any setter fired this iteration
     if (anyFired) _hidSend();
+
+    // 4. Advance the status-LED state machine (non-blocking). Reads the uart0 RSR
+    //    after the drain so this tick's UART errors are visible.
+    statusTick();
+}
+
+void statusLedBegin() {
+#ifndef SIMGATEWAY_TEST
+    pinMode(PIN_LED_RED,   OUTPUT);
+    pinMode(PIN_LED_GREEN, OUTPUT);
+    digitalWrite(PIN_LED_RED,   LOW);
+    digitalWrite(PIN_LED_GREEN, LOW);
+#endif
+}
+
+void statusTick() {
+    uint32_t now = millis();
+
+#ifndef SIMGATEWAY_TEST
+    bool mounted = TinyUSBDevice.mounted();
+
+    // Read the PL011 sticky error flags. Serial1 == uart0 on this board
+    // (SerialUART.cpp: `#define __SERIAL1_DEVICE uart0`); a future board wiring the
+    // status UART to uart1 must change STATUS_UART_HW. Clear on every read
+    // (write-to-clear via the ECR alias) or a single overrun pins FAULT forever.
+    auto* const        STATUS_UART_HW = uart0_hw;
+    constexpr uint32_t RSR_ERR = UART_UARTRSR_OE_BITS | UART_UARTRSR_BE_BITS |
+                                 UART_UARTRSR_PE_BITS | UART_UARTRSR_FE_BITS;
+    bool rsrError = (STATUS_UART_HW->rsr & RSR_ERR) != 0;
+    if (rsrError) STATUS_UART_HW->rsr = 0;
+#else
+    bool mounted  = false; // test builds drive the state machine via the hooks below
+    bool rsrError = false;
+#endif
+
+    if (mounted) _everMounted = true;
+    bool faultActive   = _updateFaultLatch(now, rsrError, _uartMovedThisTick);
+    _uartMovedThisTick = false;
+
+    StatusInputs in{ now, mounted, _lastCdcRxMs, _everMounted, faultActive };
+    _applyLed(_resolveStatus(in));
 }
 
 #ifdef SIMGATEWAY_TEST
@@ -348,6 +546,40 @@ uint8_t cdcCaptureByte(size_t index) {
     return (index < _sgtest_cdcCount) ? _sgtest_cdcBytes[index] : 0;
 }
 bool cdcCaptureOverflow()  { return _sgtest_cdcOverflow; }
+
+// ── Status-LED test hooks ─────────────────────────────────────────────────────
+void statusInject(uint32_t now, bool mounted, uint32_t lastCdcRxMs, bool faultActive) {
+    if (mounted) _everMounted = true;
+    _sgtest_inputs = StatusInputs{ now, mounted, lastCdcRxMs, _everMounted, faultActive };
+}
+
+void statusResolve() {
+    _sgtest_out = _resolveStatus(_sgtest_inputs);
+    _applyLed(_sgtest_out);
+}
+
+bool statusFaultStep(uint32_t now, bool rsrError, bool uartRxMoved) {
+    return _updateFaultLatch(now, rsrError, uartRxMoved);
+}
+
+LedState statusState()      { return _sgtest_out.state; }
+Anim     statusAnim()       { return _sgtest_out.anim; }
+bool     statusRedLevel()   { return _sgtest_redLevel; }
+bool     statusGreenLevel() { return _sgtest_greenLevel; }
+
+void statusResetForTest() {
+    _everMounted       = false;
+    _faultLatched      = false;
+    _faultEverSeen     = false;
+    _lastFaultMs       = 0;
+    _lastUartRxMs      = 0;
+    _lastCdcRxMs       = 0;
+    _uartMovedThisTick = false;
+    _sgtest_redLevel   = false;
+    _sgtest_greenLevel = false;
+    _sgtest_inputs     = StatusInputs{};
+    _sgtest_out        = LedOutput{};
+}
 #endif
 
 } // namespace SimGateway

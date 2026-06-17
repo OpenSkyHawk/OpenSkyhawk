@@ -3974,6 +3974,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#simgateway-status-leds-firmware-driven" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SimGateway status LEDs (firmware-driven)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#bom" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4665,11 +4676,11 @@ edge GPIO are PWM-capable; GP26–GP29 are the 4× 12-bit ADC. The module's <cod
 </tr>
 <tr>
 <td>GP2</td>
-<td><strong>SimGateway status — GREEN</strong> (<code>SIMGW</code>, 0805, board-mounted, high-value R) — <strong>reserved</strong></td>
+<td><strong>SimGateway status — GREEN</strong> (<code>SIMGW</code>, 0805, board-mounted, high-value R) — driven by the status-LED state machine (active-high)</td>
 </tr>
 <tr>
 <td>GP3</td>
-<td><strong>SimGateway status — RED</strong> (<code>SIMGW</code>, 0805) — <strong>reserved</strong></td>
+<td><strong>SimGateway status — RED</strong> (<code>SIMGW</code>, 0805) — driven by the status-LED state machine (active-high)</td>
 </tr>
 <tr>
 <td>GP4–GP15</td>
@@ -4687,6 +4698,53 @@ edge GPIO are PWM-capable; GP26–GP29 are the 4× 12-bit ADC. The module's <cod
 </table>
 <p>Pass-through priority: <strong>GP26–GP29 (ADC)</strong> for HID axes, plus a few GP4–GP15. Underside pads
 (GP16–GP25) are not used — only the 20 edge pins are wired.</p>
+<h3 id="simgateway-status-leds-firmware-driven">SimGateway status LEDs (firmware-driven)</h3>
+<p>GP2 (green) / GP3 (red) are driven by a non-blocking state machine in the SimGateway library
+(<code>Firmware/Libraries/SimGateway/</code>, ticked from <code>SimGateway::loop()</code>), active-high. States,
+highest priority first:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Trigger</th>
+<th>LED</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FAULT</code></td>
+<td>uart0 RX hardware error (RSR overrun/framing/parity)</td>
+<td>red fast (4 Hz)</td>
+</tr>
+<tr>
+<td><code>NO_HOST</code></td>
+<td>USB not enumerated, or unplugged after a mount</td>
+<td>red solid</td>
+</tr>
+<tr>
+<td><code>STREAMING</code></td>
+<td>DCS-BIOS bytes from the PC within last ~500 ms</td>
+<td>green solid</td>
+</tr>
+<tr>
+<td><code>USB_IDLE</code></td>
+<td>USB mounted, no recent DCS data</td>
+<td>green slow (1 Hz)</td>
+</tr>
+<tr>
+<td><code>INIT</code></td>
+<td>booted, pre-USB-mount (brief)</td>
+<td>red slow</td>
+</tr>
+</tbody>
+</table>
+<p><code>FAULT</code> is read from the <code>uart0</code> PL011 <code>RSR</code> register (the arduino-pico <code>SerialUART</code> driver
+surfaces no error flags), latched for ≥2 s, and clears only when clean UART data resumes after
+the fault — a silent bus holds it. User-facing table: published
+<a href="../../architecture/sim-gateway/#status-leds">architecture/sim-gateway.md → Status LEDs</a>.
+Counterpart STM32 status LEDs
+(PB14/PB15) are owned by <code>STM32Board</code> (issue #93); SimGateway shares only the animation
+vocabulary, not the engine.</p>
 <h3 id="bom">BOM</h3>
 <table>
 <thead>

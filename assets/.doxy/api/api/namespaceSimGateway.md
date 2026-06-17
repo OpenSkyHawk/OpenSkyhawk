@@ -53,6 +53,8 @@
 | ---: | :--- |
 |  void | [**loop**](#function-loop) () <br>_Relay bytes and dispatch HID frames. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _iteration._ |
 |  void | [**setup**](#function-setup) (SerialUART & uart, uint8\_t txPin=DEFAULT\_UART\_TX\_PIN, uint8\_t rxPin=DEFAULT\_UART\_RX\_PIN) <br>_Initialise USB identity, OpenSkyhawkJoystick, and UART link to_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
+|  void | [**statusLedBegin**](#function-statusledbegin) () <br>_Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from_ [_**setup()**_](namespaceSimGateway.md#function-setup) _._ |
+|  void | [**statusTick**](#function-statustick) () <br>_Advance the status-LED state machine and animation. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _._ |
 
 
 
@@ -158,6 +160,42 @@ Must be the first call in the sketch's [**setup()**](namespaceSimGateway.md#func
 * `rxPin` RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2. 
 
 
+
+
+        
+
+<hr>
+
+
+
+### function statusLedBegin 
+
+_Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from_ [_**setup()**_](namespaceSimGateway.md#function-setup) _._
+```C++
+void SimGateway::statusLedBegin () 
+```
+
+
+
+Called automatically by [**SimGateway::setup()**](namespaceSimGateway.md#function-setup); sketches do not call it directly. 
+
+
+        
+
+<hr>
+
+
+
+### function statusTick 
+
+_Advance the status-LED state machine and animation. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _._
+```C++
+void SimGateway::statusTick () 
+```
+
+
+
+Samples USB-mount, recent DCS-BIOS activity, and the uart0 PL011 error flags, then drives GP2/GP3 for the current state. Non-blocking. Called automatically by [**SimGateway::loop()**](namespaceSimGateway.md#function-loop); sketches do not call it directly. 
 
 
         

@@ -70,6 +70,8 @@
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
 * **setWarning** ([**STM32Board**](namespaceSTM32Board.md))
+* **statusLedBegin** ([**SimGateway**](namespaceSimGateway.md))
+* **statusTick** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## t

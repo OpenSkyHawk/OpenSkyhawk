@@ -4226,6 +4226,13 @@ auto-detected SimGateway — identity (<em>A-4E Skyhawk</em>), USB <strong>VID/P
 serial port (<code>scanning…</code> until the device is found), the <strong>CDC serial + HID</strong> interfaces, and
 a <strong>Relaying / Stopped</strong> indicator. An <strong>Auto-reconnect</strong> toggle re-opens the port
 automatically if the cockpit is unplugged and replugged.</p>
+<div class="admonition tip">
+<p class="admonition-title">Reading the SimGateway LEDs</p>
+<p>The gateway board has two status LEDs you can read at a glance: <strong>green solid</strong> = DCS-BIOS
+data flowing, <strong>green slow blink</strong> = connected but idle, <strong>red solid</strong> = no PC connected,
+<strong>red fast blink</strong> = a UART link fault. See
+<a href="../../architecture/sim-gateway/#status-leds">SimGateway → Status LEDs</a> for the full table.</p>
+</div>
 <p>The <strong>Source Mode</strong>, <strong>DCS Link</strong> (host + transport), and <strong>Record</strong> controls live on this
 tab too — covered under <a href="#getting-started">Getting started</a> and
 <a href="#recording-and-replay">Recording and replay</a>.</p>
