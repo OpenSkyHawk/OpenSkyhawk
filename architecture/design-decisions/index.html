@@ -4341,11 +4341,13 @@ on the <a href="../dcsbios-vs-hid/">DCS-BIOS vs HID</a> page.</p>
 <hr />
 <h2 id="d7-stm32f103-for-the-can-nodes">D7 — STM32F103 for the CAN nodes</h2>
 <p><strong>Decision:</strong> The CAN nodes — PanelBridge and every PanelGroup node — use the <strong>STM32F103</strong>
-family (LQFP48, 20 KB RAM). The <strong>STM32F103C8</strong> (64 KB flash) is the default; the
-<strong>STM32F103CB</strong> (128 KB flash) is used only where flash demands it.
-<strong>PanelBridge</strong> is the STM32F103CB case — it runs the DCS-BIOS library plus the full generated
-input map (~300 entries). PanelGroup nodes carry only the <code>DCSIN_*</code> constants they use,
-so they fit the STM32F103C8.</p>
+family (LQFP48, 20 KB RAM). The <strong>STM32F103C8</strong> (64 KB flash) is the default for every board;
+the <strong>STM32F103CB</strong> (128 KB flash) is a drop-in fallback on the identical footprint, reserved
+for any future build that ever exceeds 64 KB.
+<strong>PanelBridge</strong> runs the DCS-BIOS library plus the full generated input map (~300 entries), yet
+compiles to ~26 KB flash (~40% of the C8's 64 KB) — so it fits the STM32F103C8. PanelGroup
+nodes carry only the <code>DCSIN_*</code> constants they use, so they fit easily too. No board currently
+needs the CB.</p>
 <p><strong>Reasoning:</strong></p>
 <ul>
 <li><strong>Native bxCAN peripheral</strong> — CAN is the backbone of the whole system; a built-in

@@ -4051,11 +4051,12 @@ monitor_speed = 115200
 crystal; the internal RC oscillator is not accurate enough for 500 kbps CAN).</p>
 <div class="admonition note">
 <p class="admonition-title">Which STM32 variant</p>
-<p>Per the <a href="../../getting-started/prerequisites/">variant policy</a>, PanelGroup nodes default to
-<strong><code>genericSTM32F103C8</code></strong> (64 KB) and <strong>PanelBridge</strong> uses <strong><code>genericSTM32F103CB</code></strong> (128 KB,
-for the DCS-BIOS input map). Note: the in-tree <code>Templates/PanelGroup</code> currently still
-targets <code>genericSTM32F103CB</code> — set it to <code>C8</code> unless your panel actually needs the extra
-flash.</p>
+<p>Per the <a href="../../getting-started/prerequisites/">variant policy</a>, <strong>all</strong> STM32 boards default to
+<strong><code>genericSTM32F103C8</code></strong> (64 KB) — both PanelGroup nodes and <strong>PanelBridge</strong>. PanelBridge
+carries the full DCS-BIOS input map yet still compiles to ~26 KB flash, so it fits the C8
+comfortably. <strong><code>genericSTM32F103CB</code></strong> (128 KB) is a drop-in fallback (identical LQFP48
+footprint) for any future build that ever exceeds 64 KB — no board currently needs it. Note:
+the in-tree <code>Templates/PanelGroup</code> should target <code>genericSTM32F103C8</code>.</p>
 </div>
 <h2 id="flashing">Flashing</h2>
 <p>STM32 boards flash over <strong>SWD with an ST-Link</strong> (<code>upload_protocol = stlink</code>). PlatformIO drives

@@ -4044,7 +4044,7 @@ break the byte-relay guarantees the architecture depends on.</p>
 SimGateway   (RP2040)
   │  UART @ 250 kbps
   ▼
-PanelBridge  (STM32F103CB, CAN master)
+PanelBridge  (STM32F103C8, CAN master)
   │  CAN bus @ 500 kbps
   ▼
 PanelGroup   (STM32F103C8, one per panel group)
@@ -4066,7 +4066,7 @@ Breakout boards (MCP23017, ADS1115)
 <tr>
 <td><strong>MCU</strong></td>
 <td>RP2040</td>
-<td>STM32F103CB</td>
+<td>STM32F103C8</td>
 <td>STM32F103C8</td>
 </tr>
 <tr>
@@ -4106,11 +4106,13 @@ structs, CAN IDs, the <code>controlId</code> namespace), <strong><code>STM32Boar
 init for both STM32 tiers), and <strong><code>HIDControls</code></strong> (the HID <code>controlId</code> allocations, shared
 between SimGateway and CANProtocol).</p>
 <div class="admonition note">
-<p class="admonition-title">STM32F103 variant: STM32F103C8 by default, STM32F103CB where flash demands it</p>
-<p>Both STM32 tiers use the STM32F103 family. The <strong>STM32F103C8</strong> (64 KB flash) is the default and
-runs most of the firmware. <strong>PanelBridge</strong> uses the <strong>STM32F103CB</strong> (128 KB) —
-it carries the full DCS-BIOS input map on top of the DCS-BIOS library. PanelGroup
-nodes only hold the <code>DCSIN_*</code> constants they use, so they fit the STM32F103C8.</p>
+<p class="admonition-title">STM32F103 variant: STM32F103C8 by default on every board</p>
+<p>Both STM32 tiers use the STM32F103 family, and both default to the <strong>STM32F103C8</strong> (64 KB
+flash). <strong>PanelBridge</strong> carries the full DCS-BIOS input map on top of the DCS-BIOS library,
+yet still compiles to ~26 KB flash (~40% of the C8's 64 KB), so it fits the STM32F103C8.
+PanelGroup nodes only hold the <code>DCSIN_*</code> constants they use, so they fit easily too. The
+<strong>STM32F103CB</strong> (128 KB) is a drop-in fallback on the identical LQFP48 footprint, available
+if a future build ever exceeds 64 KB — no board currently needs it.</p>
 </div>
 <h2 id="simgateway-rp2040">SimGateway (RP2040)</h2>
 <p>The single USB device the PC sees. A composite device: USB CDC for the DCS-BIOS stream, USB
