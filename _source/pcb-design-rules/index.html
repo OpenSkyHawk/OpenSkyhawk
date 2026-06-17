@@ -4140,7 +4140,7 @@ The custom DRC rule file is at <code>PCB/Libraries/design-rules/jlcpcb-standard.
 </tbody>
 </table>
 <p>Current capacity estimates at 1oz copper, 10°C temperature rise (IPC-2221B).</p>
-<p><strong>Package compatibility note:</strong> LQFP48 (STM32) and HTSSOP-16 (DRV8835) have pad gaps of 0.28mm and 0.35mm respectively — too narrow to route between pads at 0.2mm clearance regardless. Use pad-end escape routing for both (best practice anyway). SOIC-8/28 (1.27mm pitch, 0.67mm gap) routes comfortably between pads at 0.2mm clearance.</p>
+<p><strong>Package compatibility note:</strong> LQFP48 (STM32) and HTSSOP-16 (DRV8833PW) have pad gaps of 0.28mm and 0.35mm respectively — too narrow to route between pads at 0.2mm clearance regardless. Use pad-end escape routing for both (best practice anyway). SOIC-8/28 (1.27mm pitch, 0.67mm gap) routes comfortably between pads at 0.2mm clearance.</p>
 <h3 id="via-sizes">Via sizes</h3>
 <table>
 <thead>
@@ -4410,7 +4410,7 @@ The custom DRC rule file is at <code>PCB/Libraries/design-rules/jlcpcb-standard.
 <td>~510 mA (large panel edge case)</td>
 </tr>
 <tr>
-<td>5V (DRV8835 stepper VM)</td>
+<td>5V (DRV8833 stepper VM)</td>
 <td>15–30 mA</td>
 <td>50 mA</td>
 </tr>
@@ -4427,7 +4427,7 @@ The custom DRC rule file is at <code>PCB/Libraries/design-rules/jlcpcb-standard.
 <ul>
 <li>[ ] Solenoid / electromagnetic switch: confirm coil resistance, voltage, duty cycle, and whether flyback protection is needed (it almost certainly is — add TVS or flyback diode)</li>
 <li>[ ] Servo: confirm supply voltage (5V or dedicated), stall current, and whether a separate high-current supply rail is needed</li>
-<li>[ ] Large stepper (NEMA 14/17): confirm driver IC (DRV8835 is <strong>not</strong> suitable — max 1.5A; use DRV8825, TMC2209, or similar), current per phase, and microstepping requirements</li>
+<li>[ ] Large stepper (NEMA 14/17): confirm driver IC (the DRV8833 gauge driver is <strong>not</strong> suitable — max ~1.5A/phase; use DRV8825, TMC2209, or similar), current per phase, and microstepping requirements</li>
 <li>[ ] Decide: high-current actuator load on same board as logic, or dedicated driver board with separate power connector?</li>
 </ul>
 <hr />
