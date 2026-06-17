@@ -32,13 +32,20 @@ a glance:
 |-----|---------|
 | Off | Not powered |
 | Red blinking | Booting / initialising |
-| Green blinking | Normal — CAN bus healthy |
+| Green blinking | Normal — CAN healthy, no data flowing |
+| **Green solid** | **Connected — CAN healthy and data flowing** (DCS exports on PanelBridge; `CTRL_BCAST` on PanelGroup) |
 | Red fast blink | TEC > 0 — transmit errors accumulating |
 | Red solid | Bus-off — CAN controller halted |
 | Amber flicker (alternating) | Warning / degraded state |
 
-CAN faults are driven from the `CanStatus` callback. For non-CAN faults (SYNC timeout, missing
-heartbeat, I²C hang, application fault), call `STM32Board::setWarning()` to get the amber state.
+The state machine is shared (`STM32Board`); only the triggers differ per role. **Green solid
+(connected)** appears while data is actively flowing and decays back to green-blinking after
+~½ s of quiet. **Amber (warning)** means a tracked PanelGroup node died (PanelBridge) or the
+master heartbeat was lost (PanelGroup).
+
+CAN faults are driven from the `CanStatus` callback. For non-CAN faults (dead node, lost
+master, SYNC timeout, I²C hang), the firmware calls `STM32Board::setWarning(true)` and clears
+it with `setWarning(false)` on recovery.
 
 !!! note "PB14/PB15 are reserved"
     The status-LED pins are owned by `STM32Board` — don't use PB14/PB15 for panel I/O or

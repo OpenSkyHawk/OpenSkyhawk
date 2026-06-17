@@ -49,19 +49,28 @@ so a class with instances would be a fiction. Internal state variables are defin
 
 ```
 Firmware/Tests/STM32Board/
-├── platformio.ini
+├── platformio.ini                 — 3 visual envs + 4 STM32BOARD_TEST assertion envs
 └── tests/
     ├── led_state_machine/
-    │   └── led_state_machine.cpp   — exercises all 6 LedStates via onCanStatus() (4 states) and
-    │                                 setWarning() (WARNING); OFF shown pre-begin(). Verifies pin
-    │                                 output matches the animation map (blink period, colour, solid/off)
+    │   └── led_state_machine.cpp   — visual: cycles all 7 LedStates (onCanStatus 4 + setLinkActive
+    │                                 CONNECTED + setWarning WARNING); OFF shown pre-begin()
     ├── diag_serial/
     │   └── diag_serial.cpp         — setDebug(false): log() produces no output; setDebug(true):
     │                                 log() emits the expected string on Serial1 at 115200 baud
-    └── can_status_wiring/
-        └── can_status_wiring.cpp   — calls onCanStatus() with each CanStatus value; verifies
-                                      the correct LedState is entered (checks pin behaviour via tick())
+    ├── can_status_wiring/
+    │   └── can_status_wiring.cpp   — calls onCanStatus() with each CanStatus value; verifies
+    │                                 the correct LedState is entered (checks pin behaviour via tick())
+    ├── state_precedence/           — [STM32BOARD_TEST] currentState() asserts the precedence table:
+    │                                 CONNECTED engage/suppress/re-engage, WARNING vs CAN faults
+    ├── link_decay/                 — [STM32BOARD_TEST] CONNECTED → NORMAL after LINK_DECAY_MS;
+    │                                 refresh holds it
+    ├── warning_clear/              — [STM32BOARD_TEST] setWarning(true/false) latch; no-arg raises
+    └── animation_timing/           — [STM32BOARD_TEST] CONNECTED solid (no toggle) vs NORMAL blink,
+                                      via direct PB14/PB15 pin reads
 ```
+
+The four `STM32BOARD_TEST` envs print `PASS`/`FAIL` per assertion plus an `ALL PASS` summary
+over DiagSerial; the three visual envs are observed against the animation map.
 
 `can_status_wiring.cpp` verifies the mapping from CANProtocol's `CanStatus` values to
 STM32Board's private LED states, so both libraries must be in `lib_deps`:
@@ -153,13 +162,30 @@ namespace STM32Board {
     void onCanStatus(CanStatus status);
 
     /**
-     * @brief Enter WARNING LED state — red/green alternating at 500 ms.
+     * @brief Raise or clear the WARNING condition — red/green alternating at 500 ms.
      *
-     * Call for any non-CAN fault: SYNC timeout, missing heartbeat, I²C bus hang,
-     * or application-layer fault. CanStatus has no WARNING value — this is the
-     * only public entry point for that state.
+     * Call for any non-CAN fault: dead PanelGroup node (PanelBridge), lost master
+     * heartbeat (PanelGroup), SYNC timeout, I²C bus hang. CanStatus has no WARNING value —
+     * this is the only public entry point for that state. WARNING is a clearable latch:
+     * call setWarning(false) once the condition recovers. It outranks CONNECTED/NORMAL but
+     * is masked by any CAN fault (CAN_ERROR/BUS_OFF).
+     *
+     * @param on True to raise WARNING (default); false to clear it.
      */
-    void setWarning();
+    void setWarning(bool on = true);
+
+    /**
+     * @brief Signal that application data is flowing → CONNECTED (green solid).
+     *
+     * Call setLinkActive(true) on each unit of inbound data (PanelBridge: a DCS-BIOS export
+     * seen; PanelGroup: a CTRL_BCAST received). The link auto-decays back to NORMAL after
+     * ~500 ms (LINK_DECAY_MS) with no further calls, evaluated inside tick(). CONNECTED is
+     * shown only while the CAN bus is healthy; a CAN fault masks it and it re-engages
+     * automatically on recovery if data is still flowing.
+     *
+     * @param active True to (re)assert the data-flowing link; false to drop it immediately.
+     */
+    void setLinkActive(bool active);
 
     /**
      * @brief Returns true when debug output is enabled.
@@ -222,14 +248,18 @@ STM32Board::tick();
 enum class LedState {
     OFF,        // both LEDs off — pre-begin() only
     BOOTING,    // red slow blink  (1000 ms) — initialising
-    NORMAL,     // green slow blink (1000 ms) — CAN bus healthy
+    NORMAL,     // green slow blink (1000 ms) — CAN healthy, no data flowing
+    CONNECTED,  // green solid                — CAN healthy and data flowing
     CAN_ERROR,  // red fast blink  (250 ms)  — TEC > 0, errors accumulating
     BUS_OFF,    // red solid                  — CAN controller halted
-    WARNING     // red/green alternating (500 ms) — degraded state
+    WARNING     // red/green alternating (500 ms) — app-layer degraded state
 };
 ```
 
-`LedState` is an internal type — not exposed in the public API.
+`LedState` is an internal type — not exposed in the public API. The on-target tests need to
+assert it, so the `STM32BOARD_TEST` macro (set only by the test envs) moves the enum to the
+header and exposes a read-only `LedState currentState()` accessor; production builds keep both
+private.
 
 ### LedState → Animation Map
 
@@ -238,22 +268,54 @@ enum class LedState {
 | `OFF` | off | off | — |
 | `BOOTING` | blink | off | 1000 ms |
 | `NORMAL` | off | blink | 1000 ms |
+| `CONNECTED` | off | solid on | — |
 | `CAN_ERROR` | blink | off | 250 ms |
 | `BUS_OFF` | solid on | off | — |
 | `WARNING` | alternating | alternating | 500 ms |
 
 For `WARNING`: phase 0 → red on, green off; phase 1 → red off, green on.
 
-### CanStatus → LedState mapping (inside onCanStatus)
+### State arbitration & precedence
 
-| CanStatus | LedState |
-|-----------|----------|
-| `STARTING` | `BOOTING` |
-| `NORMAL` | `NORMAL` |
-| `TX_ERROR` | `CAN_ERROR` |
-| `BUS_OFF` | `BUS_OFF` |
+The LED state is **derived**, not set last-writer-wins. `STM32Board` stores three independent
+inputs — the last `CanStatus`, a data-flowing link flag (with timestamp, set by
+`setLinkActive`), and a warning latch (`setWarning`) — and a single internal `_recompute()`
+picks the effective `LedState` by fixed precedence (highest first):
+
+| Priority | Condition | LedState |
+|----------|-----------|----------|
+| 1 | not begun | `OFF` |
+| 2 | `CanStatus::BUS_OFF` | `BUS_OFF` |
+| 3 | `CanStatus::TX_ERROR` | `CAN_ERROR` |
+| 4 | `CanStatus::STARTING` | `BOOTING` |
+| 5 | warning latched | `WARNING` |
+| 6 | `CanStatus::NORMAL` **and** link active | `CONNECTED` |
+| 7 | `CanStatus::NORMAL` | `NORMAL` |
+
+CAN-health faults outrank the app-layer WARNING (a dead/erroring bus must never be masked).
+WARNING outranks CONNECTED/NORMAL. CONNECTED is guarded on `NORMAL`, so a CAN fault
+auto-suppresses it and it re-engages on recovery if the link has not yet decayed
+(`LINK_DECAY_MS` = 500 ms). `_recompute()` resets the blink phase and repaints only on an
+actual state change.
+
+### CanStatus → LedState mapping
+
+`onCanStatus()` stores the `CanStatus` and calls `_recompute()`; rows 2–4, 6–7 above are the
+effective mapping (CONNECTED/NORMAL both correspond to `CanStatus::NORMAL`, differentiated by
+the link flag):
+
+| CanStatus | LedState (no link) | LedState (link active) |
+|-----------|--------------------|------------------------|
+| `STARTING` | `BOOTING` | `BOOTING` |
+| `NORMAL` | `NORMAL` | `CONNECTED` |
+| `TX_ERROR` | `CAN_ERROR` | `CAN_ERROR` |
+| `BUS_OFF` | `BUS_OFF` | `BUS_OFF` |
 
 `CanStatus` is defined in `CANProtocol.h`. See CANProtocol TechSpec for the full enum.
+
+> **ERROR_PASSIVE (EPVF / TEC ≥ 128)** is intentionally **not** a distinct LED state — it stays
+> folded into `CAN_ERROR`, and EPVF remains visible via the heartbeat `flags` byte. See
+> `FirmwarePlan/11-open-issues.md` (re-confirmed in #93).
 
 ---
 
@@ -263,21 +325,30 @@ For `WARNING`: phase 0 → red on, green off; phase 1 → red off, green on.
 
 ```cpp
 void STM32Board::tick() {
-    uint32_t now    = millis();
-    uint16_t period = _blinkPeriodFor(_state);  // 0 = solid or off
+    uint32_t now = millis();
 
+    // Decay the data-flowing link → CONNECTED falls back to NORMAL after a quiet gap.
+    if (_linkActive && (now - _linkLastMs) >= LINK_DECAY_MS) {
+        _linkActive = false;
+        _recompute();
+    }
+
+    uint16_t period = _blinkPeriodFor(_state);  // 0 = solid or off
     if (period > 0 && (now - _ledLastToggleMs) >= (uint32_t)(period / 2)) {
         _blinkPhase      = !_blinkPhase;
         _ledLastToggleMs = now;
         _applyLed();  // only called when phase actually changes
     }
-    // solid/off states: pins already set by setLedState() — nothing to do here
+    // solid/off states: pins already set by _recompute() — nothing to do here
 }
 ```
 
 `_applyLed()` is called in two places only:
-- Inside `setLedState()` — applies the new state immediately on transition
+- Inside `_recompute()` — applies the new state immediately on a transition (and only then)
 - Inside `tick()` — only when `_blinkPhase` toggles
+
+`_recompute()` is the **sole writer** of `_state`: `onCanStatus()`, `setWarning()`,
+`setLinkActive()`, and the `tick()` decay path all update one input field and call it.
 
 `digitalWrite()` is called exactly twice per blink cycle for blinking states, and once per
 state transition for solid and off states. Pins are never written redundantly.

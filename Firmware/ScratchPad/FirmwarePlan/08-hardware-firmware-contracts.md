@@ -136,14 +136,33 @@ for custom OpenSkyhawk controller boards.
 |-----|-------|---------|---------|
 | OFF | OFF | Off | Not powered |
 | Slow blink | OFF | Red blinking | Booting / initialising |
-| OFF | Slow blink | Green blinking | Normal — CAN bus healthy |
+| OFF | Slow blink | Green blinking | Normal — CAN healthy, no data flowing |
+| OFF | Solid on | Green solid | **Connected — CAN healthy and data flowing** |
 | Fast blink | OFF | Red fast | TEC > 0 — transmit errors accumulating |
 | ON | OFF | Red solid | Bus-off — CAN controller halted |
 | Alternating | Alternating | Amber flicker | Warning / degraded state |
 
-**Triggering WARNING:** call `STM32Board::setWarning()` for any non-CAN fault — e.g. SYNC
-timeout, missing heartbeat, I²C bus hang, or application-layer fault. `CanStatus` has no
-WARNING value; CAN bus faults are communicated via `onCanStatus()` only.
+The state machine and animations are **shared** in `STM32Board`; PanelBridge and PanelGroup
+differ only in the role triggers that drive `setLinkActive()` / `setWarning()`:
+
+| State | PanelBridge trigger | PanelGroup trigger |
+|-------|---------------------|--------------------|
+| Connected (green solid) | a DCS-BIOS export seen → `setLinkActive(true)` | a `CTRL_BCAST` received → `setLinkActive(true)` |
+| Warning (amber) | a tracked PanelGroup node died | master heartbeat (`HB_0`) lost (timeout) |
+
+**CONNECTED & decay:** `setLinkActive(true)` enters the green-solid CONNECTED state; it decays
+back to NORMAL (green slow) after ~500 ms with no further data. CONNECTED shows only while the
+bus is healthy — a CAN fault masks it and it re-engages automatically on recovery.
+
+**Master heartbeat (`HB_0`):** PanelBridge transmits an unconditional liveness beacon on
+`canIdHb(0)` every 500 ms. PanelGroup accepts it (`filterAcceptId(canIdHb(0))`) and, once it
+has seen a master, raises WARNING if `HB_0` stops for > 1500 ms. This is independent of
+`CTRL_BCAST` (which only moves when DCS export values change), so an idle/paused sim does not
+trigger a false no-master warning.
+
+**Triggering WARNING:** call `STM32Board::setWarning(true)` for any non-CAN fault (dead node,
+lost master, SYNC timeout, I²C hang) and `setWarning(false)` once it recovers. `CanStatus` has
+no WARNING value; CAN bus faults are communicated via `onCanStatus()` only.
 
 ---
 
