@@ -281,16 +281,16 @@ MCP23017 0x20–0x27, ADS1115 0x48–0x4B (independent per bus).
 ### Backlight (on the base — all panels are backlit)
 
 Two PWM-dimmed low-side zones per the LED-zone standard: **IRLML2502** N-ch MOSFET ×2, gates
-driven directly by STM32 PWM, drain → `BACKLIGHT_SW_RETURN`, source → GND. Per-string
+driven directly by STM32 PWM, drain → `BLn_RETURN`, source → GND. Per-string
 current-limit resistors live on the LED strings (per zone), not on this board.
 
-| Zone | PWM pin | Timer | MOSFET |
-|---|---|---|---|
-| Panel | PA6 (`PWM_PANEL_LED`) | TIM3_CH1 | Q1 |
-| Gauge | PA7 (`PWM_GAUGE_LED`) | TIM3_CH2 | Q2 |
+| Zone | PWM net | Pin | Timer | MOSFET | Return |
+|---|---|---|---|---|---|
+| BL1 | `PWM_BL1` | PA6 | TIM3_CH1 | Q2 | `BL1_RETURN` |
+| BL2 | `PWM_BL2` | PA7 | TIM3_CH2 | Q3 | `BL2_RETURN` |
 
-Each MOSFET: 100 Ω gate series + 100 kΩ gate pull-down (matches prototype). `+12V_BACKLIGHT`
-is always-on bus +12V.
+Each MOSFET: 100 Ω gate series + 100 kΩ gate pull-down (gate-side, holds off at boot). `+12V`
+is the always-on bus +12V (no separate backlight net).
 
 ### STM32 pin assignment (LQFP48)
 
@@ -311,8 +311,8 @@ is always-on bus +12V.
 | 13 | PA3 | breakout (ADC3 / USART2) | 37 | PA14 | SWCLK |
 | 14 | PA4 | breakout (ADC4) | 38 | PA15 | breakout (JTAG remap) |
 | 15 | PA5 | breakout (ADC5) | 39 | PB3 | breakout (JTAG remap) |
-| 16 | **PA6** | **PWM_PANEL_LED → Q1** | 40 | PB4 | breakout (JTAG remap) |
-| 17 | **PA7** | **PWM_GAUGE_LED → Q2** | 41 | PB5 | breakout (GPIO) |
+| 16 | **PA6** | **PWM_BL1 → Q2** | 40 | PB4 | breakout (JTAG remap) |
+| 17 | **PA7** | **PWM_BL2 → Q3** | 41 | PB5 | breakout (GPIO) |
 | 18 | PB0 | breakout (ADC8) | 42 | PB6 | I2C1_SCL |
 | 19 | PB1 | breakout (ADC9) | 43 | PB7 | I2C1_SDA |
 | 20 | PB2 | BOOT1 → NC | 44 | BOOT0 | 10 k pull-down + jumper |
@@ -338,7 +338,7 @@ PA15/PB3/PB4 require JTAG remap (SWD still works on PA13/PA14). Per-channel ADC 
 |---|---|---|
 | J_BUS_IN, J_BUS_OUT | Molex Mini-Fit Jr 2×4 | CAN + power, pass-through |
 | J_I2C1, J_I2C2 | JST-XH 8-pin | I²C bus to sub-panels (pinout below) |
-| J_BL1…J_BLn | Molex Mini-Fit Jr 1×2 | switched-12V backlight feed to sub-panels (≈4 per zone, space permitting) |
+| J_BL1, J_BL2 | Molex Mini-Fit Jr 2×01 | switched-12V backlight feed to sub-panels (pin 1 +12V, pin 2 return) |
 | J_SWD | 1×5 header | programming/debug (incl. NRST) |
 | J_DIAG | 1×3 JST-XH | `DiagSerial` console |
 | J_TERM | 2-pin jumper | switches in 120 Ω CAN termination |
@@ -354,8 +354,9 @@ PA15/PB3/PB4 require JTAG remap (SWD still works on PA13/PA14). Per-channel ADC 
 | 3 | GND | 7 | INT_B |
 | 4 | GND | 8 | spare |
 
-**Backlight power-out (`J_BLn`, Molex Mini-Fit Jr 1×2):** pin 1 `BACKLIGHT_SW_RETURN` (MOSFET
-drain), pin 2 `+12V_BACKLIGHT`. Sub-panel LED strings dim off this board's MOSFET.
+**Backlight power-out (`J_BL1` / `J_BL2`, Molex Mini-Fit Jr 2×01):** pin 1 `+12V` (always-on bus),
+pin 2 `BLn_RETURN` (MOSFET drain). Sub-panel LED strings dim off this board's MOSFET. Keep this
+pin order on **every** backlight connector for harness consistency.
 
 ### BOM
 
@@ -383,7 +384,7 @@ drain), pin 2 `+12V_BACKLIGHT`. Sub-panel LED strings dim off this board's MOSFE
 | D1/D2/D3 | LEDs | `Device:LED` | red / green / power |
 | J_BUS_IN/OUT | Molex Mini-Fit Jr 2×4 | `Connector_Molex:Molex_Mini-Fit_Jr_5566-08A2_2x04_P4.20mm_Vertical` | ×2 |
 | J_I2C1/2 | JST-XH 8-pin | `Connector_JST:JST_XH_B8B-XH-A_1x08_P2.50mm_Vertical` | ×2 |
-| J_BLn | Molex Mini-Fit Jr 1×2 | `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A2_2x01_P4.20mm_Vertical` | ×~8 |
+| J_BL1, J_BL2 | Molex Mini-Fit Jr 2×01 | `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A2_2x01_P4.20mm_Vertical` | ×2 |
 | J_SWD | 1×5 header | `Connector_Generic:Conn_01x05` | +3V3/SWDIO/SWCLK/NRST/GND |
 | J_DIAG | 1×3 JST-XH | `Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical` | |
 | J_TERM | 1×2 header | `Connector_Generic:Conn_01x02` | jumper |

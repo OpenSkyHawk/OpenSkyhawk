@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          KICAD="docker run --rm -v $PWD:/work -w /work kicad/kicad:10.0.1 kicad-cli"
+          KICAD="docker run --rm --user $(id -u):$(id -g) -e HOME=/tmp -v $PWD:/work -v $RUNNER_TEMP:$RUNNER_TEMP -w /work kicad/kicad:10.0.1 kicad-cli"
           reports_dir="$RUNNER_TEMP/kicad-reports"
           changed_file="$RUNNER_TEMP/kicad-changed-files.txt"
           projects_file="$RUNNER_TEMP/kicad-projects.txt"
