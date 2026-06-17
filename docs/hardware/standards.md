@@ -21,8 +21,10 @@ continuity check.
 
 ## MCU
 
-- **CAN nodes: STM32F103** (LQFP48). PanelGroup nodes use the **`STM32F103C8`** (64 KB);
-  **PanelBridge** uses the **`STM32F103CB`** (128 KB, for the DCS-BIOS input map).
+- **CAN nodes: STM32F103** (LQFP48). All boards default to the **`STM32F103C8`** (64 KB) —
+  both PanelGroup nodes and **PanelBridge** (which carries the DCS-BIOS input map but still
+  compiles to ~26 KB flash). The **`STM32F103CB`** (128 KB) is a drop-in fallback on the same
+  footprint, needed by no board currently.
 - Requires an **external 8 MHz crystal** — the internal RC oscillator isn't accurate enough for
   500 kbps CAN.
 - **PA11/PA12** are shared between USB and CAN; pick one at init (CAN, in production).

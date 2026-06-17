@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 900" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .bg    { fill:#ffffff; }
+    .blk   { fill:#eef2f7; stroke:#334155; stroke-width:1.5; rx:6; }
+    .mcu   { fill:#fff7ed; stroke:#c2410c; stroke-width:2; rx:8; }
+    .pwr   { fill:#fef2f2; stroke:#b91c1c; stroke-width:1.5; rx:6; }
+    .led   { fill:#f0fdf4; stroke:#15803d; stroke-width:1.5; rx:6; }
+    .i2c   { fill:#f5f3ff; stroke:#6d28d9; stroke-width:1.5; rx:6; }
+    .title { font-size:22px; font-weight:700; fill:#0f172a; }
+    .sub   { font-size:13px; fill:#475569; }
+    .lbl   { font-size:13px; font-weight:600; fill:#0f172a; }
+    .pin   { font-size:12px; fill:#1e293b; }
+    .net   { font-size:11px; fill:#334155; font-family:"SF Mono",Consolas,monospace; }
+    .netp  { font-size:11px; fill:#b91c1c; font-family:"SF Mono",Consolas,monospace; }
+    .wire  { stroke:#475569; stroke-width:1.4; fill:none; }
+    .wirep { stroke:#dc2626; stroke-width:1.6; fill:none; }
+    .wirec { stroke:#7c3aed; stroke-width:1.6; fill:none; }
+    .note  { font-size:12px; fill:#64748b; font-style:italic; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1220" height="900"/>
+  <text class="title" x="30" y="40">Board 2 — PanelGroup base</text>
+  <text class="sub"   x="30" y="62">Generic STM32F103C8T6 CAN sub-node (NODE_ID 1–63) · dual I²C + dual backlight · manual connectivity diagram</text>
+
+  <!-- ===== Bus connectors ===== -->
+  <rect class="blk" x="30" y="100" width="150" height="110"/>
+  <text class="lbl" x="105" y="122" text-anchor="middle">J_BUS_IN</text>
+  <text class="net" x="42" y="142">1,2 +12V  3 +5V</text>
+  <text class="net" x="42" y="160">4,7,8 GND</text>
+  <text class="net" x="42" y="178">5 CANH  6 CANL</text>
+  <text class="note" x="42" y="200">Molex Mini-Fit Jr 2×4</text>
+
+  <rect class="blk" x="30" y="250" width="150" height="110"/>
+  <text class="lbl" x="105" y="272" text-anchor="middle">J_BUS_OUT</text>
+  <text class="net" x="42" y="292">1,2 +12V  3 +5V</text>
+  <text class="net" x="42" y="310">4,7,8 GND</text>
+  <text class="net" x="42" y="328">5 CANH  6 CANL</text>
+  <text class="note" x="42" y="350">pass-through</text>
+  <path class="wire" d="M105 210 L105 250"/>
+
+  <!-- power rail -->
+  <rect class="pwr" x="30" y="400" width="150" height="86"/>
+  <text class="lbl" x="105" y="422" text-anchor="middle">AMS1117-3.3</text>
+  <text class="netp" x="42" y="444">+5V  →  +3V3</text>
+  <text class="net" x="42" y="464">100nF + 10µF / rail</text>
+  <path class="wirep" d="M180 440 L210 440 L210 330 L260 330"/>
+  <text class="netp" x="186" y="326">+5V</text>
+
+  <!-- CAN transceiver -->
+  <rect class="blk" x="260" y="140" width="170" height="140"/>
+  <text class="lbl" x="345" y="162" text-anchor="middle">SN65HVD230</text>
+  <text class="net" x="272" y="190">D ← CAN_TX (PA12)</text>
+  <text class="net" x="272" y="210">R → CAN_RX (PA11)</text>
+  <text class="net" x="272" y="236">CANH/CANL ↔ bus</text>
+  <rect class="blk" x="260" y="300" width="170" height="56"/>
+  <text class="lbl" x="345" y="322" text-anchor="middle">120 Ω + J_TERM</text>
+  <text class="note" x="345" y="342" text-anchor="middle">jumper = end-node term</text>
+  <path class="wirec" d="M180 168 L240 168 L240 232 L260 232"/>
+  <text class="net" x="186" y="162">CANH/CANL</text>
+
+  <!-- ===== STM32 MCU ===== -->
+  <rect class="mcu" x="540" y="100" width="280" height="470"/>
+  <text class="lbl" x="680" y="126" text-anchor="middle">STM32F103C8T6</text>
+  <text class="sub" x="680" y="144" text-anchor="middle">PanelGroup · LQFP48 (CB drop-in)</text>
+
+  <text class="pin" x="554" y="176">PB6/PB7   I2C1 SCL/SDA</text>
+  <text class="pin" x="554" y="198">PB12/PB13 I2C1 INT_A/INT_B</text>
+  <text class="pin" x="554" y="226">PB10/PB11 I2C2 SCL/SDA</text>
+  <text class="pin" x="554" y="248">PB8/PB9   I2C2 INT_A/INT_B</text>
+  <text class="pin" x="554" y="278">PA6 PWM_PANEL_LED → Q1</text>
+  <text class="pin" x="554" y="300">PA7 PWM_GAUGE_LED → Q2</text>
+  <text class="pin" x="554" y="330">PA11/PA12 CAN</text>
+  <text class="pin" x="554" y="352">PA13/PA14 SWD · PA9/PA10 diag</text>
+  <text class="pin" x="554" y="382">PB14/PB15 STATUS LED R/G</text>
+  <text class="pin" x="554" y="404">PD0/PD1 8 MHz · BOOT0 10k↓</text>
+  <text class="pin" x="554" y="426">PC13-15 NC</text>
+  <text class="note" x="554" y="456">breakout (full) — capability:</text>
+  <text class="note" x="554" y="474">ADC+PWM: PA0-3,PB0,PB1 · ADC only: PA4,PA5</text>
+  <text class="note" x="554" y="492">PWM/digital: PA8,PA15,PB3,PB4,PB5</text>
+  <text class="note" x="554" y="510">all pins → digital GPIO too</text>
+  <text class="note" x="554" y="528">ADC RC filter added per variant</text>
+
+  <rect class="blk" x="690" y="520" width="120" height="40"/>
+  <text class="lbl" x="750" y="545" text-anchor="middle">Y1 8 MHz</text>
+  <path class="wire" d="M750 500 L750 520"/>
+
+  <path class="wirec" d="M430 200 L500 200 L500 324 L540 324"/>
+
+  <!-- ===== I2C headers ===== -->
+  <rect class="i2c" x="900" y="100" width="290" height="120"/>
+  <text class="lbl" x="1045" y="122" text-anchor="middle">J_I2C1  (JST-XH 8-pin)</text>
+  <text class="net" x="914" y="144">1 SDA  2 SCL  3,4 GND  5 +3V3</text>
+  <text class="net" x="914" y="162">6 INT_A  7 INT_B  8 spare</text>
+  <text class="note" x="914" y="188">on-board: 4.7k pull-ups, 33Ω SDA/SCL,</text>
+  <text class="note" x="914" y="204">100Ω INT_A/INT_B</text>
+
+  <rect class="i2c" x="900" y="240" width="290" height="120"/>
+  <text class="lbl" x="1045" y="262" text-anchor="middle">J_I2C2  (JST-XH 8-pin)</text>
+  <text class="net" x="914" y="284">1 SDA  2 SCL  3,4 GND  5 +3V3</text>
+  <text class="net" x="914" y="302">6 INT_A  7 INT_B  8 spare</text>
+  <text class="note" x="914" y="328">second independent bus</text>
+  <text class="note" x="914" y="344">MCP23017 0x20-27 · ADS1115 0x48-4B</text>
+
+  <path class="wire" d="M820 188 L860 188 L860 160 L900 160"/>
+  <path class="wire" d="M820 232 L880 232 L880 300 L900 300"/>
+
+  <!-- ===== Backlight ===== -->
+  <rect class="blk" x="900" y="400" width="290" height="150"/>
+  <text class="lbl" x="1045" y="422" text-anchor="middle">Backlight zones (on base)</text>
+  <text class="net" x="914" y="446">Q1 IRLML2502 ← PA6 (panel)</text>
+  <text class="net" x="914" y="464">Q2 IRLML2502 ← PA7 (gauge)</text>
+  <text class="net" x="914" y="484">low-side: drain → BACKLIGHT_SW_RETURN</text>
+  <text class="net" x="914" y="502">100Ω gate · 100k pull-down each</text>
+  <text class="netp" x="914" y="524">J_BL1..n (Mini-Fit Jr 1×2):</text>
+  <text class="netp" x="914" y="542">  1 SW_RETURN   2 +12V_BACKLIGHT</text>
+  <path class="wire" d="M820 284 L870 284 L870 450 L900 450"/>
+  <path class="wirep" d="M180 150 L205 150 L205 470 L900 470" opacity="0.5"/>
+  <text class="netp" x="640" y="486" opacity="0.7">+12V_BACKLIGHT (bus +12V)</text>
+
+  <!-- ===== SWD + Diag + LEDs ===== -->
+  <rect class="blk" x="540" y="600" width="130" height="66"/>
+  <text class="lbl" x="605" y="622" text-anchor="middle">J_SWD 1×4</text>
+  <text class="net" x="552" y="642">3V3 SWDIO</text>
+  <text class="net" x="552" y="658">SWCLK GND</text>
+
+  <rect class="blk" x="690" y="600" width="130" height="66"/>
+  <text class="lbl" x="755" y="622" text-anchor="middle">J_DIAG 1×3</text>
+  <text class="net" x="702" y="642">TX RX GND</text>
+  <text class="net" x="702" y="658">USART1 115200</text>
+
+  <rect class="led" x="900" y="600" width="290" height="66"/>
+  <text class="lbl" x="1045" y="622" text-anchor="middle">Status / Power LEDs</text>
+  <text class="net" x="914" y="644">RED PB14 · GRN PB15 · PWR=+3V3</text>
+  <text class="net" x="914" y="660">front face</text>
+  <path class="wire" d="M820 388 L870 388 L870 630 L900 630"/>
+
+  <text class="note" x="30" y="710">All nets trace to the pin-assignment table in base-boards.md. Backlight +12V is always-on bus power; the MOSFET switches the return so sub-panel LED strings dim off this board.</text>
+  <text class="note" x="30" y="730">No onboard expanders / ADS1115 / stepper driver — those live on specialized variants. No PSU-input connector (bus pass-through).</text>
+</svg>

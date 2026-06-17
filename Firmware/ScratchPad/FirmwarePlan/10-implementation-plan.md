@@ -13,7 +13,7 @@
 - [x] Create a PlatformIO project template for SimGateway (RP2040) with TinyUSB joystick,
       USB CDC relay, UART link to PanelBridge, and empty HIDAxis/HIDButton declaration section.
       Template at `Firmware/Templates/SimGateway/`.
-- [x] Create a PlatformIO project template for STM32F103CBT6 PanelGroup boards with:
+- [x] Create a PlatformIO project template for STM32F103C8 PanelGroup boards with:
   - `platformio.ini` pre-configured: correct board, framework (arduino), STM32duino platform,
     upload protocol (stlink), and `build_flags = -DNODE_ID=x` placeholder for the board's
     static node ID

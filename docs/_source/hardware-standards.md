@@ -6,16 +6,18 @@
 
 | Acceptable | Not acceptable |
 |------------|---------------|
-| SOIC, SSOP, TSSOP, HTSSOP | QFN, DFN, WSON |
+| SOIC, SSOP, TSSOP, HTSSOP | DFN, WSON (true no-lead) |
 | LQFP | BGA, LGA |
-| SOT-23, SOT-223 | Any fully-bottom-terminated package |
-| Through-hole | |
+| SOT-23, SOT-223 | Any *fully* bottom-terminated package |
+| Through-hole, QFN *(case-by-case — see below)* | |
 
 HTSSOP (exposed thermal pad on underside) is acceptable — side leads are the critical joints; the GND pad is verified by continuity check.
 
+**QFN — case-by-case, not a blanket ban.** A QFN whose perimeter leads are side-accessible (a solder fillet climbs the castellated edge) with only a GND center pad — e.g. the **RP2040 QFN-56** — is judged like HTSSOP: the side fillets are the inspectable critical joints; the center pad is GND (continuity-checked). It reflows on the T962 with a stencil, a reduced center-pad aperture (~50–70 %), and a proper profile. Only *fully* bottom-terminated packages — BGA, LGA, true no-lead DFN/WSON — are out, because there is no side joint to inspect.
+
 ## MCU
 
-**Selected: STM32F103CBT6** — LQFP48, 128 KB flash, 20 KB RAM.
+**Selected: STM32F103C8T6** — LQFP48, 64 KB flash, 20 KB RAM. Default for every board (PanelGroup and PanelBridge alike; PanelBridge's DCS-BIOS input map still compiles to ~26 KB). The **STM32F103CBT6** (128 KB flash) is a drop-in fallback on the identical LQFP48 footprint for any future build that exceeds 64 KB — no board currently needs it.
 
 - Requires **external 8 MHz crystal** for reliable CAN bus timing (internal RC oscillator is not accurate enough for CAN bit-rate lock)
 - **PA11/PA12** are shared between USB and CAN — the two peripherals cannot be used simultaneously; pick one at firmware init
@@ -111,7 +113,9 @@ DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated
 
 **Minimum pitch: 2.54 mm.** Nothing smaller is used anywhere in the build.
 
-**Wire gauge: 24 AWG throughout.**
+**Wire gauge:** 16–18 AWG silicone on the **main bus** (power + CAN daisy-chain); 24 AWG on
+signal/logic harnesses (I²C, interrupts, switches). Match the Mini-Fit Jr crimp terminal to the
+bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated terminal (5556 won't crimp 16 AWG).
 
 ### Molex Mini-Fit Jr (main bus + LED power)
 
@@ -119,6 +123,7 @@ DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated
 - Main bus: CAN bus signals and power distribution between controller groups
 - LED power: 2-pin (1×2) per lighting zone on every MCU and breakout board — carries `+12V_BACKLIGHT` and `BACKLIGHT_SW_RETURN`
 - Polarized housing — one insertion orientation only
+- Rated up to **9 A/pin** (gauge/terminal-dependent; derate when all pins energized). Power split across pins (2×+12V, 3×GND) gives large margin over the ~2.3 A system load — current is never the limit, pour continuity at the pads is
 
 **Main bus connector: 2×4 (8-pin), `Connector_Molex:Molex_Minifit_Jr_5557-08A2_2x04_P4.20mm_Vertical`**
 

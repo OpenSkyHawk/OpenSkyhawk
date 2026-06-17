@@ -44,7 +44,7 @@ PCB/
 
 | Component | Library reference |
 |-----------|------------------|
-| STM32F103CBT6 | `MCU_ST_STM32F1:STM32F103CBTx` |
+| STM32F103C8T6 | `MCU_ST_STM32F1:STM32F103CBTx` (same symbol covers C8/CB) |
 | AMS1117-3.3 | `Regulator_Linear:AMS1117-3.3_SOT223` |
 | MCP23017 | `Interface_Expansion:MCP23017x-x-SO` (SOIC-28) |
 | DRV8833PW | `Driver_Motor:DRV8833PW` (HTSSOP-16) |

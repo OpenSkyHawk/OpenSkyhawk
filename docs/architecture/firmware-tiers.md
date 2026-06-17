@@ -12,7 +12,7 @@ PC (DCS + DCS-BIOS)
 SimGateway   (RP2040)
   │  UART @ 250 kbps
   ▼
-PanelBridge  (STM32F103CB, CAN master)
+PanelBridge  (STM32F103C8, CAN master)
   │  CAN bus @ 500 kbps
   ▼
 PanelGroup   (STM32F103C8, one per panel group)
@@ -25,7 +25,7 @@ Breakout boards (MCP23017, ADS1115)
 
 | | SimGateway | PanelBridge | PanelGroup |
 |---|---|---|---|
-| **MCU** | RP2040 | STM32F103CB | STM32F103C8 |
+| **MCU** | RP2040 | STM32F103C8 | STM32F103C8 |
 | **Library** | `SimGateway.h` | `PanelBridge.h` | `OpenSkyhawk.h` |
 | **Role** | USB bridge + HID | CAN master + DCS-BIOS | Panel I/O |
 | **Upstream** | USB to PC | UART to SimGateway | CAN to PanelBridge |
@@ -37,11 +37,13 @@ structs, CAN IDs, the `controlId` namespace), **`STM32Board`** (CAN/UART/status-
 init for both STM32 tiers), and **`HIDControls`** (the HID `controlId` allocations, shared
 between SimGateway and CANProtocol).
 
-!!! note "STM32F103 variant: STM32F103C8 by default, STM32F103CB where flash demands it"
-    Both STM32 tiers use the STM32F103 family. The **STM32F103C8** (64 KB flash) is the default and
-    runs most of the firmware. **PanelBridge** uses the **STM32F103CB** (128 KB) —
-    it carries the full DCS-BIOS input map on top of the DCS-BIOS library. PanelGroup
-    nodes only hold the `DCSIN_*` constants they use, so they fit the STM32F103C8.
+!!! note "STM32F103 variant: STM32F103C8 by default on every board"
+    Both STM32 tiers use the STM32F103 family, and both default to the **STM32F103C8** (64 KB
+    flash). **PanelBridge** carries the full DCS-BIOS input map on top of the DCS-BIOS library,
+    yet still compiles to ~26 KB flash (~40% of the C8's 64 KB), so it fits the STM32F103C8.
+    PanelGroup nodes only hold the `DCSIN_*` constants they use, so they fit easily too. The
+    **STM32F103CB** (128 KB) is a drop-in fallback on the identical LQFP48 footprint, available
+    if a future build ever exceeds 64 KB — no board currently needs it.
 
 ## SimGateway (RP2040)
 

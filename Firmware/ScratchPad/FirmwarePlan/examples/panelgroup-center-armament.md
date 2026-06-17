@@ -15,7 +15,7 @@ Companion `platformio.ini` excerpt:
 ```ini
 [env:center_armament]
 platform = ststm32
-board = genericSTM32F103CB
+board = genericSTM32F103C8
 framework = arduino
 build_flags = -DNODE_ID=3
 lib_deps =

@@ -8,7 +8,7 @@ see [KiCad Workflow](kicad-workflow.md).
 
 | Part | Package | Role | KiCad symbol |
 |------|---------|------|--------------|
-| STM32F103C8 / CB | LQFP48 | CAN node MCU (C8 nodes, CB PanelBridge) | `MCU_ST_STM32F1:STM32F103CBTx` |
+| STM32F103C8 / CB | LQFP48 | CAN node MCU (C8 default all boards; CB drop-in fallback) | `MCU_ST_STM32F1:STM32F103CBTx` |
 | SN65HVD230 | SOIC-8 | CAN transceiver, 3.3 V | `Interface_CAN_LIN:SN65HVD230` |
 | MCP23017 | SOIC-28 | I²C digital I/O expander (16-bit) | `Interface_Expansion:MCP23017x-x-SO` |
 | ADS1115 | — | I²C 16-bit ADC, 4 channels | `Analog_ADC:ADS1115` |

@@ -8,7 +8,7 @@
 
 | Component | Details |
 |---|---|
-| MCU | STM32F103CBT6 (LQFP48, 128 KB flash, 20 KB RAM) |
+| MCU | STM32F103C8T6 (LQFP48, 64 KB flash, 20 KB RAM) |
 | CAN transceiver | SN65HVD230 (SOIC-8, 3.3V logic) |
 | CAN node ID | TBD |
 | Voltage regulation | 5V from main bus (PC ATX PSU); AMS1117-3.3 (SOT-223) locally for 3.3V; no AP63205WU on this board |
