@@ -222,14 +222,36 @@ edge GPIO are PWM-capable; GP26–GP29 are the 4× 12-bit ADC. The module's `3V3
 |---|---|
 | GP0 | UART TX → STM32 PA3 — **reserved (link)** |
 | GP1 | UART RX ← STM32 PA2 — **reserved (link)** |
-| GP2 | **SimGateway status — GREEN** (`SIMGW`, 0805, board-mounted, high-value R) — **reserved** |
-| GP3 | **SimGateway status — RED** (`SIMGW`, 0805) — **reserved** |
+| GP2 | **SimGateway status — GREEN** (`SIMGW`, 0805, board-mounted, high-value R) — driven by the status-LED state machine (active-high) |
+| GP3 | **SimGateway status — RED** (`SIMGW`, 0805) — driven by the status-LED state machine (active-high) |
 | GP4–GP15 | free digital / PWM — break out on header |
 | GP26–GP29 | **ADC0–3** (analog axes) + PWM/digital — break out on header |
 | 5V / 3V3 / GND | power (3V3 = module LDO, separate domain; 5V NC) |
 
 Pass-through priority: **GP26–GP29 (ADC)** for HID axes, plus a few GP4–GP15. Underside pads
 (GP16–GP25) are not used — only the 20 edge pins are wired.
+
+### SimGateway status LEDs (firmware-driven)
+
+GP2 (green) / GP3 (red) are driven by a non-blocking state machine in the SimGateway library
+(`Firmware/Libraries/SimGateway/`, ticked from `SimGateway::loop()`), active-high. States,
+highest priority first:
+
+| State | Trigger | LED |
+|---|---|---|
+| `FAULT` | uart0 RX hardware error (RSR overrun/framing/parity) | red fast (4 Hz) |
+| `NO_HOST` | USB not enumerated, or unplugged after a mount | red solid |
+| `STREAMING` | DCS-BIOS bytes from the PC within last ~500 ms | green solid |
+| `USB_IDLE` | USB mounted, no recent DCS data | green slow (1 Hz) |
+| `INIT` | booted, pre-USB-mount (brief) | red slow |
+
+`FAULT` is read from the `uart0` PL011 `RSR` register (the arduino-pico `SerialUART` driver
+surfaces no error flags), latched for ≥2 s, and clears only when clean UART data resumes after
+the fault — a silent bus holds it. User-facing table: published
+[architecture/sim-gateway.md → Status LEDs](../architecture/sim-gateway.md#status-leds).
+Counterpart STM32 status LEDs
+(PB14/PB15) are owned by `STM32Board` (issue #93); SimGateway shares only the animation
+vocabulary, not the engine.
 
 ### BOM
 

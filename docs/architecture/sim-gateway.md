@@ -118,3 +118,33 @@ At startup, `SimGateway::setup()` owns all of it: USB identity, GP0/GP1 pin conf
 `Serial1.begin(250000)`, and TinyUSB HID enumeration. The sketch only declares its `HIDAxis`
 / `HIDButton` / `HIDHatSwitch` objects and calls `setup()` / `loop()` — DCS-BIOS relay is
 automatic and needs no declarations.
+
+## Status LEDs
+
+The gateway carries two board-mounted status LEDs on the `Gateway_Bridge` board — **GREEN on
+GP2, RED on GP3** — so you can read its USB / data / fault state at a glance without a host. They
+are active-high (HIGH = on) and driven by a non-blocking `millis()` animator ticked from
+`SimGateway::loop()`; the RP2040 module's onboard WS2812 is not used. State priority runs highest
+to lowest — the topmost active row wins:
+
+| Priority | State | What it means | LED |
+|---|---|---|---|
+| 1 (highest) | `FAULT` | A UART hardware error on the PanelBridge link (overrun / framing / parity) | **Red, fast blink** (4 Hz) |
+| 2 | `NO_HOST` | USB not enumerated — no PC, or the cable was unplugged | **Red, solid** |
+| 3 | `STREAMING` | DCS-BIOS data flowing from the PC (seen within the last ~500 ms) | **Green, solid** |
+| 4 | `USB_IDLE` | USB connected, but no recent DCS-BIOS data | **Green, slow blink** (1 Hz) |
+| 5 (lowest) | `INIT` | Just booted, USB not yet mounted (brief) | **Red, slow blink** |
+
+!!! note "When the fault light clears"
+    `FAULT` is latched, not momentary: it stays on for at least ~2 s (so a single glitch is
+    visible) and then clears **only once clean PanelBridge data resumes** on the UART — an
+    error-free byte received *after* the fault. A fault on an otherwise-silent link therefore
+    stays lit until traffic returns error-free, rather than timing out on its own. The error is
+    read straight from the RP2040's `uart0` PL011 error register (`RSR`), because the
+    arduino-pico `SerialUART` driver doesn't surface overrun/framing flags any other way.
+
+!!! warning "Active-high, separate power domain"
+    Both LEDs are active-high (HIGH = lit) and sit on the RP2040 module's own 3V3 LDO, isolated
+    from the STM32 rail — so they reflect the *gateway's* state even if the STM32 side is
+    unpowered or held in reset. The two `BRIDGE` LEDs next to them (PB14/PB15) are driven
+    separately by the STM32 firmware.
