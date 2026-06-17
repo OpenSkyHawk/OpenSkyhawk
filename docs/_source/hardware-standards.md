@@ -125,7 +125,7 @@ bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated 
 - Polarized housing — one insertion orientation only
 - Rated up to **9 A/pin** (gauge/terminal-dependent; derate when all pins energized). Power split across pins (2×+12V, 3×GND) gives large margin over the ~2.3 A system load — current is never the limit, pour continuity at the pads is
 
-**Main bus connector: 2×4 (8-pin), `Connector_Molex:Molex_Minifit_Jr_5557-08A2_2x04_P4.20mm_Vertical`**
+**Main bus connector: 2×4 (8-pin), `Connector_Molex:Molex_Mini-Fit_Jr_5566-08A2_2x04_P4.20mm_Vertical`** (5566 = vertical PCB header; 5557 is the mating wire-side receptacle housing)
 
 Two identical connectors per MCU board (J_BUS_IN + J_BUS_OUT) — same nets, bus passes through.
 
