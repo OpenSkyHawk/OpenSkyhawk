@@ -23,6 +23,7 @@ which load automatically when you work on that aspect (don't paste their content
 | How the whole stack fits together / cross-layer questions / onboarding / debugging across layers | `full-stack` |
 | CAD panel & bezel modeling, STL/STEP export, mechanical fit | `cad` |
 | Researching a new panel — DCS Model Viewer, control inventory & types, panel sizing | `panel-mapping` |
+| Driving a panel/controller through the full build pipeline (research → schematic → CAD → PCB → firmware → order → test), grouping panels into controllers, or resuming a partly-built one | `panel-pipeline` |
 
 Contributor-facing version: [AI-Assisted Development](docs/contributing/ai-assisted-development.md).
 
