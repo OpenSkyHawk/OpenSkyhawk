@@ -10,7 +10,8 @@
 
 Drives X27.589 Switec stepper via DRV8833PW using the SwitecX25 library. Owns ~SLEEP pin
 (HIGH from setup()), software homing via motor.reset(), and non-blocking update() per loop
-iteration. Two motors on one DRV8833 share the same SLEEP_PIN.
+iteration. One DRV8833 drives one bipolar stepper (2 coils); multiple drivers may share one
+SLEEP_PIN to save GPIO.
 
 ---
 
