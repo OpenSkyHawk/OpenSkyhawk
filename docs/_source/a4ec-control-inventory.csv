@@ -149,12 +149,12 @@ input,T Handles,1240,EMERG_GEAR_REL,Emergency Landing Gear Release Handle,defaul
 input,T Handles,1241,EMERG_BOMB_REL,Emergency Stores Release Handle,default_2_position_tumb,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",Switch2Pos
 input,T Handles,1242,MAN_FLIGHT_CONTROL,Manual Flight Control Handle,default_2_position_tumb,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",Switch2Pos
 input,T Handles,1243,EMERG_GEN_DEPLOY,Emergency Generator Release Handle,default_2_position_tumb,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",Switch2Pos
-output,AFCS  [AFCS_HDG],,AFCS_HDG_100S,AFCS Heading 100's,gauge,,DCS-BIOS,0x8476,65535,,SwitecX25Output
-output,AFCS  [AFCS_HDG],,AFCS_HDG_10S,AFCS Heading 10's,gauge,,DCS-BIOS,0x8478,65535,,SwitecX25Output
-output,AFCS  [AFCS_HDG],,AFCS_HDG_1S,AFCS Heading 1's,gauge,,DCS-BIOS,0x847A,65535,,SwitecX25Output
-output,AFCS,,AFCS_PITCH,AFCS Pitch Gauge,gauge,,DCS-BIOS,0x8552,65535,,SwitecX25Output
-output,AFCS,,AFCS_ROLL,AFCS Roll Gauge,gauge,,DCS-BIOS,0x854E,65535,,SwitecX25Output
-output,AFCS,,AFCS_YAW,AFCS Yaw Gauge,gauge,,DCS-BIOS,0x8550,65535,,SwitecX25Output
+output,AFCS  [AFCS_HDG],,AFCS_HDG_100S,AFCS Heading 100's,gauge,,DCS-BIOS,0x8476,65535,,NeedleGauge
+output,AFCS  [AFCS_HDG],,AFCS_HDG_10S,AFCS Heading 10's,gauge,,DCS-BIOS,0x8478,65535,,NeedleGauge
+output,AFCS  [AFCS_HDG],,AFCS_HDG_1S,AFCS Heading 1's,gauge,,DCS-BIOS,0x847A,65535,,NeedleGauge
+output,AFCS,,AFCS_PITCH,AFCS Pitch Gauge,gauge,,DCS-BIOS,0x8552,65535,,NeedleGauge
+output,AFCS,,AFCS_ROLL,AFCS Roll Gauge,gauge,,DCS-BIOS,0x854E,65535,,NeedleGauge
+output,AFCS,,AFCS_YAW,AFCS Yaw Gauge,gauge,,DCS-BIOS,0x8550,65535,,NeedleGauge
 output,AOA Indicator,,AOA_GREEN,AOA Indexer (green),LED,,DCS-BIOS,0x8470,1,,LED
 output,AOA Indicator,,AOA_RED,AOA Indexer (red),LED,,DCS-BIOS,0x8470,1,,LED
 output,AOA Indicator,,AOA_YELLOW,AOA Indexer (yellow),LED,,DCS-BIOS,0x8470,1,,LED
@@ -163,62 +163,62 @@ output,Advisory Lights,,D_ADVISORY_INRANGE,In Range Light (yellow),LED,,DCS-BIOS
 output,Advisory Lights,,D_ADVISORY_SETRANGE,Set Range Light (yellow),LED,,DCS-BIOS,0x8470,1,,LED
 output,ApproachPowerCompensator,,APC_LIGHT,APC Indicator Light (red),LED,,DCS-BIOS,0x8470,1,,LED
 output,Armament Panel,,AWRS_POWER,AWRS Power Indicator Light (yellow),LED,,DCS-BIOS,0x8470,1,,LED
-output,BDHI  [BDHI],,BDHI_DME_00X,BDHI nnX,gauge,,DCS-BIOS,0x846A,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_DME_0X0,BDHI nXn,gauge,,DCS-BIOS,0x8468,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_DME_FLAG,BDHI Flag,gauge,,DCS-BIOS,0x8464,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_DME_X00,BDHI Xnn,gauge,,DCS-BIOS,0x8466,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_HDG,BDHI Heading,gauge,,DCS-BIOS,0x845E,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_ILS_GS,BDHI ILS GS,gauge,,DCS-BIOS,0x846C,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_ILS_LOC,BDHI ILS LOC,gauge,,DCS-BIOS,0x846E,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_NEEDLE1,BDHI Needle 1,gauge,,DCS-BIOS,0x8460,65535,,SwitecX25Output
-output,BDHI  [BDHI],,BDHI_NEEDLE2,BDHI Needle 2,gauge,,DCS-BIOS,0x8462,65535,,SwitecX25Output
-output,Clock  [CURRTIME],,CURRTIME_HOURS,Current Hours,gauge,,DCS-BIOS,0x84E0,65535,,SwitecX25Output
-output,Clock  [CURRTIME],,CURRTIME_MINS,Current Minutes,gauge,,DCS-BIOS,0x84E2,65535,,SwitecX25Output
-output,Clock  [CURRTIME],,CURRTIME_SECS,Current Seconds,gauge,,DCS-BIOS,0x84E4,65535,,SwitecX25Output
-output,Clock  [STOPWATCH],,STOPWATCH_MINS,Stopwatch Minutes,gauge,,DCS-BIOS,0x84E6,65535,,SwitecX25Output
-output,Clock  [STOPWATCH],,STOPWATCH_SECS,Stopwatch Seconds,gauge,,DCS-BIOS,0x84E8,65535,,SwitecX25Output
-output,Countermeasures  [CM_BANK1],,CM_BANK1_0X,CM Bank 1 1's,gauge,,DCS-BIOS,0x84C8,65535,,SwitecX25Output
-output,Countermeasures  [CM_BANK1],,CM_BANK1_X0,CM Bank 1 10's,gauge,,DCS-BIOS,0x84C6,65535,,SwitecX25Output
-output,Countermeasures  [CM_BANK2],,CM_BANK2_0X,CM Bank 2 1's,gauge,,DCS-BIOS,0x84CC,65535,,SwitecX25Output
-output,Countermeasures  [CM_BANK2],,CM_BANK2_X0,CM Bank 2 10's,gauge,,DCS-BIOS,0x84CA,65535,,SwitecX25Output
-output,Doppler Nav,,APN153_DRIFT_GAUGE,Drift Gauge,gauge,,DCS-BIOS,0x847C,65535,,SwitecX25Output
-output,Doppler Nav  [APN153_SPEED],,APN153_SPEED_00X,Speed nnX,gauge,,DCS-BIOS,0x8482,65535,,SwitecX25Output
-output,Doppler Nav  [APN153_SPEED],,APN153_SPEED_0X0,Speed nXn,gauge,,DCS-BIOS,0x8480,65535,,SwitecX25Output
-output,Doppler Nav  [APN153_SPEED],,APN153_SPEED_X00,Speed Xnn,gauge,,DCS-BIOS,0x847E,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_0000X,MagVar nnnnX,gauge,,DCS-BIOS,0x84C4,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_000X0,MagVar nnnXn,gauge,,DCS-BIOS,0x84C2,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_00X00,MagVar nnXnn,gauge,,DCS-BIOS,0x84C0,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_0X000,MagVar nXnnn,gauge,,DCS-BIOS,0x84BE,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_X0000,MagVar Xnnnn,gauge,,DCS-BIOS,0x84BC,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_WINDDIR],,ASN41_WINDDIR_00X,Wind Direction nnX,gauge,,DCS-BIOS,0x84BA,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_WINDDIR],,ASN41_WINDDIR_0X0,Wind Direction nXn,gauge,,DCS-BIOS,0x84B8,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_WINDDIR],,ASN41_WINDDIR_X00,Wind Direction Xnn,gauge,,DCS-BIOS,0x84B6,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_WINDSPEED],,ASN41_WINDSPEED_00X,Windspeed nnX,gauge,,DCS-BIOS,0x84B4,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_WINDSPEED],,ASN41_WINDSPEED_0X0,Windspeed nXn,gauge,,DCS-BIOS,0x84B2,65535,,SwitecX25Output
-output,Doppler Nav  [ASN41_WINDSPEED],,ASN41_WINDSPEED_X00,Windspeed Xnn,gauge,,DCS-BIOS,0x84B0,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_0000X,Destination Latitude nnnnX,gauge,,DCS-BIOS,0x84A2,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_000X0,Destination Latitude nnnXn,gauge,,DCS-BIOS,0x84A0,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_00X00,Destination Latitude nnXnn,gauge,,DCS-BIOS,0x849E,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_0X000,Destination Latitude nXnnn,gauge,,DCS-BIOS,0x849C,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_X0000,Destination Latitude Xnnnn,gauge,,DCS-BIOS,0x849A,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_00000X,Destination Longitude nnnnnX,gauge,,DCS-BIOS,0x84AE,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_0000X0,Destination Longitude nnnnXn,gauge,,DCS-BIOS,0x84AC,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_000X00,Destination Longitude nnnXnn,gauge,,DCS-BIOS,0x84AA,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_00X000,Destination Longitude nnXnnn,gauge,,DCS-BIOS,0x84A8,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_0X0000,Destination Longitude nXnnnn,gauge,,DCS-BIOS,0x84A6,65535,,SwitecX25Output
-output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_X00000,Destination Longitude Xnnnnn,gauge,,DCS-BIOS,0x84A4,65535,,SwitecX25Output
+output,BDHI  [BDHI],,BDHI_DME_00X,BDHI nnX,gauge,,DCS-BIOS,0x846A,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_DME_0X0,BDHI nXn,gauge,,DCS-BIOS,0x8468,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_DME_FLAG,BDHI Flag,gauge,,DCS-BIOS,0x8464,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_DME_X00,BDHI Xnn,gauge,,DCS-BIOS,0x8466,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_HDG,BDHI Heading,gauge,,DCS-BIOS,0x845E,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_ILS_GS,BDHI ILS GS,gauge,,DCS-BIOS,0x846C,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_ILS_LOC,BDHI ILS LOC,gauge,,DCS-BIOS,0x846E,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_NEEDLE1,BDHI Needle 1,gauge,,DCS-BIOS,0x8460,65535,,NeedleGauge
+output,BDHI  [BDHI],,BDHI_NEEDLE2,BDHI Needle 2,gauge,,DCS-BIOS,0x8462,65535,,NeedleGauge
+output,Clock  [CURRTIME],,CURRTIME_HOURS,Current Hours,gauge,,DCS-BIOS,0x84E0,65535,,NeedleGauge
+output,Clock  [CURRTIME],,CURRTIME_MINS,Current Minutes,gauge,,DCS-BIOS,0x84E2,65535,,NeedleGauge
+output,Clock  [CURRTIME],,CURRTIME_SECS,Current Seconds,gauge,,DCS-BIOS,0x84E4,65535,,NeedleGauge
+output,Clock  [STOPWATCH],,STOPWATCH_MINS,Stopwatch Minutes,gauge,,DCS-BIOS,0x84E6,65535,,NeedleGauge
+output,Clock  [STOPWATCH],,STOPWATCH_SECS,Stopwatch Seconds,gauge,,DCS-BIOS,0x84E8,65535,,NeedleGauge
+output,Countermeasures  [CM_BANK1],,CM_BANK1_0X,CM Bank 1 1's,gauge,,DCS-BIOS,0x84C8,65535,,NeedleGauge
+output,Countermeasures  [CM_BANK1],,CM_BANK1_X0,CM Bank 1 10's,gauge,,DCS-BIOS,0x84C6,65535,,NeedleGauge
+output,Countermeasures  [CM_BANK2],,CM_BANK2_0X,CM Bank 2 1's,gauge,,DCS-BIOS,0x84CC,65535,,NeedleGauge
+output,Countermeasures  [CM_BANK2],,CM_BANK2_X0,CM Bank 2 10's,gauge,,DCS-BIOS,0x84CA,65535,,NeedleGauge
+output,Doppler Nav,,APN153_DRIFT_GAUGE,Drift Gauge,gauge,,DCS-BIOS,0x847C,65535,,NeedleGauge
+output,Doppler Nav  [APN153_SPEED],,APN153_SPEED_00X,Speed nnX,gauge,,DCS-BIOS,0x8482,65535,,DrumDisplay
+output,Doppler Nav  [APN153_SPEED],,APN153_SPEED_0X0,Speed nXn,gauge,,DCS-BIOS,0x8480,65535,,DrumDisplay
+output,Doppler Nav  [APN153_SPEED],,APN153_SPEED_X00,Speed Xnn,gauge,,DCS-BIOS,0x847E,65535,,DrumDisplay
+output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_0000X,MagVar nnnnX,gauge,,DCS-BIOS,0x84C4,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_000X0,MagVar nnnXn,gauge,,DCS-BIOS,0x84C2,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_00X00,MagVar nnXnn,gauge,,DCS-BIOS,0x84C0,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_0X000,MagVar nXnnn,gauge,,DCS-BIOS,0x84BE,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_MAGVAR],,ASN41_MAGVAR_X0000,MagVar Xnnnn,gauge,,DCS-BIOS,0x84BC,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_WINDDIR],,ASN41_WINDDIR_00X,Wind Direction nnX,gauge,,DCS-BIOS,0x84BA,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_WINDDIR],,ASN41_WINDDIR_0X0,Wind Direction nXn,gauge,,DCS-BIOS,0x84B8,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_WINDDIR],,ASN41_WINDDIR_X00,Wind Direction Xnn,gauge,,DCS-BIOS,0x84B6,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_WINDSPEED],,ASN41_WINDSPEED_00X,Windspeed nnX,gauge,,DCS-BIOS,0x84B4,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_WINDSPEED],,ASN41_WINDSPEED_0X0,Windspeed nXn,gauge,,DCS-BIOS,0x84B2,65535,,NeedleGauge
+output,Doppler Nav  [ASN41_WINDSPEED],,ASN41_WINDSPEED_X00,Windspeed Xnn,gauge,,DCS-BIOS,0x84B0,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_0000X,Destination Latitude nnnnX,gauge,,DCS-BIOS,0x84A2,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_000X0,Destination Latitude nnnXn,gauge,,DCS-BIOS,0x84A0,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_00X00,Destination Latitude nnXnn,gauge,,DCS-BIOS,0x849E,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_0X000,Destination Latitude nXnnn,gauge,,DCS-BIOS,0x849C,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LAT],,NAV_DEST_LAT_X0000,Destination Latitude Xnnnn,gauge,,DCS-BIOS,0x849A,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_00000X,Destination Longitude nnnnnX,gauge,,DCS-BIOS,0x84AE,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_0000X0,Destination Longitude nnnnXn,gauge,,DCS-BIOS,0x84AC,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_000X00,Destination Longitude nnnXnn,gauge,,DCS-BIOS,0x84AA,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_00X000,Destination Longitude nnXnnn,gauge,,DCS-BIOS,0x84A8,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_0X0000,Destination Longitude nXnnnn,gauge,,DCS-BIOS,0x84A6,65535,,NeedleGauge
+output,Doppler Nav Destination  [NAV_DEST_LON],,NAV_DEST_LON_X00000,Destination Longitude Xnnnnn,gauge,,DCS-BIOS,0x84A4,65535,,NeedleGauge
 output,Doppler Nav Lights,,APN153_MEMORYLIGHT,Memory Light (yellow),LED,,DCS-BIOS,0x8470,1,,LED
-output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_0000X,Current Latitude nnnnX,gauge,,DCS-BIOS,0x848C,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_000X0,Current Latitude nnnXn,gauge,,DCS-BIOS,0x848A,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_00X00,Current Latitude nnXnn,gauge,,DCS-BIOS,0x8488,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_0X000,Current Latitude nXnnn,gauge,,DCS-BIOS,0x8486,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_X0000,Current Latitude Xnnnn,gauge,,DCS-BIOS,0x8484,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_00000X,Current Longitude nnnnnX,gauge,,DCS-BIOS,0x8498,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_0000X0,Current Longitude nnnnXn,gauge,,DCS-BIOS,0x8496,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_000X00,Current Longitude nnnXnn,gauge,,DCS-BIOS,0x8494,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_00X000,Current Longitude nnXnnn,gauge,,DCS-BIOS,0x8492,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_0X0000,Current Longitude nXnnnn,gauge,,DCS-BIOS,0x8490,65535,,SwitecX25Output
-output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_X00000,Current Longitude Xnnnnn,gauge,,DCS-BIOS,0x848E,65535,,SwitecX25Output
+output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_0000X,Current Latitude nnnnX,gauge,,DCS-BIOS,0x848C,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_000X0,Current Latitude nnnXn,gauge,,DCS-BIOS,0x848A,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_00X00,Current Latitude nnXnn,gauge,,DCS-BIOS,0x8488,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_0X000,Current Latitude nXnnn,gauge,,DCS-BIOS,0x8486,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LAT],,NAV_CURPOS_LAT_X0000,Current Latitude Xnnnn,gauge,,DCS-BIOS,0x8484,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_00000X,Current Longitude nnnnnX,gauge,,DCS-BIOS,0x8498,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_0000X0,Current Longitude nnnnXn,gauge,,DCS-BIOS,0x8496,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_000X00,Current Longitude nnnXnn,gauge,,DCS-BIOS,0x8494,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_00X000,Current Longitude nnXnnn,gauge,,DCS-BIOS,0x8492,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_0X0000,Current Longitude nXnnnn,gauge,,DCS-BIOS,0x8490,65535,,NeedleGauge
+output,Doppler Nav Position  [NAV_CURPOS_LON],,NAV_CURPOS_LON_X00000,Current Longitude Xnnnnn,gauge,,DCS-BIOS,0x848E,65535,,NeedleGauge
 output,ECM Panel Lights,,ECM_GO_LIGHT,ECM GO Light (green),LED,,DCS-BIOS,0x8470,1,,LED
 output,ECM Panel Lights,,ECM_NOGO_LIGHT,ECM NO GO Light (red),LED,,DCS-BIOS,0x8470,1,,LED
 output,ECM Panel Lights,,ECM_REC_LIGHT,ECM REC Light (red),LED,,DCS-BIOS,0x84EA,1,,LED
@@ -227,65 +227,65 @@ output,ECM Panel Lights,,ECM_SAM_LIGHT,ECM SAM Light (red),LED,,DCS-BIOS,0x8470,
 output,ECM Panel Lights,,ECM_STBY_LIGHT,ECM STBY Light (yellow),LED,,DCS-BIOS,0x8470,1,,LED
 output,ECM Panel Lights,,ECM_TEST_LIGHT,ECM Test Light (white),LED,,DCS-BIOS,0x8470,1,,LED
 output,ECM Panel Lights,,RWR_LIGHT,Glareshield RWR Light,LED,,DCS-BIOS,0x8470,1,,LED
-output,Engine Instruments,,D_FUEL,Fuel Gauge,gauge,,DCS-BIOS,0x840C,65535,,SwitecX25Output
-output,Engine Instruments,,D_FUEL_FLOW,Fuel Flow,gauge,,DCS-BIOS,0x8406,65535,,SwitecX25Output
-output,Engine Instruments,,EGT_C,EGT,gauge,,DCS-BIOS,0x8404,65535,,SwitecX25Output
-output,Engine Instruments,,OIL_PRESSURE,Oil Pressure,gauge,,DCS-BIOS,0x8408,65535,,SwitecX25Output
-output,Engine Instruments,,PRESSURE_RATIO,Pressure Ratio,gauge,,DCS-BIOS,0x840A,65535,,SwitecX25Output
-output,Engine Instruments,,RPM,Engine RPM,gauge,,DCS-BIOS,0x8400,65535,,SwitecX25Output
-output,Engine Instruments,,RPM_DECI,Engine RPM DECI,gauge,,DCS-BIOS,0x8402,65535,,SwitecX25Output
-output,Gunsight,,D_GUNSIGHT_REFLECTOR,Gunsight Reflector Elevation,gauge,,DCS-BIOS,0x845A,65535,,SwitecX25Output
-output,Lights,,APG53A_GLOW,Radar Glow Light (green),gauge,,DCS-BIOS,0x84DE,65535,,SwitecX25Output
-output,Lights,,LIGHTS_CONSOLE,Console Lights (red),gauge,,DCS-BIOS,0x84DC,65535,,SwitecX25Output
-output,Lights,,LIGHTS_FLOOD_RED,Red Flood Lights (red),gauge,,DCS-BIOS,0x84D8,65535,,SwitecX25Output
-output,Lights,,LIGHTS_FLOOD_WHITE,White Flood Lights (white),gauge,,DCS-BIOS,0x84D6,65535,,SwitecX25Output
-output,Lights,,LIGHTS_INSTRUMENTS,Instrument Lights (red),gauge,,DCS-BIOS,0x84DA,65535,,SwitecX25Output
-output,Main Flight Instruments  [ACCEL],,ACCEL_CUR,Accelerometer,gauge,,DCS-BIOS,0x8442,65535,,SwitecX25Output
-output,Main Flight Instruments  [ACCEL],,ACCEL_MAX,Accelerometer Max,gauge,,DCS-BIOS,0x8444,65535,,SwitecX25Output
-output,Main Flight Instruments  [ACCEL],,ACCEL_MIN,Accelerometer Min,gauge,,DCS-BIOS,0x8446,65535,,SwitecX25Output
-output,Main Flight Instruments  [ADI],,ADI_HDG,ADI Heading,gauge,,DCS-BIOS,0x844E,65535,,SwitecX25Output
-output,Main Flight Instruments  [ADI],,ADI_OFF,ADI Off,gauge,,DCS-BIOS,0x8450,65535,,SwitecX25Output
-output,Main Flight Instruments  [ADI],,ADI_PITCH,ADI Pitch,gauge,,DCS-BIOS,0x844A,65535,,SwitecX25Output
-output,Main Flight Instruments  [ADI],,ADI_ROLL,ADI Roll,gauge,,DCS-BIOS,0x844C,65535,,SwitecX25Output
-output,Main Flight Instruments  [ADI],,ADI_SLIP,ADI Slip,gauge,,DCS-BIOS,0x8452,65535,,SwitecX25Output
-output,Main Flight Instruments  [ADI],,ADI_TURN,ADI Turn,gauge,,DCS-BIOS,0x8454,65535,,SwitecX25Output
-output,Main Flight Instruments  [ALT_ADJ],,ALT_ADJ_000N,Altimeter Adjustment xxxN,gauge,,DCS-BIOS,0x843A,65535,,SwitecX25Output
-output,Main Flight Instruments  [ALT_ADJ],,ALT_ADJ_00N0,Altimeter Adjustment xxNx,gauge,,DCS-BIOS,0x8438,65535,,SwitecX25Output
-output,Main Flight Instruments  [ALT_ADJ],,ALT_ADJ_NN00,Altimeter Adjustment NNxx,gauge,,DCS-BIOS,0x8436,65535,,SwitecX25Output
-output,Main Flight Instruments,,AOA_G,Angle Of Attack,gauge,,DCS-BIOS,0x8458,65535,,SwitecX25Output
-output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_HORIZ,SAI Horizon,gauge,,DCS-BIOS,0x8418,65535,,SwitecX25Output
-output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_OFF,SAI Off,gauge,,DCS-BIOS,0x841E,65535,,SwitecX25Output
-output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_PITCH,SAI Pitch,gauge,,DCS-BIOS,0x841A,65535,,SwitecX25Output
-output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_ROLL,SAI Roll,gauge,,DCS-BIOS,0x841C,65535,,SwitecX25Output
-output,Main Flight Instruments,,CABIN_ALT,Cabin Altitude,gauge,,DCS-BIOS,0x843C,65535,,SwitecX25Output
-output,Main Flight Instruments,,COMPASS_HDG,Backup Compass,gauge,,DCS-BIOS,0x8456,65535,,SwitecX25Output
-output,Main Flight Instruments  [D_ALT],,D_ALT_100S,Altimeter 100s,gauge,,DCS-BIOS,0x8434,65535,,SwitecX25Output
-output,Main Flight Instruments  [D_ALT],,D_ALT_10K,Altimeter 10k,gauge,,DCS-BIOS,0x8430,65535,,SwitecX25Output
-output,Main Flight Instruments  [D_ALT],,D_ALT_1K,Altimeter 1k,gauge,,DCS-BIOS,0x8432,65535,,SwitecX25Output
-output,Main Flight Instruments  [D_ALT],,D_ALT_NEEDLE,Altimeter needle,gauge,,DCS-BIOS,0x842E,65535,,SwitecX25Output
-output,Main Flight Instruments  [D_IAS],,D_IAS_DEG,IAS,gauge,,DCS-BIOS,0x8420,65535,,SwitecX25Output
-output,Main Flight Instruments  [D_IAS],,D_IAS_IDX,IAS Index,gauge,,DCS-BIOS,0x8424,65535,,SwitecX25Output
-output,Main Flight Instruments  [D_IAS],,D_IAS_MACH_DEG,Mach Disc,gauge,,DCS-BIOS,0x8422,65535,,SwitecX25Output
-output,Main Flight Instruments,,D_MACH_IDX,Mach Index,gauge,,DCS-BIOS,0x8426,65535,,SwitecX25Output
-output,Main Flight Instruments,,D_OXYGEN_OFF,Oxygen off flag,gauge,,DCS-BIOS,0x8440,65535,,SwitecX25Output
-output,Main Flight Instruments,,D_RADAR_ALT,Radar Altimeter,gauge,,DCS-BIOS,0x8428,65535,,SwitecX25Output
-output,Main Flight Instruments,,D_RADAR_IDX,Radar ALtimeter Indexer,gauge,,DCS-BIOS,0x842A,65535,,SwitecX25Output
-output,Main Flight Instruments,,D_RADAR_OFF,Radar Altimeter Off flag,gauge,,DCS-BIOS,0x842C,65535,,SwitecX25Output
-output,Main Flight Instruments,,LIQUID_O2,Liquid Oxygen,gauge,,DCS-BIOS,0x843E,65535,,SwitecX25Output
-output,Main Flight Instruments,,VVI,Variometer,gauge,,DCS-BIOS,0x8448,65535,,SwitecX25Output
-output,Mechanical Systems,,CANOPY_POS,Canopy Position,gauge,,DCS-BIOS,0x84EC,65535,,SwitecX25Output
+output,Engine Instruments,,D_FUEL,Fuel Gauge,gauge,,DCS-BIOS,0x840C,65535,,NeedleGauge
+output,Engine Instruments,,D_FUEL_FLOW,Fuel Flow,gauge,,DCS-BIOS,0x8406,65535,,NeedleGauge
+output,Engine Instruments,,EGT_C,EGT,gauge,,DCS-BIOS,0x8404,65535,,NeedleGauge
+output,Engine Instruments,,OIL_PRESSURE,Oil Pressure,gauge,,DCS-BIOS,0x8408,65535,,NeedleGauge
+output,Engine Instruments,,PRESSURE_RATIO,Pressure Ratio,gauge,,DCS-BIOS,0x840A,65535,,NeedleGauge
+output,Engine Instruments,,RPM,Engine RPM,gauge,,DCS-BIOS,0x8400,65535,,NeedleGauge
+output,Engine Instruments,,RPM_DECI,Engine RPM DECI,gauge,,DCS-BIOS,0x8402,65535,,NeedleGauge
+output,Gunsight,,D_GUNSIGHT_REFLECTOR,Gunsight Reflector Elevation,gauge,,DCS-BIOS,0x845A,65535,,NeedleGauge
+output,Lights,,APG53A_GLOW,Radar Glow Light (green),gauge,,DCS-BIOS,0x84DE,65535,,NeedleGauge
+output,Lights,,LIGHTS_CONSOLE,Console Lights (red),gauge,,DCS-BIOS,0x84DC,65535,,NeedleGauge
+output,Lights,,LIGHTS_FLOOD_RED,Red Flood Lights (red),gauge,,DCS-BIOS,0x84D8,65535,,NeedleGauge
+output,Lights,,LIGHTS_FLOOD_WHITE,White Flood Lights (white),gauge,,DCS-BIOS,0x84D6,65535,,NeedleGauge
+output,Lights,,LIGHTS_INSTRUMENTS,Instrument Lights (red),gauge,,DCS-BIOS,0x84DA,65535,,NeedleGauge
+output,Main Flight Instruments  [ACCEL],,ACCEL_CUR,Accelerometer,gauge,,DCS-BIOS,0x8442,65535,,NeedleGauge
+output,Main Flight Instruments  [ACCEL],,ACCEL_MAX,Accelerometer Max,gauge,,DCS-BIOS,0x8444,65535,,NeedleGauge
+output,Main Flight Instruments  [ACCEL],,ACCEL_MIN,Accelerometer Min,gauge,,DCS-BIOS,0x8446,65535,,NeedleGauge
+output,Main Flight Instruments  [ADI],,ADI_HDG,ADI Heading,gauge,,DCS-BIOS,0x844E,65535,,NeedleGauge
+output,Main Flight Instruments  [ADI],,ADI_OFF,ADI Off,gauge,,DCS-BIOS,0x8450,65535,,NeedleGauge
+output,Main Flight Instruments  [ADI],,ADI_PITCH,ADI Pitch,gauge,,DCS-BIOS,0x844A,65535,,NeedleGauge
+output,Main Flight Instruments  [ADI],,ADI_ROLL,ADI Roll,gauge,,DCS-BIOS,0x844C,65535,,NeedleGauge
+output,Main Flight Instruments  [ADI],,ADI_SLIP,ADI Slip,gauge,,DCS-BIOS,0x8452,65535,,NeedleGauge
+output,Main Flight Instruments  [ADI],,ADI_TURN,ADI Turn,gauge,,DCS-BIOS,0x8454,65535,,NeedleGauge
+output,Main Flight Instruments  [ALT_ADJ],,ALT_ADJ_000N,Altimeter Adjustment xxxN,gauge,,DCS-BIOS,0x843A,65535,,NeedleGauge
+output,Main Flight Instruments  [ALT_ADJ],,ALT_ADJ_00N0,Altimeter Adjustment xxNx,gauge,,DCS-BIOS,0x8438,65535,,NeedleGauge
+output,Main Flight Instruments  [ALT_ADJ],,ALT_ADJ_NN00,Altimeter Adjustment NNxx,gauge,,DCS-BIOS,0x8436,65535,,NeedleGauge
+output,Main Flight Instruments,,AOA_G,Angle Of Attack,gauge,,DCS-BIOS,0x8458,65535,,NeedleGauge
+output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_HORIZ,SAI Horizon,gauge,,DCS-BIOS,0x8418,65535,,NeedleGauge
+output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_OFF,SAI Off,gauge,,DCS-BIOS,0x841E,65535,,NeedleGauge
+output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_PITCH,SAI Pitch,gauge,,DCS-BIOS,0x841A,65535,,NeedleGauge
+output,Main Flight Instruments  [ATTGYRO_STBY],,ATTGYRO_STBY_ROLL,SAI Roll,gauge,,DCS-BIOS,0x841C,65535,,NeedleGauge
+output,Main Flight Instruments,,CABIN_ALT,Cabin Altitude,gauge,,DCS-BIOS,0x843C,65535,,NeedleGauge
+output,Main Flight Instruments,,COMPASS_HDG,Backup Compass,gauge,,DCS-BIOS,0x8456,65535,,NeedleGauge
+output,Main Flight Instruments  [D_ALT],,D_ALT_100S,Altimeter 100s,gauge,,DCS-BIOS,0x8434,65535,,NeedleGauge
+output,Main Flight Instruments  [D_ALT],,D_ALT_10K,Altimeter 10k,gauge,,DCS-BIOS,0x8430,65535,,NeedleGauge
+output,Main Flight Instruments  [D_ALT],,D_ALT_1K,Altimeter 1k,gauge,,DCS-BIOS,0x8432,65535,,NeedleGauge
+output,Main Flight Instruments  [D_ALT],,D_ALT_NEEDLE,Altimeter needle,gauge,,DCS-BIOS,0x842E,65535,,NeedleGauge
+output,Main Flight Instruments  [D_IAS],,D_IAS_DEG,IAS,gauge,,DCS-BIOS,0x8420,65535,,NeedleGauge
+output,Main Flight Instruments  [D_IAS],,D_IAS_IDX,IAS Index,gauge,,DCS-BIOS,0x8424,65535,,NeedleGauge
+output,Main Flight Instruments  [D_IAS],,D_IAS_MACH_DEG,Mach Disc,gauge,,DCS-BIOS,0x8422,65535,,NeedleGauge
+output,Main Flight Instruments,,D_MACH_IDX,Mach Index,gauge,,DCS-BIOS,0x8426,65535,,NeedleGauge
+output,Main Flight Instruments,,D_OXYGEN_OFF,Oxygen off flag,gauge,,DCS-BIOS,0x8440,65535,,NeedleGauge
+output,Main Flight Instruments,,D_RADAR_ALT,Radar Altimeter,gauge,,DCS-BIOS,0x8428,65535,,NeedleGauge
+output,Main Flight Instruments,,D_RADAR_IDX,Radar ALtimeter Indexer,gauge,,DCS-BIOS,0x842A,65535,,NeedleGauge
+output,Main Flight Instruments,,D_RADAR_OFF,Radar Altimeter Off flag,gauge,,DCS-BIOS,0x842C,65535,,NeedleGauge
+output,Main Flight Instruments,,LIQUID_O2,Liquid Oxygen,gauge,,DCS-BIOS,0x843E,65535,,NeedleGauge
+output,Main Flight Instruments,,VVI,Variometer,gauge,,DCS-BIOS,0x8448,65535,,NeedleGauge
+output,Mechanical Systems,,CANOPY_POS,Canopy Position,gauge,,DCS-BIOS,0x84EC,65535,,NeedleGauge
 output,Mechanical Systems,,GEAR_LIGHT,Landing Gear Light (red),LED,,DCS-BIOS,0x845C,1,,LED
-output,Mechanical Systems Indicators,,D_FLAPS_IND,Flaps Indicator,gauge,,DCS-BIOS,0x840E,65535,,SwitecX25Output
-output,Mechanical Systems Indicators,,D_TAIL_HOOK,Hook Indicator,gauge,,DCS-BIOS,0x8410,65535,,SwitecX25Output
-output,Mechanical Systems Indicators,,GEAR_LEFT,Left Gear Indicator,gauge,,DCS-BIOS,0x8414,65535,,SwitecX25Output
-output,Mechanical Systems Indicators,,GEAR_NOSE,Nose Gear Indicator,gauge,,DCS-BIOS,0x8412,65535,,SwitecX25Output
-output,Mechanical Systems Indicators,,GEAR_RIGHT,Right Gear Indicator,gauge,,DCS-BIOS,0x8416,65535,,SwitecX25Output
-output,Radar Control Panel Gauges,,APG53A_BOTTOMRANGE,Radar Plan Range,gauge,,DCS-BIOS,0x8474,65535,,SwitecX25Output
-output,Radar Control Panel Gauges,,APG53A_LEFTRANGE,Radar Profile Range,gauge,,DCS-BIOS,0x8472,65535,,SwitecX25Output
-output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_000XX,Frequency nnnXX,gauge,,DCS-BIOS,0x84D2,65535,,SwitecX25Output
-output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_00X00,Frequency nnXnn,gauge,,DCS-BIOS,0x84D0,65535,,SwitecX25Output
-output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_PRESET,Frequency Preset,gauge,,DCS-BIOS,0x84D4,65535,,SwitecX25Output
-output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_XX000,Frequency XXnnn,gauge,,DCS-BIOS,0x84CE,65535,,SwitecX25Output
+output,Mechanical Systems Indicators,,D_FLAPS_IND,Flaps Indicator,gauge,,DCS-BIOS,0x840E,65535,,NeedleGauge
+output,Mechanical Systems Indicators,,D_TAIL_HOOK,Hook Indicator,gauge,,DCS-BIOS,0x8410,65535,,NeedleGauge
+output,Mechanical Systems Indicators,,GEAR_LEFT,Left Gear Indicator,gauge,,DCS-BIOS,0x8414,65535,,NeedleGauge
+output,Mechanical Systems Indicators,,GEAR_NOSE,Nose Gear Indicator,gauge,,DCS-BIOS,0x8412,65535,,NeedleGauge
+output,Mechanical Systems Indicators,,GEAR_RIGHT,Right Gear Indicator,gauge,,DCS-BIOS,0x8416,65535,,NeedleGauge
+output,Radar Control Panel Gauges,,APG53A_BOTTOMRANGE,Radar Plan Range,gauge,,DCS-BIOS,0x8474,65535,,NeedleGauge
+output,Radar Control Panel Gauges,,APG53A_LEFTRANGE,Radar Profile Range,gauge,,DCS-BIOS,0x8472,65535,,NeedleGauge
+output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_000XX,Frequency nnnXX,gauge,,DCS-BIOS,0x84D2,65535,,NeedleGauge
+output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_00X00,Frequency nnXnn,gauge,,DCS-BIOS,0x84D0,65535,,NeedleGauge
+output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_PRESET,Frequency Preset,gauge,,DCS-BIOS,0x84D4,65535,,NeedleGauge
+output,UHF Radio  [ARC51_FREQ],,ARC51_FREQ_XX000,Frequency XXnnn,gauge,,DCS-BIOS,0x84CE,65535,,NeedleGauge
 output,Warning Lamps,,D_CONTHYD_CAUTION,Control Hydraulics-Caution Ladder (yellow),LED,,DCS-BIOS,0x845C,1,,LED
 output,Warning Lamps,,D_FUELBOOST_CAUTION,Fuel Boost-Caution Ladder (yellow),LED,,DCS-BIOS,0x845C,1,,LED
 output,Warning Lamps,,D_FUELTRANS_CAUTION,Fuel Transfer-Caution Ladder (yellow),LED,,DCS-BIOS,0x845C,1,,LED
