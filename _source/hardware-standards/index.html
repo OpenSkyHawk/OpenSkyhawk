@@ -4262,6 +4262,7 @@
 <li>Apply same RC input filter as STM32: 1 kΩ series + 100 nF to GND per axis input</li>
 </ul>
 <p><strong>Analog expansion via ADS1115 (worth prototyping):</strong> When more than 3 axes are needed, add ADS1115 breakout(s) over I²C — the same part already used on STM32 breakout boards.</p>
+<p><strong>Selected: ADS1115IDGSR (TI)</strong> — 16-bit ADC, VSSOP-10. <strong>LCSC: C37593</strong> <em>(note: LCSC description erroneously says QFN-10; IDGSR suffix = VSSOP-10 with gull-wing leads — inspectable)</em></p>
 <ul>
 <li>4 channels per chip, 16-bit, I²C</li>
 <li>Up to 4 chips per bus (addresses 0x48–0x4B via ADDR pin) = 16 channels per I²C bus</li>
@@ -4316,7 +4317,7 @@
 </table>
 <p>Local decoupling required on every board: 100 nF + 10 µF per rail, placed close to each IC. Never use a linear regulator for 12 V → 5 V conversion.</p>
 <h2 id="stepper-driver">Stepper Driver</h2>
-<p><strong>Selected: DRV8833PW (TI)</strong> — dual H-bridge, HTSSOP-16.</p>
+<p><strong>Selected: DRV8833PWPR (TI)</strong> — dual H-bridge, TSSOP-16-EP. <strong>LCSC: C50506</strong></p>
 <p>DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated, not inspectable after reflow). DRV8833PW is the same electrical capability in an inspectable HTSSOP-16 package.</p>
 <ul>
 <li>Drives one X27.589 Switec stepper (bipolar, ~600 steps/315°, 180–300 Ω coils, ~15–30 mA at 5 V)</li>
@@ -4650,6 +4651,7 @@ chip.writeRegister(MCP23017Register::GPINTEN_B, gpintenB);
 <li>LED power arrives on a <strong>separate 2-pin Mini-Fit Jr connector</strong> — not the signal harness</li>
 </ul>
 <h3 id="mcp23017-instance">MCP23017 Instance</h3>
+<p><strong>Selected: MCP23017-E/SS (Microchip)</strong> — 16-bit I/O expander, SSOP-28. <strong>LCSC: C506653</strong></p>
 <blockquote>
 <p><strong>Silicon bug — GPA7 and GPB7 must not be used as inputs.</strong><br />
 Confirmed by Microchip in datasheet Revision D (June 2022) and support article
