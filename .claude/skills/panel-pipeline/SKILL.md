@@ -161,8 +161,9 @@ so this skill (not a template) owns the structure.
   KiCad effort (TechSpec + prototype, e.g. how `Switch2Pos` was built). The pipeline only flags it,
   tickets it, and blocks the board until it lands.
   Implemented today: `Switch2Pos`, `LED`, `PinRef`. Planned/missing: `Switch3Pos`, `ActionButton`,
-  `SwitchMultiPos`/`RotarySwitch`, `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder`, `ServoOutput`, `SwitecX25Output`,
-  `AccelStepperOutput`, `AngleSensor`, `SwitchWithCover2Pos`.
+  `SwitchMultiPos`/`RotarySwitch`, `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder`, `DrumDisplay`,
+  `NeedleGauge` (pointer gauges — Switec/AccelStepper/servo backends, supersedes ServoOutput +
+  AccelStepperOutput), `AngleSensor`, `SwitchWithCover2Pos`.
   This **confirms the A1 provisional Ready/Blocked** classification now that types are sim-verified.
 - Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Project item / issue body +
   `docs/_source/controllers/<Panel>.md`.
