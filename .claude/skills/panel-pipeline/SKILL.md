@@ -95,6 +95,45 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
 
 ---
 
+## A2b — Graduate to GitHub issues · *owner: AI*
+
+Tracking lives in two **private** GitHub Projects (org `OpenSkyHawk`): **git is the data source
+of truth, the Projects are the generated tracker.** Get the field/option node IDs live with
+`gh project field-list <n> --owner OpenSkyHawk --format json`.
+
+- **#1 Panel Research & Assignment** — every panel as a **draft** through A1/B1 (fields: Console,
+  #Controls, Breakdown, Panel Type, Priority, + independent flag columns `Controls?` /
+  `Screenshot?` / `Analysis?`). `Analysis?=Done` only after a ModelViewer screenshot is reviewed
+  **and** the input list verified — it's downstream of `Screenshot?`, never auto-set from migrated data.
+- **#2 Controller Build** — each controller as an **issue** through B1–B9.
+
+**Graduate a controller** once A2 groups its panels (draft→issue conversion is **one-way**, and
+issues are **public** since the repo is public — the Projects stay private via their own ACL):
+
+1. Create the **controller** issue — label `controller`, add to #2, set build `Status`. Body =
+   group checklist: `- [ ] B6 Firmware  - [ ] B9 Integration test  - [ ] host/MCU PCB  - [ ] B7 Order  - [ ] B8 Assembly`
+   + member panels + NODE_ID.
+2. For each member panel: **convert** its #1 draft → issue (`convertProjectV2DraftIssueItemToIssue`),
+   label `panel`, keep it in #1 *and* add to #2, then **link as a sub-issue** of the controller (`addSubIssue`).
+3. Panel issue body = its control inventory (B1 / `panel-mapping` output) + panel checklist:
+   `- [ ] B2 Schematic  - [ ] B5 PCB  - [ ] B3 CAD  - [ ] B4 Backlight`.
+4. Check a step when its PR merges (`- [ ] B2 Schematic #123`); advance the controller `Status`
+   as steps complete. All panel sub-issues closed = hardware done → finish group firmware + test.
+
+**Sub-tasks are defined by issue type:** `controller` → firmware/test/order/assembly · `panel` →
+schematic/PCB/CAD/backlight. Default is **2-level** (panels = sub-issues, steps = checklists; ~80
+issues total). Switch a controller to **3-level** (each step its own sub-issue nested under the
+panel — GitHub nests ≤8 deep) only when it needs assignable/PR-tracked steps or fine % roll-up.
+Steps are **tasks** (checkboxes); the **checkpoint** is the `Status` field they advance; reserve
+**Milestones** for coarse gates (a console, a release). Issue templates have no per-template ACL,
+so this skill (not a template) owns the structure.
+
+> **Tracking transition:** these GitHub Projects are the live tracker. The `Notion Status` / Notion
+> page references elsewhere in this skill are now **legacy** (Notion → research source only; git =
+> data, Projects = tracker) and are being reconciled — trust the Project + repo over Notion.
+
+---
+
 ## Phase B — per-controller build (repeats per controller)
 
 ### B1 — Research (deep) · `panel-mapping` · *AI drafts → human photos + in-sim type confirm*
