@@ -114,7 +114,7 @@ input,Countermeasures,525,CM_ADJ2,Dispenser 2 Counter,default_axis,,DCS-BIOS,0x8
 input,Countermeasures,530,CM_PWR,Chaff Power Switch,default_2_position_tumb,,DCS-BIOS,0x84EA,,"fixed_step,set_state,action",Switch2Pos
 input,Avionics,603,RADAR_ALT_SW,AN/APN-141 Radar Altimeter,default_button_axis,,DCS-BIOS,0x850E,,"fixed_step,set_state,action",PushSetKnob
 input,Avionics,663,STBY_ATT_INDEX_BTN,Standby Attitude Horizon,default_button_axis,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",PushSetKnob
-input,Armament Panel,700,ARM_EMERG_SEL,Emergency Release Selector,multiposition_switch_limited,7,DCS-BIOS,0x8500,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
+input,Armament Panel,700,ARM_EMERG_SEL,Emergency Release Selector,multiposition_switch_limited,7,DCS-BIOS,0x8500,,"fixed_step,set_state",AnalogMultiPos
 input,Armament Panel,701,ARM_GUN,Guns Charging Switch,default_2_position_tumb,,DCS-BIOS,0x84EA,,"fixed_step,set_state,action",Switch2Pos
 input,Armament Panel,702,ARM_BOMB,Bomb Arm Switch,default_3_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state",Switch3Pos
 input,Armament Panel,703,ARM_STATION1,Station 1 Selector Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
@@ -122,19 +122,19 @@ input,Armament Panel,704,ARM_STATION2,Station 2 Selector Switch,default_2_positi
 input,Armament Panel,705,ARM_STATION3,Station 3 Selector Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
 input,Armament Panel,706,ARM_STATION4,Station 4 Selector Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
 input,Armament Panel,707,ARM_STATION5,Station 5 Selector Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
-input,Armament Panel,708,ARM_FUNC_SEL,Weapon Function Selector Switch,multiposition_switch_limited,7,DCS-BIOS,0x8500,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
+input,Armament Panel,708,ARM_FUNC_SEL,Weapon Function Selector Switch,multiposition_switch_limited,7,DCS-BIOS,0x8500,,"fixed_step,set_state",AnalogMultiPos
 input,Armament Panel,709,ARM_MASTER,Master Armament Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
 input,Avionics,720,FUEL_EXT_BTN,Internal-External Fuel Switch,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",ActionButton
 input,Radar Scope,721,RADAR_PROFILE,Radar Terrain Clearance Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
 input,Radar Scope,722,RADAR_RANGE,Radar Range Switch,default_2_position_tumb,,DCS-BIOS,0x8502,,"fixed_step,set_state,action",Switch2Pos
 input,Avionics,723,MASTER_TEST,Master Test Switch,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",ActionButton
-input,BDHI,724,BDHI_MODE,BDHI Switch,multiposition_switch_limited,,DCS-BIOS,0x8502,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
-input,Armament Panel,725,SHRIKE_SEL_KNB,Shrike Selector Knob,multiposition_switch_limited,5,DCS-BIOS,0x8502,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
+input,BDHI,724,BDHI_MODE,BDHI Switch,multiposition_switch_limited,,DCS-BIOS,0x8502,,"fixed_step,set_state",Switch3Pos
+input,Armament Panel,725,SHRIKE_SEL_KNB,Shrike Selector Knob,multiposition_switch_limited,5,DCS-BIOS,0x8502,,"fixed_step,set_state",SwitchMultiPos
 input,Armament Panel,726,MISSILE_VOL,Shrike/Sidewinder Volume Knob,default_axis_limited,,DCS-BIOS,0x8506,,"set_state,variable_step",AnalogInput
-input,Armament Panel,740,AWRS_QUANT,AWRS Quantity Selector Switch,multiposition_switch_limited,12,DCS-BIOS,0x8502,,"fixed_step,set_state",AnalogMultiPos(>7)
+input,Armament Panel,740,AWRS_QUANT,AWRS Quantity Selector Switch,multiposition_switch_limited,12,DCS-BIOS,0x8502,,"fixed_step,set_state",AnalogMultiPos
 input,Armament Panel,742,AWRS_DROP_INT,AWRS Drop Interval Knob,default_axis_limited,,DCS-BIOS,0x8504,,"set_state,variable_step",AnalogInput
 input,Armament Panel,743,AWRS_MULTI,AWRS Multiplier Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
-input,Armament Panel,744,AWRS_MODE,AWRS Mode Selector Switch,multiposition_switch_limited,6,DCS-BIOS,0x8502,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
+input,Armament Panel,744,AWRS_MODE,AWRS Mode Selector Switch,multiposition_switch_limited,6,DCS-BIOS,0x8502,,"fixed_step,set_state",AnalogMultiPos
 input,Avionics,827,ALT_PRESS_KNB,Altimeter Pressure,default_axis,,DCS-BIOS,0x8516,,variable_step,AnalogInput
 input,Avionics,853,AOA_INDEX_DIM,AoA Indexer Dimming Wheel,default_axis_limited,,DCS-BIOS,0x851A,,"set_state,variable_step",AnalogInput
 input,Avionics,885,IAS_INDEX_BTN,IAS Index,default_button_axis,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",PushSetKnob
