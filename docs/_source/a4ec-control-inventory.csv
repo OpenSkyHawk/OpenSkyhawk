@@ -38,8 +38,8 @@ input,AFCS,163,AFCS_ALT,AFCS Altitude Switch,default_2_position_tumb,,DCS-BIOS,0
 input,AFCS,164,AFCS_HDG_SET,AFCS Heading Select Pull-to-Set Knob,default_axis_limited,,DCS-BIOS,0x850A,,variable_step,AnalogInput
 input,AFCS,165,AFCS_STAB_AUG,AFCS Stability Augmentation Switch (Yaw Damper),default_2_position_tumb,,DCS-BIOS,0x8508,,"fixed_step,set_state,action",Switch2Pos
 input,AFCS,166,AFCS_AIL_TRIM,AFCS Aileron Trim Switch (unimplemented),default_2_position_tumb,,DCS-BIOS,0x8508,,"fixed_step,set_state,action",Switch2Pos
-input,Doppler Nav,170,DOPPLER_SEL,AN/APN-153 Doppler Navigation Radar Mode Switch,multiposition_switch_limited,5,DCS-BIOS,0x8522,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
-input,Doppler Nav,176,NAV_SEL,AN/ASN-41 Function Selector Switch,multiposition_switch_limited,5,DCS-BIOS,0x8522,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
+input,Doppler Nav,170,DOPPLER_SEL,AN/APN-153 Doppler Navigation Radar Mode Switch,multiposition_switch_limited,5,DCS-BIOS,0x8522,,"fixed_step,set_state",AnalogMultiPos
+input,Doppler Nav,176,NAV_SEL,AN/ASN-41 Function Selector Switch,multiposition_switch_limited,5,DCS-BIOS,0x8522,,"fixed_step,set_state",AnalogMultiPos
 input,Lights,217,LIGHT_EXT_PROBE,Probe Light Switch,multiposition_switch_limited,,DCS-BIOS,0x8532,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
 input,Lights,218,LIGHT_EXT_TAXI,Taxi Light Switch,default_2_position_tumb,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
 input,Lights,219,LIGHT_EXT_ANTICOLL,Anti-Collision Light Switch,default_2_position_tumb,,DCS-BIOS,0x8532,,"fixed_step,set_state,action",Switch2Pos
@@ -50,13 +50,20 @@ input,Lights,223,LIGHT_EXT_TAIL,Tail Light Switch,multiposition_switch_limited,,
 input,Air Condition,224,CABIN_PRESS,Cabin Pressure Switch,default_2_position_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state,action",Switch2Pos
 input,Air Condition,225,WINDSHLD_DEFROST,Windshield Defrost Switch,default_3_position_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state",Switch3Pos
 input,Air Condition,226,CABIN_TEMP,Cabin Temperature Knob,default_axis_limited,,DCS-BIOS,0x8546,,"set_state,variable_step",AnalogInput
-input,Doppler Nav,236,PPOS_LAT_BTN,Present Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",PushSetKnob
-input,Doppler Nav,237,PPOS_LON_BTN,Present Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",PushSetKnob
-input,Doppler Nav,238,DEST_LAT_BTN,Destination Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",PushSetKnob
-input,Doppler Nav,239,DEST_LON_BTN,Destination Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",PushSetKnob
-input,Doppler Nav,240,ASN41_MAGVAR_BTN,Magnetic Variation Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",PushSetKnob
-input,Doppler Nav,241,ASN41_WINDSPEED_BTN,Wind Speed Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",PushSetKnob
-input,Doppler Nav,242,ASN41_WINDDIR_BTN,Wind Direction Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",PushSetKnob
+input,Doppler Nav,236,PPOS_LAT_BTN,Present Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,237,PPOS_LON_BTN,Present Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,238,DEST_LAT_BTN,Destination Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,239,DEST_LON_BTN,Destination Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,240,ASN41_MAGVAR_BTN,Magnetic Variation Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,241,ASN41_WINDSPEED_BTN,Wind Speed Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,242,ASN41_WINDDIR_BTN,Wind Direction Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,177,PPOS_LAT_KNB,ASN-41 Present Position - Latitude Knob,analog_dial,,DCS-BIOS,0x8524,0-65535,variable_step,RotaryEncoder
+input,Doppler Nav,183,PPOS_LON_KNB,ASN-41 Present Position - Longitude Knob,analog_dial,,DCS-BIOS,0x8526,0-65535,variable_step,RotaryEncoder
+input,Doppler Nav,190,DEST_LAT_KNB,ASN-41 Destination - Latitude Knob,analog_dial,,DCS-BIOS,0x8528,0-65535,variable_step,RotaryEncoder
+input,Doppler Nav,196,DEST_LON_KNB,ASN-41 Destination - Longitude Knob,analog_dial,,DCS-BIOS,0x852a,0-65535,variable_step,RotaryEncoder
+input,Doppler Nav,203,ASN41_MAGVAR_KNB,ASN-41 Magnetic Variation Knob,analog_dial,,DCS-BIOS,0x852c,0-65535,variable_step,RotaryEncoder
+input,Doppler Nav,209,ASN41_WINDSPEED_KNB,ASN-41 Wind Speed Knob,analog_dial,,DCS-BIOS,0x852e,0-65535,variable_step,RotaryEncoder
+input,Doppler Nav,213,ASN41_WINDDIR_KNB,ASN-41 Wind Direction Knob,analog_dial,,DCS-BIOS,0x8530,0-65535,variable_step,RotaryEncoder
 input,Doppler Nav,247,DOPPLER_MEM_TEST,AN/APN-153 Memory Light Test,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",ActionButton
 input,Doppler Nav,248,ASN41_LAT_SLEW,Destination Latitude Slew Knob,springloaded_3_pos_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state",Switch3Pos
 input,Doppler Nav,249,ASN41_LON_SLEW,Destination Longitude Slew Knob,springloaded_3_pos_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state",Switch3Pos
@@ -65,7 +72,7 @@ input,Mechanical Systems,251,SEAT_ADJ,Seat Adjustment Switch,springloaded_3_pos_
 input,T Handles,252,EMERG_GEN_BYPASS,Emergency Generator Switch,default_2_position_tumb,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",Switch2Pos
 input,MCL,253,MCL_PWR,AN/ARA-63 MCL Power Switch,springloaded_forward_only_3_pos_tumb,,DCS-BIOS,0x854C,,"fixed_step,set_state",Switch3Pos
 input,TACAN,254,TACAN_ANT_CONT,TACAN Antenna Control Switch (unimplemented),inverted_3_position_tumb,,DCS-BIOS,0x854C,,"fixed_step,set_state",Switch3Pos
-input,Doppler Nav,255,NAV_DEAD,Navigation Dead Reckoning/Doppler Switch (unimplemented),default_2_position_tumb,,DCS-BIOS,0x8554,,"fixed_step,set_state,action",Switch2Pos
+input,MCL,255,NAV_DEAD,Navigation Dead Reckoning/Doppler Switch (unimplemented),default_2_position_tumb,,DCS-BIOS,0x8554,,"fixed_step,set_state,action",Switch2Pos
 input,Fuel Systems,256,FUEL_TRANS,Fuel Transfer Switch,default_2_position_tumb,,DCS-BIOS,0x8554,,"fixed_step,set_state,action",Switch2Pos
 input,Avionics,257,RAIN_REMOVE,Rain Removal Switch (unimplemented),default_2_position_tumb,,DCS-BIOS,0x8554,,"fixed_step,set_state,action",Switch2Pos
 input,AFCS,258,AFCS_1N2_COVER,AFCS 1-N-2 Guard Switch,default_2_position_tumb,,DCS-BIOS,0x854C,,"fixed_step,set_state,action",Switch2Pos

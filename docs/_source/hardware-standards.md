@@ -47,6 +47,8 @@ Choose by mechanical fit. All are equivalent for HID use.
 
 **Analog expansion via ADS1115 (worth prototyping):** When more than 3 axes are needed, add ADS1115 breakout(s) over I²C — the same part already used on STM32 breakout boards.
 
+**Selected: ADS1115IDGSR (TI)** — 16-bit ADC, VSSOP-10. **LCSC: C37593** _(note: LCSC description erroneously says QFN-10; IDGSR suffix = VSSOP-10 with gull-wing leads — inspectable)_
+
 - 4 channels per chip, 16-bit, I²C
 - Up to 4 chips per bus (addresses 0x48–0x4B via ADDR pin) = 16 channels per I²C bus
 - RP2040 has two I²C buses; effectively unlimited axes in practice
@@ -81,7 +83,7 @@ Local decoupling required on every board: 100 nF + 10 µF per rail, placed close
 
 ## Stepper Driver
 
-**Selected: DRV8833PW (TI)** — dual H-bridge, HTSSOP-16.
+**Selected: DRV8833PWPR (TI)** — dual H-bridge, TSSOP-16-EP. **LCSC: C50506**
 
 DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated, not inspectable after reflow). DRV8833PW is the same electrical capability in an inspectable HTSSOP-16 package.
 
@@ -282,6 +284,8 @@ These subcircuits repeat on every MCU board and are candidates for KiCad hierarc
 - LED power arrives on a **separate 2-pin Mini-Fit Jr connector** — not the signal harness
 
 ### MCP23017 Instance
+
+**Selected: MCP23017-E/SS (Microchip)** — 16-bit I/O expander, SSOP-28. **LCSC: C506653**
 
 > **Silicon bug — GPA7 and GPB7 must not be used as inputs.**  
 > Confirmed by Microchip in datasheet Revision D (June 2022) and support article
