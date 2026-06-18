@@ -26,7 +26,7 @@ PCB/
 **Always create a new board with the `/new-kicad-project` skill — never hand-roll the project
 files.** It copies the library tables, pins the OpenSkyhawk libs, pre-loads the
 [design rules](pcb-design-rules.md), creates the root schematic, and registers the board in
-Notion.
+the GitHub Project (Panel Research & Assignment).
 
 ```
 /new-kicad-project <Console> <Group> <BoardName> [mcu|breakout]

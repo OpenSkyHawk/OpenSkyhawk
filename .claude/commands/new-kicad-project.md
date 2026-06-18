@@ -104,12 +104,14 @@ mkdir -p "PCB/Libraries/sheets"
 
 List `.kicad_sch` files in `PCB/Libraries/sheets/`. These are the available standard block templates.
 
-### 9. Update Notion Panels database
+### 9. Update the GitHub Project (panel tracking)
 
-Search the Panels database (`collection://301575ac-53b1-80c1-be2d-000b57d99f55`) for an existing page matching `<BoardName>` or a close variant (e.g. "AWRS Panel" for `AWRS_Panel`).
+Find the panel's item in Project **#1 Panel Research & Assignment** (org `OpenSkyHawk`) — match
+`<BoardName>` or a close variant (e.g. "AWRS Panel" for `AWRS_Panel`):
+`gh project item-list 1 --owner OpenSkyHawk --format json`.
 
-- **If found:** update the page body using `notion-update-page` with `command: update_content`. Replace the placeholder task description with the repo path and scaffolding status. Do NOT create a new page.
-- **If not found:** create a new page in the database with `Task name`, `Status: Not started`, `Console Position`, `Controller: <Group>`.
+- **If found:** append the repo path + scaffolding status to the item body (`gh project item-edit --id <DI_…> --body ...`). Do NOT create a duplicate. (See the `panel-pipeline` skill for fields + the controller-graduation flow.)
+- **If not found:** add a draft item (`gh project item-create 1 --owner OpenSkyHawk --title "<BoardName>"`) and set its `Console` / `Controller` fields.
 
 Body note to add (substitute actual values):
 ```

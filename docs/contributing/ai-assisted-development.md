@@ -23,7 +23,7 @@ source of truth:
 
 | Skill | Loads when you're… | Points to |
 |-------|--------------------|-----------|
-| `panel-mapping` | researching a new panel in the DCS Model Viewer — identifying controls and their types, mapping DCS-BIOS IDs, measuring panel size | Notion Panels DB, `docs/_source/controllers/` |
+| `panel-mapping` | researching a new panel in the DCS Model Viewer — identifying controls and their types, mapping DCS-BIOS IDs, measuring panel size | GitHub Project (Panel Research & Assignment), `docs/_source/controllers/` |
 | `pcb-design` | capturing a schematic or laying out a PCB — parts, packages, connectors, net classes, DRC, wiring an MCP23017/ADS1115, board review | `docs/_source/hardware-standards.md`, `pcb-design-rules.md`, `kicad.md` |
 | `firmware` | writing firmware — PanelGroup / PanelBridge / SimGateway, CAN, NODE_ID, DCS-BIOS, HID, libraries and their tests | `FirmwarePlan/`, `TechSpec/` |
 | `full-stack` | tracing or debugging across layers, or onboarding — how a control flows from panel to DCS and back | `FirmwarePlan/01-system-overview.md`, the [Architecture](../architecture/index.md) pages |
@@ -45,7 +45,7 @@ it'll hand you off to the right specialist skill.
 ## Working in the repo
 
 - The always-on context is `CLAUDE.md` — it stays deliberately small: project orientation, the
-  skill map above, and the source-of-truth/tracking rules (Notion + the `docs-drift` GitHub
+  skill map above, and the source-of-truth/tracking rules (GitHub Projects for panels, Notion for non-panel tasks, + the `docs-drift` GitHub
   issue). Everything discipline-specific is in a skill.
 - Other AI tools should read `AGENTS.md`, which points at the same sources.
 - See [Design Conventions](conventions.md) for the rules every change follows, and

@@ -21,7 +21,7 @@ hierarchical sheet templates.
 
 Never hand-create project files. Run the `/new-kicad-project <Console> <Group> <Board> [mcu|breakout]`
 command — it copies the lib tables, pre-loads JLCPCB design rules + net classes, writes a
-minimal root schematic, and updates Notion.
+minimal root schematic, and updates the panel's GitHub Project item.
 
 ## Non-negotiable rules (functional failures if violated — verify at schematic time)
 

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus. Project notes and panel status are tracked in Notion under the "A-4E Home Cockpit" workspace.
+OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus. Panel/controller build tracking lives in **GitHub Projects** (org `OpenSkyHawk`); non-panel tasks and project notes are in **Notion** under the "A-4E Home Cockpit" workspace.
 
 ## Repository structure
 
@@ -31,34 +31,25 @@ Contributor-facing version: [AI-Assisted Development](docs/contributing/ai-assis
 
 ## Source of truth & tracking
 
-Two external systems hold living project state. Keep them in sync as work lands.
+Two systems hold living project state: **GitHub Projects** for panel/controller build tracking, and **Notion** for non-panel tasks + project notes. Keep them in sync as work lands.
+
+### GitHub Projects — panel/controller tracking (org `OpenSkyHawk`)
+
+**Panels and controllers are tracked in GitHub Projects v2, not Notion.** **Git holds the reference data** (`docs/_source/a4ec-control-inventory.csv` — the curated master control inventory; usage in `a4ec-control-inventory.md`); the panel→console/controller assignment + build state live in the **Projects** (the tracker). The **`panel-pipeline` skill owns the structure** (fields, the controller→panel sub-issue hierarchy, the graduation procedure). Fetch live field/option node IDs with `gh project field-list <n> --owner OpenSkyHawk --format json`.
+
+- **#1 Panel Research & Assignment** — every panel as a **draft** through research/assignment (fields: Console, #Controls, Breakdown, Panel Type, Priority, + independent flag columns `Controls?` / `Screenshot?` / `Analysis?`).
+- **#2 Controller Build** — each controller as an **issue** through the build pipeline (B1–B9), with its panels as **sub-issues**; per-stage work tracked as task-list checklists.
+- Build-stage state = the Project `Status` field cross-checked against **repo signals** (KiCad ERC/DRC, exported gerbers, firmware compiles). ModelViewer reference screenshots live as **committed repo files** — issue/Notion image attachments aren't reliably fetchable.
 
 ### Notion — "A-4E Home Cockpit" workspace (Notion ID: `301575ac53b180b6a1b7cce9ba40ac79`)
 
-Two databases: **Panels** (one page per physical panel) and **Tasks** (non-panel work items).
+Notion holds the **Tasks** database (non-panel work items) + general project notes. *(The legacy Notion Panels database is superseded by the GitHub Projects above — research-reference only; do not treat it as the tracker.)*
 
-**Always search before creating.** Before calling `notion-create-pages`, search the target database for an existing page with the same or similar name. Update it instead of creating a duplicate.
+**Always search before creating.** Before calling `notion-create-pages`, search the Tasks database for an existing page with the same or similar name. Update it instead of creating a duplicate.
 
-**Write notes to page body content, not to the Description property.** The `Description` property field is a one-liner used for database-level filtering. Substantive notes (repo paths, scaffolding status, wiring details) go in the page body via `update_content`.
+**Write notes to page body content, not to the Description property.** The `Description` property field is a one-liner used for database-level filtering. Substantive notes go in the page body via `update_content`.
 
-**Finding a page:** use `notion-search` with the panel or task name, then `notion-fetch` on the result URL to read its current content before editing.
-
-#### Panels Database
-
-Tracks every physical panel in the cockpit — one page per panel. Purpose: specification and implementation record (components, PCB repo path, wiring, DCS-BIOS IDs). Not for general task tracking.
-
-- **Collection URL:** `collection://301575ac-53b1-80c1-be2d-000b57d99f55`
-- **Database page:** `https://www.notion.so/301575ac53b180b2ad55d2b6394d0b25`
-- **Key properties:** `Task name` (title), `Status`, `Console Position`, `Controller`, `Panel Type`, `Priority`
-- **Status pipeline:** Not started → Research → Schematics → CAD → PCB Layout → Ordering → Assembly → Testing → Done
-  - **Schematics** — KiCad schematic complete, ERC clean
-  - **CAD** — panel model in progress or complete
-  - **PCB Layout** — KiCad PCB layout in progress or complete
-  - **Ordering** — PCB sent to JLCPCB, components sourced
-  - **Assembly** — board soldered and installed in panel
-  - **Testing** — functional verification in DCS
-- **When a KiCad project is scaffolded:** find the existing panel page, set Status to `Not started` (unchanged if already set), and add the repo path + scaffolding note to the **page body** under the Task description section.
-- **When schematics are complete:** update page body with sheet structure, key ICs, harness connectors, and DCS-BIOS IDs. Advance Status to `Schematics`.
+**Finding a page:** use `notion-search` with the task name, then `notion-fetch` on the result URL to read its current content before editing.
 
 #### Tasks Database
 

@@ -9,10 +9,11 @@ The first step for any new panel. Produces two outputs — a **control inventory
 **panel dimensions** — that feed the rest of the pipeline (`firmware` classes, `pcb-design`
 I/O, `cad` outline).
 
-The authoritative worked record lives in the **Notion Panels database** (one page per panel);
-the best example is *Misc Switch Panel* — Controls Inventory + I/O Summary + Dimensions tables.
-A condensed copy lives in `docs/_source/controllers/<Panel>.md`. Record findings in the Notion
-page body (per the CLAUDE.md Notion rules), then mirror the condensed version into the repo.
+The authoritative worked record lives in the panel's **GitHub Project item** (Project #1 *Panel
+Research & Assignment*, or its Controller Build issue once graduated — the `panel-pipeline` skill
+owns the structure); the best example is the *Misc Switch Panel* record — Controls Inventory + I/O
+Summary + Dimensions tables. A condensed copy lives in `docs/_source/controllers/<Panel>.md`.
+Record findings in the item/issue body, then mirror the condensed version into the repo.
 
 ## Process
 
@@ -36,8 +37,8 @@ page body (per the CLAUDE.md Notion rules), then mirror the condensed version in
    `real-world mm = √(ΔX² + ΔY² + ΔZ²) × 1.10 × 1000`
    (width = bottom-left → bottom-right, height = bottom-left → top-left). Switch
    centre-to-centre spacings are measured later in the CAD model.
-6. **Record** to the Notion Panels page (Controls Inventory / I/O Summary / Dimensions) and the
-   condensed `docs/_source/controllers/<Panel>.md`. Claim a NODE_ID in `Firmware/NODE_IDS.md`
+6. **Record** to the panel's GitHub Project item/issue (Controls Inventory / I/O Summary /
+   Dimensions) and the condensed `docs/_source/controllers/<Panel>.md`. Claim a NODE_ID in `Firmware/NODE_IDS.md`
    when the panel becomes a PanelGroup node.
 
 ## Hand-off

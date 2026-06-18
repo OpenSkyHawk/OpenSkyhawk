@@ -1,6 +1,6 @@
 ---
 name: panel-pipeline
-description: Orchestrate building an OpenSkyhawk cockpit controller end-to-end — research → schematic → CAD → backlight → PCB → firmware → order → assembly → test. Use when starting a new panel or controller, advancing one to its next stage, resuming a partially-built one (detect where it stands and continue), or partitioning the cockpit's panels into controllers. A thin orchestrator: it sequences stages, enforces gates, keeps Notion + repo tracking in sync, owns the cross-cutting decisions (controller grouping, NODE_ID, prerequisites), and delegates the discipline work to panel-mapping, pcb-design, cad, firmware, and verify. Multi-session and resumable.
+description: Orchestrate building an OpenSkyhawk cockpit controller end-to-end — research → schematic → CAD → backlight → PCB → firmware → order → assembly → test. Use when starting a new panel or controller, advancing one to its next stage, resuming a partially-built one (detect where it stands and continue), or partitioning the cockpit's panels into controllers. A thin orchestrator: it sequences stages, enforces gates, keeps the GitHub Projects + repo tracking in sync, owns the cross-cutting decisions (controller grouping, NODE_ID, prerequisites), and delegates the discipline work to panel-mapping, pcb-design, cad, firmware, and verify. Multi-session and resumable.
 ---
 
 # Panel Pipeline — controller build orchestrator
@@ -16,27 +16,27 @@ where the owner is human.
 
 ## Detect stage & resume
 
-Read the panel's **Notion Status** (the tracker) and cross-check **repo signals**:
+Read the panel/controller's **GitHub Project status** (the tracker) and cross-check **repo signals**:
 
 | Stage reached | Repo signal |
 |---|---|
 | Grouped | NODE_ID claimed in `Firmware/NODE_IDS.md` |
-| Researched | `docs/_source/controllers/<Panel>.md` exists + Notion inventory complete |
+| Researched | `docs/_source/controllers/<Panel>.md` exists + Project item research complete |
 | Schematic | KiCad project exists + ERC clean |
 | CAD | `.FCStd`/`.f3d` source exists |
 | Backlight | LED-array count set in schematic + re-ERC clean |
 | PCB | routed + DRC clean + gerbers exported |
 | Firmware | `Firmware/Panels/<Controller>/` compiles + tests pass |
-| Ordering / Assembly / Testing | Notion Status + order ref / boards in hand |
+| Ordering / Assembly / Testing | Project Status + order ref / boards in hand |
 
-If Notion and the repo disagree, trust the repo signal and correct Notion. *(Conflict-resolution
+If the Project and the repo disagree, trust the repo signal and correct the Project. *(Conflict-resolution
 is a thin detail — refine in use.)*
 
 ## Scope: controller, not panel
 
 A **controller** = one STM32 PanelGroup MCU = one CAN **NODE_ID**, hosting a **host panel + I²C
-breakouts within ~12–18"**. Notion keeps **one page per physical panel**; the build pipeline runs
-**per controller**. The grouping rule + budgets are summarized in A2 below.
+breakouts within ~12–18"**. GitHub Project #1 keeps **one item per physical panel**; the build pipeline runs
+**per controller** (Project #2). The grouping rule + budgets are summarized in A2 below.
 
 ## Readiness — pick what's buildable now
 
@@ -73,7 +73,7 @@ positions}`:
   `DCSIN_*` ≥ 0x8000 → DCS-BIOS via PanelBridge; `CTRL_*` < 0x8000 → HID via SimGateway.)
 - **positions** — from the mod files (not manual Model Viewer) → feed A2 distances.
 
-Output: per-panel I/O + actuator budget, recorded in the Notion panel page body. Also run a **bulk
+Output: per-panel I/O + actuator budget, recorded in the panel's GitHub Project item. Also run a **bulk
 readiness check** — map each control's estimated type → required OpenSkyhawk block → does it exist?
 → mark each panel **Ready** (all blocks exist) or **Blocked** (list missing blocks). Provisional
 (estimated types); confirmed at B1 once types are sim-verified. Feeds the Readiness scheduling above.
@@ -95,6 +95,41 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
 
 ---
 
+## A2b — Graduate to GitHub issues · *owner: AI*
+
+Tracking lives in two **private** GitHub Projects (org `OpenSkyHawk`): **git is the data source
+of truth, the Projects are the generated tracker.** Get the field/option node IDs live with
+`gh project field-list <n> --owner OpenSkyHawk --format json`.
+
+- **#1 Panel Research & Assignment** — every panel as a **draft** through A1/B1 (fields: Console,
+  #Controls, Breakdown, Panel Type, Priority, + independent flag columns `Controls?` /
+  `Screenshot?` / `Analysis?`). `Analysis?=Done` only after a ModelViewer screenshot is reviewed
+  **and** the input list verified — it's downstream of `Screenshot?`, never auto-set from migrated data.
+- **#2 Controller Build** — each controller as an **issue** through B1–B9.
+
+**Graduate a controller** once A2 groups its panels (draft→issue conversion is **one-way**, and
+issues are **public** since the repo is public — the Projects stay private via their own ACL):
+
+1. Create the **controller** issue — label `controller`, add to #2, set build `Status`. Body =
+   group checklist: `- [ ] B6 Firmware  - [ ] B9 Integration test  - [ ] host/MCU PCB  - [ ] B7 Order  - [ ] B8 Assembly`
+   + member panels + NODE_ID.
+2. For each member panel: **convert** its #1 draft → issue (`convertProjectV2DraftIssueItemToIssue`),
+   label `panel`, keep it in #1 *and* add to #2, then **link as a sub-issue** of the controller (`addSubIssue`).
+3. Panel issue body = its control inventory (B1 / `panel-mapping` output) + panel checklist:
+   `- [ ] B2 Schematic  - [ ] B5 PCB  - [ ] B3 CAD  - [ ] B4 Backlight`.
+4. Check a step when its PR merges (`- [ ] B2 Schematic #123`); advance the controller `Status`
+   as steps complete. All panel sub-issues closed = hardware done → finish group firmware + test.
+
+**Sub-tasks are defined by issue type:** `controller` → firmware/test/order/assembly · `panel` →
+schematic/PCB/CAD/backlight. Default is **2-level** (panels = sub-issues, steps = checklists; ~80
+issues total). Switch a controller to **3-level** (each step its own sub-issue nested under the
+panel — GitHub nests ≤8 deep) only when it needs assignable/PR-tracked steps or fine % roll-up.
+Steps are **tasks** (checkboxes); the **checkpoint** is the `Status` field they advance; reserve
+**Milestones** for coarse gates (a console, a release). Issue templates have no per-template ACL,
+so this skill (not a template) owns the structure.
+
+---
+
 ## Phase B — per-controller build (repeats per controller)
 
 ### B1 — Research (deep) · `panel-mapping` · *AI drafts → human photos + in-sim type confirm*
@@ -113,7 +148,7 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
   `SwitchMultiPos`/`RotarySwitch`, `AnalogInput`, `RotaryEncoder`, `ServoOutput`, `SwitecX25Output`,
   `AccelStepperOutput`, `AngleSensor`, `SwitchWithCover2Pos`.
   This **confirms the A1 provisional Ready/Blocked** classification now that types are sim-verified.
-- Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Notion body +
+- Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Project item / issue body +
   `docs/_source/controllers/<Panel>.md`.
 
 ### B2 — Schematic · `pcb-design` · *AI analysis → human draws → AI reviews*
@@ -186,9 +221,9 @@ breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
 
 ## Conventions
 
-- **Tracking** — one Notion Panels page per physical panel (notes in the page **body**, not the
-  Description property; the *Armament Panel* page is the format template). Advance Status at each
-  gate. Open Tasks/issues for prerequisites and deferred items.
+- **Tracking** — one GitHub Project item per physical panel (Project #1; controller issue in #2),
+  notes in the item/issue **body**; the *Armament Panel* / *Misc Switch Panel* record is the format
+  template. Advance `Status` at each gate. Open GitHub issues for prerequisites and deferred items.
 - **NODE_ID** — claimed per controller in `Firmware/NODE_IDS.md` at A2.
 - **Repo mirror** — condensed per-panel record in `docs/_source/controllers/<Panel>.md`.
 - **Never** auto-merge PRs or place orders — the human owns B7–B9 and all merges.
