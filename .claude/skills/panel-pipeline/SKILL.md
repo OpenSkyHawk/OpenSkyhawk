@@ -249,6 +249,7 @@ so this skill (not a template) owns the structure.
   6. **Analysis notes** — AI-generated prose: confirmed control types, physical layout findings, design decisions, open questions.
   7. **Inputs** — table: `Control | Identifier | DCS-BIOS addr | FW class | Notes`
   8. **Outputs** — table: `Display group | Identifiers | Digits | Flag | FW class`
+  9. **Component Summary** — AI-generated I²C device + discrete-driver + STM32-direct-pin tables for the panel's own I/O (parts + LCSC + addresses/pins). Per-panel scope; the controller-wide budget + remaining-pin availability lives on the controller issue, not here.
 
   When updating a ticket: **always fetch the current body first**, extract Notes + Screenshot verbatim, then rebuild as fetched-Notes + fetched-Screenshot + updated AI sections. **Never reconstruct from memory or session context** — the user edits Notes and Screenshot directly in the GitHub UI, and overwriting them destroys their work irreversibly.
 - **NODE_ID** — claimed per controller in `Firmware/NODE_IDS.md` at A2.
