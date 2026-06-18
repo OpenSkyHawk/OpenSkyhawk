@@ -93,6 +93,22 @@ Bias to **split** — up to 63 CAN nodes are essentially free. Grouping is **pro
 (mod-file distances) and **confirmed at B3 CAD** against the real harness path (re-split if a
 breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.
 
+#### PanelGroup base — fixed resources (cache; full ref: `docs/_source/base-boards.md`)
+
+Every controller starts from the **PanelGroup base** (STM32F103C8T6, LQFP48). The base fixes
+these — don't re-derive, build the per-controller budget on top:
+
+- **Reserved (not available):** CAN PA11/PA12 · diag USART1 PA9/PA10 · SWD PA13/PA14 ·
+  status LED PB14(red)/PB15(grn) · backlight PWM PA6(BL1)/PA7(BL2) · I2C1 PB6/PB7 ·
+  I2C2 PB10/PB11 · I2C1 INT PB12/PB13 · I2C2 INT PB8/PB9 · OSC PD0/PD1 · NC PC13/14/15 + PB2.
+- **Breakout (free panel I/O) — 13 GPIO:** ADC+PWM `PA0 PA1 PA2 PA3 PB0 PB1` · ADC-only
+  `PA4 PA5` · PWM/digital (JTAG-remap for PA15/PB3/PB4) `PA8 PA15 PB3 PB4 PB5`. **8 ADC-capable.**
+- **I²C:** 2 buses, each with INT_A/INT_B brought to its 8-pin JST-XH header → **one INT-driven
+  MCP23017 (inputs) per bus**; output-only expanders need no INT. Addressing MCP23017 0x20–0x27,
+  ADS1115 0x48–0x4B per bus. Prefer a **direct STM32 ADC breakout pin** over an ADS1115 when only
+  1–2 analog channels are needed.
+- **Backlight:** 2 PWM-dimmed low-side zones on-base (sized at B4).
+
 ---
 
 ## A2b — Graduate to GitHub issues · *owner: AI*
@@ -145,7 +161,7 @@ so this skill (not a template) owns the structure.
   KiCad effort (TechSpec + prototype, e.g. how `Switch2Pos` was built). The pipeline only flags it,
   tickets it, and blocks the board until it lands.
   Implemented today: `Switch2Pos`, `LED`, `PinRef`. Planned/missing: `Switch3Pos`, `ActionButton`,
-  `SwitchMultiPos`/`RotarySwitch`, `AnalogInput`, `RotaryEncoder`, `ServoOutput`, `SwitecX25Output`,
+  `SwitchMultiPos`/`RotarySwitch`, `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder`, `ServoOutput`, `SwitecX25Output`,
   `AccelStepperOutput`, `AngleSensor`, `SwitchWithCover2Pos`.
   This **confirms the A1 provisional Ready/Blocked** classification now that types are sim-verified.
 - Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Project item / issue body +
@@ -222,8 +238,20 @@ so this skill (not a template) owns the structure.
 ## Conventions
 
 - **Tracking** — one GitHub Project item per physical panel (Project #1; controller issue in #2),
-  notes in the item/issue **body**; the *Armament Panel* / *Misc Switch Panel* record is the format
-  template. Advance `Status` at each gate. Open GitHub issues for prerequisites and deferred items.
+  notes in the item/issue **body**. Advance `Status` at each gate. Open GitHub issues for prerequisites and deferred items.
+
+- **Panel item / issue body structure** (in this order, all sections present):
+  1. **Header line** — auto-generated control count summary (`**N controls** — X inputs · Y gauges · Z LEDs`)
+  2. **Notes** — human-authored observations: physical layout, construction decisions, open questions. Never overwrite.
+  3. **Screenshot** — embedded image tag(s). Manual scans or ModelViewer shots. Never overwrite. Screenshots are attached directly to GitHub issues/drafts — do NOT commit images to the repo.
+  4. **Prerequisites** — AI-generated checklist of missing `OpenSkyhawk::` firmware classes / KiCad symbols, each linked to its GitHub issue. One line per blocker.
+  5. **Research checklist** — three standard items (A-phase only): `- [x] Control list identified (Lua + DCS-BIOS)` / `- [ ] Reference screenshot attached to ticket` / `- [ ] Assigned to a controller`. Coords + dimensions are B3 (CAD), not tracked here.
+  6. **Analysis notes** — AI-generated prose: confirmed control types, physical layout findings, design decisions, open questions.
+  7. **Inputs** — table: `Control | Identifier | DCS-BIOS addr | FW class | Notes`
+  8. **Outputs** — table: `Display group | Identifiers | Digits | Flag | FW class`
+  9. **Component Summary** — AI-generated I²C device + discrete-driver + STM32-direct-pin tables for the panel's own I/O (parts + LCSC + addresses/pins). Per-panel scope; the controller-wide budget + remaining-pin availability lives on the controller issue, not here.
+
+  When updating a ticket: **always fetch the current body first**, extract Notes + Screenshot verbatim, then rebuild as fetched-Notes + fetched-Screenshot + updated AI sections. **Never reconstruct from memory or session context** — the user edits Notes and Screenshot directly in the GitHub UI, and overwriting them destroys their work irreversibly.
 - **NODE_ID** — claimed per controller in `Firmware/NODE_IDS.md` at A2.
 - **Repo mirror** — condensed per-panel record in `docs/_source/controllers/<Panel>.md`.
 - **Never** auto-merge PRs or place orders — the human owns B7–B9 and all merges.

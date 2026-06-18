@@ -11,6 +11,7 @@ claim the next available NODE_ID here.
 |---------|-------------------|---------|--------|
 | 0       | PanelBridge       | —       | Reserved — CAN master, never transmitted on bus |
 | 1       | Center_Armament   | Center  | Active |
+| 2       | Right_Navigation  | Right   | Active |
 <!-- --8<-- [end:registry] -->
 
 ## Rules
