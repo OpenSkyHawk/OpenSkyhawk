@@ -4100,11 +4100,11 @@ cp PCB/Libraries/project-template/fp-lib-table  PCB/&lt;Console&gt;/&lt;Group&gt
 <pre><code>/new-kicad-project &lt;Console&gt; &lt;Group&gt; &lt;BoardName&gt; [mcu|breakout]
 </code></pre>
 <p>Example: <code>/new-kicad-project Center_Console Center_Armament AWRS_Panel breakout</code></p>
-<p>The skill creates and then updates Notion:
+<p>The skill creates the files and then updates the panel's GitHub Project item:
 - <code>PCB/&lt;Console&gt;/&lt;Group&gt;/&lt;BoardName&gt;/sym-lib-table</code> + <code>fp-lib-table</code> (copied from template)
 - <code>&lt;BoardName&gt;.kicad_pro</code> (with OpenSkyhawk libs pinned, correct ERC severities)
 - <code>&lt;BoardName&gt;.kicad_sch</code> (minimal root sheet with title block)
-- Finds the existing Notion Panels page (or creates one) and adds the repo path to the page body</p>
+- Finds the panel's item in the <strong>Panel Research &amp; Assignment</strong> Project (or adds one) and appends the repo path to its body</p>
 <hr />
 <h1 id="kicad-cli">KiCad CLI</h1>
 <p>Path: <code>/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli</code> (v10.0.1)</p>
