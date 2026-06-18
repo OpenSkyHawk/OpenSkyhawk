@@ -87,11 +87,11 @@ Triggers: user asks to "create", "add", or "scaffold" a new board, panel, or KiC
 
 Example: `/new-kicad-project Center_Console Center_Armament AWRS_Panel breakout`
 
-The skill creates and then updates Notion:
+The skill creates the files and then updates the panel's GitHub Project item:
 - `PCB/<Console>/<Group>/<BoardName>/sym-lib-table` + `fp-lib-table` (copied from template)
 - `<BoardName>.kicad_pro` (with OpenSkyhawk libs pinned, correct ERC severities)
 - `<BoardName>.kicad_sch` (minimal root sheet with title block)
-- Finds the existing Notion Panels page (or creates one) and adds the repo path to the page body
+- Finds the panel's item in the **Panel Research & Assignment** Project (or adds one) and appends the repo path to its body
 
 ---
 

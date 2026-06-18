@@ -1,6 +1,6 @@
 ---
 name: panel-pipeline
-description: Orchestrate building an OpenSkyhawk cockpit controller end-to-end — research → schematic → CAD → backlight → PCB → firmware → order → assembly → test. Use when starting a new panel or controller, advancing one to its next stage, resuming a partially-built one (detect where it stands and continue), or partitioning the cockpit's panels into controllers. A thin orchestrator: it sequences stages, enforces gates, keeps Notion + repo tracking in sync, owns the cross-cutting decisions (controller grouping, NODE_ID, prerequisites), and delegates the discipline work to panel-mapping, pcb-design, cad, firmware, and verify. Multi-session and resumable.
+description: Orchestrate building an OpenSkyhawk cockpit controller end-to-end — research → schematic → CAD → backlight → PCB → firmware → order → assembly → test. Use when starting a new panel or controller, advancing one to its next stage, resuming a partially-built one (detect where it stands and continue), or partitioning the cockpit's panels into controllers. A thin orchestrator: it sequences stages, enforces gates, keeps the GitHub Projects + repo tracking in sync, owns the cross-cutting decisions (controller grouping, NODE_ID, prerequisites), and delegates the discipline work to panel-mapping, pcb-design, cad, firmware, and verify. Multi-session and resumable.
 ---
 
 # Panel Pipeline — controller build orchestrator
@@ -16,27 +16,27 @@ where the owner is human.
 
 ## Detect stage & resume
 
-Read the panel's **Notion Status** (the tracker) and cross-check **repo signals**:
+Read the panel/controller's **GitHub Project status** (the tracker) and cross-check **repo signals**:
 
 | Stage reached | Repo signal |
 |---|---|
 | Grouped | NODE_ID claimed in `Firmware/NODE_IDS.md` |
-| Researched | `docs/_source/controllers/<Panel>.md` exists + Notion inventory complete |
+| Researched | `docs/_source/controllers/<Panel>.md` exists + Project item research complete |
 | Schematic | KiCad project exists + ERC clean |
 | CAD | `.FCStd`/`.f3d` source exists |
 | Backlight | LED-array count set in schematic + re-ERC clean |
 | PCB | routed + DRC clean + gerbers exported |
 | Firmware | `Firmware/Panels/<Controller>/` compiles + tests pass |
-| Ordering / Assembly / Testing | Notion Status + order ref / boards in hand |
+| Ordering / Assembly / Testing | Project Status + order ref / boards in hand |
 
-If Notion and the repo disagree, trust the repo signal and correct Notion. *(Conflict-resolution
+If the Project and the repo disagree, trust the repo signal and correct the Project. *(Conflict-resolution
 is a thin detail — refine in use.)*
 
 ## Scope: controller, not panel
 
 A **controller** = one STM32 PanelGroup MCU = one CAN **NODE_ID**, hosting a **host panel + I²C
-breakouts within ~12–18"**. Notion keeps **one page per physical panel**; the build pipeline runs
-**per controller**. The grouping rule + budgets are summarized in A2 below.
+breakouts within ~12–18"**. GitHub Project #1 keeps **one item per physical panel**; the build pipeline runs
+**per controller** (Project #2). The grouping rule + budgets are summarized in A2 below.
 
 ## Readiness — pick what's buildable now
 
@@ -73,7 +73,7 @@ positions}`:
   `DCSIN_*` ≥ 0x8000 → DCS-BIOS via PanelBridge; `CTRL_*` < 0x8000 → HID via SimGateway.)
 - **positions** — from the mod files (not manual Model Viewer) → feed A2 distances.
 
-Output: per-panel I/O + actuator budget, recorded in the Notion panel page body. Also run a **bulk
+Output: per-panel I/O + actuator budget, recorded in the panel's GitHub Project item. Also run a **bulk
 readiness check** — map each control's estimated type → required OpenSkyhawk block → does it exist?
 → mark each panel **Ready** (all blocks exist) or **Blocked** (list missing blocks). Provisional
 (estimated types); confirmed at B1 once types are sim-verified. Feeds the Readiness scheduling above.
@@ -128,10 +128,6 @@ Steps are **tasks** (checkboxes); the **checkpoint** is the `Status` field they 
 **Milestones** for coarse gates (a console, a release). Issue templates have no per-template ACL,
 so this skill (not a template) owns the structure.
 
-> **Tracking transition:** these GitHub Projects are the live tracker. The `Notion Status` / Notion
-> page references elsewhere in this skill are now **legacy** (Notion → research source only; git =
-> data, Projects = tracker) and are being reconciled — trust the Project + repo over Notion.
-
 ---
 
 ## Phase B — per-controller build (repeats per controller)
@@ -152,7 +148,7 @@ so this skill (not a template) owns the structure.
   `SwitchMultiPos`/`RotarySwitch`, `AnalogInput`, `RotaryEncoder`, `ServoOutput`, `SwitecX25Output`,
   `AccelStepperOutput`, `AngleSensor`, `SwitchWithCover2Pos`.
   This **confirms the A1 provisional Ready/Blocked** classification now that types are sim-verified.
-- Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Notion body +
+- Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Project item / issue body +
   `docs/_source/controllers/<Panel>.md`.
 
 ### B2 — Schematic · `pcb-design` · *AI analysis → human draws → AI reviews*
@@ -225,9 +221,9 @@ so this skill (not a template) owns the structure.
 
 ## Conventions
 
-- **Tracking** — one Notion Panels page per physical panel (notes in the page **body**, not the
-  Description property; the *Armament Panel* page is the format template). Advance Status at each
-  gate. Open Tasks/issues for prerequisites and deferred items.
+- **Tracking** — one GitHub Project item per physical panel (Project #1; controller issue in #2),
+  notes in the item/issue **body**; the *Armament Panel* / *Misc Switch Panel* record is the format
+  template. Advance `Status` at each gate. Open GitHub issues for prerequisites and deferred items.
 - **NODE_ID** — claimed per controller in `Firmware/NODE_IDS.md` at A2.
 - **Repo mirror** — condensed per-panel record in `docs/_source/controllers/<Panel>.md`.
 - **Never** auto-merge PRs or place orders — the human owns B7–B9 and all merges.
