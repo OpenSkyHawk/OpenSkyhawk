@@ -55,17 +55,18 @@ def parse_clickabledata(path):
     out = {}
     if not os.path.isfile(path):
         sys.exit(f"clickabledata not found: {path}")
-    for line in open(path, encoding="utf-8", errors="replace"):
-        s = line.strip()
-        if s.startswith("--"):
-            continue
-        m = re.match(r'elements\[".*?"\]\s*=\s*([A-Za-z0-9_]+)\s*\(\s*"([^"]*)"(.*)', s)
-        if not m:
-            continue
-        ctor, desc, rest = m.group(1), m.group(2), m.group(3)
-        nums = re.findall(r"(?<![\w.])(\d+)(?![\w.])", rest)
-        if nums:
-            out[int(nums[0])] = {"desc": desc, "ctor": ctor}
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            s = line.strip()
+            if s.startswith("--"):
+                continue
+            m = re.match(r'elements\[".*?"\]\s*=\s*([A-Za-z0-9_]+)\s*\(\s*"([^"]*)"(.*)', s)
+            if not m:
+                continue
+            ctor, desc, rest = m.group(1), m.group(2), m.group(3)
+            nums = re.findall(r"(?<![\w.])(\d+)(?![\w.])", rest)
+            if nums:
+                out[int(nums[0])] = {"desc": desc, "ctor": ctor}
     return out
 
 
@@ -74,19 +75,20 @@ def parse_module(path):
     out = {}
     if not os.path.isfile(path):
         sys.exit(f"DCS-BIOS module lua not found: {path}")
-    for line in open(path, encoding="utf-8", errors="replace"):
-        m = re.search(r':(define\w+)\(\s*"([^"]+)"\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)([^)]*)', line)
-        if not m:
-            continue
-        define, ident, arg, rest = m.group(1), m.group(2), int(m.group(5)), m.group(6)
-        nums = re.findall(r"(\d+)", rest)
-        strs = re.findall(r'"([^"]+)"', rest)
-        out[arg] = {
-            "identifier": ident,
-            "define": define,
-            "n_pos": int(nums[0]) if (define == "defineMultipositionSwitch" and nums) else None,
-            "category": strs[-2] if len(strs) >= 2 else "?",
-        }
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            m = re.search(r':(define\w+)\(\s*"([^"]+)"\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)([^)]*)', line)
+            if not m:
+                continue
+            define, ident, arg, rest = m.group(1), m.group(2), int(m.group(5)), m.group(6)
+            nums = re.findall(r"(\d+)", rest)
+            strs = re.findall(r'"([^"]+)"', rest)
+            out[arg] = {
+                "identifier": ident,
+                "define": define,
+                "n_pos": int(nums[0]) if (define == "defineMultipositionSwitch" and nums) else None,
+                "category": strs[-2] if len(strs) >= 2 else "?",
+            }
     return out
 
 
@@ -95,7 +97,8 @@ def parse_json(path):
     pure-output controls (gauges/LEDs/metadata) do not."""
     if not os.path.isfile(path):
         sys.exit(f"DCS-BIOS JSON not found: {path}")
-    data = json.load(open(path))
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        data = json.load(fh)
     inputs, outputs = {}, []
     for cat, ctrls in data.items():
         for ident, c in ctrls.items():
