@@ -23,7 +23,7 @@ Alternatively, open the template file directly and copy the relevant symbols/wir
 |------|--------------|---------------|
 | (none yet) | | |
 
-Templates are added here as each standard block is first drawn and validated. See `docs/claude/hardware-standards.md` **Standard Circuit Blocks** for the target list:
+Templates are added here as each standard block is first drawn and validated. See `docs/_source/hardware-standards.md` **Standard Circuit Blocks** for the target list:
 
 - `power_rail.kicad_sch` — AP63205WU (12V→5V) + AMS1117-3.3 (5V→3.3V)
 - `mcp23017.kicad_sch` — MCP23017 with decoupling (100nF+10µF), address resistors, I2C series resistors (33Ω), interrupt protection (100Ω)
