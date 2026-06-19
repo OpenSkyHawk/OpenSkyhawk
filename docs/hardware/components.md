@@ -24,10 +24,9 @@ see [KiCad Workflow](kicad-workflow.md).
 | X27.589 | Gauge needle stepper (e.g. cabin pressure) | `OpenSkyhawk:X27.589_Stepper` |
 | X27.168 | Gauge needle stepper (single-mount variant) | `OpenSkyhawk:X27.168_Stepper` |
 
-!!! warning "Stepper driver IC — TBD"
-    The motor driver for the gauge steppers is **not yet finalised** — it's under bench
-    evaluation. Don't design a board around a specific driver part until that's resolved; the
-    motor supply rail (5 V) is settled, the driver IC is not.
+!!! note "Stepper driver: DRV8833"
+    The gauge needle steppers are driven by a **DRV8833** dual H-bridge — four logic inputs per
+    motor (two coils), motor supply (VM) on the **5 V** rail. Drive the X27 air-core at 5 V.
 
 ## High-current boards only
 

@@ -279,6 +279,17 @@ namespace PanelGroup {
      */
     void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
 
+    /**
+     * @brief Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache.
+     * @param chip  Chip reference.
+     * @param port  PORT_A (0) or PORT_B (1).
+     * @param bit   Bit index 0–7.
+     * @return      Live logical level (true = HIGH).
+     * @note Called by PinRef::readLive() for time-critical reads before loop() refreshes the
+     *       cache (e.g. blocking homing on an MCP-backed home sensor). One I2C transaction per call.
+     */
+    bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit);
+
 } // namespace PanelGroup
 
 #endif // ARDUINO_ARCH_STM32

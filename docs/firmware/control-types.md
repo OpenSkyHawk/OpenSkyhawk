@@ -6,10 +6,11 @@ hardware. This page is the catalogue, with honest Phase status: most types are *
 not yet implemented**.
 
 !!! warning "Most control types are not implemented yet"
-    Implemented today: **LED** and **DrumDisplay** (outputs) and **Switch2Pos** (input), plus the
-    **PinRef** abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3); DrumDisplay
-    is authored and compile-gated, with the on-hardware bench still pending. Everything marked
-    *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it to compile today.
+    Implemented today: **LED**, **DrumDisplay**, and **NeedleGauge** (outputs) and **Switch2Pos**
+    (input), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3);
+    DrumDisplay and NeedleGauge are authored and compile-gated, with the on-hardware bench still pending.
+    Everything marked *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it
+    to compile today.
 
 ## PinRef — the hardware abstraction *(implemented)*
 
@@ -67,11 +68,9 @@ at global scope; `PanelGroup::loop()` polls them and batches events into `EVT_n`
 |-------|--------|------------|
 | `LED` | **Implemented** | GPIO pin driven from one bit of a DCS value |
 | `DrumDisplay` | **Implemented** (bench pending) | OLED rolling-drum readout — multi-digit gauges (speed, lat/lon, frequency, range) + optional 2-state flag. Own library; pulls U8g2 |
+| `NeedleGauge` | **Implemented** (bench pending) | Pointer/needle gauge — maps a DCS value to a motor angle over a swappable driver backend (linear or calibrated curve). Supersedes `SwitecX25Output` / `AccelStepperOutput` / `ServoOutput` |
 | `AnalogOutput` | Phase 5 — not started | 16-bit DCS value → PWM duty (backlighting) |
 | `IntegerOutput` | Phase 5 — not started | Raw 16-bit value to a user callback |
-| `SwitecX25Output` | Phase 5 — not started | Gauge needle stepper (X27 family), SwitecX25 lib |
-| `AccelStepperOutput` | Phase 5 — not started | Gauge stepper with a physical home sensor |
-| `ServoOutput` | Phase 5 — not started | Standard RC servo |
 
 Outputs use DCS-BIOS **output addresses** from the generated `A4EC` headers — the address
 constant plus its bitmask. Example for the implemented `LED`:
@@ -83,10 +82,13 @@ OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM, 
 Note the naming: `A_4E_C_<NAME>` for the address and `A_4E_C_<NAME>_AM` for the mask — **not**
 the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
 
-!!! warning "Stepper driver part is TBD"
-    The `SwitecX25Output` / `AccelStepperOutput` motor driver IC is still being validated on
-    the bench — don't document a specific driver part yet. See
-    [Hardware Standards](../hardware/standards.md) once written.
+!!! note "NeedleGauge drives gauge motors through a swappable backend"
+    `NeedleGauge` does only the value→angle mapping. The drive lives in a reusable **motor-driver layer**
+    (`Firmware/Libraries/PanelGroup/Drivers/`): a `MotorDriver` base with a `StepperMotor` backend today —
+    non-blocking, driving four coils through `PinRef` (native GPIO **or** an MCP23017 expander). One
+    air-core profile covers the X27.589 / VID-29 / BKA-30 family; homing is either a mechanical hard-stop
+    or a digital home sensor (switch / reed / hall / opto). Drive the X27 at **5 V** through a DRV8833. A
+    `ServoMotor` backend is planned (#132).
 
 !!! note "DrumDisplay is a separate, opt-in library"
     `DrumDisplay` lives in `Firmware/Libraries/DrumDisplay/` (not PanelGroup) so the U8g2 OLED

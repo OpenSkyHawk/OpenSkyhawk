@@ -83,6 +83,19 @@ public:
     bool read() const;
 
     /**
+     * @brief Live digital read — bypasses any cache.
+     *
+     * GPIO: digitalRead(pin) (already live).
+     * MCP23017: a fresh readPort() over I2C, also refreshing PanelGroup's cache.
+     * ADS1115: live readAnalog() > half-scale. NC: false.
+     *
+     * @return true = HIGH, false = LOW.
+     * @note For time-critical reads before PanelGroup::loop() refreshes the cache — e.g. blocking
+     *       homing on an MCP-backed sensor. Costs one I2C transaction per call on MCP pins.
+     */
+    bool readLive() const;
+
+    /**
      * @brief Analog read, normalised to 16-bit (0–65535).
      *
      * GPIO: analogRead(pin) × 16 → 0–65520 (12-bit ADC scaled to 16-bit).
