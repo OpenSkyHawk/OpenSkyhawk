@@ -94,6 +94,8 @@ namespace PanelGroup {
 
     void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
 
+    bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit);
+
 } // namespace PanelGroup
 
 #endif // ARDUINO_ARCH_STM32

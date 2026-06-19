@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.8" xml:lang="en-US">
+  <compound refid="structOpenSkyhawk_1_1AccelPoint" kind="struct"><name>OpenSkyhawk::AccelPoint</name>
+    <member refid="structOpenSkyhawk_1_1AccelPoint_1aa1da095cdd28c67a62ef2895cbad89c8" kind="variable"><name>stepThreshold</name></member>
+    <member refid="structOpenSkyhawk_1_1AccelPoint_1ad8e6eb8131e1fadcbd5bae34f11ccc5b" kind="variable"><name>delayUs</name></member>
+  </compound>
   <compound refid="classADS1115" kind="class"><name>ADS1115</name>
   </compound>
   <compound refid="structBatchState" kind="struct"><name>BatchState</name>
@@ -92,6 +96,14 @@
     <member refid="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" kind="variable"><name>nDigits</name></member>
     <member refid="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" kind="variable"><name>place</name></member>
   </compound>
+  <compound refid="structOpenSkyhawk_1_1GaugeCal" kind="struct"><name>OpenSkyhawk::GaugeCal</name>
+    <member refid="structOpenSkyhawk_1_1GaugeCal_1a8274ca7f32bbfef17c7d95c408c9d6ec" kind="variable"><name>minTravel</name></member>
+    <member refid="structOpenSkyhawk_1_1GaugeCal_1a67368f5c74562fdeeb32095cfb728ce3" kind="variable"><name>maxTravel</name></member>
+    <member refid="structOpenSkyhawk_1_1GaugeCal_1a83895f695eeb1d6c28bbd1b29fda30ff" kind="variable"><name>reverse</name></member>
+    <member refid="structOpenSkyhawk_1_1GaugeCal_1aa89d9589c389023d2d405440d4a3ce4d" kind="variable"><name>curveIn</name></member>
+    <member refid="structOpenSkyhawk_1_1GaugeCal_1a01130ea340d1b5face45eb145ccec685" kind="variable"><name>curveOut</name></member>
+    <member refid="structOpenSkyhawk_1_1GaugeCal_1adedd51dbd29f34a1b0b5293d3d86e6b1" kind="variable"><name>curveN</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1HIDAxis" kind="class"><name>OpenSkyhawk::HIDAxis</name>
     <member refid="classOpenSkyhawk_1_1HIDAxis_1a0439c987ad56df9c8fc9466a90ffc12c" kind="variable"><name>_head</name></member>
     <member refid="classOpenSkyhawk_1_1HIDAxis_1a10522a85da4e369e724993f4b4277800" kind="variable"><name>_next</name></member>
@@ -125,6 +137,11 @@
     <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1a0f7b6694376ec757652728ac00755962" kind="function"><name>next</name></member>
     <member refid="classOpenSkyhawk_1_1HIDHatSwitch_1a385f8888cec0ed4b0b133be41310b5cd" kind="function"><name>head</name></member>
   </compound>
+  <compound refid="structOpenSkyhawk_1_1HomeSensor" kind="struct"><name>OpenSkyhawk::HomeSensor</name>
+    <member refid="structOpenSkyhawk_1_1HomeSensor_1abe92607c10c965f36e34ad40f86cfd12" kind="variable"><name>activeLow</name></member>
+    <member refid="structOpenSkyhawk_1_1HomeSensor_1a7ea76a4281982540e4cf46f73157e90c" kind="variable"><name>debounceMs</name></member>
+    <member refid="structOpenSkyhawk_1_1HomeSensor_1a9dfe5790f1e4876df74c051ac9ec36de" kind="variable"><name>maxSeekSteps</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1I2cMux" kind="class"><name>OpenSkyhawk::I2cMux</name>
     <member refid="classOpenSkyhawk_1_1I2cMux_1a9fd480d296453c1a3aeee2c0c9ef47ee" kind="variable"><name>_addr</name></member>
     <member refid="classOpenSkyhawk_1_1I2cMux_1acf7d3f87fce5bc85d0f4701047a04562" kind="variable"><name>_wire</name></member>
@@ -153,6 +170,25 @@
     <member refid="classOpenSkyhawk_1_1LED_1a563c5f236ed992c8a321792b0f80ccff" kind="function"><name>LED</name></member>
     <member refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" kind="function"><name>configure</name></member>
     <member refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341" kind="function"><name>onControlPacket</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1MotorDriver" kind="class"><name>OpenSkyhawk::MotorDriver</name>
+    <member refid="classOpenSkyhawk_1_1MotorDriver_1a0d6189324d9bfc937ce04961f698e7f9" kind="function"><name>~MotorDriver</name></member>
+    <member refid="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1MotorDriver_1abf40a9749ee1b48406de581e07025fcf" kind="function"><name>home</name></member>
+    <member refid="classOpenSkyhawk_1_1MotorDriver_1a90685e21bc5f1354b4fe98c4ad7a6d23" kind="function"><name>moveTo</name></member>
+    <member refid="classOpenSkyhawk_1_1MotorDriver_1a98f4669440c20b80c13be9f8d8532a87" kind="function"><name>update</name></member>
+    <member refid="classOpenSkyhawk_1_1MotorDriver_1a1174f0699e60b6b4b6891988d9d5e984" kind="function"><name>position</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1NeedleGauge" kind="class"><name>OpenSkyhawk::NeedleGauge</name>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1a02a6bcd2fba608ff8af465f10a647abe" kind="variable"><name>_controlId</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1aac580b10650b960558757fe6785f03c0" kind="variable"><name>_mask</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1a4afb6b55c7a9fc1a4ae924c6588e9777" kind="variable"><name>_motor</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1a8ad9fe88b2c4e7eb4862f86c050805c6" kind="variable"><name>_cal</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1a3844e414a1ee4c18a5cf872fb71d21fa" kind="function"><name>NeedleGauge</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1a5ed2454f76ca7d0f9c4c57796b3a831a" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1a187471a0f4be78da62b242b7d278f37d" kind="function"><name>onControlPacket</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1a9bd49eb4dd495533892f7a9aad6f7c5b" kind="function"><name>update</name></member>
+    <member refid="classOpenSkyhawk_1_1NeedleGauge_1ac14ef657a85146aff33dbcd29b90b994" kind="function"><name>valueToPos</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1OutputBase" kind="class"><name>OpenSkyhawk::OutputBase</name>
     <member refid="classOpenSkyhawk_1_1OutputBase_1a46bbff177d96003351c7144d6b171afe" kind="variable"><name>_head</name></member>
@@ -185,6 +221,7 @@
     <member refid="classPinRef_1a94a6a5253fef0b8c33d7caa514e55dd4" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1adadada577c72fb0b3534a3354387ddd2" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1a2f38bed5de65575b4e243d8cb9349f90" kind="function"><name>read</name></member>
+    <member refid="classPinRef_1ac2195c891574cd919350cdf0a8e9bef1" kind="function"><name>readLive</name></member>
     <member refid="classPinRef_1a08e3c8b54a3c18ae352c50d5e75cd2b2" kind="function"><name>readAnalog</name></member>
     <member refid="classPinRef_1a0936506f3842d0b761e134732e81a7d3" kind="function"><name>write</name></member>
     <member refid="classPinRef_1ad68f7414ce0f3f99f252cf94159dc534" kind="function"><name>writeAnalog</name></member>
@@ -198,6 +235,55 @@
     <member refid="structRxQueueEntry_1a758987839532de7c7ef2e059f552b033" kind="variable"><name>canId</name></member>
     <member refid="structRxQueueEntry_1ad7f337951df4e0a7075dd47a8ca93d7c" kind="variable"><name>len</name></member>
     <member refid="structRxQueueEntry_1ad621304447b625321e0cfe744e57d1ea" kind="variable"><name>data</name></member>
+  </compound>
+  <compound refid="structOpenSkyhawk_1_1StepperConfig" kind="struct"><name>OpenSkyhawk::StepperConfig</name>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1ae37146eb146907e2e8ae9210df1252ed" kind="variable"><name>stepsPerRev</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a77acbe1e2eb9309a3879962e2c26d50e" kind="variable"><name>pattern</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1ab296a0b0840caac9c9324aeaa7261f39" kind="variable"><name>accel</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a35aa00e9fcacee3b45db0e2d75209a7e" kind="variable"><name>accelN</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a9259690ad915f4b9d17f0be59f2c22fb" kind="variable"><name>home</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a5695c15302816adf6794d0c0ee77b3a1" kind="variable"><name>homeSeekClockwise</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1ac4f0e0295dfcef32e1a9e75aacb6b933" kind="variable"><name>sensor</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a60acc3b369297622fdce4530b6f9b0a9" kind="variable"><name>homePosition</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a7b028d73ef16729b1d7f700dcb60f4be" kind="variable"><name>parkPosition</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a687d530f51693137d2c2c9a33899441d" kind="variable"><name>minPos</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a1a5c5aef7debf6f295151683f297ad5e" kind="variable"><name>maxPos</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1ab45407d951c8b7a9b106b85e4848f659" kind="variable"><name>wrap</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1ae608309976d278b430a54d6dbb403502" kind="variable"><name>deadband</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a849fa6b409dc9740106e3cffd4692df0" kind="variable"><name>autoRecal</name></member>
+    <member refid="structOpenSkyhawk_1_1StepperConfig_1a7894c8d187bdbd4518156bf7dba5d166" kind="variable"><name>recalDebounceMs</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1StepperMotor" kind="class"><name>OpenSkyhawk::StepperMotor</name>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a130677699c0cc69ac59f78f95ec9de8b" kind="variable"><name>_coil</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1afa327365a973dcac837cbfe51e8bbe23" kind="variable"><name>_homeSense</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a3eba62629606a6046a454179daeedcf3" kind="variable"><name>_sleepEn</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1ae55524628b2b854c9841c1259a8257f6" kind="variable"><name>_cfg</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1ad189f7da751d0c9af018b797ed4b4ba1" kind="variable"><name>_maxVel</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a489689a92a91dc2f99e91bd7de02f056" kind="variable"><name>_currentStep</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a38baa5593452a49ead143d89d1450082" kind="variable"><name>_targetStep</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1acc482218b50e23ce45677b10932f489a" kind="variable"><name>_vel</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1af41d26624b81e7bfddb72fcdcd588d40" kind="variable"><name>_dir</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1ad8547d25c35026dd594eb969028e8d67" kind="variable"><name>_stopped</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a36de192b35391073ef6a07602fcdaf5d" kind="variable"><name>_state</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1ace225f94f652567d22c54e85d04a83a0" kind="variable"><name>_microDelay</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a9253e380d16ba27d474c5b31930a5c57" kind="variable"><name>_time0</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a9058402c1f606d91d5e7899e5f6615fc" kind="variable"><name>_homed</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a71ec7bcca39b4abb82699717bf07647b" kind="variable"><name>_lastRecalMs</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a6f0be45ac758c110d9d0d5235e3ae1b5" kind="variable"><name>_sensorOverride</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a8926f21a0e93d4b04946a75e6308a8d3" kind="function"><name>StepperMotor</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a88cc3e0f508c4783ba64a9d16e9ac724" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a47ab20a55ad4d338a629405bb96bc94e" kind="function"><name>home</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1ae48eb812d537dae7efb3a82e470d54d1" kind="function"><name>moveTo</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a39e650299fd72d0c7b4b09b01dc00572" kind="function"><name>update</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a6051601bfe60ad458759d84826c8841a" kind="function"><name>position</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a792457ad3e4dda3fcd5931e764edeb5a" kind="function"><name>homed</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a1b2feda7cb6a1455401ed127f138c8af" kind="function"><name>writeIO</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a8300a41b60a4a3acdc087db3aceff3bb" kind="function"><name>stepOnce</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a74b0667e763e7f9554b3993f2f3b0e89" kind="function"><name>advance</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a99364883684e3af8b47263b2d523ccb7" kind="function"><name>sensorAsserted</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a95384a220a51149f5b77744efcc0da65" kind="function"><name>sensorConfirmed</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1afddc4c72c4f9e640004e28d3e0b3c729" kind="function"><name>seekHomeBlocking</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a58773ee295c63067c92a0545df4ae961" kind="function"><name>runToStopBlocking</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1Switch2Pos" kind="class"><name>OpenSkyhawk::Switch2Pos</name>
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1af04a08b30176de7081fae6a2f3cc41a8" kind="variable"><name>DEBOUNCE_MS</name></member>
@@ -220,17 +306,17 @@
     <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
     <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d18" kind="namespace"><name>@18</name>
+  <compound refid="namespace_0d23" kind="namespace"><name>@23</name>
   </compound>
-  <compound refid="namespace_0d22" kind="namespace"><name>@22</name>
-    <member refid="namespace_0d22_1a32a3437b01bf9f276d4e53d90482e810" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d22_1a32a3437b01bf9f276d4e53d90482e810aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d22_1a32a3437b01bf9f276d4e53d90482e810a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d22_1a32a3437b01bf9f276d4e53d90482e810a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d22_1ac84c680ebe0728e0d04a78d31b425814" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d22_1ac84c680ebe0728e0d04a78d31b425814ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d22_1ac84c680ebe0728e0d04a78d31b425814aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d22_1ac84c680ebe0728e0d04a78d31b425814a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d27" kind="namespace"><name>@27</name>
+    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
   </compound>
@@ -270,6 +356,12 @@
     <member refid="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2" kind="enum"><name>DrumScroll</name></member>
     <member refid="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2a878f5f0b1463a602d91a6c98fb903bac" kind="enumvalue"><name>EASE_ONLY</name></member>
     <member refid="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2a30caab24267e24dedc4c258772a4d8d5" kind="enumvalue"><name>SNAP_SETTLE</name></member>
+    <member refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" kind="enum"><name>HomeMode</name></member>
+    <member refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7ac78decb824e426b2dbfc79ae121b79f4" kind="enumvalue"><name>STALL</name></member>
+    <member refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7a72700b6ac14b90435377dcbaeb77e908" kind="enumvalue"><name>SENSOR</name></member>
+    <member refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" kind="enum"><name>StepPattern</name></member>
+    <member refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a962e53b27cf971b35075f41d438a89d2" kind="enumvalue"><name>SWITEC_6STATE</name></member>
+    <member refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a21163361b15fdc3ebbe309acaa2d40cc" kind="enumvalue"><name>FULL_4STATE</name></member>
     <member refid="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" kind="variable"><name>EASE</name></member>
     <member refid="namespaceOpenSkyhawk_1ad718667155d85fa62e6eff912a9c002f" kind="variable"><name>FRAME_MS</name></member>
     <member refid="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" kind="variable"><name>SETTLE_EPS</name></member>
@@ -278,7 +370,12 @@
     <member refid="namespaceOpenSkyhawk_1ae47c2dbd6ff64b6c51b12e1f5f0fdbbc" kind="variable"><name>KIND_DIGIT</name></member>
     <member refid="namespaceOpenSkyhawk_1af33b156d05d4b3feb480939b4e3b691d" kind="variable"><name>KIND_GLYPH</name></member>
     <member refid="namespaceOpenSkyhawk_1a0d81fd69344bd8c88c2edb048f966b47" kind="variable"><name>KIND_FLAG</name></member>
+    <member refid="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" kind="variable"><name>kSwitecDefaultAccel</name></member>
+    <member refid="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" kind="variable"><name>kSwitecDefaultAccelN</name></member>
     <member refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kind="function"><name>pow10l</name></member>
+    <member refid="namespaceOpenSkyhawk_1a00d1364e4501890bfb60bfbcdb7d3902" kind="function"><name>makeX27Config</name></member>
+  </compound>
+  <compound refid="namespaceOpenSkyhawk_1_1_0d12" kind="namespace"><name>OpenSkyhawk::@12</name>
   </compound>
   <compound refid="namespacePanelBridge" kind="namespace"><name>PanelBridge</name>
     <member refid="namespacePanelBridge_1aa4d303af811bcf25628d8086b6087a4e" kind="typedef"><name>NodeCallback</name></member>
@@ -295,6 +392,7 @@
     <member refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kind="function"><name>loop</name></member>
     <member refid="namespacePanelGroup_1ae901405cd77bc1596e8894df9cd3e662" kind="function"><name>readCachedPin</name></member>
     <member refid="namespacePanelGroup_1ae8692730dbfd3bce4ea3c7dcff6e8141" kind="function"><name>writeCachedPin</name></member>
+    <member refid="namespacePanelGroup_1aae9c2ee79d4f68b5e0882d14972e1685" kind="function"><name>readLivePin</name></member>
   </compound>
   <compound refid="namespaceSimGateway" kind="namespace"><name>SimGateway</name>
     <member refid="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bd" kind="enum"><name>LedState</name></member>
@@ -1199,6 +1297,12 @@
   </compound>
   <compound refid="ADS1115_8h" kind="file"><name>ADS1115.h</name>
   </compound>
+  <compound refid="MotorDriver_8h" kind="file"><name>MotorDriver.h</name>
+  </compound>
+  <compound refid="StepperMotor_8cpp" kind="file"><name>StepperMotor.cpp</name>
+  </compound>
+  <compound refid="StepperMotor_8h" kind="file"><name>StepperMotor.h</name>
+  </compound>
   <compound refid="I2cMux_8cpp" kind="file"><name>I2cMux.cpp</name>
   </compound>
   <compound refid="I2cMux_8h" kind="file"><name>I2cMux.h</name>
@@ -1212,6 +1316,10 @@
   <compound refid="LED_8cpp" kind="file"><name>LED.cpp</name>
   </compound>
   <compound refid="LED_8h" kind="file"><name>LED.h</name>
+  </compound>
+  <compound refid="NeedleGauge_8cpp" kind="file"><name>NeedleGauge.cpp</name>
+  </compound>
+  <compound refid="NeedleGauge_8h" kind="file"><name>NeedleGauge.h</name>
   </compound>
   <compound refid="PanelGroup_8cpp" kind="file"><name>PanelGroup.cpp</name>
   </compound>
@@ -1261,6 +1369,8 @@
   </compound>
   <compound refid="dir_81ff3032570f78b12938068450b63228" kind="dir"><name>Firmware/Libraries/CANProtocol</name>
   </compound>
+  <compound refid="dir_da1b6a20235952b69490534d482f5898" kind="dir"><name>Firmware/Libraries/PanelGroup/Drivers</name>
+  </compound>
   <compound refid="dir_b8ac8c4bf654b399fff34fe5003d7d6c" kind="dir"><name>Firmware/Libraries/DrumDisplay</name>
   </compound>
   <compound refid="dir_74b6a3b63f61c160c0f14b7a283a4c9b" kind="dir"><name>Firmware</name>
@@ -1277,6 +1387,10 @@
   </compound>
   <compound refid="dir_3540c00680c2664f9f7e8f48ca1cab09" kind="dir"><name>Firmware/Libraries</name>
   </compound>
+  <compound refid="dir_7cabaf4812e32c14ff26922d3804a645" kind="dir"><name>Firmware/Libraries/PanelGroup/Drivers/MotorDriver</name>
+  </compound>
+  <compound refid="dir_61ced45d99aac20e353c7cae873553bb" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge</name>
+  </compound>
   <compound refid="dir_529c528362a647a34d31d0b3b420ca72" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs</name>
   </compound>
   <compound refid="dir_f592a3c441b32532ba8eb6b28add2a90" kind="dir"><name>Firmware/Libraries/PanelBridge</name>
@@ -1284,6 +1398,8 @@
   <compound refid="dir_54a06c409a6161127d200302d3061b3f" kind="dir"><name>Firmware/Libraries/PanelGroup</name>
   </compound>
   <compound refid="dir_a54aa0246e1c520ae49dfef506a428ca" kind="dir"><name>Firmware/Libraries/SimGateway</name>
+  </compound>
+  <compound refid="dir_f431add5022471a872df403ed217c535" kind="dir"><name>Firmware/Libraries/PanelGroup/Drivers/StepperMotor</name>
   </compound>
   <compound refid="dir_aa1816754c0645981f9c7af905857f7d" kind="dir"><name>Firmware/Libraries/STM32Board</name>
   </compound>

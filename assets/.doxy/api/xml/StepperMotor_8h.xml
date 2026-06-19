@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="StepperMotor_8h" kind="file" language="C++">
+    <compoundname>StepperMotor.h</compoundname>
+    <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
+    <includes refid="MotorDriver_8h" local="no">Drivers/MotorDriver/MotorDriver.h</includes>
+    <includedby refid="StepperMotor_8cpp" local="no">Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp</includedby>
+    <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="6">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Drivers/MotorDriver/MotorDriver.h</label>
+        <link refid="MotorDriver_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+      <node id="3">
+        <label>Arduino.h</label>
+      </node>
+      <node id="5">
+        <label>MCP23017.h</label>
+      </node>
+      <node id="4">
+        <label>Wire.h</label>
+      </node>
+      <node id="10">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp</label>
+        <link refid="StepperMotor_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structOpenSkyhawk_1_1AccelPoint" prot="public">OpenSkyhawk::AccelPoint</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1HomeSensor" prot="public">OpenSkyhawk::HomeSensor</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1StepperConfig" prot="public">OpenSkyhawk::StepperConfig</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1StepperMotor" prot="public">OpenSkyhawk::StepperMotor</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>Non-blocking 4-wire stepper driver on <ref refid="classPinRef" kindref="compound">PinRef</ref> coils. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A control-agnostic MotorDriver for instrument gauge steppers. Drives four coils through <ref refid="classPinRef" kindref="compound">PinRef</ref>, so the coils may be native STM32 GPIO <bold>or</bold> an MCP23017 expander with no code change. The motion engine is ported from Guy Carpenter&apos;s SwitecX25 library: an integer (no-FPU) table-driven trapezoidal accel/decel — a <computeroutput>vel</computeroutput> proxy ramps up one step at a time and decelerates once the steps remaining to target fall below <computeroutput>vel</computeroutput>, giving smooth acceleration into and out of every move.</para>
+<para>One drive profile (StepPattern::SWITEC_6STATE) covers the air-core instrument stepper family on hand — X27.589 / VID-29 / BKA-30 are the same motor electrically; a coil that runs reversed is corrected by swapping two constructor pins, not a new profile. StepPattern::FULL_4STATE is reserved for generic geared 4-wire steppers.</para>
+<para>Homing: HomeMode::STALL drives into a mechanical end-stop (no sensor); HomeMode::SENSOR seeks a debounced digital home sensor — a micro switch, reed, hall, or opto-interrupter all read identically through one <ref refid="classPinRef" kindref="compound">PinRef</ref> + an active-level flag.</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>PinRef</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="MotorDriver_8h" kindref="compound">Drivers/MotorDriver/MotorDriver.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>MotorDriver<sp/>base</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" kindref="member">HomeMode</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7ac78decb824e426b2dbfc79ae121b79f4" kindref="member">STALL</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7a72700b6ac14b90435377dcbaeb77e908" kindref="member">SENSOR</ref><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ABSOLUTE<sp/>—<sp/>future:<sp/>read<sp/>an<sp/>absolute<sp/>encoder<sp/>(AS5600);<sp/>reports<sp/>position,<sp/>no<sp/>seek.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" kindref="member">StepPattern</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a962e53b27cf971b35075f41d438a89d2" kindref="member">SWITEC_6STATE</ref>,<sp/><sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a21163361b15fdc3ebbe309acaa2d40cc" kindref="member">FULL_4STATE</ref><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="structOpenSkyhawk_1_1AccelPoint" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1AccelPoint" kindref="compound">AccelPoint</ref><sp/>{</highlight></codeline>
+<codeline lineno="52" refid="structOpenSkyhawk_1_1AccelPoint_1aa1da095cdd28c67a62ef2895cbad89c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1AccelPoint_1aa1da095cdd28c67a62ef2895cbad89c8" kindref="member">stepThreshold</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="53" refid="structOpenSkyhawk_1_1AccelPoint_1ad8e6eb8131e1fadcbd5bae34f11ccc5b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1AccelPoint_1ad8e6eb8131e1fadcbd5bae34f11ccc5b" kindref="member">delayUs</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="structOpenSkyhawk_1_1HomeSensor" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1HomeSensor" kindref="compound">HomeSensor</ref><sp/>{</highlight></codeline>
+<codeline lineno="62" refid="structOpenSkyhawk_1_1HomeSensor_1abe92607c10c965f36e34ad40f86cfd12" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1HomeSensor_1abe92607c10c965f36e34ad40f86cfd12" kindref="member">activeLow</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="63" refid="structOpenSkyhawk_1_1HomeSensor_1a7ea76a4281982540e4cf46f73157e90c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1HomeSensor_1a7ea76a4281982540e4cf46f73157e90c" kindref="member">debounceMs</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="64" refid="structOpenSkyhawk_1_1HomeSensor_1a9dfe5790f1e4876df74c051ac9ec36de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1HomeSensor_1a9dfe5790f1e4876df74c051ac9ec36de" kindref="member">maxSeekSteps</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="structOpenSkyhawk_1_1StepperConfig" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref><sp/>{</highlight></codeline>
+<codeline lineno="74" refid="structOpenSkyhawk_1_1StepperConfig_1ae37146eb146907e2e8ae9210df1252ed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1ae37146eb146907e2e8ae9210df1252ed" kindref="member">stepsPerRev</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="75" refid="structOpenSkyhawk_1_1StepperConfig_1a77acbe1e2eb9309a3879962e2c26d50e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" kindref="member">StepPattern</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a77acbe1e2eb9309a3879962e2c26d50e" kindref="member">pattern</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="76" refid="structOpenSkyhawk_1_1StepperConfig_1ab296a0b0840caac9c9324aeaa7261f39" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1AccelPoint" kindref="compound">AccelPoint</ref>*<sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1ab296a0b0840caac9c9324aeaa7261f39" kindref="member">accel</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="77" refid="structOpenSkyhawk_1_1StepperConfig_1a35aa00e9fcacee3b45db0e2d75209a7e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a35aa00e9fcacee3b45db0e2d75209a7e" kindref="member">accelN</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="78" refid="structOpenSkyhawk_1_1StepperConfig_1a9259690ad915f4b9d17f0be59f2c22fb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" kindref="member">HomeMode</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a9259690ad915f4b9d17f0be59f2c22fb" kindref="member">home</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="79" refid="structOpenSkyhawk_1_1StepperConfig_1a5695c15302816adf6794d0c0ee77b3a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a5695c15302816adf6794d0c0ee77b3a1" kindref="member">homeSeekClockwise</ref>;<sp/></highlight></codeline>
+<codeline lineno="80" refid="structOpenSkyhawk_1_1StepperConfig_1ac4f0e0295dfcef32e1a9e75aacb6b933" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1HomeSensor" kindref="compound">HomeSensor</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1ac4f0e0295dfcef32e1a9e75aacb6b933" kindref="member">sensor</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="81" refid="structOpenSkyhawk_1_1StepperConfig_1a60acc3b369297622fdce4530b6f9b0a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a60acc3b369297622fdce4530b6f9b0a9" kindref="member">homePosition</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="82" refid="structOpenSkyhawk_1_1StepperConfig_1a7b028d73ef16729b1d7f700dcb60f4be" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a7b028d73ef16729b1d7f700dcb60f4be" kindref="member">parkPosition</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="83" refid="structOpenSkyhawk_1_1StepperConfig_1a687d530f51693137d2c2c9a33899441d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a687d530f51693137d2c2c9a33899441d" kindref="member">minPos</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="84" refid="structOpenSkyhawk_1_1StepperConfig_1a1a5c5aef7debf6f295151683f297ad5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a1a5c5aef7debf6f295151683f297ad5e" kindref="member">maxPos</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="85" refid="structOpenSkyhawk_1_1StepperConfig_1ab45407d951c8b7a9b106b85e4848f659" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1ab45407d951c8b7a9b106b85e4848f659" kindref="member">wrap</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="86" refid="structOpenSkyhawk_1_1StepperConfig_1ae608309976d278b430a54d6dbb403502" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1ae608309976d278b430a54d6dbb403502" kindref="member">deadband</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="87" refid="structOpenSkyhawk_1_1StepperConfig_1a849fa6b409dc9740106e3cffd4692df0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a849fa6b409dc9740106e3cffd4692df0" kindref="member">autoRecal</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="88" refid="structOpenSkyhawk_1_1StepperConfig_1a7894c8d187bdbd4518156bf7dba5d166" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig_1a7894c8d187bdbd4518156bf7dba5d166" kindref="member">recalDebounceMs</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1AccelPoint" kindref="compound">AccelPoint</ref><sp/><ref refid="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" kindref="member">kSwitecDefaultAccel</ref>[5];</highlight></codeline>
+<codeline lineno="93" refid="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" kindref="member">kSwitecDefaultAccelN</ref><sp/>=<sp/>5;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref><sp/><ref refid="namespaceOpenSkyhawk_1a00d1364e4501890bfb60bfbcdb7d3902" kindref="member">makeX27Config</ref>(int16_t<sp/>homePosition,<sp/>int16_t<sp/>parkPosition,</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int16_t<sp/>minPos,<sp/>int16_t<sp/>maxPos,</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" kindref="member">HomeMode</ref><sp/>home<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7ac78decb824e426b2dbfc79ae121b79f4" kindref="member">HomeMode::STALL</ref>,</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>homeSeekClockwise<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1HomeSensor" kindref="compound">HomeSensor</ref><sp/>sensor<sp/>=<sp/>{<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/>5,<sp/>2000<sp/>},</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>wrap<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>uint8_t<sp/>deadband<sp/>=<sp/>1,</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>autoRecal<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>uint32_t<sp/>recalDebounceMs<sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>stepsPerRev<sp/>=<sp/>720);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="classOpenSkyhawk_1_1StepperMotor" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1StepperMotor" kindref="compound">StepperMotor</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1StepperMotor" kindref="compound">StepperMotor</ref>(<ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c1,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c2,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c3,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c4,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref>&amp;<sp/>cfg,</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>homeSense<sp/>=<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>(),<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>sleepEn<sp/>=<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>());</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1StepperMotor_1a88cc3e0f508c4783ba64a9d16e9ac724" kindref="member">configure</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1StepperMotor_1a47ab20a55ad4d338a629405bb96bc94e" kindref="member">home</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1StepperMotor_1ae48eb812d537dae7efb3a82e470d54d1" kindref="member">moveTo</ref>(int32_t<sp/>pos)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1StepperMotor_1a39e650299fd72d0c7b4b09b01dc00572" kindref="member">update</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/><ref refid="classOpenSkyhawk_1_1StepperMotor_1a6051601bfe60ad458759d84826c8841a" kindref="member">position</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147" refid="classOpenSkyhawk_1_1StepperMotor_1a792457ad3e4dda3fcd5931e764edeb5a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1StepperMotor_1a792457ad3e4dda3fcd5931e764edeb5a" kindref="member">homed</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_homed;<sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>STEPPERMOTOR_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>debugAdvance()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>advance();<sp/>}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>debugCurrentStep()</highlight><highlight class="keyword"><sp/>const<sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_currentStep;<sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>debugTargetStep()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_targetStep;<sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>debugVel()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_vel;<sp/>}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>debugMicroDelay()</highlight><highlight class="keyword"><sp/>const<sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_microDelay;<sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>debugStopped()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_stopped;<sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>debugSensorAsserted()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sensorAsserted(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>debugSetSensorOverride(int8_t<sp/>level)<sp/>{<sp/>_sensorOverride<sp/>=<sp/>level;<sp/>}<sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>collaborators<sp/>/<sp/>config<sp/>(plain<sp/>//<sp/>—<sp/>EXTRACT_PRIVATE<sp/>NO,<sp/>not<sp/>in<sp/>API<sp/>docs)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_coil[4];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>coil<sp/>pins</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_homeSense;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>home<sp/>sensor<sp/>(NC<sp/>if<sp/>unused)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sleepEn;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>driver<sp/>enable<sp/>/<sp/>~SLEEP<sp/>(NC<sp/>if<sp/>unused)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>StepperConfig<sp/>_cfg;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>copied<sp/>config<sp/>(accel<sp/>table<sp/>referenced,<sp/>not<sp/>owned)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/>_maxVel;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>last<sp/>accel<sp/>threshold<sp/>=<sp/>top<sp/>speed<sp/>gate</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>motion<sp/>state<sp/>(SwitecX25<sp/>model)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/><sp/><sp/><sp/><sp/><sp/>_currentStep;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>absolute<sp/>step<sp/>position</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/><sp/><sp/><sp/><sp/><sp/>_targetStep;<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>commanded<sp/>target</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/>_vel;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>accel-steps<sp/>proxy<sp/>for<sp/>velocity</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>int8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/>_dir;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>+1<sp/>/<sp/>-1<sp/>/<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_stopped;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>true<sp/>when<sp/>settled<sp/>at<sp/>target</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/>_state;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>coil-state<sp/>index<sp/>(0..stateCount-1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/>_microDelay;<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>delay<sp/>until<sp/>next<sp/>step,<sp/>µs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/>_time0;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>micros()<sp/>at<sp/>last<sp/>step</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_homed;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>homing<sp/>succeeded</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>auto-recal</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/>_lastRecalMs;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>millis()<sp/>of<sp/>last<sp/>recal</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>int8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sensorOverride;<sp/></highlight><highlight class="comment">//<sp/>-1<sp/>=<sp/>read<sp/>pin;<sp/>0/1<sp/>=<sp/>forced<sp/>(test<sp/>seam)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>helpers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>writeIO();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>energise<sp/>coils<sp/>for<sp/>_state</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>stepOnce(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>up);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>one<sp/>detent<sp/>in<sp/>a<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>advance();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SwitecX25<sp/>accel/step<sp/>kernel</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>sensorAsserted(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>live)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>single<sp/>read<sp/>through<sp/>activeLow;<sp/>live=true<sp/>→<sp/>bypass<sp/>cache</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>sensorConfirmed()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>sensorAsserted<sp/>stable<sp/>for<sp/>debounceMs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>seekHomeBlocking();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>step<sp/>toward<sp/>sensor<sp/>until<sp/>confirmed<sp/>or<sp/>maxSeekSteps</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>runToStopBlocking();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>advance()<sp/>+<sp/>delay<sp/>until<sp/>stopped<sp/>(homing/park<sp/>moves)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h"/>
+  </compounddef>
+</doxygen>

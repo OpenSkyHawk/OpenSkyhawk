@@ -2,18 +2,25 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="namespaceOpenSkyhawk" kind="namespace" language="C++">
     <compoundname>OpenSkyhawk</compoundname>
+    <innerclass refid="structOpenSkyhawk_1_1AccelPoint" prot="public">OpenSkyhawk::AccelPoint</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1DrumDisplay" prot="public">OpenSkyhawk::DrumDisplay</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumFlag" prot="public">OpenSkyhawk::DrumFlag</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumGlyph" prot="public">OpenSkyhawk::DrumGlyph</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumReadout" prot="public">OpenSkyhawk::DrumReadout</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumSource" prot="public">OpenSkyhawk::DrumSource</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1GaugeCal" prot="public">OpenSkyhawk::GaugeCal</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1HIDAxis" prot="public">OpenSkyhawk::HIDAxis</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1HIDButton" prot="public">OpenSkyhawk::HIDButton</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1HIDHatSwitch" prot="public">OpenSkyhawk::HIDHatSwitch</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1HomeSensor" prot="public">OpenSkyhawk::HomeSensor</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1I2cMux" prot="public">OpenSkyhawk::I2cMux</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1InputBase" prot="public">OpenSkyhawk::InputBase</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1LED" prot="public">OpenSkyhawk::LED</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1MotorDriver" prot="public">OpenSkyhawk::MotorDriver</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1NeedleGauge" prot="public">OpenSkyhawk::NeedleGauge</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1OutputBase" prot="public">OpenSkyhawk::OutputBase</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1StepperConfig" prot="public">OpenSkyhawk::StepperConfig</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1StepperMotor" prot="public">OpenSkyhawk::StepperMotor</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1Switch2Pos" prot="public">OpenSkyhawk::Switch2Pos</innerclass>
     <sectiondef kind="enum">
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" prot="public" static="no" strong="yes">
@@ -83,6 +90,64 @@
         <inbodydescription>
         </inbodydescription>
         <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="53" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="53" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>HomeMode</name>
+        <qualifiedname>OpenSkyhawk::HomeMode</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7ac78decb824e426b2dbfc79ae121b79f4" prot="public">
+          <name>STALL</name>
+          <briefdescription>
+<para>Drive into a mechanical end-stop, then call that position home. No sensor. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7a72700b6ac14b90435377dcbaeb77e908" prot="public">
+          <name>SENSOR</name>
+          <briefdescription>
+<para>Seek a digital home sensor (switch / reed / hall / opto), then offset to park. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>How the driver establishes its zero reference at boot. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="34" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="34" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>StepPattern</name>
+        <qualifiedname>OpenSkyhawk::StepPattern</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a962e53b27cf971b35075f41d438a89d2" prot="public">
+          <name>SWITEC_6STATE</name>
+          <briefdescription>
+<para>6-state air-core drive (X27.589 / VID-29 / BKA-30). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a21163361b15fdc3ebbe309acaa2d40cc" prot="public">
+          <name>FULL_4STATE</name>
+          <briefdescription>
+<para>4-state full-step, two coils energised (generic geared 4-wire). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Coil energising sequence. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="41" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="41" bodyend="44"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -206,6 +271,43 @@
         </inbodydescription>
         <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="30" column="22" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="30" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" prot="public" static="no" mutable="no">
+        <type>const <ref refid="structOpenSkyhawk_1_1AccelPoint" kindref="compound">AccelPoint</ref></type>
+        <definition>const AccelPoint OpenSkyhawk::kSwitecDefaultAccel</definition>
+        <argsstring>[5]</argsstring>
+        <name>kSwitecDefaultAccel</name>
+        <qualifiedname>OpenSkyhawk::kSwitecDefaultAccel</qualifiedname>
+        <initializer>= {
+    {  20, 3000 },
+    {  50, 1500 },
+    { 100, 1000 },
+    { 150,  800 },
+    { 300,  600 },
+}</initializer>
+        <briefdescription>
+<para>Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" line="9" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="9" bodyend="15" declfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" declline="92" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::kSwitecDefaultAccelN</definition>
+        <argsstring></argsstring>
+        <name>kSwitecDefaultAccelN</name>
+        <qualifiedname>OpenSkyhawk::kSwitecDefaultAccelN</qualifiedname>
+        <initializer>= 5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="93" column="19" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="func">
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -225,6 +327,178 @@
         <inbodydescription>
         </inbodydescription>
         <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="32" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="32" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a00d1364e4501890bfb60bfbcdb7d3902" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref></type>
+        <definition>StepperConfig OpenSkyhawk::makeX27Config</definition>
+        <argsstring>(int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos, HomeMode home=HomeMode::STALL, bool homeSeekClockwise=false, HomeSensor sensor={ true, 5, 2000 }, bool wrap=false, uint8_t deadband=1, bool autoRecal=false, uint32_t recalDebounceMs=0, uint16_t stepsPerRev=720)</argsstring>
+        <name>makeX27Config</name>
+        <qualifiedname>OpenSkyhawk::makeX27Config</qualifiedname>
+        <param>
+          <type>int16_t</type>
+          <declname>homePosition</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>parkPosition</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>minPos</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>maxPos</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" kindref="member">HomeMode</ref></type>
+          <declname>home</declname>
+          <defval><ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7ac78decb824e426b2dbfc79ae121b79f4" kindref="member">HomeMode::STALL</ref></defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>homeSeekClockwise</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type><ref refid="structOpenSkyhawk_1_1HomeSensor" kindref="compound">HomeSensor</ref></type>
+          <declname>sensor</declname>
+          <defval>{ true, 5, 2000 }</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>wrap</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>deadband</declname>
+          <defval>1</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>autoRecal</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>recalDebounceMs</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>stepsPerRev</declname>
+          <defval>720</defval>
+        </param>
+        <briefdescription>
+<para>Build a <ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref> with the X27 air-core motor defaults filled in. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Bakes the motor-invariant fields — <computeroutput>stepsPerRev</computeroutput>, <computeroutput>pattern</computeroutput> (SWITEC_6STATE), and the default SwitecX25 accel table — so a sketch specifies only the per-gauge wiring/travel. Shared by every X27 / VID-29 / BKA-30 gauge; override any default for a specific panel.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>homePosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>step index at the home reference. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parkPosition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rest position after homing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>minPos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lower moveTo travel clamp (ignored if wrap). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxPos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>upper moveTo travel clamp (ignored if wrap). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>home</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>homing strategy. Default STALL. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>homeSeekClockwise</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>seek direction. Default false. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>home-sensor params (SENSOR mode). Default active-low, 5 ms, 2000 steps. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>wrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>continuous-rotation gauge. Default false. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>deadband</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>anti-jitter band, steps. Default 1. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>autoRecal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>re-zero on sensor crossing. Default false. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>recalDebounceMs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>minimum interval between auto-recals. Default 0. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stepsPerRev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>full revolution in steps. Default 720 (nominal — calibrate per motor). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Populated <ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" line="199" column="15" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="199" bodyend="210" declfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" declline="116" declcolumn="15"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

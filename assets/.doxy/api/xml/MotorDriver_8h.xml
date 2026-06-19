@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="MotorDriver_8h" kind="file" language="C++">
+    <compoundname>MotorDriver.h</compoundname>
+    <includes local="no">Arduino.h</includes>
+    <includedby refid="StepperMotor_8h" local="no">Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</includedby>
+    <includedby refid="NeedleGauge_8h" local="no">Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h</label>
+        <link refid="MotorDriver_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Arduino.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h</label>
+        <link refid="MotorDriver_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp</label>
+        <link refid="StepperMotor_8cpp"/>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</label>
+        <link refid="NeedleGauge_8cpp"/>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</label>
+        <link refid="NeedleGauge_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1MotorDriver" prot="public">OpenSkyhawk::MotorDriver</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>Abstract base for non-blocking motor/servo drivers. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A MotorDriver moves a physical actuator (gauge stepper, geared stepper, RC servo) toward a commanded position without blocking the loop. It owns the low-level drive (coil energising / PWM), homing, and per-step timing; it knows nothing about DCS-BIOS. High-level controls — NeedleGauge (value → angle), and later a motorised DrumDisplay or trim indicator — <emphasis>compose</emphasis> a MotorDriver and drive it, so no stepper/servo code is duplicated across controls.</para>
+<para>A MotorDriver is NOT an OutputBase: it is owned and ticked (update()) by whatever control uses it, not registered on <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s output list directly.</para>
+<para>Concrete drivers: StepperMotor (now); ServoMotor / StepDirMotor (future siblings).</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="classOpenSkyhawk_1_1MotorDriver" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref><sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="36" refid="classOpenSkyhawk_1_1MotorDriver_1a0d6189324d9bfc937ce04961f698e7f9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MotorDriver_1a0d6189324d9bfc937ce04961f698e7f9" kindref="member">~MotorDriver</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328" kindref="member">configure</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="classOpenSkyhawk_1_1MotorDriver_1abf40a9749ee1b48406de581e07025fcf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MotorDriver_1abf40a9749ee1b48406de581e07025fcf" kindref="member">home</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="classOpenSkyhawk_1_1MotorDriver_1a90685e21bc5f1354b4fe98c4ad7a6d23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MotorDriver_1a90685e21bc5f1354b4fe98c4ad7a6d23" kindref="member">moveTo</ref>(int32_t<sp/>pos)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="classOpenSkyhawk_1_1MotorDriver_1a98f4669440c20b80c13be9f8d8532a87" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MotorDriver_1a98f4669440c20b80c13be9f8d8532a87" kindref="member">update</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="classOpenSkyhawk_1_1MotorDriver_1a1174f0699e60b6b4b6891988d9d5e984" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>int32_t<sp/><ref refid="classOpenSkyhawk_1_1MotorDriver_1a1174f0699e60b6b4b6891988d9d5e984" kindref="member">position</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h"/>
+  </compounddef>
+</doxygen>

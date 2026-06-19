@@ -46,6 +46,11 @@
 * **FRAME\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
+## h
+
+* **HomeMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## i
 
 * **isDebug** ([**STM32Board**](namespaceSTM32Board.md))
@@ -56,6 +61,8 @@
 * **KIND\_DIGIT** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **KIND\_FLAG** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **KIND\_GLYPH** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **kSwitecDefaultAccel** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **kSwitecDefaultAccelN** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## l
@@ -63,13 +70,14 @@
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d22.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d27.md))
 
 
 ## m
 
 * **makeHeartbeatPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **MULTIPOS** ([**InputType**](namespaceInputType.md))
+* **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## n
@@ -93,13 +101,14 @@
 * **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d22.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d27.md))
 
 
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
 * **readCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
+* **readLivePin** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerADC** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerExpander** ([**PanelGroup**](namespacePanelGroup.md))
 
@@ -113,6 +122,7 @@
 * **SWITCH** ([**InputType**](namespaceInputType.md))
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **StepPattern** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
 * **setLinkActive** ([**STM32Board**](namespaceSTM32Board.md))

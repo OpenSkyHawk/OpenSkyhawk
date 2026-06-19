@@ -4,16 +4,18 @@
     <compoundname>OpenSkyhawk.h</compoundname>
     <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
+    <includes refid="StepperMotor_8h" local="no">Drivers/StepperMotor/StepperMotor.h</includes>
     <includes refid="LED_8h" local="no">Outputs/LED/LED.h</includes>
+    <includes refid="NeedleGauge_8h" local="no">Outputs/NeedleGauge/NeedleGauge.h</includes>
     <includes refid="Switch2Pos_8h" local="no">Inputs/Switch2Pos/Switch2Pos.h</includes>
     <includes refid="A4EC__CmdIds_8h" local="no">A4EC_CmdIds.h</includes>
     <includes refid="A4EC__OutputIds_8h" local="no">A4EC_OutputIds.h</includes>
     <incdepgraph>
-      <node id="16">
+      <node id="19">
         <label>A4EC_CmdIds.h</label>
         <link refid="A4EC__CmdIds_8h"/>
       </node>
-      <node id="17">
+      <node id="20">
         <label>A4EC_OutputIds.h</label>
         <link refid="A4EC__OutputIds_8h"/>
       </node>
@@ -36,6 +38,20 @@
         </childnode>
       </node>
       <node id="15">
+        <label>Drivers/MotorDriver/MotorDriver.h</label>
+        <link refid="MotorDriver_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
         <label>Inputs/Switch2Pos/Switch2Pos.h</label>
         <link refid="Switch2Pos_8h"/>
         <childnode refid="5" relation="include">
@@ -50,17 +66,29 @@
         </childnode>
         <childnode refid="14" relation="include">
         </childnode>
-        <childnode refid="15" relation="include">
-        </childnode>
         <childnode refid="16" relation="include">
         </childnode>
         <childnode refid="17" relation="include">
         </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
       </node>
-      <node id="14">
+      <node id="16">
         <label>Outputs/LED/LED.h</label>
         <link refid="LED_8h"/>
         <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Outputs/NeedleGauge/NeedleGauge.h</label>
+        <link refid="NeedleGauge_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
         </childnode>
       </node>
       <node id="5">
@@ -126,10 +154,12 @@
 <codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="LED_8h" kindref="compound">Outputs/LED/LED.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch2Pos_8h" kindref="compound">Inputs/Switch2Pos/Switch2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="StepperMotor_8h" kindref="compound">Drivers/StepperMotor/StepperMotor.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="LED_8h" kindref="compound">Outputs/LED/LED.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="NeedleGauge_8h" kindref="compound">Outputs/NeedleGauge/NeedleGauge.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch2Pos_8h" kindref="compound">Inputs/Switch2Pos/Switch2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/OpenSkyhawk.h"/>
   </compounddef>

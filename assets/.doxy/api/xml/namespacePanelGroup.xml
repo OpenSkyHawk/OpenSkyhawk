@@ -325,6 +325,63 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="363" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="363" bodyend="373" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="20" declcolumn="10"/>
       </memberdef>
+      <memberdef kind="function" id="namespacePanelGroup_1aae9c2ee79d4f68b5e0882d14972e1685" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PanelGroup::readLivePin</definition>
+        <argsstring>(MCP23017 &amp;chip, uint8_t port, uint8_t bit)</argsstring>
+        <name>readLivePin</name>
+        <qualifiedname>PanelGroup::readLivePin</qualifiedname>
+        <param>
+          <type>MCP23017 &amp;</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>port</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <briefdescription>
+<para>Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>chip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Chip reference. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>port</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>PORT_A (0) or PORT_B (1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bit index 0–7. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Live logical level (true = HIGH). </para>
+</simplesect>
+<simplesect kind="note"><para>Called by <ref refid="classPinRef_1ac2195c891574cd919350cdf0a8e9bef1" kindref="member">PinRef::readLive()</ref> for time-critical reads before <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop()</ref> refreshes the cache (e.g. blocking homing on an MCP-backed home sensor). One I2C transaction per call. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="375" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="375" bodyend="384" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="21" declcolumn="10"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Static singleton for CAN sub-node (<ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>) firmware. </para>

@@ -4126,11 +4126,10 @@ see <a href="../kicad-workflow/">KiCad Workflow</a>.</p>
 </tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="admonition-title">Stepper driver IC — TBD</p>
-<p>The motor driver for the gauge steppers is <strong>not yet finalised</strong> — it's under bench
-evaluation. Don't design a board around a specific driver part until that's resolved; the
-motor supply rail (5 V) is settled, the driver IC is not.</p>
+<div class="admonition note">
+<p class="admonition-title">Stepper driver: DRV8833</p>
+<p>The gauge needle steppers are driven by a <strong>DRV8833</strong> dual H-bridge — four logic inputs per
+motor (two coils), motor supply (VM) on the <strong>5 V</strong> rail. Drive the X27 air-core at 5 V.</p>
 </div>
 <h2 id="high-current-boards-only">High-current boards only</h2>
 <table>

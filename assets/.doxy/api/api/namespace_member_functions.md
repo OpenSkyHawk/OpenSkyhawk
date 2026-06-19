@@ -41,6 +41,7 @@
 ## m
 
 * **makeHeartbeatPayload** ([**CANProtocol**](namespaceCANProtocol.md))
+* **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## o
@@ -62,6 +63,7 @@
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
 * **readCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
+* **readLivePin** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerADC** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerExpander** ([**PanelGroup**](namespacePanelGroup.md))
 

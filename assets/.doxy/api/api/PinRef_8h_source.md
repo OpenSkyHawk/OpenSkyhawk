@@ -39,6 +39,8 @@ public:
 
     bool read() const;
 
+    bool readLive() const;
+
     uint16_t readAnalog() const;
 
     void write(bool value);

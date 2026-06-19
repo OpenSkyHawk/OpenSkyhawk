@@ -29,18 +29,25 @@
 
 | Type | Name |
 | ---: | :--- |
+| struct | [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) <br>_One point on the acceleration curve (SwitecX25 form)._  |
 | class | [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) <br>_Rolling-drum OLED readout. One instance == one OLED panel._  |
 | struct | [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) <br>_Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter._  |
 | struct | [**DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) <br>_A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc._  |
 | struct | [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) <br>_Complete description of one rolling readout: its sources, geometry, glyphs, flag._  |
 | struct | [**DrumSource**](structOpenSkyhawk_1_1DrumSource.md) <br>_One DCS-BIOS digit source feeding a_ [_**DrumReadout**_](structOpenSkyhawk_1_1DrumReadout.md) _._ |
+| struct | [**GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md) <br>_Value → position calibration for one gauge._  |
 | class | [**HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) <br>_HID axis handler. Declared at sketch scope for each joystick axis._  |
 | class | [**HIDButton**](classOpenSkyhawk_1_1HIDButton.md) <br>_HID button handler. Declared at sketch scope for each button._  |
 | class | [**HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md) <br>_HID hat switch handler. Declared at sketch scope for each hat switch._  |
+| struct | [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) <br>_Home-sensor parameters (_ HomeMode::SENSOR _only)._ |
 | class | [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md) <br>_Selects one downstream channel of a TCA9548A I2C multiplexer._  |
 | class | [**InputBase**](classOpenSkyhawk_1_1InputBase.md) <br>_Abstract base for all hardware-polled input objects._  |
 | class | [**LED**](classOpenSkyhawk_1_1LED.md) <br>_Digital_ [_**LED**_](classOpenSkyhawk_1_1LED.md) _output. Drives a pin based on a DCS-BIOS state value._ |
+| class | [**MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md) <br>_Common interface every motor/servo backend implements._  |
+| class | [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) <br>_DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._ |
 | class | [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) <br>_Abstract base for all DCS-driven output objects._  |
+| struct | [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) <br>_Full per-instance stepper configuration. Authored per sketch (panel wiring)._  |
+| class | [**StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md) <br>_Non-blocking instrument-gauge stepper driven through_ [_**PinRef**_](classPinRef.md) _coils._ |
 | class | [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md) <br>_Debounced 2-position switch. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 
 
@@ -50,10 +57,18 @@
 | ---: | :--- |
 | enum uint8\_t | [**DrumFont**](#enum-drumfont)  <br>_Glyph font size. Maps to a fixed monospace ProFont face._  |
 | enum uint8\_t | [**DrumScroll**](#enum-drumscroll)  <br>_Scroll behaviour per readout._  |
+| enum uint8\_t | [**HomeMode**](#enum-homemode)  <br>_How the driver establishes its zero reference at boot._  |
+| enum uint8\_t | [**StepPattern**](#enum-steppattern)  <br>_Coil energising sequence._  |
 
 
 
 
+## Public Attributes
+
+| Type | Name |
+| ---: | :--- |
+|  const [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) | [**kSwitecDefaultAccel**](#variable-kswitecdefaultaccel)   = `/* multi line expression */`<br>_Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family._  |
+|  constexpr uint8\_t | [**kSwitecDefaultAccelN**](#variable-kswitecdefaultacceln)   = `5`<br> |
 
 
 ## Public Static Attributes
@@ -82,6 +97,11 @@
 
 
 
+## Public Functions
+
+| Type | Name |
+| ---: | :--- |
+|  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=720) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
 
 
 ## Public Static Functions
@@ -171,6 +191,69 @@ SNAP\_SETTLE adds the prototype-missing jump handling: deltas above the readout'
 
 
         
+
+<hr>
+
+
+
+### enum HomeMode 
+
+_How the driver establishes its zero reference at boot._ 
+```C++
+enum OpenSkyhawk::HomeMode {
+    STALL,
+    SENSOR
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum StepPattern 
+
+_Coil energising sequence._ 
+```C++
+enum OpenSkyhawk::StepPattern {
+    SWITEC_6STATE,
+    FULL_4STATE
+};
+```
+
+
+
+
+<hr>
+## Public Attributes Documentation
+
+
+
+
+### variable kSwitecDefaultAccel 
+
+_Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family._ 
+```C++
+const AccelPoint OpenSkyhawk::kSwitecDefaultAccel;
+```
+
+
+
+
+<hr>
+
+
+
+### variable kSwitecDefaultAccelN 
+
+```C++
+constexpr uint8_t OpenSkyhawk::kSwitecDefaultAccelN;
+```
+
+
+
 
 <hr>
 ## Public Static Attributes Documentation
@@ -277,6 +360,67 @@ const float OpenSkyhawk::SNAP_LANDING;
 
 
 
+
+<hr>
+## Public Functions Documentation
+
+
+
+
+### function makeX27Config 
+
+_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._
+```C++
+StepperConfig OpenSkyhawk::makeX27Config (
+    int16_t homePosition,
+    int16_t parkPosition,
+    int16_t minPos,
+    int16_t maxPos,
+    HomeMode home=HomeMode::STALL,
+    bool homeSeekClockwise=false,
+    HomeSensor sensor={ true, 5, 2000 },
+    bool wrap=false,
+    uint8_t deadband=1,
+    bool autoRecal=false,
+    uint32_t recalDebounceMs=0,
+    uint16_t stepsPerRev=720
+) 
+```
+
+
+
+Bakes the motor-invariant fields — `stepsPerRev`, `pattern` (SWITEC\_6STATE), and the default SwitecX25 accel table — so a sketch specifies only the per-gauge wiring/travel. Shared by every X27 / VID-29 / BKA-30 gauge; override any default for a specific panel.
+
+
+
+
+**Parameters:**
+
+
+* `homePosition` step index at the home reference. 
+* `parkPosition` rest position after homing. 
+* `minPos` lower moveTo travel clamp (ignored if wrap). 
+* `maxPos` upper moveTo travel clamp (ignored if wrap). 
+* `home` homing strategy. Default STALL. 
+* `homeSeekClockwise` seek direction. Default false. 
+* `sensor` home-sensor params (SENSOR mode). Default active-low, 5 ms, 2000 steps. 
+* `wrap` continuous-rotation gauge. Default false. 
+* `deadband` anti-jitter band, steps. Default 1. 
+* `autoRecal` re-zero on sensor crossing. Default false. 
+* `recalDebounceMs` minimum interval between auto-recals. Default 0. 
+* `stepsPerRev` full revolution in steps. Default 720 (nominal — calibrate per motor). 
+
+
+
+**Returns:**
+
+Populated [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md). 
+
+
+
+
+
+        
 
 <hr>
 ## Public Static Functions Documentation

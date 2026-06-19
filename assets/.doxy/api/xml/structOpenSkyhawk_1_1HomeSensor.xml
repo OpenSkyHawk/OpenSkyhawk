@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structOpenSkyhawk_1_1HomeSensor" kind="struct" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::HomeSensor</compoundname>
+    <includes refid="StepperMotor_8h" local="no">StepperMotor.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1HomeSensor_1abe92607c10c965f36e34ad40f86cfd12" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::HomeSensor::activeLow</definition>
+        <argsstring></argsstring>
+        <name>activeLow</name>
+        <qualifiedname>OpenSkyhawk::HomeSensor::activeLow</qualifiedname>
+        <briefdescription>
+<para>true: sensor asserts LOW; false: asserts HIGH </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="62" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1HomeSensor_1a7ea76a4281982540e4cf46f73157e90c" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::HomeSensor::debounceMs</definition>
+        <argsstring></argsstring>
+        <name>debounceMs</name>
+        <qualifiedname>OpenSkyhawk::HomeSensor::debounceMs</qualifiedname>
+        <briefdescription>
+<para>stable-assert confirmation window </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="63" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1HomeSensor_1a9dfe5790f1e4876df74c051ac9ec36de" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::HomeSensor::maxSeekSteps</definition>
+        <argsstring></argsstring>
+        <name>maxSeekSteps</name>
+        <qualifiedname>OpenSkyhawk::HomeSensor::maxSeekSteps</qualifiedname>
+        <briefdescription>
+<para>abort the seek after this many steps (mis-wired safety) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="64" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Home-sensor parameters (<ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7a72700b6ac14b90435377dcbaeb77e908" kindref="member">HomeMode::SENSOR</ref> only). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Any digital home detector reduces to a debounced level read; the sensor type is purely a wiring/polarity choice handled by <computeroutput>activeLow</computeroutput>. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="61" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="61" bodyend="65"/>
+    <listofallmembers>
+      <member refid="structOpenSkyhawk_1_1HomeSensor_1abe92607c10c965f36e34ad40f86cfd12" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HomeSensor</scope><name>activeLow</name></member>
+      <member refid="structOpenSkyhawk_1_1HomeSensor_1a7ea76a4281982540e4cf46f73157e90c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HomeSensor</scope><name>debounceMs</name></member>
+      <member refid="structOpenSkyhawk_1_1HomeSensor_1a9dfe5790f1e4876df74c051ac9ec36de" prot="public" virt="non-virtual"><scope>OpenSkyhawk::HomeSensor</scope><name>maxSeekSteps</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

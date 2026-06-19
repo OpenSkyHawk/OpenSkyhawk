@@ -4,6 +4,7 @@
     <compoundname>OpenSkyhawk::OutputBase</compoundname>
     <derivedcompoundref refid="classOpenSkyhawk_1_1DrumDisplay" prot="public" virt="non-virtual">OpenSkyhawk::DrumDisplay</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1LED" prot="public" virt="non-virtual">OpenSkyhawk::LED</derivedcompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1NeedleGauge" prot="public" virt="non-virtual">OpenSkyhawk::NeedleGauge</derivedcompoundref>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
     <sectiondef kind="private-static-attrib">
       <memberdef kind="variable" id="classOpenSkyhawk_1_1OutputBase_1a46bbff177d96003351c7144d6b171afe" prot="private" static="yes" mutable="no">
@@ -47,6 +48,7 @@
         <qualifiedname>OpenSkyhawk::OutputBase::configure</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9">configure</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1NeedleGauge_1a5ed2454f76ca7d0f9c4c57796b3a831a">configure</reimplementedby>
         <briefdescription>
 <para>Configure hardware pins for this output. </para>
         </briefdescription>
@@ -65,6 +67,7 @@
         <qualifiedname>OpenSkyhawk::OutputBase::onControlPacket</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb">onControlPacket</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341">onControlPacket</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1NeedleGauge_1a187471a0f4be78da62b242b7d278f37d">onControlPacket</reimplementedby>
         <param>
           <type>uint16_t</type>
           <declname>controlId</declname>
@@ -107,6 +110,7 @@
         <name>update</name>
         <qualifiedname>OpenSkyhawk::OutputBase::update</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da">update</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1NeedleGauge_1a9bd49eb4dd495533892f7a9aad6f7c5b">update</reimplementedby>
         <briefdescription>
 <para>Called every <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> iteration. </para>
         </briefdescription>
@@ -183,6 +187,12 @@
       <node id="3">
         <label>OpenSkyhawk::LED</label>
         <link refid="classOpenSkyhawk_1_1LED"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OpenSkyhawk::NeedleGauge</label>
+        <link refid="classOpenSkyhawk_1_1NeedleGauge"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>

@@ -53,6 +53,7 @@ _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md)
 | ---: | :--- |
 |  void | [**loop**](#function-loop) () <br>_Run all_ [_**PanelGroup**_](namespacePanelGroup.md) _work. Call once per_[_**loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
 |  bool | [**readCachedPin**](#function-readcachedpin) (const MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_Return cached MCP23017 pin state. Called by_ [_**PinRef::read()**_](classPinRef.md#function-read) _. No I2C._ |
+|  bool | [**readLivePin**](#function-readlivepin) (MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache._  |
 |  void | [**registerADC**](#function-registeradc) ([**ADS1115**](classADS1115.md) & adc, uint8\_t addr=0x48, TwoWire & wire=Wire) <br>_Register an_ [_**ADS1115**_](classADS1115.md) _ADC. Call before_[_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
 |  void | [**registerExpander**](#function-registerexpander) (MCP23017 & chip, uint8\_t intaPin, uint8\_t intbPin) <br>_Register an MCP23017 expander in interrupt-driven mode. Call before_ [_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
 |  void | [**registerExpander**](#function-registerexpander) (MCP23017 & chip) <br>_Register an MCP23017 expander in polling-fallback mode. Call before_ [_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
@@ -151,6 +152,51 @@ bool PanelGroup::readCachedPin (
 **Returns:**
 
 Cached logical level (true = HIGH). 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function readLivePin 
+
+_Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache._ 
+```C++
+bool PanelGroup::readLivePin (
+    MCP23017 & chip,
+    uint8_t port,
+    uint8_t bit
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `chip` Chip reference. 
+* `port` PORT\_A (0) or PORT\_B (1). 
+* `bit` Bit index 0–7. 
+
+
+
+**Returns:**
+
+Live logical level (true = HIGH). 
+
+
+
+
+**Note:**
+
+Called by [**PinRef::readLive()**](classPinRef.md#function-readlive) for time-critical reads before [**loop()**](namespacePanelGroup.md#function-loop) refreshes the cache (e.g. blocking homing on an MCP-backed home sensor). One I2C transaction per call. 
 
 
 

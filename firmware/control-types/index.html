@@ -4046,10 +4046,11 @@ hardware. This page is the catalogue, with honest Phase status: most types are <
 not yet implemented</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Most control types are not implemented yet</p>
-<p>Implemented today: <strong>LED</strong> and <strong>DrumDisplay</strong> (outputs) and <strong>Switch2Pos</strong> (input), plus the
-<strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3); DrumDisplay
-is authored and compile-gated, with the on-hardware bench still pending. Everything marked
-<em>Phase 4</em> or <em>Phase 5</em> below is specified but <strong>not yet written</strong> — don't expect it to compile today.</p>
+<p>Implemented today: <strong>LED</strong>, <strong>DrumDisplay</strong>, and <strong>NeedleGauge</strong> (outputs) and <strong>Switch2Pos</strong>
+(input), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3);
+DrumDisplay and NeedleGauge are authored and compile-gated, with the on-hardware bench still pending.
+Everything marked <em>Phase 4</em> or <em>Phase 5</em> below is specified but <strong>not yet written</strong> — don't expect it
+to compile today.</p>
 </div>
 <h2 id="pinref-the-hardware-abstraction-implemented">PinRef — the hardware abstraction <em>(implemented)</em></h2>
 <p>Every input and output takes a <code>PinRef</code>, not a raw pin number. One interface over three
@@ -4186,6 +4187,11 @@ specified. Don't assume the API beyond <code>begin()</code> / <code>readAngle()<
 <td>OLED rolling-drum readout — multi-digit gauges (speed, lat/lon, frequency, range) + optional 2-state flag. Own library; pulls U8g2</td>
 </tr>
 <tr>
+<td><code>NeedleGauge</code></td>
+<td><strong>Implemented</strong> (bench pending)</td>
+<td>Pointer/needle gauge — maps a DCS value to a motor angle over a swappable driver backend (linear or calibrated curve). Supersedes <code>SwitecX25Output</code> / <code>AccelStepperOutput</code> / <code>ServoOutput</code></td>
+</tr>
+<tr>
 <td><code>AnalogOutput</code></td>
 <td>Phase 5 — not started</td>
 <td>16-bit DCS value → PWM duty (backlighting)</td>
@@ -4195,21 +4201,6 @@ specified. Don't assume the API beyond <code>begin()</code> / <code>readAngle()<
 <td>Phase 5 — not started</td>
 <td>Raw 16-bit value to a user callback</td>
 </tr>
-<tr>
-<td><code>SwitecX25Output</code></td>
-<td>Phase 5 — not started</td>
-<td>Gauge needle stepper (X27 family), SwitecX25 lib</td>
-</tr>
-<tr>
-<td><code>AccelStepperOutput</code></td>
-<td>Phase 5 — not started</td>
-<td>Gauge stepper with a physical home sensor</td>
-</tr>
-<tr>
-<td><code>ServoOutput</code></td>
-<td>Phase 5 — not started</td>
-<td>Standard RC servo</td>
-</tr>
 </tbody>
 </table>
 <p>Outputs use DCS-BIOS <strong>output addresses</strong> from the generated <code>A4EC</code> headers — the address
@@ -4218,11 +4209,14 @@ constant plus its bitmask. Example for the implemented <code>LED</code>:</p>
 </code></pre>
 <p>Note the naming: <code>A_4E_C_&lt;NAME&gt;</code> for the address and <code>A_4E_C_&lt;NAME&gt;_AM</code> for the mask — <strong>not</strong>
 the old <code>_A</code> suffix. See <a href="../dcsbios-integration/">DCS-BIOS Integration</a>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Stepper driver part is TBD</p>
-<p>The <code>SwitecX25Output</code> / <code>AccelStepperOutput</code> motor driver IC is still being validated on
-the bench — don't document a specific driver part yet. See
-<a href="../../hardware/standards/">Hardware Standards</a> once written.</p>
+<div class="admonition note">
+<p class="admonition-title">NeedleGauge drives gauge motors through a swappable backend</p>
+<p><code>NeedleGauge</code> does only the value→angle mapping. The drive lives in a reusable <strong>motor-driver layer</strong>
+(<code>Firmware/Libraries/PanelGroup/Drivers/</code>): a <code>MotorDriver</code> base with a <code>StepperMotor</code> backend today —
+non-blocking, driving four coils through <code>PinRef</code> (native GPIO <strong>or</strong> an MCP23017 expander). One
+air-core profile covers the X27.589 / VID-29 / BKA-30 family; homing is either a mechanical hard-stop
+or a digital home sensor (switch / reed / hall / opto). Drive the X27 at <strong>5 V</strong> through a DRV8833. A
+<code>ServoMotor</code> backend is planned (#132).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">DrumDisplay is a separate, opt-in library</p>

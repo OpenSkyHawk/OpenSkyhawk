@@ -9,9 +9,11 @@
     <includes refid="PinRef_8h" local="yes">PinRef.h</includes>
     <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
     <includedby refid="DrumDisplay_8h" local="no">Firmware/Libraries/DrumDisplay/DrumDisplay.h</includedby>
+    <includedby refid="StepperMotor_8h" local="no">Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</includedby>
     <includedby refid="Switch2Pos_8h" local="no">Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h</includedby>
     <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
     <includedby refid="LED_8h" local="no">Firmware/Libraries/PanelGroup/Outputs/LED/LED.h</includedby>
+    <includedby refid="NeedleGauge_8h" local="no">Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</includedby>
     <includedby refid="PanelGroup_8cpp" local="yes">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
     <incdepgraph>
       <node id="8">
@@ -82,13 +84,25 @@
         </childnode>
       </node>
       <node id="5">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp</label>
+        <link refid="StepperMotor_8cpp"/>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
         <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</label>
         <link refid="Switch2Pos_8cpp"/>
       </node>
-      <node id="4">
+      <node id="7">
         <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h</label>
         <link refid="Switch2Pos_8h"/>
-        <childnode refid="5" relation="include">
+        <childnode refid="8" relation="include">
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
@@ -97,19 +111,31 @@
         <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
         <link refid="OpenSkyhawk_8h"/>
       </node>
-      <node id="8">
+      <node id="10">
         <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</label>
         <link refid="LED_8cpp"/>
       </node>
-      <node id="7">
+      <node id="9">
         <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.h</label>
         <link refid="LED_8h"/>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="8" relation="include">
+        <childnode refid="10" relation="include">
         </childnode>
       </node>
-      <node id="9">
+      <node id="12">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</label>
+        <link refid="NeedleGauge_8cpp"/>
+      </node>
+      <node id="11">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</label>
+        <link refid="NeedleGauge_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
         <link refid="PanelGroup_8cpp"/>
       </node>
@@ -120,11 +146,15 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
         <childnode refid="7" relation="include">
         </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
         <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
@@ -253,9 +283,11 @@
 <codeline lineno="272"><highlight class="normal"></highlight></codeline>
 <codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1ae8692730dbfd3bce4ea3c7dcff6e8141" kindref="member">writeCachedPin</ref>(MCP23017&amp;<sp/>chip,<sp/>uint8_t<sp/>port,<sp/>uint8_t<sp/>bit,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
 <codeline lineno="281"><highlight class="normal"></highlight></codeline>
-<codeline lineno="282"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelGroup</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="283"><highlight class="normal"></highlight></codeline>
-<codeline lineno="284"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1aae9c2ee79d4f68b5e0882d14972e1685" kindref="member">readLivePin</ref>(MCP23017&amp;<sp/>chip,<sp/>uint8_t<sp/>port,<sp/>uint8_t<sp/>bit);</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelGroup</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"></highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/PanelGroup.h"/>
   </compounddef>

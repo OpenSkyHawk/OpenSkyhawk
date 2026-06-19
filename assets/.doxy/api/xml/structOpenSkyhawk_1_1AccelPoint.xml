@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structOpenSkyhawk_1_1AccelPoint" kind="struct" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::AccelPoint</compoundname>
+    <includes refid="StepperMotor_8h" local="no">StepperMotor.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1AccelPoint_1aa1da095cdd28c67a62ef2895cbad89c8" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AccelPoint::stepThreshold</definition>
+        <argsstring></argsstring>
+        <name>stepThreshold</name>
+        <qualifiedname>OpenSkyhawk::AccelPoint::stepThreshold</qualifiedname>
+        <briefdescription>
+<para>cumulative steps under acceleration </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="52" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1AccelPoint_1ad8e6eb8131e1fadcbd5bae34f11ccc5b" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AccelPoint::delayUs</definition>
+        <argsstring></argsstring>
+        <name>delayUs</name>
+        <qualifiedname>OpenSkyhawk::AccelPoint::delayUs</qualifiedname>
+        <briefdescription>
+<para>inter-step delay at/above that threshold </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="53" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>One point on the acceleration curve (SwitecX25 form). </para>
+    </briefdescription>
+    <detaileddescription>
+<para><computeroutput>delayUs</computeroutput> is the inter-step delay once cumulative accel-steps reach <computeroutput>stepThreshold</computeroutput>. The last entry&apos;s <computeroutput>delayUs</computeroutput> sets the maximum angular velocity. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="51" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="51" bodyend="54"/>
+    <listofallmembers>
+      <member refid="structOpenSkyhawk_1_1AccelPoint_1ad8e6eb8131e1fadcbd5bae34f11ccc5b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AccelPoint</scope><name>delayUs</name></member>
+      <member refid="structOpenSkyhawk_1_1AccelPoint_1aa1da095cdd28c67a62ef2895cbad89c8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AccelPoint</scope><name>stepThreshold</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

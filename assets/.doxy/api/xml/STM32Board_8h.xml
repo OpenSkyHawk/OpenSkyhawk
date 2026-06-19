@@ -9,6 +9,7 @@
     <includedby refid="Switch2Pos_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</includedby>
     <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
     <includedby refid="LED_8cpp" local="no">Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</includedby>
+    <includedby refid="NeedleGauge_8cpp" local="no">Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</includedby>
     <includedby refid="PanelGroup_8cpp" local="no">Firmware/Libraries/PanelGroup/PanelGroup.cpp</includedby>
     <includedby refid="STM32Board_8cpp" local="yes">Firmware/Libraries/STM32Board/STM32Board.cpp</includedby>
     <incdepgraph>
@@ -49,10 +50,14 @@
         <link refid="LED_8cpp"/>
       </node>
       <node id="7">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</label>
+        <link refid="NeedleGauge_8cpp"/>
+      </node>
+      <node id="8">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
         <link refid="PanelGroup_8cpp"/>
       </node>
-      <node id="8">
+      <node id="9">
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>
@@ -72,6 +77,8 @@
         <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

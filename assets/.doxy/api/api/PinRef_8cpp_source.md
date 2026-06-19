@@ -28,6 +28,7 @@
 namespace PanelGroup {
     bool readCachedPin(const MCP23017& chip, uint8_t port, uint8_t bit);
     void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
+    bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit);
 }
 
 // ── PIN_NC definition ─────────────────────────────────────────────────────────
@@ -63,6 +64,22 @@ bool PinRef::read() const {
         return PanelGroup::readCachedPin(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit);
     case Type::ADS:
         return readAnalog() > 32767u;
+    case Type::NC:
+    default:
+        return false;
+    }
+}
+
+// ── readLive ──────────────────────────────────────────────────────────────────
+
+bool PinRef::readLive() const {
+    switch (_type) {
+    case Type::GPIO:
+        return digitalRead(_src.pin) == HIGH;          // already live
+    case Type::MCP:
+        return PanelGroup::readLivePin(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit);
+    case Type::ADS:
+        return readAnalog() > 32767u;                  // already live
     case Type::NC:
     default:
         return false;

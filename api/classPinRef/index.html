@@ -4145,6 +4145,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-readlive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function readLive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-write" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4292,6 +4303,10 @@
 <tr>
 <td style="text-align: right;">uint16_t</td>
 <td style="text-align: left;"><a href="#function-readanalog"><strong>readAnalog</strong></a> () const<br><em>Analog read, normalised to 16-bit (0–65535).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-readlive"><strong>readLive</strong></a> () const<br><em>Live digital read — bypasses any cache.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -4458,6 +4473,17 @@
 <p>Normalised 16-bit ADC value. </p>
 <p><strong>Note:</strong></p>
 <p>Do not call from an ISR on <a href="../classADS1115/"><strong>ADS1115</strong></a> pins — blocks ~8 ms per conversion. </p>
+<hr>
+
+<h3 id="function-readlive">function readLive</h3>
+<p><em>Live digital read — bypasses any cache.</em> </p>
+<pre><code class="language-C++">bool PinRef::readLive () const
+</code></pre>
+<p>GPIO: digitalRead(pin) (already live). MCP23017: a fresh readPort() over I2C, also refreshing <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s cache. <a href="../classADS1115/"><strong>ADS1115</strong></a>: live <a href="./#function-readanalog"><strong>readAnalog()</strong></a> &gt; half-scale. NC: false.</p>
+<p><strong>Returns:</strong></p>
+<p>true = HIGH, false = LOW. </p>
+<p><strong>Note:</strong></p>
+<p>For time-critical reads before <a href="../namespacePanelGroup/#function-loop"><strong>PanelGroup::loop()</strong></a> refreshes the cache — e.g. blocking homing on an MCP-backed sensor. Costs one I2C transaction per call on MCP pins. </p>
 <hr>
 
 <h3 id="function-write">function write</h3>

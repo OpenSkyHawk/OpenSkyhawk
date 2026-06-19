@@ -460,9 +460,20 @@
 <codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="373"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="374"><highlight class="normal"></highlight></codeline>
-<codeline lineno="375"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelGroup</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="376"><highlight class="normal"></highlight></codeline>
-<codeline lineno="377"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespacePanelGroup_1aae9c2ee79d4f68b5e0882d14972e1685" kindref="member">readLivePin</ref>(MCP23017&amp;<sp/>chip,<sp/>uint8_t<sp/>port,<sp/>uint8_t<sp/>bit)<sp/>{</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_expanderCount;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_expanders[i].chip<sp/>!=<sp/>&amp;chip)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>v<sp/>=<sp/>chip.readPort(port<sp/>==<sp/>0<sp/>?<sp/>MCP23017Port::A<sp/>:<sp/>MCP23017Port::B);<sp/></highlight><highlight class="comment">//<sp/>live<sp/>I2C<sp/>read</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(port<sp/>==<sp/>0)<sp/>_expanders[i].portAcache<sp/>=<sp/>v;</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_expanders[i].portBcache<sp/>=<sp/>v;</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(v<sp/>&gt;&gt;<sp/>bit)<sp/>&amp;<sp/>1u;</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="384"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"></highlight></codeline>
+<codeline lineno="386"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PanelGroup</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="387"><highlight class="normal"></highlight></codeline>
+<codeline lineno="388"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp"/>
   </compounddef>

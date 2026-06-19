@@ -75,6 +75,7 @@ _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.
 |  bool | [**isNC**](#function-isnc) () const<br>_Returns true if this is the NC (no-connect) sentinel._  |
 |  bool | [**read**](#function-read) () const<br>_Digital read._  |
 |  uint16\_t | [**readAnalog**](#function-readanalog) () const<br>_Analog read, normalised to 16-bit (0–65535)._  |
+|  bool | [**readLive**](#function-readlive) () const<br>_Live digital read — bypasses any cache._  |
 |  void | [**write**](#function-write) (bool value) <br>_Digital write._  |
 |  void | [**writeAnalog**](#function-writeanalog) (uint16\_t val) <br>_Analog write (PWM). GPIO only._  |
 
@@ -506,6 +507,41 @@ Normalised 16-bit ADC value.
 **Note:**
 
 Do not call from an ISR on [**ADS1115**](classADS1115.md) pins — blocks ~8 ms per conversion. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function readLive 
+
+_Live digital read — bypasses any cache._ 
+```C++
+bool PinRef::readLive () const
+```
+
+
+
+GPIO: digitalRead(pin) (already live). MCP23017: a fresh readPort() over I2C, also refreshing [**PanelGroup**](namespacePanelGroup.md)'s cache. [**ADS1115**](classADS1115.md): live [**readAnalog()**](classPinRef.md#function-readanalog) &gt; half-scale. NC: false.
+
+
+
+
+**Returns:**
+
+true = HIGH, false = LOW. 
+
+
+
+
+**Note:**
+
+For time-critical reads before [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) refreshes the cache — e.g. blocking homing on an MCP-backed sensor. Costs one I2C transaction per call on MCP pins. 
 
 
 

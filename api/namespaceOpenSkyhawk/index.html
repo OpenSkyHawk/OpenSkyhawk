@@ -3896,10 +3896,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#public-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-static-attributes" class="md-nav__link">
     <span class="md-ellipsis">
       
         Public Static Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions
       
     </span>
   </a>
@@ -3945,6 +3967,67 @@
     <span class="md-ellipsis">
       
         enum DrumScroll
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-homemode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum HomeMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-steppattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum StepPattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-kswitecdefaultaccel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable kSwitecDefaultAccel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-kswitecdefaultacceln" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable kSwitecDefaultAccelN
       
     </span>
   </a>
@@ -4062,6 +4145,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#public-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-makex27config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function makeX27Config
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-static-functions-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4121,6 +4232,10 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1AccelPoint/"><strong>AccelPoint</strong></a> <br><em>One point on the acceleration curve (SwitecX25 form).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>DrumDisplay</strong></a> <br><em>Rolling-drum OLED readout. One instance == one OLED panel.</em></td>
 </tr>
@@ -4141,6 +4256,10 @@
 <td style="text-align: left;"><a href="../structOpenSkyhawk_1_1DrumSource/"><strong>DrumSource</strong></a> <br><em>One DCS-BIOS digit source feeding a</em> <a href="../structOpenSkyhawk_1_1DrumReadout/"><em><strong>DrumReadout</strong></em></a> <em>.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1GaugeCal/"><strong>GaugeCal</strong></a> <br><em>Value → position calibration for one gauge.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>HIDAxis</strong></a> <br><em>HID axis handler. Declared at sketch scope for each joystick axis.</em></td>
 </tr>
@@ -4151,6 +4270,10 @@
 <tr>
 <td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>HIDHatSwitch</strong></a> <br><em>HID hat switch handler. Declared at sketch scope for each hat switch.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1HomeSensor/"><strong>HomeSensor</strong></a> <br><em>Home-sensor parameters (</em> HomeMode::SENSOR <em>only).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
@@ -4166,7 +4289,23 @@
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1MotorDriver/"><strong>MotorDriver</strong></a> <br><em>Common interface every motor/servo backend implements.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1NeedleGauge/"><strong>NeedleGauge</strong></a> <br><em>DCS-driven pointer gauge over any</em> <a href="../classOpenSkyhawk_1_1MotorDriver/"><em><strong>MotorDriver</strong></em></a> <em>backend.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> <br><em>Abstract base for all DCS-driven output objects.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a> <br><em>Full per-instance stepper configuration. Authored per sketch (panel wiring).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1StepperMotor/"><strong>StepperMotor</strong></a> <br><em>Non-blocking instrument-gauge stepper driven through</em> <a href="../classPinRef/"><em><strong>PinRef</strong></em></a> <em>coils.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
@@ -4190,6 +4329,33 @@
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-drumscroll"><strong>DrumScroll</strong></a>  <br><em>Scroll behaviour per readout.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-homemode"><strong>HomeMode</strong></a>  <br><em>How the driver establishes its zero reference at boot.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-steppattern"><strong>StepPattern</strong></a>  <br><em>Coil energising sequence.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-attributes">Public Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">const <a href="../structOpenSkyhawk_1_1AccelPoint/"><strong>AccelPoint</strong></a></td>
+<td style="text-align: left;"><a href="#variable-kswitecdefaultaccel"><strong>kSwitecDefaultAccel</strong></a>   = <code>/* multi line expression */</code><br><em>Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-kswitecdefaultacceln"><strong>kSwitecDefaultAccelN</strong></a>   = <code>5</code><br></td>
 </tr>
 </tbody>
 </table>
@@ -4236,6 +4402,21 @@
 </tr>
 </tbody>
 </table>
+<h2 id="public-functions">Public Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a></td>
+<td style="text-align: left;"><a href="#function-makex27config"><strong>makeX27Config</strong></a> (int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos, <a href="./#enum-homemode"><strong>HomeMode</strong></a> home=HomeMode::STALL, bool homeSeekClockwise=false, <a href="../structOpenSkyhawk_1_1HomeSensor/"><strong>HomeSensor</strong></a> sensor={ true, 5, 2000 }, bool wrap=false, uint8_t deadband=1, bool autoRecal=false, uint32_t recalDebounceMs=0, uint16_t stepsPerRev=720) <br><em>Build a</em> <a href="../structOpenSkyhawk_1_1StepperConfig/"><em><strong>StepperConfig</strong></em></a> <em>with the X27 air-core motor defaults filled in.</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-static-functions">Public Static Functions</h2>
 <table>
 <thead>
@@ -4272,6 +4453,35 @@
 </code></pre>
 <p><strong>Note:</strong></p>
 <p>SNAP_SETTLE adds the prototype-missing jump handling: deltas above the readout's snapThreshold teleport the tape near the target, then ease the final step, so a sudden 130→250 KIAS change doesn't spin every wheel through 120 intermediate values. </p>
+<hr>
+
+<h3 id="enum-homemode">enum HomeMode</h3>
+<p><em>How the driver establishes its zero reference at boot.</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::HomeMode {
+    STALL,
+    SENSOR
+};
+</code></pre>
+<hr>
+
+<h3 id="enum-steppattern">enum StepPattern</h3>
+<p><em>Coil energising sequence.</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::StepPattern {
+    SWITEC_6STATE,
+    FULL_4STATE
+};
+</code></pre>
+<hr>
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+<h3 id="variable-kswitecdefaultaccel">variable kSwitecDefaultAccel</h3>
+<p><em>Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family.</em> </p>
+<pre><code class="language-C++">const AccelPoint OpenSkyhawk::kSwitecDefaultAccel;
+</code></pre>
+<hr>
+
+<h3 id="variable-kswitecdefaultacceln">variable kSwitecDefaultAccelN</h3>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::kSwitecDefaultAccelN;
+</code></pre>
 <hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-ease">variable EASE</h3>
@@ -4312,6 +4522,43 @@
 <h3 id="variable-snap_landing">variable SNAP_LANDING</h3>
 <pre><code class="language-C++">const float OpenSkyhawk::SNAP_LANDING;
 </code></pre>
+<hr>
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+<h3 id="function-makex27config">function makeX27Config</h3>
+<p><em>Build a</em> <a href="../structOpenSkyhawk_1_1StepperConfig/"><em><strong>StepperConfig</strong></em></a> <em>with the X27 air-core motor defaults filled in.</em></p>
+<pre><code class="language-C++">StepperConfig OpenSkyhawk::makeX27Config (
+    int16_t homePosition,
+    int16_t parkPosition,
+    int16_t minPos,
+    int16_t maxPos,
+    HomeMode home=HomeMode::STALL,
+    bool homeSeekClockwise=false,
+    HomeSensor sensor={ true, 5, 2000 },
+    bool wrap=false,
+    uint8_t deadband=1,
+    bool autoRecal=false,
+    uint32_t recalDebounceMs=0,
+    uint16_t stepsPerRev=720
+) 
+</code></pre>
+<p>Bakes the motor-invariant fields — <code>stepsPerRev</code>, <code>pattern</code> (SWITEC_6STATE), and the default SwitecX25 accel table — so a sketch specifies only the per-gauge wiring/travel. Shared by every X27 / VID-29 / BKA-30 gauge; override any default for a specific panel.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>homePosition</code> step index at the home reference. </li>
+<li><code>parkPosition</code> rest position after homing. </li>
+<li><code>minPos</code> lower moveTo travel clamp (ignored if wrap). </li>
+<li><code>maxPos</code> upper moveTo travel clamp (ignored if wrap). </li>
+<li><code>home</code> homing strategy. Default STALL. </li>
+<li><code>homeSeekClockwise</code> seek direction. Default false. </li>
+<li><code>sensor</code> home-sensor params (SENSOR mode). Default active-low, 5 ms, 2000 steps. </li>
+<li><code>wrap</code> continuous-rotation gauge. Default false. </li>
+<li><code>deadband</code> anti-jitter band, steps. Default 1. </li>
+<li><code>autoRecal</code> re-zero on sensor crossing. Default false. </li>
+<li><code>recalDebounceMs</code> minimum interval between auto-recals. Default 0. </li>
+<li><code>stepsPerRev</code> full revolution in steps. Default 720 (nominal — calibrate per motor). </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Populated <a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a>. </p>
 <hr>
 <h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
 <h3 id="function-pow10l">function pow10l</h3>

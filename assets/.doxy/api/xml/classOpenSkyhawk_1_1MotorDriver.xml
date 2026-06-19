@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1MotorDriver" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>OpenSkyhawk::MotorDriver</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1StepperMotor" prot="public" virt="non-virtual">OpenSkyhawk::StepperMotor</derivedcompoundref>
+    <includes refid="MotorDriver_8h" local="no">MotorDriver.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MotorDriver_1a0d6189324d9bfc937ce04961f698e7f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual OpenSkyhawk::MotorDriver::~MotorDriver</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MotorDriver</name>
+        <qualifiedname>OpenSkyhawk::MotorDriver::~MotorDriver</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" line="36" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::MotorDriver::configure</definition>
+        <argsstring>()=0</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::MotorDriver::configure</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1StepperMotor_1a88cc3e0f508c4783ba64a9d16e9ac724">configure</reimplementedby>
+        <briefdescription>
+<para>Configure pins / drive hardware. Call once from the owner&apos;s <ref refid="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328" kindref="member">configure()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Runs after bus/board init (<ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>), never from a constructor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" line="42" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MotorDriver_1abf40a9749ee1b48406de581e07025fcf" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::MotorDriver::home</definition>
+        <argsstring>()=0</argsstring>
+        <name>home</name>
+        <qualifiedname>OpenSkyhawk::MotorDriver::home</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1StepperMotor_1a47ab20a55ad4d338a629405bb96bc94e">home</reimplementedby>
+        <briefdescription>
+<para>Establish the zero reference (mechanical stop, home sensor, or absolute read). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>May block (boot-time homing). Call once, after <ref refid="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328" kindref="member">configure()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" line="48" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MotorDriver_1a90685e21bc5f1354b4fe98c4ad7a6d23" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::MotorDriver::moveTo</definition>
+        <argsstring>(int32_t pos)=0</argsstring>
+        <name>moveTo</name>
+        <qualifiedname>OpenSkyhawk::MotorDriver::moveTo</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1StepperMotor_1ae48eb812d537dae7efb3a82e470d54d1">moveTo</reimplementedby>
+        <param>
+          <type>int32_t</type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+<para>Set the target position in driver-native units. Non-blocking. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target position; the driver clamps / wraps to its own limits. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" line="54" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MotorDriver_1a98f4669440c20b80c13be9f8d8532a87" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::MotorDriver::update</definition>
+        <argsstring>()=0</argsstring>
+        <name>update</name>
+        <qualifiedname>OpenSkyhawk::MotorDriver::update</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1StepperMotor_1a39e650299fd72d0c7b4b09b01dc00572">update</reimplementedby>
+        <briefdescription>
+<para>Advance one step/increment toward the target if due. Call every loop(). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Non-blocking — does at most the work for the current instant. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" line="60" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MotorDriver_1a1174f0699e60b6b4b6891988d9d5e984" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int32_t</type>
+        <definition>virtual int32_t OpenSkyhawk::MotorDriver::position</definition>
+        <argsstring>() const =0</argsstring>
+        <name>position</name>
+        <qualifiedname>OpenSkyhawk::MotorDriver::position</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1StepperMotor_1a6051601bfe60ad458759d84826c8841a">position</reimplementedby>
+        <briefdescription>
+<para>Current position in driver-native units. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" line="63" column="21"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Common interface every motor/servo backend implements. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Positions are in driver-native units (steps for a stepper, microseconds for a servo). The owning control maps DCS-BIOS values into that space. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::MotorDriver</label>
+        <link refid="classOpenSkyhawk_1_1MotorDriver"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::StepperMotor</label>
+        <link refid="classOpenSkyhawk_1_1StepperMotor"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" line="34" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/MotorDriver/MotorDriver.h" bodystart="34" bodyend="64"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::MotorDriver</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1MotorDriver_1abf40a9749ee1b48406de581e07025fcf" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::MotorDriver</scope><name>home</name></member>
+      <member refid="classOpenSkyhawk_1_1MotorDriver_1a90685e21bc5f1354b4fe98c4ad7a6d23" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::MotorDriver</scope><name>moveTo</name></member>
+      <member refid="classOpenSkyhawk_1_1MotorDriver_1a1174f0699e60b6b4b6891988d9d5e984" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::MotorDriver</scope><name>position</name></member>
+      <member refid="classOpenSkyhawk_1_1MotorDriver_1a98f4669440c20b80c13be9f8d8532a87" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::MotorDriver</scope><name>update</name></member>
+      <member refid="classOpenSkyhawk_1_1MotorDriver_1a0d6189324d9bfc937ce04961f698e7f9" prot="public" virt="virtual"><scope>OpenSkyhawk::MotorDriver</scope><name>~MotorDriver</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

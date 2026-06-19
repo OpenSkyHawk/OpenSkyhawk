@@ -32,6 +32,8 @@
 * **KIND\_DIGIT** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **KIND\_FLAG** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **KIND\_GLYPH** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **kSwitecDefaultAccel** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **kSwitecDefaultAccelN** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## m

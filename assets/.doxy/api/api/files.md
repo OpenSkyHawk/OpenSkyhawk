@@ -23,6 +23,12 @@ Here is a list of all files with brief descriptions:
             * **file** [**PanelBridge.h**](PanelBridge_8h.md) _STM32 CAN master and DCS-BIOS processing node for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
         * **dir** [**PanelGroup**](dir_54a06c409a6161127d200302d3061b3f.md)     
             * **file** [**ADS1115.h**](ADS1115_8h.md) _Thin wrapper over Adafruit\_ADS1115 that provides a forward-declarable class name._     
+            * **dir** [**Drivers**](dir_da1b6a20235952b69490534d482f5898.md)     
+                * **dir** [**MotorDriver**](dir_7cabaf4812e32c14ff26922d3804a645.md)     
+                    * **file** [**MotorDriver.h**](MotorDriver_8h.md) _Abstract base for non-blocking motor/servo drivers._     
+                * **dir** [**StepperMotor**](dir_f431add5022471a872df403ed217c535.md)     
+                    * **file** [**StepperMotor.cpp**](StepperMotor_8cpp.md)     
+                    * **file** [**StepperMotor.h**](StepperMotor_8h.md) _Non-blocking 4-wire stepper driver on_ [_**PinRef**_](classPinRef.md) _coils._    
             * **dir** [**Helpers**](dir_9e93d9a1721bcf27b2030ff612e0fc11.md)     
                 * **dir** [**I2cMux**](dir_b0e3ddf276daac85bddb20c46644a5c8.md)     
                     * **file** [**I2cMux.cpp**](I2cMux_8cpp.md)     
@@ -35,6 +41,9 @@ Here is a list of all files with brief descriptions:
                 * **dir** [**LED**](dir_014b7653223add72b0ed2d7a88fd1566.md)     
                     * **file** [**LED.cpp**](LED_8cpp.md) 
                     * **file** [**LED.h**](LED_8h.md) _Digital LED output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+                * **dir** [**NeedleGauge**](dir_61ced45d99aac20e353c7cae873553bb.md)     
+                    * **file** [**NeedleGauge.cpp**](NeedleGauge_8cpp.md) 
+                    * **file** [**NeedleGauge.h**](NeedleGauge_8h.md) _Pointer-gauge output: maps one DCS-BIOS value to a motor position._     
             * **file** [**OpenSkyhawk.h**](OpenSkyhawk_8h.md) _Umbrella include for_ [_**PanelGroup**_](namespacePanelGroup.md) _sketch files._
             * **file** [**PanelGroup.cpp**](PanelGroup_8cpp.md)     
             * **file** [**PanelGroup.h**](PanelGroup_8h.md) _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._    

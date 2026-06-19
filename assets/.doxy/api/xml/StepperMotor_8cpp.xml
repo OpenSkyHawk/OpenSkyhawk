@@ -1,0 +1,306 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="StepperMotor_8cpp" kind="file" language="C++">
+    <compoundname>StepperMotor.cpp</compoundname>
+    <includes refid="StepperMotor_8h" local="no">Drivers/StepperMotor/StepperMotor.h</includes>
+    <incdepgraph>
+      <node id="10">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="7">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Drivers/MotorDriver/MotorDriver.h</label>
+        <link refid="MotorDriver_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp</label>
+        <link refid="StepperMotor_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+      <node id="4">
+        <label>Arduino.h</label>
+      </node>
+      <node id="6">
+        <label>MCP23017.h</label>
+      </node>
+      <node id="5">
+        <label>Wire.h</label>
+      </node>
+      <node id="11">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="StepperMotor_8h" kindref="compound">Drivers/StepperMotor/StepperMotor.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/>SwitecX25<sp/>default<sp/>acceleration<sp/>table<sp/>(cumulative<sp/>accel-step<sp/>→<sp/>inter-step<sp/>delay<sp/>µs).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Last<sp/>delayUs<sp/>(600)<sp/>sets<sp/>the<sp/>top<sp/>speed;<sp/>last<sp/>stepThreshold<sp/>(300)<sp/>is<sp/>maxVel.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AccelPoint<sp/><ref refid="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" kindref="member">kSwitecDefaultAccel</ref>[5]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/><sp/>20,<sp/>3000<sp/>},</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/><sp/>50,<sp/>1500<sp/>},</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>100,<sp/>1000<sp/>},</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>150,<sp/><sp/>800<sp/>},</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>300,<sp/><sp/>600<sp/>},</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/>HOMING_STEP_US<sp/>=<sp/>800;<sp/><sp/></highlight><highlight class="comment">//<sp/>fixed<sp/>slow<sp/>rate<sp/>while<sp/>homing<sp/>(SwitecX25<sp/>RESET_STEP_MICROSEC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><sp/>REFINE_BACKOFF<sp/>=<sp/>40;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>steps<sp/>to<sp/>back<sp/>off<sp/>the<sp/>sensor<sp/>before<sp/>the<sp/>2nd<sp/>home<sp/>pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Coil<sp/>energising<sp/>sequences.<sp/>Bit<sp/>i<sp/>(LSB<sp/>first)<sp/>drives<sp/>coil<sp/>i.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>SWITEC_6[6]<sp/>=<sp/>{<sp/>0x9,<sp/>0x1,<sp/>0x7,<sp/>0x6,<sp/>0xE,<sp/>0x8<sp/>};</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>FULL_4[4]<sp/><sp/><sp/>=<sp/>{<sp/>0x5,<sp/>0x6,<sp/>0xA,<sp/>0x9<sp/>};</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>stateTable(<ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" kindref="member">StepPattern</ref><sp/>p,<sp/>uint8_t&amp;<sp/>count)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a21163361b15fdc3ebbe309acaa2d40cc" kindref="member">StepPattern::FULL_4STATE</ref>)<sp/>{<sp/>count<sp/>=<sp/>4;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>FULL_4;<sp/>}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>count<sp/>=<sp/>6;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SWITEC_6;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1StepperMotor_1a8926f21a0e93d4b04946a75e6308a8d3" kindref="member">StepperMotor::StepperMotor</ref>(<ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c1,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c2,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c3,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>c4,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>StepperConfig&amp;<sp/>cfg,</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>homeSense,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>sleepEn)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_coil{<sp/>c1,<sp/>c2,<sp/>c3,<sp/>c4<sp/>},<sp/>_homeSense(homeSense),<sp/>_sleepEn(sleepEn),<sp/>_cfg(cfg),</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_maxVel(cfg.accelN<sp/>?<sp/>cfg.accel[cfg.accelN<sp/>-<sp/>1].stepThreshold<sp/>:<sp/>1),</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_currentStep(0),<sp/>_targetStep(0),<sp/>_vel(0),<sp/>_dir(0),<sp/>_stopped(true),</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>(0),<sp/>_microDelay(0),<sp/>_time0(0),<sp/>_homed(false),</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_lastRecalMs(0),<sp/>_sensorOverride(-1)<sp/>{}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::writeIO()<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>count;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>tbl<sp/>=<sp/>stateTable(_cfg.pattern,<sp/>count);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>mask<sp/>=<sp/>tbl[<ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref>];</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>4;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_coil[i].write(mask<sp/>&amp;<sp/>0x1);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mask<sp/>&gt;&gt;=<sp/>1;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::stepOnce(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>up)<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>count;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>stateTable(_cfg.pattern,<sp/>count);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(up)<sp/>{<sp/>_currentStep++;<sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/>=<sp/>(<ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/>+<sp/>1)<sp/>%<sp/>count;<sp/>}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>_currentStep--;<sp/><ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/>=<sp/>(<ref refid="STM32Board_8cpp_1ac757c1f5d5f99e06935697c5f72369e0" kindref="member">_state</ref><sp/>+<sp/>count<sp/>-<sp/>1)<sp/>%<sp/>count;<sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>writeIO();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Ported<sp/>from<sp/>SwitecX25::advance<sp/>—<sp/>integer<sp/>trapezoidal<sp/>accel/decel.<sp/>Steps<sp/>once<sp/>toward</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">//<sp/>the<sp/>target,<sp/>then<sp/>adjusts<sp/>the<sp/>velocity<sp/>proxy<sp/>and<sp/>looks<sp/>up<sp/>the<sp/>next<sp/>inter-step<sp/>delay.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::advance()<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_currentStep<sp/>==<sp/>_targetStep<sp/>&amp;&amp;<sp/>_vel<sp/>==<sp/>0)<sp/>{<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>settled</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_stopped<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/>_dir<sp/>=<sp/>0;<sp/>_time0<sp/>=<sp/>micros();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_vel<sp/>==<sp/>0)<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>start<sp/>from<sp/>rest:<sp/>pick<sp/>a<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_dir<sp/>=<sp/>(_currentStep<sp/>&lt;<sp/>_targetStep)<sp/>?<sp/>1<sp/>:<sp/>-1;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_vel<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>stepOnce(_dir<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>steps<sp/>remaining<sp/>toward<sp/>target<sp/>in<sp/>the<sp/>travel<sp/>direction<sp/>(negative<sp/>if<sp/>past<sp/>it)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>delta<sp/>=<sp/>(_dir<sp/>&gt;<sp/>0)<sp/>?<sp/>(_targetStep<sp/>-<sp/>_currentStep)<sp/>:<sp/>(_currentStep<sp/>-<sp/>_targetStep);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(delta<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(delta<sp/>&lt;<sp/>(int32_t)_vel)<sp/><sp/>_vel--;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>close<sp/>in<sp/>→<sp/>decelerate</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_vel<sp/>&lt;<sp/>_maxVel)<sp/><sp/><sp/><sp/>_vel++;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>far<sp/><sp/><sp/><sp/>→<sp/>accelerate</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>else<sp/>cruise<sp/>at<sp/>max</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_vel--;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>at/past<sp/>target<sp/>→<sp/>bleed<sp/>speed<sp/>to<sp/>reverse</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>i<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(i<sp/>+<sp/>1<sp/>&lt;<sp/>_cfg.accelN<sp/>&amp;&amp;<sp/>_cfg.accel[i].stepThreshold<sp/>&lt;<sp/>_vel)<sp/>i++;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>_microDelay<sp/>=<sp/>_cfg.accel[i].delayUs;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>_time0<sp/>=<sp/>micros();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::configure()<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>4;<sp/>i++)<sp/>_coil[i].configureAsOutput();</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_sleepEn.isNC())<sp/><sp/><sp/>{<sp/>_sleepEn.configureAsOutput();<sp/>_sleepEn.write(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/>}<sp/></highlight><highlight class="comment">//<sp/>enable<sp/>driver</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cfg.home<sp/>==<sp/>HomeMode::SENSOR<sp/>&amp;&amp;<sp/>!_homeSense.isNC())<sp/>_homeSense.configureAsInput();</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>writeIO();<sp/></highlight><highlight class="comment">//<sp/>energise<sp/>the<sp/>initial<sp/>coil<sp/>state</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="comment">//<sp/>live=true<sp/>bypasses<sp/>the<sp/>MCP<sp/>cache<sp/>(fresh<sp/>I2C<sp/>read)<sp/>—<sp/>needed<sp/>during<sp/>blocking<sp/>homing,<sp/>before</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelGroup::loop()<sp/>starts<sp/>refreshing<sp/>the<sp/>cache.<sp/>GPIO/ADS<sp/>reads<sp/>are<sp/>already<sp/>live<sp/>either<sp/>way.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>StepperMotor::sensorAsserted(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>live)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>raw;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sensorOverride<sp/>&gt;=<sp/>0)<sp/>raw<sp/>=<sp/>(_sensorOverride<sp/>!=<sp/>0);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>raw<sp/>=<sp/>live<sp/>?<sp/>_homeSense.readLive()<sp/>:<sp/>_homeSense.read();<sp/><sp/></highlight><highlight class="comment">//<sp/>true<sp/>=<sp/>HIGH</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_cfg.sensor.activeLow<sp/>?<sp/>!raw<sp/>:<sp/>raw;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>StepperMotor::sensorConfirmed()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!sensorAsserted(</highlight><highlight class="keyword">true</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>t0<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((uint32_t)(millis()<sp/>-<sp/>t0)<sp/>&lt;<sp/>_cfg.sensor.debounceMs)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!sensorAsserted(</highlight><highlight class="keyword">true</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>bounced<sp/>off<sp/>→<sp/>not<sp/>stable</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>StepperMotor::seekHomeBlocking()<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint16_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_cfg.sensor.maxSeekSteps;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sensorConfirmed())<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stepOnce(_cfg.homeSeekClockwise);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>delayMicroseconds(HOMING_STEP_US);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>sensor<sp/>never<sp/>confirmed<sp/>—<sp/>mis-wired<sp/>/<sp/>disconnected</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::runToStopBlocking()<sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(!_stopped)<sp/>{</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>advance();</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>delayMicroseconds(_microDelay);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::home()<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>_vel<sp/>=<sp/>0;<sp/>_dir<sp/>=<sp/>0;<sp/>_stopped<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cfg.home<sp/>==<sp/>HomeMode::STALL)<sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Drive<sp/>into<sp/>the<sp/>mechanical<sp/>end-stop;<sp/>a<sp/>full<sp/>revolution<sp/>seats<sp/>from<sp/>any<sp/>start.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint16_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_cfg.stepsPerRev;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stepOnce(_cfg.homeSeekClockwise);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>delayMicroseconds(HOMING_STEP_US);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_currentStep<sp/>=<sp/>_cfg.homePosition;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_homed<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/></highlight><highlight class="comment">//<sp/>SENSOR<sp/>—<sp/>two-pass<sp/>for<sp/>accuracy</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_homed<sp/>=<sp/>seekHomeBlocking();</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_homed)<sp/>{</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_currentStep<sp/>=<sp/>_cfg.homePosition;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>REFINE_BACKOFF;<sp/>i++)<sp/>{<sp/><sp/></highlight><highlight class="comment">//<sp/>clear<sp/>the<sp/>sensor,<sp/>then<sp/>re-seek<sp/>to<sp/>refine</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stepOnce(!_cfg.homeSeekClockwise);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>delayMicroseconds(HOMING_STEP_US);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_homed<sp/>=<sp/>seekHomeBlocking();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>refine<sp/>pass;<sp/>a<sp/>failed<sp/>re-seek<sp/>clears<sp/>homed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_homed)<sp/>_currentStep<sp/>=<sp/>_cfg.homePosition;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_homed)<sp/>{<sp/>_targetStep<sp/>=<sp/>_currentStep;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}<sp/></highlight><highlight class="comment">//<sp/>aborted:<sp/>don&apos;t<sp/>drive<sp/>blind</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>settle<sp/>to<sp/>the<sp/>resting<sp/>position</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>_targetStep<sp/>=<sp/>_currentStep;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>moveTo(_cfg.parkPosition);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>runToStopBlocking();</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastRecalMs<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="157"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::moveTo(int32_t<sp/>pos)<sp/>{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>t;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cfg.wrap<sp/>&amp;&amp;<sp/>_cfg.stepsPerRev<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>range<sp/>=<sp/>_cfg.stepsPerRev;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>cur<sp/><sp/><sp/>=<sp/>((_currentStep<sp/>%<sp/>range)<sp/>+<sp/>range)<sp/>%<sp/>range;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>tgt<sp/><sp/><sp/>=<sp/>((pos<sp/>%<sp/>range)<sp/>+<sp/>range)<sp/>%<sp/>range;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>diff<sp/><sp/>=<sp/>(tgt<sp/>-<sp/>cur)<sp/>%<sp/>range;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(diff<sp/>&lt;<sp/>0)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>diff<sp/>+=<sp/>range;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(diff<sp/>&gt;<sp/>range<sp/>/<sp/>2)<sp/>diff<sp/>-=<sp/>range;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>shortest<sp/>signed<sp/>path</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t<sp/>=<sp/>_currentStep<sp/>+<sp/>diff;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t<sp/>=<sp/>constrain(pos,<sp/>(int32_t)_cfg.minPos,<sp/>(int32_t)_cfg.maxPos);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>d<sp/>=<sp/>t<sp/>-<sp/>_targetStep;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(d<sp/>&lt;<sp/>0)<sp/>d<sp/>=<sp/>-d;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(d<sp/>&lt;=<sp/>(int32_t)_cfg.deadband)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>within<sp/>deadband<sp/>of<sp/>the<sp/>current<sp/>target</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>_targetStep<sp/>=<sp/>t;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_stopped)<sp/>{<sp/>_stopped<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>_time0<sp/>=<sp/>micros();<sp/>_microDelay<sp/>=<sp/>0;<sp/>}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>StepperMotor::update()<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_stopped<sp/>&amp;&amp;<sp/>(uint32_t)(micros()<sp/>-<sp/>_time0)<sp/>&gt;=<sp/>_microDelay)<sp/>advance();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cfg.autoRecal<sp/>&amp;&amp;<sp/>!_homeSense.isNC()<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(uint32_t)(millis()<sp/>-<sp/>_lastRecalMs)<sp/>&gt;<sp/>_cfg.recalDebounceMs<sp/>&amp;&amp;<sp/>sensorAsserted(</highlight><highlight class="keyword">false</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_currentStep<sp/>=<sp/>_cfg.homePosition;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>re-zero;<sp/>the<sp/>move<sp/>toward<sp/>_targetStep<sp/>continues</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_lastRecalMs<sp/>=<sp/>millis();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>cache<sp/>read:<sp/>loop()&apos;s<sp/>~20<sp/>ms<sp/>poll<sp/>keeps<sp/>it<sp/>fresh</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal">int32_t<sp/>StepperMotor::position()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cfg.wrap<sp/>&amp;&amp;<sp/>_cfg.stepsPerRev<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>range<sp/>=<sp/>_cfg.stepsPerRev;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>((_currentStep<sp/>%<sp/>range)<sp/>+<sp/>range)<sp/>%<sp/>range;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_currentStep;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal">StepperConfig<sp/><ref refid="namespaceOpenSkyhawk_1a00d1364e4501890bfb60bfbcdb7d3902" kindref="member">makeX27Config</ref>(int16_t<sp/>homePosition,<sp/>int16_t<sp/>parkPosition,</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int16_t<sp/>minPos,<sp/>int16_t<sp/>maxPos,</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>HomeMode<sp/>home,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>homeSeekClockwise,<sp/>HomeSensor<sp/>sensor,</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>wrap,<sp/>uint8_t<sp/>deadband,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>autoRecal,<sp/>uint32_t<sp/>recalDebounceMs,</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>stepsPerRev)<sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>StepperConfig{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stepsPerRev,<sp/>StepPattern::SWITEC_6STATE,<sp/><ref refid="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" kindref="member">kSwitecDefaultAccel</ref>,<sp/><ref refid="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" kindref="member">kSwitecDefaultAccelN</ref>,</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>home,<sp/>homeSeekClockwise,<sp/>sensor,</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>homePosition,<sp/>parkPosition,<sp/>minPos,<sp/>maxPos,</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>wrap,<sp/>deadband,<sp/>autoRecal,<sp/>recalDebounceMs,</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="210"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp"/>
+  </compounddef>
+</doxygen>

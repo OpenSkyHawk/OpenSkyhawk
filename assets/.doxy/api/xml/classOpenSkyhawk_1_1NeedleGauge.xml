@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1NeedleGauge" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::NeedleGauge</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1OutputBase" prot="public" virt="non-virtual">OpenSkyhawk::OutputBase</basecompoundref>
+    <includes refid="NeedleGauge_8h" local="no">NeedleGauge.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1NeedleGauge_1a02a6bcd2fba608ff8af465f10a647abe" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::NeedleGauge::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="83" column="19" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1NeedleGauge_1aac580b10650b960558757fe6785f03c0" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::NeedleGauge::_mask</definition>
+        <argsstring></argsstring>
+        <name>_mask</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::_mask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="84" column="19" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1NeedleGauge_1a4afb6b55c7a9fc1a4ae924c6588e9777" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref> *</type>
+        <definition>MotorDriver* OpenSkyhawk::NeedleGauge::_motor</definition>
+        <argsstring></argsstring>
+        <name>_motor</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::_motor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="85" column="18" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1NeedleGauge_1a8ad9fe88b2c4e7eb4862f86c050805c6" prot="private" static="no" mutable="no">
+        <type>const <ref refid="structOpenSkyhawk_1_1GaugeCal" kindref="compound">GaugeCal</ref> *</type>
+        <definition>const GaugeCal* OpenSkyhawk::NeedleGauge::_cal</definition>
+        <argsstring></argsstring>
+        <name>_cal</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::_cal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="86" column="20" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1NeedleGauge_1a3844e414a1ee4c18a5cf872fb71d21fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::NeedleGauge::NeedleGauge</definition>
+        <argsstring>(uint16_t controlId, uint16_t mask, MotorDriver &amp;motor, const GaugeCal &amp;cal)</argsstring>
+        <name>NeedleGauge</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::NeedleGauge</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type><ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref> &amp;</type>
+          <declname>motor</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1GaugeCal" kindref="compound">GaugeCal</ref> &amp;</type>
+          <declname>cal</declname>
+        </param>
+        <briefdescription>
+<para>Construct and register a pointer gauge. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCS-BIOS output address (A_4E_C_* from <ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Field mask (A_4E_C_*_AM, or 0xFFFF for a whole-word gauge). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>motor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Caller-owned <ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref> (e.g. a <ref refid="classOpenSkyhawk_1_1StepperMotor" kindref="compound">StepperMotor</ref>). Must outlive this. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Value→position calibration. Must outlive this. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="63" column="5" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp" bodystart="6" bodyend="8"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1NeedleGauge_1a5ed2454f76ca7d0f9c4c57796b3a831a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::NeedleGauge::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301">configure</reimplements>
+        <briefdescription>
+<para>Configure and home the motor (<ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="66" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp" bodystart="10" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1NeedleGauge_1a187471a0f4be78da62b242b7d278f37d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::NeedleGauge::onControlPacket</definition>
+        <argsstring>(uint16_t controlId, uint16_t value) override</argsstring>
+        <name>onControlPacket</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::onControlPacket</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375">onControlPacket</reimplements>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Retarget the motor from a CTRL_BCAST packet. Stores only — never steps here. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incoming packet controlId. Ignored if != _controlId. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Raw 16-bit DCS-BIOS value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="73" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp" bodystart="15" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1NeedleGauge_1a9bd49eb4dd495533892f7a9aad6f7c5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::NeedleGauge::update</definition>
+        <argsstring>() override</argsstring>
+        <name>update</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::update</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5">update</reimplements>
+        <briefdescription>
+<para>Advance the motor toward its target (non-blocking). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="76" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp" bodystart="26" bodyend="28"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1NeedleGauge_1ac14ef657a85146aff33dbcd29b90b994" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::NeedleGauge::valueToPos</definition>
+        <argsstring>(uint16_t value) const</argsstring>
+        <name>valueToPos</name>
+        <qualifiedname>OpenSkyhawk::NeedleGauge::valueToPos</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="88" column="13" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp" bodystart="32" bodyend="53"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>DCS-driven pointer gauge over any <ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref> backend. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::NeedleGauge</label>
+        <link refid="classOpenSkyhawk_1_1NeedleGauge"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OpenSkyhawk::NeedleGauge</label>
+        <link refid="classOpenSkyhawk_1_1NeedleGauge"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" line="54" column="1" bodyfile="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h" bodystart="54" bodyend="89"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1a8ad9fe88b2c4e7eb4862f86c050805c6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>_cal</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1a02a6bcd2fba608ff8af465f10a647abe" prot="private" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1aac580b10650b960558757fe6785f03c0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>_mask</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1a4afb6b55c7a9fc1a4ae924c6588e9777" prot="private" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>_motor</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1a5ed2454f76ca7d0f9c4c57796b3a831a" prot="public" virt="virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1a3844e414a1ee4c18a5cf872fb71d21fa" prot="public" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>NeedleGauge</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1a187471a0f4be78da62b242b7d278f37d" prot="public" virt="virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>onControlPacket</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1a9bd49eb4dd495533892f7a9aad6f7c5b" prot="public" virt="virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>update</name></member>
+      <member refid="classOpenSkyhawk_1_1NeedleGauge_1ac14ef657a85146aff33dbcd29b90b994" prot="private" virt="non-virtual"><scope>OpenSkyhawk::NeedleGauge</scope><name>valueToPos</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

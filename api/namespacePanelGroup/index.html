@@ -3930,6 +3930,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-readlivepin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function readLivePin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-registeradc" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4030,6 +4041,10 @@
 <td style="text-align: left;"><a href="#function-readcachedpin"><strong>readCachedPin</strong></a> (const MCP23017 &amp; chip, uint8_t port, uint8_t bit) <br><em>Return cached MCP23017 pin state. Called by</em> <a href="../classPinRef/#function-read"><em><strong>PinRef::read()</strong></em></a> <em>. No I2C.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-readlivepin"><strong>readLivePin</strong></a> (MCP23017 &amp; chip, uint8_t port, uint8_t bit) <br><em>Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-registeradc"><strong>registerADC</strong></a> (<a href="../classADS1115/"><strong>ADS1115</strong></a> &amp; adc, uint8_t addr=0x48, TwoWire &amp; wire=Wire) <br><em>Register an</em> <a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC. Call before</em><a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em></td>
 </tr>
@@ -4083,6 +4098,26 @@
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Cached logical level (true = HIGH). </p>
+<hr>
+
+<h3 id="function-readlivepin">function readLivePin</h3>
+<p><em>Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache.</em> </p>
+<pre><code class="language-C++">bool PanelGroup::readLivePin (
+    MCP23017 &amp; chip,
+    uint8_t port,
+    uint8_t bit
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>chip</code> Chip reference. </li>
+<li><code>port</code> PORT_A (0) or PORT_B (1). </li>
+<li><code>bit</code> Bit index 0–7. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Live logical level (true = HIGH). </p>
+<p><strong>Note:</strong></p>
+<p>Called by <a href="../classPinRef/#function-readlive"><strong>PinRef::readLive()</strong></a> for time-critical reads before <a href="./#function-loop"><strong>loop()</strong></a> refreshes the cache (e.g. blocking homing on an MCP-backed home sensor). One I2C transaction per call. </p>
 <hr>
 
 <h3 id="function-registeradc">function registerADC</h3>

@@ -12,7 +12,9 @@ _Umbrella include for_ [_**PanelGroup**_](namespacePanelGroup.md) _sketch files.
 
 * `#include <STM32Board.h>`
 * `#include <PanelGroup.h>`
+* `#include <Drivers/StepperMotor/StepperMotor.h>`
 * `#include <Outputs/LED/LED.h>`
+* `#include <Outputs/NeedleGauge/NeedleGauge.h>`
 * `#include <Inputs/Switch2Pos/Switch2Pos.h>`
 * `#include <A4EC_CmdIds.h>`
 * `#include <A4EC_OutputIds.h>`

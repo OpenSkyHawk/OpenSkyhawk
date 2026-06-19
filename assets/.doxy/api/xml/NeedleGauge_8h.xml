@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="NeedleGauge_8h" kind="file" language="C++">
+    <compoundname>NeedleGauge.h</compoundname>
+    <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
+    <includes refid="MotorDriver_8h" local="no">Drivers/MotorDriver/MotorDriver.h</includes>
+    <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
+    <includedby refid="NeedleGauge_8cpp" local="yes">Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="6">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Drivers/MotorDriver/MotorDriver.h</label>
+        <link refid="MotorDriver_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</label>
+        <link refid="NeedleGauge_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+      <node id="3">
+        <label>Arduino.h</label>
+      </node>
+      <node id="5">
+        <label>MCP23017.h</label>
+      </node>
+      <node id="4">
+        <label>Wire.h</label>
+      </node>
+      <node id="10">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</label>
+        <link refid="NeedleGauge_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</label>
+        <link refid="NeedleGauge_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structOpenSkyhawk_1_1GaugeCal" prot="public">OpenSkyhawk::GaugeCal</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1NeedleGauge" prot="public">OpenSkyhawk::NeedleGauge</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>Pointer-gauge output: maps one DCS-BIOS value to a motor position. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A thin OutputBase that <emphasis>composes</emphasis> a MotorDriver (StepperMotor today; a servo or step/dir driver later) and does only the gauge semantics — decode the 16-bit DCS-BIOS value, map it to a driver-native position (linear or piecewise-calibrated), and command the motor. All low-level drive, acceleration, and homing live in the MotorDriver, so 119 A-4E pointer gauges share one class over any backend.</para>
+<para>Usage (per-sketch wiring): <programlisting><codeline><highlight class="normal">StepperMotor<sp/>driftMotor(<ref refid="classPinRef" kindref="compound">PinRef</ref>(PA0),<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>(PA1),<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>(PA4),<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>(PA5),<sp/>DRIFT_CFG);</highlight></codeline>
+<codeline><highlight class="normal">NeedleGauge<sp/><sp/>drift(<ref refid="A4EC__OutputIds_8h_1aea56bf6d7a93411de32117988f08c0cb" kindref="member">A_4E_C_APN153_DRIFT_GAUGE</ref>,<sp/><ref refid="A4EC__OutputIds_8h_1a7da942eef708f574c4fad24824e31d82" kindref="member">A_4E_C_APN153_DRIFT_GAUGE_AM</ref>,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>driftMotor,<sp/>DRIFT_CAL);</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>OutputBase</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="MotorDriver_8h" kindref="compound">Drivers/MotorDriver/MotorDriver.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>MotorDriver</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="structOpenSkyhawk_1_1GaugeCal" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1GaugeCal" kindref="compound">GaugeCal</ref><sp/>{</highlight></codeline>
+<codeline lineno="43" refid="structOpenSkyhawk_1_1GaugeCal_1a8274ca7f32bbfef17c7d95c408c9d6ec" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1GaugeCal_1a8274ca7f32bbfef17c7d95c408c9d6ec" kindref="member">minTravel</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="44" refid="structOpenSkyhawk_1_1GaugeCal_1a67368f5c74562fdeeb32095cfb728ce3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1GaugeCal_1a67368f5c74562fdeeb32095cfb728ce3" kindref="member">maxTravel</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="45" refid="structOpenSkyhawk_1_1GaugeCal_1a83895f695eeb1d6c28bbd1b29fda30ff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1GaugeCal_1a83895f695eeb1d6c28bbd1b29fda30ff" kindref="member">reverse</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="46" refid="structOpenSkyhawk_1_1GaugeCal_1aa89d9589c389023d2d405440d4a3ce4d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t*<sp/><ref refid="structOpenSkyhawk_1_1GaugeCal_1aa89d9589c389023d2d405440d4a3ce4d" kindref="member">curveIn</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="47" refid="structOpenSkyhawk_1_1GaugeCal_1a01130ea340d1b5face45eb145ccec685" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t*<sp/><ref refid="structOpenSkyhawk_1_1GaugeCal_1a01130ea340d1b5face45eb145ccec685" kindref="member">curveOut</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="48" refid="structOpenSkyhawk_1_1GaugeCal_1adedd51dbd29f34a1b0b5293d3d86e6b1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1GaugeCal_1adedd51dbd29f34a1b0b5293d3d86e6b1" kindref="member">curveN</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="classOpenSkyhawk_1_1NeedleGauge" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1NeedleGauge" kindref="compound">NeedleGauge</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref><sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1NeedleGauge" kindref="compound">NeedleGauge</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>mask,<sp/><ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref>&amp;<sp/>motor,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1GaugeCal" kindref="compound">GaugeCal</ref>&amp;<sp/>cal);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1NeedleGauge_1a5ed2454f76ca7d0f9c4c57796b3a831a" kindref="member">configure</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1NeedleGauge_1a187471a0f4be78da62b242b7d278f37d" kindref="member">onControlPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1NeedleGauge_1a9bd49eb4dd495533892f7a9aad6f7c5b" kindref="member">update</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>NEEDLEGAUGE_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>debugValueToPos(uint16_t<sp/>value)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>valueToPos(value);<sp/>}<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/>_mask;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref>*<sp/><sp/>_motor;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>caller-owned</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1GaugeCal" kindref="compound">GaugeCal</ref>*<sp/>_cal;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>caller-owned</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>valueToPos(uint16_t<sp/>value)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">//<sp/>decode<sp/>→<sp/>position<sp/>(linear<sp/>or<sp/>piecewise)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h"/>
+  </compounddef>
+</doxygen>

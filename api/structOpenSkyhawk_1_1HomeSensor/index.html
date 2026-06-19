@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d22/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/structOpenSkyhawk_1_1HomeSensor/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>Struct OpenSkyhawk::HomeSensor - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#struct-openskyhawkhomesensor" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              Struct OpenSkyhawk::HomeSensor
             
           </span>
         </div>
@@ -3874,10 +3874,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
+  <a href="#public-attributes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Public Types
+        Public Attributes
       
     </span>
   </a>
@@ -3885,22 +3885,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
+  <a href="#detailed-description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Public Types Documentation
+        Detailed Description
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Public Types Documentation">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Attributes Documentation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#enum-ledcolor" class="md-nav__link">
+  <a href="#variable-activelow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        enum LedColor
+        variable activeLow
       
     </span>
   </a>
@@ -3908,10 +3919,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
+  <a href="#variable-debouncems" class="md-nav__link">
     <span class="md-ellipsis">
       
-        enum ParserState
+        variable debounceMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-maxseeksteps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable maxSeekSteps
       
     </span>
   </a>
@@ -3943,9 +3965,13 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
+<h1 id="struct-openskyhawkhomesensor">Struct OpenSkyhawk::HomeSensor</h1>
+<p><a href="../annotated/"><strong>ClassList</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>HomeSensor</strong></a></p>
+<p><em>Home-sensor parameters (</em> HomeMode::SENSOR <em>only).</em><a href="#detailed-description">More...</a></p>
+<ul>
+<li><code>#include &lt;StepperMotor.h&gt;</code></li>
+</ul>
+<h2 id="public-attributes">Public Attributes</h2>
 <table>
 <thead>
 <tr>
@@ -3955,36 +3981,42 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-ledcolor"><strong>LedColor</strong></a>  <br></td>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-activelow"><strong>activeLow</strong></a>  <br><em>true: sensor asserts LOW; false: asserts HIGH</em></td>
 </tr>
 <tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#variable-debouncems"><strong>debounceMs</strong></a>  <br><em>stable-assert confirmation window</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#variable-maxseeksteps"><strong>maxSeekSteps</strong></a>  <br><em>abort the seek after this many steps (mis-wired safety)</em></td>
 </tr>
 </tbody>
 </table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-ledcolor">enum LedColor</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::LedColor {
-    NONE,
-    RED,
-    GREEN
-};
+<h2 id="detailed-description">Detailed Description</h2>
+<p>Any digital home detector reduces to a debounced level read; the sensor type is purely a wiring/polarity choice handled by <code>activeLow</code>. </p>
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+<h3 id="variable-activelow">variable activeLow</h3>
+<p><em>true: sensor asserts LOW; false: asserts HIGH</em> </p>
+<pre><code class="language-C++">bool OpenSkyhawk::HomeSensor::activeLow;
 </code></pre>
 <hr>
 
-<h3 id="enum-parserstate">enum ParserState</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserState {
-    IDLE,
-    GOT_AA,
-    IN_FRAME
-};
+<h3 id="variable-debouncems">variable debounceMs</h3>
+<p><em>stable-assert confirmation window</em> </p>
+<pre><code class="language-C++">uint8_t OpenSkyhawk::HomeSensor::debounceMs;
+</code></pre>
+<hr>
+
+<h3 id="variable-maxseeksteps">variable maxSeekSteps</h3>
+<p><em>abort the seek after this many steps (mis-wired safety)</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::HomeSensor::maxSeekSteps;
 </code></pre>
 <hr>
 
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</code></p>
 
 
 

@@ -1,0 +1,585 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1StepperMotor" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::StepperMotor</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1MotorDriver" prot="public" virt="non-virtual">OpenSkyhawk::MotorDriver</basecompoundref>
+    <includes refid="StepperMotor_8h" local="no">StepperMotor.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a130677699c0cc69ac59f78f95ec9de8b" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::StepperMotor::_coil[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>_coil</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_coil</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="162" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1afa327365a973dcac837cbfe51e8bbe23" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::StepperMotor::_homeSense</definition>
+        <argsstring></argsstring>
+        <name>_homeSense</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_homeSense</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="163" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a3eba62629606a6046a454179daeedcf3" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::StepperMotor::_sleepEn</definition>
+        <argsstring></argsstring>
+        <name>_sleepEn</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_sleepEn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="164" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1ae55524628b2b854c9841c1259a8257f6" prot="private" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref></type>
+        <definition>StepperConfig OpenSkyhawk::StepperMotor::_cfg</definition>
+        <argsstring></argsstring>
+        <name>_cfg</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_cfg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="165" column="19" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1ad189f7da751d0c9af018b797ed4b4ba1" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::StepperMotor::_maxVel</definition>
+        <argsstring></argsstring>
+        <name>_maxVel</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_maxVel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="166" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a489689a92a91dc2f99e91bd7de02f056" prot="private" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::StepperMotor::_currentStep</definition>
+        <argsstring></argsstring>
+        <name>_currentStep</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_currentStep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="169" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a38baa5593452a49ead143d89d1450082" prot="private" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::StepperMotor::_targetStep</definition>
+        <argsstring></argsstring>
+        <name>_targetStep</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_targetStep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="170" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="170" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1acc482218b50e23ce45677b10932f489a" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::StepperMotor::_vel</definition>
+        <argsstring></argsstring>
+        <name>_vel</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_vel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="171" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="171" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1af41d26624b81e7bfddb72fcdcd588d40" prot="private" static="no" mutable="no">
+        <type>int8_t</type>
+        <definition>int8_t OpenSkyhawk::StepperMotor::_dir</definition>
+        <argsstring></argsstring>
+        <name>_dir</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_dir</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="172" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="172" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1ad8547d25c35026dd594eb969028e8d67" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperMotor::_stopped</definition>
+        <argsstring></argsstring>
+        <name>_stopped</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_stopped</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="173" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="173" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a36de192b35391073ef6a07602fcdaf5d" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::StepperMotor::_state</definition>
+        <argsstring></argsstring>
+        <name>_state</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_state</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="174" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="174" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1ace225f94f652567d22c54e85d04a83a0" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::StepperMotor::_microDelay</definition>
+        <argsstring></argsstring>
+        <name>_microDelay</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_microDelay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="175" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="175" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a9253e380d16ba27d474c5b31930a5c57" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::StepperMotor::_time0</definition>
+        <argsstring></argsstring>
+        <name>_time0</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_time0</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="176" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a9058402c1f606d91d5e7899e5f6615fc" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperMotor::_homed</definition>
+        <argsstring></argsstring>
+        <name>_homed</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_homed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="177" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a71ec7bcca39b4abb82699717bf07647b" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::StepperMotor::_lastRecalMs</definition>
+        <argsstring></argsstring>
+        <name>_lastRecalMs</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_lastRecalMs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="180" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1StepperMotor_1a6f0be45ac758c110d9d0d5235e3ae1b5" prot="private" static="no" mutable="no">
+        <type>int8_t</type>
+        <definition>int8_t OpenSkyhawk::StepperMotor::_sensorOverride</definition>
+        <argsstring></argsstring>
+        <name>_sensorOverride</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::_sensorOverride</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="181" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a8926f21a0e93d4b04946a75e6308a8d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::StepperMotor::StepperMotor</definition>
+        <argsstring>(PinRef c1, PinRef c2, PinRef c3, PinRef c4, const StepperConfig &amp;cfg, PinRef homeSense=PinRef(), PinRef sleepEn=PinRef())</argsstring>
+        <name>StepperMotor</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::StepperMotor</qualifiedname>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>c1</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>c2</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>c3</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>c4</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>homeSense</declname>
+          <defval><ref refid="classPinRef" kindref="compound">PinRef</ref>()</defval>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>sleepEn</declname>
+          <defval><ref refid="classPinRef" kindref="compound">PinRef</ref>()</defval>
+        </param>
+        <briefdescription>
+<para>Construct a stepper over four coil pins. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c1..c4</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coil PinRefs (GPIO or MCP23017). Swap two to reverse direction. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-instance configuration (copied; cfg.accel must outlive this). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>homeSense</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Home-sensor <ref refid="classPinRef" kindref="compound">PinRef</ref> for <ref refid="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7a72700b6ac14b90435377dcbaeb77e908" kindref="member">HomeMode::SENSOR</ref> (NC default for STALL). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sleepEn</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional driver ~SLEEP/enable <ref refid="classPinRef" kindref="compound">PinRef</ref>, driven HIGH in <ref refid="classOpenSkyhawk_1_1StepperMotor_1a88cc3e0f508c4783ba64a9d16e9ac724" kindref="member">configure()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="137" column="5" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="31" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a88cc3e0f508c4783ba64a9d16e9ac724" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1MotorDriver_1a863747fb6a5b322682f9f01819cfc328">configure</reimplements>
+        <briefdescription>
+<para>coils OUTPUT, ~SLEEP HIGH, sensor INPUT, energise. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="140" column="13" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="86" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a47ab20a55ad4d338a629405bb96bc94e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::home</definition>
+        <argsstring>() override</argsstring>
+        <name>home</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::home</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1MotorDriver_1abf40a9749ee1b48406de581e07025fcf">home</reimplements>
+        <briefdescription>
+<para>blocking homing (STALL or SENSOR), then park. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="141" column="13" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="127" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1ae48eb812d537dae7efb3a82e470d54d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::moveTo</definition>
+        <argsstring>(int32_t pos) override</argsstring>
+        <name>moveTo</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::moveTo</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1MotorDriver_1a90685e21bc5f1354b4fe98c4ad7a6d23">moveTo</reimplements>
+        <param>
+          <type>int32_t</type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+<para>retarget (clamp/wrap + deadband); non-blocking. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="142" column="13" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="159" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a39e650299fd72d0c7b4b09b01dc00572" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::update</definition>
+        <argsstring>() override</argsstring>
+        <name>update</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::update</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1MotorDriver_1a98f4669440c20b80c13be9f8d8532a87">update</reimplements>
+        <briefdescription>
+<para>step toward target if due; auto-recal. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="143" column="13" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="181" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a6051601bfe60ad458759d84826c8841a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::StepperMotor::position</definition>
+        <argsstring>() const override</argsstring>
+        <name>position</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::position</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1MotorDriver_1a1174f0699e60b6b4b6891988d9d5e984">position</reimplements>
+        <briefdescription>
+<para>current step (wrapped to 0..stepsPerRev if wrap). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="144" column="13" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="191" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a792457ad3e4dda3fcd5931e764edeb5a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperMotor::homed</definition>
+        <argsstring>() const</argsstring>
+        <name>homed</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::homed</qualifiedname>
+        <briefdescription>
+<para>True once homing has completed successfully (false if a SENSOR seek aborted). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="147" column="10" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="147" bodyend="147"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a1b2feda7cb6a1455401ed127f138c8af" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::writeIO</definition>
+        <argsstring>()</argsstring>
+        <name>writeIO</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::writeIO</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="184" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="39" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a8300a41b60a4a3acdc087db3aceff3bb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::stepOnce</definition>
+        <argsstring>(bool up)</argsstring>
+        <name>stepOnce</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::stepOnce</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>up</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="185" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="49" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a74b0667e763e7f9554b3993f2f3b0e89" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::advance</definition>
+        <argsstring>()</argsstring>
+        <name>advance</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::advance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="186" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="59" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a99364883684e3af8b47263b2d523ccb7" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperMotor::sensorAsserted</definition>
+        <argsstring>(bool live) const</argsstring>
+        <name>sensorAsserted</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::sensorAsserted</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>live</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="187" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="95" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a95384a220a51149f5b77744efcc0da65" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperMotor::sensorConfirmed</definition>
+        <argsstring>() const</argsstring>
+        <name>sensorConfirmed</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::sensorConfirmed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="188" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="102" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1afddc4c72c4f9e640004e28d3e0b3c729" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::StepperMotor::seekHomeBlocking</definition>
+        <argsstring>()</argsstring>
+        <name>seekHomeBlocking</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::seekHomeBlocking</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="189" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="111" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1StepperMotor_1a58773ee295c63067c92a0545df4ae961" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::StepperMotor::runToStopBlocking</definition>
+        <argsstring>()</argsstring>
+        <name>runToStopBlocking</name>
+        <qualifiedname>OpenSkyhawk::StepperMotor::runToStopBlocking</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="190" column="14" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="120" bodyend="125"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Non-blocking instrument-gauge stepper driven through <ref refid="classPinRef" kindref="compound">PinRef</ref> coils. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::MotorDriver</label>
+        <link refid="classOpenSkyhawk_1_1MotorDriver"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::StepperMotor</label>
+        <link refid="classOpenSkyhawk_1_1StepperMotor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::MotorDriver</label>
+        <link refid="classOpenSkyhawk_1_1MotorDriver"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::StepperMotor</label>
+        <link refid="classOpenSkyhawk_1_1StepperMotor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="128" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="128" bodyend="191"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1ae55524628b2b854c9841c1259a8257f6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_cfg</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a130677699c0cc69ac59f78f95ec9de8b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_coil</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a489689a92a91dc2f99e91bd7de02f056" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_currentStep</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1af41d26624b81e7bfddb72fcdcd588d40" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_dir</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a9058402c1f606d91d5e7899e5f6615fc" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_homed</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1afa327365a973dcac837cbfe51e8bbe23" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_homeSense</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a71ec7bcca39b4abb82699717bf07647b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_lastRecalMs</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1ad189f7da751d0c9af018b797ed4b4ba1" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_maxVel</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1ace225f94f652567d22c54e85d04a83a0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_microDelay</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a6f0be45ac758c110d9d0d5235e3ae1b5" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_sensorOverride</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a3eba62629606a6046a454179daeedcf3" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_sleepEn</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a36de192b35391073ef6a07602fcdaf5d" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_state</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1ad8547d25c35026dd594eb969028e8d67" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_stopped</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a38baa5593452a49ead143d89d1450082" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_targetStep</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a9253e380d16ba27d474c5b31930a5c57" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_time0</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1acc482218b50e23ce45677b10932f489a" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>_vel</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a74b0667e763e7f9554b3993f2f3b0e89" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>advance</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a88cc3e0f508c4783ba64a9d16e9ac724" prot="public" virt="virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a47ab20a55ad4d338a629405bb96bc94e" prot="public" virt="virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>home</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a792457ad3e4dda3fcd5931e764edeb5a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>homed</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1ae48eb812d537dae7efb3a82e470d54d1" prot="public" virt="virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>moveTo</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a6051601bfe60ad458759d84826c8841a" prot="public" virt="virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>position</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a58773ee295c63067c92a0545df4ae961" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>runToStopBlocking</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1afddc4c72c4f9e640004e28d3e0b3c729" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>seekHomeBlocking</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a99364883684e3af8b47263b2d523ccb7" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>sensorAsserted</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a95384a220a51149f5b77744efcc0da65" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>sensorConfirmed</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a8300a41b60a4a3acdc087db3aceff3bb" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>stepOnce</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a8926f21a0e93d4b04946a75e6308a8d3" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>StepperMotor</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a39e650299fd72d0c7b4b09b01dc00572" prot="public" virt="virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>update</name></member>
+      <member refid="classOpenSkyhawk_1_1StepperMotor_1a1b2feda7cb6a1455401ed127f138c8af" prot="private" virt="non-virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>writeIO</name></member>
+      <member refid="classOpenSkyhawk_1_1MotorDriver_1a0d6189324d9bfc937ce04961f698e7f9" prot="public" virt="virtual"><scope>OpenSkyhawk::StepperMotor</scope><name>~MotorDriver</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
