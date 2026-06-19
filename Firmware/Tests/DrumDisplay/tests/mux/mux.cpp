@@ -65,12 +65,17 @@ void setup() {
     Wire.setSCL(PB8);
     Wire.setSDA(PB9);
     Wire.begin();
+    // Bring each panel up on its OWN mux channel first: begin() must precede configure(), and
+    // each begin() must run while that panel's channel is selected (both share address 0x3C).
+    mux.select(0);
     oled0.setI2CAddress(0x3C << 1);
-    oled1.setI2CAddress(0x3C << 1);
-    disp0.configure();   // selects mux channel 0, then begin-blank
-    disp1.configure();   // selects mux channel 1
     oled0.begin();
+    mux.select(1);
+    oled1.setI2CAddress(0x3C << 1);
     oled1.begin();
+
+    disp0.configure();   // re-selects channel 0, blanks
+    disp1.configure();   // re-selects channel 1, blanks
 
     // Channel 0 = speed 250, channel 1 = BDHI range 045 — independent state.
     disp0.onControlPacket(A_4E_C_APN153_SPEED_X00, digitWord(2));
