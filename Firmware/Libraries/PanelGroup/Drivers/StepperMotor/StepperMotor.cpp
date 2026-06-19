@@ -90,18 +90,20 @@ void StepperMotor::configure() {
     writeIO(); // energise the initial coil state
 }
 
-bool StepperMotor::sensorAsserted() const {
+// live=true bypasses the MCP cache (fresh I2C read) — needed during blocking homing, before
+// PanelGroup::loop() starts refreshing the cache. GPIO/ADS reads are already live either way.
+bool StepperMotor::sensorAsserted(bool live) const {
     bool raw;
     if (_sensorOverride >= 0) raw = (_sensorOverride != 0);
-    else                      raw = _homeSense.read();   // true = HIGH
+    else                      raw = live ? _homeSense.readLive() : _homeSense.read();  // true = HIGH
     return _cfg.sensor.activeLow ? !raw : raw;
 }
 
 bool StepperMotor::sensorConfirmed() const {
-    if (!sensorAsserted()) return false;
+    if (!sensorAsserted(true)) return false;
     uint32_t t0 = millis();
     while ((uint32_t)(millis() - t0) < _cfg.sensor.debounceMs) {
-        if (!sensorAsserted()) return false;             // bounced off → not stable
+        if (!sensorAsserted(true)) return false;         // bounced off → not stable
     }
     return true;
 }
@@ -137,11 +139,12 @@ void StepperMotor::home() {
         _homed = seekHomeBlocking();
         if (_homed) {
             _currentStep = _cfg.homePosition;
-            for (uint8_t i = 0; i < REFINE_BACKOFF; i++) {  // clear the sensor, then re-seek
+            for (uint8_t i = 0; i < REFINE_BACKOFF; i++) {  // clear the sensor, then re-seek to refine
                 stepOnce(!_cfg.homeSeekClockwise);
                 delayMicroseconds(HOMING_STEP_US);
             }
-            if (seekHomeBlocking()) _currentStep = _cfg.homePosition;
+            _homed = seekHomeBlocking();                    // refine pass; a failed re-seek clears homed
+            if (_homed) _currentStep = _cfg.homePosition;
         }
         if (!_homed) { _targetStep = _currentStep; return; } // aborted: don't drive blind
     }
@@ -179,9 +182,9 @@ void StepperMotor::update() {
     if (!_stopped && (uint32_t)(micros() - _time0) >= _microDelay) advance();
 
     if (_cfg.autoRecal && !_homeSense.isNC() &&
-        (uint32_t)(millis() - _lastRecalMs) > _cfg.recalDebounceMs && sensorAsserted()) {
+        (uint32_t)(millis() - _lastRecalMs) > _cfg.recalDebounceMs && sensorAsserted(false)) {
         _currentStep = _cfg.homePosition;               // re-zero; the move toward _targetStep continues
-        _lastRecalMs = millis();
+        _lastRecalMs = millis();                         // cache read: loop()'s ~20 ms poll keeps it fresh
     }
 }
 
@@ -191,6 +194,19 @@ int32_t StepperMotor::position() const {
         return ((_currentStep % range) + range) % range;
     }
     return _currentStep;
+}
+
+StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
+                            int16_t minPos, int16_t maxPos,
+                            HomeMode home, bool homeSeekClockwise, HomeSensor sensor,
+                            bool wrap, uint8_t deadband, bool autoRecal, uint32_t recalDebounceMs,
+                            uint16_t stepsPerRev) {
+    return StepperConfig{
+        stepsPerRev, StepPattern::SWITEC_6STATE, kSwitecDefaultAccel, kSwitecDefaultAccelN,
+        home, homeSeekClockwise, sensor,
+        homePosition, parkPosition, minPos, maxPos,
+        wrap, deadband, autoRecal, recalDebounceMs,
+    };
 }
 
 } // namespace OpenSkyhawk

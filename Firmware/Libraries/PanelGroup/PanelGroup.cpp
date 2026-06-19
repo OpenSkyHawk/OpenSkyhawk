@@ -372,6 +372,17 @@ void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value) {
     }
 }
 
+bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit) {
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        if (_expanders[i].chip != &chip) continue;
+        uint8_t v = chip.readPort(port == 0 ? MCP23017Port::A : MCP23017Port::B); // live I2C read
+        if (port == 0) _expanders[i].portAcache = v;
+        else           _expanders[i].portBcache = v;
+        return (v >> bit) & 1u;
+    }
+    return false;
+}
+
 } // namespace PanelGroup
 
 #endif // ARDUINO_ARCH_STM32

@@ -87,6 +87,13 @@ struct StepperConfig {
 extern const AccelPoint kSwitecDefaultAccel[5];   // {20,3000},{50,1500},{100,1000},{150,800},{300,600}
 constexpr uint8_t       kSwitecDefaultAccelN = 5;
 
+// Factory: fills the X27 air-core motor-invariant fields (stepsPerRev/pattern/accel); a sketch sets
+// only the per-gauge wiring/travel. Shared by every X27 / VID-29 / BKA-30 gauge — override any default.
+StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos,
+                            HomeMode home = HomeMode::STALL, bool homeSeekClockwise = false,
+                            HomeSensor sensor = {true,5,2000}, bool wrap = false, uint8_t deadband = 1,
+                            bool autoRecal = false, uint32_t recalDebounceMs = 0, uint16_t stepsPerRev = 720);
+
 class StepperMotor : public MotorDriver {
 public:
     StepperMotor(PinRef c1, PinRef c2, PinRef c3, PinRef c4, const StepperConfig& cfg,
@@ -128,11 +135,13 @@ settling exactly (`currentStep == targetStep && vel == 0`).
 - **STALL** — step into the mechanical end-stop `stepsPerRev` times (a full revolution seats from any
   start), set `pos = homePosition`. No sensor.
 - **SENSOR** (two-pass, à la AHN) — clear the sensor, seek `homeSeekClockwise` until the debounced read
-  asserts, hard-stop, set `pos = homePosition`; back off and re-seek to refine; then move to
-  `parkPosition`. `maxSeekSteps` aborts a never-asserting (mis-wired) sensor → `homed() == false`, no
-  hang. **Sensor-agnostic:** micro switch / reed / hall / opto all reduce to one debounced level read;
-  `activeLow` sets polarity. Sensor read via `PinRef::read()` (native GPIO immediate; MCP23017 = the
-  ~20 ms PanelGroup cache).
+  asserts, hard-stop, set `pos = homePosition`; back off and **re-seek to refine — a failed refine pass
+  also clears `homed()`**, so the `maxSeekSteps` safety holds for both passes; then move to `parkPosition`.
+  `maxSeekSteps` aborts a never-asserting (mis-wired) sensor → `homed() == false`, no hang.
+  **Sensor-agnostic:** micro switch / reed / hall / opto all reduce to one debounced level read;
+  `activeLow` sets polarity. The home sensor may be on **native GPIO or an MCP23017** — blocking homing
+  reads it via `PinRef::readLive()` (a fresh I2C read on MCP, because `loop()` isn't refreshing the cache
+  yet during `setup()`); auto-recal in `update()` uses the cached `read()` (the ~20 ms poll keeps it fresh).
 
 ### Coil drive & MCP23017
 

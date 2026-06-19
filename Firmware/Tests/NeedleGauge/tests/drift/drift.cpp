@@ -11,11 +11,9 @@
 
 using namespace OpenSkyhawk;
 
-// Motor with a ±200-step travel so the ±150 drift arc passes unclamped; deadband 0.
-static const StepperConfig MOTOR_CFG = {
-    720, StepPattern::SWITEC_6STATE, kSwitecDefaultAccel, kSwitecDefaultAccelN,
-    HomeMode::STALL, false, { false, 0, 0 }, 0, 0, -200, 200, false, 0, false, 0,
-};
+// Motor with a ±200-step travel so the ±150 drift arc passes unclamped.
+// makeX27Config bakes in the X27 motor-invariant fields; we set only the per-gauge travel.
+static const StepperConfig MOTOR_CFG = makeX27Config(/*home*/0, /*park*/0, /*min*/-200, /*max*/200);
 StepperMotor gMotor(PinRef(), PinRef(), PinRef(), PinRef(), MOTOR_CFG);
 
 // Drift arc ±150 steps about centre.

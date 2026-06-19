@@ -93,6 +93,36 @@ extern const AccelPoint kSwitecDefaultAccel[5];
 constexpr uint8_t kSwitecDefaultAccelN = 5;
 
 /**
+ * @brief Build a StepperConfig with the X27 air-core motor defaults filled in.
+ *
+ * Bakes the motor-invariant fields — `stepsPerRev`, `pattern` (SWITEC_6STATE), and the default
+ * SwitecX25 accel table — so a sketch specifies only the per-gauge wiring/travel. Shared by every
+ * X27 / VID-29 / BKA-30 gauge; override any default for a specific panel.
+ *
+ * @param homePosition       step index at the home reference.
+ * @param parkPosition       rest position after homing.
+ * @param minPos             lower moveTo travel clamp (ignored if wrap).
+ * @param maxPos             upper moveTo travel clamp (ignored if wrap).
+ * @param home               homing strategy. Default STALL.
+ * @param homeSeekClockwise  seek direction. Default false.
+ * @param sensor             home-sensor params (SENSOR mode). Default active-low, 5 ms, 2000 steps.
+ * @param wrap               continuous-rotation gauge. Default false.
+ * @param deadband           anti-jitter band, steps. Default 1.
+ * @param autoRecal          re-zero on sensor crossing. Default false.
+ * @param recalDebounceMs    minimum interval between auto-recals. Default 0.
+ * @param stepsPerRev        full revolution in steps. Default 720 (nominal — calibrate per motor).
+ * @return Populated StepperConfig.
+ */
+StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
+                            int16_t minPos, int16_t maxPos,
+                            HomeMode home = HomeMode::STALL,
+                            bool homeSeekClockwise = false,
+                            HomeSensor sensor = { true, 5, 2000 },
+                            bool wrap = false, uint8_t deadband = 1,
+                            bool autoRecal = false, uint32_t recalDebounceMs = 0,
+                            uint16_t stepsPerRev = 720);
+
+/**
  * @brief Non-blocking instrument-gauge stepper driven through PinRef coils.
  */
 class StepperMotor : public MotorDriver {
@@ -123,7 +153,7 @@ public:
     uint16_t debugVel() const         { return _vel; }
     uint16_t debugMicroDelay() const  { return _microDelay; }
     bool    debugStopped() const      { return _stopped; }
-    bool    debugSensorAsserted() const { return sensorAsserted(); }
+    bool    debugSensorAsserted() const { return sensorAsserted(false); }
     void    debugSetSensorOverride(int8_t level) { _sensorOverride = level; } ///< -1 pin, 0/1 forced
 #endif
 
@@ -154,7 +184,7 @@ private:
     void     writeIO();                    // energise coils for _state
     void     stepOnce(bool up);            // one detent in a direction
     void     advance();                    // SwitecX25 accel/step kernel
-    bool     sensorAsserted() const;       // debounced-free single read through activeLow
+    bool     sensorAsserted(bool live) const; // single read through activeLow; live=true → bypass cache
     bool     sensorConfirmed() const;      // sensorAsserted stable for debounceMs
     bool     seekHomeBlocking();           // step toward sensor until confirmed or maxSeekSteps
     void     runToStopBlocking();          // advance() + delay until stopped (homing/park moves)

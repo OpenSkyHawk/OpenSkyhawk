@@ -51,14 +51,12 @@ Across a full ~20-board cockpit that's roughly **2.3 A at 12 V** — well under 
 - **CAN transceiver** (SN65HVD230) runs directly from the 3.3 V rail — no level shifter.
 - **RP2040 SimGateway** is bus-powered from USB. If it's co-located with STM32 CAN hardware,
   **share GND only** — do not tie the RP2040 module's 3.3 V to the STM32 board's 3.3 V.
-- **Stepper driver motor supply (VM)** runs from the **5 V** rail. The specific driver part is
-  still being validated on the bench — see TBD below.
+- **Stepper driver motor supply (VM)** runs from the **5 V** rail. The driver is a **DRV8833**
+  dual H-bridge (four logic inputs per motor).
 
 ## TBD — not yet specified
 
 !!! note "Marked TBD because it isn't in source material yet"
-    - **Stepper driver selection.** The motor supply rail (5 V) is settled, but the driver IC
-      itself is still under bench evaluation and is intentionally left unspecified here.
     - **Actuator boards** (solenoids, servos, large steppers) are **not yet designed**. Each
       will need its own power-budget analysis before PCB work — flyback protection, dedicated
       supply rails, and driver selection are all open. The established boundary is that logic +
