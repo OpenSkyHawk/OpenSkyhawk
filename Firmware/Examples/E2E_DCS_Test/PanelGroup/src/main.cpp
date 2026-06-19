@@ -1,4 +1,4 @@
-// E2E_DCS_Test — PanelGroup node (STM32F103CB, NODE_ID=1)
+// E2E_DCS_Test — PanelGroup node (STM32F103C8, NODE_ID=1)
 //
 // ONGOING integration node: one live instance of every control class we build, driven by real
 // DCS-BIOS over CAN (SimGateway → PanelBridge → this node via CTRL_BCAST). Add new controls to
