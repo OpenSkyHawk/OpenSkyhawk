@@ -179,13 +179,15 @@ SimGateway          (depends on HIDControls — CTRL_* constants used in sketch 
         │     ├── RotarySwitch            (depends on RotaryEncoder)
         │     ├── AnalogInput             (depends on PinRef, PanelGroup)
         │     └── AngleSensorInput        (depends on PinRef, PanelGroup)
+        ├── Drivers/
+              │     ├── MotorDriver       (abstract base — depends on PanelGroup)
+              │     └── StepperMotor      (depends on MotorDriver, PinRef, PanelGroup)
         └── Outputs/
               ├── LED                     (depends on PinRef, PanelGroup)
               ├── IntegerOutput           (depends on PanelGroup)
               ├── AnalogOutput            (depends on PinRef, PanelGroup)
-              ├── SwitecX25Output         (depends on PanelGroup)
-              ├── AccelStepperOutput      (depends on PanelGroup)
-              └── ServoOutput             (depends on PinRef, PanelGroup)
+              └── NeedleGauge             (depends on PanelGroup, Drivers/MotorDriver + StepperMotor;
+                                           supersedes SwitecX25Output / AccelStepperOutput / ServoOutput)
 
 Note: PanelGroup sketches (per-panel main.cpp files) depend on both the PanelGroup
 library and A4EC (for DCSIN_* constants). The PanelGroup library itself does not.
