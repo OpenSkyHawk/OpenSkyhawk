@@ -6,9 +6,10 @@ hardware. This page is the catalogue, with honest Phase status: most types are *
 not yet implemented**.
 
 !!! warning "Most control types are not implemented yet"
-    Only **LED** (output) and **Switch2Pos** (input), plus the **PinRef** abstraction, are
-    implemented and hardware-verified (Phase 3). Everything marked *Phase 4* or *Phase 5*
-    below is specified but **not yet written** — don't expect it to compile today.
+    Implemented today: **LED** and **DrumDisplay** (outputs) and **Switch2Pos** (input), plus the
+    **PinRef** abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3); DrumDisplay
+    is authored and compile-gated, with the on-hardware bench still pending. Everything marked
+    *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it to compile today.
 
 ## PinRef — the hardware abstraction *(implemented)*
 
@@ -65,6 +66,7 @@ at global scope; `PanelGroup::loop()` polls them and batches events into `EVT_n`
 | Class | Status | What it is |
 |-------|--------|------------|
 | `LED` | **Implemented** | GPIO pin driven from one bit of a DCS value |
+| `DrumDisplay` | **Implemented** (bench pending) | OLED rolling-drum readout — multi-digit gauges (speed, lat/lon, frequency, range) + optional 2-state flag. Own library; pulls U8g2 |
 | `AnalogOutput` | Phase 5 — not started | 16-bit DCS value → PWM duty (backlighting) |
 | `IntegerOutput` | Phase 5 — not started | Raw 16-bit value to a user callback |
 | `SwitecX25Output` | Phase 5 — not started | Gauge needle stepper (X27 family), SwitecX25 lib |
@@ -85,6 +87,13 @@ the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
     The `SwitecX25Output` / `AccelStepperOutput` motor driver IC is still being validated on
     the bench — don't document a specific driver part yet. See
     [Hardware Standards](../hardware/standards.md) once written.
+
+!!! note "DrumDisplay is a separate, opt-in library"
+    `DrumDisplay` lives in `Firmware/Libraries/DrumDisplay/` (not PanelGroup) so the U8g2 OLED
+    driver only lands on nodes that actually use a display — add `file://../../Libraries/DrumDisplay`
+    to a sketch's `lib_deps` to use it. Each readout (its digit sources, geometry, and optional
+    flag) is described by a `DrumReadout` defined in the sketch, like the `PinRef` wiring map.
+    Many same-address OLEDs can share one bus behind a TCA9548A via the `I2cMux` helper.
 
 ## Wiring map convention
 

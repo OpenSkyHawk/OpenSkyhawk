@@ -25,7 +25,7 @@
 // const PinRef PIN_<NET>(adc1, 0);                   // ADS1115 channel
 
 // ── Outputs (DCS → hardware) ─────────────────────────────────────────────────
-// #include <LED.h>
+// #include <Outputs/LED/LED.h>
 // OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>_AM, PIN_<NET>);
 // OpenSkyhawk::LED <name>(A_4E_C_<ID>, A_4E_C_<ID>_AM, PIN_<NET>, /*reverse=*/true);
 

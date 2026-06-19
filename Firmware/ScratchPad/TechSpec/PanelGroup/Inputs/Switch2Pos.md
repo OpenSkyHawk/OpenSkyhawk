@@ -191,7 +191,7 @@ private:
 #include <Wire.h>
 #include <MCP23017.h>
 #include <PanelGroup.h>
-#include <Switch2Pos.h>
+#include <Inputs/Switch2Pos/Switch2Pos.h>
 #include <A4EC_CmdIds.h>    // DCSIN_* constants
 #include <HIDControls.h>    // CTRL_* constants (if any HID buttons on this node)
 

@@ -10,7 +10,7 @@
 
 #include <Arduino.h>
 #include <STM32Board.h>
-#include <Switch2Pos.h>
+#include <Inputs/Switch2Pos/Switch2Pos.h>
 
 static constexpr uint16_t CTRL_FWD = 0xAA01;  // reverse=false
 static constexpr uint16_t CTRL_REV = 0xAA02;  // reverse=true

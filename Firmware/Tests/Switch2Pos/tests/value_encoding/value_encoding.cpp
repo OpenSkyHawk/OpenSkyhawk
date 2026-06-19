@@ -9,7 +9,7 @@
 
 #include <Arduino.h>
 #include <STM32Board.h>
-#include <Switch2Pos.h>
+#include <Inputs/Switch2Pos/Switch2Pos.h>
 
 static constexpr uint16_t CTRL_ID  = 0x1234;
 static constexpr uint8_t  PIN_CTRL = PB0;

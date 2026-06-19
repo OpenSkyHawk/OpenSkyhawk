@@ -422,8 +422,8 @@ namespace PanelGroup {
 #include <Wire.h>
 #include <MCP23017.h>
 #include <PanelGroup.h>
-#include <Switch2Pos.h>
-#include <LED.h>
+#include <Inputs/Switch2Pos/Switch2Pos.h>
+#include <Outputs/LED/LED.h>
 #include <A4EC_CmdIds.h>    // DCSIN_* constants for DCS-BIOS inputs
 #include <A4EC_OutputIds.h> // A_4E_C_* output address/mask constants
 #include <HIDControls.h>    // CTRL_* constants for HID inputs (if any on this node)
