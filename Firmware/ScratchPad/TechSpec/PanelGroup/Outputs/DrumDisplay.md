@@ -32,15 +32,21 @@ things the prototype lacked: **DCS-BIOS address→digit decode**, **snap-then-se
 ## File Layout
 
 ```
+Firmware/Libraries/DrumDisplay/        — separate library (deps: PanelGroup + U8g2)
+├── DrumDisplay.{h,cpp}
+└── library.json
+
 Firmware/Libraries/PanelGroup/
-├── Outputs/DrumDisplay/DrumDisplay.{h,cpp}   — this class
-└── Helpers/I2cMux/I2cMux.{h,cpp}             — TCA9548A selector (see Helpers/I2cMux.md)
+└── Helpers/I2cMux/I2cMux.{h,cpp}      — TCA9548A selector, stays in PanelGroup (Wire-only)
 ```
 
-Each component lives in its own folder. `DrumDisplay.h` is deliberately **not** included by
-`OpenSkyhawk.h` (the umbrella). Display nodes include `<Outputs/DrumDisplay/DrumDisplay.h>`
-explicitly, so switch-only nodes never reference U8g2 — keeping the U8g2 dependency off their flash
-image (measured Δ = 0 bytes).
+**DrumDisplay is its own opt-in library, not part of PanelGroup** — required, not cosmetic. Panel
+projects build PanelGroup with `lib_ldf_mode = deep+`, which compiles *every* PanelGroup source, so a
+`DrumDisplay.cpp` inside PanelGroup forces `<U8g2lib.h>` onto every panel node and breaks the build of
+non-display projects (CI-proven on Center_Armament + E2E_PanelGroup). As a standalone library, only
+projects that list `file://../../Libraries/DrumDisplay` in their `lib_deps` compile it and pull U8g2;
+all other PanelGroup nodes stay U8g2-free. `I2cMux` stays in PanelGroup (needs only `Wire`, so it
+compiles everywhere harmlessly).
 
 **Readout descriptors** (`DrumReadout` tables) are **not** a shared header — each is defined in the
 sketch that drives that panel, alongside its `PinRef` / U8G2 wiring (see Sketch Usage). A node
@@ -74,7 +80,7 @@ for the on-hardware bench pass.
 ## Public API
 
 ```cpp
-// Outputs/DrumDisplay/DrumDisplay.h  (inside #ifdef ARDUINO_ARCH_STM32)
+// Firmware/Libraries/DrumDisplay/DrumDisplay.h  (inside #ifdef ARDUINO_ARCH_STM32)
 #include <PanelGroup.h>      // OutputBase
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
@@ -129,8 +135,8 @@ the readouts it drives.
 ```cpp
 #include <Wire.h>
 #include <PanelGroup.h>
-#include <Outputs/DrumDisplay/DrumDisplay.h>   // NOT via OpenSkyhawk.h — keeps U8g2 off switch-only nodes
-#include <A4EC_OutputIds.h>                     // A_4E_C_* addresses + _AM masks
+#include <DrumDisplay.h>          // separate lib — add file://../../Libraries/DrumDisplay to lib_deps
+#include <A4EC_OutputIds.h>       // A_4E_C_* addresses + _AM masks
 
 using namespace OpenSkyhawk;
 

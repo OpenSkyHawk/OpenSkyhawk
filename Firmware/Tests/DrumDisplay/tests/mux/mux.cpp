@@ -11,7 +11,7 @@
 #include <Wire.h>
 #include <math.h>
 #include <STM32Board.h>
-#include <Outputs/DrumDisplay/DrumDisplay.h>
+#include <DrumDisplay.h>
 #include <Helpers/I2cMux/I2cMux.h>
 #include <A4EC_OutputIds.h>
 

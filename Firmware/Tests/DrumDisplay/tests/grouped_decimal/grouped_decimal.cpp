@@ -8,7 +8,7 @@
 #include <Wire.h>
 #include <math.h>
 #include <STM32Board.h>
-#include <Outputs/DrumDisplay/DrumDisplay.h>
+#include <DrumDisplay.h>
 #include <A4EC_OutputIds.h>
 
 using namespace OpenSkyhawk;
