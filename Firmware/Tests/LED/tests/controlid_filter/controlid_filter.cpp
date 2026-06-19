@@ -8,7 +8,7 @@
 
 #include <Arduino.h>
 #include <STM32Board.h>
-#include <LED.h>
+#include <Outputs/LED.h>
 
 static constexpr uint8_t  TEST_PIN = PB0;
 static constexpr uint16_t CTRL_ID  = 0x1234;

@@ -5,7 +5,7 @@
 
 #ifdef ARDUINO_ARCH_STM32
 
-#include <Switch2Pos.h>
+#include "Switch2Pos.h"
 #include <CANProtocol.h>  // sendBatched, canIdEvt, ControlPacket
 #include <STM32Board.h>
 

@@ -11,7 +11,7 @@
 
 #include <Arduino.h>
 #include <STM32Board.h>
-#include <LED.h>
+#include <Outputs/LED.h>
 
 static constexpr uint8_t PIN_SOURCE = PB0;  // reverse=false LED
 static constexpr uint8_t PIN_SINK   = PB1;  // reverse=true  LED
