@@ -12,7 +12,7 @@
  * #include <Wire.h>
  * #include <MCP23017.h>
  * #include <PanelGroup.h>
- * #include <Outputs/LED.h>
+ * #include <Outputs/LED/LED.h>
  * #include <A4EC_OutputIds.h>
  *
  * MCP23017 exp1(0x20, Wire);

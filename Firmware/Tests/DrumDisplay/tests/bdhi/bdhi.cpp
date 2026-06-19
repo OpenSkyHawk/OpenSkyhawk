@@ -10,12 +10,26 @@
 #include <Wire.h>
 #include <math.h>
 #include <STM32Board.h>
-#include <Outputs/DrumDisplay.h>
-#include <A4EC_DrumReadouts.h>
+#include <Outputs/DrumDisplay/DrumDisplay.h>
+#include <A4EC_OutputIds.h>
 
 using namespace OpenSkyhawk;
 
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
+
+// Readout descriptor — defined in the sketch (panel wiring, like the PinRef map), not a global.
+static const DrumSource BDHI_DME_SRC[] = {
+    { A_4E_C_BDHI_DME_X00, A_4E_C_BDHI_DME_X00_AM, 1, 2 },
+    { A_4E_C_BDHI_DME_0X0, A_4E_C_BDHI_DME_0X0_AM, 1, 1 },
+    { A_4E_C_BDHI_DME_00X, A_4E_C_BDHI_DME_00X_AM, 1, 0 },
+};
+// BDHI DME validity flag — its own dedicated address (not a hemisphere dual-role).
+static const DrumReadout BDHI_DME = {
+    BDHI_DME_SRC, 3, 3, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
+    { true, A_4E_C_BDHI_DME_FLAG, A_4E_C_BDHI_DME_FLAG_AM, " M", 3, 5.5f },
+    DrumScroll::SNAP_SETTLE, 3.0f,
+};
+
 DrumDisplay bdhi(oled, BDHI_DME, DrumFont::LARGE);
 
 static bool pass = true;

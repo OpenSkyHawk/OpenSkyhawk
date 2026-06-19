@@ -11,7 +11,7 @@
 
 #include <Arduino.h>
 #include <STM32Board.h>
-#include <Outputs/LED.h>
+#include <Outputs/LED/LED.h>
 
 static constexpr uint8_t  PIN_SRC  = PB0;
 static constexpr uint8_t  PIN_SINK = PB1;

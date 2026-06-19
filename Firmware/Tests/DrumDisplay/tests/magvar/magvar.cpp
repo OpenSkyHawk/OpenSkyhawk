@@ -7,12 +7,28 @@
 #include <Wire.h>
 #include <math.h>
 #include <STM32Board.h>
-#include <Outputs/DrumDisplay.h>
-#include <A4EC_DrumReadouts.h>
+#include <Outputs/DrumDisplay/DrumDisplay.h>
+#include <A4EC_OutputIds.h>
 
 using namespace OpenSkyhawk;
 
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
+
+// Readout descriptor — defined in the sketch (panel wiring, like the PinRef map), not a global.
+static const DrumSource MAGVAR_SRC[] = {
+    { A_4E_C_ASN41_MAGVAR_X0000, A_4E_C_ASN41_MAGVAR_X0000_AM, 1, 4 },
+    { A_4E_C_ASN41_MAGVAR_0X000, A_4E_C_ASN41_MAGVAR_0X000_AM, 1, 3 },
+    { A_4E_C_ASN41_MAGVAR_00X00, A_4E_C_ASN41_MAGVAR_00X00_AM, 1, 2 },
+    { A_4E_C_ASN41_MAGVAR_000X0, A_4E_C_ASN41_MAGVAR_000X0_AM, 1, 1 },
+    { A_4E_C_ASN41_MAGVAR_0000X, A_4E_C_ASN41_MAGVAR_0000X_AM, 1, 0 },
+};
+// TODO(bench): rightmost source carries the ones digit and/or the E/W hemisphere — confirm.
+static const DrumReadout ASN41_MAGVAR = {
+    MAGVAR_SRC, 5, 5, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
+    { true, A_4E_C_ASN41_MAGVAR_0000X, A_4E_C_ASN41_MAGVAR_0000X_AM, "EW", 5, 5.5f },
+    DrumScroll::SNAP_SETTLE, 3.0f,
+};
+
 DrumDisplay magvar(oled, ASN41_MAGVAR, DrumFont::LARGE);
 
 static bool pass = true;

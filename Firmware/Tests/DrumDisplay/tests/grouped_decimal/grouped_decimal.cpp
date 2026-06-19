@@ -8,12 +8,28 @@
 #include <Wire.h>
 #include <math.h>
 #include <STM32Board.h>
-#include <Outputs/DrumDisplay.h>
-#include <A4EC_DrumReadouts.h>
+#include <Outputs/DrumDisplay/DrumDisplay.h>
+#include <A4EC_OutputIds.h>
 
 using namespace OpenSkyhawk;
 
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
+
+// Readout descriptor — defined in the sketch (panel wiring, like the PinRef map), not a global.
+// NN00 carries the top two digits (places 3,2); 00N0 the tens; 000N the ones. '.' after digit 2.
+static const DrumSource ALT_ADJ_SRC[] = {
+    { A_4E_C_ALT_ADJ_NN00, A_4E_C_ALT_ADJ_NN00_AM, 2, 2 },
+    { A_4E_C_ALT_ADJ_00N0, A_4E_C_ALT_ADJ_00N0_AM, 1, 1 },
+    { A_4E_C_ALT_ADJ_000N, A_4E_C_ALT_ADJ_000N_AM, 1, 0 },
+};
+static const DrumGlyph ALT_ADJ_DOT[] = {
+    { '.', 2, 1.8f },
+};
+static const DrumReadout ALT_ADJ = {
+    ALT_ADJ_SRC, 3, 4, 4.5f, 8.0f, 1.0f, 0.0f, 0, ALT_ADJ_DOT, 1,
+    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+};
+
 DrumDisplay alt(oled, ALT_ADJ, DrumFont::LARGE);
 
 static bool pass = true;

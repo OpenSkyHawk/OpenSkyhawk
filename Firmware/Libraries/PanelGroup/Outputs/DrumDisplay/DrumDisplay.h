@@ -28,7 +28,7 @@
 
 #include <PanelGroup.h>      // OutputBase
 #include <U8g2lib.h>
-#include <Helpers/I2cMux.h>
+#include <Helpers/I2cMux/I2cMux.h>
 
 namespace OpenSkyhawk {
 

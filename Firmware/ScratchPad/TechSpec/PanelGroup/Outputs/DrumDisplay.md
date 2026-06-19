@@ -33,17 +33,18 @@ things the prototype lacked: **DCS-BIOS address→digit decode**, **snap-then-se
 
 ```
 Firmware/Libraries/PanelGroup/
-├── Outputs/DrumDisplay.h
-├── Outputs/DrumDisplay.cpp
-└── Helpers/I2cMux.{h,cpp}          — TCA9548A selector (see Helpers/I2cMux.md)
-
-Firmware/Libraries/A4EC/
-└── A4EC_DrumReadouts.h             — A-4E DrumReadout descriptor tables (data only)
+├── Outputs/DrumDisplay/DrumDisplay.{h,cpp}   — this class
+└── Helpers/I2cMux/I2cMux.{h,cpp}             — TCA9548A selector (see Helpers/I2cMux.md)
 ```
 
-`DrumDisplay.h` is deliberately **not** included by `OpenSkyhawk.h` (the umbrella). Display nodes
-include `<Outputs/DrumDisplay.h>` explicitly, so switch-only nodes never reference U8g2 — keeping
-the U8g2 dependency off their flash image (measured Δ = 0 bytes).
+Each component lives in its own folder. `DrumDisplay.h` is deliberately **not** included by
+`OpenSkyhawk.h` (the umbrella). Display nodes include `<Outputs/DrumDisplay/DrumDisplay.h>`
+explicitly, so switch-only nodes never reference U8g2 — keeping the U8g2 dependency off their flash
+image (measured Δ = 0 bytes).
+
+**Readout descriptors** (`DrumReadout` tables) are **not** a shared header — each is defined in the
+sketch that drives that panel, alongside its `PinRef` / U8G2 wiring (see Sketch Usage). A node
+defines only the readouts it actually shows.
 
 ### Test project
 
@@ -73,10 +74,10 @@ for the on-hardware bench pass.
 ## Public API
 
 ```cpp
-// Outputs/DrumDisplay.h  (inside #ifdef ARDUINO_ARCH_STM32)
+// Outputs/DrumDisplay/DrumDisplay.h  (inside #ifdef ARDUINO_ARCH_STM32)
 #include <PanelGroup.h>      // OutputBase
 #include <U8g2lib.h>
-#include <Helpers/I2cMux.h>
+#include <Helpers/I2cMux/I2cMux.h>
 
 namespace OpenSkyhawk {
 
@@ -115,41 +116,51 @@ public:
 ```
 
 All addressing/masking uses the `A_4E_C_*` / `A_4E_C_*_AM` constants from `A4EC_OutputIds.h` —
-never raw hex. The A-4E descriptor tables live in `A4EC_DrumReadouts.h`.
+never raw hex. Each `DrumReadout` is defined in the sketch that drives the panel (panel wiring), not
+a shared global.
 
 ---
 
 ## Sketch Usage
 
+The readout descriptor is defined in the sketch, like the `PinRef` wiring map — a node defines only
+the readouts it drives.
+
 ```cpp
 #include <Wire.h>
 #include <PanelGroup.h>
-#include <Outputs/DrumDisplay.h>     // NOT via OpenSkyhawk.h — keeps U8g2 off switch-only nodes
-#include <Helpers/I2cMux.h>
-#include <A4EC_DrumReadouts.h>       // APN153_SPEED, NAV_CURPOS_LON, ASN41_MAGVAR, ALT_ADJ, …
+#include <Outputs/DrumDisplay/DrumDisplay.h>   // NOT via OpenSkyhawk.h — keeps U8g2 off switch-only nodes
+#include <A4EC_OutputIds.h>                     // A_4E_C_* addresses + _AM masks
+
+using namespace OpenSkyhawk;
+
+// ── readout descriptor (panel wiring, defined here, not a shared global) ──
+static const DrumSource SPEED_SRC[] = {
+    { A_4E_C_APN153_SPEED_X00, A_4E_C_APN153_SPEED_X00_AM, 1, 2 },
+    { A_4E_C_APN153_SPEED_0X0, A_4E_C_APN153_SPEED_0X0_AM, 1, 1 },
+    { A_4E_C_APN153_SPEED_00X, A_4E_C_APN153_SPEED_00X_AM, 1, 0 },
+};
+static const DrumReadout APN153_SPEED = {
+    SPEED_SRC, 3, 3, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
+    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+};
 
 // Sketch owns the concrete panel type, rotation, and Wire.
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oledSpeed(U8G2_R0, U8X8_PIN_NONE);
-
-// ── single panel ──
-OpenSkyhawk::DrumDisplay speed(oledSpeed, OpenSkyhawk::APN153_SPEED, OpenSkyhawk::DrumFont::LARGE);
-
-// ── several panels behind one TCA9548A ──
-OpenSkyhawk::I2cMux navMux(0x70, Wire);
-U8G2_SH1106_128X64_NONAME_F_HW_I2C oledLat(U8G2_R0, U8X8_PIN_NONE);
-U8G2_SH1106_128X64_NONAME_F_HW_I2C oledLon(U8G2_R0, U8X8_PIN_NONE);
-OpenSkyhawk::DrumDisplay lat(oledLat, OpenSkyhawk::NAV_CURPOS_LAT, navMux, /*channel*/ 0);
-OpenSkyhawk::DrumDisplay lon(oledLon, OpenSkyhawk::NAV_CURPOS_LON, navMux, /*channel*/ 1);
+DrumDisplay speed(oledSpeed, APN153_SPEED, DrumFont::LARGE);
 
 void setup() {
     Wire.setSCL(PB8); Wire.setSDA(PB9); Wire.begin();   // bus pins owned by the sketch
     oledSpeed.setI2CAddress(0x3C << 1); oledSpeed.begin();
-    oledLat.setI2CAddress(0x3C << 1);   oledLat.begin();
-    oledLon.setI2CAddress(0x3C << 1);   oledLon.begin();
     PanelGroup::setup();   // calls configure() on every DrumDisplay (auto-fits + blanks)
 }
 void loop() { PanelGroup::loop(); }   // dispatches CTRL_BCAST → onControlPacket; calls update()
 ```
+
+For several panels on one TCA9548A: `#include <Helpers/I2cMux/I2cMux.h>`, construct one
+`I2cMux navMux(0x70, Wire);`, and pass it + a channel to each ctor —
+`DrumDisplay lat(oledLat, LAT_READOUT, navMux, /*channel*/ 0);` — each re-selects its channel before
+every buffer send.
 
 ---
 
@@ -210,9 +221,9 @@ the wrong buffer. `I2cMux::select()` caches the last channel and skips redundant
 | PanelGroup | `Firmware/Libraries/PanelGroup` | OutputBase, dispatch; CTRL_BCAST handled by PanelGroup |
 | U8g2 | `olikraus/U8g2@^2.35` | Full-buffer driver; caller constructs the concrete type |
 | I2cMux | `PanelGroup/Helpers/I2cMux` | Optional TCA9548A selector for multi-panel nodes |
-| A4EC | `Firmware/Libraries/A4EC` | `A_4E_C_*` addresses/masks + `A4EC_DrumReadouts.h` tables |
+| A4EC | `Firmware/Libraries/A4EC` | `A_4E_C_*` addresses + `_AM` masks (`A4EC_OutputIds.h`); descriptors are per-sketch |
 
-### Bench-confirm TODOs (flagged in `A4EC_DrumReadouts.h`)
+### Bench-confirm TODOs (flagged on the sketch descriptors)
 
 - Hemisphere dual-role on the rightmost LAT/LON/MAGVAR source (digit vs N/S·E/W flag vs both).
 - ARC-51 manual selector split (which of `_10MHZ`/`_1MHZ`/`_50KHZ` carries what; linear vs packed).

@@ -12,7 +12,7 @@
 #pragma once
 #include <STM32Board.h>
 #include <PanelGroup.h>
-#include <Outputs/LED.h>
-#include <Inputs/Switch2Pos.h>
+#include <Outputs/LED/LED.h>
+#include <Inputs/Switch2Pos/Switch2Pos.h>
 #include <A4EC_CmdIds.h>
 #include <A4EC_OutputIds.h>

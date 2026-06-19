@@ -11,14 +11,35 @@
 #include <Wire.h>
 #include <math.h>
 #include <STM32Board.h>
-#include <Outputs/DrumDisplay.h>
-#include <Helpers/I2cMux.h>
-#include <A4EC_DrumReadouts.h>
+#include <Outputs/DrumDisplay/DrumDisplay.h>
+#include <Helpers/I2cMux/I2cMux.h>
+#include <A4EC_OutputIds.h>
 
 using namespace OpenSkyhawk;
 
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled0(U8G2_R0, U8X8_PIN_NONE);
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled1(U8G2_R0, U8X8_PIN_NONE);
+
+// Readout descriptors — defined in the sketch (panel wiring, like the PinRef map), not a global.
+static const DrumSource SPEED_SRC[] = {
+    { A_4E_C_APN153_SPEED_X00, A_4E_C_APN153_SPEED_X00_AM, 1, 2 },
+    { A_4E_C_APN153_SPEED_0X0, A_4E_C_APN153_SPEED_0X0_AM, 1, 1 },
+    { A_4E_C_APN153_SPEED_00X, A_4E_C_APN153_SPEED_00X_AM, 1, 0 },
+};
+static const DrumReadout APN153_SPEED = {
+    SPEED_SRC, 3, 3, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
+    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+};
+static const DrumSource BDHI_DME_SRC[] = {
+    { A_4E_C_BDHI_DME_X00, A_4E_C_BDHI_DME_X00_AM, 1, 2 },
+    { A_4E_C_BDHI_DME_0X0, A_4E_C_BDHI_DME_0X0_AM, 1, 1 },
+    { A_4E_C_BDHI_DME_00X, A_4E_C_BDHI_DME_00X_AM, 1, 0 },
+};
+static const DrumReadout BDHI_DME = {
+    BDHI_DME_SRC, 3, 3, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
+    { true, A_4E_C_BDHI_DME_FLAG, A_4E_C_BDHI_DME_FLAG_AM, " M", 3, 5.5f },
+    DrumScroll::SNAP_SETTLE, 3.0f,
+};
 
 I2cMux mux(0x70, Wire);
 DrumDisplay disp0(oled0, APN153_SPEED, mux, /*channel*/ 0, DrumFont::LARGE);

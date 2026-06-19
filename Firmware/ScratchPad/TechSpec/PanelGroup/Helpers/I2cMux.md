@@ -24,8 +24,7 @@ only routes SDA/SCL. `I2cMux` performs **no I²C in its constructor** and never 
 
 ```
 Firmware/Libraries/PanelGroup/
-├── Helpers/I2cMux.h
-└── Helpers/I2cMux.cpp
+└── Helpers/I2cMux/I2cMux.{h,cpp}
 ```
 
 Exercised by `Firmware/Tests/DrumDisplay/tests/mux/` (two panels on channels 0/1).
@@ -35,7 +34,7 @@ Exercised by `Firmware/Tests/DrumDisplay/tests/mux/` (two panels on channels 0/1
 ## Public API
 
 ```cpp
-// Helpers/I2cMux.h  (inside #ifdef ARDUINO_ARCH_STM32)
+// Helpers/I2cMux/I2cMux.h  (inside #ifdef ARDUINO_ARCH_STM32)
 namespace OpenSkyhawk {
 
 class I2cMux {

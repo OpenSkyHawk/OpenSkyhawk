@@ -10,14 +10,25 @@
 #include <Wire.h>
 #include <math.h>
 #include <STM32Board.h>
-#include <Outputs/DrumDisplay.h>
-#include <A4EC_DrumReadouts.h>
+#include <Outputs/DrumDisplay/DrumDisplay.h>
+#include <A4EC_OutputIds.h>
 
 using namespace OpenSkyhawk;
 
 // Full-buffer hardware-I2C SH1106. SSD1306 alternative on the line below.
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
 // U8G2_SSD1306_128X64_NONAME_F_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
+
+// Readout descriptor — defined in the sketch (panel wiring, like the PinRef map), not a global.
+static const DrumSource SPEED_SRC[] = {
+    { A_4E_C_APN153_SPEED_X00, A_4E_C_APN153_SPEED_X00_AM, 1, 2 },
+    { A_4E_C_APN153_SPEED_0X0, A_4E_C_APN153_SPEED_0X0_AM, 1, 1 },
+    { A_4E_C_APN153_SPEED_00X, A_4E_C_APN153_SPEED_00X_AM, 1, 0 },
+};
+static const DrumReadout APN153_SPEED = {
+    SPEED_SRC, 3, 3, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
+    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+};
 
 DrumDisplay speed(oled, APN153_SPEED, DrumFont::LARGE);
 

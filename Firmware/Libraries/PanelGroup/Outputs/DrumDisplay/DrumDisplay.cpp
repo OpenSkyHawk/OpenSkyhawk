@@ -64,7 +64,7 @@ long DrumDisplay::decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits) {
     long span = pow10l(nDigits) - 1;  // 1 digit → 9, 2 digits → 99
     // Whole-word sources (m == 0xFFFF) scale 0..65535 → 0..span. A low-justified bit field
     // scales 0..m → 0..span. Non-contiguous packed fields would need a right-shift first —
-    // none shipped; see the TODO(bench) notes in A4EC_DrumReadouts.h.
+    // none shipped; see the TODO(bench) notes on the sketch-defined descriptors.
     return lroundf(static_cast<float>(masked) / static_cast<float>(m) * static_cast<float>(span));
 }
 
