@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structOpenSkyhawk_1_1DrumSource" kind="struct" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::DrumSource</compoundname>
+    <includes refid="DrumDisplay_8h" local="no">DrumDisplay.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumSource_1a9cadaf8bef575f06ba037a05dbc03851" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::DrumSource::address</definition>
+        <argsstring></argsstring>
+        <name>address</name>
+        <qualifiedname>OpenSkyhawk::DrumSource::address</qualifiedname>
+        <briefdescription>
+<para>DCS-BIOS output address (A_4E_C_* from <ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="69" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumSource_1ae511fd77851f9e27ecd243c442eccf6e" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::DrumSource::mask</definition>
+        <argsstring></argsstring>
+        <name>mask</name>
+        <qualifiedname>OpenSkyhawk::DrumSource::mask</qualifiedname>
+        <briefdescription>
+<para>field mask (A_4E_C_*_AM); 0xFFFF for whole-word sources </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="70" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::DrumSource::nDigits</definition>
+        <argsstring></argsstring>
+        <name>nDigits</name>
+        <qualifiedname>OpenSkyhawk::DrumSource::nDigits</qualifiedname>
+        <briefdescription>
+<para>digits this address encodes (1 for APN153, 2 for ARC-51 groups) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="71" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::DrumSource::place</definition>
+        <argsstring></argsstring>
+        <name>place</name>
+        <qualifiedname>OpenSkyhawk::DrumSource::place</qualifiedname>
+        <briefdescription>
+<para>least-significant digit column this source writes (0 = rightmost) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="72" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>One DCS-BIOS digit source feeding a <ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="note"><para>Populate <computeroutput>address</computeroutput> / <computeroutput>mask</computeroutput> from the A_4E_C_* and A_4E_C_*_AM constants in <ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>. The masked value (0..mask) is scaled to nDigits decimal digits: digits = round((value &amp; mask) / mask * (10^nDigits − 1)); each of those nDigits digits is spliced into the readout&apos;s combined number starting at <computeroutput>place</computeroutput> (0 = least-significant column). </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="68" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="68" bodyend="73"/>
+    <listofallmembers>
+      <member refid="structOpenSkyhawk_1_1DrumSource_1a9cadaf8bef575f06ba037a05dbc03851" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>address</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumSource_1ae511fd77851f9e27ecd243c442eccf6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>mask</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>nDigits</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>place</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

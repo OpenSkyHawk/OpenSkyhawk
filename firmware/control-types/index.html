@@ -4046,9 +4046,10 @@ hardware. This page is the catalogue, with honest Phase status: most types are <
 not yet implemented</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Most control types are not implemented yet</p>
-<p>Only <strong>LED</strong> (output) and <strong>Switch2Pos</strong> (input), plus the <strong>PinRef</strong> abstraction, are
-implemented and hardware-verified (Phase 3). Everything marked <em>Phase 4</em> or <em>Phase 5</em>
-below is specified but <strong>not yet written</strong> — don't expect it to compile today.</p>
+<p>Implemented today: <strong>LED</strong> and <strong>DrumDisplay</strong> (outputs) and <strong>Switch2Pos</strong> (input), plus the
+<strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3); DrumDisplay
+is authored and compile-gated, with the on-hardware bench still pending. Everything marked
+<em>Phase 4</em> or <em>Phase 5</em> below is specified but <strong>not yet written</strong> — don't expect it to compile today.</p>
 </div>
 <h2 id="pinref-the-hardware-abstraction-implemented">PinRef — the hardware abstraction <em>(implemented)</em></h2>
 <p>Every input and output takes a <code>PinRef</code>, not a raw pin number. One interface over three
@@ -4180,6 +4181,11 @@ specified. Don't assume the API beyond <code>begin()</code> / <code>readAngle()<
 <td>GPIO pin driven from one bit of a DCS value</td>
 </tr>
 <tr>
+<td><code>DrumDisplay</code></td>
+<td><strong>Implemented</strong> (bench pending)</td>
+<td>OLED rolling-drum readout — multi-digit gauges (speed, lat/lon, frequency, range) + optional 2-state flag. Own library; pulls U8g2</td>
+</tr>
+<tr>
 <td><code>AnalogOutput</code></td>
 <td>Phase 5 — not started</td>
 <td>16-bit DCS value → PWM duty (backlighting)</td>
@@ -4217,6 +4223,14 @@ the old <code>_A</code> suffix. See <a href="../dcsbios-integration/">DCS-BIOS I
 <p>The <code>SwitecX25Output</code> / <code>AccelStepperOutput</code> motor driver IC is still being validated on
 the bench — don't document a specific driver part yet. See
 <a href="../../hardware/standards/">Hardware Standards</a> once written.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">DrumDisplay is a separate, opt-in library</p>
+<p><code>DrumDisplay</code> lives in <code>Firmware/Libraries/DrumDisplay/</code> (not PanelGroup) so the U8g2 OLED
+driver only lands on nodes that actually use a display — add <code>file://../../Libraries/DrumDisplay</code>
+to a sketch's <code>lib_deps</code> to use it. Each readout (its digit sources, geometry, and optional
+flag) is described by a <code>DrumReadout</code> defined in the sketch, like the <code>PinRef</code> wiring map.
+Many same-address OLEDs can share one bus behind a TCA9548A via the <code>I2cMux</code> helper.</p>
 </div>
 <h2 id="wiring-map-convention">Wiring map convention</h2>
 <p><code>PinRef</code> bit positions and mask values must be <strong>named constants</strong>, never inline literals.

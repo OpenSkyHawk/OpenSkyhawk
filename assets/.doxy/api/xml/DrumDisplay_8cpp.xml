@@ -1,0 +1,443 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="DrumDisplay_8cpp" kind="file" language="C++">
+    <compoundname>DrumDisplay.cpp</compoundname>
+    <includes refid="DrumDisplay_8h" local="yes">DrumDisplay.h</includes>
+    <includes local="no">math.h</includes>
+    <includes local="no">string.h</includes>
+    <incdepgraph>
+      <node id="10">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
+        <link refid="DrumDisplay_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>DrumDisplay.h</label>
+        <link refid="DrumDisplay_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="7">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Helpers/I2cMux/I2cMux.h</label>
+        <link refid="I2cMux_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+      <node id="4">
+        <label>Arduino.h</label>
+      </node>
+      <node id="6">
+        <label>MCP23017.h</label>
+      </node>
+      <node id="13">
+        <label>U8g2lib.h</label>
+      </node>
+      <node id="5">
+        <label>Wire.h</label>
+      </node>
+      <node id="15">
+        <label>math.h</label>
+      </node>
+      <node id="11">
+        <label>stdint.h</label>
+      </node>
+      <node id="16">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE</para>
+</simplesect>
+Renderer (drawTape / drawFlag / per-place ease / per-cell clip) ported from the bench-verified SH1106 prototype. The class adds three things the prototype lacked: DCS-BIOS address→digit decode (onControlPacket), snap-then-settle (update), and descriptor-driven geometry auto-fit (fitGeometry) that replaces the prototype&apos;s hardcoded PX_PER_MM / COLW / GAP / FLAGW / CELLH constants. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="DrumDisplay_8h" kindref="compound">DrumDisplay.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;math.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="namespaceOpenSkyhawk" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tuning<sp/>constants<sp/>(mirror<sp/>the<sp/>prototype:<sp/>0.30<sp/>ease,<sp/>~60<sp/>fps<sp/>gate).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" kindref="member">EASE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0.30f;<sp/><sp/></highlight><highlight class="comment">//<sp/>per-frame<sp/>ease<sp/>factor<sp/>(0..1);<sp/>lower<sp/>=<sp/>slower<sp/>roll</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1ad718667155d85fa62e6eff912a9c002f" kindref="member">FRAME_MS</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>16;<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>~60<sp/>fps<sp/>render<sp/>gate</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" kindref="member">SETTLE_EPS</ref><sp/><sp/><sp/>=<sp/>0.02f;<sp/><sp/></highlight><highlight class="comment">//<sp/>|target-pos|<sp/>below<sp/>which<sp/>a<sp/>place<sp/>is<sp/>&quot;settled&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a20ab3f82aea59d65d67346cb3542d27f" kindref="member">SNAP_LANDING</ref><sp/>=<sp/>1.5f;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>on<sp/>a<sp/>big<sp/>jump,<sp/>land<sp/>this<sp/>many<sp/>digits<sp/>shy<sp/>of<sp/>target</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" kindref="member">PX_PER_MM</ref><sp/><sp/><sp/><sp/>=<sp/>4.35f;<sp/><sp/></highlight><highlight class="comment">//<sp/>nominal<sp/>scale<sp/>(bench<sp/>value);<sp/>auto-shrink<sp/>corrects<sp/>it</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Cell<sp/>kinds<sp/>stored<sp/>in<sp/>_cellKind[].</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1ae47c2dbd6ff64b6c51b12e1f5f0fdbbc" kindref="member">KIND_DIGIT</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1af33b156d05d4b3feb480939b4e3b691d" kindref="member">KIND_GLYPH</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1a0d81fd69344bd8c88c2edb048f966b47" kindref="member">KIND_FLAG</ref><sp/><sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kindref="member">pow10l</ref>(uint8_t<sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(n--)<sp/>r<sp/>*=<sp/>10;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>construction<sp/>──────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1DrumDisplay_1a5dd925c4ef3442260cee87688ef08cc5" kindref="member">DrumDisplay::DrumDisplay</ref>(U8G2&amp;<sp/>oled,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref>&amp;<sp/>readout,</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref><sp/>font,<sp/>int16_t<sp/>xOffsetPx,<sp/>int16_t<sp/>yOffsetPx)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_oled(&amp;oled),<sp/>_r(&amp;readout),<sp/>_mux(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">),<sp/>_channel(0),<sp/>_font(font),</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_xOff(xOffsetPx),<sp/>_yOff(yOffsetPx),</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_target(0),<sp/>_flagTarget(0),<sp/>_dirty(</highlight><highlight class="keyword">false</highlight><highlight class="normal">),<sp/>_hasState(</highlight><highlight class="keyword">false</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_flagPos(0.0f),</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_geomDirty(</highlight><highlight class="keyword">false</highlight><highlight class="normal">),<sp/>_colW(0),<sp/>_cellH(0),<sp/>_gap(0),<sp/>_flagW(0),<sp/>_cy(0),</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_nCells(0),<sp/>_lastFrameMs(0)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>6;<sp/>i++)<sp/>_pos[i]<sp/>=<sp/>0.0f;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1DrumDisplay_1a5dd925c4ef3442260cee87688ef08cc5" kindref="member">DrumDisplay::DrumDisplay</ref>(U8G2&amp;<sp/>oled,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref>&amp;<sp/>readout,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1I2cMux" kindref="compound">I2cMux</ref>&amp;<sp/>mux,<sp/>uint8_t<sp/>channel,</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref><sp/>font,<sp/>int16_t<sp/>xOffsetPx,<sp/>int16_t<sp/>yOffsetPx)</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="classOpenSkyhawk_1_1DrumDisplay" kindref="compound">DrumDisplay</ref>(oled,<sp/>readout,<sp/>font,<sp/>xOffsetPx,<sp/>yOffsetPx)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>_mux<sp/><sp/><sp/><sp/><sp/>=<sp/>&amp;mux;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>_channel<sp/>=<sp/>channel;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>decode<sp/>helpers<sp/>────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>DrumDisplay::decodeDigits(uint16_t<sp/>value,<sp/>uint16_t<sp/>mask,<sp/>uint8_t<sp/>nDigits)<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>m<sp/>=<sp/>mask<sp/>?<sp/>mask<sp/>:<sp/>0xFFFF;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>masked<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">uint32_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(value<sp/>&amp;<sp/>m);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>span<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kindref="member">pow10l</ref>(nDigits)<sp/>-<sp/>1;<sp/><sp/></highlight><highlight class="comment">//<sp/>1<sp/>digit<sp/>→<sp/>9,<sp/>2<sp/>digits<sp/>→<sp/>99</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Whole-word<sp/>sources<sp/>(m<sp/>==<sp/>0xFFFF)<sp/>scale<sp/>0..65535<sp/>→<sp/>0..span.<sp/>A<sp/>low-justified<sp/>bit<sp/>field</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>scales<sp/>0..m<sp/>→<sp/>0..span.<sp/>Non-contiguous<sp/>packed<sp/>fields<sp/>would<sp/>need<sp/>a<sp/>right-shift<sp/>first<sp/>—</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>none<sp/>shipped;<sp/>see<sp/>the<sp/>TODO(bench)<sp/>notes<sp/>on<sp/>the<sp/>sketch-defined<sp/>descriptors.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lroundf(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(masked)<sp/>/<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(m)<sp/>*<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(span));</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>onControlPacket<sp/>—<sp/>decode<sp/>+<sp/>splice<sp/>+<sp/>mark<sp/>dirty;<sp/>NEVER<sp/>draws<sp/>────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb" kindref="member">DrumDisplay::onControlPacket</ref>(uint16_t<sp/>controlId,<sp/>uint16_t<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Flag<sp/>source?<sp/>(A<sp/>source<sp/>may<sp/>be<sp/>BOTH<sp/>a<sp/>digit<sp/>and<sp/>the<sp/>flag<sp/>—<sp/>NAV<sp/>hemisphere<sp/>dual-role<sp/>—</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>so<sp/>this<sp/>does<sp/>not<sp/>early-return;<sp/>the<sp/>digit<sp/>loop<sp/>below<sp/>still<sp/>runs<sp/>for<sp/>the<sp/>same<sp/>address.)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" kindref="member">enabled</ref><sp/>&amp;&amp;<sp/>controlId<sp/>==<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a05bff3332e1abb724e58de93edb85115" kindref="member">address</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/>m<sp/>=<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a3498630538978436a1a0682dfcd2a7be" kindref="member">mask</ref><sp/>?<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a3498630538978436a1a0682dfcd2a7be" kindref="member">mask</ref><sp/>:<sp/>0xFFFF;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t<sp/>masked<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">uint32_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(value<sp/>&amp;<sp/>m);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nFaces<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(strlen(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a343181be9f2742ce131d31862e0e63b8" kindref="member">faces</ref>));</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nFaces<sp/>&lt;<sp/>1)<sp/>nFaces<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>face<sp/>=<sp/>(m<sp/>==<sp/>0xFFFF)</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>?<sp/>lroundf(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(masked)<sp/>/<sp/>65535.0f<sp/>*<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(nFaces<sp/>-<sp/>1))</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>(masked<sp/>?<sp/>(nFaces<sp/>-<sp/>1)<sp/>:<sp/>0);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_hasState<sp/>||<sp/>face<sp/>!=<sp/>_flagTarget)<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_flagTarget<sp/>=<sp/>face;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_dirty<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hasState<sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Digit<sp/>source(s)?<sp/>Scan<sp/>ALL<sp/>sources,<sp/>not<sp/>just<sp/>the<sp/>first<sp/>match<sp/>—<sp/>two<sp/>sources<sp/>may<sp/>share<sp/>one</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>address<sp/>with<sp/>different<sp/>masks<sp/>(e.g.<sp/>ARC-51<sp/>10<sp/>MHz<sp/>+<sp/>1<sp/>MHz<sp/>both<sp/>at<sp/>0x853a,<sp/>mask-separated).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a146224ae8ee664eb18111c478624ea11" kindref="member">nSources</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1DrumSource" kindref="compound">DrumSource</ref>&amp;<sp/>s<sp/>=<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1acd2b3f30f7bd53a15049c87fb3253703" kindref="member">sources</ref>[i];</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(controlId<sp/>!=<sp/>s.<ref refid="structOpenSkyhawk_1_1DrumSource_1a9cadaf8bef575f06ba037a05dbc03851" kindref="member">address</ref>)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>part<sp/><sp/><sp/><sp/><sp/>=<sp/>decodeDigits(value,<sp/>s.<ref refid="structOpenSkyhawk_1_1DrumSource_1ae511fd77851f9e27ecd243c442eccf6e" kindref="member">mask</ref>,<sp/>s.<ref refid="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" kindref="member">nDigits</ref>);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>lo<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kindref="member">pow10l</ref>(s.<ref refid="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" kindref="member">place</ref>);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>weight<sp/>of<sp/>the<sp/>low<sp/>column<sp/>of<sp/>this<sp/>field</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>hi<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kindref="member">pow10l</ref>(s.<ref refid="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" kindref="member">place</ref><sp/>+<sp/>s.<ref refid="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" kindref="member">nDigits</ref>);<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>weight<sp/>just<sp/>above<sp/>the<sp/>field</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>keepHigh<sp/>=<sp/>(_target<sp/>/<sp/>hi)<sp/>*<sp/>hi;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>digits<sp/>above<sp/>the<sp/>field</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>keepLow<sp/><sp/>=<sp/>_target<sp/>%<sp/>lo;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>digits<sp/>below<sp/>the<sp/>field</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>spliced<sp/><sp/>=<sp/>keepHigh<sp/>+<sp/>part<sp/>*<sp/>lo<sp/>+<sp/>keepLow;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_hasState<sp/>||<sp/>spliced<sp/>!=<sp/>_target)<sp/>{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_target<sp/><sp/><sp/>=<sp/>spliced;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_dirty<sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hasState<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>configure<sp/>—<sp/>auto-fit<sp/>geometry,<sp/>blank<sp/>───────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798" kindref="member">DrumDisplay::configure</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_mux)<sp/>_mux-&gt;<ref refid="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" kindref="member">select</ref>(_channel);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;setFont(fontPtr());</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;setFontPosCenter();</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>fitGeometry();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;clearBuffer();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;sendBuffer();<sp/><sp/></highlight><highlight class="comment">//<sp/>blank<sp/>until<sp/>the<sp/>first<sp/>packet<sp/>arrives<sp/>(_hasState<sp/>stays<sp/>false)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>fitGeometry<sp/>—<sp/>descriptor<sp/>mm<sp/>+<sp/>font<sp/>+<sp/>offset<sp/>→<sp/>px<sp/>(replaces<sp/>hardcoded<sp/>consts)<sp/>─</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>DrumDisplay::fitGeometry()<sp/>{</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>W<sp/>=<sp/>_oled-&gt;getDisplayWidth();</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>H<sp/>=<sp/>_oled-&gt;getDisplayHeight();</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>colW<sp/><sp/>=<sp/>lroundf(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1af97e749c5f7beb5ae5e6ab1ecbc93fb0" kindref="member">digitWidthMm</ref><sp/><sp/><sp/><sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" kindref="member">PX_PER_MM</ref>);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>gap<sp/><sp/><sp/>=<sp/>lroundf(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae10bfcdf1fa23ee739c02eb8c46f04fc" kindref="member">interDigitGapMm</ref><sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" kindref="member">PX_PER_MM</ref>);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>grpG<sp/><sp/>=<sp/>lroundf(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a3b1012e4b4dcc08dbbb752edf85fc994" kindref="member">groupGapMm</ref><sp/><sp/><sp/><sp/><sp/><sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" kindref="member">PX_PER_MM</ref>);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cellH<sp/>=<sp/>lroundf(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a2ee8e00f5857d9737bd97b9e526ef502" kindref="member">digitHeightMm</ref><sp/><sp/><sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" kindref="member">PX_PER_MM</ref>);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flagW<sp/>=<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" kindref="member">enabled</ref><sp/>?<sp/>lroundf(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a6b58a6a60500993eb14a29a8d12c9984" kindref="member">widthMm</ref><sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" kindref="member">PX_PER_MM</ref>)<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Build<sp/>the<sp/>ordered<sp/>visual-cell<sp/>list<sp/>left→right:<sp/>digits<sp/>(leftmost<sp/>=<sp/>highest<sp/>place),</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>glyphs<sp/>at<sp/>their<sp/>afterCol,<sp/>the<sp/>flag<sp/>at<sp/>its<sp/>atVisualCol.<sp/>extraGap[]<sp/>carries<sp/>group<sp/>gaps.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>kinds[MAX_CELLS];</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/>datas[MAX_CELLS];</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/>widths[MAX_CELLS];</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/>extraGap[MAX_CELLS];</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>n<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>c<sp/>=<sp/>0;<sp/>c<sp/>&lt;=<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a4831f8bc5787e19668a747f68d869083" kindref="member">nDigits</ref><sp/>&amp;&amp;<sp/>n<sp/>&lt;<sp/>MAX_CELLS;<sp/>c++)<sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>g<sp/>=<sp/>0;<sp/>g<sp/>&lt;<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1adbcc53ec978c88d90875f7db36907d1e" kindref="member">nGlyphs</ref><sp/>&amp;&amp;<sp/>n<sp/>&lt;<sp/>MAX_CELLS;<sp/>g++)<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1afdf113785bfae62139036dca602aedfc" kindref="member">glyphs</ref>[g].<ref refid="structOpenSkyhawk_1_1DrumGlyph_1a8345037fce06fec4590eccac2cf72b10" kindref="member">afterCol</ref><sp/>==<sp/>c)<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>kinds[n]<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1af33b156d05d4b3feb480939b4e3b691d" kindref="member">KIND_GLYPH</ref>;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>datas[n]<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(g);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>widths[n]<sp/>=<sp/>lroundf(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1afdf113785bfae62139036dca602aedfc" kindref="member">glyphs</ref>[g].<ref refid="structOpenSkyhawk_1_1DrumGlyph_1a503f97bf7a076e57af4b382ce6b24412" kindref="member">widthMm</ref><sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" kindref="member">PX_PER_MM</ref>);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>extraGap[n]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n++;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" kindref="member">enabled</ref><sp/>&amp;&amp;<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1acd9ba5184fb1baf9019affff39f9a7c1" kindref="member">atVisualCol</ref><sp/>==<sp/>c<sp/>&amp;&amp;<sp/>n<sp/>&lt;<sp/>MAX_CELLS)<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>kinds[n]<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a0d81fd69344bd8c88c2edb048f966b47" kindref="member">KIND_FLAG</ref>;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>datas[n]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>widths[n]<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(flagW);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>extraGap[n]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n++;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(c<sp/>&lt;<sp/>_r-&gt;nDigits<sp/>&amp;&amp;<sp/>n<sp/>&lt;<sp/>MAX_CELLS)<sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>kinds[n]<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1ae47c2dbd6ff64b6c51b12e1f5f0fdbbc" kindref="member">KIND_DIGIT</ref>;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>datas[n]<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a4831f8bc5787e19668a747f68d869083" kindref="member">nDigits</ref><sp/>-<sp/>1<sp/>-<sp/>c);<sp/><sp/></highlight><highlight class="comment">//<sp/>visual<sp/>L→R,<sp/>leftmost<sp/>=<sp/>top<sp/>place</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>widths[n]<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(colW);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>grpBoundary<sp/>=<sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a460b286071b0ef933198be42cc779564" kindref="member">groupSize</ref><sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>c<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>(c<sp/>%<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a460b286071b0ef933198be42cc779564" kindref="member">groupSize</ref>)<sp/>==<sp/>0);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>extraGap[n]<sp/>=<sp/>grpBoundary<sp/>?<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(grpG)<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n++;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Total<sp/>laid-out<sp/>width:<sp/>cells<sp/>+<sp/>inter-cell<sp/>gaps<sp/>+<sp/>group<sp/>gaps.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>totalW<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>totalW<sp/>+=<sp/>widths[i];</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>&gt;<sp/>0)<sp/>totalW<sp/>+=<sp/>gap;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>totalW<sp/>+=<sp/>extraGap[i];</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Auto-shrink<sp/>if<sp/>the<sp/>row<sp/>is<sp/>wider<sp/>than<sp/>the<sp/>panel<sp/>(the<sp/>prototype&apos;s<sp/>&quot;won&apos;t<sp/>fit&quot;<sp/>note,<sp/>real).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(totalW<sp/>&gt;<sp/>W<sp/>&amp;&amp;<sp/>totalW<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>k<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(W)<sp/>/<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(totalW);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>colW<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(floorf(colW<sp/>*<sp/>k));</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gap<sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(floorf(gap<sp/>*<sp/>k));</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>flagW<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(floorf(flagW<sp/>*<sp/>k));</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>widths[i]<sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(floorf(widths[i]<sp/>*<sp/>k));</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>extraGap[i]<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(floorf(extraGap[i]<sp/>*<sp/>k));</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>totalW<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>totalW<sp/>+=<sp/>widths[i];</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>&gt;<sp/>0)<sp/>totalW<sp/>+=<sp/>gap;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>totalW<sp/>+=<sp/>extraGap[i];</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cellH<sp/>&gt;<sp/>H)<sp/>cellH<sp/>=<sp/>H;<sp/><sp/></highlight><highlight class="comment">//<sp/>clamp<sp/>roll<sp/>window<sp/>to<sp/>short<sp/>panels<sp/>(128x32)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x0<sp/>=<sp/>(W<sp/>-<sp/>totalW)<sp/>/<sp/>2<sp/>+<sp/>_xOff;<sp/><sp/></highlight><highlight class="comment">//<sp/>centre<sp/>the<sp/>row,<sp/>then<sp/>apply<sp/>registration<sp/>offset</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>_cy<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(H<sp/>/<sp/>2<sp/>+<sp/>_yOff);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x<sp/>=<sp/>x0;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>&gt;<sp/>0)<sp/>x<sp/>+=<sp/>gap;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x<sp/>+=<sp/>extraGap[i];</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_cellX[i]<sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(x);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_cellW[i]<sp/><sp/><sp/><sp/>=<sp/>widths[i];</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_cellKind[i]<sp/>=<sp/>kinds[i];</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_cellData[i]<sp/>=<sp/>datas[i];</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x<sp/>+=<sp/>widths[i];</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>_nCells<sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>_colW<sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(colW);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>_cellH<sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(cellH);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>_gap<sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(gap);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>_flagW<sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(flagW);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>_geomDirty<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="215"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>ported<sp/>renderers<sp/>(cell<sp/>width<sp/>passed<sp/>in,<sp/>not<sp/>a<sp/>global)<sp/>──────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>DrumDisplay::drawTape(int16_t<sp/>cx,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>p,<sp/>int16_t<sp/>w)<sp/>{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>lroundf(p);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>c<sp/>-<sp/>1;<sp/>k<sp/>&lt;=<sp/>c<sp/>+<sp/>1;<sp/>k++)<sp/>{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>glyph<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(((k<sp/>%<sp/>10)<sp/>+<sp/>10)<sp/>%<sp/>10);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>s[2]<sp/>=<sp/>{<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">char</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(</highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal"><sp/>+<sp/>glyph),<sp/>0<sp/>};</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>gx<sp/>=<sp/>cx<sp/>+<sp/>(w<sp/>-<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_oled-&gt;getStrWidth(s)))<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y<sp/><sp/>=<sp/>_cy<sp/>+<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(lroundf((</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(k)<sp/>-<sp/>p)<sp/>*<sp/>_cellH));</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_oled-&gt;drawStr(gx,<sp/>y,<sp/>s);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="228"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>DrumDisplay::drawFlag(int16_t<sp/>cx,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>p,<sp/>int16_t<sp/>w)<sp/>{</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nF<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(strlen(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a343181be9f2742ce131d31862e0e63b8" kindref="member">faces</ref>));</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nF<sp/>&lt;<sp/>1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>lroundf(p);</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>c<sp/>-<sp/>1;<sp/>k<sp/>&lt;=<sp/>c<sp/>+<sp/>1;<sp/>k++)<sp/>{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(((k<sp/>%<sp/>nF)<sp/>+<sp/>nF)<sp/>%<sp/>nF);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>s[2]<sp/>=<sp/>{<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a343181be9f2742ce131d31862e0e63b8" kindref="member">faces</ref>[idx],<sp/>0<sp/>};</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>gx<sp/>=<sp/>cx<sp/>+<sp/>(w<sp/>-<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_oled-&gt;getStrWidth(s)))<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y<sp/><sp/>=<sp/>_cy<sp/>+<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(lroundf((</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(k)<sp/>-<sp/>p)<sp/>*<sp/>_cellH));</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_oled-&gt;drawStr(gx,<sp/>y,<sp/>s);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="241"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>update<sp/>—<sp/>frame<sp/>gate<sp/>+<sp/>idle<sp/>skip<sp/>+<sp/>ease/snap<sp/>+<sp/>render<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" kindref="member">DrumDisplay::update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_hasState)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>nothing<sp/>received<sp/>yet<sp/>→<sp/>stay<sp/>blank</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(now<sp/>-<sp/>_lastFrameMs<sp/>&lt;<sp/><ref refid="namespaceOpenSkyhawk_1ad718667155d85fa62e6eff912a9c002f" kindref="member">FRAME_MS</ref>)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>~60<sp/>fps<sp/>gate</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(settled()<sp/>&amp;&amp;<sp/>!_dirty)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>idle<sp/>skip:<sp/>no<sp/>I2C<sp/>when<sp/>nothing<sp/>moves</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastFrameMs<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_geomDirty)<sp/>{</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_oled-&gt;setFont(fontPtr());</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_oled-&gt;setFontPosCenter();</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fitGeometry();</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Ease<sp/>each<sp/>place<sp/>toward<sp/>target/10^place,<sp/>with<sp/>SNAP_SETTLE<sp/>jump<sp/>handling.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>place<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a4831f8bc5787e19668a747f68d869083" kindref="member">nDigits</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>step<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_target<sp/>/<sp/>place);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a308a5bb65069fa55d95a31d076552e86" kindref="member">scroll</ref><sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2a30caab24267e24dedc4c258772a4d8d5" kindref="member">DrumScroll::SNAP_SETTLE</ref><sp/>&amp;&amp;<sp/>fabsf(step<sp/>-<sp/>_pos[i])<sp/>&gt;<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a3c70cb831828a9e1980e0f6e2e122a87" kindref="member">snapThreshold</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_pos[i]<sp/>=<sp/>step<sp/>-<sp/>copysignf(<ref refid="namespaceOpenSkyhawk_1a20ab3f82aea59d65d67346cb3542d27f" kindref="member">SNAP_LANDING</ref>,<sp/>step<sp/>-<sp/>_pos[i]);<sp/><sp/></highlight><highlight class="comment">//<sp/>land<sp/>just<sp/>shy,<sp/>same<sp/>direction</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_pos[i]<sp/>+=<sp/>(step<sp/>-<sp/>_pos[i])<sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" kindref="member">EASE</ref>;</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>place<sp/>*=<sp/>10;</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" kindref="member">enabled</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>ft<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_flagTarget);</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a308a5bb65069fa55d95a31d076552e86" kindref="member">scroll</ref><sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2a30caab24267e24dedc4c258772a4d8d5" kindref="member">DrumScroll::SNAP_SETTLE</ref><sp/>&amp;&amp;<sp/>fabsf(ft<sp/>-<sp/>_flagPos)<sp/>&gt;<sp/>1.0f)<sp/>{</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_flagPos<sp/>=<sp/>ft<sp/>-<sp/>copysignf(0.9f,<sp/>ft<sp/>-<sp/>_flagPos);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_flagPos<sp/>+=<sp/>(ft<sp/>-<sp/>_flagPos)<sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" kindref="member">EASE</ref>;</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/>_dirty<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Render<sp/>(select<sp/>mux<sp/>first;<sp/>full-buffer;<sp/>per-cell<sp/>clip;<sp/>one<sp/>sendBuffer).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_mux)<sp/>_mux-&gt;<ref refid="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" kindref="member">select</ref>(_channel);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;clearBuffer();</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;setFont(fontPtr());</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;setFontPosCenter();</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>ci<sp/>=<sp/>0;<sp/>ci<sp/>&lt;<sp/>_nCells;<sp/>ci++)<sp/>{</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int16_t<sp/>cx<sp/>=<sp/>_cellX[ci];</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int16_t<sp/>w<sp/><sp/>=<sp/>_cellW[ci];</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_oled-&gt;setClipWindow(cx,<sp/>_cy<sp/>-<sp/>_cellH<sp/>/<sp/>2,<sp/>cx<sp/>+<sp/>w,<sp/>_cy<sp/>+<sp/>_cellH<sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cellKind[ci]<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1ae47c2dbd6ff64b6c51b12e1f5f0fdbbc" kindref="member">KIND_DIGIT</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>drawTape(cx,<sp/>_pos[_cellData[ci]],<sp/>w);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cellKind[ci]<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1af33b156d05d4b3feb480939b4e3b691d" kindref="member">KIND_GLYPH</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1DrumGlyph" kindref="compound">DrumGlyph</ref>&amp;<sp/>g<sp/>=<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1afdf113785bfae62139036dca602aedfc" kindref="member">glyphs</ref>[_cellData[ci]];</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>s[2]<sp/>=<sp/>{<sp/>g.<ref refid="structOpenSkyhawk_1_1DrumGlyph_1a939c37034cee0b9076d09160e32a7385" kindref="member">ch</ref>,<sp/>0<sp/>};</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>gx<sp/>=<sp/>cx<sp/>+<sp/>(w<sp/>-<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_oled-&gt;getStrWidth(s)))<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_oled-&gt;drawStr(gx,<sp/>_cy,<sp/>s);<sp/><sp/></highlight><highlight class="comment">//<sp/>static<sp/>glyph:<sp/>centred,<sp/>no<sp/>tape</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">//<sp/>KIND_FLAG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>drawFlag(cx,<sp/>_flagPos,<sp/>w);</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;setMaxClipWindow();</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/>_oled-&gt;sendBuffer();<sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>one<sp/>expensive<sp/>I2C<sp/>op</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>runtime<sp/>setters<sp/>────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1DrumDisplay_1ab15d2fb278c66698cac2217425362c64" kindref="member">DrumDisplay::setFontSize</ref>(<ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref><sp/>font)<sp/>{</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/>_font<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>font;</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/>_geomDirty<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"></highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1DrumDisplay_1a70f334da66bdd81dbe6ec043815f6b0c" kindref="member">DrumDisplay::setOffset</ref>(int16_t<sp/>xOffsetPx,<sp/>int16_t<sp/>yOffsetPx)<sp/>{</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>_xOff<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>xOffsetPx;</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/>_yOff<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>yOffsetPx;</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/>_geomDirty<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="312"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>small<sp/>helpers<sp/>──────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"></highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>DrumDisplay::settled()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>place<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1a4831f8bc5787e19668a747f68d869083" kindref="member">nDigits</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fabsf(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_target<sp/>/<sp/>place)<sp/>-<sp/>_pos[i])<sp/>&gt;<sp/><ref refid="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" kindref="member">SETTLE_EPS</ref>)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>place<sp/>*=<sp/>10;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_r-&gt;<ref refid="structOpenSkyhawk_1_1DrumReadout_1ae4582ffb94cb95fae53e5e48ba5beb4a" kindref="member">flag</ref>.<ref refid="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" kindref="member">enabled</ref><sp/>&amp;&amp;<sp/>fabsf(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">float</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_flagTarget)<sp/>-<sp/>_flagPos)<sp/>&gt;<sp/><ref refid="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" kindref="member">SETTLE_EPS</ref>)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="324"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>DrumDisplay::fontPtr()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_font<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5a71726adf0ff60cd03eaf3c515883eeb8" kindref="member">DrumFont::LARGE</ref><sp/>?<sp/>u8g2_font_profont29_mr<sp/>:<sp/>u8g2_font_profont22_mr;</highlight></codeline>
+<codeline lineno="328"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DRUMDISPLAY_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal">int16_t<sp/>DrumDisplay::debugRowWidth()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_nCells<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">int16_t</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_cellX[_nCells<sp/>-<sp/>1]<sp/>+<sp/>_cellW[_nCells<sp/>-<sp/>1]<sp/>-<sp/>_cellX[0]);</highlight></codeline>
+<codeline lineno="334"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp"/>
+  </compounddef>
+</doxygen>

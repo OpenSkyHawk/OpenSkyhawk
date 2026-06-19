@@ -2,17 +2,235 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="namespaceOpenSkyhawk" kind="namespace" language="C++">
     <compoundname>OpenSkyhawk</compoundname>
+    <innerclass refid="classOpenSkyhawk_1_1DrumDisplay" prot="public">OpenSkyhawk::DrumDisplay</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1DrumFlag" prot="public">OpenSkyhawk::DrumFlag</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1DrumGlyph" prot="public">OpenSkyhawk::DrumGlyph</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1DrumReadout" prot="public">OpenSkyhawk::DrumReadout</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1DrumSource" prot="public">OpenSkyhawk::DrumSource</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1HIDAxis" prot="public">OpenSkyhawk::HIDAxis</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1HIDButton" prot="public">OpenSkyhawk::HIDButton</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1HIDHatSwitch" prot="public">OpenSkyhawk::HIDHatSwitch</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1I2cMux" prot="public">OpenSkyhawk::I2cMux</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1InputBase" prot="public">OpenSkyhawk::InputBase</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1LED" prot="public">OpenSkyhawk::LED</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1OutputBase" prot="public">OpenSkyhawk::OutputBase</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1Switch2Pos" prot="public">OpenSkyhawk::Switch2Pos</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>DrumFont</name>
+        <qualifiedname>OpenSkyhawk::DrumFont</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5a9b9c17e13f0e3dc9860a26e08b59b2a7" prot="public">
+          <name>SMALL</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+<para>u8g2_font_profont22_mr (~22 px tall) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5a71726adf0ff60cd03eaf3c515883eeb8" prot="public">
+          <name>LARGE</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>u8g2_font_profont29_mr (~29 px tall) — default </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Glyph font size. Maps to a fixed monospace ProFont face. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>SMALL = u8g2_font_profont22_mr, LARGE = u8g2_font_profont29_mr (mono, ASCII). Mono guarantees the flag glyph (&apos;N&apos;/&apos;S&apos;/&apos;E&apos;/&apos;W&apos;) is no wider than a digit cell. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="42" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="42" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>DrumScroll</name>
+        <qualifiedname>OpenSkyhawk::DrumScroll</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2a878f5f0b1463a602d91a6c98fb903bac" prot="public">
+          <name>EASE_ONLY</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+<para>pure cascade ease (prototype behaviour) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad23ddefc56dd746097ae553ded3a1a2a30caab24267e24dedc4c258772a4d8d5" prot="public">
+          <name>SNAP_SETTLE</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>snap near target on large jumps, then ease the last bit — default </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Scroll behaviour per readout. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>SNAP_SETTLE adds the prototype-missing jump handling: deltas above the readout&apos;s snapThreshold teleport the tape near the target, then ease the final step, so a sudden 130→250 KIAS change doesn&apos;t spin every wheel through 120 intermediate values. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="53" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="53" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" prot="public" static="yes" mutable="no">
+        <type>const float</type>
+        <definition>const float OpenSkyhawk::EASE</definition>
+        <argsstring></argsstring>
+        <name>EASE</name>
+        <qualifiedname>OpenSkyhawk::EASE</qualifiedname>
+        <initializer>= 0.30f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="21" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1ad718667155d85fa62e6eff912a9c002f" prot="public" static="yes" mutable="no">
+        <type>const uint32_t</type>
+        <definition>const uint32_t OpenSkyhawk::FRAME_MS</definition>
+        <argsstring></argsstring>
+        <name>FRAME_MS</name>
+        <qualifiedname>OpenSkyhawk::FRAME_MS</qualifiedname>
+        <initializer>= 16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="22" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" prot="public" static="yes" mutable="no">
+        <type>const float</type>
+        <definition>const float OpenSkyhawk::SETTLE_EPS</definition>
+        <argsstring></argsstring>
+        <name>SETTLE_EPS</name>
+        <qualifiedname>OpenSkyhawk::SETTLE_EPS</qualifiedname>
+        <initializer>= 0.02f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="23" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a20ab3f82aea59d65d67346cb3542d27f" prot="public" static="yes" mutable="no">
+        <type>const float</type>
+        <definition>const float OpenSkyhawk::SNAP_LANDING</definition>
+        <argsstring></argsstring>
+        <name>SNAP_LANDING</name>
+        <qualifiedname>OpenSkyhawk::SNAP_LANDING</qualifiedname>
+        <initializer>= 1.5f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="24" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a5b08a3ab7cd1e58253b2d78199db74a1" prot="public" static="yes" mutable="no">
+        <type>const float</type>
+        <definition>const float OpenSkyhawk::PX_PER_MM</definition>
+        <argsstring></argsstring>
+        <name>PX_PER_MM</name>
+        <qualifiedname>OpenSkyhawk::PX_PER_MM</qualifiedname>
+        <initializer>= 4.35f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="25" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1ae47c2dbd6ff64b6c51b12e1f5f0fdbbc" prot="public" static="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t OpenSkyhawk::KIND_DIGIT</definition>
+        <argsstring></argsstring>
+        <name>KIND_DIGIT</name>
+        <qualifiedname>OpenSkyhawk::KIND_DIGIT</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="28" column="22" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1af33b156d05d4b3feb480939b4e3b691d" prot="public" static="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t OpenSkyhawk::KIND_GLYPH</definition>
+        <argsstring></argsstring>
+        <name>KIND_GLYPH</name>
+        <qualifiedname>OpenSkyhawk::KIND_GLYPH</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="29" column="22" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a0d81fd69344bd8c88c2edb048f966b47" prot="public" static="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t OpenSkyhawk::KIND_FLAG</definition>
+        <argsstring></argsstring>
+        <name>KIND_FLAG</name>
+        <qualifiedname>OpenSkyhawk::KIND_FLAG</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="30" column="22" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>long</type>
+        <definition>static long OpenSkyhawk::pow10l</definition>
+        <argsstring>(uint8_t n)</argsstring>
+        <name>pow10l</name>
+        <qualifiedname>OpenSkyhawk::pow10l</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="32" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="32" bodyend="36"/>
+      </memberdef>
+    </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="Firmware/Libraries/PanelGroup/LED.h" line="14" column="1"/>
+    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="18" column="1"/>
   </compounddef>
 </doxygen>

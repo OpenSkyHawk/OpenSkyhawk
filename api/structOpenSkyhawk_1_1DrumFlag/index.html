@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d6/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/structOpenSkyhawk_1_1DrumFlag/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp} - OpenSkyhawk</title>
+        <title>Struct OpenSkyhawk::DrumFlag - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelbridgepanelbridgecpp" class="md-skip">
+        <a href="#struct-openskyhawkdrumflag" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}
+              Struct OpenSkyhawk::DrumFlag
             
           </span>
         </div>
@@ -3867,6 +3867,119 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable address
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-atvisualcol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable atVisualCol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable enabled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-faces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable faces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-mask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable mask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-widthmm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable widthMm
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3885,10 +3998,89 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelbridgepanelbridgecpp">Namespace anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}</strong></a></p>
+<h1 id="struct-openskyhawkdrumflag">Struct OpenSkyhawk::DrumFlag</h1>
+<p><a href="../annotated/"><strong>ClassList</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>DrumFlag</strong></a></p>
+<p><em>Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter.</em> <a href="#detailed-description">More...</a></p>
+<ul>
+<li><code>#include &lt;DrumDisplay.h&gt;</code></li>
+</ul>
+<h2 id="public-attributes">Public Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#variable-address"><strong>address</strong></a>  <br><em>DCS-BIOS address that drives the flag.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#variable-atvisualcol"><strong>atVisualCol</strong></a>  <br><em>visual column the flag cell is inserted at (after this many digits)</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-enabled"><strong>enabled</strong></a>  <br><em>false ⇒ no flag tape rendered (default)</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">const char *</td>
+<td style="text-align: left;"><a href="#variable-faces"><strong>faces</strong></a>  <br><em>face string, one char per state, e.g. "NS" / "EW" (nFaces = strlen)</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#variable-mask"><strong>mask</strong></a>  <br><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">float</td>
+<td style="text-align: left;"><a href="#variable-widthmm"><strong>widthMm</strong></a>  <br><em>flag cell width, mm (wider than a digit so a broad 'W' fits)</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="detailed-description">Detailed Description</h2>
+<p><strong>Note:</strong></p>
+<p>OFF by default (<code>enabled</code> = false). Position is configurable (not hardcoded rightmost). Populate <code>address</code> / <code>mask</code> from the A4EC constants. For a whole-word source (mask 0xFFFF) the value maps to a face by round(value/65535·(nFaces−1)); for a bit-packed source the masked value selects face 0 (zero) or the last face (non-zero). Bench-confirm the real encoding before trusting it. </p>
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+<h3 id="variable-address">variable address</h3>
+<p><em>DCS-BIOS address that drives the flag.</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumFlag::address;
+</code></pre>
+<hr>
+
+<h3 id="variable-atvisualcol">variable atVisualCol</h3>
+<p><em>visual column the flag cell is inserted at (after this many digits)</em> </p>
+<pre><code class="language-C++">uint8_t OpenSkyhawk::DrumFlag::atVisualCol;
+</code></pre>
+<hr>
+
+<h3 id="variable-enabled">variable enabled</h3>
+<p><em>false ⇒ no flag tape rendered (default)</em> </p>
+<pre><code class="language-C++">bool OpenSkyhawk::DrumFlag::enabled;
+</code></pre>
+<hr>
+
+<h3 id="variable-faces">variable faces</h3>
+<p><em>face string, one char per state, e.g. "NS" / "EW" (nFaces = strlen)</em> </p>
+<pre><code class="language-C++">const char* OpenSkyhawk::DrumFlag::faces;
+</code></pre>
+<hr>
+
+<h3 id="variable-mask">variable mask</h3>
+<p><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumFlag::mask;
+</code></pre>
+<hr>
+
+<h3 id="variable-widthmm">variable widthMm</h3>
+<p><em>flag cell width, mm (wider than a digit so a broad 'W' fits)</em> </p>
+<pre><code class="language-C++">float OpenSkyhawk::DrumFlag::widthMm;
+</code></pre>
+<hr>
+
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelBridge/PanelBridge.cpp</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/DrumDisplay/DrumDisplay.h</code></p>
 
 
 

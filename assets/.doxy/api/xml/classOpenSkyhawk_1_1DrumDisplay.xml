@@ -1,0 +1,920 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1DrumDisplay" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::DrumDisplay</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1OutputBase" prot="public" virt="non-virtual">OpenSkyhawk::OutputBase</basecompoundref>
+    <includes refid="DrumDisplay_8h" local="no">DrumDisplay.h</includes>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a8bb1b71baaa98e331bbc670ee5e43732" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::DrumDisplay::MAX_CELLS</definition>
+        <argsstring></argsstring>
+        <name>MAX_CELLS</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::MAX_CELLS</qualifiedname>
+        <initializer>= 8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="214" column="30" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="214" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a426c7e311441d324874b8843abfade58" prot="private" static="no" mutable="no">
+        <type>U8G2 *</type>
+        <definition>U8G2* OpenSkyhawk::DrumDisplay::_oled</definition>
+        <argsstring></argsstring>
+        <name>_oled</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_oled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="217" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="217" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a34fb43a079191d1fd07ef2199163e018" prot="private" static="no" mutable="no">
+        <type>const <ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref> *</type>
+        <definition>const DrumReadout* OpenSkyhawk::DrumDisplay::_r</definition>
+        <argsstring></argsstring>
+        <name>_r</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_r</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="218" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="218" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1f5b68bc775592185cadf36ac66ffe46" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1I2cMux" kindref="compound">I2cMux</ref> *</type>
+        <definition>I2cMux* OpenSkyhawk::DrumDisplay::_mux</definition>
+        <argsstring></argsstring>
+        <name>_mux</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_mux</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="219" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="219" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a8b7ee0e217e470da54d3a7a9af37dc73" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::DrumDisplay::_channel</definition>
+        <argsstring></argsstring>
+        <name>_channel</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_channel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="220" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1ae3e4dbefbb9e3063cb45c583da1c39a7" prot="private" static="no" mutable="no">
+        <type><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref></type>
+        <definition>DrumFont OpenSkyhawk::DrumDisplay::_font</definition>
+        <argsstring></argsstring>
+        <name>_font</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_font</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="221" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="221" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1aa5129ca119903c6dfeea7f1e719f4b4b" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_xOff</definition>
+        <argsstring></argsstring>
+        <name>_xOff</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_xOff</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="222" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="222" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1ac18f0ad05cd6f7afbec43c4d4eb7ffdf" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_yOff</definition>
+        <argsstring></argsstring>
+        <name>_yOff</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_yOff</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="222" column="30" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="222" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1af617c26c44e7ec68fe003c5b84849cc4" prot="private" static="no" mutable="no">
+        <type>long</type>
+        <definition>long OpenSkyhawk::DrumDisplay::_target</definition>
+        <argsstring></argsstring>
+        <name>_target</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_target</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="225" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="225" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a02e0b6a989128829a4458ed08800b140" prot="private" static="no" mutable="no">
+        <type>long</type>
+        <definition>long OpenSkyhawk::DrumDisplay::_flagTarget</definition>
+        <argsstring></argsstring>
+        <name>_flagTarget</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_flagTarget</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="226" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="226" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a7ece4248bb8e410f190d1f767d27aa60" prot="private" static="no" mutable="no">
+        <type>volatile bool</type>
+        <definition>volatile bool OpenSkyhawk::DrumDisplay::_dirty</definition>
+        <argsstring></argsstring>
+        <name>_dirty</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_dirty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="227" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="227" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a5886181a5c5ee4566a83b79a2c12553f" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::DrumDisplay::_hasState</definition>
+        <argsstring></argsstring>
+        <name>_hasState</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_hasState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="228" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="228" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a899112c7564a3d7c2217a822d5c2d325" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OpenSkyhawk::DrumDisplay::_pos[6]</definition>
+        <argsstring>[6]</argsstring>
+        <name>_pos</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_pos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="231" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="231" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a27fa0419e4a563911aa49c6b3b2928a6" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OpenSkyhawk::DrumDisplay::_flagPos</definition>
+        <argsstring></argsstring>
+        <name>_flagPos</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_flagPos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="232" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="232" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a744f91060ee964afcd1d681b762f02dd" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::DrumDisplay::_geomDirty</definition>
+        <argsstring></argsstring>
+        <name>_geomDirty</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_geomDirty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="235" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="235" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1d106a02bb053bf5c769e0a03ebc9d40" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_colW</definition>
+        <argsstring></argsstring>
+        <name>_colW</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_colW</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="236" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="236" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1eee622df7d3de622baa10c5e78ebb3e" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_cellH</definition>
+        <argsstring></argsstring>
+        <name>_cellH</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_cellH</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="237" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1bd8ba6621473a8f0828b3b557817bf1" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_gap</definition>
+        <argsstring></argsstring>
+        <name>_gap</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_gap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="238" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="238" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a0eddf14a9aa600fd0d2581e319715893" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_flagW</definition>
+        <argsstring></argsstring>
+        <name>_flagW</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_flagW</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="239" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="239" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a297ebe8a7424a2b0b0a2efc5c42ae6d6" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_cy</definition>
+        <argsstring></argsstring>
+        <name>_cy</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_cy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="240" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="240" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a36f5ca2a129e78d9886c3156742d9af2" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_cellX[MAX_CELLS]</definition>
+        <argsstring>[MAX_CELLS]</argsstring>
+        <name>_cellX</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_cellX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="241" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="241" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a08a08c5d21983f0bcc562ce728527be8" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_cellW[MAX_CELLS]</definition>
+        <argsstring>[MAX_CELLS]</argsstring>
+        <name>_cellW</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_cellW</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="242" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="242" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1ab6176e929ccccdce1fe54d2d4b19ddef" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::DrumDisplay::_cellKind[MAX_CELLS]</definition>
+        <argsstring>[MAX_CELLS]</argsstring>
+        <name>_cellKind</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_cellKind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="243" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="243" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a50e31aa169e3ff98ebc2e5e6a73711c8" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumDisplay::_cellData[MAX_CELLS]</definition>
+        <argsstring>[MAX_CELLS]</argsstring>
+        <name>_cellData</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_cellData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="244" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="244" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a4dd2a6b7625f40e6657c91f70add2ddc" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::DrumDisplay::_nCells</definition>
+        <argsstring></argsstring>
+        <name>_nCells</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_nCells</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="245" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="245" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1acfa9ff0068cd95b0e980543dcb3fd7c6" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::DrumDisplay::_lastFrameMs</definition>
+        <argsstring></argsstring>
+        <name>_lastFrameMs</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::_lastFrameMs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="246" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="246" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a5dd925c4ef3442260cee87688ef08cc5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::DrumDisplay::DrumDisplay</definition>
+        <argsstring>(U8G2 &amp;oled, const DrumReadout &amp;readout, DrumFont font=DrumFont::LARGE, int16_t xOffsetPx=0, int16_t yOffsetPx=0)</argsstring>
+        <name>DrumDisplay</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::DrumDisplay</qualifiedname>
+        <param>
+          <type>U8G2 &amp;</type>
+          <declname>oled</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref> &amp;</type>
+          <declname>readout</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref></type>
+          <declname>font</declname>
+          <defval><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5a71726adf0ff60cd03eaf3c515883eeb8" kindref="member">DrumFont::LARGE</ref></defval>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>xOffsetPx</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>yOffsetPx</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Construct and register a direct-bus drum display. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>oled</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Caller-owned U8G2 (already begin()&apos;d, rotation set). Must outlive this. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>readout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Descriptor for this readout (sources, geometry, flag). Must outlive this. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-mounting glyph size. Default <ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5a71726adf0ff60cd03eaf3c515883eeb8" kindref="member">DrumFont::LARGE</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>xOffsetPx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X pixel shift of the whole digit block, registers it to the faceplate window. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>yOffsetPx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y pixel shift of the digit block centre line. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in <ref refid="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798" kindref="member">configure()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="145" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="40" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a600e5a348bc62c05b62b99d6832c63c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::DrumDisplay::DrumDisplay</definition>
+        <argsstring>(U8G2 &amp;oled, const DrumReadout &amp;readout, I2cMux &amp;mux, uint8_t channel, DrumFont font=DrumFont::LARGE, int16_t xOffsetPx=0, int16_t yOffsetPx=0)</argsstring>
+        <name>DrumDisplay</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::DrumDisplay</qualifiedname>
+        <param>
+          <type>U8G2 &amp;</type>
+          <declname>oled</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref> &amp;</type>
+          <declname>readout</declname>
+        </param>
+        <param>
+          <type><ref refid="classOpenSkyhawk_1_1I2cMux" kindref="compound">I2cMux</ref> &amp;</type>
+          <declname>mux</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>channel</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref></type>
+          <declname>font</declname>
+          <defval><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5a71726adf0ff60cd03eaf3c515883eeb8" kindref="member">DrumFont::LARGE</ref></defval>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>xOffsetPx</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>yOffsetPx</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Construct and register a muxed drum display (one TCA9548A branch). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>oled</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Caller-owned U8G2. Must outlive this. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>readout</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Descriptor. Must outlive this. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mux</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shared TCA9548A selector. Must outlive this. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>TCA9548A channel 0–7 this panel sits on. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-mounting glyph size. Default <ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5a71726adf0ff60cd03eaf3c515883eeb8" kindref="member">DrumFont::LARGE</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>xOffsetPx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X pixel registration shift. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>yOffsetPx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y pixel registration shift. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The class calls mux.select(channel) before geometry fit in <ref refid="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798" kindref="member">configure()</ref> and before each sendBuffer() so interleaved displays never write to the wrong panel. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="161" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="51" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301">configure</reimplements>
+        <briefdescription>
+<para>Compute pixel geometry from the panel + descriptor, set the font, blank the panel. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Called once by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip init. Selects the mux channel (if any) first, reads getDisplayWidth()/Height(), runs the geometry fit, and clears the OLED. The sketch owns oled.begin(); this does NOT call begin(). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="172" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="112" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::onControlPacket</definition>
+        <argsstring>(uint16_t controlId, uint16_t value) override</argsstring>
+        <name>onControlPacket</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::onControlPacket</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375">onControlPacket</reimplements>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Decode one CTRL_BCAST packet into this readout&apos;s digits/flag. Never draws. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCS-BIOS output address from the packet. Ignored unless it matches a <ref refid="structOpenSkyhawk_1_1DrumSource_1a9cadaf8bef575f06ba037a05dbc03851" kindref="member">DrumSource.address</ref> or the flag.address of this readout. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>16-bit DCS-BIOS value (0..65535) for that address. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Cheap: decodes value→digit(s), splices into the target number, sets the dirty flag. The expensive full-buffer I2C send happens in <ref refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" kindref="member">update()</ref>, never here. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="182" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="73" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::update</definition>
+        <argsstring>() override</argsstring>
+        <name>update</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::update</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5">update</reimplements>
+        <briefdescription>
+<para>Advance the ease/snap animation and push one frame if needed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Called every loop(). ~60 fps frame gate; early-out when idle (settled AND not dirty). On a live frame: mux.select(channel), ease each place toward target/10^place with SNAP_SETTLE jump handling, render every cell with setClipWindow, then one sendBuffer(). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="190" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="245" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ab15d2fb278c66698cac2217425362c64" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::setFontSize</definition>
+        <argsstring>(DrumFont font)</argsstring>
+        <name>setFontSize</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::setFontSize</qualifiedname>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref></type>
+          <declname>font</declname>
+        </param>
+        <briefdescription>
+<para>Change glyph size at runtime (e.g. swap a cramped 6-digit readout to SMALL). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New DrumFont. Re-fits geometry on the next <ref refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" kindref="member">update()</ref> so cells re-auto-fit. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="196" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="303" bodyend="306"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a70f334da66bdd81dbe6ec043815f6b0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::setOffset</definition>
+        <argsstring>(int16_t xOffsetPx, int16_t yOffsetPx)</argsstring>
+        <name>setOffset</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::setOffset</qualifiedname>
+        <param>
+          <type>int16_t</type>
+          <declname>xOffsetPx</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>yOffsetPx</declname>
+        </param>
+        <briefdescription>
+<para>Re-register the digit block to the faceplate window at runtime. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>xOffsetPx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New X pixel shift of the digit block. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>yOffsetPx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New Y pixel shift (centre line) of the digit block. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Marks geometry dirty; the new offsets apply on the next rendered frame. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="204" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="308" bodyend="312"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a4b7ab58b82ec352abd2d91d5a87b4746" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::fitGeometry</definition>
+        <argsstring>()</argsstring>
+        <name>fitGeometry</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::fitGeometry</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="249" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="123" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ae646eecafa86229cd454e58119a1900b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::drawTape</definition>
+        <argsstring>(int16_t cx, float p, int16_t w)</argsstring>
+        <name>drawTape</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::drawTape</qualifiedname>
+        <param>
+          <type>int16_t</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>w</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="250" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="219" bodyend="228"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a686d20d40dc2c8c162da5acd2f46502d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::DrumDisplay::drawFlag</definition>
+        <argsstring>(int16_t cx, float p, int16_t w)</argsstring>
+        <name>drawFlag</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::drawFlag</qualifiedname>
+        <param>
+          <type>int16_t</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>w</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="251" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="230" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1aaadb3a8dc92f57f5857b3f12754700ee" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::DrumDisplay::settled</definition>
+        <argsstring>() const</argsstring>
+        <name>settled</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::settled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="252" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="316" bodyend="324"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ab4eaa2748c51bffad63e511da23c9cbf" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const uint8_t *</type>
+        <definition>const uint8_t * OpenSkyhawk::DrumDisplay::fontPtr</definition>
+        <argsstring>() const</argsstring>
+        <name>fontPtr</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::fontPtr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="253" column="19" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="326" bodyend="328"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a71110858c699caa5a8fc18d6c3204ff6" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>long</type>
+        <definition>long OpenSkyhawk::DrumDisplay::decodeDigits</definition>
+        <argsstring>(uint16_t value, uint16_t mask, uint8_t nDigits)</argsstring>
+        <name>decodeDigits</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::decodeDigits</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>nDigits</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="254" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="61" bodyend="69"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Rolling-drum OLED readout. One instance == one OLED panel. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Construct at global scope so <ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref> self-registers it. <ref refid="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb" kindref="member">onControlPacket()</ref> only decodes + flags dirty (cheap); <ref refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" kindref="member">update()</ref> does the ~60 fps gate, channel reselect, ease+snap, render, and the single expensive sendBuffer(). </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::DrumDisplay</label>
+        <link refid="classOpenSkyhawk_1_1DrumDisplay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OpenSkyhawk::DrumDisplay</label>
+        <link refid="classOpenSkyhawk_1_1DrumDisplay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="134" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="134" bodyend="255"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a50e31aa169e3ff98ebc2e5e6a73711c8" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cellData</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1eee622df7d3de622baa10c5e78ebb3e" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cellH</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab6176e929ccccdce1fe54d2d4b19ddef" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cellKind</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a08a08c5d21983f0bcc562ce728527be8" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cellW</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a36f5ca2a129e78d9886c3156742d9af2" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cellX</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a8b7ee0e217e470da54d3a7a9af37dc73" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_channel</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1d106a02bb053bf5c769e0a03ebc9d40" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_colW</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a297ebe8a7424a2b0b0a2efc5c42ae6d6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cy</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a7ece4248bb8e410f190d1f767d27aa60" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_dirty</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a27fa0419e4a563911aa49c6b3b2928a6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_flagPos</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a02e0b6a989128829a4458ed08800b140" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_flagTarget</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a0eddf14a9aa600fd0d2581e319715893" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_flagW</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ae3e4dbefbb9e3063cb45c583da1c39a7" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_font</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1bd8ba6621473a8f0828b3b557817bf1" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_gap</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a744f91060ee964afcd1d681b762f02dd" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_geomDirty</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a5886181a5c5ee4566a83b79a2c12553f" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_hasState</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1acfa9ff0068cd95b0e980543dcb3fd7c6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_lastFrameMs</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1f5b68bc775592185cadf36ac66ffe46" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_mux</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a4dd2a6b7625f40e6657c91f70add2ddc" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_nCells</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a426c7e311441d324874b8843abfade58" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_oled</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a899112c7564a3d7c2217a822d5c2d325" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_pos</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a34fb43a079191d1fd07ef2199163e018" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_r</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1af617c26c44e7ec68fe003c5b84849cc4" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_target</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1aa5129ca119903c6dfeea7f1e719f4b4b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_xOff</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ac18f0ad05cd6f7afbec43c4d4eb7ffdf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_yOff</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798" prot="public" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a71110858c699caa5a8fc18d6c3204ff6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>decodeDigits</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a686d20d40dc2c8c162da5acd2f46502d" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>drawFlag</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ae646eecafa86229cd454e58119a1900b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>drawTape</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a5dd925c4ef3442260cee87688ef08cc5" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>DrumDisplay</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a600e5a348bc62c05b62b99d6832c63c5" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>DrumDisplay</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a4b7ab58b82ec352abd2d91d5a87b4746" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>fitGeometry</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab4eaa2748c51bffad63e511da23c9cbf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>fontPtr</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a8bb1b71baaa98e331bbc670ee5e43732" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>MAX_CELLS</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb" prot="public" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>onControlPacket</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab15d2fb278c66698cac2217425362c64" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>setFontSize</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a70f334da66bdd81dbe6ec043815f6b0c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>setOffset</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1aaadb3a8dc92f57f5857b3f12754700ee" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>settled</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" prot="public" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

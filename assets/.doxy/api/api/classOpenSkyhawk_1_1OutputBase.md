@@ -16,7 +16,7 @@ _Abstract base for all DCS-driven output objects._ [More...](#detailed-descripti
 
 
 
-Inherited by the following classes: [OpenSkyhawk::LED](classOpenSkyhawk_1_1LED.md)
+Inherited by the following classes: [OpenSkyhawk::DrumDisplay](classOpenSkyhawk_1_1DrumDisplay.md),  [OpenSkyhawk::LED](classOpenSkyhawk_1_1LED.md)
 
 
 

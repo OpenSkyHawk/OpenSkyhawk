@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1I2cMux" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::I2cMux</compoundname>
+    <includes refid="I2cMux_8h" local="no">I2cMux.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cMux_1a9fd480d296453c1a3aeee2c0c9ef47ee" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::I2cMux::_addr</definition>
+        <argsstring></argsstring>
+        <name>_addr</name>
+        <qualifiedname>OpenSkyhawk::I2cMux::_addr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="56" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cMux_1acf7d3f87fce5bc85d0f4701047a04562" prot="private" static="no" mutable="no">
+        <type>TwoWire *</type>
+        <definition>TwoWire* OpenSkyhawk::I2cMux::_wire</definition>
+        <argsstring></argsstring>
+        <name>_wire</name>
+        <qualifiedname>OpenSkyhawk::I2cMux::_wire</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="57" column="13" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cMux_1aae8f998ea8bd974632beac37268c9d30" prot="private" static="no" mutable="no">
+        <type>int8_t</type>
+        <definition>int8_t OpenSkyhawk::I2cMux::_lastChannel</definition>
+        <argsstring></argsstring>
+        <name>_lastChannel</name>
+        <qualifiedname>OpenSkyhawk::I2cMux::_lastChannel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="58" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cMux_1a2625ae62c98a7bbaf1a6f7da9e017ec7" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::I2cMux::I2cMux</definition>
+        <argsstring>(uint8_t addr=0x70, TwoWire &amp;wire=Wire)</argsstring>
+        <name>I2cMux</name>
+        <qualifiedname>OpenSkyhawk::I2cMux::I2cMux</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>addr</declname>
+          <defval>0x70</defval>
+        </param>
+        <param>
+          <type>TwoWire &amp;</type>
+          <declname>wire</declname>
+          <defval>Wire</defval>
+        </param>
+        <briefdescription>
+<para>Construct a mux handle. No I2C occurs here. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>addr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>TCA9548A 7-bit I2C address (0x70–0x77 via A0/A1/A2). Default 0x70. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>wire</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>I2C bus the mux sits on. Default Wire (I2C1 on STM32). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="39" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="12" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::I2cMux::select</definition>
+        <argsstring>(uint8_t channel)</argsstring>
+        <name>select</name>
+        <qualifiedname>OpenSkyhawk::I2cMux::select</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>channel</declname>
+        </param>
+        <briefdescription>
+<para>Route the bus to one downstream channel. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>channel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Channel 0–7. Values above 7 are clamped to 7. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the channel is selected (write issued, or already current); false on I2C NAK. </para>
+</simplesect>
+<simplesect kind="note"><para>Writes a single byte (1 &lt;&lt; channel); skipped when channel == last selected. Callers sharing one mux across several devices MUST call this immediately before each downstream I2C op — an interleaved driver can change the channel. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="50" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="15" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cMux_1a3868588f78df77d77ac654ff959830bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::I2cMux::disableAll</definition>
+        <argsstring>()</argsstring>
+        <name>disableAll</name>
+        <qualifiedname>OpenSkyhawk::I2cMux::disableAll</qualifiedname>
+        <briefdescription>
+<para>Disable all channels (control byte 0x00). Optional bus quiescing. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="53" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="25" bodyend="30"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Selects one downstream channel of a TCA9548A I2C multiplexer. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Stateless beyond a last-selected cache: select(ch) writes the 1-of-8 channel bitmask to the TCA9548A control register only when the requested channel differs from the last one written, so repeated <ref refid="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" kindref="member">select()</ref> of the same channel costs no I2C. Construct one per physical TCA9548A. The sketch owns Wire.begin(); <ref refid="classOpenSkyhawk_1_1I2cMux" kindref="compound">I2cMux</ref> never starts the bus and performs no I2C in its constructor. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="32" column="1" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="32" bodyend="59"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1a9fd480d296453c1a3aeee2c0c9ef47ee" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>_addr</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1aae8f998ea8bd974632beac37268c9d30" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>_lastChannel</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1acf7d3f87fce5bc85d0f4701047a04562" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>_wire</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1a3868588f78df77d77ac654ff959830bd" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>disableAll</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1a2625ae62c98a7bbaf1a6f7da9e017ec7" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>I2cMux</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>select</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

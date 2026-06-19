@@ -18,22 +18,44 @@
     </incdepgraph>
     <invincdepgraph>
       <node id="4">
-        <label>Firmware/Libraries/PanelGroup/LED.cpp</label>
-        <link refid="LED_8cpp"/>
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
+        <link refid="DrumDisplay_8cpp"/>
       </node>
       <node id="3">
-        <label>Firmware/Libraries/PanelGroup/LED.h</label>
-        <link refid="LED_8h"/>
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.h</label>
+        <link refid="DrumDisplay_8h"/>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</label>
+        <link refid="Switch2Pos_8cpp"/>
       </node>
       <node id="5">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h</label>
+        <link refid="Switch2Pos_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
         <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
         <link refid="OpenSkyhawk_8h"/>
       </node>
-      <node id="6">
+      <node id="9">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</label>
+        <link refid="LED_8cpp"/>
+      </node>
+      <node id="8">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.h</label>
+        <link refid="LED_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
         <link refid="PanelGroup_8cpp"/>
       </node>
@@ -44,12 +66,14 @@
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
         <childnode refid="7" relation="include">
         </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
       </node>
-      <node id="9">
+      <node id="11">
         <label>Firmware/Libraries/PanelGroup/PinRef.cpp</label>
         <link refid="PinRef_8cpp"/>
       </node>
@@ -58,19 +82,7 @@
         <link refid="PinRef_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-      </node>
-      <node id="8">
-        <label>Firmware/Libraries/PanelGroup/Switch2Pos.cpp</label>
-        <link refid="Switch2Pos_8cpp"/>
-      </node>
-      <node id="7">
-        <label>Firmware/Libraries/PanelGroup/Switch2Pos.h</label>
-        <link refid="Switch2Pos_8h"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
+        <childnode refid="11" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

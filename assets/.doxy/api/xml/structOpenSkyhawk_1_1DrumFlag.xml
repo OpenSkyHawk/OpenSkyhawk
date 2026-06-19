@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structOpenSkyhawk_1_1DrumFlag" kind="struct" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::DrumFlag</compoundname>
+    <includes refid="DrumDisplay_8h" local="no">DrumDisplay.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::DrumFlag::enabled</definition>
+        <argsstring></argsstring>
+        <name>enabled</name>
+        <qualifiedname>OpenSkyhawk::DrumFlag::enabled</qualifiedname>
+        <briefdescription>
+<para>false ⇒ no flag tape rendered (default) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="94" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumFlag_1a05bff3332e1abb724e58de93edb85115" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::DrumFlag::address</definition>
+        <argsstring></argsstring>
+        <name>address</name>
+        <qualifiedname>OpenSkyhawk::DrumFlag::address</qualifiedname>
+        <briefdescription>
+<para>DCS-BIOS address that drives the flag. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="95" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumFlag_1a3498630538978436a1a0682dfcd2a7be" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::DrumFlag::mask</definition>
+        <argsstring></argsstring>
+        <name>mask</name>
+        <qualifiedname>OpenSkyhawk::DrumFlag::mask</qualifiedname>
+        <briefdescription>
+<para>field mask (A_4E_C_*_AM); 0xFFFF for whole-word </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="96" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumFlag_1a343181be9f2742ce131d31862e0e63b8" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* OpenSkyhawk::DrumFlag::faces</definition>
+        <argsstring></argsstring>
+        <name>faces</name>
+        <qualifiedname>OpenSkyhawk::DrumFlag::faces</qualifiedname>
+        <briefdescription>
+<para>face string, one char per state, e.g. &quot;NS&quot; / &quot;EW&quot; (nFaces = strlen) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="97" column="16" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumFlag_1acd9ba5184fb1baf9019affff39f9a7c1" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::DrumFlag::atVisualCol</definition>
+        <argsstring></argsstring>
+        <name>atVisualCol</name>
+        <qualifiedname>OpenSkyhawk::DrumFlag::atVisualCol</qualifiedname>
+        <briefdescription>
+<para>visual column the flag cell is inserted at (after this many digits) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="98" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumFlag_1a6b58a6a60500993eb14a29a8d12c9984" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float OpenSkyhawk::DrumFlag::widthMm</definition>
+        <argsstring></argsstring>
+        <name>widthMm</name>
+        <qualifiedname>OpenSkyhawk::DrumFlag::widthMm</qualifiedname>
+        <briefdescription>
+<para>flag cell width, mm (wider than a digit so a broad &apos;W&apos; fits) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="99" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="note"><para>OFF by default (<computeroutput>enabled</computeroutput> = false). Position is configurable (not hardcoded rightmost). Populate <computeroutput>address</computeroutput> / <computeroutput>mask</computeroutput> from the A4EC constants. For a whole-word source (mask 0xFFFF) the value maps to a face by round(value/65535·(nFaces−1)); for a bit-packed source the masked value selects face 0 (zero) or the last face (non-zero). Bench-confirm the real encoding before trusting it. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="93" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="93" bodyend="100"/>
+    <listofallmembers>
+      <member refid="structOpenSkyhawk_1_1DrumFlag_1a05bff3332e1abb724e58de93edb85115" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumFlag</scope><name>address</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumFlag_1acd9ba5184fb1baf9019affff39f9a7c1" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumFlag</scope><name>atVisualCol</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumFlag</scope><name>enabled</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumFlag_1a343181be9f2742ce131d31862e0e63b8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumFlag</scope><name>faces</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumFlag_1a3498630538978436a1a0682dfcd2a7be" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumFlag</scope><name>mask</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumFlag_1a6b58a6a60500993eb14a29a8d12c9984" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumFlag</scope><name>widthMm</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

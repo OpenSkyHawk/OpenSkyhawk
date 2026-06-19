@@ -331,5 +331,5 @@ Implements [*OpenSkyhawk::InputBase::poll*](classOpenSkyhawk_1_1InputBase.md#fun
 <hr>
 
 ------------------------------
-The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/Switch2Pos.h`
+The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h`
 

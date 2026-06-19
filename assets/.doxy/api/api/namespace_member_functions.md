@@ -53,6 +53,11 @@
 * **onCanStatus** ([**STM32Board**](namespaceSTM32Board.md))
 
 
+## p
+
+* **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))

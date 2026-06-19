@@ -4,8 +4,8 @@
     <compoundname>OpenSkyhawk.h</compoundname>
     <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
-    <includes refid="LED_8h" local="no">LED.h</includes>
-    <includes refid="Switch2Pos_8h" local="no">Switch2Pos.h</includes>
+    <includes refid="LED_8h" local="no">Outputs/LED/LED.h</includes>
+    <includes refid="Switch2Pos_8h" local="no">Inputs/Switch2Pos/Switch2Pos.h</includes>
     <includes refid="A4EC__CmdIds_8h" local="no">A4EC_CmdIds.h</includes>
     <includes refid="A4EC__OutputIds_8h" local="no">A4EC_OutputIds.h</includes>
     <incdepgraph>
@@ -35,9 +35,9 @@
         <childnode refid="9" relation="include">
         </childnode>
       </node>
-      <node id="14">
-        <label>LED.h</label>
-        <link refid="LED_8h"/>
+      <node id="15">
+        <label>Inputs/Switch2Pos/Switch2Pos.h</label>
+        <link refid="Switch2Pos_8h"/>
         <childnode refid="5" relation="include">
         </childnode>
       </node>
@@ -55,6 +55,12 @@
         <childnode refid="16" relation="include">
         </childnode>
         <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Outputs/LED/LED.h</label>
+        <link refid="LED_8h"/>
+        <childnode refid="5" relation="include">
         </childnode>
       </node>
       <node id="5">
@@ -77,12 +83,6 @@
         <label>PinRef.h</label>
         <link refid="PinRef_8h"/>
         <childnode refid="3" relation="include">
-        </childnode>
-      </node>
-      <node id="15">
-        <label>Switch2Pos.h</label>
-        <link refid="Switch2Pos_8h"/>
-        <childnode refid="5" relation="include">
         </childnode>
       </node>
       <node id="2">
@@ -126,8 +126,8 @@
 <codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="LED_8h" kindref="compound">LED.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch2Pos_8h" kindref="compound">Switch2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="LED_8h" kindref="compound">Outputs/LED/LED.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch2Pos_8h" kindref="compound">Inputs/Switch2Pos/Switch2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>

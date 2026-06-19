@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d12/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/DrumDisplay_8cpp_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp} - OpenSkyhawk</title>
+        <title>File DrumDisplay.cpp - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp" class="md-skip">
+        <a href="#file-drumdisplaycpp" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+              File DrumDisplay.cpp
             
           </span>
         </div>
@@ -3885,10 +3885,339 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp">Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a></p>
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp</code></p>
+<h1 id="file-drumdisplaycpp">File DrumDisplay.cpp</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_b8ac8c4bf654b399fff34fe5003d7d6c/"><strong>DrumDisplay</strong></a> <strong>&gt;</strong> <a href="../DrumDisplay_8cpp/"><strong>DrumDisplay.cpp</strong></a></p>
+<p><a href="../DrumDisplay_8cpp/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#ifdef ARDUINO_ARCH_STM32
+
+#include &quot;DrumDisplay.h&quot;
+#include &lt;math.h&gt;
+#include &lt;string.h&gt;
+
+namespace OpenSkyhawk {
+
+// Tuning constants (mirror the prototype: 0.30 ease, ~60 fps gate).
+static const float    EASE         = 0.30f;  // per-frame ease factor (0..1); lower = slower roll
+static const uint32_t FRAME_MS     = 16;     // ~60 fps render gate
+static const float    SETTLE_EPS   = 0.02f;  // |target-pos| below which a place is &quot;settled&quot;
+static const float    SNAP_LANDING = 1.5f;   // on a big jump, land this many digits shy of target
+static const float    PX_PER_MM    = 4.35f;  // nominal scale (bench value); auto-shrink corrects it
+
+// Cell kinds stored in _cellKind[].
+static const uint8_t KIND_DIGIT = 0;
+static const uint8_t KIND_GLYPH = 1;
+static const uint8_t KIND_FLAG  = 2;
+
+static long pow10l(uint8_t n) {
+    long r = 1;
+    while (n--) r *= 10;
+    return r;
+}
+
+// ── construction ──────────────────────────────────────────────────────────────
+
+DrumDisplay::DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout,
+                         DrumFont font, int16_t xOffsetPx, int16_t yOffsetPx)
+    : _oled(&amp;oled), _r(&amp;readout), _mux(nullptr), _channel(0), _font(font),
+      _xOff(xOffsetPx), _yOff(yOffsetPx),
+      _target(0), _flagTarget(0), _dirty(false), _hasState(false),
+      _flagPos(0.0f),
+      _geomDirty(false), _colW(0), _cellH(0), _gap(0), _flagW(0), _cy(0),
+      _nCells(0), _lastFrameMs(0) {
+    for (uint8_t i = 0; i &lt; 6; i++) _pos[i] = 0.0f;
+}
+
+DrumDisplay::DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout,
+                         I2cMux&amp; mux, uint8_t channel,
+                         DrumFont font, int16_t xOffsetPx, int16_t yOffsetPx)
+    : DrumDisplay(oled, readout, font, xOffsetPx, yOffsetPx) {
+    _mux     = &amp;mux;
+    _channel = channel;
+}
+
+// ── decode helpers ────────────────────────────────────────────────────────────
+
+long DrumDisplay::decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits) {
+    uint16_t m = mask ? mask : 0xFFFF;
+    uint32_t masked = static_cast&lt;uint32_t&gt;(value &amp; m);
+    long span = pow10l(nDigits) - 1;  // 1 digit → 9, 2 digits → 99
+    // Whole-word sources (m == 0xFFFF) scale 0..65535 → 0..span. A low-justified bit field
+    // scales 0..m → 0..span. Non-contiguous packed fields would need a right-shift first —
+    // none shipped; see the TODO(bench) notes on the sketch-defined descriptors.
+    return lroundf(static_cast&lt;float&gt;(masked) / static_cast&lt;float&gt;(m) * static_cast&lt;float&gt;(span));
+}
+
+// ── onControlPacket — decode + splice + mark dirty; NEVER draws ────────────────
+
+void DrumDisplay::onControlPacket(uint16_t controlId, uint16_t value) {
+    // Flag source? (A source may be BOTH a digit and the flag — NAV hemisphere dual-role —
+    // so this does not early-return; the digit loop below still runs for the same address.)
+    if (_r-&gt;flag.enabled &amp;&amp; controlId == _r-&gt;flag.address) {
+        uint16_t m = _r-&gt;flag.mask ? _r-&gt;flag.mask : 0xFFFF;
+        uint32_t masked = static_cast&lt;uint32_t&gt;(value &amp; m);
+        int nFaces = static_cast&lt;int&gt;(strlen(_r-&gt;flag.faces));
+        if (nFaces &lt; 1) nFaces = 1;
+        long face = (m == 0xFFFF)
+                        ? lroundf(static_cast&lt;float&gt;(masked) / 65535.0f * static_cast&lt;float&gt;(nFaces - 1))
+                        : (masked ? (nFaces - 1) : 0);
+        if (!_hasState || face != _flagTarget) {
+            _flagTarget = face;
+            _dirty      = true;
+            _hasState   = true;
+        }
+    }
+
+    // Digit source(s)? Scan ALL sources, not just the first match — two sources may share one
+    // address with different masks (e.g. ARC-51 10 MHz + 1 MHz both at 0x853a, mask-separated).
+    for (uint8_t i = 0; i &lt; _r-&gt;nSources; i++) {
+        const DrumSource&amp; s = _r-&gt;sources[i];
+        if (controlId != s.address) continue;
+        long part     = decodeDigits(value, s.mask, s.nDigits);
+        long lo       = pow10l(s.place);                 // weight of the low column of this field
+        long hi       = pow10l(s.place + s.nDigits);     // weight just above the field
+        long keepHigh = (_target / hi) * hi;             // digits above the field
+        long keepLow  = _target % lo;                    // digits below the field
+        long spliced  = keepHigh + part * lo + keepLow;
+        if (!_hasState || spliced != _target) {
+            _target   = spliced;
+            _dirty    = true;
+            _hasState = true;
+        }
+    }
+}
+
+// ── configure — auto-fit geometry, blank ───────────────────────────────────────
+
+void DrumDisplay::configure() {
+    if (_mux) _mux-&gt;select(_channel);
+    _oled-&gt;setFont(fontPtr());
+    _oled-&gt;setFontPosCenter();
+    fitGeometry();
+    _oled-&gt;clearBuffer();
+    _oled-&gt;sendBuffer();  // blank until the first packet arrives (_hasState stays false)
+}
+
+// ── fitGeometry — descriptor mm + font + offset → px (replaces hardcoded consts) ─
+
+void DrumDisplay::fitGeometry() {
+    const int W = _oled-&gt;getDisplayWidth();
+    const int H = _oled-&gt;getDisplayHeight();
+
+    int colW  = lroundf(_r-&gt;digitWidthMm    * PX_PER_MM);
+    int gap   = lroundf(_r-&gt;interDigitGapMm * PX_PER_MM);
+    int grpG  = lroundf(_r-&gt;groupGapMm      * PX_PER_MM);
+    int cellH = lroundf(_r-&gt;digitHeightMm   * PX_PER_MM);
+    int flagW = _r-&gt;flag.enabled ? lroundf(_r-&gt;flag.widthMm * PX_PER_MM) : 0;
+
+    // Build the ordered visual-cell list left→right: digits (leftmost = highest place),
+    // glyphs at their afterCol, the flag at its atVisualCol. extraGap[] carries group gaps.
+    uint8_t kinds[MAX_CELLS];
+    int16_t datas[MAX_CELLS];
+    int16_t widths[MAX_CELLS];
+    int16_t extraGap[MAX_CELLS];
+    uint8_t n = 0;
+
+    for (uint8_t c = 0; c &lt;= _r-&gt;nDigits &amp;&amp; n &lt; MAX_CELLS; c++) {
+        for (uint8_t g = 0; g &lt; _r-&gt;nGlyphs &amp;&amp; n &lt; MAX_CELLS; g++) {
+            if (_r-&gt;glyphs[g].afterCol == c) {
+                kinds[n] = KIND_GLYPH;
+                datas[n] = static_cast&lt;int16_t&gt;(g);
+                widths[n] = lroundf(_r-&gt;glyphs[g].widthMm * PX_PER_MM);
+                extraGap[n] = 0;
+                n++;
+            }
+        }
+        if (_r-&gt;flag.enabled &amp;&amp; _r-&gt;flag.atVisualCol == c &amp;&amp; n &lt; MAX_CELLS) {
+            kinds[n] = KIND_FLAG;
+            datas[n] = 0;
+            widths[n] = static_cast&lt;int16_t&gt;(flagW);
+            extraGap[n] = 0;
+            n++;
+        }
+        if (c &lt; _r-&gt;nDigits &amp;&amp; n &lt; MAX_CELLS) {
+            kinds[n] = KIND_DIGIT;
+            datas[n] = static_cast&lt;int16_t&gt;(_r-&gt;nDigits - 1 - c);  // visual L→R, leftmost = top place
+            widths[n] = static_cast&lt;int16_t&gt;(colW);
+            bool grpBoundary = (_r-&gt;groupSize &gt; 0 &amp;&amp; c &gt; 0 &amp;&amp; (c % _r-&gt;groupSize) == 0);
+            extraGap[n] = grpBoundary ? static_cast&lt;int16_t&gt;(grpG) : 0;
+            n++;
+        }
+    }
+
+    // Total laid-out width: cells + inter-cell gaps + group gaps.
+    int totalW = 0;
+    for (uint8_t i = 0; i &lt; n; i++) {
+        totalW += widths[i];
+        if (i &gt; 0) totalW += gap;
+        totalW += extraGap[i];
+    }
+
+    // Auto-shrink if the row is wider than the panel (the prototype's &quot;won't fit&quot; note, real).
+    if (totalW &gt; W &amp;&amp; totalW &gt; 0) {
+        float k = static_cast&lt;float&gt;(W) / static_cast&lt;float&gt;(totalW);
+        colW = static_cast&lt;int&gt;(floorf(colW * k));
+        gap  = static_cast&lt;int&gt;(floorf(gap * k));
+        flagW = static_cast&lt;int&gt;(floorf(flagW * k));
+        for (uint8_t i = 0; i &lt; n; i++) {
+            widths[i]   = static_cast&lt;int16_t&gt;(floorf(widths[i] * k));
+            extraGap[i] = static_cast&lt;int16_t&gt;(floorf(extraGap[i] * k));
+        }
+        totalW = 0;
+        for (uint8_t i = 0; i &lt; n; i++) {
+            totalW += widths[i];
+            if (i &gt; 0) totalW += gap;
+            totalW += extraGap[i];
+        }
+    }
+    if (cellH &gt; H) cellH = H;  // clamp roll window to short panels (128x32)
+
+    int x0 = (W - totalW) / 2 + _xOff;  // centre the row, then apply registration offset
+    _cy = static_cast&lt;int16_t&gt;(H / 2 + _yOff);
+
+    int x = x0;
+    for (uint8_t i = 0; i &lt; n; i++) {
+        if (i &gt; 0) x += gap;
+        x += extraGap[i];
+        _cellX[i]    = static_cast&lt;int16_t&gt;(x);
+        _cellW[i]    = widths[i];
+        _cellKind[i] = kinds[i];
+        _cellData[i] = datas[i];
+        x += widths[i];
+    }
+
+    _nCells = n;
+    _colW   = static_cast&lt;int16_t&gt;(colW);
+    _cellH  = static_cast&lt;int16_t&gt;(cellH);
+    _gap    = static_cast&lt;int16_t&gt;(gap);
+    _flagW  = static_cast&lt;int16_t&gt;(flagW);
+    _geomDirty = false;
+}
+
+// ── ported renderers (cell width passed in, not a global) ──────────────────────
+
+void DrumDisplay::drawTape(int16_t cx, float p, int16_t w) {
+    long c = lroundf(p);
+    for (long k = c - 1; k &lt;= c + 1; k++) {
+        int glyph = static_cast&lt;int&gt;(((k % 10) + 10) % 10);
+        char s[2] = { static_cast&lt;char&gt;('0' + glyph), 0 };
+        int gx = cx + (w - static_cast&lt;int&gt;(_oled-&gt;getStrWidth(s))) / 2;
+        int y  = _cy + static_cast&lt;int&gt;(lroundf((static_cast&lt;float&gt;(k) - p) * _cellH));
+        _oled-&gt;drawStr(gx, y, s);
+    }
+}
+
+void DrumDisplay::drawFlag(int16_t cx, float p, int16_t w) {
+    int nF = static_cast&lt;int&gt;(strlen(_r-&gt;flag.faces));
+    if (nF &lt; 1) return;
+    long c = lroundf(p);
+    for (long k = c - 1; k &lt;= c + 1; k++) {
+        int idx = static_cast&lt;int&gt;(((k % nF) + nF) % nF);
+        char s[2] = { _r-&gt;flag.faces[idx], 0 };
+        int gx = cx + (w - static_cast&lt;int&gt;(_oled-&gt;getStrWidth(s))) / 2;
+        int y  = _cy + static_cast&lt;int&gt;(lroundf((static_cast&lt;float&gt;(k) - p) * _cellH));
+        _oled-&gt;drawStr(gx, y, s);
+    }
+}
+
+// ── update — frame gate + idle skip + ease/snap + render ───────────────────────
+
+void DrumDisplay::update() {
+    if (!_hasState) return;                       // nothing received yet → stay blank
+    uint32_t now = millis();
+    if (now - _lastFrameMs &lt; FRAME_MS) return;    // ~60 fps gate
+    if (settled() &amp;&amp; !_dirty) return;             // idle skip: no I2C when nothing moves
+    _lastFrameMs = now;
+
+    if (_geomDirty) {
+        _oled-&gt;setFont(fontPtr());
+        _oled-&gt;setFontPosCenter();
+        fitGeometry();
+    }
+
+    // Ease each place toward target/10^place, with SNAP_SETTLE jump handling.
+    long place = 1;
+    for (uint8_t i = 0; i &lt; _r-&gt;nDigits; i++) {
+        float step = static_cast&lt;float&gt;(_target / place);
+        if (_r-&gt;scroll == DrumScroll::SNAP_SETTLE &amp;&amp; fabsf(step - _pos[i]) &gt; _r-&gt;snapThreshold) {
+            _pos[i] = step - copysignf(SNAP_LANDING, step - _pos[i]);  // land just shy, same direction
+        }
+        _pos[i] += (step - _pos[i]) * EASE;
+        place *= 10;
+    }
+    if (_r-&gt;flag.enabled) {
+        float ft = static_cast&lt;float&gt;(_flagTarget);
+        if (_r-&gt;scroll == DrumScroll::SNAP_SETTLE &amp;&amp; fabsf(ft - _flagPos) &gt; 1.0f) {
+            _flagPos = ft - copysignf(0.9f, ft - _flagPos);
+        }
+        _flagPos += (ft - _flagPos) * EASE;
+    }
+    _dirty = false;
+
+    // Render (select mux first; full-buffer; per-cell clip; one sendBuffer).
+    if (_mux) _mux-&gt;select(_channel);
+    _oled-&gt;clearBuffer();
+    _oled-&gt;setFont(fontPtr());
+    _oled-&gt;setFontPosCenter();
+    for (uint8_t ci = 0; ci &lt; _nCells; ci++) {
+        int16_t cx = _cellX[ci];
+        int16_t w  = _cellW[ci];
+        _oled-&gt;setClipWindow(cx, _cy - _cellH / 2, cx + w, _cy + _cellH / 2);
+        if (_cellKind[ci] == KIND_DIGIT) {
+            drawTape(cx, _pos[_cellData[ci]], w);
+        } else if (_cellKind[ci] == KIND_GLYPH) {
+            const DrumGlyph&amp; g = _r-&gt;glyphs[_cellData[ci]];
+            char s[2] = { g.ch, 0 };
+            int gx = cx + (w - static_cast&lt;int&gt;(_oled-&gt;getStrWidth(s))) / 2;
+            _oled-&gt;drawStr(gx, _cy, s);  // static glyph: centred, no tape
+        } else {  // KIND_FLAG
+            drawFlag(cx, _flagPos, w);
+        }
+    }
+    _oled-&gt;setMaxClipWindow();
+    _oled-&gt;sendBuffer();  // the one expensive I2C op
+}
+
+// ── runtime setters ────────────────────────────────────────────────────────────
+
+void DrumDisplay::setFontSize(DrumFont font) {
+    _font      = font;
+    _geomDirty = true;
+}
+
+void DrumDisplay::setOffset(int16_t xOffsetPx, int16_t yOffsetPx) {
+    _xOff      = xOffsetPx;
+    _yOff      = yOffsetPx;
+    _geomDirty = true;
+}
+
+// ── small helpers ──────────────────────────────────────────────────────────────
+
+bool DrumDisplay::settled() const {
+    long place = 1;
+    for (uint8_t i = 0; i &lt; _r-&gt;nDigits; i++) {
+        if (fabsf(static_cast&lt;float&gt;(_target / place) - _pos[i]) &gt; SETTLE_EPS) return false;
+        place *= 10;
+    }
+    if (_r-&gt;flag.enabled &amp;&amp; fabsf(static_cast&lt;float&gt;(_flagTarget) - _flagPos) &gt; SETTLE_EPS) return false;
+    return true;
+}
+
+const uint8_t* DrumDisplay::fontPtr() const {
+    return _font == DrumFont::LARGE ? u8g2_font_profont29_mr : u8g2_font_profont22_mr;
+}
+
+#ifdef DRUMDISPLAY_TEST
+int16_t DrumDisplay::debugRowWidth() const {
+    if (_nCells == 0) return 0;
+    return static_cast&lt;int16_t&gt;(_cellX[_nCells - 1] + _cellW[_nCells - 1] - _cellX[0]);
+}
+#endif
+
+}  // namespace OpenSkyhawk
+
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

@@ -3911,20 +3911,26 @@
 <h1 id="class-hierarchy">Class Hierarchy</h1>
 <p>This inheritance list is sorted roughly, but not completely, alphabetically:</p>
 <ul>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a> <em>Abstract base for all DCS-driven output objects.</em>     <ul>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a> <em>Rolling-drum OLED readout. One instance == one OLED panel.</em> </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a> <em>Digital</em> <a href="../classOpenSkyhawk_1_1LED/"><em><strong>LED</strong></em></a> <em>output. Drives a pin based on a DCS-BIOS state value.</em></li>
+</ul>
+</li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a> <em>HID axis handler. Declared at sketch scope for each joystick axis.</em> </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a> <em>HID button handler. Declared at sketch scope for each button.</em> </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a> <em>HID hat switch handler. Declared at sketch scope for each hat switch.</em> </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a> <em>Selects one downstream channel of a TCA9548A I2C multiplexer.</em> </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a> <em>Abstract base for all hardware-polled input objects.</em>     <ul>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a> <em>Debounced 2-position switch. Self-registers into</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em></li>
-</ul>
-</li>
-<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a> <em>Abstract base for all DCS-driven output objects.</em>     <ul>
-<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a> <em>Digital</em> <a href="../classOpenSkyhawk_1_1LED/"><em><strong>LED</strong></em></a> <em>output. Drives a pin based on a DCS-BIOS state value.</em></li>
 </ul>
 </li>
 <li><strong>class</strong> <a href="../classPinRef/"><strong>PinRef</strong></a> <em>Hardware pin abstraction used by all</em> <a href="../namespaceOpenSkyhawk/"><em><strong>OpenSkyhawk</strong></em></a> <em>input and output classes.</em></li>
 <li><strong>struct</strong> <a href="../structBatchState/"><strong>BatchState</strong></a> </li>
 <li><strong>struct</strong> <a href="../structDcsBiosInputEntry/"><strong>DcsBiosInputEntry</strong></a> </li>
+<li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1DrumFlag/"><strong>OpenSkyhawk::DrumFlag</strong></a> <em>Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter.</em> </li>
+<li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1DrumGlyph/"><strong>OpenSkyhawk::DrumGlyph</strong></a> <em>A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc.</em> </li>
+<li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>OpenSkyhawk::DrumReadout</strong></a> <em>Complete description of one rolling readout: its sources, geometry, glyphs, flag.</em> </li>
+<li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1DrumSource/"><strong>OpenSkyhawk::DrumSource</strong></a> <em>One DCS-BIOS digit source feeding a</em> <a href="../structOpenSkyhawk_1_1DrumReadout/"><em><strong>DrumReadout</strong></em></a> <em>.</em></li>
 <li><strong>struct</strong> <a href="../structRxQueueEntry/"><strong>RxQueueEntry</strong></a> </li>
 <li><strong>struct</strong> <a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a> </li>
 <li><strong>class</strong> <strong>Adafruit_ADS1115</strong>    <ul>

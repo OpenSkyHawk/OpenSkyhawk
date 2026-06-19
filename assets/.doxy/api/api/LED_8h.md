@@ -4,7 +4,7 @@
 
 
 
-[**FileList**](files.md) **>** [**Firmware**](dir_74b6a3b63f61c160c0f14b7a283a4c9b.md) **>** [**Libraries**](dir_3540c00680c2664f9f7e8f48ca1cab09.md) **>** [**PanelGroup**](dir_54a06c409a6161127d200302d3061b3f.md) **>** [**LED.h**](LED_8h.md)
+[**FileList**](files.md) **>** [**Firmware**](dir_74b6a3b63f61c160c0f14b7a283a4c9b.md) **>** [**Libraries**](dir_3540c00680c2664f9f7e8f48ca1cab09.md) **>** [**PanelGroup**](dir_54a06c409a6161127d200302d3061b3f.md) **>** [**Outputs**](dir_529c528362a647a34d31d0b3b420ca72.md) **>** [**LED**](dir_014b7653223add72b0ed2d7a88fd1566.md) **>** [**LED.h**](LED_8h.md)
 
 [Go to the source code of this file](LED_8h_source.md)
 
@@ -109,5 +109,5 @@ GPL-2.0-only — see Firmware/LICENSE
     
 
 ------------------------------
-The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/LED.h`
+The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/Outputs/LED/LED.h`
 

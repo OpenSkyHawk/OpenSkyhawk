@@ -263,5 +263,5 @@ Implements [*OpenSkyhawk::OutputBase::onControlPacket*](classOpenSkyhawk_1_1Outp
 <hr>
 
 ------------------------------
-The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/LED.h`
+The documentation for this class was generated from the following file `Firmware/Libraries/PanelGroup/Outputs/LED/LED.h`
 

@@ -6,8 +6,8 @@
     <includes refid="HIDControls_8h" local="no">HIDControls.h</includes>
     <includedby refid="CANProtocol_8cpp" local="yes">Firmware/Libraries/CANProtocol/CANProtocol.cpp</includedby>
     <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <includedby refid="Switch2Pos_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</includedby>
     <includedby refid="PanelGroup_8h" local="no">Firmware/Libraries/PanelGroup/PanelGroup.h</includedby>
-    <includedby refid="Switch2Pos_8cpp" local="no">Firmware/Libraries/PanelGroup/Switch2Pos.cpp</includedby>
     <includedby refid="STM32Board_8cpp" local="no">Firmware/Libraries/STM32Board/STM32Board.cpp</includedby>
     <incdepgraph>
       <node id="1">
@@ -40,60 +40,72 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="10" relation="include">
+        <childnode refid="5" relation="include">
         </childnode>
-        <childnode refid="11" relation="include">
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
+        <link refid="DrumDisplay_8cpp"/>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.h</label>
+        <link refid="DrumDisplay_8h"/>
+        <childnode refid="7" relation="include">
         </childnode>
       </node>
       <node id="3">
         <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
         <link refid="PanelBridge_8cpp"/>
       </node>
-      <node id="6">
-        <label>Firmware/Libraries/PanelGroup/LED.cpp</label>
-        <link refid="LED_8cpp"/>
+      <node id="4">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</label>
+        <link refid="Switch2Pos_8cpp"/>
       </node>
-      <node id="5">
-        <label>Firmware/Libraries/PanelGroup/LED.h</label>
-        <link refid="LED_8h"/>
-        <childnode refid="6" relation="include">
+      <node id="8">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h</label>
+        <link refid="Switch2Pos_8h"/>
+        <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="9" relation="include">
         </childnode>
       </node>
-      <node id="7">
+      <node id="9">
         <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
         <link refid="OpenSkyhawk_8h"/>
       </node>
-      <node id="8">
+      <node id="11">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</label>
+        <link refid="LED_8cpp"/>
+      </node>
+      <node id="10">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.h</label>
+        <link refid="LED_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
         <link refid="PanelGroup_8cpp"/>
       </node>
-      <node id="4">
+      <node id="5">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.h</label>
         <link refid="PanelGroup_8h"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
         <childnode refid="9" relation="include">
         </childnode>
-      </node>
-      <node id="10">
-        <label>Firmware/Libraries/PanelGroup/Switch2Pos.cpp</label>
-        <link refid="Switch2Pos_8cpp"/>
-      </node>
-      <node id="9">
-        <label>Firmware/Libraries/PanelGroup/Switch2Pos.h</label>
-        <link refid="Switch2Pos_8h"/>
-        <childnode refid="7" relation="include">
-        </childnode>
         <childnode refid="10" relation="include">
         </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
       </node>
-      <node id="11">
+      <node id="13">
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>

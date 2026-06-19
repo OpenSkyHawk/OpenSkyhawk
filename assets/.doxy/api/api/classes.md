@@ -15,6 +15,16 @@
 ## d
 
 * [**DcsBiosInputEntry**](structDcsBiosInputEntry.md)
+* [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**DrumSource**](structOpenSkyhawk_1_1DrumSource.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## h
@@ -29,6 +39,8 @@
 
 ## i
 
+* [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**InputBase**](classOpenSkyhawk_1_1InputBase.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 

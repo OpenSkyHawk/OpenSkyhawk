@@ -1,0 +1,418 @@
+
+
+# Class OpenSkyhawk::DrumDisplay
+
+
+
+[**ClassList**](annotated.md) **>** [**OpenSkyhawk**](namespaceOpenSkyhawk.md) **>** [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md)
+
+
+
+_Rolling-drum OLED readout. One instance == one OLED panel._ [More...](#detailed-description)
+
+* `#include <DrumDisplay.h>`
+
+
+
+Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Public Functions
+
+| Type | Name |
+| ---: | :--- |
+|   | [**DrumDisplay**](#function-drumdisplay-12) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, int16\_t xOffsetPx=0, int16\_t yOffsetPx=0) <br>_Construct and register a direct-bus drum display._  |
+|   | [**DrumDisplay**](#function-drumdisplay-22) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md) & mux, uint8\_t channel, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, int16\_t xOffsetPx=0, int16\_t yOffsetPx=0) <br>_Construct and register a muxed drum display (one TCA9548A branch)._  |
+| virtual void | [**configure**](#function-configure) () override<br>_Compute pixel geometry from the panel + descriptor, set the font, blank the panel._  |
+| virtual void | [**onControlPacket**](#function-oncontrolpacket) (uint16\_t controlId, uint16\_t value) override<br>_Decode one CTRL\_BCAST packet into this readout's digits/flag. Never draws._  |
+|  void | [**setFontSize**](#function-setfontsize) ([**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font) <br>_Change glyph size at runtime (e.g. swap a cramped 6-digit readout to SMALL)._  |
+|  void | [**setOffset**](#function-setoffset) (int16\_t xOffsetPx, int16\_t yOffsetPx) <br>_Re-register the digit block to the faceplate window at runtime._  |
+| virtual void | [**update**](#function-update) () override<br>_Advance the ease/snap animation and push one frame if needed._  |
+
+
+## Public Functions inherited from OpenSkyhawk::OutputBase
+
+See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
+
+| Type | Name |
+| ---: | :--- |
+| virtual void | [**configure**](classOpenSkyhawk_1_1OutputBase.md#function-configure) () <br>_Configure hardware pins for this output._  |
+|  [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) \* | [**next**](classOpenSkyhawk_1_1OutputBase.md#function-next) () const<br>_Next output in the list; nullptr at end._  |
+| virtual void | [**onControlPacket**](classOpenSkyhawk_1_1OutputBase.md#function-oncontrolpacket) (uint16\_t controlId, uint16\_t value) = 0<br>_Called for every non-null ControlPacket in a CTRL\_BCAST frame._  |
+| virtual void | [**update**](classOpenSkyhawk_1_1OutputBase.md#function-update) () <br>_Called every_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
+
+
+
+
+## Public Static Functions inherited from OpenSkyhawk::OutputBase
+
+See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
+
+| Type | Name |
+| ---: | :--- |
+|  [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) \* | [**head**](classOpenSkyhawk_1_1OutputBase.md#function-head) () <br>_Head of the self-registered linked list._  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Protected Functions inherited from OpenSkyhawk::OutputBase
+
+See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
+
+| Type | Name |
+| ---: | :--- |
+|   | [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md#function-outputbase) () <br>_Registers this instance into the linked list._  |
+
+
+
+
+
+
+## Detailed Description
+
+
+Construct at global scope so [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) self-registers it. [**onControlPacket()**](classOpenSkyhawk_1_1DrumDisplay.md#function-oncontrolpacket) only decodes + flags dirty (cheap); [**update()**](classOpenSkyhawk_1_1DrumDisplay.md#function-update) does the ~60 fps gate, channel reselect, ease+snap, render, and the single expensive sendBuffer(). 
+
+
+    
+## Public Functions Documentation
+
+
+
+
+### function DrumDisplay [1/2]
+
+_Construct and register a direct-bus drum display._ 
+```C++
+OpenSkyhawk::DrumDisplay::DrumDisplay (
+    U8G2 & oled,
+    const DrumReadout & readout,
+    DrumFont font=DrumFont::LARGE,
+    int16_t xOffsetPx=0,
+    int16_t yOffsetPx=0
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `oled` Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this. 
+* `readout` Descriptor for this readout (sources, geometry, flag). Must outlive this. 
+* `font` Per-mounting glyph size. Default DrumFont::LARGE. 
+* `xOffsetPx` X pixel shift of the whole digit block, registers it to the faceplate window. 
+* `yOffsetPx` Y pixel shift of the digit block centre line. 
+
+
+
+**Note:**
+
+The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in [**configure()**](classOpenSkyhawk_1_1DrumDisplay.md#function-configure). 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function DrumDisplay [2/2]
+
+_Construct and register a muxed drum display (one TCA9548A branch)._ 
+```C++
+OpenSkyhawk::DrumDisplay::DrumDisplay (
+    U8G2 & oled,
+    const DrumReadout & readout,
+    I2cMux & mux,
+    uint8_t channel,
+    DrumFont font=DrumFont::LARGE,
+    int16_t xOffsetPx=0,
+    int16_t yOffsetPx=0
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `oled` Caller-owned U8G2. Must outlive this. 
+* `readout` Descriptor. Must outlive this. 
+* `mux` Shared TCA9548A selector. Must outlive this. 
+* `channel` TCA9548A channel 0–7 this panel sits on. 
+* `font` Per-mounting glyph size. Default DrumFont::LARGE. 
+* `xOffsetPx` X pixel registration shift. 
+* `yOffsetPx` Y pixel registration shift. 
+
+
+
+**Note:**
+
+The class calls mux.select(channel) before geometry fit in [**configure()**](classOpenSkyhawk_1_1DrumDisplay.md#function-configure) and before each sendBuffer() so interleaved displays never write to the wrong panel. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function configure 
+
+_Compute pixel geometry from the panel + descriptor, set the font, blank the panel._ 
+```C++
+virtual void OpenSkyhawk::DrumDisplay::configure () override
+```
+
+
+
+
+
+**Note:**
+
+Called once by [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) after chip init. Selects the mux channel (if any) first, reads getDisplayWidth()/Height(), runs the geometry fit, and clears the OLED. The sketch owns oled.begin(); this does NOT call begin(). 
+
+
+
+
+
+        
+Implements [*OpenSkyhawk::OutputBase::configure*](classOpenSkyhawk_1_1OutputBase.md#function-configure)
+
+
+<hr>
+
+
+
+### function onControlPacket 
+
+_Decode one CTRL\_BCAST packet into this readout's digits/flag. Never draws._ 
+```C++
+virtual void OpenSkyhawk::DrumDisplay::onControlPacket (
+    uint16_t controlId,
+    uint16_t value
+) override
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `controlId` DCS-BIOS output address from the packet. Ignored unless it matches a [**DrumSource.address**](structOpenSkyhawk_1_1DrumSource.md#variable-address) or the flag.address of this readout. 
+* `value` 16-bit DCS-BIOS value (0..65535) for that address. 
+
+
+
+**Note:**
+
+Cheap: decodes value→digit(s), splices into the target number, sets the dirty flag. The expensive full-buffer I2C send happens in [**update()**](classOpenSkyhawk_1_1DrumDisplay.md#function-update), never here. 
+
+
+
+
+
+        
+Implements [*OpenSkyhawk::OutputBase::onControlPacket*](classOpenSkyhawk_1_1OutputBase.md#function-oncontrolpacket)
+
+
+<hr>
+
+
+
+### function setFontSize 
+
+_Change glyph size at runtime (e.g. swap a cramped 6-digit readout to SMALL)._ 
+```C++
+void OpenSkyhawk::DrumDisplay::setFontSize (
+    DrumFont font
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `font` New DrumFont. Re-fits geometry on the next [**update()**](classOpenSkyhawk_1_1DrumDisplay.md#function-update) so cells re-auto-fit. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function setOffset 
+
+_Re-register the digit block to the faceplate window at runtime._ 
+```C++
+void OpenSkyhawk::DrumDisplay::setOffset (
+    int16_t xOffsetPx,
+    int16_t yOffsetPx
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `xOffsetPx` New X pixel shift of the digit block. 
+* `yOffsetPx` New Y pixel shift (centre line) of the digit block. 
+
+
+
+**Note:**
+
+Marks geometry dirty; the new offsets apply on the next rendered frame. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function update 
+
+_Advance the ease/snap animation and push one frame if needed._ 
+```C++
+virtual void OpenSkyhawk::DrumDisplay::update () override
+```
+
+
+
+
+
+**Note:**
+
+Called every loop(). ~60 fps frame gate; early-out when idle (settled AND not dirty). On a live frame: mux.select(channel), ease each place toward target/10^place with SNAP\_SETTLE jump handling, render every cell with setClipWindow, then one sendBuffer(). 
+
+
+
+
+
+        
+Implements [*OpenSkyhawk::OutputBase::update*](classOpenSkyhawk_1_1OutputBase.md#function-update)
+
+
+<hr>
+
+------------------------------
+The documentation for this class was generated from the following file `Firmware/Libraries/DrumDisplay/DrumDisplay.h`
+

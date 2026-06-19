@@ -25,6 +25,8 @@
 ## d
 
 * **drain** ([**CANProtocol**](namespaceCANProtocol.md))
+* **DrumFont** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **DrumScroll** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **diagSerial** ([**STM32Board**](namespaceSTM32Board.md))
 * **DEFAULT\_UART\_RX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 * **DEFAULT\_UART\_TX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
@@ -33,6 +35,7 @@
 ## e
 
 * **ENCODER** ([**InputType**](namespaceInputType.md))
+* **EASE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## f
@@ -40,6 +43,7 @@
 * **filterAcceptAll** ([**CANProtocol**](namespaceCANProtocol.md))
 * **filterAcceptId** ([**CANProtocol**](namespaceCANProtocol.md))
 * **flushBatched** ([**CANProtocol**](namespaceCANProtocol.md))
+* **FRAME\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## i
@@ -47,12 +51,19 @@
 * **isDebug** ([**STM32Board**](namespaceSTM32Board.md))
 
 
+## k
+
+* **KIND\_DIGIT** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **KIND\_FLAG** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **KIND\_GLYPH** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## l
 
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d18.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d22.md))
 
 
 ## m
@@ -78,9 +89,11 @@
 
 ## p
 
+* **PX\_PER\_MM** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d18.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d22.md))
 
 
 ## r
@@ -98,6 +111,8 @@
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
 * **SWITCH** ([**InputType**](namespaceInputType.md))
+* **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
 * **setLinkActive** ([**STM32Board**](namespaceSTM32Board.md))

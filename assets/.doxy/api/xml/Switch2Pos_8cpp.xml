@@ -2,7 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="Switch2Pos_8cpp" kind="file" language="C++">
     <compoundname>Switch2Pos.cpp</compoundname>
-    <includes refid="Switch2Pos_8h" local="no">Switch2Pos.h</includes>
+    <includes refid="Switch2Pos_8h" local="yes">Switch2Pos.h</includes>
     <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
     <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
     <incdepgraph>
@@ -22,6 +22,22 @@
         <label>ADS1115.h</label>
         <link refid="ADS1115_8h"/>
         <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</label>
+        <link refid="Switch2Pos_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Switch2Pos.h</label>
+        <link refid="Switch2Pos_8h"/>
+        <childnode refid="3" relation="include">
         </childnode>
       </node>
       <node id="3">
@@ -44,22 +60,6 @@
         <label>PinRef.h</label>
         <link refid="PinRef_8h"/>
         <childnode refid="4" relation="include">
-        </childnode>
-      </node>
-      <node id="1">
-        <label>Firmware/Libraries/PanelGroup/Switch2Pos.cpp</label>
-        <link refid="Switch2Pos_8cpp"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="13" relation="include">
-        </childnode>
-      </node>
-      <node id="2">
-        <label>Switch2Pos.h</label>
-        <link refid="Switch2Pos_8h"/>
-        <childnode refid="3" relation="include">
         </childnode>
       </node>
       <node id="13">
@@ -101,7 +101,7 @@
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
 <codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="7"><highlight class="normal"></highlight></codeline>
-<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch2Pos_8h" kindref="compound">Switch2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="Switch2Pos_8h" kindref="compound">Switch2Pos.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>sendBatched,<sp/>canIdEvt,<sp/>ControlPacket</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="11"><highlight class="normal"></highlight></codeline>
@@ -163,6 +163,6 @@
 <codeline lineno="67"><highlight class="normal"></highlight></codeline>
 <codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="Firmware/Libraries/PanelGroup/Switch2Pos.cpp"/>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp"/>
   </compounddef>
 </doxygen>
