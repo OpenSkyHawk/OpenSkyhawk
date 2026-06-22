@@ -7,6 +7,8 @@
 // Digital I/O:
 //   LED    PC13 (built-in, active-LOW)            → A_4E_C_D_GLARE_WHEELS (Master Test lamp)
 //   Button PB0  (active-LOW, 10kΩ pull-up to 3V3) → DCSIN_MASTER_TEST
+// Needle gauge — X27 air-core stepper via DRV8833 (coils PA0/PA1/PA4/PA5):
+//   APN-153 DRIFT needle ← A_4E_C_APN153_DRIFT_GAUGE (centre-zero)
 // OLED drum readouts — TCA9548A @ 0x70 on I2C1 (SCL=PB8, SDA=PB9), each panel @ 0x3C:
 //   ch0 → current longitude  (NAV_CURPOS_LON, 6 digits + E/W flag)
 //   ch1 → ARC-51 UHF frequency (ARC51_FREQ, 5 digits + '.', e.g. 225.50)
@@ -24,6 +26,21 @@ const PinRef PIN_BTN(PB0);
 
 LED        wheelsLight(A_4E_C_D_GLARE_WHEELS, A_4E_C_D_GLARE_WHEELS_AM, PIN_LED, /*reverse=*/true);
 Switch2Pos masterTest (DCSIN_MASTER_TEST, PIN_BTN);
+
+// ── APN-153 DRIFT needle — X27 air-core stepper via DRV8833 ─────────────────────
+// Centre-zero gauge: DCS 0 → full-left, 32768 → centre, 65535 → full-right. NeedleGauge
+// auto-registers like the LED/drums, so PanelGroup::setup() homes it and loop() drives it
+// from CTRL_BCAST — the needle tracks live DRIFT data over CAN with no extra code here.
+// Homing: into the full-left stop (assigned -150), then park at centre (0); home direction /
+// offset are per-gauge bench-tuned. DRV8833 ~SLEEP tied HIGH in hardware (or wire to a spare
+// GPIO + pass as the StepperMotor sleepEn arg). makeX27Config bakes the air-core defaults
+// (1080 steps/rev, rangeSteps 945, gentle homing); set rangeSteps 960 for a 320° BKA-30.
+static const StepperConfig DRIFT_MOTOR =
+    makeX27Config(/*home*/-150, /*park*/0, /*minPos*/-150, /*maxPos*/150);
+StepperMotor driftMotor(PinRef(PA0), PinRef(PA1), PinRef(PA4), PinRef(PA5), DRIFT_MOTOR);
+static const GaugeCal DRIFT_CAL = { -150, 150, /*reverse=*/false, nullptr, nullptr, 0 };
+NeedleGauge driftGauge(A_4E_C_APN153_DRIFT_GAUGE, A_4E_C_APN153_DRIFT_GAUGE_AM,
+                       driftMotor, DRIFT_CAL);
 
 // ── OLED drum readouts (two panels behind a TCA9548A @ 0x70 on I2C1) ────────────
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oledLon  (U8G2_R0, U8X8_PIN_NONE);
