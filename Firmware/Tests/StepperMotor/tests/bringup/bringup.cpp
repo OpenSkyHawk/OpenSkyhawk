@@ -13,10 +13,10 @@
 using namespace OpenSkyhawk;
 
 static constexpr int16_t SWEEP_LO = 30;
-static constexpr int16_t SWEEP_HI = 600;
+static constexpr int16_t SWEEP_HI = 930;   // within the measured ~960-step (320°) BKA-30 range
 
 static const StepperConfig CFG = {
-    /* stepsPerRev       */ 720,
+    /* stepsPerRev       */ 1080,   // full revolution (datasheet) — degree/wrap math
     /* pattern           */ StepPattern::SWITEC_6STATE,
     /* accel             */ kSwitecDefaultAccel,
     /* accelN            */ kSwitecDefaultAccelN,
@@ -26,11 +26,13 @@ static const StepperConfig CFG = {
     /* homePosition      */ 0,
     /* parkPosition      */ SWEEP_LO,
     /* minPos            */ 0,
-    /* maxPos            */ 720,
+    /* maxPos            */ 960,
     /* wrap              */ false,
     /* deadband          */ 1,
     /* autoRecal         */ false,
     /* recalDebounceMs   */ 0,
+    /* rangeSteps        */ 960,    // BKA-30 stop-to-stop (320° @ 1/3°) — STALL home drives this
+    /* homeStepUs        */ 0,      // 0 → library default 2000µs (under the start-stop rate)
 };
 
 StepperMotor gMotor(PinRef(PA0), PinRef(PA1), PinRef(PA4), PinRef(PA5), CFG);

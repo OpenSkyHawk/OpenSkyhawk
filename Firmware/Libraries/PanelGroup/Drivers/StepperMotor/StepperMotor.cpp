@@ -15,8 +15,13 @@ const AccelPoint kSwitecDefaultAccel[5] = {
 };
 
 namespace {
-constexpr uint16_t HOMING_STEP_US = 800;  // fixed slow rate while homing (SwitecX25 RESET_STEP_MICROSEC)
-constexpr uint8_t  REFINE_BACKOFF = 40;   // steps to back off the sensor before the 2nd home pass
+// Homing seek rate (µs/step). MUST stay under the air-core motor's start-stop speed (X27 family
+// ωss ≈ 258°/s ≈ 774 steps/s ≈ 1290 µs/step) or the open-loop seek slips and the zero wanders
+// between homes. The former 800 µs (1250 steps/s) sat right at that edge — the cause of the
+// "home left, then home right" band-swap. Overridable per motor via StepperConfig::homeStepUs.
+constexpr uint16_t kHomeStepUsDefault = 2000;  // ≈ 500 steps/s — safe margin; homing is boot-only
+constexpr uint8_t  REFINE_BACKOFF     = 40;    // steps to back off the sensor before the 2nd home pass
+constexpr uint8_t  HOMING_MARGIN_DIV  = 8;     // STALL over-drive = range/8 — guarantees the stop is reached
 
 // Coil energising sequences. Bit i (LSB first) drives coil i.
 const uint8_t SWITEC_6[6] = { 0x9, 0x1, 0x7, 0x6, 0xE, 0x8 };
@@ -41,9 +46,12 @@ void StepperMotor::writeIO() {
     const uint8_t* tbl = stateTable(_cfg.pattern, count);
     uint8_t mask = tbl[_state];
     for (uint8_t i = 0; i < 4; i++) {
-        _coil[i].write(mask & 0x1);
+        _coil[i].writeDeferred(mask & 0x1);   // MCP coils: cache-only; GPIO coils: immediate
         mask >>= 1;
     }
+    // Push all four coils in one writePort() per MCP port (8 per-pin I2C writes → 1). For GPIO
+    // coils nothing is dirty, so this just scans the (small) expander list — negligible.
+    PanelGroup::flushExpanderWrites();
 }
 
 void StepperMotor::stepOnce(bool up) {
@@ -109,10 +117,11 @@ bool StepperMotor::sensorConfirmed() const {
 }
 
 bool StepperMotor::seekHomeBlocking() {
+    uint16_t stepUs = _cfg.homeStepUs ? _cfg.homeStepUs : kHomeStepUsDefault;
     for (uint16_t i = 0; i < _cfg.sensor.maxSeekSteps; i++) {
         if (sensorConfirmed()) return true;
         stepOnce(_cfg.homeSeekClockwise);
-        delayMicroseconds(HOMING_STEP_US);
+        delayMicroseconds(stepUs);
     }
     return false; // sensor never confirmed — mis-wired / disconnected
 }
@@ -126,12 +135,18 @@ void StepperMotor::runToStopBlocking() {
 
 void StepperMotor::home() {
     _vel = 0; _dir = 0; _stopped = true;
+    uint16_t stepUs = _cfg.homeStepUs ? _cfg.homeStepUs : kHomeStepUsDefault;
 
     if (_cfg.home == HomeMode::STALL) {
-        // Drive into the mechanical end-stop; a full revolution seats from any start.
-        for (uint16_t i = 0; i < _cfg.stepsPerRev; i++) {
+        // Drive into the mechanical end-stop. Drive the mechanical RANGE (+ a small margin),
+        // NOT a full revolution — over-driving a stop-limited gauge by the rev/range difference
+        // grinds the already-seated rotor and desyncs it, so the zero lands differently each home.
+        // rangeSteps == 0 falls back to stepsPerRev (legacy configs).
+        uint16_t range = _cfg.rangeSteps ? _cfg.rangeSteps : _cfg.stepsPerRev;
+        uint16_t drive = range + range / HOMING_MARGIN_DIV;
+        for (uint16_t i = 0; i < drive; i++) {
             stepOnce(_cfg.homeSeekClockwise);
-            delayMicroseconds(HOMING_STEP_US);
+            delayMicroseconds(stepUs);
         }
         _currentStep = _cfg.homePosition;
         _homed = true;
@@ -141,7 +156,7 @@ void StepperMotor::home() {
             _currentStep = _cfg.homePosition;
             for (uint8_t i = 0; i < REFINE_BACKOFF; i++) {  // clear the sensor, then re-seek to refine
                 stepOnce(!_cfg.homeSeekClockwise);
-                delayMicroseconds(HOMING_STEP_US);
+                delayMicroseconds(stepUs);
             }
             _homed = seekHomeBlocking();                    // refine pass; a failed re-seek clears homed
             if (_homed) _currentStep = _cfg.homePosition;
@@ -200,12 +215,13 @@ StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
                             int16_t minPos, int16_t maxPos,
                             HomeMode home, bool homeSeekClockwise, HomeSensor sensor,
                             bool wrap, uint8_t deadband, bool autoRecal, uint32_t recalDebounceMs,
-                            uint16_t stepsPerRev) {
+                            uint16_t stepsPerRev, uint16_t rangeSteps, uint16_t homeStepUs) {
     return StepperConfig{
         stepsPerRev, StepPattern::SWITEC_6STATE, kSwitecDefaultAccel, kSwitecDefaultAccelN,
         home, homeSeekClockwise, sensor,
         homePosition, parkPosition, minPos, maxPos,
         wrap, deadband, autoRecal, recalDebounceMs,
+        rangeSteps, homeStepUs,
     };
 }
 

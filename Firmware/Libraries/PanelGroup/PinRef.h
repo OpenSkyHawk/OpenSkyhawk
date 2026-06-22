@@ -121,6 +121,17 @@ public:
     void write(bool value);
 
     /**
+     * @brief Like write(), but MCP writes only update the cache (no I2C) — the caller then
+     *        invokes PanelGroup::flushExpanderWrites() to push each port in one writePort().
+     *
+     * GPIO writes stay immediate (already cheap). Lets a multi-pin output batch its expander
+     * writes: one I2C transaction per port instead of one read-modify-write per pin.
+     *
+     * @param value true = HIGH, false = LOW.
+     */
+    void writeDeferred(bool value);
+
+    /**
      * @brief Analog write (PWM). GPIO only.
      *
      * GPIO: analogWrite(pin, val >> 8) — maps 16-bit value to 8-bit duty cycle.
