@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1MultiPosInput" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>OpenSkyhawk::MultiPosInput</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1SwitchMultiPos" prot="public" virt="non-virtual">OpenSkyhawk::SwitchMultiPos</derivedcompoundref>
+    <includes refid="MultiPosInput_8h" local="no">MultiPosInput.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::MultiPosInput::NO_POSITION</definition>
+        <argsstring></argsstring>
+        <name>NO_POSITION</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::NO_POSITION</qualifiedname>
+        <initializer>= 0xFFFF</initializer>
+        <briefdescription>
+<para><ref refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" kindref="member">readRaw()</ref> sentinel: &quot;nothing active right now — hold the last position&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="34" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" prot="protected" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::MultiPosInput::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::_controlId</qualifiedname>
+        <briefdescription>
+<para>DCS/HID control id (routing). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="87" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1a48d2582f77fe6e11afdcf4c7ff8ecb38" prot="protected" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::MultiPosInput::_numPositions</definition>
+        <argsstring></argsstring>
+        <name>_numPositions</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::_numPositions</qualifiedname>
+        <briefdescription>
+<para>N — number of discrete positions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="88" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1aac98d86d92023c8dcd16d8a4a7245f75" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::MultiPosInput::_debounceMs</definition>
+        <argsstring></argsstring>
+        <name>_debounceMs</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::_debounceMs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="93" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1a6297071b06590f6b7bf4487fedc7f1c9" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::MultiPosInput::_lastPos</definition>
+        <argsstring></argsstring>
+        <name>_lastPos</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::_lastPos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="94" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1adf35dd65541724159d422c7fa1bc09d6" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::MultiPosInput::_pendingPos</definition>
+        <argsstring></argsstring>
+        <name>_pendingPos</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::_pendingPos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="95" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1a7afdb479b7c6bb1a6d2d198e35ca9713" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::MultiPosInput::_debounceStartMs</definition>
+        <argsstring></argsstring>
+        <name>_debounceStartMs</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::_debounceStartMs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="96" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1MultiPosInput_1abfea71de6eb0a718d327bc6b40ecfbc9" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::MultiPosInput::_initialized</definition>
+        <argsstring></argsstring>
+        <name>_initialized</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::_initialized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="97" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::MultiPosInput::poll</definition>
+        <argsstring>() override</argsstring>
+        <name>poll</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::poll</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45">poll</reimplements>
+        <briefdescription>
+<para>Resolve the position, debounce it, emit a CAN EVT on confirmed change. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref>. No-op until <ref refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610" kindref="member">forceReport()</ref> has run once. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="41" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp" bodystart="48" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::MultiPosInput::forceReport</definition>
+        <argsstring>() override</argsstring>
+        <name>forceReport</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::forceReport</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92">forceReport</reimplements>
+        <briefdescription>
+<para>Resolve the current position and emit a CAN EVT unconditionally — no debounce. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> during the boot EVT burst and on SYNC_REQ. Establishes the baseline so subsequent <ref refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" kindref="member">poll()</ref> calls have a valid reference. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="49" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp" bodystart="38" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MultiPosInput_1a8252af59e9a4e0aca413594313c6ef98" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::MultiPosInput::position</definition>
+        <argsstring>() const</argsstring>
+        <name>position</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::position</qualifiedname>
+        <briefdescription>
+<para>The last confirmed position index (0..N-1). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Updated by <ref refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610" kindref="member">forceReport()</ref> (immediately) and <ref refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" kindref="member">poll()</ref> (after the debounce confirms a change). Useful as a query — a node can read its current selector position — and for tests to assert the resolved index without capturing the CAN frame. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="58" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MultiPosInput_1ad32d74dbe25f0b9313c8341f9bd5d8a2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::MultiPosInput::MultiPosInput</definition>
+        <argsstring>(uint16_t controlId, uint8_t numPositions, uint16_t debounceMs)</argsstring>
+        <name>MultiPosInput</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::MultiPosInput</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>numPositions</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>debounceMs</declname>
+        </param>
+        <briefdescription>
+<para>Construct the base. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numPositions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of discrete positions N (valid indices 0..N-1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>debounceMs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stability window before a changed position is confirmed. 0 = confirm on the next poll (subclass does its own filtering). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="74" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp" bodystart="14" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>uint16_t</type>
+        <definition>virtual uint16_t OpenSkyhawk::MultiPosInput::readRaw</definition>
+        <argsstring>()=0</argsstring>
+        <name>readRaw</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::readRaw</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1SwitchMultiPos_1a3fcd22d73936b7632c855b048383f224">readRaw</reimplementedby>
+        <briefdescription>
+<para>Resolve the instantaneous position index, or NO_POSITION to hold the last. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Implemented per subclass (one-hot pin scan, analog band-resolve, ...). Must be non-blocking. Return a value in 0..numPositions-1, or NO_POSITION when nothing is currently active.</para>
+<para><simplesect kind="return"><para>resolved index, or NO_POSITION. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="85" column="22"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1MultiPosInput_1ac308c93f5fd38b095c757796258f12b1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::MultiPosInput::emit</definition>
+        <argsstring>(uint16_t pos, bool init=false)</argsstring>
+        <name>emit</name>
+        <qualifiedname>OpenSkyhawk::MultiPosInput::emit</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>init</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>sendBatched a MULTIPOS EVT {controlId, pos}. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="91" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp" bodystart="23" bodyend="36"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> list. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A subclass reports the instantaneous resolved position via <ref refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" kindref="member">readRaw()</ref>; this base debounces it (configurable window) and emits a CAN EVT only when the <emphasis>confirmed</emphasis> position changes. The emitted value is the absolute index, never a delta — a jump from any position to any other (even skipping intermediates) emits the new index directly; there is no ±1 or adjacency assumption.</para>
+<para><ref refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" kindref="member">readRaw()</ref> returns NO_POSITION when nothing resolves (e.g. a non-shorting rotary mid-throw with no pin closed); the base then holds the last confirmed position — no spurious EVT.</para>
+<para>Subclasses: <ref refid="classOpenSkyhawk_1_1SwitchMultiPos" kindref="compound">SwitchMultiPos</ref> (one-hot pins), AnalogMultiPos (resistor ladder, #114). </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::MultiPosInput</label>
+        <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::SwitchMultiPos</label>
+        <link refid="classOpenSkyhawk_1_1SwitchMultiPos"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::MultiPosInput</label>
+        <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" line="31" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h" bodystart="31" bodyend="101"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1aac98d86d92023c8dcd16d8a4a7245f75" prot="private" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>_debounceMs</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a7afdb479b7c6bb1a6d2d198e35ca9713" prot="private" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>_debounceStartMs</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1abfea71de6eb0a718d327bc6b40ecfbc9" prot="private" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>_initialized</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a6297071b06590f6b7bf4487fedc7f1c9" prot="private" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>_lastPos</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a48d2582f77fe6e11afdcf4c7ff8ecb38" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>_numPositions</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1adf35dd65541724159d422c7fa1bc09d6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>_pendingPos</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" prot="public" virt="virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1ac308c93f5fd38b095c757796258f12b1" prot="private" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>emit</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610" prot="public" virt="virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1ad32d74dbe25f0b9313c8341f9bd5d8a2" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>MultiPosInput</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>NO_POSITION</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" prot="public" virt="virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8252af59e9a4e0aca413594313c6ef98" prot="public" virt="non-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>position</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" prot="protected" virt="pure-virtual"><scope>OpenSkyhawk::MultiPosInput</scope><name>readRaw</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="classOpenSkyhawk_1_1InputBase" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>OpenSkyhawk::InputBase</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1MultiPosInput" prot="public" virt="non-virtual">OpenSkyhawk::MultiPosInput</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1Switch2Pos" prot="public" virt="non-virtual">OpenSkyhawk::Switch2Pos</derivedcompoundref>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
     <sectiondef kind="private-static-attrib">
@@ -45,6 +46,7 @@
         <name>configure</name>
         <qualifiedname>OpenSkyhawk::InputBase::configure</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520">configure</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1SwitchMultiPos_1a877222668af46793a279a71dada6052a">configure</reimplementedby>
         <briefdescription>
 <para>Configure hardware pins for this input. </para>
         </briefdescription>
@@ -62,6 +64,7 @@
         <argsstring>()=0</argsstring>
         <name>poll</name>
         <qualifiedname>OpenSkyhawk::InputBase::poll</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262">poll</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f">poll</reimplementedby>
         <briefdescription>
 <para>Read hardware state and emit a CAN EVT if state changed. </para>
@@ -79,6 +82,7 @@
         <argsstring>()=0</argsstring>
         <name>forceReport</name>
         <qualifiedname>OpenSkyhawk::InputBase::forceReport</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891">forceReport</reimplementedby>
         <briefdescription>
 <para>Read hardware state and emit a CAN EVT unconditionally. </para>
@@ -152,9 +156,21 @@
         <link refid="classOpenSkyhawk_1_1InputBase"/>
       </node>
       <node id="2">
+        <label>OpenSkyhawk::MultiPosInput</label>
+        <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
         <label>OpenSkyhawk::Switch2Pos</label>
         <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
         <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::SwitchMultiPos</label>
+        <link refid="classOpenSkyhawk_1_1SwitchMultiPos"/>
+        <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>

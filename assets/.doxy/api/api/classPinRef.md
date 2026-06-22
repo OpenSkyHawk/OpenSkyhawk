@@ -67,7 +67,7 @@ _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.
 |   | [**PinRef**](#function-pinref-14) (uint8\_t pin) <br>_Direct STM32 GPIO pin._  |
 |   | [**PinRef**](#function-pinref-24) (MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_MCP23017 expander GPIO._  |
 |   | [**PinRef**](#function-pinref-34) ([**ADS1115**](classADS1115.md) & adc, uint8\_t channel) <br>[_**ADS1115**_](classADS1115.md) _ADC channel._ |
-|   | [**PinRef**](#function-pinref-44) () <br>_No-connect sentinel — represents a position with no physical pin._  |
+|  constexpr | [**PinRef**](#function-pinref-44) () <br>_No-connect sentinel — represents a position with no physical pin._  |
 |  void | [**configureAsInput**](#function-configureasinput) () <br>_Configure this pin as a digital input._  |
 |  void | [**configureAsOutput**](#function-configureasoutput) () <br>_Configure this pin as a digital output._  |
 |  uint8\_t | [**gpioPin**](#function-gpiopin) () const<br>_Return the raw Arduino pin number for GPIO PinRefs._  |
@@ -319,12 +319,22 @@ PinRef::PinRef (
 
 _No-connect sentinel — represents a position with no physical pin._ 
 ```C++
-PinRef::PinRef () 
+inline constexpr PinRef::PinRef () 
 ```
 
 
 
-All reads return false / 0. All writes are no-ops. Equivalent to PIN\_NC. Provided for use in array initialisers. 
+All reads return false / 0. All writes are no-ops. Equivalent to PIN\_NC. Provided for use in array initialisers.
+
+
+
+
+**Note:**
+
+constexpr so `PIN_NC` — and any default-constructed NC [**PinRef**](classPinRef.md) — is constant-initialized. This makes it safe to place in a global wiring-map array without the static-initialization-order hazard a dynamically-initialized global would have. 
+
+
+
 
 
         

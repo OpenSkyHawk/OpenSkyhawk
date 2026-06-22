@@ -4284,7 +4284,7 @@
 <td style="text-align: left;"><a href="#function-pinref-34"><strong>PinRef</strong></a> (<a href="../classADS1115/"><strong>ADS1115</strong></a> &amp; adc, uint8_t channel) <br><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC channel.</em></td>
 </tr>
 <tr>
-<td style="text-align: right;"></td>
+<td style="text-align: right;">constexpr</td>
 <td style="text-align: left;"><a href="#function-pinref-44"><strong>PinRef</strong></a> () <br><em>No-connect sentinel — represents a position with no physical pin.</em></td>
 </tr>
 <tr>
@@ -4423,9 +4423,11 @@
 
 <h3 id="function-pinref-44">function PinRef [4/4]</h3>
 <p><em>No-connect sentinel — represents a position with no physical pin.</em> </p>
-<pre><code class="language-C++">PinRef::PinRef () 
+<pre><code class="language-C++">inline constexpr PinRef::PinRef () 
 </code></pre>
-<p>All reads return false / 0. All writes are no-ops. Equivalent to PIN_NC. Provided for use in array initialisers. </p>
+<p>All reads return false / 0. All writes are no-ops. Equivalent to PIN_NC. Provided for use in array initialisers.</p>
+<p><strong>Note:</strong></p>
+<p>constexpr so <code>PIN_NC</code> — and any default-constructed NC <a href="./"><strong>PinRef</strong></a> — is constant-initialized. This makes it safe to place in a global wiring-map array without the static-initialization-order hazard a dynamically-initialized global would have. </p>
 <hr>
 
 <h3 id="function-configureasinput">function configureAsInput</h3>

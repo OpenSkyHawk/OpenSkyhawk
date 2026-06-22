@@ -34,9 +34,15 @@ Here is a list of all files with brief descriptions:
                     * **file** [**I2cMux.cpp**](I2cMux_8cpp.md)     
                     * **file** [**I2cMux.h**](I2cMux_8h.md) _TCA9548A 1-to-8 I2C multiplexer channel selector for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
             * **dir** [**Inputs**](dir_2e07d2b82251b5bb8c3d5a17dd64c04b.md)     
+                * **dir** [**MultiPosInput**](dir_7bc1eaced50854697a5557e9b0a7cd3c.md)     
+                    * **file** [**MultiPosInput.cpp**](MultiPosInput_8cpp.md)     
+                    * **file** [**MultiPosInput.h**](MultiPosInput_8h.md) _Shared base for multi-position selector inputs (SwitchMultiPos, AnalogMultiPos, ...)._     
                 * **dir** [**Switch2Pos**](dir_498c816b3a939baf976ad59345a9b3b2.md)     
                     * **file** [**Switch2Pos.cpp**](Switch2Pos_8cpp.md)     
                     * **file** [**Switch2Pos.h**](Switch2Pos_8h.md) _Debounced 2-position switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+                * **dir** [**SwitchMultiPos**](dir_4dc253f801dfeffbf99c560a0635ade6.md)     
+                    * **file** [**SwitchMultiPos.cpp**](SwitchMultiPos_8cpp.md)     
+                    * **file** [**SwitchMultiPos.h**](SwitchMultiPos_8h.md) _N-pin rotary selector switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
             * **dir** [**Outputs**](dir_529c528362a647a34d31d0b3b420ca72.md)     
                 * **dir** [**LED**](dir_014b7653223add72b0ed2d7a88fd1566.md)     
                     * **file** [**LED.cpp**](LED_8cpp.md) 

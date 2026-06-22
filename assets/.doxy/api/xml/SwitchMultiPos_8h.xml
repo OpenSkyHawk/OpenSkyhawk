@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="SwitchMultiPos_8h" kind="file" language="C++">
+    <compoundname>SwitchMultiPos.h</compoundname>
+    <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
+    <includes refid="MultiPosInput_8h" local="no">Inputs/MultiPosInput/MultiPosInput.h</includes>
+    <includedby refid="SwitchMultiPos_8cpp" local="yes">Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.cpp</includedby>
+    <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="6">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Inputs/MultiPosInput/MultiPosInput.h</label>
+        <link refid="MultiPosInput_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.h</label>
+        <link refid="SwitchMultiPos_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+      <node id="3">
+        <label>Arduino.h</label>
+      </node>
+      <node id="5">
+        <label>MCP23017.h</label>
+      </node>
+      <node id="4">
+        <label>Wire.h</label>
+      </node>
+      <node id="10">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.cpp</label>
+        <link refid="SwitchMultiPos_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.h</label>
+        <link refid="SwitchMultiPos_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1SwitchMultiPos" prot="public">OpenSkyhawk::SwitchMultiPos</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>N-pin rotary selector switch for <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> nodes. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>PinRef</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="MultiPosInput_8h" kindref="compound">Inputs/MultiPosInput/MultiPosInput.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>MultiPosInput<sp/>base</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="classOpenSkyhawk_1_1SwitchMultiPos" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1SwitchMultiPos" kindref="compound">SwitchMultiPos</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput" kindref="compound">MultiPosInput</ref><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="41" refid="classOpenSkyhawk_1_1SwitchMultiPos_1a9cdae86debdee5012aa46f7f7b6a8de1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1SwitchMultiPos_1a9cdae86debdee5012aa46f7f7b6a8de1" kindref="member">DEBOUNCE_MS</ref><sp/>=<sp/>20;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1SwitchMultiPos" kindref="compound">SwitchMultiPos</ref>(uint16_t<sp/>controlId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>*<sp/>pins,<sp/>uint8_t<sp/>numPins,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reverse<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1SwitchMultiPos_1a877222668af46793a279a71dada6052a" kindref="member">configure</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1SwitchMultiPos_1a3fcd22d73936b7632c855b048383f224" kindref="member">readRaw</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref>*<sp/>_pins;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/>_numPins;<sp/><sp/></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_reverse;<sp/><sp/></highlight></codeline>
+<codeline lineno="76"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.h"/>
+  </compounddef>
+</doxygen>

@@ -65,6 +65,8 @@
 
 * [**MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## n
@@ -96,6 +98,8 @@
 * [**StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 

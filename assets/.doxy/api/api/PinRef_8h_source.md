@@ -33,7 +33,7 @@ public:
 
     PinRef(ADS1115& adc, uint8_t channel);
 
-    PinRef();
+    constexpr PinRef() : _type(Type::NC), _src{} {}
 
     // ── Interface ─────────────────────────────────────────────────────────────────
 

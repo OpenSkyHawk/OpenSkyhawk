@@ -3931,9 +3931,8 @@ PinRef::PinRef(ADS1115&amp; adc, uint8_t channel) : _type(Type::ADS) {
     adc.setGain(GAIN_ONE); // ±4.096V FSR — best resolution for 0–3.3V inputs
 }
 
-PinRef::PinRef() : _type(Type::NC) {
-    _src.pin = 0;
-}
+// Default no-connect ctor is constexpr, defined inline in PinRef.h (constant-initialized
+// so PIN_NC is safe in global array initialisers — no static-init-order hazard).
 
 // ── read ──────────────────────────────────────────────────────────────────────
 

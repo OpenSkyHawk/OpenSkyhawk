@@ -4046,10 +4046,10 @@ hardware. This page is the catalogue, with honest Phase status: most types are <
 not yet implemented</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Most control types are not implemented yet</p>
-<p>Implemented today: <strong>LED</strong>, <strong>DrumDisplay</strong>, and <strong>NeedleGauge</strong> (outputs) and <strong>Switch2Pos</strong>
-(input), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3);
-DrumDisplay is hardware-verified (mux + readouts on real OLEDs). NeedleGauge is authored and
-compile-gated, with the on-hardware bench still pending.
+<p>Implemented today: <strong>LED</strong>, <strong>DrumDisplay</strong>, and <strong>NeedleGauge</strong> (outputs) and <strong>Switch2Pos</strong> +
+<strong>SwitchMultiPos</strong> (inputs), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are
+hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
+NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos is hardware-verified (10/10 bench scenarios).
 Everything marked <em>Phase 4</em> or <em>Phase 5</em> below is specified but <strong>not yet written</strong> — don't expect it
 to compile today.</p>
 </div>
@@ -4114,7 +4114,7 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </tr>
 <tr>
 <td><code>SwitchMultiPos</code></td>
-<td>Phase 4 — not started</td>
+<td><strong>Implemented</strong> (hardware-verified)</td>
 <td>N-pin rotary, one active. value = index</td>
 </tr>
 <tr>

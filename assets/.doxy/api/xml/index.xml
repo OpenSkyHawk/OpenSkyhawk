@@ -179,6 +179,22 @@
     <member refid="classOpenSkyhawk_1_1MotorDriver_1a98f4669440c20b80c13be9f8d8532a87" kind="function"><name>update</name></member>
     <member refid="classOpenSkyhawk_1_1MotorDriver_1a1174f0699e60b6b4b6891988d9d5e984" kind="function"><name>position</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1MultiPosInput" kind="class"><name>OpenSkyhawk::MultiPosInput</name>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" kind="variable"><name>NO_POSITION</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" kind="variable"><name>_controlId</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a48d2582f77fe6e11afdcf4c7ff8ecb38" kind="variable"><name>_numPositions</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1aac98d86d92023c8dcd16d8a4a7245f75" kind="variable"><name>_debounceMs</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a6297071b06590f6b7bf4487fedc7f1c9" kind="variable"><name>_lastPos</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1adf35dd65541724159d422c7fa1bc09d6" kind="variable"><name>_pendingPos</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a7afdb479b7c6bb1a6d2d198e35ca9713" kind="variable"><name>_debounceStartMs</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1abfea71de6eb0a718d327bc6b40ecfbc9" kind="variable"><name>_initialized</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" kind="function"><name>poll</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610" kind="function"><name>forceReport</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8252af59e9a4e0aca413594313c6ef98" kind="function"><name>position</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1ad32d74dbe25f0b9313c8341f9bd5d8a2" kind="function"><name>MultiPosInput</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" kind="function"><name>readRaw</name></member>
+    <member refid="classOpenSkyhawk_1_1MultiPosInput_1ac308c93f5fd38b095c757796258f12b1" kind="function"><name>emit</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1NeedleGauge" kind="class"><name>OpenSkyhawk::NeedleGauge</name>
     <member refid="classOpenSkyhawk_1_1NeedleGauge_1a02a6bcd2fba608ff8af465f10a647abe" kind="variable"><name>_controlId</name></member>
     <member refid="classOpenSkyhawk_1_1NeedleGauge_1aac580b10650b960558757fe6785f03c0" kind="variable"><name>_mask</name></member>
@@ -219,7 +235,7 @@
     <member refid="classPinRef_1a1a39e46cfc347bdfebf78fabd37e8d57" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1ab04330ae4e468f50efac724e7b230740" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1a94a6a5253fef0b8c33d7caa514e55dd4" kind="function"><name>PinRef</name></member>
-    <member refid="classPinRef_1adadada577c72fb0b3534a3354387ddd2" kind="function"><name>PinRef</name></member>
+    <member refid="classPinRef_1a9fc468d55c56b5ef69e447e1c50467f8" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1a2f38bed5de65575b4e243d8cb9349f90" kind="function"><name>read</name></member>
     <member refid="classPinRef_1ac2195c891574cd919350cdf0a8e9bef1" kind="function"><name>readLive</name></member>
     <member refid="classPinRef_1a08e3c8b54a3c18ae352c50d5e75cd2b2" kind="function"><name>readAnalog</name></member>
@@ -303,23 +319,32 @@
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891" kind="function"><name>forceReport</name></member>
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520" kind="function"><name>configure</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1SwitchMultiPos" kind="class"><name>OpenSkyhawk::SwitchMultiPos</name>
+    <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a9cdae86debdee5012aa46f7f7b6a8de1" kind="variable"><name>DEBOUNCE_MS</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1ac92b47f849cab23546b9ba2cc33c0ae0" kind="variable"><name>_pins</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a690e1f6d3927e37be4d12bf32fa17209" kind="variable"><name>_numPins</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a3cc8addb4af7998a58ba0833bb6a4c68" kind="variable"><name>_reverse</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a8a1f98b3f783a7766983aa4edff3e1d8" kind="function"><name>SwitchMultiPos</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a877222668af46793a279a71dada6052a" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a3fcd22d73936b7632c855b048383f224" kind="function"><name>readRaw</name></member>
+  </compound>
   <compound refid="structTxQueueEntry" kind="struct"><name>TxQueueEntry</name>
     <member refid="structTxQueueEntry_1aa218a9b070cfc094584bbfcf398b6f29" kind="variable"><name>canId</name></member>
     <member refid="structTxQueueEntry_1ac97d64f73e4b53529f3cb74ecf432d47" kind="variable"><name>len</name></member>
     <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
     <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d23" kind="namespace"><name>@23</name>
-  </compound>
   <compound refid="namespace_0d27" kind="namespace"><name>@27</name>
-    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d27_1ac3c184dc9dc921ac72946b5b3ec5d589a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d27_1a9f78d7eb824d7250182a23e0d5091ab3a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  </compound>
+  <compound refid="namespace_0d31" kind="namespace"><name>@31</name>
+    <member refid="namespace_0d31_1a3a0c65e621062f04cb345324ad970826" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d31_1a3a0c65e621062f04cb345324ad970826aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d31_1a3a0c65e621062f04cb345324ad970826a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d31_1a3a0c65e621062f04cb345324ad970826a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d31_1a29138e75c175eaa2b1a599f26490fe72" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d31_1a29138e75c175eaa2b1a599f26490fe72ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d31_1a29138e75c175eaa2b1a599f26490fe72aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d31_1a29138e75c175eaa2b1a599f26490fe72a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
   </compound>
@@ -1312,9 +1337,17 @@
   </compound>
   <compound refid="I2cMux_8h" kind="file"><name>I2cMux.h</name>
   </compound>
+  <compound refid="MultiPosInput_8cpp" kind="file"><name>MultiPosInput.cpp</name>
+  </compound>
+  <compound refid="MultiPosInput_8h" kind="file"><name>MultiPosInput.h</name>
+  </compound>
   <compound refid="Switch2Pos_8cpp" kind="file"><name>Switch2Pos.cpp</name>
   </compound>
   <compound refid="Switch2Pos_8h" kind="file"><name>Switch2Pos.h</name>
+  </compound>
+  <compound refid="SwitchMultiPos_8cpp" kind="file"><name>SwitchMultiPos.cpp</name>
+  </compound>
+  <compound refid="SwitchMultiPos_8h" kind="file"><name>SwitchMultiPos.h</name>
   </compound>
   <compound refid="OpenSkyhawk_8h" kind="file"><name>OpenSkyhawk.h</name>
   </compound>
@@ -1394,6 +1427,8 @@
   </compound>
   <compound refid="dir_7cabaf4812e32c14ff26922d3804a645" kind="dir"><name>Firmware/Libraries/PanelGroup/Drivers/MotorDriver</name>
   </compound>
+  <compound refid="dir_7bc1eaced50854697a5557e9b0a7cd3c" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput</name>
+  </compound>
   <compound refid="dir_61ced45d99aac20e353c7cae873553bb" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge</name>
   </compound>
   <compound refid="dir_529c528362a647a34d31d0b3b420ca72" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs</name>
@@ -1409,5 +1444,7 @@
   <compound refid="dir_aa1816754c0645981f9c7af905857f7d" kind="dir"><name>Firmware/Libraries/STM32Board</name>
   </compound>
   <compound refid="dir_498c816b3a939baf976ad59345a9b3b2" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos</name>
+  </compound>
+  <compound refid="dir_4dc253f801dfeffbf99c560a0635ade6" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos</name>
   </compound>
 </doxygenindex>

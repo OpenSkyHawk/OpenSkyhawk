@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="MultiPosInput_8h" kind="file" language="C++">
+    <compoundname>MultiPosInput.h</compoundname>
+    <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
+    <includedby refid="MultiPosInput_8cpp" local="yes">Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp</includedby>
+    <includedby refid="SwitchMultiPos_8h" local="no">Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.h</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="6">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h</label>
+        <link refid="MultiPosInput_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+      <node id="3">
+        <label>Arduino.h</label>
+      </node>
+      <node id="5">
+        <label>MCP23017.h</label>
+      </node>
+      <node id="4">
+        <label>Wire.h</label>
+      </node>
+      <node id="10">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp</label>
+        <link refid="MultiPosInput_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h</label>
+        <link refid="MultiPosInput_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.cpp</label>
+        <link refid="SwitchMultiPos_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.h</label>
+        <link refid="SwitchMultiPos_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1MultiPosInput" prot="public">OpenSkyhawk::MultiPosInput</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>Shared base for multi-position selector inputs (SwitchMultiPos, AnalogMultiPos, ...). </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PanelGroup_8h" kindref="compound">PanelGroup.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>InputBase</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="classOpenSkyhawk_1_1MultiPosInput" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1MultiPosInput" kindref="compound">MultiPosInput</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="34" refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" kindref="member">NO_POSITION</ref><sp/>=<sp/>0xFFFF;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" kindref="member">poll</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610" kindref="member">forceReport</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="classOpenSkyhawk_1_1MultiPosInput_1a8252af59e9a4e0aca413594313c6ef98" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput_1a8252af59e9a4e0aca413594313c6ef98" kindref="member">position</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_lastPos;<sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>MULTIPOS_TEST</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>emitCount()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_emitCount;<sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>MultiPosInput(uint16_t<sp/>controlId,<sp/>uint8_t<sp/>numPositions,<sp/>uint16_t<sp/>debounceMs);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" kindref="member">readRaw</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" kindref="member">_controlId</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="88" refid="classOpenSkyhawk_1_1MultiPosInput_1a48d2582f77fe6e11afdcf4c7ff8ecb38" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="classOpenSkyhawk_1_1MultiPosInput_1a48d2582f77fe6e11afdcf4c7ff8ecb38" kindref="member">_numPositions</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>emit(uint16_t<sp/>pos,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>init<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/><sp/></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>_debounceMs;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>stability<sp/>window<sp/>(ms);<sp/>0<sp/>=<sp/>confirm<sp/>next<sp/>poll</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>_lastPos;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>last<sp/>confirmed<sp/>/<sp/>emitted<sp/>index</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>_pendingPos;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>last<sp/>raw<sp/>reading<sp/>(pre-confirm)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>_debounceStartMs;<sp/><sp/></highlight><highlight class="comment">//<sp/>millis()<sp/>when<sp/>_pendingPos<sp/>last<sp/>changed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_initialized;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>false<sp/>until<sp/>forceReport();<sp/>poll()<sp/>no-op<sp/>before<sp/>this</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>MULTIPOS_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>_emitCount<sp/>=<sp/>0;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>test-only<sp/>EVT<sp/>counter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h"/>
+  </compounddef>
+</doxygen>
