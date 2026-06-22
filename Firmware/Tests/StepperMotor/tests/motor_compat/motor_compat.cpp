@@ -12,7 +12,7 @@
 using namespace OpenSkyhawk;
 
 static const StepperConfig CFG = {
-    /* stepsPerRev       */ 720,
+    /* stepsPerRev       */ 1080,   // full revolution (datasheet)
     /* pattern           */ StepPattern::SWITEC_6STATE,
     /* accel             */ kSwitecDefaultAccel,
     /* accelN            */ kSwitecDefaultAccelN,
@@ -27,6 +27,8 @@ static const StepperConfig CFG = {
     /* deadband          */ 1,
     /* autoRecal         */ false,
     /* recalDebounceMs   */ 0,
+    /* rangeSteps        */ 960,    // stop-to-stop — STALL home drives this (X27.589 ≈ 945)
+    /* homeStepUs        */ 0,      // 0 → library default 2000µs
 };
 
 StepperMotor gMotor(PinRef(PA0), PinRef(PA1), PinRef(PA4), PinRef(PA5), CFG);

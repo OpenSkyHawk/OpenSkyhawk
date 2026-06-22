@@ -87,15 +87,40 @@ Local decoupling required on every board: 100 nF + 10 µF per rail, placed close
 
 DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated, not inspectable after reflow). DRV8833PW is the same electrical capability in an inspectable HTSSOP-16 package.
 
-- Drives one X27.589 Switec stepper (bipolar, ~600 steps/315°, 180–300 Ω coils, ~15–30 mA at 5 V)
+- Drives one X27.589 Switec stepper (bipolar, **~945 partial steps/315°** = 1/3°/step, 1080 steps/full-rev; 180–300 Ω coils, ~15–30 mA at 5 V)
 - VM supply: 2–10.8 V (use 5 V); VINT: 3.3 V output (bypass with 100 nF to GND — do not drive with external supply)
 - VCP (charge pump): 100 nF cap to VM — required for internal charge pump
 - **~SLEEP pin (active LOW)**: driven HIGH from `setup()` before the homing sequence runs — motor requires active driver output for homing torque. Remains HIGH permanently after that. Anti-twitch is achieved by homing to position 0 before DCS connects, not by disabling the driver.
 - AISEN / BISEN: current sense inputs — tie to GND (no current regulation needed; X27.589 coil resistance limits current naturally at 5 V)
 - ~FAULT: open-drain fault output — leave NC in this revision
 - No current-regulation passives needed; X27.589 coil resistance limits current naturally at 5 V
-- Firmware: use **SwitecX25** library (handles homing/reset); AccelStepper does not implement homing
+- Firmware: **`StepperMotor`** (SwitecX25 accel ported in-tree; STALL & SENSOR homing) — see *Stepper drive* below
 - KiCad symbol: `Driver_Motor:DRV8833PW` (built-in)
+
+### Stepper drive — resolution, homing, and I²C-expander limits
+
+**Resolution (X27.589 / VID-29 / BKA-30 air-core family).** `StepperMotor` drives the datasheet **partial step = 1/3°/step** (1080 steps/full-rev) via the 6-state air-core sequence. Full step = 1°; micro step = 1/12° (PWM current control) is **not used** — the DRV8833 has no indexer and the firmware drives plain digital coil states. 1/3° (~960 positions over a 320° gauge) is ample; microstepping is a deferred option (see #122).
+
+**Homing (STALL).** `StepperConfig.rangeSteps` is the **mechanical stop-to-stop travel** (~945 for an X27.589 315°, ~960 for a 320° BKA-30) — distinct from `stepsPerRev` (the full 360° revolution, used for degree↔step and `wrap`). STALL home drives `rangeSteps` (+ a 1/8 margin), **not** a full revolution: over-driving a stop-limited gauge by the rev−range difference grinds the seated rotor and desyncs it, so the zero wanders between homes. The seek runs at `homeStepUs` (default 2000 µs ≈ 500 steps/s), which **must stay under the air-core start-stop speed** (~774 steps/s ≈ 1290 µs/step) — the former 800 µs (1250 steps/s) sat at that edge and caused the "home left, then home right" band-swap.
+
+**Coil drive path & speed envelope** (bench-measured 2026-06-21, BKA-30 on DRV8833 @ 5 V):
+
+| Path | Step rate | ≈ °/s | Notes |
+|---|---|---|---|
+| Native STM32 GPIO | ~1667 steps/s | ~600 | motor-limited (datasheet max with accel) |
+| MCP23017 @ 400 kHz | ~490 steps/s | ~163 | batched port write; I²C-overhead-limited |
+| MCP23017 @ 100 kHz | ~260 steps/s | ~87 | for long / loaded buses |
+
+- **STM32F103 I²C ceiling = 400 kHz** (no fast-mode-plus on the F1 peripheral).
+- **Batched port write:** `StepperMotor` writes all four coils in **one** `writePort()` per step (`PanelGroup::flushExpanderWrites()`), not four per-pin read-modify-writes — fewer I²C transactions, lower bus occupancy, and an **atomic coil transition** (no mixed-coil intermediate state). **Caveat: the batched write rewrites the whole 8-bit port from cache, so stepper coils must OWN their MCP23017 port** — do not place unrelated I/O on the other pins of that port.
+- **Rule of thumb:** a gauge needing fast slews → coils on **native GPIO**; a slow / remote gauge → MCP expander (≈163 °/s, fine for gradual gauges like APN-153 DRIFT). The expander is a *reach* tool, not a speed tool.
+
+**12-inch remote I²C bus.** At ~12" the bus capacitance (cable + device pins, ~150–250 pF) limits speed:
+
+- **400 kHz** needs SCL rise < 300 ns → use **~1.5 kΩ pull-ups** (sink ~2.2 mA, within MCP23017 / STM32 limits). 4.7 kΩ at that capacitance rises in ~1 µs and **fails** 400 kHz.
+- **100 kHz** tolerates **4.7 kΩ** at 12" (1 µs rise is within spec) — reliable but slower.
+- Or an **active I²C buffer** (P82B715 / PCA9600 / LTC4311) to hold 400 kHz over 12–18".
+- Verify on a scope (SCL rise time) with the **fully populated** bus (MCP + OLED + ADS) for realistic capacitance.
 
 ## Screws
 

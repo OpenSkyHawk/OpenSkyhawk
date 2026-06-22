@@ -280,6 +280,19 @@ namespace PanelGroup {
     void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
 
     /**
+     * @brief Deferred MCP23017 write — update the cache + mark the port dirty, no I2C.
+     * @note Pair with flushExpanderWrites(). Lets a multi-pin output (e.g. a stepper's four
+     *       coils) collapse N per-pin read-modify-writes into one writePort() per port.
+     */
+    void writeCachedPinDeferred(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
+
+    /**
+     * @brief Push every port dirtied by writeCachedPinDeferred() — one writePort() each.
+     * @note No-op when nothing is pending (GPIO-only outputs never dirty a port).
+     */
+    void flushExpanderWrites();
+
+    /**
      * @brief Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache.
      * @param chip  Chip reference.
      * @param port  PORT_A (0) or PORT_B (1).

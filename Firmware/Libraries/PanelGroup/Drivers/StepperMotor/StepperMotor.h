@@ -86,6 +86,10 @@ struct StepperConfig {
     uint8_t           deadband;          ///< ignore target changes within this many steps
     bool              autoRecal;         ///< re-zero to homePosition when the sensor next asserts
     uint32_t          recalDebounceMs;   ///< minimum interval between auto-recals
+    // Appended for back-compat: existing positional initialisers omit these → value-initialised to
+    // 0 → legacy behaviour (STALL home drives stepsPerRev at the library default rate).
+    uint16_t          rangeSteps;        ///< mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev
+    uint16_t          homeStepUs;        ///< homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)
 };
 
 /** @brief Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family. */
@@ -110,7 +114,11 @@ constexpr uint8_t kSwitecDefaultAccelN = 5;
  * @param deadband           anti-jitter band, steps. Default 1.
  * @param autoRecal          re-zero on sensor crossing. Default false.
  * @param recalDebounceMs    minimum interval between auto-recals. Default 0.
- * @param stepsPerRev        full revolution in steps. Default 720 (nominal — calibrate per motor).
+ * @param stepsPerRev        full revolution in steps. Default 1080 (X27/BKA datasheet, 1/3°/step).
+ * @param rangeSteps         mechanical stop-to-stop travel in steps = STALL home distance. Default 945
+ *                           (X27.589 ~315°); set per gauge (e.g. 960 for a 320° BKA-30).
+ * @param homeStepUs         homing seek rate µs/step. Default 0 → library default (2000 ≈ 500 steps/s).
+ *                           Keep under the motor start-stop rate (~774 steps/s) or the seek slips.
  * @return Populated StepperConfig.
  */
 StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
@@ -120,7 +128,8 @@ StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
                             HomeSensor sensor = { true, 5, 2000 },
                             bool wrap = false, uint8_t deadband = 1,
                             bool autoRecal = false, uint32_t recalDebounceMs = 0,
-                            uint16_t stepsPerRev = 720);
+                            uint16_t stepsPerRev = 1080, uint16_t rangeSteps = 945,
+                            uint16_t homeStepUs = 0);
 
 /**
  * @brief Non-blocking instrument-gauge stepper driven through PinRef coils.

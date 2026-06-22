@@ -42,8 +42,8 @@ Be honest about what's built. Firmware is at the end of **Phase 3**, hardware-ve
     - **Phase 4 input types** — Switch3Pos, SwitchMultiPos, ActionButton, AnalogInput,
       RotaryEncoder, RotaryAcceleratedEncoder, RotarySwitch, AnalogMultiPos, AngleSensorInput,
       SwitchWithCover2Pos
-    - **Phase 5 output types** — AnalogOutput, IntegerOutput, SwitecX25Output,
-      AccelStepperOutput, ServoOutput
+    - **Phase 5 output types** — AnalogOutput, IntegerOutput. (`NeedleGauge` is
+      **implemented** and supersedes the former SwitecX25Output / AccelStepperOutput / ServoOutput.)
     - **Phase 6** — the Center_Armament PanelGroup sketch rewrite and end-to-end integration
 
     See [Control Types](control-types.md) for the full list with status.
