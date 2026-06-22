@@ -29,8 +29,8 @@ input,Mechanical Systems,133,JATO_ARM,JATO Arming Switch,default_2_position_tumb
 input,Mechanical Systems,134,JATO_JETT_SAFE,JATO Jettison Switch,default_2_position_tumb,,DCS-BIOS,0x850E,,"fixed_step,set_state,action",Switch2Pos
 input,Stby,135,APC_ENABLE,APC Power Switch,multiposition_switch_limited,,DCS-BIOS,0x8508,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
 input,Std,136,APS_COLD_STD_HOT,APC Temperature Switch,multiposition_switch_limited,,DCS-BIOS,0x8508,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
-input,Avionics,139,ACCEL_RESET,Accelerometer Reset,default_button,,DCS-BIOS,0x850E,,"fixed_step,set_state,action",ActionButton
-input,Clock,146,STOPWATCH,Elapsed-Time Clock,default_button,,DCS-BIOS,0x850E,,"fixed_step,set_state,action",ActionButton
+input,Avionics,139,ACCEL_RESET,Accelerometer Reset,default_button,,DCS-BIOS,0x850E,,"fixed_step,set_state,action",Switch2Pos
+input,Clock,146,STOPWATCH,Elapsed-Time Clock,default_button,,DCS-BIOS,0x850E,,"fixed_step,set_state,action",Switch2Pos
 input,AFCS,160,AFCS_STBY,AFCS Standby Switch,default_2_position_tumb,,DCS-BIOS,0x8502,,"fixed_step,set_state,action",Switch2Pos
 input,AFCS,161,AFCS_ENGAGE,AFCS Engage Switch,default_2_position_tumb,,DCS-BIOS,0x8502,,"fixed_step,set_state,action",Switch2Pos
 input,AFCS,162,AFCS_HDG_SEL,AFCS Heading Select Switch,default_2_position_tumb,,DCS-BIOS,0x8502,,"fixed_step,set_state,action",Switch2Pos
@@ -50,13 +50,13 @@ input,Lights,223,LIGHT_EXT_TAIL,Tail Light Switch,multiposition_switch_limited,,
 input,Air Condition,224,CABIN_PRESS,Cabin Pressure Switch,default_2_position_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state,action",Switch2Pos
 input,Air Condition,225,WINDSHLD_DEFROST,Windshield Defrost Switch,default_3_position_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state",Switch3Pos
 input,Air Condition,226,CABIN_TEMP,Cabin Temperature Knob,default_axis_limited,,DCS-BIOS,0x8546,,"set_state,variable_step",AnalogInput
-input,Doppler Nav,236,PPOS_LAT_BTN,Present Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
-input,Doppler Nav,237,PPOS_LON_BTN,Present Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
-input,Doppler Nav,238,DEST_LAT_BTN,Destination Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
-input,Doppler Nav,239,DEST_LON_BTN,Destination Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
-input,Doppler Nav,240,ASN41_MAGVAR_BTN,Magnetic Variation Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
-input,Doppler Nav,241,ASN41_WINDSPEED_BTN,Wind Speed Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
-input,Doppler Nav,242,ASN41_WINDDIR_BTN,Wind Direction Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,236,PPOS_LAT_BTN,Present Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
+input,Doppler Nav,237,PPOS_LON_BTN,Present Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
+input,Doppler Nav,238,DEST_LAT_BTN,Destination Latitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
+input,Doppler Nav,239,DEST_LON_BTN,Destination Longitude Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
+input,Doppler Nav,240,ASN41_MAGVAR_BTN,Magnetic Variation Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
+input,Doppler Nav,241,ASN41_WINDSPEED_BTN,Wind Speed Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
+input,Doppler Nav,242,ASN41_WINDDIR_BTN,Wind Direction Push-to-Set Knob,default_button_axis,,DCS-BIOS,0x8522,,"fixed_step,set_state,action",Switch2Pos
 input,Doppler Nav,177,PPOS_LAT_KNB,ASN-41 Present Position - Latitude Knob,analog_dial,,DCS-BIOS,0x8524,0-65535,variable_step,RotaryEncoder
 input,Doppler Nav,183,PPOS_LON_KNB,ASN-41 Present Position - Longitude Knob,analog_dial,,DCS-BIOS,0x8526,0-65535,variable_step,RotaryEncoder
 input,Doppler Nav,190,DEST_LAT_KNB,ASN-41 Destination - Latitude Knob,analog_dial,,DCS-BIOS,0x8528,0-65535,variable_step,RotaryEncoder
@@ -64,7 +64,7 @@ input,Doppler Nav,196,DEST_LON_KNB,ASN-41 Destination - Longitude Knob,analog_di
 input,Doppler Nav,203,ASN41_MAGVAR_KNB,ASN-41 Magnetic Variation Knob,analog_dial,,DCS-BIOS,0x852c,0-65535,variable_step,RotaryEncoder
 input,Doppler Nav,209,ASN41_WINDSPEED_KNB,ASN-41 Wind Speed Knob,analog_dial,,DCS-BIOS,0x852e,0-65535,variable_step,RotaryEncoder
 input,Doppler Nav,213,ASN41_WINDDIR_KNB,ASN-41 Wind Direction Knob,analog_dial,,DCS-BIOS,0x8530,0-65535,variable_step,RotaryEncoder
-input,Doppler Nav,247,DOPPLER_MEM_TEST,AN/APN-153 Memory Light Test,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",ActionButton
+input,Doppler Nav,247,DOPPLER_MEM_TEST,AN/APN-153 Memory Light Test,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",Switch2Pos
 input,Doppler Nav,248,ASN41_LAT_SLEW,Destination Latitude Slew Knob,springloaded_3_pos_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state",Switch3Pos
 input,Doppler Nav,249,ASN41_LON_SLEW,Destination Longitude Slew Knob,springloaded_3_pos_tumb,,DCS-BIOS,0x8544,,"fixed_step,set_state",Switch3Pos
 input,MCL,250,MCL_CHAN_SEL,MCL Channel Selector Switch,multiposition_switch_limited,20,DCS-BIOS,0x854C,,"fixed_step,set_state",AnalogMultiPos(>7)
@@ -101,14 +101,14 @@ input,ECM Panel,503,ECM_AUDIO,Audio ALQ Switch,default_2_position_tumb,,DCS-BIOS
 input,ECM Panel,504,ECM_APR25_PW,APR-25 Switch,default_2_position_tumb,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",Switch2Pos
 input,?,505,ECM_MSL_VOL,Missile Alert Volume,default_axis_limited,,DCS-BIOS,0x8542,,"set_state,variable_step",AnalogInput
 input,?,506,ECM_PRF_VOL,PRF Volume,default_axis_limited,,DCS-BIOS,0x8540,,"set_state,variable_step",AnalogInput
-input,ECM Panel,507,ECM_APR27_TEST,APR-27 Test,default_button,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",ActionButton
+input,ECM Panel,507,ECM_APR27_TEST,APR-27 Test,default_button,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",Switch2Pos
 input,,509,,Compass Latitude Knob (unimplemented),default_axis_limited,,HID/keybind,,,,AnalogInput
-input,ECM Panel,510,ECM_APR27_LIGHT,APR-27 Light,default_button,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",ActionButton
+input,ECM Panel,510,ECM_APR27_LIGHT,APR-27 Light,default_button,,DCS-BIOS,0x853E,,"fixed_step,set_state,action",Switch2Pos
 input,,511,,Compass Heading Set Knob (unimplemented),springloaded_3_pos_tumb,,HID/keybind,,,,Switch3Pos
 input,,512,,Compass Mode (unimplemented),default_2_position_tumb,,HID/keybind,,,,Switch2Pos
-input,,513,,Compass Push-to-Sync (unimplemented),default_button,,HID/keybind,,,,ActionButton
+input,,513,,Compass Push-to-Sync (unimplemented),default_button,,HID/keybind,,,,Switch2Pos
 input,Countermeasures,522,CM_BANK,Dispenser Select,multiposition_switch_limited,,DCS-BIOS,0x84EA,,"fixed_step,set_state",SwitchMultiPos/enc/ladder
-input,Countermeasures,523,CM_AUTO,Chaff AUTO Pushbutton (ALE-29A Salvo),default_button,,DCS-BIOS,0x84EA,,"fixed_step,set_state,action",ActionButton
+input,Countermeasures,523,CM_AUTO,Chaff AUTO Pushbutton (ALE-29A Salvo),default_button,,DCS-BIOS,0x84EA,,"fixed_step,set_state,action",Switch2Pos
 input,Countermeasures,524,CM_ADJ1,Dispenser 1 Counter,default_axis,,DCS-BIOS,0x84FC,,variable_step,AnalogInput
 input,Countermeasures,525,CM_ADJ2,Dispenser 2 Counter,default_axis,,DCS-BIOS,0x84FE,,variable_step,AnalogInput
 input,Countermeasures,530,CM_PWR,Chaff Power Switch,default_2_position_tumb,,DCS-BIOS,0x84EA,,"fixed_step,set_state,action",Switch2Pos
@@ -124,10 +124,10 @@ input,Armament Panel,706,ARM_STATION4,Station 4 Selector Switch,default_2_positi
 input,Armament Panel,707,ARM_STATION5,Station 5 Selector Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
 input,Armament Panel,708,ARM_FUNC_SEL,Weapon Function Selector Switch,multiposition_switch_limited,7,DCS-BIOS,0x8500,,"fixed_step,set_state",AnalogMultiPos
 input,Armament Panel,709,ARM_MASTER,Master Armament Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
-input,Avionics,720,FUEL_EXT_BTN,Internal-External Fuel Switch,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",ActionButton
+input,Avionics,720,FUEL_EXT_BTN,Internal-External Fuel Switch,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",Switch2Pos
 input,Radar Scope,721,RADAR_PROFILE,Radar Terrain Clearance Switch,default_2_position_tumb,,DCS-BIOS,0x8500,,"fixed_step,set_state,action",Switch2Pos
 input,Radar Scope,722,RADAR_RANGE,Radar Range Switch,default_2_position_tumb,,DCS-BIOS,0x8502,,"fixed_step,set_state,action",Switch2Pos
-input,Avionics,723,MASTER_TEST,Master Test Switch,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",ActionButton
+input,Avionics,723,MASTER_TEST,Master Test Switch,default_button,,DCS-BIOS,0x8512,,"fixed_step,set_state,action",Switch2Pos
 input,BDHI,724,BDHI_MODE,BDHI Switch,multiposition_switch_limited,,DCS-BIOS,0x8502,,"fixed_step,set_state",Switch3Pos
 input,Armament Panel,725,SHRIKE_SEL_KNB,Shrike Selector Knob,multiposition_switch_limited,5,DCS-BIOS,0x8502,,"fixed_step,set_state",SwitchMultiPos
 input,Armament Panel,726,MISSILE_VOL,Shrike/Sidewinder Volume Knob,default_axis_limited,,DCS-BIOS,0x8506,,"set_state,variable_step",AnalogInput
