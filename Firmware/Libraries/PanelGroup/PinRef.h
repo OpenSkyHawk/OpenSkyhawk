@@ -65,8 +65,13 @@ public:
      *
      * @details All reads return false / 0. All writes are no-ops.
      * Equivalent to PIN_NC. Provided for use in array initialisers.
+     *
+     * @note constexpr so `PIN_NC` — and any default-constructed NC PinRef — is
+     * constant-initialized. This makes it safe to place in a global wiring-map array
+     * without the static-initialization-order hazard a dynamically-initialized global
+     * would have.
      */
-    PinRef();
+    constexpr PinRef() : _type(Type::NC), _src{} {}
 
     // ── Interface ─────────────────────────────────────────────────────────────────
 
