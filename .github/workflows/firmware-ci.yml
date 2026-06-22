@@ -3,15 +3,13 @@ name: Firmware CI
 on:
   workflow_dispatch:
   schedule:
-    # Weekly full build. PRs use affected-project selection for faster feedback.
+    # Weekly full build of every firmware project (canary).
     - cron: "0 8 * * 0"
   pull_request:
     paths:
       - "Firmware/**"
       - "tools/check_node_ids.py"
       - ".github/workflows/firmware-ci.yml"
-      - ".github/firmware-platformio-impact.json"
-      - ".github/scripts/select-platformio-projects.py"
 
 permissions:
   contents: read
@@ -32,13 +30,15 @@ jobs:
 
   firmware:
     name: Build supported PlatformIO projects
+    # Full build (~20 min) runs only on the weekly schedule and on manual
+    # dispatch — never on PRs or pushes, where it was slow feedback for little
+    # value. Trigger an on-demand build from the Actions tab ("Run workflow").
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -46,29 +46,13 @@ jobs:
           python-version: "3.12"
 
       - name: Select firmware projects
-        id: select
         run: |
           set -euo pipefail
-
-          projects_file="$RUNNER_TEMP/platformio-projects.txt"
-          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-            # pull_request checks out GitHub's synthetic merge commit.
-            # With fetch-depth 2, HEAD^1 is the base parent and HEAD is the merge result.
-            python .github/scripts/select-platformio-projects.py \
-              --mode affected \
-              --base "HEAD^1" \
-              --head "HEAD" \
-              --output "$projects_file" \
-              --github-output "$GITHUB_OUTPUT"
-          else
-            python .github/scripts/select-platformio-projects.py \
-              --mode full \
-              --output "$projects_file" \
-              --github-output "$GITHUB_OUTPUT"
-          fi
+          python .github/scripts/select-platformio-projects.py \
+            --mode full \
+            --output "$RUNNER_TEMP/platformio-projects.txt"
 
       - name: Cache PlatformIO toolchain
-        if: steps.select.outputs.project_count != '0'
         uses: actions/cache@v5
         with:
           # Cache the EXTRACTED toolchains (packages/ + platforms/) — the STM32 +
@@ -89,14 +73,12 @@ jobs:
             ${{ runner.os }}-platformio-
 
       - name: Install PlatformIO
-        if: steps.select.outputs.project_count != '0'
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
           python -m pip install platformio
 
       - name: Build firmware projects
-        if: steps.select.outputs.project_count != '0'
         run: |
           set -euo pipefail
 
@@ -129,10 +111,6 @@ jobs:
           fi
 
           exit "$failed"
-
-      - name: Skip firmware builds
-        if: steps.select.outputs.project_count == '0'
-        run: echo "No affected PlatformIO projects were selected."
 
       - name: Upload PlatformIO logs
         if: always()
