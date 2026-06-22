@@ -9,7 +9,7 @@ not yet implemented**.
     Implemented today: **LED**, **DrumDisplay**, and **NeedleGauge** (outputs) and **Switch2Pos** +
     **SwitchMultiPos** (inputs), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are
     hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
-    NeedleGauge and SwitchMultiPos are authored and compile-gated, with the on-hardware bench still pending.
+    NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos is hardware-verified (10/10 bench scenarios).
     Everything marked *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it
     to compile today.
 
