@@ -37,9 +37,13 @@ Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/
 ### Test project — `Firmware/Tests/SwitchMultiPos/`
 
 GPIO-driven bench tests (mirror `Tests/Switch2Pos/`): control output pins drive the selector
-input pins through jumpers; `check(label, ok)` → `STM32Board::diagSerial()` PASS/FAIL; EVTs are
-captured via a CAN loopback (`onReceive` + `filterAcceptId(canIdEvt)` + `flushBatched` + `drain`).
-Default rig: jumper `PB0→PA0, PB1→PA1, PB4→PA4, PB5→PA5` (4 positions).
+input pins through jumpers; `check(label, ok)` → `STM32Board::diagSerial()` PASS/FAIL. The
+resolved index is asserted directly via `SwitchMultiPos::position()` and the emit count via the
+`#ifdef MULTIPOS_TEST` `emitCount()` seam — **not** a captured CAN frame, so there is no
+loopback fragility. CAN runs in **normal mode** (`CANProtocol::start()`): the node ACKs the
+(unmodified) PanelBridge and the EVTs reach it — drive a position, watch the selector move in DCS.
+Default rig: jumper `PB0→PA0, PB1→PA1, PB10→PA4, PB5→PA5` (4 positions; `test_pin_nc` uses
+`PB0→PA0, PB10→PA4`).
 
 | Scenario env | Verifies |
 |---|---|

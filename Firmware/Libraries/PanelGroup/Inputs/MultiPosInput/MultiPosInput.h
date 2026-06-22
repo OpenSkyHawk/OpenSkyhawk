@@ -48,6 +48,20 @@ public:
      */
     void forceReport() override;
 
+    /**
+     * @brief The last confirmed position index (0..N-1).
+     *
+     * Updated by forceReport() (immediately) and poll() (after the debounce confirms a change).
+     * Useful as a query — a node can read its current selector position — and for tests to
+     * assert the resolved index without capturing the CAN frame.
+     */
+    uint16_t position() const { return _lastPos; }
+
+#ifdef MULTIPOS_TEST
+    /** @brief Test seam — count of CAN EVTs emitted (forceReport + each confirmed change). */
+    uint16_t emitCount() const { return _emitCount; }
+#endif
+
 protected:
     /**
      * @brief Construct the base.
@@ -81,6 +95,9 @@ private:
     uint16_t _pendingPos;       // last raw reading (pre-confirm)
     uint32_t _debounceStartMs;  // millis() when _pendingPos last changed
     bool     _initialized;      // false until forceReport(); poll() no-op before this
+#ifdef MULTIPOS_TEST
+    uint16_t _emitCount = 0;    // test-only EVT counter
+#endif
 };
 
 }  // namespace OpenSkyhawk

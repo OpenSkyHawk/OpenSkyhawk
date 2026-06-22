@@ -53,6 +53,10 @@ public:
 
     void poll() override;          // resolve, debounce, emit on confirmed change
     void forceReport() override;   // resolve + emit unconditionally (no debounce); set baseline
+    uint16_t position() const;     // last confirmed index 0..N-1 (query + test assert)
+#ifdef MULTIPOS_TEST
+    uint16_t emitCount() const;    // test seam — count of EVTs emitted
+#endif
 
 protected:
     MultiPosInput(uint16_t controlId, uint8_t numPositions, uint16_t debounceMs);

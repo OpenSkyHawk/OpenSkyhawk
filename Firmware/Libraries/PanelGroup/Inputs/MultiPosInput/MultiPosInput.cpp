@@ -23,6 +23,9 @@ MultiPosInput::MultiPosInput(uint16_t controlId, uint8_t numPositions, uint16_t 
 void MultiPosInput::emit(uint16_t pos, bool init) {
     CANProtocol::sendBatched(canIdEvt(NODE_ID),
                              ControlPacket{_controlId, pos});
+#ifdef MULTIPOS_TEST
+    _emitCount++;
+#endif
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[MUL] 0x")); d.print(_controlId, HEX);

@@ -1,11 +1,12 @@
 // SwitchMultiPos — one_hot test
 //
-// Drives each of N position pins active (LOW, reverse=false) in turn and confirms the
-// emitted EVT carries that position's index. forceReport() is used so each read emits
-// immediately (the debounced poll() path is covered by the debounce/jump/fast_sweep tests).
+// Drives each of N position pins active (LOW, reverse=false) in turn and asserts the resolved
+// index via SwitchMultiPos::position(). CAN runs in NORMAL mode: the node ACKs the (unmodified)
+// PanelBridge and the EVTs reach it — verification is on the class's own state, not a captured
+// frame, so there is no CAN-loopback fragility.
 //
-// Hardware: STM32. Jumper PB0->PA0, PB1->PA1, PB10->PA4, PB5->PA5.
-//   PBx: outputs driving the switch lines.  PAx: SwitchMultiPos inputs (one-hot).
+// Rig: this STM32 on the CAN bus with the PanelBridge. Watch the selector move in DCS as a bonus.
+//   Jumper PB0->PA0, PB1->PA1, PB10->PA4, PB5->PA5  (PBx outputs simulate the switch lines).
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -15,19 +16,6 @@ static constexpr uint16_t CTRL_ID = 0x5678;
 static constexpr uint8_t  N       = 4;
 static const uint8_t SW_PINS[N]   = { PA0, PA1, PA4, PA5 };
 static const uint8_t CTRL_PINS[N] = { PB0, PB1, PB10, PB5 };
-
-static uint8_t  gEvtCount   = 0;
-static uint16_t gLastVal    = 0xFFFF;
-static uint16_t gLastCtrlId = 0xFFFF;
-
-static void onCan(uint32_t canId, const uint8_t* data, uint8_t len) {
-    if (canId != canIdEvt(NODE_ID) || len < 8) return;
-    const ControlPacketPair* pair = reinterpret_cast<const ControlPacketPair*>(data);
-    if (pair->a.controlId == CTRL_ID)      { gEvtCount++; gLastVal = pair->a.value; gLastCtrlId = pair->a.controlId; }
-    else if (pair->b.controlId == CTRL_ID) { gEvtCount++; gLastVal = pair->b.value; gLastCtrlId = pair->b.controlId; }
-}
-
-static void flushDrain() { CANProtocol::flushBatched(canIdEvt(NODE_ID)); delay(2); CANProtocol::drain(); }
 
 // Drive position idx LOW (active), the rest HIGH.
 static void setActive(uint8_t idx) {
@@ -42,7 +30,6 @@ void setup() {
     STM32Board::setDebug(true);
     STM32Board::begin();
     STM32Board::diagSerial().println("=== SwitchMultiPos one_hot ===");
-    STM32Board::diagSerial().println("Hardware: jumper PB0->PA0, PB1->PA1, PB10->PA4, PB5->PA5.");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
@@ -53,20 +40,17 @@ void setup() {
 
     for (uint8_t i = 0; i < N; i++) pinMode(CTRL_PINS[i], OUTPUT);
     gSel.configure();
-
-    CANProtocol::onReceive(onCan);
-    CANProtocol::filterAcceptId(canIdEvt(NODE_ID));
-    CANProtocol::startLoopback();
+    CANProtocol::start();                    // normal mode — node ACKs the bridge
 
     for (uint8_t i = 0; i < N; i++) {
         setActive(i);
         gSel.forceReport();
-        flushDrain();
+        CANProtocol::flushBatched(canIdEvt(NODE_ID));   // push the EVT to the bridge (E2E)
         char lbl[40];
-        snprintf(lbl, sizeof(lbl), "pos %u active -> index %u", i, gLastVal);
-        check(lbl, gLastVal == i);
+        snprintf(lbl, sizeof(lbl), "pos %u active -> index %u", i, gSel.position());
+        check(lbl, gSel.position() == i);
     }
-    check("controlId forwarded", gLastCtrlId == CTRL_ID);
+    check("4 positions -> 4 EVTs emitted", gSel.emitCount() == N);
 
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
