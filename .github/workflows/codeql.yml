@@ -1,0 +1,50 @@
+name: CodeQL
+
+# Advanced setup (replaces GitHub's default setup). Triggers live here, so
+# analysis runs ONLY where we say — never on the generated `gh-pages` branch.
+# Default setup scanned every protected branch on push; each docs deploy pushes
+# built HTML to gh-pages, which has no analyzable source, so CodeQL fatally
+# errored ("no source code seen") on every deploy. Scoping to `main` fixes that
+# while leaving gh-pages branch protection (delete safety) untouched.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly, Monday 04:00 UTC — matches the previous default-setup cadence.
+    - cron: "0 4 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # All three use build-mode "none" (buildless extraction). The firmware
+        # is PlatformIO/Arduino with no root build system, so c-cpp autobuild
+        # cannot build it — buildless analysis is what the prior default setup
+        # used, and it passes.
+        language: [actions, c-cpp, python]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
