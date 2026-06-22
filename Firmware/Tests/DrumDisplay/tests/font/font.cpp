@@ -75,6 +75,15 @@ void setup() {
     big.update();
     check("re-fit after setFontSize keeps 3 cells", big.debugCellCount() == 3);
 
+    // Regression (bench-found): setOffset() on a SETTLED readout must still re-fit + re-render.
+    // The update() idle-skip used to return early when settled && !dirty, swallowing the re-fit,
+    // so a runtime registration change silently did nothing. mm offset → px via the panel scale.
+    for (int i = 0; i < 120; i++) { small.update(); delay(20); }   // drive to settled
+    int16_t x0 = small.debugCellX0();
+    small.setOffset(3.0f, 0.0f);   // +3 mm right
+    small.update();
+    check("setOffset re-positions a settled readout", small.debugCellX0() > x0);
+
     d.println(pass ? F("=== ALL PASS ===") : F("=== FAIL ==="));
 }
 
