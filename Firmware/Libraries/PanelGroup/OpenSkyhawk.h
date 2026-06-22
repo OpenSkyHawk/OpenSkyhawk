@@ -17,5 +17,6 @@
 #include <Outputs/NeedleGauge/NeedleGauge.h>
 #include <Inputs/Switch2Pos/Switch2Pos.h>
 #include <Inputs/SwitchMultiPos/SwitchMultiPos.h>
+#include <Inputs/AnalogMultiPos/AnalogMultiPos.h>
 #include <A4EC_CmdIds.h>
 #include <A4EC_OutputIds.h>
