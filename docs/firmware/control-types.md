@@ -8,7 +8,8 @@ not yet implemented**.
 !!! warning "Most control types are not implemented yet"
     Implemented today: **LED**, **DrumDisplay**, and **NeedleGauge** (outputs) and **Switch2Pos**
     (input), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are hardware-verified (Phase 3);
-    DrumDisplay and NeedleGauge are authored and compile-gated, with the on-hardware bench still pending.
+    DrumDisplay is hardware-verified (mux + readouts on real OLEDs). NeedleGauge is authored and
+    compile-gated, with the on-hardware bench still pending.
     Everything marked *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it
     to compile today.
 
@@ -67,7 +68,7 @@ at global scope; `PanelGroup::loop()` polls them and batches events into `EVT_n`
 | Class | Status | What it is |
 |-------|--------|------------|
 | `LED` | **Implemented** | GPIO pin driven from one bit of a DCS value |
-| `DrumDisplay` | **Implemented** (bench pending) | OLED rolling-drum readout — multi-digit gauges (speed, lat/lon, frequency, range) + optional 2-state flag. Own library; pulls U8g2 |
+| `DrumDisplay` | **Implemented** (hardware-verified) | OLED rolling-drum readout — multi-digit gauges (speed, lat/lon, frequency, range) + optional 2-state flag. Own library; pulls U8g2 |
 | `NeedleGauge` | **Implemented** (bench pending) | Pointer/needle gauge — maps a DCS value to a motor angle over a swappable driver backend (linear or calibrated curve). Supersedes `SwitecX25Output` / `AccelStepperOutput` / `ServoOutput` |
 | `AnalogOutput` | Phase 5 — not started | 16-bit DCS value → PWM duty (backlighting) |
 | `IntegerOutput` | Phase 5 — not started | Raw 16-bit value to a user callback |

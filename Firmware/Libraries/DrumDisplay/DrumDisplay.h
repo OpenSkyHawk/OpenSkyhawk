@@ -138,13 +138,13 @@ public:
      * @param oled       Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this.
      * @param readout    Descriptor for this readout (sources, geometry, flag). Must outlive this.
      * @param font       Per-mounting glyph size. Default DrumFont::LARGE.
-     * @param xOffsetPx  X pixel shift of the whole digit block, registers it to the faceplate window.
-     * @param yOffsetPx  Y pixel shift of the digit block centre line.
+     * @param xOffsetMm  X shift (mm) of the whole digit block, registers it to the faceplate window.
+     * @param yOffsetMm  Y shift (mm) of the digit block centre line.
      * @note The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in configure().
      */
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
                 DrumFont font = DrumFont::LARGE,
-                int16_t xOffsetPx = 0, int16_t yOffsetPx = 0);
+                float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
 
     /**
      * @brief Construct and register a muxed drum display (one TCA9548A branch).
@@ -153,15 +153,15 @@ public:
      * @param mux        Shared TCA9548A selector. Must outlive this.
      * @param channel    TCA9548A channel 0–7 this panel sits on.
      * @param font       Per-mounting glyph size. Default DrumFont::LARGE.
-     * @param xOffsetPx  X pixel registration shift.
-     * @param yOffsetPx  Y pixel registration shift.
+     * @param xOffsetMm  X registration shift (mm).
+     * @param yOffsetMm  Y registration shift (mm).
      * @note The class calls mux.select(channel) before geometry fit in configure() and before
      *       each sendBuffer() so interleaved displays never write to the wrong panel.
      */
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
                 I2cMux& mux, uint8_t channel,
                 DrumFont font = DrumFont::LARGE,
-                int16_t xOffsetPx = 0, int16_t yOffsetPx = 0);
+                float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
 
     /**
      * @brief Compute pixel geometry from the panel + descriptor, set the font, blank the panel.
@@ -197,17 +197,22 @@ public:
 
     /**
      * @brief Re-register the digit block to the faceplate window at runtime.
-     * @param xOffsetPx  New X pixel shift of the digit block.
-     * @param yOffsetPx  New Y pixel shift (centre line) of the digit block.
-     * @note Marks geometry dirty; the new offsets apply on the next rendered frame.
+     * @param xOffsetMm  New X shift (mm) of the digit block — measure the cutout misalignment after assembly.
+     * @param yOffsetMm  New Y shift (mm, centre line) of the digit block.
+     * @note Marks geometry dirty; the new offsets apply on the next rendered frame. Resolution-
+     *       independent (converted to px via the panel scale), so the same mm value registers
+     *       correctly on any OLED size.
+     * @note Rounds to whole pixels, so the smallest useful step is ~0.25 mm (≈1 px); a 0.1 mm
+     *       nudge is sub-pixel and may not move. The 1.3" 128x64 (~0.23 mm/px) is the coarser panel.
      */
-    void setOffset(int16_t xOffsetPx, int16_t yOffsetPx);
+    void setOffset(float xOffsetMm, float yOffsetMm);
 
 #ifdef DRUMDISPLAY_TEST
     long    debugTarget() const     { return _target; }      ///< test-only: decoded combined number
     long    debugFlagTarget() const { return _flagTarget; }  ///< test-only: decoded flag face index
     uint8_t debugCellCount() const  { return _nCells; }      ///< test-only: laid-out visual cell count
     int16_t debugRowWidth() const;                           ///< test-only: total laid-out width, px
+    int16_t debugCellX0() const     { return _nCells ? _cellX[0] : 0; }  ///< test-only: leftmost cell X, px
 #endif
 
 private:
@@ -219,7 +224,7 @@ private:
     I2cMux*            _mux;          // nullptr for direct-bus instances
     uint8_t            _channel;      // mux channel; ignored when _mux == nullptr
     DrumFont           _font;         // current glyph size
-    int16_t            _xOff, _yOff;  // pixel registration offset
+    float              _xOffMm, _yOffMm;  // registration offset, mm (→ px via PX_PER_MM in fitGeometry)
 
     // decoded value state (set in onControlPacket, read in update)
     long               _target;       // combined integer the digit row should show

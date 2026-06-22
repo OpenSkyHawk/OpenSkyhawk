@@ -105,17 +105,17 @@ class DrumDisplay : public OutputBase {
 public:
     // Direct-bus: one panel on the MCU's I²C bus.
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
-                DrumFont font = DrumFont::LARGE, int16_t xOffsetPx = 0, int16_t yOffsetPx = 0);
+                DrumFont font = DrumFont::LARGE, float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
     // Muxed: one panel behind a TCA9548A branch (re-selects its channel before each I²C op).
     DrumDisplay(U8G2& oled, const DrumReadout& readout, I2cMux& mux, uint8_t channel,
-                DrumFont font = DrumFont::LARGE, int16_t xOffsetPx = 0, int16_t yOffsetPx = 0);
+                DrumFont font = DrumFont::LARGE, float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
 
     void configure() override;                                  // auto-fit geometry, blank
     void onControlPacket(uint16_t controlId, uint16_t value) override;  // decode + dirty, never draws
     void update() override;                                     // ~60fps gate, ease+snap, render
 
     void setFontSize(DrumFont font);                            // runtime; re-fits next frame
-    void setOffset(int16_t xOffsetPx, int16_t yOffsetPx);       // runtime; re-registers next frame
+    void setOffset(float xOffsetMm, float yOffsetMm);          // runtime mm; re-registers next frame
 };
 
 }  // namespace OpenSkyhawk
@@ -201,7 +201,10 @@ Converts the descriptor's mm fields to px at a nominal 4.35 px/mm, lays out the 
 (digits leftmost = highest place, glyphs at `afterCol`, flag at `atVisualCol`, group gaps), and if
 the row is wider than the panel **uniformly shrinks** pitch to fit the pixel width. The roll-window
 height is clamped to short (128×32) panels. The block is centred, then offset by the per-mounting
-`xOffsetPx`/`yOffsetPx`. Re-run on the next frame whenever `setFontSize()`/`setOffset()` mark it dirty.
+`xOffsetMm`/`yOffsetMm` (mm → px at the nominal scale; ~0.25 mm ≈ 1 px is the smallest useful step — the
+0.91" is ~0.175 mm/px, the 1.3" ~0.23 mm/px). Re-run on the next frame whenever `setFontSize()` /
+`setOffset()` mark geometry dirty — `update()`'s idle skip honors that geom-dirty flag, so a runtime
+re-register applies **even on a settled readout** (was a no-op before — bench-found, fixed).
 
 ### update() — frame gate, idle skip, ease + snap, render
 
