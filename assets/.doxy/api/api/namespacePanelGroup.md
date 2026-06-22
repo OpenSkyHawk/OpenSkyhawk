@@ -51,6 +51,7 @@ _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md)
 
 | Type | Name |
 | ---: | :--- |
+|  void | [**flushExpanderWrites**](#function-flushexpanderwrites) () <br>_Push every port dirtied by_ [_**writeCachedPinDeferred()**_](namespacePanelGroup.md#function-writecachedpindeferred) _— one writePort() each._ |
 |  void | [**loop**](#function-loop) () <br>_Run all_ [_**PanelGroup**_](namespacePanelGroup.md) _work. Call once per_[_**loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
 |  bool | [**readCachedPin**](#function-readcachedpin) (const MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_Return cached MCP23017 pin state. Called by_ [_**PinRef::read()**_](classPinRef.md#function-read) _. No I2C._ |
 |  bool | [**readLivePin**](#function-readlivepin) (MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache._  |
@@ -59,6 +60,7 @@ _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md)
 |  void | [**registerExpander**](#function-registerexpander) (MCP23017 & chip) <br>_Register an MCP23017 expander in polling-fallback mode. Call before_ [_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
 |  void | [**setup**](#function-setup) () <br>_Initialise_ [_**PanelGroup**_](namespacePanelGroup.md) _. Call from sketch_[_**setup()**_](namespacePanelGroup.md#function-setup) _after Wire.begin()._ |
 |  void | [**writeCachedPin**](#function-writecachedpin) (MCP23017 & chip, uint8\_t port, uint8\_t bit, bool value) <br>_Write MCP23017 pin and update cache. Called by_ [_**PinRef::write()**_](classPinRef.md#function-write) _._ |
+|  void | [**writeCachedPinDeferred**](#function-writecachedpindeferred) (MCP23017 & chip, uint8\_t port, uint8\_t bit, bool value) <br>_Deferred MCP23017 write — update the cache + mark the port dirty, no I2C._  |
 
 
 
@@ -96,6 +98,31 @@ Manages MCP23017 expander registration and cache, [**ADS1115**](classADS1115.md)
     
 ## Public Functions Documentation
 
+
+
+
+### function flushExpanderWrites 
+
+_Push every port dirtied by_ [_**writeCachedPinDeferred()**_](namespacePanelGroup.md#function-writecachedpindeferred) _— one writePort() each._
+```C++
+void PanelGroup::flushExpanderWrites () 
+```
+
+
+
+
+
+**Note:**
+
+No-op when nothing is pending (GPIO-only outputs never dirty a port). 
+
+
+
+
+
+        
+
+<hr>
 
 
 
@@ -395,6 +422,36 @@ void PanelGroup::writeCachedPin (
 * `port` PORT\_A (0) or PORT\_B (1). 
 * `bit` Bit index 0–7. 
 * `value` Logical level to write. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function writeCachedPinDeferred 
+
+_Deferred MCP23017 write — update the cache + mark the port dirty, no I2C._ 
+```C++
+void PanelGroup::writeCachedPinDeferred (
+    MCP23017 & chip,
+    uint8_t port,
+    uint8_t bit,
+    bool value
+) 
+```
+
+
+
+
+
+**Note:**
+
+Pair with [**flushExpanderWrites()**](namespacePanelGroup.md#function-flushexpanderwrites). Lets a multi-pin output (e.g. a stepper's four coils) collapse N per-pin read-modify-writes into one writePort() per port. 
+
 
 
 

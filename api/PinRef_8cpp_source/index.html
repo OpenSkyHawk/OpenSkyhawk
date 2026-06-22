@@ -3908,6 +3908,7 @@
 namespace PanelGroup {
     bool readCachedPin(const MCP23017&amp; chip, uint8_t port, uint8_t bit);
     void writeCachedPin(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
+    void writeCachedPinDeferred(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
     bool readLivePin(MCP23017&amp; chip, uint8_t port, uint8_t bit);
 }
 
@@ -4005,6 +4006,21 @@ void PinRef::write(bool value) {
         STM32Board::log(&quot;[PinRef] write on ADS1115 pin — input-only, no-op&quot;);
 #endif
         break;
+    case Type::NC:
+    default:
+        break;
+    }
+}
+
+void PinRef::writeDeferred(bool value) {
+    switch (_type) {
+    case Type::GPIO:
+        digitalWrite(_src.pin, value ? HIGH : LOW);   // native GPIO is already immediate
+        break;
+    case Type::MCP:
+        PanelGroup::writeCachedPinDeferred(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit, value);
+        break;
+    case Type::ADS:
     case Type::NC:
     default:
         break;

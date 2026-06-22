@@ -25,6 +25,7 @@
 * **filterAcceptAll** ([**CANProtocol**](namespaceCANProtocol.md))
 * **filterAcceptId** ([**CANProtocol**](namespaceCANProtocol.md))
 * **flushBatched** ([**CANProtocol**](namespaceCANProtocol.md))
+* **flushExpanderWrites** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 ## i
@@ -93,6 +94,7 @@
 ## w
 
 * **writeCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
+* **writeCachedPinDeferred** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 

@@ -30,6 +30,8 @@ struct ExpanderEntry {
     bool      openDrain;  // shares interrupt line; IOCON.ODR = 1
     uint8_t   portAcache; // last-known GPA0–7 state
     uint8_t   portBcache; // last-known GPB0–7 state
+    bool      portAdirty; // GPA cache changed since last flush (deferred batched write)
+    bool      portBdirty; // GPB cache changed since last flush
 };
 
 struct ADCEntry {
@@ -163,6 +165,8 @@ void registerExpander(MCP23017& chip, uint8_t intaPin, uint8_t intbPin) {
     e.openDrain = false; // resolved in setup()
     e.portAcache = 0xFF;
     e.portBcache = 0xFF;
+    e.portAdirty = false;
+    e.portBdirty = false;
 }
 
 void registerExpander(MCP23017& chip) {
@@ -379,6 +383,33 @@ void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value) {
         else       cache &= ~(1u << bit);
         chip.digitalWrite(port * 8 + bit, value ? HIGH : LOW);
         return;
+    }
+}
+
+// Deferred batched write: update only the cache + mark the port dirty — NO I2C. Pair with
+// flushExpanderWrites() to push each touched port in a single writePort() (1 transaction)
+// instead of one read-modify-write per pin. Used by multi-pin outputs (e.g. StepperMotor
+// coils) where per-pin I2C would otherwise dominate the step rate.
+void writeCachedPinDeferred(MCP23017& chip, uint8_t port, uint8_t bit, bool value) {
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        if (_expanders[i].chip != &chip) continue;
+        uint8_t& cache = (port == 0) ? _expanders[i].portAcache
+                                     : _expanders[i].portBcache;
+        if (value) cache |=  (1u << bit);
+        else       cache &= ~(1u << bit);
+        if (port == 0) _expanders[i].portAdirty = true;
+        else           _expanders[i].portBdirty = true;
+        return;
+    }
+}
+
+// Push every port dirtied by writeCachedPinDeferred() — one writePort() per dirty port.
+// Cheap no-op when nothing is pending (the common GPIO-only path just scans the flags).
+void flushExpanderWrites() {
+    for (uint8_t i = 0; i < _expanderCount; i++) {
+        ExpanderEntry& e = _expanders[i];
+        if (e.portAdirty) { e.chip->writePort(MCP23017Port::A, e.portAcache); e.portAdirty = false; }
+        if (e.portBdirty) { e.chip->writePort(MCP23017Port::B, e.portBcache); e.portBdirty = false; }
     }
 }
 

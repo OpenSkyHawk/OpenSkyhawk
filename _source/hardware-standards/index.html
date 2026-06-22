@@ -3987,6 +3987,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Stepper Driver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stepper-drive-resolution-homing-and-i2c-expander-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stepper drive — resolution, homing, and I²C-expander limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4348,15 +4365,61 @@
 <p><strong>Selected: DRV8833PWPR (TI)</strong> — dual H-bridge, TSSOP-16-EP. <strong>LCSC: C50506</strong></p>
 <p>DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated, not inspectable after reflow). DRV8833PW is the same electrical capability in an inspectable HTSSOP-16 package.</p>
 <ul>
-<li>Drives one X27.589 Switec stepper (bipolar, ~600 steps/315°, 180–300 Ω coils, ~15–30 mA at 5 V)</li>
+<li>Drives one X27.589 Switec stepper (bipolar, <strong>~945 partial steps/315°</strong> = 1/3°/step, 1080 steps/full-rev; 180–300 Ω coils, ~15–30 mA at 5 V)</li>
 <li>VM supply: 2–10.8 V (use 5 V); VINT: 3.3 V output (bypass with 100 nF to GND — do not drive with external supply)</li>
 <li>VCP (charge pump): 100 nF cap to VM — required for internal charge pump</li>
 <li><strong>~SLEEP pin (active LOW)</strong>: driven HIGH from <code>setup()</code> before the homing sequence runs — motor requires active driver output for homing torque. Remains HIGH permanently after that. Anti-twitch is achieved by homing to position 0 before DCS connects, not by disabling the driver.</li>
 <li>AISEN / BISEN: current sense inputs — tie to GND (no current regulation needed; X27.589 coil resistance limits current naturally at 5 V)</li>
 <li>~FAULT: open-drain fault output — leave NC in this revision</li>
 <li>No current-regulation passives needed; X27.589 coil resistance limits current naturally at 5 V</li>
-<li>Firmware: use <strong>SwitecX25</strong> library (handles homing/reset); AccelStepper does not implement homing</li>
+<li>Firmware: <strong><code>StepperMotor</code></strong> (SwitecX25 accel ported in-tree; STALL &amp; SENSOR homing) — see <em>Stepper drive</em> below</li>
 <li>KiCad symbol: <code>Driver_Motor:DRV8833PW</code> (built-in)</li>
+</ul>
+<h3 id="stepper-drive-resolution-homing-and-i2c-expander-limits">Stepper drive — resolution, homing, and I²C-expander limits</h3>
+<p><strong>Resolution (X27.589 / VID-29 / BKA-30 air-core family).</strong> <code>StepperMotor</code> drives the datasheet <strong>partial step = 1/3°/step</strong> (1080 steps/full-rev) via the 6-state air-core sequence. Full step = 1°; micro step = 1/12° (PWM current control) is <strong>not used</strong> — the DRV8833 has no indexer and the firmware drives plain digital coil states. 1/3° (~960 positions over a 320° gauge) is ample; microstepping is a deferred option (see #122).</p>
+<p><strong>Homing (STALL).</strong> <code>StepperConfig.rangeSteps</code> is the <strong>mechanical stop-to-stop travel</strong> (~945 for an X27.589 315°, ~960 for a 320° BKA-30) — distinct from <code>stepsPerRev</code> (the full 360° revolution, used for degree↔step and <code>wrap</code>). STALL home drives <code>rangeSteps</code> (+ a 1/8 margin), <strong>not</strong> a full revolution: over-driving a stop-limited gauge by the rev−range difference grinds the seated rotor and desyncs it, so the zero wanders between homes. The seek runs at <code>homeStepUs</code> (default 2000 µs ≈ 500 steps/s), which <strong>must stay under the air-core start-stop speed</strong> (~774 steps/s ≈ 1290 µs/step) — the former 800 µs (1250 steps/s) sat at that edge and caused the "home left, then home right" band-swap.</p>
+<p><strong>Coil drive path &amp; speed envelope</strong> (bench-measured 2026-06-21, BKA-30 on DRV8833 @ 5 V):</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Step rate</th>
+<th>≈ °/s</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Native STM32 GPIO</td>
+<td>~1667 steps/s</td>
+<td>~600</td>
+<td>motor-limited (datasheet max with accel)</td>
+</tr>
+<tr>
+<td>MCP23017 @ 400 kHz</td>
+<td>~490 steps/s</td>
+<td>~163</td>
+<td>batched port write; I²C-overhead-limited</td>
+</tr>
+<tr>
+<td>MCP23017 @ 100 kHz</td>
+<td>~260 steps/s</td>
+<td>~87</td>
+<td>for long / loaded buses</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>STM32F103 I²C ceiling = 400 kHz</strong> (no fast-mode-plus on the F1 peripheral).</li>
+<li><strong>Batched port write:</strong> <code>StepperMotor</code> writes all four coils in <strong>one</strong> <code>writePort()</code> per step (<code>PanelGroup::flushExpanderWrites()</code>), not four per-pin read-modify-writes — fewer I²C transactions, lower bus occupancy, and an <strong>atomic coil transition</strong> (no mixed-coil intermediate state). <strong>Caveat: the batched write rewrites the whole 8-bit port from cache, so stepper coils must OWN their MCP23017 port</strong> — do not place unrelated I/O on the other pins of that port.</li>
+<li><strong>Rule of thumb:</strong> a gauge needing fast slews → coils on <strong>native GPIO</strong>; a slow / remote gauge → MCP expander (≈163 °/s, fine for gradual gauges like APN-153 DRIFT). The expander is a <em>reach</em> tool, not a speed tool.</li>
+</ul>
+<p><strong>12-inch remote I²C bus.</strong> At ~12" the bus capacitance (cable + device pins, ~150–250 pF) limits speed:</p>
+<ul>
+<li><strong>400 kHz</strong> needs SCL rise &lt; 300 ns → use <strong>~1.5 kΩ pull-ups</strong> (sink ~2.2 mA, within MCP23017 / STM32 limits). 4.7 kΩ at that capacitance rises in ~1 µs and <strong>fails</strong> 400 kHz.</li>
+<li><strong>100 kHz</strong> tolerates <strong>4.7 kΩ</strong> at 12" (1 µs rise is within spec) — reliable but slower.</li>
+<li>Or an <strong>active I²C buffer</strong> (P82B715 / PCA9600 / LTC4311) to hold 400 kHz over 12–18".</li>
+<li>Verify on a scope (SCL rise time) with the <strong>fully populated</strong> bus (MCP + OLED + ADS) for realistic capacitance.</li>
 </ul>
 <h2 id="screws">Screws</h2>
 <table>

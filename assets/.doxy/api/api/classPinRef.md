@@ -78,6 +78,7 @@ _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.
 |  bool | [**readLive**](#function-readlive) () const<br>_Live digital read — bypasses any cache._  |
 |  void | [**write**](#function-write) (bool value) <br>_Digital write._  |
 |  void | [**writeAnalog**](#function-writeanalog) (uint16\_t val) <br>_Analog write (PWM). GPIO only._  |
+|  void | [**writeDeferred**](#function-writedeferred) (bool value) <br>_Like_ [_**write()**_](classPinRef.md#function-write) _, but MCP writes only update the cache (no I2C) — the caller then invokes_[_**PanelGroup::flushExpanderWrites()**_](namespacePanelGroup.md#function-flushexpanderwrites) _to push each port in one writePort()._ |
 
 
 
@@ -610,6 +611,36 @@ GPIO: analogWrite(pin, val &gt;&gt; 8) — maps 16-bit value to 8-bit duty cycle
 
 Pin must be a PWM-capable STM32 GPIO. No runtime check is performed. 
 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function writeDeferred 
+
+_Like_ [_**write()**_](classPinRef.md#function-write) _, but MCP writes only update the cache (no I2C) — the caller then invokes_[_**PanelGroup::flushExpanderWrites()**_](namespacePanelGroup.md#function-flushexpanderwrites) _to push each port in one writePort()._
+```C++
+void PinRef::writeDeferred (
+    bool value
+) 
+```
+
+
+
+GPIO writes stay immediate (already cheap). Lets a multi-pin output batch its expander writes: one I2C transaction per port instead of one read-modify-write per pin.
+
+
+
+
+**Parameters:**
+
+
+* `value` true = HIGH, false = LOW. 
 
 
 

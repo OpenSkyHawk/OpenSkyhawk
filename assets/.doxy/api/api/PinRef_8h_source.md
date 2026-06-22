@@ -45,6 +45,8 @@ public:
 
     void write(bool value);
 
+    void writeDeferred(bool value);
+
     void writeAnalog(uint16_t val);
 
     void configureAsInput();

@@ -291,7 +291,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" line="9" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="9" bodyend="15" declfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" declline="92" declcolumn="25"/>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" line="9" column="18" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="9" bodyend="15" declfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" declline="96" declcolumn="25"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -306,7 +306,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="93" column="19" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="93" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="97" column="19" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="97" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -328,10 +328,10 @@
         </inbodydescription>
         <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="32" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="32" bodyend="36"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceOpenSkyhawk_1a00d1364e4501890bfb60bfbcdb7d3902" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a46ddcd8bc34cc500234d4513a5952df5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref></type>
         <definition>StepperConfig OpenSkyhawk::makeX27Config</definition>
-        <argsstring>(int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos, HomeMode home=HomeMode::STALL, bool homeSeekClockwise=false, HomeSensor sensor={ true, 5, 2000 }, bool wrap=false, uint8_t deadband=1, bool autoRecal=false, uint32_t recalDebounceMs=0, uint16_t stepsPerRev=720)</argsstring>
+        <argsstring>(int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos, HomeMode home=HomeMode::STALL, bool homeSeekClockwise=false, HomeSensor sensor={ true, 5, 2000 }, bool wrap=false, uint8_t deadband=1, bool autoRecal=false, uint32_t recalDebounceMs=0, uint16_t stepsPerRev=1080, uint16_t rangeSteps=945, uint16_t homeStepUs=0)</argsstring>
         <name>makeX27Config</name>
         <qualifiedname>OpenSkyhawk::makeX27Config</qualifiedname>
         <param>
@@ -388,7 +388,17 @@
         <param>
           <type>uint16_t</type>
           <declname>stepsPerRev</declname>
-          <defval>720</defval>
+          <defval>1080</defval>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>rangeSteps</declname>
+          <defval>945</defval>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>homeStepUs</declname>
+          <defval>0</defval>
         </param>
         <briefdescription>
 <para>Build a <ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref> with the X27 air-core motor defaults filled in. </para>
@@ -488,7 +498,23 @@
 <parametername>stepsPerRev</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>full revolution in steps. Default 720 (nominal — calibrate per motor). </para>
+<para>full revolution in steps. Default 1080 (X27/BKA datasheet, 1/3°/step). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rangeSteps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>mechanical stop-to-stop travel in steps = STALL home distance. Default 945 (X27.589 ~315°); set per gauge (e.g. 960 for a 320° BKA-30). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>homeStepUs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>homing seek rate µs/step. Default 0 → library default (2000 ≈ 500 steps/s). Keep under the motor start-stop rate (~774 steps/s) or the seek slips. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -498,7 +524,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" line="199" column="15" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="199" bodyend="210" declfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" declline="116" declcolumn="15"/>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" line="214" column="15" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="214" bodyend="226" declfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" declline="124" declcolumn="15"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

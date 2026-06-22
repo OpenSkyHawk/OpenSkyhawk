@@ -229,6 +229,36 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="88" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="88" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a5d160b5ec1b7a518113bf89781206abe" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::StepperConfig::rangeSteps</definition>
+        <argsstring></argsstring>
+        <name>rangeSteps</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::rangeSteps</qualifiedname>
+        <briefdescription>
+<para>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="91" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1StepperConfig_1a4fa728ff7fdf38a53da214e8188e18e8" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::StepperConfig::homeStepUs</definition>
+        <argsstring></argsstring>
+        <name>homeStepUs</name>
+        <qualifiedname>OpenSkyhawk::StepperConfig::homeStepUs</qualifiedname>
+        <briefdescription>
+<para>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="92" column="23" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Full per-instance stepper configuration. Authored per sketch (panel wiring). </para>
@@ -258,7 +288,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="73" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="73" bodyend="89"/>
+    <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="73" column="1" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="73" bodyend="93"/>
     <listofallmembers>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1ab296a0b0840caac9c9324aeaa7261f39" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>accel</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a35aa00e9fcacee3b45db0e2d75209a7e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>accelN</name></member>
@@ -267,10 +297,12 @@
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a9259690ad915f4b9d17f0be59f2c22fb" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>home</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a60acc3b369297622fdce4530b6f9b0a9" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>homePosition</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a5695c15302816adf6794d0c0ee77b3a1" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>homeSeekClockwise</name></member>
+      <member refid="structOpenSkyhawk_1_1StepperConfig_1a4fa728ff7fdf38a53da214e8188e18e8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>homeStepUs</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a1a5c5aef7debf6f295151683f297ad5e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>maxPos</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a687d530f51693137d2c2c9a33899441d" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>minPos</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a7b028d73ef16729b1d7f700dcb60f4be" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>parkPosition</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a77acbe1e2eb9309a3879962e2c26d50e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>pattern</name></member>
+      <member refid="structOpenSkyhawk_1_1StepperConfig_1a5d160b5ec1b7a518113bf89781206abe" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>rangeSteps</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1a7894c8d187bdbd4518156bf7dba5d166" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>recalDebounceMs</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1ac4f0e0295dfcef32e1a9e75aacb6b933" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>sensor</name></member>
       <member refid="structOpenSkyhawk_1_1StepperConfig_1ae37146eb146907e2e8ae9210df1252ed" prot="public" virt="non-virtual"><scope>OpenSkyhawk::StepperConfig</scope><name>stepsPerRev</name></member>

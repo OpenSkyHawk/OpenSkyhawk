@@ -122,6 +122,7 @@
 * **writeIO** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **write** ([**PinRef**](classPinRef.md))
 * **writeAnalog** ([**PinRef**](classPinRef.md))
+* **writeDeferred** ([**PinRef**](classPinRef.md))
 
 
 ## ~

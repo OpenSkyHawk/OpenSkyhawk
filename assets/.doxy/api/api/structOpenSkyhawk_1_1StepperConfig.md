@@ -43,10 +43,12 @@ _Full per-instance stepper configuration. Authored per sketch (panel wiring)._ [
 |  [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) | [**home**](#variable-home)  <br>_homing strategy_  |
 |  int16\_t | [**homePosition**](#variable-homeposition)  <br>_step index assigned at the home reference_  |
 |  bool | [**homeSeekClockwise**](#variable-homeseekclockwise)  <br>_direction to seek the home reference_  |
+|  uint16\_t | [**homeStepUs**](#variable-homestepus)  <br>_homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)_  |
 |  int16\_t | [**maxPos**](#variable-maxpos)  <br>_upper travel clamp for moveTo (ignored if wrap)_  |
 |  int16\_t | [**minPos**](#variable-minpos)  <br>_lower travel clamp for moveTo (ignored if wrap)_  |
 |  int16\_t | [**parkPosition**](#variable-parkposition)  <br>_step to rest at after homing_  |
 |  [**StepPattern**](namespaceOpenSkyhawk.md#enum-steppattern) | [**pattern**](#variable-pattern)  <br>_coil drive sequence_  |
+|  uint16\_t | [**rangeSteps**](#variable-rangesteps)  <br>_mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev_  |
 |  uint32\_t | [**recalDebounceMs**](#variable-recaldebouncems)  <br>_minimum interval between auto-recals_  |
 |  [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) | [**sensor**](#variable-sensor)  <br>_SENSOR-mode params (ignored for STALL)_  |
 |  uint16\_t | [**stepsPerRev**](#variable-stepsperrev)  <br>_steps per full revolution (calibrate empirically)_  |
@@ -212,6 +214,20 @@ bool OpenSkyhawk::StepperConfig::homeSeekClockwise;
 
 
 
+### variable homeStepUs 
+
+_homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)_ 
+```C++
+uint16_t OpenSkyhawk::StepperConfig::homeStepUs;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable maxPos 
 
 _upper travel clamp for moveTo (ignored if wrap)_ 
@@ -259,6 +275,20 @@ int16_t OpenSkyhawk::StepperConfig::parkPosition;
 _coil drive sequence_ 
 ```C++
 StepPattern OpenSkyhawk::StepperConfig::pattern;
+```
+
+
+
+
+<hr>
+
+
+
+### variable rangeSteps 
+
+_mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev_ 
+```C++
+uint16_t OpenSkyhawk::StepperConfig::rangeSteps;
 ```
 
 

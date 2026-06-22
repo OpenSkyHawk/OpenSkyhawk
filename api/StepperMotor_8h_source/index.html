@@ -3935,6 +3935,10 @@ struct StepperConfig {
     uint8_t           deadband;          
     bool              autoRecal;         
     uint32_t          recalDebounceMs;   
+    // Appended for back-compat: existing positional initialisers omit these → value-initialised to
+    // 0 → legacy behaviour (STALL home drives stepsPerRev at the library default rate).
+    uint16_t          rangeSteps;        
+    uint16_t          homeStepUs;        
 };
 
 extern const AccelPoint kSwitecDefaultAccel[5];
@@ -3947,7 +3951,8 @@ StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
                             HomeSensor sensor = { true, 5, 2000 },
                             bool wrap = false, uint8_t deadband = 1,
                             bool autoRecal = false, uint32_t recalDebounceMs = 0,
-                            uint16_t stepsPerRev = 720);
+                            uint16_t stepsPerRev = 1080, uint16_t rangeSteps = 945,
+                            uint16_t homeStepUs = 0);
 
 class StepperMotor : public MotorDriver {
 public:

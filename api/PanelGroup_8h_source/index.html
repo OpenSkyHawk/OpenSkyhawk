@@ -3974,6 +3974,10 @@ namespace PanelGroup {
 
     void writeCachedPin(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
 
+    void writeCachedPinDeferred(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
+
+    void flushExpanderWrites();
+
     bool readLivePin(MCP23017&amp; chip, uint8_t port, uint8_t bit);
 
 } // namespace PanelGroup

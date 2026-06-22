@@ -44,6 +44,7 @@
 * **filterAcceptId** ([**CANProtocol**](namespaceCANProtocol.md))
 * **flushBatched** ([**CANProtocol**](namespaceCANProtocol.md))
 * **FRAME\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **flushExpanderWrites** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 ## h
@@ -142,6 +143,7 @@
 ## w
 
 * **writeCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
+* **writeCachedPinDeferred** ([**PanelGroup**](namespacePanelGroup.md))
 
 
 

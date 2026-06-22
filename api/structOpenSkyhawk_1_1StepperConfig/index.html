@@ -3985,6 +3985,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-homestepus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable homeStepUs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-maxpos" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4022,6 +4033,17 @@
     <span class="md-ellipsis">
       
         variable pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-rangesteps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable rangeSteps
       
     </span>
   </a>
@@ -4141,6 +4163,10 @@
 <td style="text-align: left;"><a href="#variable-homeseekclockwise"><strong>homeSeekClockwise</strong></a>  <br><em>direction to seek the home reference</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#variable-homestepus"><strong>homeStepUs</strong></a>  <br><em>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">int16_t</td>
 <td style="text-align: left;"><a href="#variable-maxpos"><strong>maxPos</strong></a>  <br><em>upper travel clamp for moveTo (ignored if wrap)</em></td>
 </tr>
@@ -4155,6 +4181,10 @@
 <tr>
 <td style="text-align: right;"><a href="../namespaceOpenSkyhawk/#enum-steppattern"><strong>StepPattern</strong></a></td>
 <td style="text-align: left;"><a href="#variable-pattern"><strong>pattern</strong></a>  <br><em>coil drive sequence</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#variable-rangesteps"><strong>rangeSteps</strong></a>  <br><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint32_t</td>
@@ -4220,6 +4250,12 @@
 </code></pre>
 <hr>
 
+<h3 id="variable-homestepus">variable homeStepUs</h3>
+<p><em>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::StepperConfig::homeStepUs;
+</code></pre>
+<hr>
+
 <h3 id="variable-maxpos">variable maxPos</h3>
 <p><em>upper travel clamp for moveTo (ignored if wrap)</em> </p>
 <pre><code class="language-C++">int16_t OpenSkyhawk::StepperConfig::maxPos;
@@ -4241,6 +4277,12 @@
 <h3 id="variable-pattern">variable pattern</h3>
 <p><em>coil drive sequence</em> </p>
 <pre><code class="language-C++">StepPattern OpenSkyhawk::StepperConfig::pattern;
+</code></pre>
+<hr>
+
+<h3 id="variable-rangesteps">variable rangeSteps</h3>
+<p><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::StepperConfig::rangeSteps;
 </code></pre>
 <hr>
 

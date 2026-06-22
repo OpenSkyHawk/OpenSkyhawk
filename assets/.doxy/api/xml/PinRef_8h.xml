@@ -162,7 +162,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="216" column="21" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="26" bodyend="-1" declfile="Firmware/Libraries/PanelGroup/PinRef.h" declline="216" declcolumn="21"/>
+        <location file="Firmware/Libraries/PanelGroup/PinRef.h" line="227" column="21" bodyfile="Firmware/Libraries/PanelGroup/PinRef.cpp" bodystart="27" bodyend="-1" declfile="Firmware/Libraries/PanelGroup/PinRef.h" declline="227" declcolumn="21"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -215,38 +215,40 @@
 <codeline lineno="110"><highlight class="normal"></highlight></codeline>
 <codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1a0936506f3842d0b761e134732e81a7d3" kindref="member">write</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
 <codeline lineno="122"><highlight class="normal"></highlight></codeline>
-<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1ad68f7414ce0f3f99f252cf94159dc534" kindref="member">writeAnalog</ref>(uint16_t<sp/>val);</highlight></codeline>
-<codeline lineno="135"><highlight class="normal"></highlight></codeline>
-<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1ad51eae7d77cc3ec606471f314aa8dd57" kindref="member">configureAsInput</ref>();</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"></highlight></codeline>
-<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1aaa068f47fc479c9d3b52d1ec6b3f0060" kindref="member">configureAsOutput</ref>();</highlight></codeline>
-<codeline lineno="163"><highlight class="normal"></highlight></codeline>
-<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1a71e09b7334dd00fe246dd2e3d9b53154" kindref="member">isNC</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="168"><highlight class="normal"></highlight></codeline>
-<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1ae6528461c2bb1e094fd7aa5e038705f6" kindref="member">isGpio</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="176"><highlight class="normal"></highlight></codeline>
-<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kindref="member">gpioPin</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1ae969b01537550b6d6b4f529b69759c7f" kindref="member">writeDeferred</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1ad68f7414ce0f3f99f252cf94159dc534" kindref="member">writeAnalog</ref>(uint16_t<sp/>val);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1ad51eae7d77cc3ec606471f314aa8dd57" kindref="member">configureAsInput</ref>();</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1aaa068f47fc479c9d3b52d1ec6b3f0060" kindref="member">configureAsOutput</ref>();</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1a71e09b7334dd00fe246dd2e3d9b53154" kindref="member">isNC</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classPinRef_1ae6528461c2bb1e094fd7aa5e038705f6" kindref="member">isGpio</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="187"><highlight class="normal"></highlight></codeline>
-<codeline lineno="188"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/>Type<sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>GPIO,<sp/><sp/></highlight></codeline>
-<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MCP,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ADS,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NC,<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
-<codeline lineno="196"><highlight class="normal"></highlight></codeline>
-<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>Type<sp/>_type;<sp/><sp/></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kindref="member">gpioPin</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="198"><highlight class="normal"></highlight></codeline>
-<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">union<sp/></highlight><highlight class="normal">{</highlight></codeline>
-<codeline lineno="200" refid="classPinRef_1a2991db1deea943cb3356e61308238a54" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="classPinRef_1a2991db1deea943cb3356e61308238a54" kindref="member">pin</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="201" refid="classPinRef_1ac678ec020877487e1b33a7f14bd23324" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{<sp/>MCP23017*<sp/><ref refid="classPinRef_1abbc6d9f9ea7b00388804e84fc950309d" kindref="member">chip</ref>;<sp/>uint8_t<sp/><ref refid="classPinRef_1aa5eee03a45c9b0422c68220706c76b1d" kindref="member">port</ref>;<sp/>uint8_t<sp/><ref refid="classPinRef_1ac678ec020877487e1b33a7f14bd23324" kindref="member">bit</ref>;<sp/>}<sp/><ref refid="classPinRef_1a7fe530229713c48d1ec10c4cf78701ad" kindref="member">mcp</ref>;<sp/></highlight></codeline>
-<codeline lineno="202" refid="classPinRef_1a44f250ed3f1327876adc437f797127a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{<sp/><ref refid="classADS1115" kindref="compound">ADS1115</ref>*<sp/><sp/><ref refid="classPinRef_1a44f250ed3f1327876adc437f797127a5" kindref="member">adc</ref>;<sp/><sp/>uint8_t<sp/><ref refid="classPinRef_1a9ded8eb8756032181d243e81d6486ba5" kindref="member">channel</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/><ref refid="classPinRef_1af49bbd360a2e5834cad1b1b054b06c86" kindref="member">ads</ref>;<sp/></highlight></codeline>
-<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>_src;</highlight></codeline>
-<codeline lineno="204"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="205"><highlight class="normal"></highlight></codeline>
-<codeline lineno="216"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/><ref refid="PinRef_8h_1a2fe7a10b1d2145cd6d6b70153dc266be" kindref="member">PIN_NC</ref>;</highlight></codeline>
-<codeline lineno="217"><highlight class="normal"></highlight></codeline>
-<codeline lineno="218"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/>Type<sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>GPIO,<sp/><sp/></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MCP,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ADS,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NC,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>Type<sp/>_type;<sp/><sp/></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">union<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="211" refid="classPinRef_1a2991db1deea943cb3356e61308238a54" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="classPinRef_1a2991db1deea943cb3356e61308238a54" kindref="member">pin</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="212" refid="classPinRef_1ac678ec020877487e1b33a7f14bd23324" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{<sp/>MCP23017*<sp/><ref refid="classPinRef_1abbc6d9f9ea7b00388804e84fc950309d" kindref="member">chip</ref>;<sp/>uint8_t<sp/><ref refid="classPinRef_1aa5eee03a45c9b0422c68220706c76b1d" kindref="member">port</ref>;<sp/>uint8_t<sp/><ref refid="classPinRef_1ac678ec020877487e1b33a7f14bd23324" kindref="member">bit</ref>;<sp/>}<sp/><ref refid="classPinRef_1a7fe530229713c48d1ec10c4cf78701ad" kindref="member">mcp</ref>;<sp/></highlight></codeline>
+<codeline lineno="213" refid="classPinRef_1a44f250ed3f1327876adc437f797127a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{<sp/><ref refid="classADS1115" kindref="compound">ADS1115</ref>*<sp/><sp/><ref refid="classPinRef_1a44f250ed3f1327876adc437f797127a5" kindref="member">adc</ref>;<sp/><sp/>uint8_t<sp/><ref refid="classPinRef_1a9ded8eb8756032181d243e81d6486ba5" kindref="member">channel</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/><ref refid="classPinRef_1af49bbd360a2e5834cad1b1b054b06c86" kindref="member">ads</ref>;<sp/></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>_src;</highlight></codeline>
+<codeline lineno="215"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/><ref refid="PinRef_8h_1a2fe7a10b1d2145cd6d6b70153dc266be" kindref="member">PIN_NC</ref>;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/PinRef.h"/>
   </compounddef>

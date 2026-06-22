@@ -101,7 +101,7 @@
 
 | Type | Name |
 | ---: | :--- |
-|  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=720) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
+|  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=1080, uint16\_t rangeSteps=945, uint16\_t homeStepUs=0) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
 
 
 ## Public Static Functions
@@ -383,7 +383,9 @@ StepperConfig OpenSkyhawk::makeX27Config (
     uint8_t deadband=1,
     bool autoRecal=false,
     uint32_t recalDebounceMs=0,
-    uint16_t stepsPerRev=720
+    uint16_t stepsPerRev=1080,
+    uint16_t rangeSteps=945,
+    uint16_t homeStepUs=0
 ) 
 ```
 
@@ -408,7 +410,9 @@ Bakes the motor-invariant fields — `stepsPerRev`, `pattern` (SWITEC\_6STATE), 
 * `deadband` anti-jitter band, steps. Default 1. 
 * `autoRecal` re-zero on sensor crossing. Default false. 
 * `recalDebounceMs` minimum interval between auto-recals. Default 0. 
-* `stepsPerRev` full revolution in steps. Default 720 (nominal — calibrate per motor). 
+* `stepsPerRev` full revolution in steps. Default 1080 (X27/BKA datasheet, 1/3°/step). 
+* `rangeSteps` mechanical stop-to-stop travel in steps = STALL home distance. Default 945 (X27.589 ~315°); set per gauge (e.g. 960 for a 320° BKA-30). 
+* `homeStepUs` homing seek rate µs/step. Default 0 → library default (2000 ≈ 500 steps/s). Keep under the motor start-stop rate (~774 steps/s) or the seek slips. 
 
 
 

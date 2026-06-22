@@ -4177,6 +4177,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-writedeferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function writeDeferred
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4315,6 +4326,10 @@
 <tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-writeanalog"><strong>writeAnalog</strong></a> (uint16_t val) <br><em>Analog write (PWM). GPIO only.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-writedeferred"><strong>writeDeferred</strong></a> (bool value) <br><em>Like</em> <a href="./#function-write"><em><strong>write()</strong></em></a> <em>, but MCP writes only update the cache (no I2C) — the caller then invokes</em><a href="../namespacePanelGroup/#function-flushexpanderwrites"><em><strong>PanelGroup::flushExpanderWrites()</strong></em></a> <em>to push each port in one writePort().</em></td>
 </tr>
 </tbody>
 </table>
@@ -4512,6 +4527,19 @@
 </ul>
 <p><strong>Note:</strong></p>
 <p>Pin must be a PWM-capable STM32 GPIO. No runtime check is performed. </p>
+<hr>
+
+<h3 id="function-writedeferred">function writeDeferred</h3>
+<p><em>Like</em> <a href="./#function-write"><em><strong>write()</strong></em></a> <em>, but MCP writes only update the cache (no I2C) — the caller then invokes</em><a href="../namespacePanelGroup/#function-flushexpanderwrites"><em><strong>PanelGroup::flushExpanderWrites()</strong></em></a> <em>to push each port in one writePort().</em></p>
+<pre><code class="language-C++">void PinRef::writeDeferred (
+    bool value
+) 
+</code></pre>
+<p>GPIO writes stay immediate (already cheap). Lets a multi-pin output batch its expander writes: one I2C transaction per port instead of one read-modify-write per pin.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>value</code> true = HIGH, false = LOW. </li>
+</ul>
 <hr>
 
 <hr />

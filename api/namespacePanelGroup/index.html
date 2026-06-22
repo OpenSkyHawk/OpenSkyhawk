@@ -3908,6 +3908,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#function-flushexpanderwrites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function flushExpanderWrites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3995,6 +4006,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-writecachedpindeferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function writeCachedPinDeferred
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4034,6 +4056,10 @@
 <tbody>
 <tr>
 <td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-flushexpanderwrites"><strong>flushExpanderWrites</strong></a> () <br><em>Push every port dirtied by</em> <a href="./#function-writecachedpindeferred"><em><strong>writeCachedPinDeferred()</strong></em></a> <em>— one writePort() each.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-loop"><strong>loop</strong></a> () <br><em>Run all</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>work. Call once per</em><a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></td>
 </tr>
 <tr>
@@ -4064,11 +4090,23 @@
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-writecachedpin"><strong>writeCachedPin</strong></a> (MCP23017 &amp; chip, uint8_t port, uint8_t bit, bool value) <br><em>Write MCP23017 pin and update cache. Called by</em> <a href="../classPinRef/#function-write"><em><strong>PinRef::write()</strong></em></a> <em>.</em></td>
 </tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-writecachedpindeferred"><strong>writeCachedPinDeferred</strong></a> (MCP23017 &amp; chip, uint8_t port, uint8_t bit, bool value) <br><em>Deferred MCP23017 write — update the cache + mark the port dirty, no I2C.</em></td>
+</tr>
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Manages MCP23017 expander registration and cache, <a href="../classADS1115/"><strong>ADS1115</strong></a> registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL_BCAST dispatch, SYNC_REQ response, and the 500 ms HB_n heartbeat. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
+<h3 id="function-flushexpanderwrites">function flushExpanderWrites</h3>
+<p><em>Push every port dirtied by</em> <a href="./#function-writecachedpindeferred"><em><strong>writeCachedPinDeferred()</strong></em></a> <em>— one writePort() each.</em></p>
+<pre><code class="language-C++">void PanelGroup::flushExpanderWrites () 
+</code></pre>
+<p><strong>Note:</strong></p>
+<p>No-op when nothing is pending (GPIO-only outputs never dirty a port). </p>
+<hr>
+
 <h3 id="function-loop">function loop</h3>
 <p><em>Run all</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>work. Call once per</em><a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></p>
 <pre><code class="language-C++">void PanelGroup::loop () 
@@ -4210,6 +4248,19 @@ PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
 <li><code>bit</code> Bit index 0–7. </li>
 <li><code>value</code> Logical level to write. </li>
 </ul>
+<hr>
+
+<h3 id="function-writecachedpindeferred">function writeCachedPinDeferred</h3>
+<p><em>Deferred MCP23017 write — update the cache + mark the port dirty, no I2C.</em> </p>
+<pre><code class="language-C++">void PanelGroup::writeCachedPinDeferred (
+    MCP23017 &amp; chip,
+    uint8_t port,
+    uint8_t bit,
+    bool value
+) 
+</code></pre>
+<p><strong>Note:</strong></p>
+<p>Pair with <a href="./#function-flushexpanderwrites"><strong>flushExpanderWrites()</strong></a>. Lets a multi-pin output (e.g. a stepper's four coils) collapse N per-pin read-modify-writes into one writePort() per port. </p>
 <hr>
 
 <hr />
