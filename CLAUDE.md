@@ -83,4 +83,5 @@ The weekly docs-drift review (`tools/docs-drift/REVIEW.md`) opens/updates a sing
 
 - Remote: `git@github.com:OpenSkyHawk/OpenSkyhawk.git`
 - Do not add `Co-Authored-By:` trailers to commits
+- Do not add Claude Code / AI attribution signatures (`🤖 Generated with…`, `🤖 Addressed by…`) to commits, PR descriptions, or issue/PR comments
 - STLs, Gerbers, and other generated outputs are gitignored — commit sources only
