@@ -45,7 +45,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 |-------|--------|------------|
 | `Switch2Pos` | **Implemented** | Debounced 2-position switch (20 ms). value 0/1 |
 | `Switch3Pos` | Phase 4 — not started | 3-position (ON-OFF-ON). value 0/1/2 |
-| `SwitchMultiPos` | **Implemented** (bench pending) | N-pin rotary, one active. value = index |
+| `SwitchMultiPos` | **Implemented** (hardware-verified) | N-pin rotary, one active. value = index |
 | `AnalogMultiPos` | Phase 4 — not started | Resistor-ladder selector on one analog pin |
 | `ActionButton` | Phase 4 — not started | Momentary; fires on press only |
 | `RotaryEncoder` | Phase 4 — not started | Quadrature encoder. value 0=CCW, 1=CW |

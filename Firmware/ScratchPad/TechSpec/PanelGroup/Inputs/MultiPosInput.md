@@ -1,6 +1,6 @@
 # MultiPosInput — Technical Specification
 
-**Status:** Done (compile-gated; hardware bench pending)
+**Status:** Done (hardware-verified — 10/10 scenarios PASS 2026-06-22)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#switchmultipos-new`, `#analogmultipos-new`
 **Depends on:** `PanelGroup.md`
 

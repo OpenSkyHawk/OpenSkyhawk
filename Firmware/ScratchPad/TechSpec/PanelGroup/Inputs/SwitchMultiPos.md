@@ -1,6 +1,6 @@
 # SwitchMultiPos — Technical Specification
 
-**Status:** Done (compile-gated; hardware bench pending)
+**Status:** Done (hardware-verified — 10/10 scenarios PASS 2026-06-22)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#switchmultipos-new`
 **Depends on:** `MultiPosInput.md`, `PinRef.md`, `PanelGroup.md`
 
