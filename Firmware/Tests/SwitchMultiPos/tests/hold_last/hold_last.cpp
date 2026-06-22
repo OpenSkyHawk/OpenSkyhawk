@@ -3,7 +3,7 @@
 // When no pin reads active (a non-shorting rotary mid-throw), the last confirmed position is
 // held: readRaw() returns NO_POSITION and the base keeps _lastPos — no spurious EVT.
 //
-// Hardware: STM32. Jumper PB0->PA0, PB1->PA1, PB4->PA4, PB5->PA5.
+// Hardware: STM32. Jumper PB0->PA0, PB1->PA1, PB10->PA4, PB5->PA5.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -13,7 +13,7 @@ static constexpr uint16_t CTRL_ID = 0x5678;
 static constexpr uint8_t  N       = 4;
 static constexpr uint8_t  NONE    = 0xFF;   // setActive(NONE) → all pins HIGH (inactive)
 static const uint8_t SW_PINS[N]   = { PA0, PA1, PA4, PA5 };
-static const uint8_t CTRL_PINS[N] = { PB0, PB1, PB4, PB5 };
+static const uint8_t CTRL_PINS[N] = { PB0, PB1, PB10, PB5 };
 
 static uint8_t  gEvtCount = 0;
 static uint16_t gLastVal  = 0xFFFF;

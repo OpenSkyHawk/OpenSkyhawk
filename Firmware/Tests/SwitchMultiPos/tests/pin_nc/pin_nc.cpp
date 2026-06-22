@@ -4,7 +4,7 @@
 // electrical pin is active, that detent's index is reported; electrical positions override it.
 //
 // pins = { PA0 (pos 0), PIN_NC (pos 1), PA4 (pos 2) }.
-// Hardware: STM32. Jumper PB0->PA0, PB4->PA4. (Position 1 has no switch pin.)
+// Hardware: STM32. Jumper PB0->PA0, PB10->PA4. (Position 1 has no switch pin.)
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -29,7 +29,7 @@ static void flushDrain() { CANProtocol::flushBatched(canIdEvt(NODE_ID)); delay(2
 // idx 0 drives PA0 active, idx 2 drives PA4 active; idx 1/NONE → nothing electrical active.
 static void setActive(uint8_t idx) {
     digitalWrite(PB0, idx == 0 ? LOW : HIGH);
-    digitalWrite(PB4, idx == 2 ? LOW : HIGH);
+    digitalWrite(PB10, idx == 2 ? LOW : HIGH);
     delayMicroseconds(100);
 }
 
@@ -49,7 +49,7 @@ void setup() {
     };
 
     pinMode(PB0, OUTPUT);
-    pinMode(PB4, OUTPUT);
+    pinMode(PB10, OUTPUT);
     gSel.configure();
 
     CANProtocol::onReceive(onCan);
