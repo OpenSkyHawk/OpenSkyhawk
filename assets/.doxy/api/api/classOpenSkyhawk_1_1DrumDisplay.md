@@ -73,12 +73,12 @@ Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1Ou
 
 | Type | Name |
 | ---: | :--- |
-|   | [**DrumDisplay**](#function-drumdisplay-12) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, int16\_t xOffsetPx=0, int16\_t yOffsetPx=0) <br>_Construct and register a direct-bus drum display._  |
-|   | [**DrumDisplay**](#function-drumdisplay-22) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md) & mux, uint8\_t channel, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, int16\_t xOffsetPx=0, int16\_t yOffsetPx=0) <br>_Construct and register a muxed drum display (one TCA9548A branch)._  |
+|   | [**DrumDisplay**](#function-drumdisplay-12) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a direct-bus drum display._  |
+|   | [**DrumDisplay**](#function-drumdisplay-22) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md) & mux, uint8\_t channel, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a muxed drum display (one TCA9548A branch)._  |
 | virtual void | [**configure**](#function-configure) () override<br>_Compute pixel geometry from the panel + descriptor, set the font, blank the panel._  |
 | virtual void | [**onControlPacket**](#function-oncontrolpacket) (uint16\_t controlId, uint16\_t value) override<br>_Decode one CTRL\_BCAST packet into this readout's digits/flag. Never draws._  |
 |  void | [**setFontSize**](#function-setfontsize) ([**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font) <br>_Change glyph size at runtime (e.g. swap a cramped 6-digit readout to SMALL)._  |
-|  void | [**setOffset**](#function-setoffset) (int16\_t xOffsetPx, int16\_t yOffsetPx) <br>_Re-register the digit block to the faceplate window at runtime._  |
+|  void | [**setOffset**](#function-setoffset) (float xOffsetMm, float yOffsetMm) <br>_Re-register the digit block to the faceplate window at runtime._  |
 | virtual void | [**update**](#function-update) () override<br>_Advance the ease/snap animation and push one frame if needed._  |
 
 
@@ -180,8 +180,8 @@ OpenSkyhawk::DrumDisplay::DrumDisplay (
     U8G2 & oled,
     const DrumReadout & readout,
     DrumFont font=DrumFont::LARGE,
-    int16_t xOffsetPx=0,
-    int16_t yOffsetPx=0
+    float xOffsetMm=0.0f,
+    float yOffsetMm=0.0f
 ) 
 ```
 
@@ -195,8 +195,8 @@ OpenSkyhawk::DrumDisplay::DrumDisplay (
 * `oled` Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this. 
 * `readout` Descriptor for this readout (sources, geometry, flag). Must outlive this. 
 * `font` Per-mounting glyph size. Default DrumFont::LARGE. 
-* `xOffsetPx` X pixel shift of the whole digit block, registers it to the faceplate window. 
-* `yOffsetPx` Y pixel shift of the digit block centre line. 
+* `xOffsetMm` X shift (mm) of the whole digit block, registers it to the faceplate window. 
+* `yOffsetMm` Y shift (mm) of the digit block centre line. 
 
 
 
@@ -224,8 +224,8 @@ OpenSkyhawk::DrumDisplay::DrumDisplay (
     I2cMux & mux,
     uint8_t channel,
     DrumFont font=DrumFont::LARGE,
-    int16_t xOffsetPx=0,
-    int16_t yOffsetPx=0
+    float xOffsetMm=0.0f,
+    float yOffsetMm=0.0f
 ) 
 ```
 
@@ -241,8 +241,8 @@ OpenSkyhawk::DrumDisplay::DrumDisplay (
 * `mux` Shared TCA9548A selector. Must outlive this. 
 * `channel` TCA9548A channel 0–7 this panel sits on. 
 * `font` Per-mounting glyph size. Default DrumFont::LARGE. 
-* `xOffsetPx` X pixel registration shift. 
-* `yOffsetPx` Y pixel registration shift. 
+* `xOffsetMm` X registration shift (mm). 
+* `yOffsetMm` Y registration shift (mm). 
 
 
 
@@ -357,8 +357,8 @@ void OpenSkyhawk::DrumDisplay::setFontSize (
 _Re-register the digit block to the faceplate window at runtime._ 
 ```C++
 void OpenSkyhawk::DrumDisplay::setOffset (
-    int16_t xOffsetPx,
-    int16_t yOffsetPx
+    float xOffsetMm,
+    float yOffsetMm
 ) 
 ```
 
@@ -369,14 +369,21 @@ void OpenSkyhawk::DrumDisplay::setOffset (
 **Parameters:**
 
 
-* `xOffsetPx` New X pixel shift of the digit block. 
-* `yOffsetPx` New Y pixel shift (centre line) of the digit block. 
+* `xOffsetMm` New X shift (mm) of the digit block — measure the cutout misalignment after assembly. 
+* `yOffsetMm` New Y shift (mm, centre line) of the digit block. 
 
 
 
 **Note:**
 
-Marks geometry dirty; the new offsets apply on the next rendered frame. 
+Marks geometry dirty; the new offsets apply on the next rendered frame. Resolution- independent (converted to px via the panel scale), so the same mm value registers correctly on any OLED size. 
+
+
+
+
+**Note:**
+
+Rounds to whole pixels, so the smallest useful step is ~0.25 mm (≈1 px); a 0.1 mm nudge is sub-pixel and may not move. The 1.3" 128x64 (~0.23 mm/px) is the coarser panel. 
 
 
 

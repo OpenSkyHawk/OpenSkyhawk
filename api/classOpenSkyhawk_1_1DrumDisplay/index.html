@@ -4060,11 +4060,11 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-drumdisplay-12"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, int16_t xOffsetPx=0, int16_t yOffsetPx=0) <br><em>Construct and register a direct-bus drum display.</em></td>
+<td style="text-align: left;"><a href="#function-drumdisplay-12"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br><em>Construct and register a direct-bus drum display.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-drumdisplay-22"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>I2cMux</strong></a> &amp; mux, uint8_t channel, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, int16_t xOffsetPx=0, int16_t yOffsetPx=0) <br><em>Construct and register a muxed drum display (one TCA9548A branch).</em></td>
+<td style="text-align: left;"><a href="#function-drumdisplay-22"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>I2cMux</strong></a> &amp; mux, uint8_t channel, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br><em>Construct and register a muxed drum display (one TCA9548A branch).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -4080,7 +4080,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-setoffset"><strong>setOffset</strong></a> (int16_t xOffsetPx, int16_t yOffsetPx) <br><em>Re-register the digit block to the faceplate window at runtime.</em></td>
+<td style="text-align: left;"><a href="#function-setoffset"><strong>setOffset</strong></a> (float xOffsetMm, float yOffsetMm) <br><em>Re-register the digit block to the faceplate window at runtime.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -4157,8 +4157,8 @@
     U8G2 &amp; oled,
     const DrumReadout &amp; readout,
     DrumFont font=DrumFont::LARGE,
-    int16_t xOffsetPx=0,
-    int16_t yOffsetPx=0
+    float xOffsetMm=0.0f,
+    float yOffsetMm=0.0f
 ) 
 </code></pre>
 <p><strong>Parameters:</strong></p>
@@ -4166,8 +4166,8 @@
 <li><code>oled</code> Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this. </li>
 <li><code>readout</code> Descriptor for this readout (sources, geometry, flag). Must outlive this. </li>
 <li><code>font</code> Per-mounting glyph size. Default DrumFont::LARGE. </li>
-<li><code>xOffsetPx</code> X pixel shift of the whole digit block, registers it to the faceplate window. </li>
-<li><code>yOffsetPx</code> Y pixel shift of the digit block centre line. </li>
+<li><code>xOffsetMm</code> X shift (mm) of the whole digit block, registers it to the faceplate window. </li>
+<li><code>yOffsetMm</code> Y shift (mm) of the digit block centre line. </li>
 </ul>
 <p><strong>Note:</strong></p>
 <p>The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in <a href="./#function-configure"><strong>configure()</strong></a>. </p>
@@ -4181,8 +4181,8 @@
     I2cMux &amp; mux,
     uint8_t channel,
     DrumFont font=DrumFont::LARGE,
-    int16_t xOffsetPx=0,
-    int16_t yOffsetPx=0
+    float xOffsetMm=0.0f,
+    float yOffsetMm=0.0f
 ) 
 </code></pre>
 <p><strong>Parameters:</strong></p>
@@ -4192,8 +4192,8 @@
 <li><code>mux</code> Shared TCA9548A selector. Must outlive this. </li>
 <li><code>channel</code> TCA9548A channel 0–7 this panel sits on. </li>
 <li><code>font</code> Per-mounting glyph size. Default DrumFont::LARGE. </li>
-<li><code>xOffsetPx</code> X pixel registration shift. </li>
-<li><code>yOffsetPx</code> Y pixel registration shift. </li>
+<li><code>xOffsetMm</code> X registration shift (mm). </li>
+<li><code>yOffsetMm</code> Y registration shift (mm). </li>
 </ul>
 <p><strong>Note:</strong></p>
 <p>The class calls mux.select(channel) before geometry fit in <a href="./#function-configure"><strong>configure()</strong></a> and before each sendBuffer() so interleaved displays never write to the wrong panel. </p>
@@ -4240,17 +4240,19 @@
 <h3 id="function-setoffset">function setOffset</h3>
 <p><em>Re-register the digit block to the faceplate window at runtime.</em> </p>
 <pre><code class="language-C++">void OpenSkyhawk::DrumDisplay::setOffset (
-    int16_t xOffsetPx,
-    int16_t yOffsetPx
+    float xOffsetMm,
+    float yOffsetMm
 ) 
 </code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>xOffsetPx</code> New X pixel shift of the digit block. </li>
-<li><code>yOffsetPx</code> New Y pixel shift (centre line) of the digit block. </li>
+<li><code>xOffsetMm</code> New X shift (mm) of the digit block — measure the cutout misalignment after assembly. </li>
+<li><code>yOffsetMm</code> New Y shift (mm, centre line) of the digit block. </li>
 </ul>
 <p><strong>Note:</strong></p>
-<p>Marks geometry dirty; the new offsets apply on the next rendered frame. </p>
+<p>Marks geometry dirty; the new offsets apply on the next rendered frame. Resolution- independent (converted to px via the panel scale), so the same mm value registers correctly on any OLED size. </p>
+<p><strong>Note:</strong></p>
+<p>Rounds to whole pixels, so the smallest useful step is ~0.25 mm (≈1 px); a 0.1 mm nudge is sub-pixel and may not move. The 1.3" 128x64 (~0.23 mm/px) is the coarser panel. </p>
 <hr>
 
 <h3 id="function-update">function update</h3>

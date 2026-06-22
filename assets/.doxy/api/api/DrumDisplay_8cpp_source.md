@@ -38,9 +38,9 @@ static long pow10l(uint8_t n) {
 // ── construction ──────────────────────────────────────────────────────────────
 
 DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
-                         DrumFont font, int16_t xOffsetPx, int16_t yOffsetPx)
+                         DrumFont font, float xOffsetMm, float yOffsetMm)
     : _oled(&oled), _r(&readout), _mux(nullptr), _channel(0), _font(font),
-      _xOff(xOffsetPx), _yOff(yOffsetPx),
+      _xOffMm(xOffsetMm), _yOffMm(yOffsetMm),
       _target(0), _flagTarget(0), _dirty(false), _hasState(false),
       _flagPos(0.0f),
       _geomDirty(false), _colW(0), _cellH(0), _gap(0), _flagW(0), _cy(0),
@@ -50,8 +50,8 @@ DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
 
 DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
                          I2cMux& mux, uint8_t channel,
-                         DrumFont font, int16_t xOffsetPx, int16_t yOffsetPx)
-    : DrumDisplay(oled, readout, font, xOffsetPx, yOffsetPx) {
+                         DrumFont font, float xOffsetMm, float yOffsetMm)
+    : DrumDisplay(oled, readout, font, xOffsetMm, yOffsetMm) {
     _mux     = &mux;
     _channel = channel;
 }
@@ -192,8 +192,8 @@ void DrumDisplay::fitGeometry() {
     }
     if (cellH > H) cellH = H;  // clamp roll window to short panels (128x32)
 
-    int x0 = (W - totalW) / 2 + _xOff;  // centre the row, then apply registration offset
-    _cy = static_cast<int16_t>(H / 2 + _yOff);
+    int x0 = (W - totalW) / 2 + lroundf(_xOffMm * PX_PER_MM);  // centre the row, then apply the mm offset
+    _cy = static_cast<int16_t>(H / 2 + lroundf(_yOffMm * PX_PER_MM));
 
     int x = x0;
     for (uint8_t i = 0; i < n; i++) {
@@ -246,7 +246,8 @@ void DrumDisplay::update() {
     if (!_hasState) return;                       // nothing received yet → stay blank
     uint32_t now = millis();
     if (now - _lastFrameMs < FRAME_MS) return;    // ~60 fps gate
-    if (settled() && !_dirty) return;             // idle skip: no I2C when nothing moves
+    if (settled() && !_dirty && !_geomDirty) return;  // idle skip: no I2C when nothing moves
+                                                      // (_geomDirty forces a frame after setOffset/setFontSize)
     _lastFrameMs = now;
 
     if (_geomDirty) {
@@ -305,9 +306,9 @@ void DrumDisplay::setFontSize(DrumFont font) {
     _geomDirty = true;
 }
 
-void DrumDisplay::setOffset(int16_t xOffsetPx, int16_t yOffsetPx) {
-    _xOff      = xOffsetPx;
-    _yOff      = yOffsetPx;
+void DrumDisplay::setOffset(float xOffsetMm, float yOffsetMm) {
+    _xOffMm    = xOffsetMm;
+    _yOffMm    = yOffsetMm;
     _geomDirty = true;
 }
 

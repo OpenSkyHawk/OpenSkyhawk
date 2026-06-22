@@ -3956,12 +3956,12 @@ class DrumDisplay : public OutputBase {
 public:
     DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout,
                 DrumFont font = DrumFont::LARGE,
-                int16_t xOffsetPx = 0, int16_t yOffsetPx = 0);
+                float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
 
     DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout,
                 I2cMux&amp; mux, uint8_t channel,
                 DrumFont font = DrumFont::LARGE,
-                int16_t xOffsetPx = 0, int16_t yOffsetPx = 0);
+                float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
 
     void configure() override;
 
@@ -3971,13 +3971,14 @@ public:
 
     void setFontSize(DrumFont font);
 
-    void setOffset(int16_t xOffsetPx, int16_t yOffsetPx);
+    void setOffset(float xOffsetMm, float yOffsetMm);
 
 #ifdef DRUMDISPLAY_TEST
     long    debugTarget() const     { return _target; }      
     long    debugFlagTarget() const { return _flagTarget; }  
     uint8_t debugCellCount() const  { return _nCells; }      
     int16_t debugRowWidth() const;                           
+    int16_t debugCellX0() const     { return _nCells ? _cellX[0] : 0; }  
 #endif
 
 private:
@@ -3989,7 +3990,7 @@ private:
     I2cMux*            _mux;          // nullptr for direct-bus instances
     uint8_t            _channel;      // mux channel; ignored when _mux == nullptr
     DrumFont           _font;         // current glyph size
-    int16_t            _xOff, _yOff;  // pixel registration offset
+    float              _xOffMm, _yOffMm;  // registration offset, mm (→ px via PX_PER_MM in fitGeometry)
 
     // decoded value state (set in onControlPacket, read in update)
     long               _target;       // combined integer the digit row should show
