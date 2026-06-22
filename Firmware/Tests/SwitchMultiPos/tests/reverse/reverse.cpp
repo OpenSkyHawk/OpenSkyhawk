@@ -4,7 +4,7 @@
 // index is unchanged; only the electrical sense flips. Verified via position(); CAN in NORMAL
 // mode (node ACKs the PanelBridge).
 //
-// Rig: STM32 on the CAN bus with the PanelBridge. Jumper PB0->PA0, PB1->PA1, PB10->PA4, PB5->PA5.
+// Rig: STM32 on the CAN bus with the PanelBridge. Jumper PB0->PA0, PB1->PA1, PB4->PA4, PB5->PA5.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -13,7 +13,7 @@
 static constexpr uint16_t CTRL_ID = 0x5678;
 static constexpr uint8_t  N       = 4;
 static const uint8_t SW_PINS[N]   = { PA0, PA1, PA4, PA5 };
-static const uint8_t CTRL_PINS[N] = { PB0, PB1, PB10, PB5 };
+static const uint8_t CTRL_PINS[N] = { PB0, PB1, PB4, PB5 };
 
 // reverse=true → active pin is HIGH. Drive position idx HIGH (active), the rest LOW.
 static void setActiveHigh(uint8_t idx) {

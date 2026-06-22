@@ -5,7 +5,7 @@
 // Verified via position(); CAN in NORMAL mode (node ACKs the PanelBridge).
 //
 // pins = { PA0 (pos 0), PIN_NC (pos 1), PA4 (pos 2) }.
-// Rig: STM32 on the CAN bus with the PanelBridge. Jumper PB0->PA0, PB10->PA4 (pos 1 has no pin).
+// Rig: STM32 on the CAN bus with the PanelBridge. Jumper PB0->PA0, PB4->PA4 (pos 1 has no pin).
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -17,7 +17,7 @@ static constexpr uint8_t  NONE    = 0xFF;
 
 static void setActive(uint8_t idx) {   // idx 0 → PA0 active, idx 2 → PA4 active; 1/NONE → none
     digitalWrite(PB0,  idx == 0 ? LOW : HIGH);
-    digitalWrite(PB10, idx == 2 ? LOW : HIGH);
+    digitalWrite(PB4, idx == 2 ? LOW : HIGH);
     delayMicroseconds(100);
 }
 static void txPush() { CANProtocol::flushBatched(canIdEvt(NODE_ID)); }
@@ -38,7 +38,7 @@ void setup() {
     };
 
     pinMode(PB0,  OUTPUT);
-    pinMode(PB10, OUTPUT);
+    pinMode(PB4, OUTPUT);
     gSel.configure();
     CANProtocol::start();
 
