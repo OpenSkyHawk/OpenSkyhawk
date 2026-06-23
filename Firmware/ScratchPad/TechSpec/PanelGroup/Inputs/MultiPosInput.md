@@ -81,6 +81,10 @@ private:
 A real index is always `< _numPositions` (≤ ~10 in practice), so the value can never collide.
 It shares the same numeric value as `AnalogMultiPos`'s `ANALOG_NC` by design.
 
+`poll()` and `forceReport()` defensively coerce any **out-of-range** `readRaw()` result
+(`≥ _numPositions`, e.g. from a buggy subclass) to `NO_POSITION`, so a garbage index never reaches
+CAN — the family invariant is enforced once, in the base.
+
 All state is per-instance; no statics.
 
 ---

@@ -37,6 +37,7 @@ void MultiPosInput::emit(uint16_t pos, bool init) {
 
 void MultiPosInput::forceReport() {
     uint16_t raw = readRaw();
+    if (raw != NO_POSITION && raw >= _numPositions) raw = NO_POSITION;  // reject an out-of-range index
     if (raw == NO_POSITION) raw = 0;   // nothing active at boot → default to position 0
     _lastPos         = raw;
     _pendingPos      = raw;
@@ -49,6 +50,7 @@ void MultiPosInput::poll() {
     if (!_initialized) return;
 
     uint16_t raw = readRaw();
+    if (raw != NO_POSITION && raw >= _numPositions) raw = NO_POSITION;  // reject an out-of-range index
     if (raw == NO_POSITION) raw = _lastPos;   // hold last confirmed position
 
     if (raw != _pendingPos) {
