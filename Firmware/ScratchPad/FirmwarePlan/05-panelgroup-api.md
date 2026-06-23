@@ -148,7 +148,7 @@ input event arrives, CANProtocol must flush the half-full EVT batch within two
 full-state polls, PanelGroup calls `CANProtocol::flushBatched(canIdEvt(NODE_ID))` so the odd
 trailing packet flushes immediately at the end of the poll pass.
 
-### Switch2Pos *(exists — needs PinRef update)*
+### Switch2Pos *(implemented)*
 
 Debounced 2-position switch. VALUE: 1 = active (pin LOW), 0 = inactive. Debounce: 20 ms fixed.
 
@@ -229,8 +229,9 @@ fires CAN EVT when `|delta| >= stepsPerDetent`. VALUE: 1 = clockwise, 0 = counte
 `StepsPerDetent` enum: `ONE_STEP_PER_DETENT`, `TWO_STEPS_PER_DETENT`, `FOUR_STEPS_PER_DETENT`,
 `EIGHT_STEPS_PER_DETENT`.
 
-Interrupt latency constraint: ≤ one encoder detent period (typically ≥ 10 ms at human speeds —
-achievable with ~1 ms interrupt response through MCP23017).
+Read model: PanelGroup polls `poll()` each loop, decoding the cached A/B bits — refreshed on the
+MCP23017 interrupt, **not** a per-encoder ISR. The detent period at human turn speeds (≥ ~10 ms) is
+well within the expander INT-refresh latency. (Verify the 11-encoder throughput on one node at B6.)
 
 ```cpp
 OpenSkyhawk::RotaryEncoder altSet(DCSIN_ALT_SET,
@@ -408,60 +409,50 @@ OpenSkyhawk::AnalogOutput instrLight(A_4E_C_LIGHTS_INSTRUMENTS_A, PinRef(PB9));
 OpenSkyhawk::AnalogOutput floodLight(A_4E_C_LIGHTS_FLOOD_RED_A,   PinRef(PB8));
 ```
 
-### SwitecX25Output *(new)*
+### NeedleGauge *(new)*
 
-Drives a gauge needle stepper (X27.589 / VID-29 family) via DRV8833PW using the **SwitecX25
-library**. Relies on mechanical CCW stop for homing — no physical sensor required.
-
-Homing sequence at boot:
-1. `~SLEEP` driven HIGH (motor enabled — required for homing torque).
-2. `PanelGroup::setup()` calls `motor.reset()` — steps fully CCW to mechanical stop.
-3. After `reset()` completes, needle is at position 0; `~SLEEP` remains HIGH.
-4. On first `CTRL_BCAST` frame matching this address, needle moves to received DCS position.
-
-Random motion cannot occur after homing because SwitecX25 only moves on explicit `moveTo()`.
-
-Value mapping: `steps = map(dcsValue, 0, 65535, 0, maxSteps)`. All A-4E gauges are linear.
-
-`SwitecX25Output::update()` must be called every `PanelGroup::loop()` iteration (non-blocking).
-
-**One DRV8833 per stepper** — its dual H-bridge drives the two coils of a single bipolar
-motor. To save GPIO, multiple drivers may share one `~SLEEP` line: pass the same `SLEEP_PIN`
-to each instance (or tie all `~SLEEP` pins to one STM32 GPIO).
+Drives a **needle / pointer gauge** from one DCS-BIOS address. `NeedleGauge` is a thin `OutputBase`
+that does only the **gauge semantics** — decode the 16-bit value, map it to a motor position (linear
+or piecewise-calibrated via `GaugeCal`), and command the motor. All low-level drive, acceleration,
+and homing live in a **`MotorDriver`** the gauge *composes*, so the ~119 A-4E pointer gauges share
+one class over any backend.
 
 ```cpp
-SwitecX25 needle(600, PIN_A1, PIN_A2, PIN_B1, PIN_B2);  // 600 steps = 315°
-OpenSkyhawk::SwitecX25Output cabinPressure(A_4E_C_CABIN_ALT_A, needle, SLEEP_PIN);
+struct GaugeCal {                       // motor positions are driver-native units (steps)
+    int16_t minTravel, maxTravel;       // positions at DCS value 0 / 65535 (linear path)
+    bool reverse;                       // flip direction (mounted / wired reversed)
+    const uint16_t *curveIn, *curveOut; // ascending breakpoints + positions, or nullptr = linear
+    uint8_t curveN;                     // breakpoint count (0 = linear)
+};
+
+NeedleGauge(uint16_t controlId, uint16_t mask, MotorDriver& motor, const GaugeCal& cal);
 ```
 
-### AccelStepperOutput *(new)*
+- **Linear** (`curveN == 0`): `pos = map(value, 0, 65535, minTravel, maxTravel)`; signed travel lets
+  a centre-zero gauge (DRIFT) sit mid-range. **Piecewise** (`curveN ≥ 2`): binary-search `curveIn`,
+  interpolate `curveOut` (non-linear dials). `reverse` flips the input before either path.
+- `onControlPacket()` **stores only** — computes the target and calls `motor.moveTo()`, never steps;
+  the coil drive happens in `update()` (off the packet path, like `LED`). `configure()` homes the
+  motor (may block — boot only). `update()` runs every `PanelGroup::loop()` iteration (non-blocking).
 
-Drives a gauge needle stepper via **AccelStepper library** with a physical home sensor
-(hall-effect or optical switch). For gauges without a mechanical stop or for continuous-rotation
-indicators.
+#### Motor-driver layer — `PanelGroup/Drivers/`
 
-Homing: `~SLEEP` HIGH, step toward `homePin` until sensor reads active (LOW), set
-`currentPosition = 0`.
+The backend is a **`MotorDriver`** the sketch builds and passes by reference (composition, like
+`DrumDisplay` taking a `U8G2&`) — *not* an enum inside the gauge. Today: **`StepperMotor`** (integer
+SwitecX25-style acceleration; drives four coils through `PinRef` — native GPIO **or** MCP23017;
+homing by **mechanical STALL** or a **home sensor**; one air-core profile covers X27.589 / VID-29 /
+BKA-30, run at **5 V through a DRV8833**). A **`ServoMotor`** backend is planned (#132). See
+`08-hardware-firmware-contracts.md` for the DRV8833 `~SLEEP` contract.
 
 ```cpp
-AccelStepper motor(AccelStepper::FULL4WIRE, PIN_A1, PIN_A2, PIN_B1, PIN_B2);
-OpenSkyhawk::AccelStepperOutput gauge(A_4E_C_D_ALT_NEEDLE_A, motor,
-                                       HOME_SENSOR_PIN, SLEEP_PIN, minSteps, maxSteps);
+StepperMotor driftMotor(PinRef(PA0), PinRef(PA1), PinRef(PA4), PinRef(PA5), DRIFT_MOTOR_CFG);
+const GaugeCal DRIFT_CAL = { -150, 150, false, nullptr, nullptr, 0 };  // centre-zero, ±150 steps
+OpenSkyhawk::NeedleGauge drift(A_4E_C_APN153_DRIFT_GAUGE, A_4E_C_APN153_DRIFT_GAUGE_AM,
+                               driftMotor, DRIFT_CAL);
 ```
 
-Value mapping: `steps = map(dcsValue, 0, 65535, minSteps, maxSteps)`.
-
-### ServoOutput *(new)*
-
-Standard RC servo via Arduino **Servo library** (1–2 ms pulse, 50 Hz). Must be a direct STM32
-GPIO pin because `Servo.attach()` requires a raw pin. Enforced by checking `pin.isGpio()` and
-using `pin.gpioPin()` internally.
-
-Value mapping: `servo.writeMicroseconds(map(dcsValue, 0, 65535, minPulse, maxPulse))`.
-
-```cpp
-OpenSkyhawk::ServoOutput flapInd(A_4E_C_D_FLAPS_IND_A, PinRef(SERVO_PIN), 1000, 2000);
-```
+**Supersedes** the former `SwitecX25Output` / `AccelStepperOutput` / `ServoOutput` standalone classes
+— the backend is now a swappable `MotorDriver`, not a per-library output class.
 
 ---
 

@@ -58,9 +58,9 @@ Both sides are 3.3 V — no level shifter required.
 requires active driver output for homing torque. `~SLEEP` remains HIGH permanently after that
 point.
 
-The `SwitecX25Output` and `AccelStepperOutput` constructors accept a `SLEEP_PIN` argument.
-`PanelGroup::setup()` drives it HIGH before calling `motor.reset()` or starting the homing
-sequence.
+The `StepperMotor` driver (composed by `NeedleGauge`) owns the `~SLEEP` / enable line.
+`PanelGroup::setup()` → `NeedleGauge::configure()` → `motor.configure()` drives it HIGH before the
+homing sequence (`motor.home()`).
 
 **Correct behaviour:** HIGH from `setup()` for homing torque. `hardware-standards.md` has
 been updated to reflect this.

@@ -84,7 +84,7 @@ void setup() {
     Wire.begin();                 // init I2C1 before PanelGroup::setup()
     PanelGroup::registerExpander(exp1, PA4, PA5);    // INTA=PA4, INTB=PA5
     PanelGroup::setup();
-    // PanelGroup::setup() drives ~SLEEP HIGH and homes any registered SwitecX25Output motors.
+    // PanelGroup::setup() drives ~SLEEP HIGH and homes any registered NeedleGauge motors.
     // It also reads full port state of all expanders (baseline) and sends initial CAN EVTs.
 }
 
