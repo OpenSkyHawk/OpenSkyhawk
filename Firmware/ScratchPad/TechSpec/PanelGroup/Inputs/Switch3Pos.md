@@ -1,6 +1,6 @@
 # Switch3Pos — Technical Specification
 
-**Status:** Done (compile-gated; hardware bench pending)
+**Status:** Done (hardware-verified — 6/6 envs PASS 2026-06-23)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#switch3pos-new`
 **Depends on:** `MultiPosInput.md`, `PinRef.md`, `PanelGroup.md`
 
