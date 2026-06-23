@@ -1,7 +1,8 @@
-// RotaryEncoder — reversal test
+// RotaryEncoder — dir_mode test
 //
-// A CW detent then a CCW detent emit +step (CW) then -step (CCW). Confirms direction tracking across a
-// reversal with no stuck state. OpenSkyhawk::FOUR_STEPS_PER_DETENT.
+// DIR mode (fixed_step selector with no indicator, e.g. ARC-51 freq): each detent emits a signed
+// ±1 DIRECTION on the DIR frame (canIdEvtDir), which the bridge turns into INC/DEC. Confirms the
+// value (±1, not ±step) and the frame routing distinct from REL. OpenSkyhawk::FOUR_STEPS_PER_DETENT.
 //
 // Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
 
@@ -11,12 +12,13 @@
 
 static constexpr uint16_t CTRL_ID = 0x567B;
 
-OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::FOUR_STEPS_PER_DETENT);
+OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1),
+                                OpenSkyhawk::FOUR_STEPS_PER_DETENT, OpenSkyhawk::DIR);
 
 void setup() {
     STM32Board::setDebug(true);
     STM32Board::begin();
-    STM32Board::diagSerial().println("=== RotaryEncoder reversal ===");
+    STM32Board::diagSerial().println("=== RotaryEncoder dir_mode ===");
 
     bool pass = true;
     auto check = [&](const char* label, bool ok) {
@@ -30,12 +32,13 @@ void setup() {
 
     gEnc.debugSeed(0);
     gEnc.debugStep(1); gEnc.debugStep(3); gEnc.debugStep(2); gEnc.debugStep(0);   // CW detent
-    check("CW detent -> REL +step", gEnc.emitCount() == 1 && gEnc.lastValue() == 3200);
+    check("DIR CW detent -> +1 on dir frame",
+          gEnc.emitCount() == 1 && gEnc.lastValue() == 1 && gEnc.lastFrame() == canIdEvtDir(NODE_ID));
 
     gEnc.debugStep(2); gEnc.debugStep(3); gEnc.debugStep(1); gEnc.debugStep(0);   // CCW detent
-    check("then CCW detent -> REL -step", gEnc.emitCount() == 2 && gEnc.lastValue() == -3200);
+    check("DIR CCW detent -> -1", gEnc.emitCount() == 2 && gEnc.lastValue() == -1);
 
-    CANProtocol::flushBatched(canIdEvtRel(NODE_ID));
+    CANProtocol::flushBatched(canIdEvtDir(NODE_ID));
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 

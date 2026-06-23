@@ -33,9 +33,9 @@ void setup() {
 
     gEnc.debugSeed(0);
     gEnc.debugStep(1);   // one CW transition (ONE_STEP) → emits
-    check("transition after forceReport: emits dir 1", gEnc.emitCount() == 1 && gEnc.lastDir() == 1);
+    check("transition after forceReport: emits REL +step", gEnc.emitCount() == 1 && gEnc.lastValue() == 3200);
 
-    CANProtocol::flushBatched(canIdEvt(NODE_ID));
+    CANProtocol::flushBatched(canIdEvtRel(NODE_ID));
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 

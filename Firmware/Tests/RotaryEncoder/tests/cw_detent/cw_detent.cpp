@@ -1,8 +1,8 @@
 // RotaryEncoder — cw_detent test
 //
 // A full clockwise quadrature cycle (Gray states 0->1->3->2->0) accumulates 4 steps. At
-// OpenSkyhawk::FOUR_STEPS_PER_DETENT that is one detent → one CW (1) EVT. debugSeed sets the start state,
-// debugStep injects each transition; assertions are on emitCount()/lastDir().
+// OpenSkyhawk::FOUR_STEPS_PER_DETENT that is one detent → one REL EVT (+step). debugSeed sets the start
+// state, debugStep injects each transition; assertions are on emitCount()/lastValue()/lastFrame().
 //
 // Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
 
@@ -31,9 +31,10 @@ void setup() {
 
     gEnc.debugSeed(0);
     gEnc.debugStep(1); gEnc.debugStep(3); gEnc.debugStep(2); gEnc.debugStep(0);   // CW cycle
-    check("CW full cycle -> 1 EVT, dir CW(1)", gEnc.emitCount() == 1 && gEnc.lastDir() == 1);
+    check("CW full cycle -> 1 EVT, REL +step on rel frame",
+          gEnc.emitCount() == 1 && gEnc.lastValue() == 3200 && gEnc.lastFrame() == canIdEvtRel(NODE_ID));
 
-    CANProtocol::flushBatched(canIdEvt(NODE_ID));
+    CANProtocol::flushBatched(canIdEvtRel(NODE_ID));
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 
