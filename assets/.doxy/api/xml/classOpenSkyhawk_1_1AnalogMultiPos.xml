@@ -1,0 +1,469 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1AnalogMultiPos" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::AnalogMultiPos</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1MultiPosInput" prot="public" virt="non-virtual">OpenSkyhawk::MultiPosInput</basecompoundref>
+    <includes refid="AnalogMultiPos_8h" local="no">AnalogMultiPos.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1a3d37942061f4202b69553a1ec84961cd" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::AnalogMultiPos::DEFAULT_DEADBAND</definition>
+        <argsstring></argsstring>
+        <name>DEFAULT_DEADBAND</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::DEFAULT_DEADBAND</qualifiedname>
+        <initializer>= 1000</initializer>
+        <briefdescription>
+<para>counts trimmed from each band edge </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="50" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1aafd102fc9ba5d0ce2dda27c4d5d97e04" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::AnalogMultiPos::POLL_MS</definition>
+        <argsstring></argsstring>
+        <name>POLL_MS</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::POLL_MS</qualifiedname>
+        <initializer>= 8</initializer>
+        <briefdescription>
+<para>min interval between ADC reads (ms) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="51" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1a8e7fefa8a3ef082d7f2e06d110e338d6" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::AnalogMultiPos::_pin</definition>
+        <argsstring></argsstring>
+        <name>_pin</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::_pin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="105" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1a3ebc83a6e8849b4e85be1a6c5aa5121a" prot="private" static="no" mutable="no">
+        <type>const uint16_t *</type>
+        <definition>const uint16_t* OpenSkyhawk::AnalogMultiPos::_posVals</definition>
+        <argsstring></argsstring>
+        <name>_posVals</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::_posVals</qualifiedname>
+        <briefdescription>
+<para>caller array, or nullptr for equal-spacing </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="106" column="20" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1adcc6e72eaa819b6d0e4e846dff681796" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogMultiPos::_deadband</definition>
+        <argsstring></argsstring>
+        <name>_deadband</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::_deadband</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="107" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1a296c8316008f369488a514d61fef6088" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogMultiPos::_cachedIdx</definition>
+        <argsstring></argsstring>
+        <name>_cachedIdx</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::_cachedIdx</qualifiedname>
+        <briefdescription>
+<para>last resolved index (held between throttled reads) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="108" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1ade50589de0b0f14d011291e7e586c876" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::AnalogMultiPos::_lastReadMs</definition>
+        <argsstring></argsstring>
+        <name>_lastReadMs</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::_lastReadMs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="109" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogMultiPos_1aac4b12121b1c014962c7b41214ff4265" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::AnalogMultiPos::_forceRead</definition>
+        <argsstring></argsstring>
+        <name>_forceRead</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::_forceRead</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+<para>next <ref refid="classOpenSkyhawk_1_1AnalogMultiPos_1a46a460fcae3fa5ea5fb3dfa3d9bb9fe4" kindref="member">readRaw()</ref> samples fresh — boot / forceReport / SYNC </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="110" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1a0272491d406a85768a36940ea1458750" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::AnalogMultiPos::AnalogMultiPos</definition>
+        <argsstring>(uint16_t controlId, PinRef pin, uint8_t numPos, const uint16_t *posVals, uint16_t deadband=DEFAULT_DEADBAND)</argsstring>
+        <name>AnalogMultiPos</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::AnalogMultiPos</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pin</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>numPos</declname>
+        </param>
+        <param>
+          <type>const uint16_t *</type>
+          <declname>posVals</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>deadband</declname>
+          <defval><ref refid="classOpenSkyhawk_1_1AnalogMultiPos_1a3d37942061f4202b69553a1ec84961cd" kindref="member">DEFAULT_DEADBAND</ref></defval>
+        </param>
+        <briefdescription>
+<para>Explicit resistor-ladder selector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>analog <ref refid="classPinRef" kindref="compound">PinRef</ref> (STM32 ADC GPIO or <ref refid="classADS1115" kindref="compound">ADS1115</ref> channel). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numPos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>N — number of positions (valid indices 0..N-1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>posVals</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>caller-owned array of N expected 16-bit ADC values, one per position. Must outlive this object. Use ANALOG_NC for a position with no detent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>deadband</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>counts trimmed from each band edge for hysteresis (default 1000). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="63" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="12" bodyend="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1ae03d4d0a5037d6c74586aef3aceef3a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::AnalogMultiPos::AnalogMultiPos</definition>
+        <argsstring>(uint16_t controlId, PinRef pin, uint8_t numPos, uint16_t deadband=DEFAULT_DEADBAND)</argsstring>
+        <name>AnalogMultiPos</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::AnalogMultiPos</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pin</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>numPos</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>deadband</declname>
+          <defval><ref refid="classOpenSkyhawk_1_1AnalogMultiPos_1a3d37942061f4202b69553a1ec84961cd" kindref="member">DEFAULT_DEADBAND</ref></defval>
+        </param>
+        <briefdescription>
+<para>Equal-spacing shorthand — positions evenly spaced across the full ADC range. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>analog <ref refid="classPinRef" kindref="compound">PinRef</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numPos</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>N — number of positions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>deadband</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>counts trimmed from each band edge (default 1000). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="74" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="21" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1abea4b6cb61409c93dbf54145bb56a758" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogMultiPos::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c">configure</reimplements>
+        <briefdescription>
+<para>Configure the pin as an input. Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="78" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="29" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1a1e53e05b23249ae3c8eda91c84e87ffe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogMultiPos::forceReport</definition>
+        <argsstring>() override</argsstring>
+        <name>forceReport</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::forceReport</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92">forceReport</reimplements>
+        <briefdescription>
+<para>Force a fresh ADC sample (bypassing the read throttle), then emit the baseline. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The boot EVT burst and SYNC_REQ must report the <emphasis>current</emphasis> position, never a stale cache: at boot — before millis() reaches POLL_MS — the throttle would otherwise return the uninitialised NO_POSITION cache and the base would emit position 0; and a SYNC arriving within POLL_MS of the last poll-read would echo an old reading. Overrides the base. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="88" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="33" bodyend="36"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1a46a460fcae3fa5ea5fb3dfa3d9bb9fe4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogMultiPos::readRaw</definition>
+        <argsstring>() override</argsstring>
+        <name>readRaw</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::readRaw</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c">readRaw</reimplements>
+        <briefdescription>
+<para>Resolve the instantaneous position index, or NO_POSITION to hold the last. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Implemented per subclass (one-hot pin scan, analog band-resolve, ...). Must be non-blocking. Return a value in 0..numPositions-1, or NO_POSITION when nothing is currently active.</para>
+<para><simplesect kind="return"><para>resolved index, or NO_POSITION. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="98" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="72" bodyend="85"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1af475a53a450e60e9345bac303c36fed6" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogMultiPos::resolve</definition>
+        <argsstring>(uint16_t raw) const</argsstring>
+        <name>resolve</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::resolve</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>raw</declname>
+        </param>
+        <briefdescription>
+<para>band-resolve a raw value → index or NO_POSITION </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="101" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="48" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1ad3e9d3eb2039288db52fcde9bb08df1f" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogMultiPos::posValAt</definition>
+        <argsstring>(uint8_t i) const</argsstring>
+        <name>posValAt</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::posValAt</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>explicit posVals[i], or computed equal-spacing </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="102" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="38" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogMultiPos_1a6ac4fc6fd08fa209d889b93bc2387df4" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::AnalogMultiPos::isValid</definition>
+        <argsstring>(uint8_t i) const</argsstring>
+        <name>isValid</name>
+        <qualifiedname>OpenSkyhawk::AnalogMultiPos::isValid</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>false when posVals[i] == ANALOG_NC </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="103" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp" bodystart="44" bodyend="46"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Resistor-ladder multi-position selector — one analog <computeroutput><ref refid="classPinRef" kindref="compound">PinRef</ref></computeroutput>, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Subclass of <computeroutput><ref refid="classOpenSkyhawk_1_1MultiPosInput" kindref="compound">MultiPosInput</ref></computeroutput> — it shares the debounce / emit-on-change / hold-last / forceReport contract and provides only the analog read: it maps the 16-bit ADC reading to a position via detection bands centred on each position&apos;s expected value.</para>
+<para>Two constructions:<itemizedlist>
+<listitem><para><bold>explicit ladder</bold> — pass <computeroutput>posVals[]</computeroutput>, the expected 16-bit ADC value per position. A position whose entry is <computeroutput>ANALOG_NC</computeroutput> has no detent and is never emitted; its neighbours&apos; bands span its place.</para>
+</listitem><listitem><para><bold>equal-spacing shorthand</bold> — pass only N; positions are evenly spaced 0..65535.</para>
+</listitem></itemizedlist>
+</para>
+<para>Detection bands: each position&apos;s band reaches half-way to its nearest <emphasis>valid</emphasis> neighbours, minus <computeroutput>deadband</computeroutput> counts on each edge (default 1000). A reading in the deadband gap between two bands resolves to <computeroutput>NO_POSITION</computeroutput>, so the base holds the last position — this gives switch hysteresis, no flicker at a boundary. The ADC is re-read at most every <computeroutput>POLL_MS</computeroutput> (8 ms).</para>
+<para>The base debounce window is 0: the deadband gaps provide the filtering, not a timer. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::AnalogMultiPos</label>
+        <link refid="classOpenSkyhawk_1_1AnalogMultiPos"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::MultiPosInput</label>
+        <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OpenSkyhawk::AnalogMultiPos</label>
+        <link refid="classOpenSkyhawk_1_1AnalogMultiPos"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::MultiPosInput</label>
+        <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="48" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="48" bodyend="115"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a296c8316008f369488a514d61fef6088" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_cachedIdx</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1adcc6e72eaa819b6d0e4e846dff681796" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_deadband</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1aac4b12121b1c014962c7b41214ff4265" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_forceRead</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1ade50589de0b0f14d011291e7e586c876" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_lastReadMs</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a48d2582f77fe6e11afdcf4c7ff8ecb38" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_numPositions</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a8e7fefa8a3ef082d7f2e06d110e338d6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_pin</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a3ebc83a6e8849b4e85be1a6c5aa5121a" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>_posVals</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a0272491d406a85768a36940ea1458750" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>AnalogMultiPos</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1ae03d4d0a5037d6c74586aef3aceef3a2" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>AnalogMultiPos</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1abea4b6cb61409c93dbf54145bb56a758" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a3d37942061f4202b69553a1ec84961cd" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>DEFAULT_DEADBAND</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a1e53e05b23249ae3c8eda91c84e87ffe" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a6ac4fc6fd08fa209d889b93bc2387df4" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>isValid</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1ad32d74dbe25f0b9313c8341f9bd5d8a2" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>MultiPosInput</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>NO_POSITION</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1aafd102fc9ba5d0ce2dda27c4d5d97e04" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>POLL_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8252af59e9a4e0aca413594313c6ef98" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>position</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1ad3e9d3eb2039288db52fcde9bb08df1f" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>posValAt</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a46a460fcae3fa5ea5fb3dfa3d9bb9fe4" prot="protected" virt="virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>readRaw</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1af475a53a450e60e9345bac303c36fed6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogMultiPos</scope><name>resolve</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

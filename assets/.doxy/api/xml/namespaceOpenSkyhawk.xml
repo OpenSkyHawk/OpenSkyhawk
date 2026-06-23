@@ -3,6 +3,7 @@
   <compounddef id="namespaceOpenSkyhawk" kind="namespace" language="C++">
     <compoundname>OpenSkyhawk</compoundname>
     <innerclass refid="structOpenSkyhawk_1_1AccelPoint" prot="public">OpenSkyhawk::AccelPoint</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1AnalogMultiPos" prot="public">OpenSkyhawk::AnalogMultiPos</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1DrumDisplay" prot="public">OpenSkyhawk::DrumDisplay</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumFlag" prot="public">OpenSkyhawk::DrumFlag</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumGlyph" prot="public">OpenSkyhawk::DrumGlyph</innerclass>
@@ -309,6 +310,24 @@
         <inbodydescription>
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" line="97" column="19" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a3f7a386c767655207cbbc1ba71ef5c34" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::ANALOG_NC</definition>
+        <argsstring></argsstring>
+        <name>ANALOG_NC</name>
+        <qualifiedname>OpenSkyhawk::ANALOG_NC</qualifiedname>
+        <initializer>= <ref refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" kindref="member">MultiPosInput::NO_POSITION</ref></initializer>
+        <briefdescription>
+<para><computeroutput>posVals[]</computeroutput> sentinel: a position with no physical detent (no distinct voltage). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The uint16_t analog of <computeroutput><ref refid="classOpenSkyhawk_1_1SwitchMultiPos" kindref="compound">SwitchMultiPos</ref></computeroutput>&apos;s <computeroutput>PIN_NC</computeroutput> — same &quot;this position index has no physical
+input&quot; role, but a different sentinel because an analog ladder is an array of ADC <emphasis>values</emphasis> (uint16_t), not <computeroutput><ref refid="classPinRef" kindref="compound">PinRef</ref></computeroutput>s. Kept <computeroutput>== <ref refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" kindref="member">MultiPosInput::NO_POSITION</ref></computeroutput> (both 0xFFFF) so there is one sentinel value across the MULTIPOS family. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="25" column="27" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="25" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">

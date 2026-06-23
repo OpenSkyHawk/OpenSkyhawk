@@ -4052,6 +4052,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#variable-analog_nc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable ANALOG_NC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-ease" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4237,6 +4248,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>AnalogMultiPos</strong></a> <br><em>Resistor-ladder multi-position selector — one analog</em> <code>PinRef</code> <em>, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>DrumDisplay</strong></a> <br><em>Rolling-drum OLED readout. One instance == one OLED panel.</em></td>
 </tr>
 <tr>
@@ -4377,6 +4392,10 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-analog_nc"><strong>ANALOG_NC</strong></a>   = <code>[**MultiPosInput::NO\_POSITION**](classOpenSkyhawk_1_1MultiPosInput.md#variable-no_position)</code><br><code>posVals[]</code> <em>sentinel: a position with no physical detent (no distinct voltage).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">const float</td>
 <td style="text-align: left;"><a href="#variable-ease"><strong>EASE</strong></a>   = <code>0.30f</code><br></td>
 </tr>
@@ -4492,6 +4511,14 @@
 </code></pre>
 <hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-analog_nc">variable ANALOG_NC</h3>
+<p><code>posVals[]</code> <em>sentinel: a position with no physical detent (no distinct voltage).</em></p>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::ANALOG_NC;
+</code></pre>
+<p>The uint16_t analog of <code>SwitchMultiPos</code>'s <code>PIN_NC</code> — same "this position index has no physical
+input" role, but a different sentinel because an analog ladder is an array of ADC <em>values</em> (uint16_t), not <code>PinRef</code>s. Kept <code>==  MultiPosInput::NO_POSITION</code> (both 0xFFFF) so there is one sentinel value across the MULTIPOS family. </p>
+<hr>
+
 <h3 id="variable-ease">variable EASE</h3>
 <pre><code class="language-C++">const float OpenSkyhawk::EASE;
 </code></pre>

@@ -3,6 +3,7 @@
   <compounddef id="classOpenSkyhawk_1_1MultiPosInput" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>OpenSkyhawk::MultiPosInput</compoundname>
     <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1AnalogMultiPos" prot="public" virt="non-virtual">OpenSkyhawk::AnalogMultiPos</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1SwitchMultiPos" prot="public" virt="non-virtual">OpenSkyhawk::SwitchMultiPos</derivedcompoundref>
     <includes refid="MultiPosInput_8h" local="no">MultiPosInput.h</includes>
     <sectiondef kind="public-static-attrib">
@@ -239,6 +240,7 @@
         <argsstring>()=0</argsstring>
         <name>readRaw</name>
         <qualifiedname>OpenSkyhawk::MultiPosInput::readRaw</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1AnalogMultiPos_1a46a460fcae3fa5ea5fb3dfa3d9bb9fe4">readRaw</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1SwitchMultiPos_1a3fcd22d73936b7632c855b048383f224">readRaw</reimplementedby>
         <briefdescription>
 <para>Resolve the instantaneous position index, or NO_POSITION to hold the last. </para>
@@ -286,9 +288,15 @@
     <detaileddescription>
 <para>A subclass reports the instantaneous resolved position via <ref refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" kindref="member">readRaw()</ref>; this base debounces it (configurable window) and emits a CAN EVT only when the <emphasis>confirmed</emphasis> position changes. The emitted value is the absolute index, never a delta — a jump from any position to any other (even skipping intermediates) emits the new index directly; there is no ±1 or adjacency assumption.</para>
 <para><ref refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c" kindref="member">readRaw()</ref> returns NO_POSITION when nothing resolves (e.g. a non-shorting rotary mid-throw with no pin closed); the base then holds the last confirmed position — no spurious EVT.</para>
-<para>Subclasses: <ref refid="classOpenSkyhawk_1_1SwitchMultiPos" kindref="compound">SwitchMultiPos</ref> (one-hot pins), AnalogMultiPos (resistor ladder, #114). </para>
+<para>Subclasses: <ref refid="classOpenSkyhawk_1_1SwitchMultiPos" kindref="compound">SwitchMultiPos</ref> (one-hot pins), <ref refid="classOpenSkyhawk_1_1AnalogMultiPos" kindref="compound">AnalogMultiPos</ref> (resistor ladder, #114). </para>
     </detaileddescription>
     <inheritancegraph>
+      <node id="3">
+        <label>OpenSkyhawk::AnalogMultiPos</label>
+        <link refid="classOpenSkyhawk_1_1AnalogMultiPos"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
       <node id="2">
         <label>OpenSkyhawk::InputBase</label>
         <link refid="classOpenSkyhawk_1_1InputBase"/>
@@ -299,7 +307,7 @@
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="3">
+      <node id="4">
         <label>OpenSkyhawk::SwitchMultiPos</label>
         <link refid="classOpenSkyhawk_1_1SwitchMultiPos"/>
         <childnode refid="1" relation="public-inheritance">

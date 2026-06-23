@@ -30,6 +30,7 @@
 | Type | Name |
 | ---: | :--- |
 | struct | [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) <br>_One point on the acceleration curve (SwitecX25 form)._  |
+| class | [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) <br>_Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._ |
 | class | [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) <br>_Rolling-drum OLED readout. One instance == one OLED panel._  |
 | struct | [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) <br>_Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter._  |
 | struct | [**DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) <br>_A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc._  |
@@ -77,6 +78,7 @@
 
 | Type | Name |
 | ---: | :--- |
+|  constexpr uint16\_t | [**ANALOG\_NC**](#variable-analog_nc)   = `[**MultiPosInput::NO\_POSITION**](classOpenSkyhawk_1_1MultiPosInput.md#variable-no_position)`<br>`posVals[]` _sentinel: a position with no physical detent (no distinct voltage)._ |
 |  const float | [**EASE**](#variable-ease)   = `0.30f`<br> |
 |  const uint32\_t | [**FRAME\_MS**](#variable-frame_ms)   = `16`<br> |
 |  const uint8\_t | [**KIND\_DIGIT**](#variable-kind_digit)   = `0`<br> |
@@ -260,6 +262,25 @@ constexpr uint8_t OpenSkyhawk::kSwitecDefaultAccelN;
 <hr>
 ## Public Static Attributes Documentation
 
+
+
+
+### variable ANALOG\_NC 
+
+`posVals[]` _sentinel: a position with no physical detent (no distinct voltage)._
+```C++
+constexpr uint16_t OpenSkyhawk::ANALOG_NC;
+```
+
+
+
+The uint16\_t analog of `SwitchMultiPos`'s `PIN_NC` — same "this position index has no physical
+input" role, but a different sentinel because an analog ladder is an array of ADC _values_ (uint16\_t), not `PinRef`s. Kept `==  MultiPosInput::NO_POSITION` (both 0xFFFF) so there is one sentinel value across the MULTIPOS family. 
+
+
+        
+
+<hr>
 
 
 

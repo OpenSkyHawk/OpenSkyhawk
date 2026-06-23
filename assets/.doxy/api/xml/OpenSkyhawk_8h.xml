@@ -9,14 +9,15 @@
     <includes refid="NeedleGauge_8h" local="no">Outputs/NeedleGauge/NeedleGauge.h</includes>
     <includes refid="Switch2Pos_8h" local="no">Inputs/Switch2Pos/Switch2Pos.h</includes>
     <includes refid="SwitchMultiPos_8h" local="no">Inputs/SwitchMultiPos/SwitchMultiPos.h</includes>
+    <includes refid="AnalogMultiPos_8h" local="no">Inputs/AnalogMultiPos/AnalogMultiPos.h</includes>
     <includes refid="A4EC__CmdIds_8h" local="no">A4EC_CmdIds.h</includes>
     <includes refid="A4EC__OutputIds_8h" local="no">A4EC_OutputIds.h</includes>
     <incdepgraph>
-      <node id="21">
+      <node id="22">
         <label>A4EC_CmdIds.h</label>
         <link refid="A4EC__CmdIds_8h"/>
       </node>
-      <node id="22">
+      <node id="23">
         <label>A4EC_OutputIds.h</label>
         <link refid="A4EC__OutputIds_8h"/>
       </node>
@@ -50,6 +51,14 @@
         <childnode refid="5" relation="include">
         </childnode>
         <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>Inputs/AnalogMultiPos/AnalogMultiPos.h</label>
+        <link refid="AnalogMultiPos_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
         </childnode>
       </node>
       <node id="20">
@@ -92,6 +101,8 @@
         <childnode refid="21" relation="include">
         </childnode>
         <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
         </childnode>
       </node>
       <node id="16">
@@ -176,8 +187,9 @@
 <codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="NeedleGauge_8h" kindref="compound">Outputs/NeedleGauge/NeedleGauge.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch2Pos_8h" kindref="compound">Inputs/Switch2Pos/Switch2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SwitchMultiPos_8h" kindref="compound">Inputs/SwitchMultiPos/SwitchMultiPos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AnalogMultiPos_8h" kindref="compound">Inputs/AnalogMultiPos/AnalogMultiPos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/OpenSkyhawk.h"/>
   </compounddef>

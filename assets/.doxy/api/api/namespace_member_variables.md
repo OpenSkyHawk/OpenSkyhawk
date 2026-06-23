@@ -8,6 +8,7 @@
 * **ACCEL\_ENCODER** ([**InputType**](namespaceInputType.md))
 * **ACTION** ([**InputType**](namespaceInputType.md))
 * **ANALOG** ([**InputType**](namespaceInputType.md))
+* **ANALOG\_NC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## d

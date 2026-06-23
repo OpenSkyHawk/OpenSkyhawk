@@ -17,7 +17,7 @@ _Base for the MULTIPOS input family — selectors that emit an absolute position
 Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
-Inherited by the following classes: [OpenSkyhawk::SwitchMultiPos](classOpenSkyhawk_1_1SwitchMultiPos.md)
+Inherited by the following classes: [OpenSkyhawk::AnalogMultiPos](classOpenSkyhawk_1_1AnalogMultiPos.md),  [OpenSkyhawk::SwitchMultiPos](classOpenSkyhawk_1_1SwitchMultiPos.md)
 
 
 
@@ -183,7 +183,7 @@ A subclass reports the instantaneous resolved position via [**readRaw()**](class
 [**readRaw()**](classOpenSkyhawk_1_1MultiPosInput.md#function-readraw) returns NO\_POSITION when nothing resolves (e.g. a non-shorting rotary mid-throw with no pin closed); the base then holds the last confirmed position — no spurious EVT.
 
 
-Subclasses: [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md) (one-hot pins), AnalogMultiPos (resistor ladder, #114). 
+Subclasses: [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md) (one-hot pins), [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) (resistor ladder, #114). 
 
 
     

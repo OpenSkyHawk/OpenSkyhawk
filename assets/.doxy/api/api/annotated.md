@@ -12,6 +12,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**InputType**](namespaceInputType.md)     
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk.md)     
     * **struct** [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) _One point on the acceleration curve (SwitecX25 form)._     
+    * **class** [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) _Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._    
     * **class** [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._     
     * **struct** [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) _Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter._     
     * **struct** [**DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) _A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc._     
@@ -42,6 +43,6 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d8.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d27.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d31.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d29.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d33.md)     
 

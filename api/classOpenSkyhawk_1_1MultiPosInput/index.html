@@ -4144,7 +4144,7 @@
 <li><code>#include &lt;MultiPosInput.h&gt;</code></li>
 </ul>
 <p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
-<p>Inherited by the following classes: <a href="../classOpenSkyhawk_1_1SwitchMultiPos/">OpenSkyhawk::SwitchMultiPos</a></p>
+<p>Inherited by the following classes: <a href="../classOpenSkyhawk_1_1AnalogMultiPos/">OpenSkyhawk::AnalogMultiPos</a>,  <a href="../classOpenSkyhawk_1_1SwitchMultiPos/">OpenSkyhawk::SwitchMultiPos</a></p>
 <h2 id="public-static-attributes">Public Static Attributes</h2>
 <table>
 <thead>
@@ -4284,7 +4284,7 @@
 <h2 id="detailed-description">Detailed Description</h2>
 <p>A subclass reports the instantaneous resolved position via <a href="./#function-readraw"><strong>readRaw()</strong></a>; this base debounces it (configurable window) and emits a CAN EVT only when the <em>confirmed</em> position changes. The emitted value is the absolute index, never a delta — a jump from any position to any other (even skipping intermediates) emits the new index directly; there is no ±1 or adjacency assumption.</p>
 <p><a href="./#function-readraw"><strong>readRaw()</strong></a> returns NO_POSITION when nothing resolves (e.g. a non-shorting rotary mid-throw with no pin closed); the base then holds the last confirmed position — no spurious EVT.</p>
-<p>Subclasses: <a href="../classOpenSkyhawk_1_1SwitchMultiPos/"><strong>SwitchMultiPos</strong></a> (one-hot pins), AnalogMultiPos (resistor ladder, #114). </p>
+<p>Subclasses: <a href="../classOpenSkyhawk_1_1SwitchMultiPos/"><strong>SwitchMultiPos</strong></a> (one-hot pins), <a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>AnalogMultiPos</strong></a> (resistor ladder, #114). </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-no_position">variable NO_POSITION</h3>
 <p><a href="./#function-readraw"><em><strong>readRaw()</strong></em></a> <em>sentinel: "nothing active right now — hold the last position".</em></p>

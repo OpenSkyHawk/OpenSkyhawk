@@ -7,6 +7,8 @@
 * [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**ADS1115**](classADS1115.md)
+* [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## b
