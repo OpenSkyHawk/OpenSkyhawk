@@ -162,8 +162,10 @@ OpenSkyhawk::Switch2Pos ejSafe   (DCSIN_SEAT_EJECT_SAFE, PinRef(expander1, PORT_
 3-position switch (ON-OFF-ON or ON-ON). VALUE: 0 = pin A active, 1 = neither (centre),
 2 = pin B active. Debounce: 20 ms per state.
 
-If both pins read active simultaneously (hardware fault or bounce during throw), reading is
-invalid and last valid state is retained.
+If both pins read active simultaneously (hardware fault or bounce during throw — mechanically
+impossible on a 3-position switch), **pin A takes priority** and VALUE 0 is reported, matching
+DcsBios `Switch3Pos` (`readState` checks pin A first). The 20 ms debounce absorbs the transient
+regardless.
 
 ```cpp
 OpenSkyhawk::Switch3Pos fuelSelector(DCSIN_FUEL_SEL,
