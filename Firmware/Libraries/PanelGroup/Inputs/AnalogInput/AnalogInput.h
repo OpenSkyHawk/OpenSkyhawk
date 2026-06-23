@@ -40,6 +40,7 @@ class AnalogInput : public InputBase {
 public:
     static constexpr uint16_t DEFAULT_HYSTERESIS = 128;  ///< counts on the 16-bit output.
     static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;    ///< EWMA α = 1/2^3 = 1/8.
+    static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;   ///< cap: scaled<<shift must fit int32 at full scale.
     static constexpr uint16_t POLL_MS            = 8;    ///< min interval between ADC reads (ms).
 
     /**
@@ -51,7 +52,9 @@ public:
      * @param minRaw      raw ADC value mapping to 0 (default 0). Readings below are clamped.
      * @param maxRaw      raw ADC value mapping to 65535 (default 65535). Above are clamped.
      * @param hysteresis  output counts of movement required before a new value is emitted.
-     * @param ewmaShift   EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8).
+     * @param ewmaShift   EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8). Capped to
+     *                    MAX_EWMA_SHIFT (15) — beyond that the int32 accumulator (scaled << shift)
+     *                    would overflow at full scale.
      */
     AnalogInput(uint16_t controlId, PinRef pin, bool reverse = false,
                 uint16_t minRaw = 0, uint16_t maxRaw = 65535,

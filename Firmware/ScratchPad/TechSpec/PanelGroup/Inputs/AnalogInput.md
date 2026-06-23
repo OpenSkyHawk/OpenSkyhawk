@@ -51,6 +51,7 @@ CAN runs in **normal mode** so the node ACKs the PanelBridge. No jumpers or pot 
 | `test_ewma` | one EWMA step lands ≈ 1/8 toward the target; many steps converge |
 | `test_near_rail` | a reading moving into a rail band is emitted (endpoints always reached) |
 | `test_force_report` | boot read emits the current value once; repeats on a second call |
+| `test_shift_bounds` | `ewmaShift` capped at 15 — a full-scale seed does not overflow the int32 acc |
 
 ---
 
@@ -152,7 +153,9 @@ and delegates to `sample()`.
 dead-band" with no smoothing. This implementation instead ports the **DcsBios `PotentiometerEWMA`**
 recipe (EWMA + hysteresis + near-rail), because the ×16 STM32 scaling amplifies ADC noise more than
 DcsBios's 10-bit path; the filter parameters are configurable (defaulting to DcsBios-equivalent
-values). `FirmwarePlan/05` should be updated to this approach.
+values). `FirmwarePlan/05` is updated to this approach in this PR. `ewmaShift` is capped at
+`MAX_EWMA_SHIFT` (15) — beyond that the int32 accumulator `scaled << ewmaShift` overflows at full
+scale; the constructor clamps it (covered by `test_shift_bounds`).
 
 ### EVT transmission
 
