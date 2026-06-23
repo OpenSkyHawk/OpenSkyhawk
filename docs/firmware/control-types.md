@@ -7,9 +7,9 @@ not yet implemented**.
 
 !!! warning "Most control types are not implemented yet"
     Implemented today: **LED**, **DrumDisplay**, and **NeedleGauge** (outputs) and **Switch2Pos** +
-    **SwitchMultiPos** + **AnalogMultiPos** (inputs), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are
+    **SwitchMultiPos** + **AnalogMultiPos** + **Switch3Pos** (inputs), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are
     hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
-    NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos and AnalogMultiPos are hardware-verified.
+    NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos, AnalogMultiPos, and Switch3Pos are hardware-verified.
     Everything marked *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it
     to compile today.
 
@@ -44,7 +44,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | Class | Status | What it is |
 |-------|--------|------------|
 | `Switch2Pos` | **Implemented** | Debounced 2-position switch (20 ms). value 0/1 |
-| `Switch3Pos` | Phase 4 — not started | 3-position (ON-OFF-ON). value 0/1/2 |
+| `Switch3Pos` | **Implemented** (hardware-verified) | 3-position (ON-OFF-ON). value 0/1/2 |
 | `SwitchMultiPos` | **Implemented** (hardware-verified) | N-pin rotary, one active. value = index |
 | `AnalogMultiPos` | **Implemented** (hardware-verified) | Resistor-ladder selector on one analog pin |
 | `ActionButton` | Phase 4 — not started | Momentary; fires on press only |
