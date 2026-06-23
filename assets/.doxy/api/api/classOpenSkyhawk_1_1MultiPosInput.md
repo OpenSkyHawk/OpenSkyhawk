@@ -17,7 +17,7 @@ _Base for the MULTIPOS input family — selectors that emit an absolute position
 Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
-Inherited by the following classes: [OpenSkyhawk::AnalogMultiPos](classOpenSkyhawk_1_1AnalogMultiPos.md),  [OpenSkyhawk::SwitchMultiPos](classOpenSkyhawk_1_1SwitchMultiPos.md)
+Inherited by the following classes: [OpenSkyhawk::AnalogMultiPos](classOpenSkyhawk_1_1AnalogMultiPos.md),  [OpenSkyhawk::Switch3Pos](classOpenSkyhawk_1_1Switch3Pos.md),  [OpenSkyhawk::SwitchMultiPos](classOpenSkyhawk_1_1SwitchMultiPos.md)
 
 
 

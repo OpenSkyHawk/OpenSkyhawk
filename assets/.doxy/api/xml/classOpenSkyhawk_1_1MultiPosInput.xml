@@ -4,6 +4,7 @@
     <compoundname>OpenSkyhawk::MultiPosInput</compoundname>
     <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1AnalogMultiPos" prot="public" virt="non-virtual">OpenSkyhawk::AnalogMultiPos</derivedcompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1Switch3Pos" prot="public" virt="non-virtual">OpenSkyhawk::Switch3Pos</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1SwitchMultiPos" prot="public" virt="non-virtual">OpenSkyhawk::SwitchMultiPos</derivedcompoundref>
     <includes refid="MultiPosInput_8h" local="no">MultiPosInput.h</includes>
     <sectiondef kind="public-static-attrib">
@@ -241,6 +242,7 @@
         <name>readRaw</name>
         <qualifiedname>OpenSkyhawk::MultiPosInput::readRaw</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogMultiPos_1a46a460fcae3fa5ea5fb3dfa3d9bb9fe4">readRaw</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1Switch3Pos_1ab21780e7a61a1d79d6238b5d17d3b5ec">readRaw</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1SwitchMultiPos_1a3fcd22d73936b7632c855b048383f224">readRaw</reimplementedby>
         <briefdescription>
 <para>Resolve the instantaneous position index, or NO_POSITION to hold the last. </para>
@@ -308,6 +310,12 @@
         </childnode>
       </node>
       <node id="4">
+        <label>OpenSkyhawk::Switch3Pos</label>
+        <link refid="classOpenSkyhawk_1_1Switch3Pos"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
         <label>OpenSkyhawk::SwitchMultiPos</label>
         <link refid="classOpenSkyhawk_1_1SwitchMultiPos"/>
         <childnode refid="1" relation="public-inheritance">

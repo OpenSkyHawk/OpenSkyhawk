@@ -101,6 +101,8 @@
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 

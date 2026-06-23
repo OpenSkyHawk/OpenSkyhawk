@@ -43,6 +43,9 @@ Here is a list of all files with brief descriptions:
                 * **dir** [**Switch2Pos**](dir_498c816b3a939baf976ad59345a9b3b2.md)     
                     * **file** [**Switch2Pos.cpp**](Switch2Pos_8cpp.md)     
                     * **file** [**Switch2Pos.h**](Switch2Pos_8h.md) _Debounced 2-position switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+                * **dir** [**Switch3Pos**](dir_344ec6ab1ff9af7411f07538fed6b206.md)     
+                    * **file** [**Switch3Pos.cpp**](Switch3Pos_8cpp.md)     
+                    * **file** [**Switch3Pos.h**](Switch3Pos_8h.md) _Three-position (ON-OFF-ON) switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
                 * **dir** [**SwitchMultiPos**](dir_4dc253f801dfeffbf99c560a0635ade6.md)     
                     * **file** [**SwitchMultiPos.cpp**](SwitchMultiPos_8cpp.md)     
                     * **file** [**SwitchMultiPos.h**](SwitchMultiPos_8h.md) _N-pin rotary selector switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    

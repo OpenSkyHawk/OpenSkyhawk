@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d29/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/Switch3Pos_8cpp_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp} - OpenSkyhawk</title>
+        <title>File Switch3Pos.cpp - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp" class="md-skip">
+        <a href="#file-switch3poscpp" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+              File Switch3Pos.cpp
             
           </span>
         </div>
@@ -3885,10 +3885,40 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp">Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a></p>
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp</code></p>
+<h1 id="file-switch3poscpp">File Switch3Pos.cpp</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_2e07d2b82251b5bb8c3d5a17dd64c04b/"><strong>Inputs</strong></a> <strong>&gt;</strong> <a href="../dir_344ec6ab1ff9af7411f07538fed6b206/"><strong>Switch3Pos</strong></a> <strong>&gt;</strong> <a href="../Switch3Pos_8cpp/"><strong>Switch3Pos.cpp</strong></a></p>
+<p><a href="../Switch3Pos_8cpp/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#ifdef ARDUINO_ARCH_STM32
+
+#include &quot;Switch3Pos.h&quot;
+
+namespace OpenSkyhawk {
+
+Switch3Pos::Switch3Pos(uint16_t controlId, PinRef pinA, PinRef pinB, bool reverse,
+                       uint16_t debounceMs)
+    : MultiPosInput(controlId, 3, debounceMs),
+      _pinA(pinA),
+      _pinB(pinB),
+      _reverse(reverse) {}
+
+void Switch3Pos::configure() {
+    _pinA.configureAsInput();
+    _pinB.configureAsInput();
+}
+
+uint16_t Switch3Pos::readRaw() {
+    bool a = _reverse ? _pinA.read() : !_pinA.read();
+    bool b = _reverse ? _pinB.read() : !_pinB.read();
+    if (a) return 0;   // pin A priority — matches DcsBios both-active behaviour
+    if (b) return 2;
+    return 1;          // centre — a real position, never NO_POSITION
+}
+
+}  // namespace OpenSkyhawk
+
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1Switch3Pos" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::Switch3Pos</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1MultiPosInput" prot="public" virt="non-virtual">OpenSkyhawk::MultiPosInput</basecompoundref>
+    <includes refid="Switch3Pos_8h" local="no">Switch3Pos.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch3Pos_1a68f1823d004b399fa249ba74274efbdb" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::Switch3Pos::DEBOUNCE_MS</definition>
+        <argsstring></argsstring>
+        <name>DEBOUNCE_MS</name>
+        <qualifiedname>OpenSkyhawk::Switch3Pos::DEBOUNCE_MS</qualifiedname>
+        <initializer>= 20</initializer>
+        <briefdescription>
+<para>index stability window (ms). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="42" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch3Pos_1a7087285c519cd9d0dbf62f05ffa072f5" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::Switch3Pos::_pinA</definition>
+        <argsstring></argsstring>
+        <name>_pinA</name>
+        <qualifiedname>OpenSkyhawk::Switch3Pos::_pinA</qualifiedname>
+        <briefdescription>
+<para>outer throw → position 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="71" column="12" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch3Pos_1a2039601ea8a08386ae8b76c316a5ea60" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::Switch3Pos::_pinB</definition>
+        <argsstring></argsstring>
+        <name>_pinB</name>
+        <qualifiedname>OpenSkyhawk::Switch3Pos::_pinB</qualifiedname>
+        <briefdescription>
+<para>outer throw → position 2. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="72" column="12" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch3Pos_1a4517a0d31e2e517aa0217f1699706ac6" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::Switch3Pos::_reverse</definition>
+        <argsstring></argsstring>
+        <name>_reverse</name>
+        <qualifiedname>OpenSkyhawk::Switch3Pos::_reverse</qualifiedname>
+        <briefdescription>
+<para>true = active-HIGH. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="73" column="12" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Switch3Pos_1a922b232618ad298ef9b28b7050f859a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::Switch3Pos::Switch3Pos</definition>
+        <argsstring>(uint16_t controlId, PinRef pinA, PinRef pinB, bool reverse=false, uint16_t debounceMs=DEBOUNCE_MS)</argsstring>
+        <name>Switch3Pos</name>
+        <qualifiedname>OpenSkyhawk::Switch3Pos::Switch3Pos</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinA</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinB</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>reverse</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>debounceMs</declname>
+          <defval><ref refid="classOpenSkyhawk_1_1Switch3Pos_1a68f1823d004b399fa249ba74274efbdb" kindref="member">DEBOUNCE_MS</ref></defval>
+        </param>
+        <briefdescription>
+<para>Construct a 3-position switch. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>outer throw → position 0 (active-LOW unless <computeroutput>reverse</computeroutput>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>outer throw → position 2. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>false (default): active pin reads LOW. true: active pin reads HIGH. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>debounceMs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index stability window before a change is confirmed (default 20 ms). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="53" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.cpp" bodystart="12" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Switch3Pos_1a841872d6f33cf299101cfe37e7c18310" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::Switch3Pos::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::Switch3Pos::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c">configure</reimplements>
+        <briefdescription>
+<para>Configure both pins as inputs. Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Does not enable internal pull-ups; board wiring supplies input bias.</para>
+<para><simplesect kind="note"><para>Must not run from the constructor — MCP23017 register writes require the expander to be initialised first. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="64" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.cpp" bodystart="19" bodyend="22"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Switch3Pos_1ab21780e7a61a1d79d6238b5d17d3b5ec" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::Switch3Pos::readRaw</definition>
+        <argsstring>() override</argsstring>
+        <name>readRaw</name>
+        <qualifiedname>OpenSkyhawk::Switch3Pos::readRaw</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1MultiPosInput_1ad83753d20d25eb7ae33fc8d911c5ea0c">readRaw</reimplements>
+        <briefdescription>
+<para>pin A → 0, pin B → 2, neither → 1 (centre). pin A wins if both read active. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="68" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.cpp" bodystart="24" bodyend="30"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Three-position switch (ON-OFF-ON / spring-centred) on two pins. Emits 0 / 1 / 2 over CAN (MULTIPOS dispatch). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A MULTIPOS-family input (N = 3) — self-registers via <ref refid="classOpenSkyhawk_1_1MultiPosInput" kindref="compound">MultiPosInput</ref>, which owns the debounce / emit-on-change / forceReport contract. This class supplies only the read.</para>
+<para>Two pins, one per outer throw; the centre needs no pin of its own:<itemizedlist>
+<listitem><para>pin A active → position 0</para>
+</listitem><listitem><para>pin B active → position 2</para>
+</listitem><listitem><para>neither → position 1 (centre — a real, emitted position)</para>
+</listitem></itemizedlist>
+</para>
+<para>Mirrors <ref refid="namespaceDcsBios" kindref="compound">DcsBios</ref> <computeroutput><ref refid="classOpenSkyhawk_1_1Switch3Pos" kindref="compound">Switch3Pos</ref></computeroutput>: if both pins read active (impossible mechanically — a bounce during a throw), pin A wins (position 0); the debounce absorbs the transient either way. Because the centre is resolved directly, <ref refid="classOpenSkyhawk_1_1Switch3Pos_1ab21780e7a61a1d79d6238b5d17d3b5ec" kindref="member">readRaw()</ref> never returns NO_POSITION — the base&apos;s hold-last path is unused.</para>
+<para>One-hot read (reverse = false, default): the active pin reads LOW (closed to GND). reverse = true inverts it (active pin reads HIGH). <ref refid="classOpenSkyhawk_1_1Switch3Pos_1a841872d6f33cf299101cfe37e7c18310" kindref="member">configure()</ref> does not enable internal pull-ups; the schematic supplies input bias (typically 10 kΩ to +3.3V, switch to GND).</para>
+<para>Used by: AN/ASN-41 LAT/LON slew (spring-centred momentary L / centre / R). </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::MultiPosInput</label>
+        <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::Switch3Pos</label>
+        <link refid="classOpenSkyhawk_1_1Switch3Pos"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::MultiPosInput</label>
+        <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::Switch3Pos</label>
+        <link refid="classOpenSkyhawk_1_1Switch3Pos"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" line="40" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h" bodystart="40" bodyend="74"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a89c35c04accd28662c3c2686cb24fe09" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a48d2582f77fe6e11afdcf4c7ff8ecb38" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>_numPositions</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch3Pos_1a7087285c519cd9d0dbf62f05ffa072f5" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>_pinA</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch3Pos_1a2039601ea8a08386ae8b76c316a5ea60" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>_pinB</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch3Pos_1a4517a0d31e2e517aa0217f1699706ac6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>_reverse</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch3Pos_1a841872d6f33cf299101cfe37e7c18310" prot="public" virt="virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch3Pos_1a68f1823d004b399fa249ba74274efbdb" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>DEBOUNCE_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610" prot="public" virt="virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1ad32d74dbe25f0b9313c8341f9bd5d8a2" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>MultiPosInput</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8daba24e79c03f8a83c1043968fc9f2a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>NO_POSITION</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262" prot="public" virt="virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1MultiPosInput_1a8252af59e9a4e0aca413594313c6ef98" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>position</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch3Pos_1ab21780e7a61a1d79d6238b5d17d3b5ec" prot="protected" virt="virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>readRaw</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch3Pos_1a922b232618ad298ef9b28b7050f859a5" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch3Pos</scope><name>Switch3Pos</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
