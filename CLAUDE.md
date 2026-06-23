@@ -82,6 +82,7 @@ The weekly docs-drift review (`tools/docs-drift/REVIEW.md`) opens/updates a sing
 ## Git
 
 - Remote: `git@github.com:OpenSkyHawk/OpenSkyhawk.git`
+- **Conventional Commits** (`type(scope): summary`) for commit messages **and PR titles** — the repo squash-merges, so the PR title becomes the commit on `main` that drives version automation. Types: `feat` / `fix` / `chore` / `test` / `docs` / `refactor` / `perf` / `build` / `ci`; a breaking change uses `type!: …` or a `BREAKING CHANGE:` footer.
 - Do not add `Co-Authored-By:` trailers to commits
 - Do not add Claude Code / AI attribution signatures (`🤖 Generated with…`, `🤖 Addressed by…`) to commits, PR descriptions, or issue/PR comments
 - STLs, Gerbers, and other generated outputs are gitignored — commit sources only
