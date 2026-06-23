@@ -167,9 +167,17 @@ static void dispatchDcsRel(uint16_t controlId, uint16_t value) {
     sendDcs(controlId, buf);
 }
 
-// DIR frame (canIdEvtDir): value is +-1 -> fixed_step (INC / DEC).
+// DIR frame (canIdEvtDir): value is strictly +-1 -> fixed_step (INC / DEC). Anything else is a
+// malformed slot -> drop + log, so a corrupt value never turns into a real cockpit step.
 static void dispatchDcsDir(uint16_t controlId, uint16_t value) {
-    sendDcs(controlId, (int16_t)value > 0 ? "INC" : "DEC");
+    const int16_t v = (int16_t)value;
+    if      (v ==  1) sendDcs(controlId, "INC");
+    else if (v == -1) sendDcs(controlId, "DEC");
+    else if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] bad dir ctrl=0x")); d.print(controlId, HEX);
+        d.print(F(" val=")); d.println(v);
+    }
 }
 
 static void dispatchEvtSlot(uint16_t controlId, uint16_t value) {

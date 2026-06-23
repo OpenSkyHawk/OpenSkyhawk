@@ -51,6 +51,7 @@ static const Case CASES[] = {
     { REL, DCSIN_ASN41_MAGVAR_KNB, (uint16_t)(int16_t)-3200, "MAGVAR_KNB REL -3200 -> \"-3200\"", true  },
     { DIR, DCSIN_ARC51_FREQ_10MHZ, (uint16_t)1,              "FREQ_10MHZ DIR +1 -> \"INC\"",      true  },
     { DIR, DCSIN_ARC51_FREQ_10MHZ, (uint16_t)(int16_t)-1,    "FREQ_10MHZ DIR -1 -> \"DEC\"",      true  },
+    { DIR, DCSIN_ARC51_FREQ_10MHZ, (uint16_t)2,              "FREQ_10MHZ DIR +2 (malformed,drop)",false },
     { ABS, 0x8700,                 0,                        "0x8700 (drop)",                     false },
     { ABS, 0xFFFF,                 0,                        "0xFFFF (drop)",                     false },
 };
