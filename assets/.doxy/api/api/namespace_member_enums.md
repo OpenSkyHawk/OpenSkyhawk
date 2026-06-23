@@ -14,6 +14,12 @@
 * **DrumScroll** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
+## e
+
+* **EncoderMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **EncoderStepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## h
 
 * **HomeMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -30,15 +36,9 @@
 * **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d39.md))
 
 
-## r
-
-* **RotaryMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
-
-
 ## s
 
 * **StepPattern** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
-* **StepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 

@@ -65,9 +65,9 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="108" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="108" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a95cb1bbb905e95b51ce30ed2e560b02c" prot="private" static="no" mutable="no">
-        <type><ref refid="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13" kindref="member">RotaryMode</ref></type>
-        <definition>RotaryMode OpenSkyhawk::RotaryEncoder::_mode</definition>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a53a0bc196f416ce438369fd2e73541df" prot="private" static="no" mutable="no">
+        <type><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6" kindref="member">EncoderMode</ref></type>
+        <definition>EncoderMode OpenSkyhawk::RotaryEncoder::_mode</definition>
         <argsstring></argsstring>
         <name>_mode</name>
         <qualifiedname>OpenSkyhawk::RotaryEncoder::_mode</qualifiedname>
@@ -77,7 +77,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="109" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="109" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="109" column="17" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="109" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a0e1e8b0621274d1646a21758e54a7e42" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -155,10 +155,10 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
-      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a67fad96aa0cb3d11f07de3813fe7e0e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a375402a3323aa232e3085649c0e6a106" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>OpenSkyhawk::RotaryEncoder::RotaryEncoder</definition>
-        <argsstring>(uint16_t controlId, PinRef pinA, PinRef pinB, StepsPerDetent stepsPerDetent=ONE_STEP_PER_DETENT, RotaryMode mode=REL, int16_t step=DEFAULT_STEP)</argsstring>
+        <argsstring>(uint16_t controlId, PinRef pinA, PinRef pinB, EncoderStepsPerDetent stepsPerDetent=EncoderStepsPerDetent::One, EncoderMode mode=EncoderMode::Rel, int16_t step=DEFAULT_STEP)</argsstring>
         <name>RotaryEncoder</name>
         <qualifiedname>OpenSkyhawk::RotaryEncoder::RotaryEncoder</qualifiedname>
         <param>
@@ -174,14 +174,14 @@
           <declname>pinB</declname>
         </param>
         <param>
-          <type><ref refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2" kindref="member">StepsPerDetent</ref></type>
+          <type><ref refid="namespaceOpenSkyhawk_1ae108c4313ff994c4cc46408adea1ef8b" kindref="member">EncoderStepsPerDetent</ref></type>
           <declname>stepsPerDetent</declname>
-          <defval><ref refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2a412566cd655b207554c08bf5e1aacaa3" kindref="member">ONE_STEP_PER_DETENT</ref></defval>
+          <defval><ref refid="namespaceOpenSkyhawk_1ae108c4313ff994c4cc46408adea1ef8ba06c2cea18679d64399783748fa367bdd" kindref="member">EncoderStepsPerDetent::One</ref></defval>
         </param>
         <param>
-          <type><ref refid="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13" kindref="member">RotaryMode</ref></type>
+          <type><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6" kindref="member">EncoderMode</ref></type>
           <declname>mode</declname>
-          <defval><ref refid="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13aa0dbd22abaaf4b7dc114db171111fb39" kindref="member">REL</ref></defval>
+          <defval><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6aeba991d56b1be0b940d722211bab87bc" kindref="member">EncoderMode::Rel</ref></defval>
         </param>
         <param>
           <type>int16_t</type>
@@ -221,7 +221,7 @@
 <parametername>stepsPerDetent</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>quadrature transitions per emitted click (default ONE; match the encoder). </para>
+<para>quadrature transitions per emitted click (default One; match the encoder). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -229,7 +229,7 @@
 <parametername>mode</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>REL (variable_step, ±step) or DIR (fixed_step, ±1). Default REL. </para>
+<para><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6aeba991d56b1be0b940d722211bab87bc" kindref="member">EncoderMode::Rel</ref> (variable_step, ±step) or <ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6a3c4e6dbf3e1df93a734d9959bac9ee94" kindref="member">Dir</ref> (fixed_step, ±1). Default Rel. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -358,7 +358,7 @@
     </briefdescription>
     <detaileddescription>
 <para>A <emphasis>relative</emphasis> control — it reports motion, not an absolute position. Ports <ref refid="namespaceDcsBios" kindref="compound">DcsBios</ref> <computeroutput><ref refid="classOpenSkyhawk_1_1RotaryEncoder" kindref="compound">RotaryEncoder</ref></computeroutput>: each poll reads the 2-bit Gray state <computeroutput>(A&lt;&lt;1)|B</computeroutput>, a transition table accumulates a signed delta, and when <computeroutput>|delta| &gt;= stepsPerDetent</computeroutput> one detent fires (CW positive / CCW negative) and the delta is reduced by one detent. <computeroutput>stepsPerDetent</computeroutput> sets how many quadrature transitions make one emitted click — set it to the encoder&apos;s transitions-per-detent so one physical click = one EVT.</para>
-<para>Two modes, chosen at construction (see RotaryMode):<itemizedlist>
+<para>Two modes, chosen at construction (see EncoderMode):<itemizedlist>
 <listitem><para><bold>REL</bold> (variable_step knob, e.g. ASN-41 nav): emits <computeroutput>±step</computeroutput> on <computeroutput>canIdEvtRel</computeroutput>; the bridge sends <computeroutput>%+d</computeroutput> (e.g. <computeroutput>&quot;+3200&quot;</computeroutput>). <computeroutput>step</computeroutput> is build-side feel (default 3200 ≈ DCS suggested_step, ~20 detents per full throw); lower it for a finer knob. The magnitude lives here on the node, so retuning needs only a node reflash — never a bridge rebuild.</para>
 </listitem><listitem><para><bold>DIR</bold> (fixed_step selector with no indicator, e.g. ARC-51 freq): emits <computeroutput>±1</computeroutput> on <computeroutput>canIdEvtDir</computeroutput>; the bridge sends <computeroutput>INC</computeroutput>/<computeroutput>DEC</computeroutput>. Stateless — DCS owns the position and clamps at the band edges.</para>
 </listitem></itemizedlist>
@@ -396,7 +396,7 @@
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_delta</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_initialized</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_lastState</name></member>
-      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a95cb1bbb905e95b51ce30ed2e560b02c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_mode</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a53a0bc196f416ce438369fd2e73541df" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_mode</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pinA</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pinB</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a0e1e8b0621274d1646a21758e54a7e42" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_step</name></member>
@@ -411,7 +411,7 @@
       <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>next</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>poll</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>readState</name></member>
-      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a67fad96aa0cb3d11f07de3813fe7e0e0" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>RotaryEncoder</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a375402a3323aa232e3085649c0e6a106" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>RotaryEncoder</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

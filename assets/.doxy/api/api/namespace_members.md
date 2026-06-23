@@ -33,6 +33,8 @@
 ## e
 
 * **EASE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **EncoderMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **EncoderStepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## f
@@ -104,7 +106,6 @@
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
-* **RotaryMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **readCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
 * **readLivePin** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerADC** ([**PanelGroup**](namespacePanelGroup.md))
@@ -120,7 +121,6 @@
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **StepPattern** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
-* **StepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
 * **setLinkActive** ([**STM32Board**](namespaceSTM32Board.md))

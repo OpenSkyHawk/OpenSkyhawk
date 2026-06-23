@@ -3896,16 +3896,16 @@
 
 namespace OpenSkyhawk {
 
-enum StepsPerDetent : uint8_t {
-    ONE_STEP_PER_DETENT    = 1,
-    TWO_STEPS_PER_DETENT   = 2,
-    FOUR_STEPS_PER_DETENT  = 4,
-    EIGHT_STEPS_PER_DETENT = 8,
+enum class EncoderStepsPerDetent : uint8_t {
+    One   = 1,
+    Two   = 2,
+    Four  = 4,
+    Eight = 8,
 };
 
-enum RotaryMode : uint8_t {
-    REL = 0,  
-    DIR = 1,  
+enum class EncoderMode : uint8_t {
+    Rel,  
+    Dir,  
 };
 
 class RotaryEncoder : public InputBase {
@@ -3913,8 +3913,8 @@ public:
     static constexpr int16_t DEFAULT_STEP = 3200;  
 
     RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                  StepsPerDetent stepsPerDetent = ONE_STEP_PER_DETENT,
-                  RotaryMode mode = REL, int16_t step = DEFAULT_STEP);
+                  EncoderStepsPerDetent stepsPerDetent = EncoderStepsPerDetent::One,
+                  EncoderMode mode = EncoderMode::Rel, int16_t step = DEFAULT_STEP);
 
     void poll() override;
 
@@ -3940,7 +3940,7 @@ private:
     uint16_t   _controlId;
     PinRef     _pinA;
     PinRef     _pinB;
-    RotaryMode _mode;
+    EncoderMode _mode;
     int16_t    _step;        
     uint8_t    _stepsPerDetent;
     uint8_t    _lastState;   

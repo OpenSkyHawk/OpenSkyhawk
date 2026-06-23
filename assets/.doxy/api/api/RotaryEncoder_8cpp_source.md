@@ -18,7 +18,7 @@
 namespace OpenSkyhawk {
 
 RotaryEncoder::RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                             StepsPerDetent stepsPerDetent, RotaryMode mode, int16_t step)
+                             EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step)
     : _controlId(controlId),
       _pinA(pinA),
       _pinB(pinB),
@@ -41,8 +41,8 @@ uint8_t RotaryEncoder::readState() {
 void RotaryEncoder::emit(int8_t dir) {
     // dir = +1 (CW) / -1 (CCW). REL → ±step on the relative frame; DIR → ±1 on the directional
     // frame. The bridge reads the payload as int16 and formats by frame (%+d vs INC/DEC).
-    const int16_t  value = (_mode == REL) ? (int16_t)(dir * _step) : (int16_t)dir;
-    const uint32_t frame = (_mode == REL) ? canIdEvtRel(NODE_ID) : canIdEvtDir(NODE_ID);
+    const int16_t  value = (_mode == EncoderMode::Rel) ? (int16_t)(dir * _step) : (int16_t)dir;
+    const uint32_t frame = (_mode == EncoderMode::Rel) ? canIdEvtRel(NODE_ID) : canIdEvtDir(NODE_ID);
     CANProtocol::sendBatched(frame, ControlPacket{_controlId, (uint16_t)value});
 #ifdef ROTARYENCODER_TEST
     _emitCount++;
@@ -52,7 +52,7 @@ void RotaryEncoder::emit(int8_t dir) {
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[ENC] 0x")); d.print(_controlId, HEX);
-        d.print(_mode == REL ? F(" REL ") : F(" DIR "));
+        d.print(_mode == EncoderMode::Rel ? F(" REL ") : F(" DIR "));
         d.println(value);   // signed: + = CW, - = CCW
     }
 }

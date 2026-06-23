@@ -78,7 +78,7 @@ Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1Inp
 
 | Type | Name |
 | ---: | :--- |
-|   | [**RotaryEncoder**](#function-rotaryencoder) (uint16\_t controlId, [**PinRef**](classPinRef.md) pinA, [**PinRef**](classPinRef.md) pinB, [**StepsPerDetent**](namespaceOpenSkyhawk.md#enum-stepsperdetent) stepsPerDetent=ONE\_STEP\_PER\_DETENT, [**RotaryMode**](namespaceOpenSkyhawk.md#enum-rotarymode) mode=REL, int16\_t step=[**DEFAULT\_STEP**](classOpenSkyhawk_1_1RotaryEncoder.md#variable-default_step)) <br>_Construct a quadrature encoder._  |
+|   | [**RotaryEncoder**](#function-rotaryencoder) (uint16\_t controlId, [**PinRef**](classPinRef.md) pinA, [**PinRef**](classPinRef.md) pinB, [**EncoderStepsPerDetent**](namespaceOpenSkyhawk.md#enum-encoderstepsperdetent) stepsPerDetent=EncoderStepsPerDetent::One, [**EncoderMode**](namespaceOpenSkyhawk.md#enum-encodermode) mode=EncoderMode::Rel, int16\_t step=[**DEFAULT\_STEP**](classOpenSkyhawk_1_1RotaryEncoder.md#variable-default_step)) <br>_Construct a quadrature encoder._  |
 | virtual void | [**configure**](#function-configure) () override<br>_Configure both pins as inputs. Called by_ [_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _._ |
 | virtual void | [**forceReport**](#function-forcereport) () override<br>_Resync the last state; emit nothing (relative control — no baseline)._  |
 | virtual void | [**poll**](#function-poll) () override<br>_Read the quadrature state, accumulate, emit a direction once a detent completes._  |
@@ -173,7 +173,7 @@ See [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 A _relative_ control — it reports motion, not an absolute position. Ports [**DcsBios**](namespaceDcsBios.md) `RotaryEncoder`: each poll reads the 2-bit Gray state `(A<<1)|B`, a transition table accumulates a signed delta, and when `|delta| >= stepsPerDetent` one detent fires (CW positive / CCW negative) and the delta is reduced by one detent. `stepsPerDetent` sets how many quadrature transitions make one emitted click — set it to the encoder's transitions-per-detent so one physical click = one EVT.
 
 
-Two modes, chosen at construction (see RotaryMode):
+Two modes, chosen at construction (see EncoderMode):
 * **REL** (variable\_step knob, e.g. ASN-41 nav): emits `±step` on `canIdEvtRel`; the bridge sends `%+d` (e.g. `"+3200"`). `step` is build-side feel (default 3200 ≈ DCS suggested\_step, ~20 detents per full throw); lower it for a finer knob. The magnitude lives here on the node, so retuning needs only a node reflash — never a bridge rebuild.
 * **DIR** (fixed\_step selector with no indicator, e.g. ARC-51 freq): emits `±1` on `canIdEvtDir`; the bridge sends `INC`/`DEC`. Stateless — DCS owns the position and clamps at the band edges.
 
@@ -216,8 +216,8 @@ OpenSkyhawk::RotaryEncoder::RotaryEncoder (
     uint16_t controlId,
     PinRef pinA,
     PinRef pinB,
-    StepsPerDetent stepsPerDetent=ONE_STEP_PER_DETENT,
-    RotaryMode mode=REL,
+    EncoderStepsPerDetent stepsPerDetent=EncoderStepsPerDetent::One,
+    EncoderMode mode=EncoderMode::Rel,
     int16_t step=DEFAULT_STEP
 ) 
 ```
@@ -232,8 +232,8 @@ OpenSkyhawk::RotaryEncoder::RotaryEncoder (
 * `controlId` DCSIN\_\* or CTRL\_\* constant. Determines [**PanelBridge**](namespacePanelBridge.md) routing. 
 * `pinA` quadrature channel A. 
 * `pinB` quadrature channel B (swap A/B to reverse the sensed direction). 
-* `stepsPerDetent` quadrature transitions per emitted click (default ONE; match the encoder). 
-* `mode` REL (variable\_step, ±step) or DIR (fixed\_step, ±1). Default REL. 
+* `stepsPerDetent` quadrature transitions per emitted click (default One; match the encoder). 
+* `mode` EncoderMode::Rel (variable\_step, ±step) or Dir (fixed\_step, ±1). Default Rel. 
 * `step` REL magnitude emitted per detent (default DEFAULT\_STEP). Ignored in DIR. 
 
 

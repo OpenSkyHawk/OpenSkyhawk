@@ -3974,6 +3974,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#enum-encodermode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum EncoderMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-encoderstepsperdetent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum EncoderStepsPerDetent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-homemode" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3985,32 +4007,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#enum-rotarymode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum RotaryMode
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#enum-steppattern" class="md-nav__link">
     <span class="md-ellipsis">
       
         enum StepPattern
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enum-stepsperdetent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum StepsPerDetent
       
     </span>
   </a>
@@ -4389,19 +4389,19 @@
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-encodermode"><strong>EncoderMode</strong></a>  <br><em>Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. Scoped enum.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-encoderstepsperdetent"><strong>EncoderStepsPerDetent</strong></a>  <br><em>Quadrature transitions per mechanical detent (match to the encoder). Scoped enum.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-homemode"><strong>HomeMode</strong></a>  <br><em>How the driver establishes its zero reference at boot.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-rotarymode"><strong>RotaryMode</strong></a>  <br><em>Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-steppattern"><strong>StepPattern</strong></a>  <br><em>Coil energising sequence.</em></td>
-</tr>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-stepsperdetent"><strong>StepsPerDetent</strong></a>  <br><em>Quadrature transitions per mechanical detent (match to the encoder).</em></td>
 </tr>
 </tbody>
 </table>
@@ -4524,6 +4524,26 @@
 <p>SNAP_SETTLE adds the prototype-missing jump handling: deltas above the readout's snapThreshold teleport the tape near the target, then ease the final step, so a sudden 130→250 KIAS change doesn't spin every wheel through 120 intermediate values. </p>
 <hr>
 
+<h3 id="enum-encodermode">enum EncoderMode</h3>
+<p><em>Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. Scoped enum.</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::EncoderMode {
+    Rel,
+    Dir
+};
+</code></pre>
+<hr>
+
+<h3 id="enum-encoderstepsperdetent">enum EncoderStepsPerDetent</h3>
+<p><em>Quadrature transitions per mechanical detent (match to the encoder). Scoped enum.</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::EncoderStepsPerDetent {
+    One = 1,
+    Two = 2,
+    Four = 4,
+    Eight = 8
+};
+</code></pre>
+<hr>
+
 <h3 id="enum-homemode">enum HomeMode</h3>
 <p><em>How the driver establishes its zero reference at boot.</em> </p>
 <pre><code class="language-C++">enum OpenSkyhawk::HomeMode {
@@ -4533,31 +4553,11 @@
 </code></pre>
 <hr>
 
-<h3 id="enum-rotarymode">enum RotaryMode</h3>
-<p><em>Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent.</em> </p>
-<pre><code class="language-C++">enum OpenSkyhawk::RotaryMode {
-    REL = 0,
-    DIR = 1
-};
-</code></pre>
-<hr>
-
 <h3 id="enum-steppattern">enum StepPattern</h3>
 <p><em>Coil energising sequence.</em> </p>
 <pre><code class="language-C++">enum OpenSkyhawk::StepPattern {
     SWITEC_6STATE,
     FULL_4STATE
-};
-</code></pre>
-<hr>
-
-<h3 id="enum-stepsperdetent">enum StepsPerDetent</h3>
-<p><em>Quadrature transitions per mechanical detent (match to the encoder).</em> </p>
-<pre><code class="language-C++">enum OpenSkyhawk::StepsPerDetent {
-    ONE_STEP_PER_DETENT = 1,
-    TWO_STEPS_PER_DETENT = 2,
-    FOUR_STEPS_PER_DETENT = 4,
-    EIGHT_STEPS_PER_DETENT = 8
 };
 </code></pre>
 <hr>

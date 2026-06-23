@@ -63,10 +63,10 @@
 | ---: | :--- |
 | enum uint8\_t | [**DrumFont**](#enum-drumfont)  <br>_Glyph font size. Maps to a fixed monospace ProFont face._  |
 | enum uint8\_t | [**DrumScroll**](#enum-drumscroll)  <br>_Scroll behaviour per readout._  |
+| enum uint8\_t | [**EncoderMode**](#enum-encodermode)  <br>_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. Scoped enum._  |
+| enum uint8\_t | [**EncoderStepsPerDetent**](#enum-encoderstepsperdetent)  <br>_Quadrature transitions per mechanical detent (match to the encoder). Scoped enum._  |
 | enum uint8\_t | [**HomeMode**](#enum-homemode)  <br>_How the driver establishes its zero reference at boot._  |
-| enum uint8\_t | [**RotaryMode**](#enum-rotarymode)  <br>_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent._  |
 | enum uint8\_t | [**StepPattern**](#enum-steppattern)  <br>_Coil energising sequence._  |
-| enum uint8\_t | [**StepsPerDetent**](#enum-stepsperdetent)  <br>_Quadrature transitions per mechanical detent (match to the encoder)._  |
 
 
 
@@ -205,6 +205,42 @@ SNAP\_SETTLE adds the prototype-missing jump handling: deltas above the readout'
 
 
 
+### enum EncoderMode 
+
+_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. Scoped enum._ 
+```C++
+enum OpenSkyhawk::EncoderMode {
+    Rel,
+    Dir
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum EncoderStepsPerDetent 
+
+_Quadrature transitions per mechanical detent (match to the encoder). Scoped enum._ 
+```C++
+enum OpenSkyhawk::EncoderStepsPerDetent {
+    One = 1,
+    Two = 2,
+    Four = 4,
+    Eight = 8
+};
+```
+
+
+
+
+<hr>
+
+
+
 ### enum HomeMode 
 
 _How the driver establishes its zero reference at boot._ 
@@ -222,23 +258,6 @@ enum OpenSkyhawk::HomeMode {
 
 
 
-### enum RotaryMode 
-
-_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent._ 
-```C++
-enum OpenSkyhawk::RotaryMode {
-    REL = 0,
-    DIR = 1
-};
-```
-
-
-
-
-<hr>
-
-
-
 ### enum StepPattern 
 
 _Coil energising sequence._ 
@@ -246,25 +265,6 @@ _Coil energising sequence._
 enum OpenSkyhawk::StepPattern {
     SWITEC_6STATE,
     FULL_4STATE
-};
-```
-
-
-
-
-<hr>
-
-
-
-### enum StepsPerDetent 
-
-_Quadrature transitions per mechanical detent (match to the encoder)._ 
-```C++
-enum OpenSkyhawk::StepsPerDetent {
-    ONE_STEP_PER_DETENT = 1,
-    TWO_STEPS_PER_DETENT = 2,
-    FOUR_STEPS_PER_DETENT = 4,
-    EIGHT_STEPS_PER_DETENT = 8
 };
 ```
 

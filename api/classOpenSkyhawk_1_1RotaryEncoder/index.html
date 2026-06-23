@@ -4120,7 +4120,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-rotaryencoder"><strong>RotaryEncoder</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pinA, <a href="../classPinRef/"><strong>PinRef</strong></a> pinB, <a href="../namespaceOpenSkyhawk/#enum-stepsperdetent"><strong>StepsPerDetent</strong></a> stepsPerDetent=ONE_STEP_PER_DETENT, <a href="../namespaceOpenSkyhawk/#enum-rotarymode"><strong>RotaryMode</strong></a> mode=REL, int16_t step=<a href="./#variable-default_step"><strong>DEFAULT_STEP</strong></a>) <br><em>Construct a quadrature encoder.</em></td>
+<td style="text-align: left;"><a href="#function-rotaryencoder"><strong>RotaryEncoder</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pinA, <a href="../classPinRef/"><strong>PinRef</strong></a> pinB, <a href="../namespaceOpenSkyhawk/#enum-encoderstepsperdetent"><strong>EncoderStepsPerDetent</strong></a> stepsPerDetent=EncoderStepsPerDetent::One, <a href="../namespaceOpenSkyhawk/#enum-encodermode"><strong>EncoderMode</strong></a> mode=EncoderMode::Rel, int16_t step=<a href="./#variable-default_step"><strong>DEFAULT_STEP</strong></a>) <br><em>Construct a quadrature encoder.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -4213,7 +4213,7 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>A <em>relative</em> control — it reports motion, not an absolute position. Ports <a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <code>RotaryEncoder</code>: each poll reads the 2-bit Gray state <code>(A&lt;&lt;1)|B</code>, a transition table accumulates a signed delta, and when <code>|delta| &gt;= stepsPerDetent</code> one detent fires (CW positive / CCW negative) and the delta is reduced by one detent. <code>stepsPerDetent</code> sets how many quadrature transitions make one emitted click — set it to the encoder's transitions-per-detent so one physical click = one EVT.</p>
-<p>Two modes, chosen at construction (see RotaryMode):
+<p>Two modes, chosen at construction (see EncoderMode):
 * <strong>REL</strong> (variable_step knob, e.g. ASN-41 nav): emits <code>±step</code> on <code>canIdEvtRel</code>; the bridge sends <code>%+d</code> (e.g. <code>"+3200"</code>). <code>step</code> is build-side feel (default 3200 ≈ DCS suggested_step, ~20 detents per full throw); lower it for a finer knob. The magnitude lives here on the node, so retuning needs only a node reflash — never a bridge rebuild.
 * <strong>DIR</strong> (fixed_step selector with no indicator, e.g. ARC-51 freq): emits <code>±1</code> on <code>canIdEvtDir</code>; the bridge sends <code>INC</code>/<code>DEC</code>. Stateless — DCS owns the position and clamps at the band edges.</p>
 <p>Both modes are preset-safe: <a href="./#function-forcereport"><strong>forceReport()</strong></a> resyncs the last Gray state and emits <strong>nothing</strong> — a relative control has no baseline to assert at boot / SYNC, so it never clobbers a mission preset. <a href="./#function-configure"><strong>configure()</strong></a> does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).</p>
@@ -4231,8 +4231,8 @@
     uint16_t controlId,
     PinRef pinA,
     PinRef pinB,
-    StepsPerDetent stepsPerDetent=ONE_STEP_PER_DETENT,
-    RotaryMode mode=REL,
+    EncoderStepsPerDetent stepsPerDetent=EncoderStepsPerDetent::One,
+    EncoderMode mode=EncoderMode::Rel,
     int16_t step=DEFAULT_STEP
 ) 
 </code></pre>
@@ -4241,8 +4241,8 @@
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
 <li><code>pinA</code> quadrature channel A. </li>
 <li><code>pinB</code> quadrature channel B (swap A/B to reverse the sensed direction). </li>
-<li><code>stepsPerDetent</code> quadrature transitions per emitted click (default ONE; match the encoder). </li>
-<li><code>mode</code> REL (variable_step, ±step) or DIR (fixed_step, ±1). Default REL. </li>
+<li><code>stepsPerDetent</code> quadrature transitions per emitted click (default One; match the encoder). </li>
+<li><code>mode</code> EncoderMode::Rel (variable_step, ±step) or Dir (fixed_step, ±1). Default Rel. </li>
 <li><code>step</code> REL magnitude emitted per detent (default DEFAULT_STEP). Ignored in DIR. </li>
 </ul>
 <hr>
