@@ -1,6 +1,6 @@
 # DrumDisplay — Technical Specification
 
-**Status:** Firmware authored + compile-gated (hardware bench pending)
+**Status:** Done (hardware-verified — mux + readouts on real OLEDs, 2026-06-22; bench-fix PR #136)
 **FirmwarePlan ref:** issue #113 (OLED drum readout)
 **Depends on:** `PanelGroup.md`, `Helpers/I2cMux.md`, `olikraus/U8g2`
 
