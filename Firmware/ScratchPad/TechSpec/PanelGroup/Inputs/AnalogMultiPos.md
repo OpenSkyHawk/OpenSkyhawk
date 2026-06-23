@@ -137,7 +137,9 @@ uint16_t AnalogMultiPos::resolve(uint16_t raw) const {
   the midpoint to its next valid neighbour, each edge pulled in by `deadband` counts. The outer
   positions reach 0 / 65535. Adjacent bands therefore leave a `2·deadband`-wide gap at each
   midpoint; a reading in the gap returns `NO_POSITION` and the base holds the last position — the
-  hysteresis that stops flicker when the wiper sits near a boundary. Space detents > 2·deadband apart.
+  hysteresis that stops flicker when the wiper sits near a boundary. Space detents > `2·deadband`
+  apart for clean hysteresis; if they sit closer, `resolve()` clamps each band to still contain its
+  own value — the detent stays selectable (it just loses the hysteresis gap), rather than vanishing.
 - **`ANALOG_NC`:** `isValid()` is false for those entries, so they are skipped in the scan *and* in
   the neighbour search — the index is reserved but never emitted, and its two valid neighbours' bands
   meet at their own shared midpoint.
