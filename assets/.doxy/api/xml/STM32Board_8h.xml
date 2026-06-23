@@ -8,6 +8,7 @@
     <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
     <includedby refid="AnalogInput_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp</includedby>
     <includedby refid="MultiPosInput_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp</includedby>
+    <includedby refid="RotaryEncoder_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp</includedby>
     <includedby refid="Switch2Pos_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</includedby>
     <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
     <includedby refid="LED_8cpp" local="no">Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</includedby>
@@ -48,26 +49,30 @@
         <link refid="MultiPosInput_8cpp"/>
       </node>
       <node id="6">
+        <label>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp</label>
+        <link refid="RotaryEncoder_8cpp"/>
+      </node>
+      <node id="7">
         <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</label>
         <link refid="Switch2Pos_8cpp"/>
       </node>
-      <node id="7">
+      <node id="8">
         <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
         <link refid="OpenSkyhawk_8h"/>
       </node>
-      <node id="8">
+      <node id="9">
         <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</label>
         <link refid="LED_8cpp"/>
       </node>
-      <node id="9">
+      <node id="10">
         <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</label>
         <link refid="NeedleGauge_8cpp"/>
       </node>
-      <node id="10">
+      <node id="11">
         <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
         <link refid="PanelGroup_8cpp"/>
       </node>
-      <node id="11">
+      <node id="12">
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>
@@ -93,6 +98,8 @@
         <childnode refid="10" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

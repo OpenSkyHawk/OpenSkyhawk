@@ -72,7 +72,7 @@
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d37.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d39.md))
 
 
 ## m
@@ -103,7 +103,7 @@
 * **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d37.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d39.md))
 
 
 ## r
@@ -125,6 +125,7 @@
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **StepPattern** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **StepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **setDebug** ([**STM32Board**](namespaceSTM32Board.md))
 * **setLinkActive** ([**STM32Board**](namespaceSTM32Board.md))

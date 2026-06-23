@@ -292,6 +292,22 @@
     <member refid="classPinRef_1ae6528461c2bb1e094fd7aa5e038705f6" kind="function"><name>isGpio</name></member>
     <member refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kind="function"><name>gpioPin</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1RotaryEncoder" kind="class"><name>OpenSkyhawk::RotaryEncoder</name>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2d62fd70ec5400f90dc9fef5f32f8496" kind="variable"><name>_controlId</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" kind="variable"><name>_pinA</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" kind="variable"><name>_pinB</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1af89eac629614783498bfd6d46580f2fb" kind="variable"><name>_stepsPerDetent</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" kind="variable"><name>_lastState</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" kind="variable"><name>_delta</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" kind="variable"><name>_initialized</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ac9b6dc4679da1827f9641d9d9ade02e1" kind="function"><name>RotaryEncoder</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" kind="function"><name>poll</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" kind="function"><name>forceReport</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" kind="function"><name>readState</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a8e81cbad00fab9236a9db28bd0aece82" kind="function"><name>decode</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a79a58edf949d49cdc91ec2cba8bae547" kind="function"><name>emit</name></member>
+  </compound>
   <compound refid="structRxQueueEntry" kind="struct"><name>RxQueueEntry</name>
     <member refid="structRxQueueEntry_1a758987839532de7c7ef2e059f552b033" kind="variable"><name>canId</name></member>
     <member refid="structRxQueueEntry_1ad7f337951df4e0a7075dd47a8ca93d7c" kind="variable"><name>len</name></member>
@@ -387,17 +403,17 @@
     <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
     <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d33" kind="namespace"><name>@33</name>
+  <compound refid="namespace_0d35" kind="namespace"><name>@35</name>
   </compound>
-  <compound refid="namespace_0d37" kind="namespace"><name>@37</name>
-    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d39" kind="namespace"><name>@39</name>
+    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274d" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274dab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274daa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274da9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
   </compound>
@@ -443,6 +459,11 @@
     <member refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46" kind="enum"><name>StepPattern</name></member>
     <member refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a962e53b27cf971b35075f41d438a89d2" kind="enumvalue"><name>SWITEC_6STATE</name></member>
     <member refid="namespaceOpenSkyhawk_1ab1645e7b98ab0b2b7fe99a8ba845bb46a21163361b15fdc3ebbe309acaa2d40cc" kind="enumvalue"><name>FULL_4STATE</name></member>
+    <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2" kind="enum"><name>StepsPerDetent</name></member>
+    <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2a412566cd655b207554c08bf5e1aacaa3" kind="enumvalue"><name>ONE_STEP_PER_DETENT</name></member>
+    <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2ab511e4945c1400b905ef7b43f8adb9fe" kind="enumvalue"><name>TWO_STEPS_PER_DETENT</name></member>
+    <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2afa42a92f0be2d13e323ac04811ed12a5" kind="enumvalue"><name>FOUR_STEPS_PER_DETENT</name></member>
+    <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2afd30b9e4f5e407812e14cb854d146822" kind="enumvalue"><name>EIGHT_STEPS_PER_DETENT</name></member>
     <member refid="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" kind="variable"><name>EASE</name></member>
     <member refid="namespaceOpenSkyhawk_1ad718667155d85fa62e6eff912a9c002f" kind="variable"><name>FRAME_MS</name></member>
     <member refid="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" kind="variable"><name>SETTLE_EPS</name></member>
@@ -1403,6 +1424,10 @@
   </compound>
   <compound refid="MultiPosInput_8h" kind="file"><name>MultiPosInput.h</name>
   </compound>
+  <compound refid="RotaryEncoder_8cpp" kind="file"><name>RotaryEncoder.cpp</name>
+  </compound>
+  <compound refid="RotaryEncoder_8h" kind="file"><name>RotaryEncoder.h</name>
+  </compound>
   <compound refid="Switch2Pos_8cpp" kind="file"><name>Switch2Pos.cpp</name>
   </compound>
   <compound refid="Switch2Pos_8h" kind="file"><name>Switch2Pos.h</name>
@@ -1506,6 +1531,8 @@
   <compound refid="dir_f592a3c441b32532ba8eb6b28add2a90" kind="dir"><name>Firmware/Libraries/PanelBridge</name>
   </compound>
   <compound refid="dir_54a06c409a6161127d200302d3061b3f" kind="dir"><name>Firmware/Libraries/PanelGroup</name>
+  </compound>
+  <compound refid="dir_d61b64c3ddc6557ee529e3725418e11d" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder</name>
   </compound>
   <compound refid="dir_a54aa0246e1c520ae49dfef506a428ca" kind="dir"><name>Firmware/Libraries/SimGateway</name>
   </compound>

@@ -3995,6 +3995,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#enum-stepsperdetent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum StepsPerDetent
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4323,6 +4334,10 @@
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> <br><em>Abstract base for all DCS-driven output objects.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>RotaryEncoder</strong></a> <br><em>Incremental quadrature encoder on two pins (A/B). Emits a</em> <strong>direction</strong> <em>per detent over CAN (ENCODER dispatch): 1 = clockwise, 0 = counter-clockwise. Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">struct</td>
 <td style="text-align: left;"><a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a> <br><em>Full per-instance stepper configuration. Authored per sketch (panel wiring).</em></td>
 </tr>
@@ -4368,6 +4383,10 @@
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-steppattern"><strong>StepPattern</strong></a>  <br><em>Coil energising sequence.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-stepsperdetent"><strong>StepsPerDetent</strong></a>  <br><em>Quadrature transitions per mechanical detent (match to the encoder).</em></td>
 </tr>
 </tbody>
 </table>
@@ -4504,6 +4523,17 @@
 <pre><code class="language-C++">enum OpenSkyhawk::StepPattern {
     SWITEC_6STATE,
     FULL_4STATE
+};
+</code></pre>
+<hr>
+
+<h3 id="enum-stepsperdetent">enum StepsPerDetent</h3>
+<p><em>Quadrature transitions per mechanical detent (match to the encoder).</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::StepsPerDetent {
+    ONE_STEP_PER_DETENT = 1,
+    TWO_STEPS_PER_DETENT = 2,
+    FOUR_STEPS_PER_DETENT = 4,
+    EIGHT_STEPS_PER_DETENT = 8
 };
 </code></pre>
 <hr>

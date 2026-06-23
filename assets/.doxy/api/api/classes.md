@@ -92,6 +92,8 @@
 
 ## r
 
+* [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**RxQueueEntry**](structRxQueueEntry.md)
 
 

@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d37/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/RotaryEncoder_8h_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>File RotaryEncoder.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#file-rotaryencoderh" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              File RotaryEncoder.h
             
           </span>
         </div>
@@ -3867,64 +3867,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Types Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enum-ledcolor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum LedColor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum ParserState
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -3943,48 +3885,66 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-ledcolor"><strong>LedColor</strong></a>  <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-ledcolor">enum LedColor</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::LedColor {
-    NONE,
-    RED,
-    GREEN
-};
-</code></pre>
-<hr>
+<h1 id="file-rotaryencoderh">File RotaryEncoder.h</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_2e07d2b82251b5bb8c3d5a17dd64c04b/"><strong>Inputs</strong></a> <strong>&gt;</strong> <a href="../dir_d61b64c3ddc6557ee529e3725418e11d/"><strong>RotaryEncoder</strong></a> <strong>&gt;</strong> <a href="../RotaryEncoder_8h/"><strong>RotaryEncoder.h</strong></a></p>
+<p><a href="../RotaryEncoder_8h/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<h3 id="enum-parserstate">enum ParserState</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserState {
-    IDLE,
-    GOT_AA,
-    IN_FRAME
-};
-</code></pre>
-<hr>
+#include &lt;PanelGroup.h&gt;  // InputBase, PinRef
 
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+namespace OpenSkyhawk {
+
+enum StepsPerDetent : uint8_t {
+    ONE_STEP_PER_DETENT    = 1,
+    TWO_STEPS_PER_DETENT   = 2,
+    FOUR_STEPS_PER_DETENT  = 4,
+    EIGHT_STEPS_PER_DETENT = 8,
+};
+
+class RotaryEncoder : public InputBase {
+public:
+    RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
+                  StepsPerDetent stepsPerDetent = ONE_STEP_PER_DETENT);
+
+    void poll() override;
+
+    void forceReport() override;
+
+    void configure() override;
+
+#ifdef ROTARYENCODER_TEST
+    void debugSeed(uint8_t state) { _lastState = (uint8_t)(state &amp; 0x3); _delta = 0; _initialized = true; }
+    void debugStep(uint8_t ab) { decode((uint8_t)(ab &amp; 0x3)); }
+    uint16_t emitCount() const { return _emitCount; }
+    int8_t lastDir() const { return _lastDir; }
+#endif
+
+protected:
+    uint8_t readState();   
+
+private:
+    void decode(uint8_t state);          
+    void emit(uint16_t dir);             
+
+    uint16_t _controlId;
+    PinRef   _pinA;
+    PinRef   _pinB;
+    uint8_t  _stepsPerDetent;
+    uint8_t  _lastState;     
+    int8_t   _delta;         
+    bool     _initialized;   
+#ifdef ROTARYENCODER_TEST
+    uint16_t _emitCount = 0;
+    int8_t   _lastDir   = -1;
+#endif
+};
+
+}  // namespace OpenSkyhawk
+
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

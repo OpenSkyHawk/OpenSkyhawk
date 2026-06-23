@@ -4,6 +4,7 @@
     <compoundname>OpenSkyhawk::InputBase</compoundname>
     <derivedcompoundref refid="classOpenSkyhawk_1_1AnalogInput" prot="public" virt="non-virtual">OpenSkyhawk::AnalogInput</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1MultiPosInput" prot="public" virt="non-virtual">OpenSkyhawk::MultiPosInput</derivedcompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1RotaryEncoder" prot="public" virt="non-virtual">OpenSkyhawk::RotaryEncoder</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1Switch2Pos" prot="public" virt="non-virtual">OpenSkyhawk::Switch2Pos</derivedcompoundref>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
     <sectiondef kind="private-static-attrib">
@@ -48,6 +49,7 @@
         <qualifiedname>OpenSkyhawk::InputBase::configure</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogMultiPos_1abea4b6cb61409c93dbf54145bb56a758">configure</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch3Pos_1a841872d6f33cf299101cfe37e7c18310">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1SwitchMultiPos_1a877222668af46793a279a71dada6052a">configure</reimplementedby>
@@ -70,6 +72,7 @@
         <qualifiedname>OpenSkyhawk::InputBase::poll</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284">poll</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262">poll</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e">poll</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f">poll</reimplementedby>
         <briefdescription>
 <para>Read hardware state and emit a CAN EVT if state changed. </para>
@@ -90,6 +93,7 @@
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogMultiPos_1a1e53e05b23249ae3c8eda91c84e87ffe">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610">forceReport</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891">forceReport</reimplementedby>
         <briefdescription>
 <para>Read hardware state and emit a CAN EVT unconditionally. </para>
@@ -181,6 +185,12 @@
         </childnode>
       </node>
       <node id="7">
+        <label>OpenSkyhawk::RotaryEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryEncoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
         <label>OpenSkyhawk::Switch2Pos</label>
         <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
         <childnode refid="1" relation="public-inheritance">

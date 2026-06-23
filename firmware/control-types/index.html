@@ -4047,9 +4047,9 @@ not yet implemented</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Most control types are not implemented yet</p>
 <p>Implemented today: <strong>LED</strong>, <strong>DrumDisplay</strong>, and <strong>NeedleGauge</strong> (outputs) and <strong>Switch2Pos</strong> +
-<strong>SwitchMultiPos</strong> + <strong>AnalogMultiPos</strong> + <strong>Switch3Pos</strong> + <strong>AnalogInput</strong> (inputs), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are
+<strong>SwitchMultiPos</strong> + <strong>AnalogMultiPos</strong> + <strong>Switch3Pos</strong> + <strong>AnalogInput</strong> + <strong>RotaryEncoder</strong> (inputs), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are
 hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
-NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos, AnalogMultiPos, Switch3Pos, and AnalogInput are hardware-verified.
+NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos, AnalogMultiPos, Switch3Pos, AnalogInput, and RotaryEncoder are hardware-verified.
 Everything marked <em>Phase 4</em> or <em>Phase 5</em> below is specified but <strong>not yet written</strong> — don't expect it
 to compile today.</p>
 </div>
@@ -4129,7 +4129,7 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </tr>
 <tr>
 <td><code>RotaryEncoder</code></td>
-<td>Phase 4 — not started</td>
+<td><strong>Implemented</strong> (hardware-verified)</td>
 <td>Quadrature encoder. value 0=CCW, 1=CW</td>
 </tr>
 <tr>

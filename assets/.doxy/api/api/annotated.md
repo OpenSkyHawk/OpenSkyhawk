@@ -31,6 +31,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md) _Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._    
     * **class** [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) _Abstract base for all DCS-driven output objects._     
+    * **class** [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) _Incremental quadrature encoder on two pins (A/B). Emits a_ **direction** _per detent over CAN (ENCODER dispatch): 1 = clockwise, 0 = counter-clockwise. Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **struct** [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) _Full per-instance stepper configuration. Authored per sketch (panel wiring)._     
     * **class** [**StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md) _Non-blocking instrument-gauge stepper driven through_ [_**PinRef**_](classPinRef.md) _coils._    
     * **class** [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md) _Debounced 2-position switch. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
@@ -45,6 +46,6 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d8.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d33.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d37.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d35.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d39.md)     
 

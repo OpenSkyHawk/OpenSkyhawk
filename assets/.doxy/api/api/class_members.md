@@ -34,7 +34,7 @@
 
 * **canId** ([**BatchState**](structBatchState.md), [**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
 * **cmdId** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
-* **configure** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
+* **configure** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **ch** ([**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md))
 * **curveIn** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **curveN** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
@@ -61,6 +61,7 @@
 * **dispatch** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md))
 * **debounceMs** ([**OpenSkyhawk::HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md))
 * **disableAll** ([**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md))
+* **decode** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **deadband** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **DEBOUNCE\_MS** ([**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **data** ([**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
@@ -68,13 +69,13 @@
 
 ## e
 
-* **emit** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md))
+* **emit** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **enabled** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
 
 
 ## f
 
-* **forceReport** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
+* **forceReport** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 * **fitGeometry** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **fontPtr** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **faces** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
@@ -155,7 +156,7 @@
 ## p
 
 * **POLL\_MS** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
-* **poll** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
+* **poll** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 * **posValAt** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **place** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **position** ([**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
@@ -172,6 +173,8 @@
 * **readRaw** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **resolve** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **reverse** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
+* **RotaryEncoder** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **readState** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **rangeSteps** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recalDebounceMs** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **runToStopBlocking** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
@@ -238,10 +241,10 @@
 ## _
 
 * **\_acc** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **\_controlId** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
+* **\_controlId** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 * **\_ewmaShift** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **\_hysteresis** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **\_initialized** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
+* **\_initialized** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 * **\_lastReadMs** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **\_lastSent** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **\_maxRaw** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
@@ -295,6 +298,11 @@
 * **\_pendingPos** ([**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md))
 * **\_cal** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **\_motor** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
+* **\_delta** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_lastState** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_pinA** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md))
+* **\_pinB** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md))
+* **\_stepsPerDetent** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **\_cfg** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_coil** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_currentStep** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
@@ -313,8 +321,6 @@
 * **\_vel** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_lastConfirmed** ([**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
 * **\_pendingRaw** ([**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
-* **\_pinA** ([**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md))
-* **\_pinB** ([**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md))
 * **\_numPins** ([**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **\_pins** ([**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **\_src** ([**PinRef**](classPinRef.md))

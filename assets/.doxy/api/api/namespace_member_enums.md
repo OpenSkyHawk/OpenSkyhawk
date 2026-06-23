@@ -22,17 +22,18 @@
 ## l
 
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d37.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d39.md))
 
 
 ## p
 
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d37.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d39.md))
 
 
 ## s
 
 * **StepPattern** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **StepsPerDetent** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 

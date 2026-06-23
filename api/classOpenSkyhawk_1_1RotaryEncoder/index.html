@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d33/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/classOpenSkyhawk_1_1RotaryEncoder/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp} - OpenSkyhawk</title>
+        <title>Class OpenSkyhawk::RotaryEncoder - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp" class="md-skip">
+        <a href="#class-openskyhawkrotaryencoder" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+              Class OpenSkyhawk::RotaryEncoder
             
           </span>
         </div>
@@ -3867,6 +3867,169 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions-inherited-from-openskyhawkinputbase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions inherited from OpenSkyhawk::InputBase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-functions-inherited-from-openskyhawkinputbase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions inherited from OpenSkyhawk::InputBase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions-inherited-from-openskyhawkinputbase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions inherited from OpenSkyhawk::InputBase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-rotaryencoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function RotaryEncoder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-configure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function configure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-forcereport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function forceReport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-poll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function poll
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protected Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-readstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function readState
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3885,10 +4048,168 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp">Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a></p>
+<h1 id="class-openskyhawkrotaryencoder">Class OpenSkyhawk::RotaryEncoder</h1>
+<p><a href="../annotated/"><strong>ClassList</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>RotaryEncoder</strong></a></p>
+<p><em>Incremental quadrature encoder on two pins (A/B). Emits a</em> <strong>direction</strong> <em>per detent over CAN (ENCODER dispatch): 1 = clockwise, 0 = counter-clockwise. Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em><a href="#detailed-description">More...</a></p>
+<ul>
+<li><code>#include &lt;RotaryEncoder.h&gt;</code></li>
+</ul>
+<p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
+<h2 id="public-functions">Public Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="#function-rotaryencoder"><strong>RotaryEncoder</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pinA, <a href="../classPinRef/"><strong>PinRef</strong></a> pinB, <a href="../namespaceOpenSkyhawk/#enum-stepsperdetent"><strong>StepsPerDetent</strong></a> stepsPerDetent=ONE_STEP_PER_DETENT) <br><em>Construct a quadrature encoder.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="#function-configure"><strong>configure</strong></a> () override<br><em>Configure both pins as inputs. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="#function-forcereport"><strong>forceReport</strong></a> () override<br><em>Resync the last state; emit nothing (relative control — no baseline).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="#function-poll"><strong>poll</strong></a> () override<br><em>Read the quadrature state, accumulate, emit a direction once a detent completes.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-functions-inherited-from-openskyhawkinputbase">Public Functions inherited from OpenSkyhawk::InputBase</h2>
+<p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-configure"><strong>configure</strong></a> () <br><em>Configure hardware pins for this input.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-forcereport"><strong>forceReport</strong></a> () = 0<br><em>Read hardware state and emit a CAN EVT unconditionally.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> *</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-next"><strong>next</strong></a> () const<br><em>Next input in the list; nullptr at end.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><strong>poll</strong></a> () = 0<br><em>Read hardware state and emit a CAN EVT if state changed.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-functions-inherited-from-openskyhawkinputbase">Public Static Functions inherited from OpenSkyhawk::InputBase</h2>
+<p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> *</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-head"><strong>head</strong></a> () <br><em>Head of the self-registered linked list.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="protected-functions">Protected Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#function-readstate"><strong>readState</strong></a> () <br><em>(pinA &lt;&lt; 1) | pinB → 0..3.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="protected-functions-inherited-from-openskyhawkinputbase">Protected Functions inherited from OpenSkyhawk::InputBase</h2>
+<p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-inputbase"><strong>InputBase</strong></a> () <br><em>Registers this instance into the linked list.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="detailed-description">Detailed Description</h2>
+<p>A <em>relative</em> control — it reports motion, not an absolute position. Ports <a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <code>RotaryEncoder</code>: each poll reads the 2-bit Gray state <code>(A&lt;&lt;1)|B</code>, a transition table accumulates a signed delta, and when <code>|delta| &gt;= stepsPerDetent</code> a CW (1) or CCW (0) EVT is emitted and the delta is reduced by one detent. <code>stepsPerDetent</code> sets how many quadrature transitions make one emitted click — set it to the encoder's transitions-per-detent so one physical click = one EVT.</p>
+<p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> maps the 0/1 direction to the control's DCS-BIOS argument strings (<code>"DEC"</code>/<code>"INC"</code> for fixed_step, the ± increment for variable_step) via the input map — so the same class drives both kinds, the difference is entirely in the map entry.</p>
+<p><a href="./#function-forcereport"><strong>forceReport()</strong></a> resyncs the last state and emits <strong>nothing</strong> — a relative control has no baseline to report at boot / SYNC. <a href="./#function-configure"><strong>configure()</strong></a> does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).</p>
+<p>Used by: AN/ASN-41 ×7 push-to-set knobs (variable_step), AN/ARC-51A ×4 freq/preset (fixed_step). </p>
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+<h3 id="function-rotaryencoder">function RotaryEncoder</h3>
+<p><em>Construct a quadrature encoder.</em> </p>
+<pre><code class="language-C++">OpenSkyhawk::RotaryEncoder::RotaryEncoder (
+    uint16_t controlId,
+    PinRef pinA,
+    PinRef pinB,
+    StepsPerDetent stepsPerDetent=ONE_STEP_PER_DETENT
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
+<li><code>pinA</code> quadrature channel A. </li>
+<li><code>pinB</code> quadrature channel B (swap A/B to reverse the sensed direction). </li>
+<li><code>stepsPerDetent</code> quadrature transitions per emitted click (default ONE). </li>
+</ul>
+<hr>
+
+<h3 id="function-configure">function configure</h3>
+<p><em>Configure both pins as inputs. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em></p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::configure () override
+</code></pre>
+<p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-configure"><em>OpenSkyhawk::InputBase::configure</em></a></p>
+<hr>
+
+<h3 id="function-forcereport">function forceReport</h3>
+<p><em>Resync the last state; emit nothing (relative control — no baseline).</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::forceReport () override
+</code></pre>
+<p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-forcereport"><em>OpenSkyhawk::InputBase::forceReport</em></a></p>
+<hr>
+
+<h3 id="function-poll">function poll</h3>
+<p><em>Read the quadrature state, accumulate, emit a direction once a detent completes.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::poll () override
+</code></pre>
+<p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><em>OpenSkyhawk::InputBase::poll</em></a></p>
+<hr>
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+<h3 id="function-readstate">function readState</h3>
+<p><em>(pinA &lt;&lt; 1) | pinB → 0..3.</em> </p>
+<pre><code class="language-C++">uint8_t OpenSkyhawk::RotaryEncoder::readState () 
+</code></pre>
+<hr>
+
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h</code></p>
 
 
 

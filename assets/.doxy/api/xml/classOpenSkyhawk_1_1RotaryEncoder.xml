@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1RotaryEncoder" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::RotaryEncoder</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
+    <includes refid="RotaryEncoder_8h" local="no">RotaryEncoder.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a2d62fd70ec5400f90dc9fef5f32f8496" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::RotaryEncoder::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="85" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::RotaryEncoder::_pinA</definition>
+        <argsstring></argsstring>
+        <name>_pinA</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_pinA</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="86" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::RotaryEncoder::_pinB</definition>
+        <argsstring></argsstring>
+        <name>_pinB</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_pinB</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="87" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1af89eac629614783498bfd6d46580f2fb" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::RotaryEncoder::_stepsPerDetent</definition>
+        <argsstring></argsstring>
+        <name>_stepsPerDetent</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_stepsPerDetent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="88" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::RotaryEncoder::_lastState</definition>
+        <argsstring></argsstring>
+        <name>_lastState</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_lastState</qualifiedname>
+        <briefdescription>
+<para>last 2-bit Gray state. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="89" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" prot="private" static="no" mutable="no">
+        <type>int8_t</type>
+        <definition>int8_t OpenSkyhawk::RotaryEncoder::_delta</definition>
+        <argsstring></argsstring>
+        <name>_delta</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_delta</qualifiedname>
+        <briefdescription>
+<para>accumulated quadrature steps since the last emit. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="90" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::RotaryEncoder::_initialized</definition>
+        <argsstring></argsstring>
+        <name>_initialized</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_initialized</qualifiedname>
+        <briefdescription>
+<para>false until <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" kindref="member">forceReport()</ref>; <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" kindref="member">poll()</ref> no-op before this. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="91" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1ac9b6dc4679da1827f9641d9d9ade02e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::RotaryEncoder::RotaryEncoder</definition>
+        <argsstring>(uint16_t controlId, PinRef pinA, PinRef pinB, StepsPerDetent stepsPerDetent=ONE_STEP_PER_DETENT)</argsstring>
+        <name>RotaryEncoder</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::RotaryEncoder</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinA</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinB</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2" kindref="member">StepsPerDetent</ref></type>
+          <declname>stepsPerDetent</declname>
+          <defval><ref refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2a412566cd655b207554c08bf5e1aacaa3" kindref="member">ONE_STEP_PER_DETENT</ref></defval>
+        </param>
+        <briefdescription>
+<para>Construct a quadrature encoder. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>quadrature channel A. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>quadrature channel B (swap A/B to reverse the sensed direction). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stepsPerDetent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>quadrature transitions per emitted click (default ONE). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="55" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="14" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RotaryEncoder::poll</definition>
+        <argsstring>() override</argsstring>
+        <name>poll</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::poll</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45">poll</reimplements>
+        <briefdescription>
+<para>Read the quadrature state, accumulate, emit a direction once a detent completes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="59" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="73" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RotaryEncoder::forceReport</definition>
+        <argsstring>() override</argsstring>
+        <name>forceReport</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::forceReport</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92">forceReport</reimplements>
+        <briefdescription>
+<para>Resync the last state; emit nothing (relative control — no baseline). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="62" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="66" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RotaryEncoder::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c">configure</reimplements>
+        <briefdescription>
+<para>Configure both pins as inputs. Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="65" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="24" bodyend="27"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::RotaryEncoder::readState</definition>
+        <argsstring>()</argsstring>
+        <name>readState</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::readState</qualifiedname>
+        <briefdescription>
+<para>(pinA &lt;&lt; 1) | pinB → 0..3. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="79" column="13" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="29" bodyend="31"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a8e81cbad00fab9236a9db28bd0aece82" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RotaryEncoder::decode</definition>
+        <argsstring>(uint8_t state)</argsstring>
+        <name>decode</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::decode</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+<para>quadrature transition → delta → emit on detent. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="82" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="46" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a79a58edf949d49cdc91ec2cba8bae547" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RotaryEncoder::emit</definition>
+        <argsstring>(uint16_t dir)</argsstring>
+        <name>emit</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::emit</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>dir</declname>
+        </param>
+        <briefdescription>
+<para>sendBatched an ENCODER EVT {controlId, dir}. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="83" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="33" bodyend="44"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Incremental quadrature encoder on two pins (A/B). Emits a <bold>direction</bold> per detent over CAN (ENCODER dispatch): 1 = clockwise, 0 = counter-clockwise. Self-registers into <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> list. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A <emphasis>relative</emphasis> control — it reports motion, not an absolute position. Ports <ref refid="namespaceDcsBios" kindref="compound">DcsBios</ref> <computeroutput><ref refid="classOpenSkyhawk_1_1RotaryEncoder" kindref="compound">RotaryEncoder</ref></computeroutput>: each poll reads the 2-bit Gray state <computeroutput>(A&lt;&lt;1)|B</computeroutput>, a transition table accumulates a signed delta, and when <computeroutput>|delta| &gt;= stepsPerDetent</computeroutput> a CW (1) or CCW (0) EVT is emitted and the delta is reduced by one detent. <computeroutput>stepsPerDetent</computeroutput> sets how many quadrature transitions make one emitted click — set it to the encoder&apos;s transitions-per-detent so one physical click = one EVT.</para>
+<para><ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> maps the 0/1 direction to the control&apos;s DCS-BIOS argument strings (<computeroutput>&quot;DEC&quot;</computeroutput>/<computeroutput>&quot;INC&quot;</computeroutput> for fixed_step, the ± increment for variable_step) via the input map — so the same class drives both kinds, the difference is entirely in the map entry.</para>
+<para><ref refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" kindref="member">forceReport()</ref> resyncs the last state and emits <bold>nothing</bold> — a relative control has no baseline to report at boot / SYNC. <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" kindref="member">configure()</ref> does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).</para>
+<para>Used by: AN/ASN-41 ×7 push-to-set knobs (variable_step), AN/ARC-51A ×4 freq/preset (fixed_step). </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::RotaryEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryEncoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::RotaryEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryEncoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="45" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="45" bodyend="96"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2d62fd70ec5400f90dc9fef5f32f8496" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_delta</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_initialized</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_lastState</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pinA</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pinB</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1af89eac629614783498bfd6d46580f2fb" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_stepsPerDetent</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a8e81cbad00fab9236a9db28bd0aece82" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>decode</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a79a58edf949d49cdc91ec2cba8bae547" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>emit</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>readState</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ac9b6dc4679da1827f9641d9d9ade02e1" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>RotaryEncoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

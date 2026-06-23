@@ -43,6 +43,9 @@ Here is a list of all files with brief descriptions:
                 * **dir** [**MultiPosInput**](dir_7bc1eaced50854697a5557e9b0a7cd3c.md)     
                     * **file** [**MultiPosInput.cpp**](MultiPosInput_8cpp.md)     
                     * **file** [**MultiPosInput.h**](MultiPosInput_8h.md) _Shared base for multi-position selector inputs (SwitchMultiPos, AnalogMultiPos, ...)._     
+                * **dir** [**RotaryEncoder**](dir_d61b64c3ddc6557ee529e3725418e11d.md)     
+                    * **file** [**RotaryEncoder.cpp**](RotaryEncoder_8cpp.md)     
+                    * **file** [**RotaryEncoder.h**](RotaryEncoder_8h.md) _Quadrature rotary encoder input for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
                 * **dir** [**Switch2Pos**](dir_498c816b3a939baf976ad59345a9b3b2.md)     
                     * **file** [**Switch2Pos.cpp**](Switch2Pos_8cpp.md)     
                     * **file** [**Switch2Pos.h**](Switch2Pos_8h.md) _Debounced 2-position switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
