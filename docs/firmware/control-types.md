@@ -7,9 +7,9 @@ not yet implemented**.
 
 !!! warning "Most control types are not implemented yet"
     Implemented today: **LED**, **DrumDisplay**, and **NeedleGauge** (outputs) and **Switch2Pos** +
-    **SwitchMultiPos** + **AnalogMultiPos** (inputs), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are
+    **SwitchMultiPos** + **AnalogMultiPos** + **RotaryEncoder** (inputs), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are
     hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
-    NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos and AnalogMultiPos are hardware-verified.
+    NeedleGauge and RotaryEncoder are authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos and AnalogMultiPos are hardware-verified.
     Everything marked *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it
     to compile today.
 
@@ -48,7 +48,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | `SwitchMultiPos` | **Implemented** (hardware-verified) | N-pin rotary, one active. value = index |
 | `AnalogMultiPos` | **Implemented** (hardware-verified) | Resistor-ladder selector on one analog pin |
 | `ActionButton` | Phase 4 — not started | Momentary; fires on press only |
-| `RotaryEncoder` | Phase 4 — not started | Quadrature encoder. value 0=CCW, 1=CW |
+| `RotaryEncoder` | **Implemented** (bench pending) | Quadrature encoder. value 0=CCW, 1=CW |
 | `RotaryAcceleratedEncoder` | Phase 4 — not started | Encoder with slow/fast (4-value scheme) |
 | `RotarySwitch` | Phase 4 — not started | Encoder used as an N-position absolute switch |
 | `AnalogInput` | Phase 4 — not started | Continuous analog, normalised to 16-bit |
