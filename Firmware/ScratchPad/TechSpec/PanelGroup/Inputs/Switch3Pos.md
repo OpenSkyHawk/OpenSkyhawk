@@ -143,11 +143,10 @@ Differences from DcsBios:
 - the 20 ms debounce + emit-on-change live in the `MultiPosInput` base (DcsBios emits raw on every
   change). Index semantics are identical, so DCS sees the same position numbers.
 
-**FirmwarePlan reconciliation:** `FirmwarePlan/05` and the earlier stub specified "both pins active
-→ retain last valid state." This implementation instead matches **DcsBios (pin A priority → 0)** —
-both-active is a mechanically impossible transient that the 20 ms debounce absorbs regardless, and
-matching DcsBios keeps the wire behaviour identical. `FirmwarePlan/05` should be updated to this
-rule.
+**FirmwarePlan reconciliation:** the earlier stub specified "both pins active → retain last valid
+state." This implementation instead matches **DcsBios (pin A priority → 0)** — both-active is a
+mechanically impossible transient that the 20 ms debounce absorbs regardless, and matching DcsBios
+keeps the wire behaviour identical. `FirmwarePlan/05` is updated to this rule in this PR.
 
 ### configure()
 
