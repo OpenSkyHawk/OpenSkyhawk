@@ -97,6 +97,12 @@ namespace PanelBridge {
      */
     void testDispatchEvt(uint16_t controlId, uint16_t value);
 
+    /** @brief Test seam — dispatch one relative (canIdEvtRel) slot: value signed → `%+d` (variable_step). */
+    void testDispatchRel(uint16_t controlId, uint16_t value);
+
+    /** @brief Test seam — dispatch one directional (canIdEvtDir) slot: value ±1 → INC/DEC (fixed_step). */
+    void testDispatchDir(uint16_t controlId, uint16_t value);
+
     /**
      * @brief Submit one DCS-BIOS export update directly, bypassing DcsBios::loop().
      *

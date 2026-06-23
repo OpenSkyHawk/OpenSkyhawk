@@ -36,23 +36,10 @@ LEDGER_PATH        = SCRIPT_DIR / "id_ledger.json"
 DCSIN_BASE = 0x8001
 DCSIN_MAX  = 0x86FF
 
-# ── Input type constants (mirrored in emitted A4EC_InputMap.h) ────────────────
-
-INPUT_TYPE_SWITCH        = 0
-INPUT_TYPE_ACTION        = 1
-INPUT_TYPE_ENCODER       = 2
-INPUT_TYPE_ACCEL_ENCODER = 3
-INPUT_TYPE_MULTIPOS      = 4
-INPUT_TYPE_ANALOG        = 5
-
-_TYPE_NAMES = {
-    INPUT_TYPE_SWITCH:        "InputType::SWITCH",
-    INPUT_TYPE_ACTION:        "InputType::ACTION",
-    INPUT_TYPE_ENCODER:       "InputType::ENCODER",
-    INPUT_TYPE_ACCEL_ENCODER: "InputType::ACCEL_ENCODER",
-    INPUT_TYPE_MULTIPOS:      "InputType::MULTIPOS",
-    INPUT_TYPE_ANALOG:        "InputType::ANALOG",
-}
+# Dispatch form is sourced from the PanelGroup input class — specifically the CAN frame it emits on
+# (ABS canIdEvt / REL canIdEvtRel / DIR canIdEvtDir) — NOT inferred from the JSON here (see #147).
+# The generated input map is therefore controlId → name only; PanelBridge formats the payload by
+# frame (%u / %+d / INC-DEC).
 
 # ── Source resolution ─────────────────────────────────────────────────────────
 
@@ -109,59 +96,9 @@ def flatten_controls(data: dict) -> dict:
             out[name] = ctrl
     return out
 
-# ── Input classification ──────────────────────────────────────────────────────
-
-def classify_input(name: str, inputs: list) -> dict:
-    """
-    Classify a control into an InputType.
-
-    Returns a dict with keys: type, arg0, arg1, arg0fast, arg1fast.
-    Returns a dict with key _skip=True on failure, plus _reason and _detail.
-    """
-    interface_set = {i["interface"] for i in inputs}
-
-    # variable_step: continuous analog dial — maps to AnalogInput
-    if "variable_step" in interface_set:
-        return {"type": INPUT_TYPE_ANALOG,
-                "arg0": None, "arg1": None, "arg0fast": None, "arg1fast": None}
-
-    fixed_steps = [i for i in inputs if i["interface"] == "fixed_step"]
-    set_states  = [i for i in inputs if i["interface"] == "set_state"]
-    actions     = [i for i in inputs if i["interface"] == "action"]
-
-    # Two fixed_step entries → ACCEL_ENCODER
-    if len(fixed_steps) == 2:
-        slow, fast = fixed_steps
-        return {
-            "type":     INPUT_TYPE_ACCEL_ENCODER,
-            "arg0":     slow.get("argument_decrement", "DEC"),
-            "arg1":     slow.get("argument_increment", "INC"),
-            "arg0fast": fast.get("argument_decrement", "DEC"),
-            "arg1fast": fast.get("argument_increment", "INC"),
-        }
-
-    # set_state present → SWITCH (max=1) or MULTIPOS (max>1)
-    if set_states:
-        max_val = set_states[0].get("max_value", 1)
-        if max_val == 1:
-            return {"type": INPUT_TYPE_SWITCH,
-                    "arg0": "0", "arg1": "1", "arg0fast": None, "arg1fast": None}
-        return {"type": INPUT_TYPE_MULTIPOS,
-                "arg0": None, "arg1": None, "arg0fast": None, "arg1fast": None}
-
-    # action only (no set_state)
-    if actions:
-        return {"type": INPUT_TYPE_ACTION,
-                "arg0": actions[0].get("argument", "1"),
-                "arg1": None, "arg0fast": None, "arg1fast": None}
-
-    # Single fixed_step only → ENCODER
-    if len(fixed_steps) == 1:
-        return {"type": INPUT_TYPE_ENCODER,
-                "arg0": "DEC", "arg1": "INC", "arg0fast": None, "arg1fast": None}
-
-    return {"_skip": True, "_reason": "unsupported",
-            "_detail": f"Unrecognised interface combination: {sorted(interface_set)}"}
+# classify_input was removed in #147: the PanelBridge dispatch form is sourced from the PanelGroup
+# input class (via the CAN frame the node emits on), not inferred from the JSON interface set here.
+# The map collapses to controlId → name, so every input control maps and nothing is "unsupported".
 
 # ── ID ledger — append-only DCSIN assignment ─────────────────────────────────
 # The cmdId for a control is assigned once and never changes: the ledger is the
@@ -189,8 +126,9 @@ def build_input_entries(controls: dict, ledger_path: Path = LEDGER_PATH) -> tupl
     """
     Returns (mapped_entries, gaps).
 
-    Each mapped entry: {name, cmdId, type, arg0, arg1, arg0fast, arg1fast}
-    Each gap:          {name, reason, detail}
+    Each mapped entry: {name, cmdId}. The dispatch form is sourced from the PanelGroup class
+    via the CAN frame (#147), not inferred here, so every input control maps and gaps is always
+    empty for inputs.
     """
     candidates = sorted(
         [(n, c) for n, c in controls.items() if c.get("inputs")],
@@ -209,14 +147,7 @@ def build_input_entries(controls: dict, ledger_path: Path = LEDGER_PATH) -> tupl
     mapped = []
     gaps   = []
 
-    for name, ctrl in candidates:
-        result = classify_input(name, ctrl["inputs"])
-        if result.get("_skip"):
-            gaps.append({"name": name,
-                         "reason": result["_reason"],
-                         "detail": result["_detail"]})
-            continue
-
+    for name, _ in candidates:
         if name in ledger:                                    # keep previously-assigned id
             cmd_id = ledger[name]
         else:                                                 # new control → append at the end
@@ -226,15 +157,7 @@ def build_input_entries(controls: dict, ledger_path: Path = LEDGER_PATH) -> tupl
         if cmd_id > DCSIN_MAX:
             sys.exit(f"ERROR: DCSIN id space exhausted assigning {name}")
 
-        mapped.append({
-            "name":     name,
-            "cmdId":    cmd_id,
-            "type":     result["type"],
-            "arg0":     result["arg0"],
-            "arg1":     result["arg1"],
-            "arg0fast": result["arg0fast"],
-            "arg1fast": result["arg1fast"],
-        })
+        mapped.append({"name": name, "cmdId": cmd_id})
 
     save_ledger(ledger, ledger_path)                          # retired ids stay reserved
     return mapped, gaps
@@ -343,46 +266,24 @@ def emit_inputmap(entries: list, source_name: str, ts: str) -> str:
         "#pragma once",
         "#include <A4EC_CmdIds.h>",
         "",
-        "// ── Input dispatch type codes ─────────────────────────────────────────────",
-        "",
-        "namespace InputType {",
-        "    static constexpr uint8_t SWITCH        = 0;  ///< Switch2Pos — sends 0 or 1",
-        "    static constexpr uint8_t ACTION        = 1;  ///< ActionButton — sends 1 (press only)",
-        "    static constexpr uint8_t ENCODER       = 2;  ///< RotaryEncoder — sends 0=CCW, 1=CW",
-        "    static constexpr uint8_t ACCEL_ENCODER = 3;  ///< RotaryAcceleratedEncoder — 0–3",
-        "    static constexpr uint8_t MULTIPOS      = 4;  ///< SwitchMultiPos / RotarySwitch / AnalogMultiPos",
-        "    static constexpr uint8_t ANALOG        = 5;  ///< AnalogInput — sends raw 0–65535 ADC reading",
-        "}",
-        "",
         "// ── Dispatch entry ────────────────────────────────────────────────────────",
+        "// controlId → DCS-BIOS name only. The dispatch FORM (absolute / relative-step /",
+        "// direction) is sourced from the PanelGroup input class via the CAN frame the node",
+        "// emits on — not from this map. PanelBridge formats the payload by frame (#147).",
         "",
         "struct DcsBiosInputEntry {",
-        "    uint16_t    cmdId;      ///< DCSIN_* compact ID — matches A4EC_CmdIds.h constant",
-        "    uint8_t     type;       ///< One of InputType::* — determines PanelBridge dispatch",
-        "    const char* name;       ///< DCS-BIOS control name for sendDcsBiosMessage()",
-        '    const char* arg0;       ///< value=0 argument ("0", "DEC", position string)',
-        '    const char* arg1;       ///< value=1 argument ("1", "INC"); nullptr for ACTION/MULTIPOS',
-        "    const char* arg0fast;   ///< ACCEL_ENCODER: fast decrement arg; nullptr for all other types",
-        "    const char* arg1fast;   ///< ACCEL_ENCODER: fast increment arg; nullptr for all other types",
+        "    uint16_t    cmdId;  ///< DCSIN_* compact ID — matches A4EC_CmdIds.h constant",
+        "    const char* name;   ///< DCS-BIOS control name for sendDcsBiosMessage()",
         "};",
         "",
         "// ── Dispatch table — sorted ascending by cmdId ────────────────────────────",
-        "// Binary search by PanelBridge. Flash cost ~6–8 KB. RAM cost: zero.",
+        "// Binary search by PanelBridge.",
         "",
         "static const DcsBiosInputEntry A4EC_INPUT_MAP[] = {",
     ]
 
     for e in sorted(entries, key=lambda x: x["cmdId"]):
-        row = (
-            f'    {{ DCSIN_{e["name"]}, '
-            f'{_TYPE_NAMES[e["type"]]}, '
-            f'"{e["name"]}", '
-            f'{_c_str(e["arg0"])}, '
-            f'{_c_str(e["arg1"])}, '
-            f'{_c_str(e["arg0fast"])}, '
-            f'{_c_str(e["arg1fast"])} }},'
-        )
-        lines.append(row)
+        lines.append(f'    {{ DCSIN_{e["name"]}, "{e["name"]}" }},')
 
     lines += [
         "};",

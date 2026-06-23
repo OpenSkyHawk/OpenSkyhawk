@@ -92,24 +92,29 @@ non-null packet's registered address matches.
 
 ## Input Dispatch
 
-`PanelBridge::loop()` drains the CAN EVT queue each iteration:
+`PanelBridge::loop()` drains the CAN event queues each iteration. The dispatch **form is the frame**
+the value arrived on (#147) — the map carries only `controlId → name`:
 
 ```
-Receive CAN EVT ControlPacketPair {slot A, slot B, nodeId}
+Receive a ControlPacketPair on one of the event frames:
+  EVT_n (canIdEvt, ABS) / EVT_REL_n (canIdEvtRel, REL) / EVT_DIR_n (canIdEvtDir, DIR)
 │
 ├── for each non-null slot:
 │
-│   ├── 0x8000 <= controlId <= 0x86FF  →  binary search in A4EC_InputMap
-│   │     sendDcsBiosMessage(entry.name, formatted_arg)
+│   ├── 0x8000 <= controlId <= 0x86FF  →  binary search in A4EC_InputMap (name)
+│   │     ABS → sendDcsBiosMessage(name, "%u")         (set_state)
+│   │     REL → sendDcsBiosMessage(name, "%+d")        (variable_step, signed step)
+│   │     DIR → sendDcsBiosMessage(name, "INC"/"DEC")  (fixed_step, sign of ±1)
 │   │     → raw ASCII on UART → SimGateway → USB CDC → DCS
+│   │     (REL/DIR are DCS-routed only; a HID-range controlId on those frames is dropped)
 │
-│   └── controlId < 0x8000   →  wrap in HID frame (see 03-uart-usb-hid-protocol.md)
+│   └── controlId < 0x8000   →  wrap in HID frame (ABS frame only; see 03-uart-usb-hid-protocol.md)
 │         send over UART to SimGateway
 │         SimGateway sees HID_MAGIC → dispatch to HIDAxis / HIDButton
 ```
 
 The input map (`A4EC_InputMap.h`) is included by PanelBridge only — not by PanelGroup sketches.
-See `04-dcs-bios-integration.md` for struct layout and value encoding.
+See `04-dcs-bios-integration.md` for the `{cmdId, name}` struct and the dispatch-by-frame model.
 Slot B with `controlId = 0x0000` is the null sentinel and is ignored. Values above
 `0x86FF`, including `0xFFFF`, are not DCS-BIOS inputs and are dropped/logged locally.
 
