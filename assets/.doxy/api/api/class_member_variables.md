@@ -6,10 +6,6 @@
 ## a
 
 * **a** ([**BatchState**](structBatchState.md))
-* **arg0** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
-* **arg0fast** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
-* **arg1** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
-* **arg1fast** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
 * **address** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **atVisualCol** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
 * **afterCol** ([**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md))
@@ -139,11 +135,6 @@
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **sensor** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **stepsPerRev** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
-
-
-## t
-
-* **type** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
 
 
 ## w

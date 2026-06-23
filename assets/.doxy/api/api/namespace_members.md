@@ -5,9 +5,6 @@
 
 ## a
 
-* **ACCEL\_ENCODER** ([**InputType**](namespaceInputType.md))
-* **ACTION** ([**InputType**](namespaceInputType.md))
-* **ANALOG** ([**InputType**](namespaceInputType.md))
 * **ANALOG\_NC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **Anim** ([**SimGateway**](namespaceSimGateway.md))
 
@@ -35,7 +32,6 @@
 
 ## e
 
-* **ENCODER** ([**InputType**](namespaceInputType.md))
 * **EASE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
@@ -78,7 +74,6 @@
 ## m
 
 * **makeHeartbeatPayload** ([**CANProtocol**](namespaceCANProtocol.md))
-* **MULTIPOS** ([**InputType**](namespaceInputType.md))
 * **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
@@ -122,7 +117,6 @@
 * **sendBatched** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
-* **SWITCH** ([**InputType**](namespaceInputType.md))
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **StepPattern** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))

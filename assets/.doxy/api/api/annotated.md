@@ -9,7 +9,6 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**CANProtocol**](namespaceCANProtocol.md)     
 * **namespace** [**DcsBios**](namespaceDcsBios.md)     
 * **struct** [**DcsBiosInputEntry**](structDcsBiosInputEntry.md)     
-* **namespace** [**InputType**](namespaceInputType.md)     
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk.md)     
     * **struct** [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) _One point on the acceleration curve (SwitecX25 form)._     
     * **class** [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) _Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    

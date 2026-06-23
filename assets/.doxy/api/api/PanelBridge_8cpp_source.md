@@ -131,16 +131,23 @@ void handleDcsBiosExport(uint16_t address, uint16_t value) {
     CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, pkt);
 }
 
-static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
-    // Binary search in A4EC_INPUT_MAP (sorted ascending by cmdId)
+// Binary search A4EC_INPUT_MAP (sorted ascending by cmdId) -> entry, or nullptr.
+static const DcsBiosInputEntry* lookupDcsEntry(uint16_t controlId) {
     int lo = 0, hi = (int)A4EC_INPUT_MAP_SIZE - 1;
-    const DcsBiosInputEntry* entry = nullptr;
     while (lo <= hi) {
         int mid = (lo + hi) / 2;
-        if      (A4EC_INPUT_MAP[mid].cmdId == controlId) { entry = &A4EC_INPUT_MAP[mid]; break; }
+        if      (A4EC_INPUT_MAP[mid].cmdId == controlId) return &A4EC_INPUT_MAP[mid];
         else if (A4EC_INPUT_MAP[mid].cmdId <  controlId)   lo = mid + 1;
         else                                                hi = mid - 1;
     }
+    return nullptr;
+}
+
+// Resolve controlId -> DCS-BIOS name and send it with the given arg string. The dispatch FORM
+// (the arg) is decided by the caller from the CAN frame the value arrived on (#147); the map
+// carries only the name.
+static void sendDcs(uint16_t controlId, const char* arg) {
+    const DcsBiosInputEntry* entry = lookupDcsEntry(controlId);
     if (!entry) {
         if (STM32Board::isDebug()) {
             auto& d = STM32Board::diagSerial();
@@ -148,73 +155,38 @@ static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
         }
         return;
     }
-
-    char multiBuf[7];  // "65535\0" + guard
-    const char* arg = nullptr;
-
-    switch (entry->type) {
-        case InputType::SWITCH:
-            if (value > 1) {
-                if (STM32Board::isDebug()) {
-                    auto& d = STM32Board::diagSerial();
-                    d.print(F("[BRIDGE] bad val ctrl=0x")); d.print(controlId, HEX);
-                    d.print(F(" val=")); d.println(value);
-                }
-                return;
-            }
-            arg = (value == 0) ? entry->arg0 : entry->arg1;
-            break;
-        case InputType::ACTION:
-            if (value == 0) return;  // ignore release
-            arg = entry->arg0;
-            break;
-        case InputType::ENCODER:
-            if (value > 1) {
-                if (STM32Board::isDebug()) {
-                    auto& d = STM32Board::diagSerial();
-                    d.print(F("[BRIDGE] bad val ctrl=0x")); d.print(controlId, HEX);
-                    d.print(F(" val=")); d.println(value);
-                }
-                return;
-            }
-            arg = (value == 0) ? entry->arg0 : entry->arg1;
-            break;
-        case InputType::ACCEL_ENCODER:
-            if      (value == 0) arg = entry->arg0;
-            else if (value == 1) arg = entry->arg1;
-            else if (value == 2) arg = entry->arg0fast;
-            else if (value == 3) arg = entry->arg1fast;
-            else {
-                if (STM32Board::isDebug()) {
-                    auto& d = STM32Board::diagSerial();
-                    d.print(F("[BRIDGE] bad val ctrl=0x")); d.print(controlId, HEX);
-                    d.print(F(" val=")); d.println(value);
-                }
-                return;
-            }
-            break;
-        case InputType::MULTIPOS:
-        case InputType::ANALOG:
-            snprintf(multiBuf, sizeof(multiBuf), "%u", (unsigned)value);
-            arg = multiBuf;
-            break;
-        default:
-            return;
-    }
-
-    if (!arg) {
-        if (STM32Board::isDebug()) {
-            auto& d = STM32Board::diagSerial();
-            d.print(F("[BRIDGE] null arg ctrl=0x")); d.println(controlId, HEX);
-        }
-        return;
-    }
-
     DcsBios::sendDcsBiosMessage(entry->name, arg);
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[BRIDGE] DCS -> \"")); d.print(entry->name);
         d.print(F("\" \"")); d.print(arg); d.println('"');
+    }
+}
+
+// ABS frame (canIdEvt): value is an absolute uint16 -> set_state. Switches, selectors, pots.
+static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
+    char buf[7];                                        // "65535\0" + guard
+    snprintf(buf, sizeof(buf), "%u", (unsigned)value);
+    sendDcs(controlId, buf);
+}
+
+// REL frame (canIdEvtRel): value is a signed +-step -> variable_step (e.g. "+3200").
+static void dispatchDcsRel(uint16_t controlId, uint16_t value) {
+    char buf[8];                                        // "-32768\0" + guard
+    snprintf(buf, sizeof(buf), "%+d", (int)(int16_t)value);
+    sendDcs(controlId, buf);
+}
+
+// DIR frame (canIdEvtDir): value is strictly +-1 -> fixed_step (INC / DEC). Anything else is a
+// malformed slot -> drop + log, so a corrupt value never turns into a real cockpit step.
+static void dispatchDcsDir(uint16_t controlId, uint16_t value) {
+    const int16_t v = (int16_t)value;
+    if      (v ==  1) sendDcs(controlId, "INC");
+    else if (v == -1) sendDcs(controlId, "DEC");
+    else if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] bad dir ctrl=0x")); d.print(controlId, HEX);
+        d.print(F(" val=")); d.println(v);
     }
 }
 
@@ -229,6 +201,28 @@ static void dispatchEvtSlot(uint16_t controlId, uint16_t value) {
             auto& d = STM32Board::diagSerial();
             d.print(F("[BRIDGE] drop ctrl=0x")); d.println(controlId, HEX);
         }
+    }
+}
+
+// Relative (canIdEvtRel) slot — DCS-routed only; value reinterpreted signed -> %+d (variable_step).
+static void dispatchRelSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId >= CTRL_ID_DCS_MIN && controlId <= CTRL_ID_DCS_MAX)
+        dispatchDcsRel(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] drop rel ctrl=0x")); d.println(controlId, HEX);
+    }
+}
+
+// Directional (canIdEvtDir) slot — DCS-routed only; value +-1 -> INC/DEC (fixed_step).
+static void dispatchDirSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId >= CTRL_ID_DCS_MIN && controlId <= CTRL_ID_DCS_MAX)
+        dispatchDcsDir(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] drop dir ctrl=0x")); d.println(controlId, HEX);
     }
 }
 
@@ -279,6 +273,28 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         dispatchEvtSlot(pair.a.controlId, pair.a.value);
         if (pair.b.controlId != 0x0000)
             dispatchEvtSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_REL_1 – EVT_REL_63: 8-byte ControlPacketPair; value reinterpreted signed -> %+d (variable_step)
+    if (canId >= canIdEvtRel(1) && canId <= canIdEvtRel(MAX_NODE_ID)) {
+        if (len < 8) return;
+        ControlPacketPair pair;
+        memcpy(&pair, data, 8);
+        dispatchRelSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchRelSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_DIR_1 – EVT_DIR_63: 8-byte ControlPacketPair; value +-1 -> INC/DEC (fixed_step)
+    if (canId >= canIdEvtDir(1) && canId <= canIdEvtDir(MAX_NODE_ID)) {
+        if (len < 8) return;
+        ControlPacketPair pair;
+        memcpy(&pair, data, 8);
+        dispatchDirSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchDirSlot(pair.b.controlId, pair.b.value);
         return;
     }
 
@@ -444,6 +460,14 @@ namespace PanelBridge {
 
 void testDispatchEvt(uint16_t controlId, uint16_t value) {
     dispatchEvtSlot(controlId, value);
+}
+
+void testDispatchRel(uint16_t controlId, uint16_t value) {
+    dispatchRelSlot(controlId, value);
+}
+
+void testDispatchDir(uint16_t controlId, uint16_t value) {
+    dispatchDirSlot(controlId, value);
 }
 
 void testHandleExport(uint16_t address, uint16_t value) {

@@ -36,6 +36,10 @@ namespace PanelBridge {
 
     void testDispatchEvt(uint16_t controlId, uint16_t value);
 
+    void testDispatchRel(uint16_t controlId, uint16_t value);
+
+    void testDispatchDir(uint16_t controlId, uint16_t value);
+
     void testHandleExport(uint16_t address, uint16_t value);
 
 #ifdef PANELBRIDGE_NODE_STATUS

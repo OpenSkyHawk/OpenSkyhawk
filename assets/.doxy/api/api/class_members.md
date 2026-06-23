@@ -6,10 +6,6 @@
 ## a
 
 * **a** ([**BatchState**](structBatchState.md))
-* **arg0** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
-* **arg0fast** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
-* **arg1** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
-* **arg1fast** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
 * **AnalogInput** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **AnalogMultiPos** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **address** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
@@ -210,7 +206,6 @@
 
 ## t
 
-* **type** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
 * **Type** ([**PinRef**](classPinRef.md))
 
 

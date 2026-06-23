@@ -6,7 +6,6 @@ Here is a list of all namespaces with brief descriptions:
 
 * **namespace** [**CANProtocol**](namespaceCANProtocol.md)     
 * **namespace** [**DcsBios**](namespaceDcsBios.md)     
-* **namespace** [**InputType**](namespaceInputType.md)     
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk.md)     
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d12.md) 
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     

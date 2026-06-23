@@ -4011,16 +4011,23 @@ void handleDcsBiosExport(uint16_t address, uint16_t value) {
     CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, pkt);
 }
 
-static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
-    // Binary search in A4EC_INPUT_MAP (sorted ascending by cmdId)
+// Binary search A4EC_INPUT_MAP (sorted ascending by cmdId) -&gt; entry, or nullptr.
+static const DcsBiosInputEntry* lookupDcsEntry(uint16_t controlId) {
     int lo = 0, hi = (int)A4EC_INPUT_MAP_SIZE - 1;
-    const DcsBiosInputEntry* entry = nullptr;
     while (lo &lt;= hi) {
         int mid = (lo + hi) / 2;
-        if      (A4EC_INPUT_MAP[mid].cmdId == controlId) { entry = &amp;A4EC_INPUT_MAP[mid]; break; }
+        if      (A4EC_INPUT_MAP[mid].cmdId == controlId) return &amp;A4EC_INPUT_MAP[mid];
         else if (A4EC_INPUT_MAP[mid].cmdId &lt;  controlId)   lo = mid + 1;
         else                                                hi = mid - 1;
     }
+    return nullptr;
+}
+
+// Resolve controlId -&gt; DCS-BIOS name and send it with the given arg string. The dispatch FORM
+// (the arg) is decided by the caller from the CAN frame the value arrived on (#147); the map
+// carries only the name.
+static void sendDcs(uint16_t controlId, const char* arg) {
+    const DcsBiosInputEntry* entry = lookupDcsEntry(controlId);
     if (!entry) {
         if (STM32Board::isDebug()) {
             auto&amp; d = STM32Board::diagSerial();
@@ -4028,73 +4035,38 @@ static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
         }
         return;
     }
-
-    char multiBuf[7];  // &quot;65535\0&quot; + guard
-    const char* arg = nullptr;
-
-    switch (entry-&gt;type) {
-        case InputType::SWITCH:
-            if (value &gt; 1) {
-                if (STM32Board::isDebug()) {
-                    auto&amp; d = STM32Board::diagSerial();
-                    d.print(F(&quot;[BRIDGE] bad val ctrl=0x&quot;)); d.print(controlId, HEX);
-                    d.print(F(&quot; val=&quot;)); d.println(value);
-                }
-                return;
-            }
-            arg = (value == 0) ? entry-&gt;arg0 : entry-&gt;arg1;
-            break;
-        case InputType::ACTION:
-            if (value == 0) return;  // ignore release
-            arg = entry-&gt;arg0;
-            break;
-        case InputType::ENCODER:
-            if (value &gt; 1) {
-                if (STM32Board::isDebug()) {
-                    auto&amp; d = STM32Board::diagSerial();
-                    d.print(F(&quot;[BRIDGE] bad val ctrl=0x&quot;)); d.print(controlId, HEX);
-                    d.print(F(&quot; val=&quot;)); d.println(value);
-                }
-                return;
-            }
-            arg = (value == 0) ? entry-&gt;arg0 : entry-&gt;arg1;
-            break;
-        case InputType::ACCEL_ENCODER:
-            if      (value == 0) arg = entry-&gt;arg0;
-            else if (value == 1) arg = entry-&gt;arg1;
-            else if (value == 2) arg = entry-&gt;arg0fast;
-            else if (value == 3) arg = entry-&gt;arg1fast;
-            else {
-                if (STM32Board::isDebug()) {
-                    auto&amp; d = STM32Board::diagSerial();
-                    d.print(F(&quot;[BRIDGE] bad val ctrl=0x&quot;)); d.print(controlId, HEX);
-                    d.print(F(&quot; val=&quot;)); d.println(value);
-                }
-                return;
-            }
-            break;
-        case InputType::MULTIPOS:
-        case InputType::ANALOG:
-            snprintf(multiBuf, sizeof(multiBuf), &quot;%u&quot;, (unsigned)value);
-            arg = multiBuf;
-            break;
-        default:
-            return;
-    }
-
-    if (!arg) {
-        if (STM32Board::isDebug()) {
-            auto&amp; d = STM32Board::diagSerial();
-            d.print(F(&quot;[BRIDGE] null arg ctrl=0x&quot;)); d.println(controlId, HEX);
-        }
-        return;
-    }
-
     DcsBios::sendDcsBiosMessage(entry-&gt;name, arg);
     if (STM32Board::isDebug()) {
         auto&amp; d = STM32Board::diagSerial();
         d.print(F(&quot;[BRIDGE] DCS -&gt; \&quot;&quot;)); d.print(entry-&gt;name);
         d.print(F(&quot;\&quot; \&quot;&quot;)); d.print(arg); d.println('&quot;');
+    }
+}
+
+// ABS frame (canIdEvt): value is an absolute uint16 -&gt; set_state. Switches, selectors, pots.
+static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
+    char buf[7];                                        // &quot;65535\0&quot; + guard
+    snprintf(buf, sizeof(buf), &quot;%u&quot;, (unsigned)value);
+    sendDcs(controlId, buf);
+}
+
+// REL frame (canIdEvtRel): value is a signed +-step -&gt; variable_step (e.g. &quot;+3200&quot;).
+static void dispatchDcsRel(uint16_t controlId, uint16_t value) {
+    char buf[8];                                        // &quot;-32768\0&quot; + guard
+    snprintf(buf, sizeof(buf), &quot;%+d&quot;, (int)(int16_t)value);
+    sendDcs(controlId, buf);
+}
+
+// DIR frame (canIdEvtDir): value is strictly +-1 -&gt; fixed_step (INC / DEC). Anything else is a
+// malformed slot -&gt; drop + log, so a corrupt value never turns into a real cockpit step.
+static void dispatchDcsDir(uint16_t controlId, uint16_t value) {
+    const int16_t v = (int16_t)value;
+    if      (v ==  1) sendDcs(controlId, &quot;INC&quot;);
+    else if (v == -1) sendDcs(controlId, &quot;DEC&quot;);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] bad dir ctrl=0x&quot;)); d.print(controlId, HEX);
+        d.print(F(&quot; val=&quot;)); d.println(v);
     }
 }
 
@@ -4109,6 +4081,28 @@ static void dispatchEvtSlot(uint16_t controlId, uint16_t value) {
             auto&amp; d = STM32Board::diagSerial();
             d.print(F(&quot;[BRIDGE] drop ctrl=0x&quot;)); d.println(controlId, HEX);
         }
+    }
+}
+
+// Relative (canIdEvtRel) slot — DCS-routed only; value reinterpreted signed -&gt; %+d (variable_step).
+static void dispatchRelSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId &gt;= CTRL_ID_DCS_MIN &amp;&amp; controlId &lt;= CTRL_ID_DCS_MAX)
+        dispatchDcsRel(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] drop rel ctrl=0x&quot;)); d.println(controlId, HEX);
+    }
+}
+
+// Directional (canIdEvtDir) slot — DCS-routed only; value +-1 -&gt; INC/DEC (fixed_step).
+static void dispatchDirSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId &gt;= CTRL_ID_DCS_MIN &amp;&amp; controlId &lt;= CTRL_ID_DCS_MAX)
+        dispatchDcsDir(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] drop dir ctrl=0x&quot;)); d.println(controlId, HEX);
     }
 }
 
@@ -4159,6 +4153,28 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         dispatchEvtSlot(pair.a.controlId, pair.a.value);
         if (pair.b.controlId != 0x0000)
             dispatchEvtSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_REL_1 – EVT_REL_63: 8-byte ControlPacketPair; value reinterpreted signed -&gt; %+d (variable_step)
+    if (canId &gt;= canIdEvtRel(1) &amp;&amp; canId &lt;= canIdEvtRel(MAX_NODE_ID)) {
+        if (len &lt; 8) return;
+        ControlPacketPair pair;
+        memcpy(&amp;pair, data, 8);
+        dispatchRelSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchRelSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_DIR_1 – EVT_DIR_63: 8-byte ControlPacketPair; value +-1 -&gt; INC/DEC (fixed_step)
+    if (canId &gt;= canIdEvtDir(1) &amp;&amp; canId &lt;= canIdEvtDir(MAX_NODE_ID)) {
+        if (len &lt; 8) return;
+        ControlPacketPair pair;
+        memcpy(&amp;pair, data, 8);
+        dispatchDirSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchDirSlot(pair.b.controlId, pair.b.value);
         return;
     }
 
@@ -4324,6 +4340,14 @@ namespace PanelBridge {
 
 void testDispatchEvt(uint16_t controlId, uint16_t value) {
     dispatchEvtSlot(controlId, value);
+}
+
+void testDispatchRel(uint16_t controlId, uint16_t value) {
+    dispatchRelSlot(controlId, value);
+}
+
+void testDispatchDir(uint16_t controlId, uint16_t value) {
+    dispatchDirSlot(controlId, value);
 }
 
 void testHandleExport(uint16_t address, uint16_t value) {

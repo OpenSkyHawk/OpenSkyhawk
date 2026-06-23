@@ -24,11 +24,6 @@
 
 
 
-## Namespaces
-
-| Type | Name |
-| ---: | :--- |
-| namespace | [**InputType**](namespaceInputType.md) <br> |
 
 
 ## Classes
