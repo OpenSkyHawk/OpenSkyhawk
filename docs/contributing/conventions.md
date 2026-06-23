@@ -58,3 +58,23 @@ them honestly.
 
 `site/` (MkDocs build) and generated `docs/api/` detail pages are gitignored — don't commit
 them. See [Docs Workflow](docs-workflow.md).
+
+## Commits and PR titles
+
+Use **[Conventional Commits](https://www.conventionalcommits.org/)** — `type(scope): summary` —
+for **both commit messages and PR titles**. The repo squash-merges, so the **PR title becomes the
+commit on `main`** that drives the release-version automation; a non-conventional title breaks the
+version bump.
+
+- **Types:** `feat` (new capability), `fix`, `chore`, `test`, `docs`, `refactor`, `perf`, `build`, `ci`.
+- **Scope** (optional, encouraged) names the area: `feat(panelbridge): …`, `fix(pcb): …`.
+- **Breaking change:** `type(scope)!: …`, or a `BREAKING CHANGE:` footer.
+
+```text
+feat(firmware): add RotaryEncoder REL/DIR relative dispatch
+fix(gen_a4ec): commit id_ledger.json on metadata refresh
+docs(contributing): document the conventional-commit standard
+```
+
+Do **not** add `Co-Authored-By:` trailers or AI-attribution signatures — see
+[AI-Assisted Development](ai-assisted-development.md).
