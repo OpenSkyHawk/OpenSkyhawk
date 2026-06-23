@@ -7,6 +7,8 @@
 
 * **canIdEcho** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **canIdEvt** ([**CANProtocol.h**](CANProtocol_8h.md))
+* **canIdEvtDir** ([**CANProtocol.h**](CANProtocol_8h.md))
+* **canIdEvtRel** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **canIdHb** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **canIdReady** ([**CANProtocol.h**](CANProtocol_8h.md))
 

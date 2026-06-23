@@ -293,20 +293,23 @@
     <member refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kind="function"><name>gpioPin</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1RotaryEncoder" kind="class"><name>OpenSkyhawk::RotaryEncoder</name>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a52c4bb5db9a1dceed90deb7dbd03ebf6" kind="variable"><name>DEFAULT_STEP</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2d62fd70ec5400f90dc9fef5f32f8496" kind="variable"><name>_controlId</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" kind="variable"><name>_pinA</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" kind="variable"><name>_pinB</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a95cb1bbb905e95b51ce30ed2e560b02c" kind="variable"><name>_mode</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a0e1e8b0621274d1646a21758e54a7e42" kind="variable"><name>_step</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1af89eac629614783498bfd6d46580f2fb" kind="variable"><name>_stepsPerDetent</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" kind="variable"><name>_lastState</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" kind="variable"><name>_delta</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" kind="variable"><name>_initialized</name></member>
-    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ac9b6dc4679da1827f9641d9d9ade02e1" kind="function"><name>RotaryEncoder</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a67fad96aa0cb3d11f07de3813fe7e0e0" kind="function"><name>RotaryEncoder</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" kind="function"><name>poll</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" kind="function"><name>forceReport</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" kind="function"><name>configure</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" kind="function"><name>readState</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a8e81cbad00fab9236a9db28bd0aece82" kind="function"><name>decode</name></member>
-    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a79a58edf949d49cdc91ec2cba8bae547" kind="function"><name>emit</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2330448c45cd481e05d5ad2f405e3e55" kind="function"><name>emit</name></member>
   </compound>
   <compound refid="structRxQueueEntry" kind="struct"><name>RxQueueEntry</name>
     <member refid="structRxQueueEntry_1a758987839532de7c7ef2e059f552b033" kind="variable"><name>canId</name></member>
@@ -464,6 +467,9 @@
     <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2ab511e4945c1400b905ef7b43f8adb9fe" kind="enumvalue"><name>TWO_STEPS_PER_DETENT</name></member>
     <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2afa42a92f0be2d13e323ac04811ed12a5" kind="enumvalue"><name>FOUR_STEPS_PER_DETENT</name></member>
     <member refid="namespaceOpenSkyhawk_1a204bf288dc9f2f58eecca6d2311283a2afd30b9e4f5e407812e14cb854d146822" kind="enumvalue"><name>EIGHT_STEPS_PER_DETENT</name></member>
+    <member refid="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13" kind="enum"><name>RotaryMode</name></member>
+    <member refid="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13aa0dbd22abaaf4b7dc114db171111fb39" kind="enumvalue"><name>REL</name></member>
+    <member refid="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13a592f9f4e65ac3a6434b8448ddbb7bf8a" kind="enumvalue"><name>DIR</name></member>
     <member refid="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" kind="variable"><name>EASE</name></member>
     <member refid="namespaceOpenSkyhawk_1ad718667155d85fa62e6eff912a9c002f" kind="variable"><name>FRAME_MS</name></member>
     <member refid="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" kind="variable"><name>SETTLE_EPS</name></member>
@@ -1329,7 +1335,7 @@
     <member refid="CANProtocol_8cpp_1a9ed7b2fea647e9a1dea3f3ec42585d9c" kind="variable"><name>_rxRing</name></member>
     <member refid="CANProtocol_8cpp_1affe906eef67f71ca3d6d265cdc0a3d67" kind="variable"><name>_rxHead</name></member>
     <member refid="CANProtocol_8cpp_1a3a5a18863444e1f2b3857b697442e399" kind="variable"><name>_rxTail</name></member>
-    <member refid="CANProtocol_8cpp_1a6eded7aea2399972243adcb61f3f4838" kind="variable"><name>_batches</name></member>
+    <member refid="CANProtocol_8cpp_1ac5caedbb850aa03f69bab1a0216c7be2" kind="variable"><name>_batches</name></member>
     <member refid="CANProtocol_8cpp_1a5b2a3b8032d639af719c01040846a52c" kind="variable"><name>_statusCb</name></member>
     <member refid="CANProtocol_8cpp_1a9687dabc39156fd4bf066fcf14ede868" kind="variable"><name>_syncReqCb</name></member>
     <member refid="CANProtocol_8cpp_1a2794f36e9a2373b34e11d2b380ea327e" kind="variable"><name>_rxCb</name></member>
@@ -1372,6 +1378,8 @@
     <member refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kind="function"><name>__attribute__</name></member>
     <member refid="CANProtocol_8h_1a3688e2363e1deaa57d248e523f9ef44c" kind="function"><name>canIdHb</name></member>
     <member refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" kind="function"><name>canIdEvt</name></member>
+    <member refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" kind="function"><name>canIdEvtRel</name></member>
+    <member refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" kind="function"><name>canIdEvtDir</name></member>
     <member refid="CANProtocol_8h_1a6a9b896bfe9298c8fd1d2d7e80c140ba" kind="function"><name>canIdEcho</name></member>
     <member refid="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" kind="function"><name>canIdReady</name></member>
   </compound>

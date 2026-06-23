@@ -3985,6 +3985,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#enum-rotarymode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum RotaryMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-steppattern" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4335,7 +4346,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
-<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>RotaryEncoder</strong></a> <br><em>Incremental quadrature encoder on two pins (A/B). Emits a</em> <strong>direction</strong> <em>per detent over CAN (ENCODER dispatch): 1 = clockwise, 0 = counter-clockwise. Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>RotaryEncoder</strong></a> <br><em>Incremental quadrature encoder on two pins (A/B). Emits a signed</em> <strong>relative</strong> <em>value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">struct</td>
@@ -4379,6 +4390,10 @@
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-homemode"><strong>HomeMode</strong></a>  <br><em>How the driver establishes its zero reference at boot.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-rotarymode"><strong>RotaryMode</strong></a>  <br><em>Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
@@ -4514,6 +4529,15 @@
 <pre><code class="language-C++">enum OpenSkyhawk::HomeMode {
     STALL,
     SENSOR
+};
+</code></pre>
+<hr>
+
+<h3 id="enum-rotarymode">enum RotaryMode</h3>
+<p><em>Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent.</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::RotaryMode {
+    REL = 0,
+    DIR = 1
 };
 </code></pre>
 <hr>

@@ -3874,6 +3874,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#public-static-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3936,6 +3947,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Static Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-default_step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable DEFAULT_STEP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4050,11 +4089,26 @@
 
 <h1 id="class-openskyhawkrotaryencoder">Class OpenSkyhawk::RotaryEncoder</h1>
 <p><a href="../annotated/"><strong>ClassList</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>RotaryEncoder</strong></a></p>
-<p><em>Incremental quadrature encoder on two pins (A/B). Emits a</em> <strong>direction</strong> <em>per detent over CAN (ENCODER dispatch): 1 = clockwise, 0 = counter-clockwise. Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em><a href="#detailed-description">More...</a></p>
+<p><em>Incremental quadrature encoder on two pins (A/B). Emits a signed</em> <strong>relative</strong> <em>value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em><a href="#detailed-description">More...</a></p>
 <ul>
 <li><code>#include &lt;RotaryEncoder.h&gt;</code></li>
 </ul>
 <p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
+<h2 id="public-static-attributes">Public Static Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">constexpr int16_t</td>
+<td style="text-align: left;"><a href="#variable-default_step"><strong>DEFAULT_STEP</strong></a>   = <code>3200</code><br><em>REL per-detent magnitude (DCS suggested_step).</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -4066,7 +4120,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-rotaryencoder"><strong>RotaryEncoder</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pinA, <a href="../classPinRef/"><strong>PinRef</strong></a> pinB, <a href="../namespaceOpenSkyhawk/#enum-stepsperdetent"><strong>StepsPerDetent</strong></a> stepsPerDetent=ONE_STEP_PER_DETENT) <br><em>Construct a quadrature encoder.</em></td>
+<td style="text-align: left;"><a href="#function-rotaryencoder"><strong>RotaryEncoder</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pinA, <a href="../classPinRef/"><strong>PinRef</strong></a> pinB, <a href="../namespaceOpenSkyhawk/#enum-stepsperdetent"><strong>StepsPerDetent</strong></a> stepsPerDetent=ONE_STEP_PER_DETENT, <a href="../namespaceOpenSkyhawk/#enum-rotarymode"><strong>RotaryMode</strong></a> mode=REL, int16_t step=<a href="./#variable-default_step"><strong>DEFAULT_STEP</strong></a>) <br><em>Construct a quadrature encoder.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -4158,10 +4212,18 @@
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>A <em>relative</em> control — it reports motion, not an absolute position. Ports <a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <code>RotaryEncoder</code>: each poll reads the 2-bit Gray state <code>(A&lt;&lt;1)|B</code>, a transition table accumulates a signed delta, and when <code>|delta| &gt;= stepsPerDetent</code> a CW (1) or CCW (0) EVT is emitted and the delta is reduced by one detent. <code>stepsPerDetent</code> sets how many quadrature transitions make one emitted click — set it to the encoder's transitions-per-detent so one physical click = one EVT.</p>
-<p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> maps the 0/1 direction to the control's DCS-BIOS argument strings (<code>"DEC"</code>/<code>"INC"</code> for fixed_step, the ± increment for variable_step) via the input map — so the same class drives both kinds, the difference is entirely in the map entry.</p>
-<p><a href="./#function-forcereport"><strong>forceReport()</strong></a> resyncs the last state and emits <strong>nothing</strong> — a relative control has no baseline to report at boot / SYNC. <a href="./#function-configure"><strong>configure()</strong></a> does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).</p>
-<p>Used by: AN/ASN-41 ×7 push-to-set knobs (variable_step), AN/ARC-51A ×4 freq/preset (fixed_step). </p>
+<p>A <em>relative</em> control — it reports motion, not an absolute position. Ports <a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <code>RotaryEncoder</code>: each poll reads the 2-bit Gray state <code>(A&lt;&lt;1)|B</code>, a transition table accumulates a signed delta, and when <code>|delta| &gt;= stepsPerDetent</code> one detent fires (CW positive / CCW negative) and the delta is reduced by one detent. <code>stepsPerDetent</code> sets how many quadrature transitions make one emitted click — set it to the encoder's transitions-per-detent so one physical click = one EVT.</p>
+<p>Two modes, chosen at construction (see RotaryMode):
+* <strong>REL</strong> (variable_step knob, e.g. ASN-41 nav): emits <code>±step</code> on <code>canIdEvtRel</code>; the bridge sends <code>%+d</code> (e.g. <code>"+3200"</code>). <code>step</code> is build-side feel (default 3200 ≈ DCS suggested_step, ~20 detents per full throw); lower it for a finer knob. The magnitude lives here on the node, so retuning needs only a node reflash — never a bridge rebuild.
+* <strong>DIR</strong> (fixed_step selector with no indicator, e.g. ARC-51 freq): emits <code>±1</code> on <code>canIdEvtDir</code>; the bridge sends <code>INC</code>/<code>DEC</code>. Stateless — DCS owns the position and clamps at the band edges.</p>
+<p>Both modes are preset-safe: <a href="./#function-forcereport"><strong>forceReport()</strong></a> resyncs the last Gray state and emits <strong>nothing</strong> — a relative control has no baseline to assert at boot / SYNC, so it never clobbers a mission preset. <a href="./#function-configure"><strong>configure()</strong></a> does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).</p>
+<p>Dispatch is sourced from the class (the CAN frame), not the input map — see #147. </p>
+<h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-default_step">variable DEFAULT_STEP</h3>
+<p><em>REL per-detent magnitude (DCS suggested_step).</em> </p>
+<pre><code class="language-C++">constexpr int16_t OpenSkyhawk::RotaryEncoder::DEFAULT_STEP;
+</code></pre>
+<hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-rotaryencoder">function RotaryEncoder</h3>
 <p><em>Construct a quadrature encoder.</em> </p>
@@ -4169,7 +4231,9 @@
     uint16_t controlId,
     PinRef pinA,
     PinRef pinB,
-    StepsPerDetent stepsPerDetent=ONE_STEP_PER_DETENT
+    StepsPerDetent stepsPerDetent=ONE_STEP_PER_DETENT,
+    RotaryMode mode=REL,
+    int16_t step=DEFAULT_STEP
 ) 
 </code></pre>
 <p><strong>Parameters:</strong></p>
@@ -4177,7 +4241,9 @@
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
 <li><code>pinA</code> quadrature channel A. </li>
 <li><code>pinB</code> quadrature channel B (swap A/B to reverse the sensed direction). </li>
-<li><code>stepsPerDetent</code> quadrature transitions per emitted click (default ONE). </li>
+<li><code>stepsPerDetent</code> quadrature transitions per emitted click (default ONE; match the encoder). </li>
+<li><code>mode</code> REL (variable_step, ±step) or DIR (fixed_step, ±1). Default REL. </li>
+<li><code>step</code> REL magnitude emitted per detent (default DEFAULT_STEP). Ignored in DIR. </li>
 </ul>
 <hr>
 

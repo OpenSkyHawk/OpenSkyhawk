@@ -83,6 +83,8 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 |  struct | [**\_\_attribute\_\_**](#function-__attribute__) ((packed)) <br>_Primary input/output routing packet. 4 bytes; two are batched for CTRL\_BCAST/EVT\_n._  |
 |  constexpr uint32\_t | [**canIdEcho**](#function-canidecho) (uint8\_t n) <br>_TEST\_SEQ echo frame ID for node n. Range 0x301-0x33F._  |
 |  constexpr uint32\_t | [**canIdEvt**](#function-canidevt) (uint8\_t n) <br>_Input event frame ID for node n. Range 0x201-0x23F._  |
+|  constexpr uint32\_t | [**canIdEvtDir**](#function-canidevtdir) (uint8\_t n) <br>_Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it_ `INC` _/_`DEC` _for a DCS-BIOS fixed\_step control. Range 0x601-0x63F._ |
+|  constexpr uint32\_t | [**canIdEvtRel**](#function-canidevtrel) (uint8\_t n) <br>_Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a signed ±step (int16); the bridge formats it_ `%+d` _for a DCS-BIOS variable\_step control. Range 0x501-0x53F._ |
 |  constexpr uint32\_t | [**canIdHb**](#function-canidhb) (uint8\_t n) <br>_Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
 |  constexpr uint32\_t | [**canIdReady**](#function-canidready) (uint8\_t n) <br>_Boot-complete READY frame ID for node n. Range 0x401-0x43F._  |
 
@@ -400,6 +402,38 @@ constexpr uint32_t canIdEcho (
 _Input event frame ID for node n. Range 0x201-0x23F._ 
 ```C++
 constexpr uint32_t canIdEvt (
+    uint8_t n
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function canIdEvtDir 
+
+_Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it_ `INC` _/_`DEC` _for a DCS-BIOS fixed\_step control. Range 0x601-0x63F._
+```C++
+constexpr uint32_t canIdEvtDir (
+    uint8_t n
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function canIdEvtRel 
+
+_Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a signed ±step (int16); the bridge formats it_ `%+d` _for a DCS-BIOS variable\_step control. Range 0x501-0x53F._
+```C++
+constexpr uint32_t canIdEvtRel (
     uint8_t n
 ) 
 ```

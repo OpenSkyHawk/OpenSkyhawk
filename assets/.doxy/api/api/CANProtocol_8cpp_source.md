@@ -52,7 +52,7 @@ static RxQueueEntry      _rxRing[RX_RING_SIZE];
 static volatile uint8_t  _rxHead = 0;
 static volatile uint8_t  _rxTail = 0;
 
-static BatchState         _batches[2];
+static BatchState         _batches[4];
 
 static CanStatusCallback  _statusCb  = nullptr;
 static CanSyncReqCallback _syncReqCb = nullptr;
@@ -203,8 +203,10 @@ static void _startInternal(uint32_t mode) {
     HAL_CAN_ActivateNotification(hcan,
         CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY);
 
-    _batches[0] = { CAN_ID_CTRL_BCAST, false, {0, 0}, 0 };
-    _batches[1] = { canIdEvt(NODE_ID),  false, {0, 0}, 0 };
+    _batches[0] = { CAN_ID_CTRL_BCAST,    false, {0, 0}, 0 };
+    _batches[1] = { canIdEvt(NODE_ID),    false, {0, 0}, 0 };
+    _batches[2] = { canIdEvtRel(NODE_ID), false, {0, 0}, 0 };  // RotaryEncoder REL
+    _batches[3] = { canIdEvtDir(NODE_ID), false, {0, 0}, 0 };  // RotaryEncoder DIR
 
     _status = CanStatus::NORMAL;
     if (_statusCb) _statusCb(_status);

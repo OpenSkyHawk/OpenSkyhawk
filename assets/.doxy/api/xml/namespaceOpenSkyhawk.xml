@@ -200,6 +200,37 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="17" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="17" bodyend="22"/>
       </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>RotaryMode</name>
+        <qualifiedname>OpenSkyhawk::RotaryMode</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13aa0dbd22abaaf4b7dc114db171111fb39" prot="public">
+          <name>REL</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+<para>variable_step knob: emit signed ±step on canIdEvtRel; bridge formats <computeroutput>%+d</computeroutput>. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a00d2d21f3acc891c19bebb85726dba13a592f9f4e65ac3a6434b8448ddbb7bf8a" prot="public">
+          <name>DIR</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>fixed_step selector: emit signed ±1 on canIdEvtDir; bridge formats <computeroutput>INC</computeroutput>/<computeroutput>DEC</computeroutput>. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="28" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="28" bodyend="31"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="var">
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" prot="public" static="yes" mutable="no">

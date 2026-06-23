@@ -193,7 +193,7 @@ constexpr uint8_t TX_RING_SIZE;
 ### variable \_batches 
 
 ```C++
-BatchState _batches[2];
+BatchState _batches[4];
 ```
 
 

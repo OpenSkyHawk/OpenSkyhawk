@@ -30,6 +30,11 @@
 * **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d39.md))
 
 
+## r
+
+* **RotaryMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## s
 
 * **StepPattern** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))

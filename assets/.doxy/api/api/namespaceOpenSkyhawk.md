@@ -49,7 +49,7 @@
 | class | [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md) <br>_Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) <br>_DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._ |
 | class | [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) <br>_Abstract base for all DCS-driven output objects._  |
-| class | [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) <br>_Incremental quadrature encoder on two pins (A/B). Emits a_ **direction** _per detent over CAN (ENCODER dispatch): 1 = clockwise, 0 = counter-clockwise. Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
+| class | [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) <br>_Incremental quadrature encoder on two pins (A/B). Emits a signed_ **relative** _value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | struct | [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) <br>_Full per-instance stepper configuration. Authored per sketch (panel wiring)._  |
 | class | [**StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md) <br>_Non-blocking instrument-gauge stepper driven through_ [_**PinRef**_](classPinRef.md) _coils._ |
 | class | [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md) <br>_Debounced 2-position switch. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
@@ -64,6 +64,7 @@
 | enum uint8\_t | [**DrumFont**](#enum-drumfont)  <br>_Glyph font size. Maps to a fixed monospace ProFont face._  |
 | enum uint8\_t | [**DrumScroll**](#enum-drumscroll)  <br>_Scroll behaviour per readout._  |
 | enum uint8\_t | [**HomeMode**](#enum-homemode)  <br>_How the driver establishes its zero reference at boot._  |
+| enum uint8\_t | [**RotaryMode**](#enum-rotarymode)  <br>_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent._  |
 | enum uint8\_t | [**StepPattern**](#enum-steppattern)  <br>_Coil energising sequence._  |
 | enum uint8\_t | [**StepsPerDetent**](#enum-stepsperdetent)  <br>_Quadrature transitions per mechanical detent (match to the encoder)._  |
 
@@ -211,6 +212,23 @@ _How the driver establishes its zero reference at boot._
 enum OpenSkyhawk::HomeMode {
     STALL,
     SENSOR
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum RotaryMode 
+
+_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent._ 
+```C++
+enum OpenSkyhawk::RotaryMode {
+    REL = 0,
+    DIR = 1
 };
 ```
 

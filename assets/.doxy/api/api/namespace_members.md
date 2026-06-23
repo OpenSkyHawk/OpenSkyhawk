@@ -109,6 +109,7 @@
 ## r
 
 * **rec** ([**CANProtocol**](namespaceCANProtocol.md))
+* **RotaryMode** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **readCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
 * **readLivePin** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerADC** ([**PanelGroup**](namespacePanelGroup.md))
