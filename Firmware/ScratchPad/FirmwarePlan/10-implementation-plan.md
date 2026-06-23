@@ -185,9 +185,10 @@ Do not start these until the matching TechSpec file is marked **Ready for implem
 ## Phase 5 — Output Types
 
 - [ ] Implement `AnalogOutput` (backlight dimming — 3 zones per MCU board).
-- [ ] Implement `SwitecX25Output` (software homing, `~SLEEP` pin, non-blocking update).
-- [ ] Implement `AccelStepperOutput` (physical home sensor, `~SLEEP` pin, non-blocking run).
-- [ ] Implement `ServoOutput` (Arduino Servo library, pulse-width control).
+- [x] Implement `NeedleGauge` + the `MotorDriver` / `StepperMotor` layer — supersedes the former
+      `SwitecX25Output` / `AccelStepperOutput` / `ServoOutput` (one gauge class over a swappable
+      backend; STALL or sensor homing, non-blocking update). (#122 / #131)
+- [ ] `ServoMotor` `MotorDriver` backend (servo-driven pointers). (#132)
 
 ---
 
