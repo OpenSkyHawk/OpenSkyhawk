@@ -2947,6 +2947,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#commits-and-pr-titles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commits and PR titles
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4085,6 +4096,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#commits-and-pr-titles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commits and PR titles
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4172,6 +4194,22 @@ them honestly.</p>
 <h2 id="dont-commit-build-output">Don't commit build output</h2>
 <p><code>site/</code> (MkDocs build) and generated <code>docs/api/</code> detail pages are gitignored — don't commit
 them. See <a href="../docs-workflow/">Docs Workflow</a>.</p>
+<h2 id="commits-and-pr-titles">Commits and PR titles</h2>
+<p>Use <strong><a href="https://www.conventionalcommits.org/">Conventional Commits</a></strong> — <code>type(scope): summary</code> —
+for <strong>both commit messages and PR titles</strong>. The repo squash-merges, so the <strong>PR title becomes the
+commit on <code>main</code></strong> that drives the release-version automation; a non-conventional title breaks the
+version bump.</p>
+<ul>
+<li><strong>Types:</strong> <code>feat</code> (new capability), <code>fix</code>, <code>chore</code>, <code>test</code>, <code>docs</code>, <code>refactor</code>, <code>perf</code>, <code>build</code>, <code>ci</code>.</li>
+<li><strong>Scope</strong> (optional, encouraged) names the area: <code>feat(panelbridge): …</code>, <code>fix(pcb): …</code>.</li>
+<li><strong>Breaking change:</strong> <code>type(scope)!: …</code>, or a <code>BREAKING CHANGE:</code> footer.</li>
+</ul>
+<pre><code class="language-text">feat(firmware): add RotaryEncoder REL/DIR relative dispatch
+fix(gen_a4ec): commit id_ledger.json on metadata refresh
+docs(contributing): document the conventional-commit standard
+</code></pre>
+<p>Do <strong>not</strong> add <code>Co-Authored-By:</code> trailers or AI-attribution signatures — see
+<a href="../ai-assisted-development/">AI-Assisted Development</a>.</p>
 
 
 
