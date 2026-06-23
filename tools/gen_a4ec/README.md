@@ -31,10 +31,16 @@ python tools/gen_a4ec/gen_a4ec.py \
   --timestamp "2025-01-01T00:00:00Z"
 ```
 
-After running, commit all changed files in `Firmware/Libraries/A4EC/` and reflash
-all boards. PanelBridge and every PanelGroup node must run firmware built from
-the same header revision — `DCSIN_*` IDs are not backward-compatible across
-regenerations.
+After running, commit all changed files in `Firmware/Libraries/A4EC/` **and
+`tools/gen_a4ec/id_ledger.json`** (the append-only id ledger — the durable source
+of truth for `DCSIN_*` assignment), then reflash all boards. PanelBridge and every
+PanelGroup node should run firmware built from the same header revision.
+
+`DCSIN_*` ids are **stable across regenerations**: the ledger keeps each control's
+id for its lifetime, appends a new control at `max+1`, and retires (never reuses) a
+removed control's id — so a snapshot update never renumbers existing controls, it
+only appends. Deleting the ledger re-seeds from scratch (renumbers everything), so
+keep it committed.
 
 ## Source resolution (priority order)
 
@@ -71,8 +77,12 @@ cp Firmware/ScratchPad/DCS-BIOS/DCS-BIOS/doc/doc_assets/A-4E-C.jsonp tools/gen_a
 python tools/gen_a4ec/gen_a4ec.py
 ```
 
-Commit both the updated `data/A-4E-C.jsonp` and all changed files in
-`Firmware/Libraries/A4EC/`.
+Commit the updated `data/A-4E-C.jsonp`, all changed files in
+`Firmware/Libraries/A4EC/`, **and `tools/gen_a4ec/id_ledger.json`** — the ledger
+changes whenever the regen appends a new control's ID or retires a removed one,
+and it is the durable source of truth for `DCSIN_*` assignment. Dropping it would
+let the next regen re-derive IDs from a stale ledger (the renumber it exists to
+prevent).
 
 ## Fetching from GitHub
 

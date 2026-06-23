@@ -31,6 +31,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT  = SCRIPT_DIR.parent.parent
 OUTPUT_DIR = REPO_ROOT / "Firmware" / "Libraries" / "A4EC"
 COMMITTED_SNAPSHOT = SCRIPT_DIR / "data" / "A-4E-C.jsonp"
+LEDGER_PATH        = SCRIPT_DIR / "id_ledger.json"
 
 DCSIN_BASE = 0x8001
 DCSIN_MAX  = 0x86FF
@@ -162,9 +163,29 @@ def classify_input(name: str, inputs: list) -> dict:
     return {"_skip": True, "_reason": "unsupported",
             "_detail": f"Unrecognised interface combination: {sorted(interface_set)}"}
 
+# ── ID ledger — append-only DCSIN assignment ─────────────────────────────────
+# The cmdId for a control is assigned once and never changes: the ledger is the
+# durable source of truth, the headers derive from it. New controls append at the
+# end (max+1); removed controls keep their id reserved (never reused), so a stale
+# sketch reference can't silently resolve to a different control. On first run the
+# ledger is absent → controls are numbered alphabetically from DCSIN_BASE (matching
+# the historical assignment) and the ledger is created — output is byte-identical.
+
+def load_ledger(path: Path = LEDGER_PATH) -> dict:
+    """Load the committed {name: cmdId} ledger; empty dict on first run (auto-seeds)."""
+    if path.exists():
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        return {k: int(v) for k, v in raw.items()}
+    return {}
+
+def save_ledger(ledger: dict, path: Path = LEDGER_PATH) -> None:
+    """Persist the ledger sorted by id (stable diff). Retired ids stay; they are not popped."""
+    ordered = dict(sorted(ledger.items(), key=lambda kv: kv[1]))
+    path.write_text(json.dumps(ordered, indent=2) + "\n", encoding="utf-8")
+
 # ── Input pass ────────────────────────────────────────────────────────────────
 
-def build_input_entries(controls: dict) -> tuple:
+def build_input_entries(controls: dict, ledger_path: Path = LEDGER_PATH) -> tuple:
     """
     Returns (mapped_entries, gaps).
 
@@ -182,9 +203,11 @@ def build_input_entries(controls: dict) -> tuple:
             f"(0x{DCSIN_BASE:04X}–0x{DCSIN_MAX:04X})"
         )
 
+    ledger  = load_ledger(ledger_path)                        # {name: cmdId}, append-only
+    next_id = (max(ledger.values()) + 1) if ledger else DCSIN_BASE
+
     mapped = []
     gaps   = []
-    cmd_id = DCSIN_BASE
 
     for name, ctrl in candidates:
         result = classify_input(name, ctrl["inputs"])
@@ -192,18 +215,28 @@ def build_input_entries(controls: dict) -> tuple:
             gaps.append({"name": name,
                          "reason": result["_reason"],
                          "detail": result["_detail"]})
-        else:
-            mapped.append({
-                "name":     name,
-                "cmdId":    cmd_id,
-                "type":     result["type"],
-                "arg0":     result["arg0"],
-                "arg1":     result["arg1"],
-                "arg0fast": result["arg0fast"],
-                "arg1fast": result["arg1fast"],
-            })
-            cmd_id += 1
+            continue
 
+        if name in ledger:                                    # keep previously-assigned id
+            cmd_id = ledger[name]
+        else:                                                 # new control → append at the end
+            cmd_id = next_id
+            ledger[name] = cmd_id
+            next_id += 1
+        if cmd_id > DCSIN_MAX:
+            sys.exit(f"ERROR: DCSIN id space exhausted assigning {name}")
+
+        mapped.append({
+            "name":     name,
+            "cmdId":    cmd_id,
+            "type":     result["type"],
+            "arg0":     result["arg0"],
+            "arg1":     result["arg1"],
+            "arg0fast": result["arg0fast"],
+            "arg1fast": result["arg1fast"],
+        })
+
+    save_ledger(ledger, ledger_path)                          # retired ids stay reserved
     return mapped, gaps
 
 # ── Output pass ───────────────────────────────────────────────────────────────
@@ -339,7 +372,7 @@ def emit_inputmap(entries: list, source_name: str, ts: str) -> str:
         "static const DcsBiosInputEntry A4EC_INPUT_MAP[] = {",
     ]
 
-    for e in entries:
+    for e in sorted(entries, key=lambda x: x["cmdId"]):
         row = (
             f'    {{ DCSIN_{e["name"]}, '
             f'{_TYPE_NAMES[e["type"]]}, '
