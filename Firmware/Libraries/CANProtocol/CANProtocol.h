@@ -202,11 +202,13 @@ namespace CANProtocol {
     /**
      * @brief Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.
      *
-     * Valid only for CAN_ID_CTRL_BCAST and canIdEvt(n). Pairs two consecutive packets
-     * into one 8-byte frame. If slot B does not arrive within two drain() calls,
-     * slot A is sent with slot B set to the null sentinel (controlId == 0x0000).
+     * Valid only for CAN_ID_CTRL_BCAST and the batched event frames — canIdEvt(n)
+     * (absolute), canIdEvtRel(n) (RotaryEncoder REL), and canIdEvtDir(n) (RotaryEncoder
+     * DIR) — each with its own pending slot. Pairs two consecutive packets into one
+     * 8-byte frame. If slot B does not arrive within two drain() calls, slot A is sent
+     * with slot B set to the null sentinel (controlId == 0x0000).
      *
-     * @param canId  CAN_ID_CTRL_BCAST or canIdEvt(NODE_ID).
+     * @param canId  CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID), or canIdEvtDir(NODE_ID).
      * @param pkt    ControlPacket to batch.
      */
     void sendBatched(uint32_t canId, const ControlPacket& pkt);
@@ -217,7 +219,7 @@ namespace CANProtocol {
      * If the named CAN ID has a pending slot A, sends it with slot B as the null
      * sentinel. No-op if no packet is pending.
      *
-     * @param canId CAN_ID_CTRL_BCAST or canIdEvt(NODE_ID).
+     * @param canId CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID), or canIdEvtDir(NODE_ID).
      */
     void flushBatched(uint32_t canId);
 

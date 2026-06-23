@@ -16,7 +16,12 @@ static_assert(sizeof(HeartbeatPayload)  == 8, "HeartbeatPayload must be 8 bytes"
 static_assert(canIdHb(0)    == 0x100U, "canIdHb(0) reserved for PanelBridge");
 static_assert(canIdHb(1)    == 0x101U, "canIdHb(1) must be 0x101");
 static_assert(canIdHb(63)   == 0x13FU, "canIdHb(63) must be 0x13F");
-static_assert(canIdEvt(1)   == 0x201U, "canIdEvt(1) must be 0x201");
+static_assert(canIdEvt(1)     == 0x201U, "canIdEvt(1) must be 0x201");
+static_assert(canIdEvt(63)    == 0x23FU, "canIdEvt(63) must be 0x23F");
+static_assert(canIdEvtRel(1)  == 0x501U, "canIdEvtRel(1) must be 0x501");
+static_assert(canIdEvtRel(63) == 0x53FU, "canIdEvtRel(63) must be 0x53F");
+static_assert(canIdEvtDir(1)  == 0x601U, "canIdEvtDir(1) must be 0x601");
+static_assert(canIdEvtDir(63) == 0x63FU, "canIdEvtDir(63) must be 0x63F");
 static_assert(canIdEcho(1)  == 0x301U, "canIdEcho(1) must be 0x301");
 static_assert(canIdReady(1) == 0x401U, "canIdReady(1) must be 0x401");
 
