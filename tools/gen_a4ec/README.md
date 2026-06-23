@@ -77,8 +77,12 @@ cp Firmware/ScratchPad/DCS-BIOS/DCS-BIOS/doc/doc_assets/A-4E-C.jsonp tools/gen_a
 python tools/gen_a4ec/gen_a4ec.py
 ```
 
-Commit both the updated `data/A-4E-C.jsonp` and all changed files in
-`Firmware/Libraries/A4EC/`.
+Commit the updated `data/A-4E-C.jsonp`, all changed files in
+`Firmware/Libraries/A4EC/`, **and `tools/gen_a4ec/id_ledger.json`** — the ledger
+changes whenever the regen appends a new control's ID or retires a removed one,
+and it is the durable source of truth for `DCSIN_*` assignment. Dropping it would
+let the next regen re-derive IDs from a stale ledger (the renumber it exists to
+prevent).
 
 ## Fetching from GitHub
 
