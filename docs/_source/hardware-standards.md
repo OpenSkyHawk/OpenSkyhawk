@@ -201,6 +201,36 @@ LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the sign
 
 - Toggle switches: 12 mm (standard), ~6 mm (ECM modules)
 
+### Rotary encoders (EC11 / bare quadrature)
+
+- A and B → two GPIO, each with a **10 kΩ pull-up to 3V3**. The `RotaryEncoder` class sets a plain
+  `INPUT` (no internal pull-up), so an open contact floats without the external resistor. Common → GND.
+- The integral push-switch on a 5-pin EC11 is a separate SPST — wire it as its own `Switch2Pos`, or
+  leave the two switch pins unconnected if out of scope.
+- Reverse the sensed direction by swapping the A/B pins — no firmware change.
+
+### Potentiometers (analog)
+
+- A pot is already a divider: wiper → an **ADC pin**, the two ends → `+3V3` and `GND`. No added
+  resistors.
+- **High end → 3V3, never 5 V.** The STM32F103 ADC pins (PA0–PA7, PB0, PB1) are **not 5 V-tolerant**;
+  5 V damages them. Reverse the travel by swapping the end terminals.
+
+### Freeing the JTAG pins for breakout GPIO
+
+`PA15` (JTDI), `PB3` (JTDO), `PB4` (NJTRST) power up as the JTAG-DP. On the **PanelGroup base** they
+are exposed as remap-gated breakout pins; to use them as ordinary GPIO, remap SWJ to SWD-only early
+in `setup()`. This keeps SWD (PA13/PA14) live so ST-Link still flashes, and releases only the three
+JTAG pins:
+
+```cpp
+__HAL_RCC_AFIO_CLK_ENABLE();
+__HAL_AFIO_REMAP_SWJ_NOJTAG();   // JTAG off, SWD on → PA15/PB3/PB4 usable as GPIO
+```
+
+The Gateway/Bridge base leaves these NC — it has enough clean breakout pins not to bother (see
+[base boards](base-boards.md)).
+
 ## CAN Transceiver
 
 **Selected: SN65HVD230** — SOIC-8, 3.3V logic.
