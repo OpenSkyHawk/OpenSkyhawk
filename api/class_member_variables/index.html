@@ -4388,6 +4388,8 @@
 <h2 id="d">d</h2>
 <ul>
 <li><strong>delayUs</strong> (<a href="../structOpenSkyhawk_1_1AccelPoint/"><strong>OpenSkyhawk::AccelPoint</strong></a>)</li>
+<li><strong>DEFAULT_EWMA_SHIFT</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
+<li><strong>DEFAULT_HYSTERESIS</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
 <li><strong>DEFAULT_DEADBAND</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
 <li><strong>digitHeightMm</strong> (<a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>OpenSkyhawk::DrumReadout</strong></a>)</li>
 <li><strong>digitWidthMm</strong> (<a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>OpenSkyhawk::DrumReadout</strong></a>)</li>
@@ -4430,6 +4432,7 @@
 </ul>
 <h2 id="m">m</h2>
 <ul>
+<li><strong>MAX_EWMA_SHIFT</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
 <li><strong>MAX_CELLS</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>mask</strong> (<a href="../structOpenSkyhawk_1_1DrumFlag/"><strong>OpenSkyhawk::DrumFlag</strong></a>, <a href="../structOpenSkyhawk_1_1DrumSource/"><strong>OpenSkyhawk::DrumSource</strong></a>)</li>
 <li><strong>maxTravel</strong> (<a href="../structOpenSkyhawk_1_1GaugeCal/"><strong>OpenSkyhawk::GaugeCal</strong></a>)</li>
@@ -4449,7 +4452,7 @@
 </ul>
 <h2 id="p">p</h2>
 <ul>
-<li><strong>POLL_MS</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
+<li><strong>POLL_MS</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>, <a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
 <li><strong>place</strong> (<a href="../structOpenSkyhawk_1_1DrumSource/"><strong>OpenSkyhawk::DrumSource</strong></a>)</li>
 <li><strong>parkPosition</strong> (<a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>OpenSkyhawk::StepperConfig</strong></a>)</li>
 <li><strong>pattern</strong> (<a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>OpenSkyhawk::StepperConfig</strong></a>)</li>
@@ -4482,11 +4485,21 @@
 </ul>
 <h2 id="_">_</h2>
 <ul>
+<li><strong>_acc</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
+<li><strong>_controlId</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>, <a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a>, <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>, <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a>, <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>, <a href="../classOpenSkyhawk_1_1NeedleGauge/"><strong>OpenSkyhawk::NeedleGauge</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
+<li><strong>_ewmaShift</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
+<li><strong>_hysteresis</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
+<li><strong>_initialized</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>, <a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
+<li><strong>_lastReadMs</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>, <a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
+<li><strong>_lastSent</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
+<li><strong>_maxRaw</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
+<li><strong>_minRaw</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
+<li><strong>_pin</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>, <a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>, <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
+<li><strong>_reverse</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>, <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>, <a href="../classOpenSkyhawk_1_1Switch3Pos/"><strong>OpenSkyhawk::Switch3Pos</strong></a>, <a href="../classOpenSkyhawk_1_1SwitchMultiPos/"><strong>OpenSkyhawk::SwitchMultiPos</strong></a>)</li>
+<li><strong>_smoothed</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>)</li>
 <li><strong>_cachedIdx</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
 <li><strong>_deadband</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
 <li><strong>_forceRead</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
-<li><strong>_lastReadMs</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
-<li><strong>_pin</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>, <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
 <li><strong>_posVals</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
 <li><strong>_cellData</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_cellH</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
@@ -4514,7 +4527,6 @@
 <li><strong>_xOffMm</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_yOffMm</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_axisIndex</strong> (<a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a>)</li>
-<li><strong>_controlId</strong> (<a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a>, <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>, <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a>, <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>, <a href="../classOpenSkyhawk_1_1NeedleGauge/"><strong>OpenSkyhawk::NeedleGauge</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
 <li><strong>_head</strong> (<a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a>, <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>, <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a>, <a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a>, <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a>)</li>
 <li><strong>_next</strong> (<a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a>, <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>, <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a>, <a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a>, <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a>)</li>
 <li><strong>_buttonIndex</strong> (<a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>)</li>
@@ -4524,10 +4536,8 @@
 <li><strong>_wire</strong> (<a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a>)</li>
 <li><strong>_lastOn</strong> (<a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>)</li>
 <li><strong>_mask</strong> (<a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1NeedleGauge/"><strong>OpenSkyhawk::NeedleGauge</strong></a>)</li>
-<li><strong>_reverse</strong> (<a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>, <a href="../classOpenSkyhawk_1_1Switch3Pos/"><strong>OpenSkyhawk::Switch3Pos</strong></a>, <a href="../classOpenSkyhawk_1_1SwitchMultiPos/"><strong>OpenSkyhawk::SwitchMultiPos</strong></a>)</li>
 <li><strong>_debounceMs</strong> (<a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>)</li>
 <li><strong>_debounceStartMs</strong> (<a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
-<li><strong>_initialized</strong> (<a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
 <li><strong>_lastPos</strong> (<a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>)</li>
 <li><strong>_numPositions</strong> (<a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>)</li>
 <li><strong>_pendingPos</strong> (<a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>)</li>

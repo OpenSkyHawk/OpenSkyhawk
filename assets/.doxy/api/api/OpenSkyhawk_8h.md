@@ -19,6 +19,7 @@ _Umbrella include for_ [_**PanelGroup**_](namespacePanelGroup.md) _sketch files.
 * `#include <Inputs/Switch3Pos/Switch3Pos.h>`
 * `#include <Inputs/SwitchMultiPos/SwitchMultiPos.h>`
 * `#include <Inputs/AnalogMultiPos/AnalogMultiPos.h>`
+* `#include <Inputs/AnalogInput/AnalogInput.h>`
 * `#include <A4EC_CmdIds.h>`
 * `#include <A4EC_OutputIds.h>`
 

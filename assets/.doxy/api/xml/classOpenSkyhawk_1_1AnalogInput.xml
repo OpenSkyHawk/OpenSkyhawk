@@ -1,0 +1,542 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1AnalogInput" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::AnalogInput</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
+    <includes refid="AnalogInput_8h" local="no">AnalogInput.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a5befd11f71ef63da0eeecade9369b49c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::AnalogInput::DEFAULT_HYSTERESIS</definition>
+        <argsstring></argsstring>
+        <name>DEFAULT_HYSTERESIS</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::DEFAULT_HYSTERESIS</qualifiedname>
+        <initializer>= 128</initializer>
+        <briefdescription>
+<para>counts on the 16-bit output. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="41" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1acce89dec9a0ff1e3bb768c63d4a6d8b7" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::AnalogInput::DEFAULT_EWMA_SHIFT</definition>
+        <argsstring></argsstring>
+        <name>DEFAULT_EWMA_SHIFT</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::DEFAULT_EWMA_SHIFT</qualifiedname>
+        <initializer>= 3</initializer>
+        <briefdescription>
+<para>EWMA α = 1/2^3 = 1/8. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="42" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1af107f07386028bb09320cb09f6551697" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::AnalogInput::MAX_EWMA_SHIFT</definition>
+        <argsstring></argsstring>
+        <name>MAX_EWMA_SHIFT</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::MAX_EWMA_SHIFT</qualifiedname>
+        <initializer>= 15</initializer>
+        <briefdescription>
+<para>cap: scaled&lt;&lt;shift must fit int32 at full scale. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="43" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1ac909af9ee952dd06c8417fc31b1be48e" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::AnalogInput::POLL_MS</definition>
+        <argsstring></argsstring>
+        <name>POLL_MS</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::POLL_MS</qualifiedname>
+        <initializer>= 8</initializer>
+        <briefdescription>
+<para>min interval between ADC reads (ms). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="44" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1ab35d52c8f139ccbfa51f85aa21eafaf5" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogInput::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="91" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a42f0798c65dff419c162fd8eed8e8f88" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::AnalogInput::_pin</definition>
+        <argsstring></argsstring>
+        <name>_pin</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_pin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="92" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a4477fce8db8a47ac3142007e8d18f3bb" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::AnalogInput::_reverse</definition>
+        <argsstring></argsstring>
+        <name>_reverse</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_reverse</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="93" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a13fbeea87fb1c0162f04ac560f7ceaa2" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogInput::_minRaw</definition>
+        <argsstring></argsstring>
+        <name>_minRaw</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_minRaw</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="94" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a7e998cd20e55352dcb22c8c655388c4d" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogInput::_maxRaw</definition>
+        <argsstring></argsstring>
+        <name>_maxRaw</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_maxRaw</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="95" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a25a49616fcab6236b5ddd4e3839f92df" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogInput::_hysteresis</definition>
+        <argsstring></argsstring>
+        <name>_hysteresis</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_hysteresis</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="96" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1ae2d426df78a502fdc62df664dcb7dcc2" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::AnalogInput::_ewmaShift</definition>
+        <argsstring></argsstring>
+        <name>_ewmaShift</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_ewmaShift</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="97" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a71a08a74a7f5116adc43730d1aa36dd0" prot="private" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::AnalogInput::_acc</definition>
+        <argsstring></argsstring>
+        <name>_acc</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_acc</qualifiedname>
+        <briefdescription>
+<para>EWMA accumulator (smoothed value &lt;&lt; ewmaShift). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="98" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1aadea69ecd586a9ffead1dfc44b4a0c5c" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogInput::_smoothed</definition>
+        <argsstring></argsstring>
+        <name>_smoothed</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_smoothed</qualifiedname>
+        <briefdescription>
+<para>current EWMA output. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="99" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1adcb9aaa46d53aa9760ec2095cc4c30ad" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogInput::_lastSent</definition>
+        <argsstring></argsstring>
+        <name>_lastSent</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_lastSent</qualifiedname>
+        <briefdescription>
+<para>last emitted value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="100" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1ab31c7d5d2996ae6386430dc7b2089c75" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::AnalogInput::_lastReadMs</definition>
+        <argsstring></argsstring>
+        <name>_lastReadMs</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_lastReadMs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="101" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogInput_1a120ef4be8db266b63db82a02a2b3b20a" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::AnalogInput::_initialized</definition>
+        <argsstring></argsstring>
+        <name>_initialized</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::_initialized</qualifiedname>
+        <briefdescription>
+<para>false until <ref refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25" kindref="member">forceReport()</ref>; <ref refid="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284" kindref="member">poll()</ref> no-op before this. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="102" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1a7221f88af51fc58b6e4bbb44fc019377" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::AnalogInput::AnalogInput</definition>
+        <argsstring>(uint16_t controlId, PinRef pin, bool reverse=false, uint16_t minRaw=0, uint16_t maxRaw=65535, uint16_t hysteresis=DEFAULT_HYSTERESIS, uint8_t ewmaShift=DEFAULT_EWMA_SHIFT)</argsstring>
+        <name>AnalogInput</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::AnalogInput</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pin</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>reverse</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>minRaw</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>maxRaw</declname>
+          <defval>65535</defval>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>hysteresis</declname>
+          <defval><ref refid="classOpenSkyhawk_1_1AnalogInput_1a5befd11f71ef63da0eeecade9369b49c" kindref="member">DEFAULT_HYSTERESIS</ref></defval>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>ewmaShift</declname>
+          <defval><ref refid="classOpenSkyhawk_1_1AnalogInput_1acce89dec9a0ff1e3bb768c63d4a6d8b7" kindref="member">DEFAULT_EWMA_SHIFT</ref></defval>
+        </param>
+        <briefdescription>
+<para>Construct a continuous analog input. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>analog <ref refid="classPinRef" kindref="compound">PinRef</ref> (STM32 ADC GPIO or <ref refid="classADS1115" kindref="compound">ADS1115</ref> channel). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>false (default): minRaw → 0, maxRaw → 65535. true: inverted. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>minRaw</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>raw ADC value mapping to 0 (default 0). Readings below are clamped. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxRaw</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>raw ADC value mapping to 65535 (default 65535). Above are clamped. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hysteresis</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>output counts of movement required before a new value is emitted. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ewmaShift</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8). Capped to MAX_EWMA_SHIFT (15) — beyond that the int32 accumulator (scaled &lt;&lt; shift) would overflow at full scale. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="59" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="14" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogInput::poll</definition>
+        <argsstring>() override</argsstring>
+        <name>poll</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::poll</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45">poll</reimplements>
+        <briefdescription>
+<para>Throttled ADC read + EWMA; emit when the value clears the hysteresis or a rail. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="64" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="89" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogInput::forceReport</definition>
+        <argsstring>() override</argsstring>
+        <name>forceReport</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::forceReport</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92">forceReport</reimplements>
+        <briefdescription>
+<para>Sample fresh (bypassing the throttle) and emit the current value as the baseline. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="67" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="80" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogInput::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c">configure</reimplements>
+        <briefdescription>
+<para>Configure the pin as an input. Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="70" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="30" bodyend="32"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1a08f28e32f3db305153fed58b96600ba1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogInput::sample</definition>
+        <argsstring>()</argsstring>
+        <name>sample</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::sample</qualifiedname>
+        <briefdescription>
+<para>one read + EWMA step + conditional emit (no throttle). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="86" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="73" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1aaba91f4aecd81038b5cd5a15a55df91f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogInput::readScaled</definition>
+        <argsstring>()</argsstring>
+        <name>readScaled</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::readScaled</qualifiedname>
+        <briefdescription>
+<para>read ADC (test seam), clamp [min,max], map → 0..65535. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="87" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="34" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1ae3ce2bce99cd64e491c6a2b844eacc94" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::AnalogInput::shouldEmit</definition>
+        <argsstring>(uint16_t v) const</argsstring>
+        <name>shouldEmit</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::shouldEmit</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+<para>hysteresis + near-rail test vs _lastSent. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="88" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="50" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogInput_1a3198a801ac89101d1124753da920805c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogInput::emit</definition>
+        <argsstring>(uint16_t v, bool init=false)</argsstring>
+        <name>emit</name>
+        <qualifiedname>OpenSkyhawk::AnalogInput::emit</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>init</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="89" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp" bodystart="58" bodyend="71"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Continuous analog input — one analog <computeroutput><ref refid="classPinRef" kindref="compound">PinRef</ref></computeroutput>, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> list. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A <bold>linear</bold> input, not a selector. It shares the MULTIPOS wire transport with the selector family only because DCS-BIOS <computeroutput>set_state</computeroutput> has no separate &quot;continuous&quot; dispatch — the 16-bit value is the control <emphasis>position</emphasis>, not an index.</para>
+<para>Read path (ports <ref refid="namespaceDcsBios" kindref="compound">DcsBios</ref> <computeroutput>PotentiometerEWMA</computeroutput>): read the ADC (already 16-bit — STM32 ×16 or <ref refid="classADS1115" kindref="compound">ADS1115</ref> ×2), clamp to <computeroutput>[minRaw, maxRaw]</computeroutput>, map to 0..65535 (reverse-aware), then apply an integer EWMA low-pass filter (α = 1/2^<computeroutput>ewmaShift</computeroutput>). A new value is emitted only when the smoothed value moves more than <computeroutput>hysteresis</computeroutput> counts from the last sent value, or when it reaches a rail (0 / 65535) moving toward it — so a settled pot is silent and the endpoints are always reached.</para>
+<para>The ADC is re-read at most every <computeroutput>POLL_MS</computeroutput> (8 ms); <computeroutput><ref refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25" kindref="member">forceReport()</ref></computeroutput> samples fresh (bypassing the throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less STM32F103.</para>
+<para><ref refid="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621" kindref="member">configure()</ref> does not enable internal pull-ups; the wiper drives the pin directly.</para>
+<para>Used by: AN/ARC-51A VOL (volume potentiometer). </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::AnalogInput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogInput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OpenSkyhawk::AnalogInput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogInput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" line="39" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h" bodystart="39" bodyend="108"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a71a08a74a7f5116adc43730d1aa36dd0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_acc</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1ab35d52c8f139ccbfa51f85aa21eafaf5" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1ae2d426df78a502fdc62df664dcb7dcc2" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_ewmaShift</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a25a49616fcab6236b5ddd4e3839f92df" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_hysteresis</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a120ef4be8db266b63db82a02a2b3b20a" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_initialized</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1ab31c7d5d2996ae6386430dc7b2089c75" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_lastReadMs</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1adcb9aaa46d53aa9760ec2095cc4c30ad" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_lastSent</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a7e998cd20e55352dcb22c8c655388c4d" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_maxRaw</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a13fbeea87fb1c0162f04ac560f7ceaa2" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_minRaw</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a42f0798c65dff419c162fd8eed8e8f88" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_pin</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a4477fce8db8a47ac3142007e8d18f3bb" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_reverse</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1aadea69ecd586a9ffead1dfc44b4a0c5c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>_smoothed</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a7221f88af51fc58b6e4bbb44fc019377" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>AnalogInput</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1acce89dec9a0ff1e3bb768c63d4a6d8b7" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>DEFAULT_EWMA_SHIFT</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a5befd11f71ef63da0eeecade9369b49c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>DEFAULT_HYSTERESIS</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a3198a801ac89101d1124753da920805c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>emit</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1af107f07386028bb09320cb09f6551697" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>MAX_EWMA_SHIFT</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1ac909af9ee952dd06c8417fc31b1be48e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>POLL_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1aaba91f4aecd81038b5cd5a15a55df91f" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>readScaled</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a08f28e32f3db305153fed58b96600ba1" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>sample</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1ae3ce2bce99cd64e491c6a2b844eacc94" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogInput</scope><name>shouldEmit</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

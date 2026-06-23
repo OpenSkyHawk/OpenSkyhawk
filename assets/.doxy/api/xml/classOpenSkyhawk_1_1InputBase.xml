@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="classOpenSkyhawk_1_1InputBase" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>OpenSkyhawk::InputBase</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1AnalogInput" prot="public" virt="non-virtual">OpenSkyhawk::AnalogInput</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1MultiPosInput" prot="public" virt="non-virtual">OpenSkyhawk::MultiPosInput</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1Switch2Pos" prot="public" virt="non-virtual">OpenSkyhawk::Switch2Pos</derivedcompoundref>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
@@ -45,6 +46,7 @@
         <argsstring>()</argsstring>
         <name>configure</name>
         <qualifiedname>OpenSkyhawk::InputBase::configure</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogMultiPos_1abea4b6cb61409c93dbf54145bb56a758">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch3Pos_1a841872d6f33cf299101cfe37e7c18310">configure</reimplementedby>
@@ -66,6 +68,7 @@
         <argsstring>()=0</argsstring>
         <name>poll</name>
         <qualifiedname>OpenSkyhawk::InputBase::poll</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284">poll</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1MultiPosInput_1a5ac5045fe3929830b9a9138cac69a262">poll</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f">poll</reimplementedby>
         <briefdescription>
@@ -84,6 +87,7 @@
         <argsstring>()=0</argsstring>
         <name>forceReport</name>
         <qualifiedname>OpenSkyhawk::InputBase::forceReport</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1AnalogMultiPos_1a1e53e05b23249ae3c8eda91c84e87ffe">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1MultiPosInput_1a0e14cea2eb11f15030958cb8ac48a610">forceReport</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891">forceReport</reimplementedby>
@@ -154,38 +158,44 @@
 <para>Declare concrete input objects at global scope; the constructor self-registers into a static linked list. <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> calls <ref refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" kindref="member">configure()</ref> on every registered input after chip initialisation, then calls <ref refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" kindref="member">forceReport()</ref> for the boot EVT burst. <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> calls <ref refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kindref="member">poll()</ref> every iteration. </para>
     </detaileddescription>
     <inheritancegraph>
-      <node id="3">
+      <node id="2">
+        <label>OpenSkyhawk::AnalogInput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogInput"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
         <label>OpenSkyhawk::AnalogMultiPos</label>
         <link refid="classOpenSkyhawk_1_1AnalogMultiPos"/>
-        <childnode refid="2" relation="public-inheritance">
+        <childnode refid="3" relation="public-inheritance">
         </childnode>
       </node>
       <node id="1">
         <label>OpenSkyhawk::InputBase</label>
         <link refid="classOpenSkyhawk_1_1InputBase"/>
       </node>
-      <node id="2">
+      <node id="3">
         <label>OpenSkyhawk::MultiPosInput</label>
         <link refid="classOpenSkyhawk_1_1MultiPosInput"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="6">
+      <node id="7">
         <label>OpenSkyhawk::Switch2Pos</label>
         <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="4">
+      <node id="5">
         <label>OpenSkyhawk::Switch3Pos</label>
         <link refid="classOpenSkyhawk_1_1Switch3Pos"/>
-        <childnode refid="2" relation="public-inheritance">
+        <childnode refid="3" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="5">
+      <node id="6">
         <label>OpenSkyhawk::SwitchMultiPos</label>
         <link refid="classOpenSkyhawk_1_1SwitchMultiPos"/>
-        <childnode refid="2" relation="public-inheritance">
+        <childnode refid="3" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>

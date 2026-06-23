@@ -6,6 +6,32 @@
   </compound>
   <compound refid="classADS1115" kind="class"><name>ADS1115</name>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1AnalogInput" kind="class"><name>OpenSkyhawk::AnalogInput</name>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a5befd11f71ef63da0eeecade9369b49c" kind="variable"><name>DEFAULT_HYSTERESIS</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1acce89dec9a0ff1e3bb768c63d4a6d8b7" kind="variable"><name>DEFAULT_EWMA_SHIFT</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1af107f07386028bb09320cb09f6551697" kind="variable"><name>MAX_EWMA_SHIFT</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1ac909af9ee952dd06c8417fc31b1be48e" kind="variable"><name>POLL_MS</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1ab35d52c8f139ccbfa51f85aa21eafaf5" kind="variable"><name>_controlId</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a42f0798c65dff419c162fd8eed8e8f88" kind="variable"><name>_pin</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a4477fce8db8a47ac3142007e8d18f3bb" kind="variable"><name>_reverse</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a13fbeea87fb1c0162f04ac560f7ceaa2" kind="variable"><name>_minRaw</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a7e998cd20e55352dcb22c8c655388c4d" kind="variable"><name>_maxRaw</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a25a49616fcab6236b5ddd4e3839f92df" kind="variable"><name>_hysteresis</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1ae2d426df78a502fdc62df664dcb7dcc2" kind="variable"><name>_ewmaShift</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a71a08a74a7f5116adc43730d1aa36dd0" kind="variable"><name>_acc</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1aadea69ecd586a9ffead1dfc44b4a0c5c" kind="variable"><name>_smoothed</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1adcb9aaa46d53aa9760ec2095cc4c30ad" kind="variable"><name>_lastSent</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1ab31c7d5d2996ae6386430dc7b2089c75" kind="variable"><name>_lastReadMs</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a120ef4be8db266b63db82a02a2b3b20a" kind="variable"><name>_initialized</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a7221f88af51fc58b6e4bbb44fc019377" kind="function"><name>AnalogInput</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284" kind="function"><name>poll</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25" kind="function"><name>forceReport</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a08f28e32f3db305153fed58b96600ba1" kind="function"><name>sample</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1aaba91f4aecd81038b5cd5a15a55df91f" kind="function"><name>readScaled</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1ae3ce2bce99cd64e491c6a2b844eacc94" kind="function"><name>shouldEmit</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1a3198a801ac89101d1124753da920805c" kind="function"><name>emit</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1AnalogMultiPos" kind="class"><name>OpenSkyhawk::AnalogMultiPos</name>
     <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a3d37942061f4202b69553a1ec84961cd" kind="variable"><name>DEFAULT_DEADBAND</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1aafd102fc9ba5d0ce2dda27c4d5d97e04" kind="variable"><name>POLL_MS</name></member>
@@ -361,17 +387,17 @@
     <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
     <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d31" kind="namespace"><name>@31</name>
+  <compound refid="namespace_0d33" kind="namespace"><name>@33</name>
   </compound>
-  <compound refid="namespace_0d35" kind="namespace"><name>@35</name>
-    <member refid="namespace_0d35_1a80043f60472f1a4ada364034777b3fb2" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d35_1a80043f60472f1a4ada364034777b3fb2aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d35_1a80043f60472f1a4ada364034777b3fb2a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d35_1a80043f60472f1a4ada364034777b3fb2a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d35_1a767bbe66cf5f6493c6b6f07bc14a61aa" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d35_1a767bbe66cf5f6493c6b6f07bc14a61aaab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d35_1a767bbe66cf5f6493c6b6f07bc14a61aaaa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d35_1a767bbe66cf5f6493c6b6f07bc14a61aaa9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d37" kind="namespace"><name>@37</name>
+    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d37_1a080fd2c05ed762b02b81b458327f4305a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d37_1a4c375446017345adddd5ef62116da9d0a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
   </compound>
@@ -1365,6 +1391,10 @@
   </compound>
   <compound refid="I2cMux_8h" kind="file"><name>I2cMux.h</name>
   </compound>
+  <compound refid="AnalogInput_8cpp" kind="file"><name>AnalogInput.cpp</name>
+  </compound>
+  <compound refid="AnalogInput_8h" kind="file"><name>AnalogInput.h</name>
+  </compound>
   <compound refid="AnalogMultiPos_8cpp" kind="file"><name>AnalogMultiPos.cpp</name>
   </compound>
   <compound refid="AnalogMultiPos_8h" kind="file"><name>AnalogMultiPos.h</name>
@@ -1440,6 +1470,8 @@
   <compound refid="STM32Board_8h" kind="file"><name>STM32Board.h</name>
   </compound>
   <compound refid="dir_4c3761349dd87c66ada20ca5eb39042a" kind="dir"><name>Firmware/Libraries/A4EC</name>
+  </compound>
+  <compound refid="dir_36f5dbe195072643095357faabfc57db" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/AnalogInput</name>
   </compound>
   <compound refid="dir_869066037a4dfe81b59e09c740cc62d3" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos</name>
   </compound>

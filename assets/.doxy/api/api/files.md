@@ -34,6 +34,9 @@ Here is a list of all files with brief descriptions:
                     * **file** [**I2cMux.cpp**](I2cMux_8cpp.md)     
                     * **file** [**I2cMux.h**](I2cMux_8h.md) _TCA9548A 1-to-8 I2C multiplexer channel selector for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
             * **dir** [**Inputs**](dir_2e07d2b82251b5bb8c3d5a17dd64c04b.md)     
+                * **dir** [**AnalogInput**](dir_36f5dbe195072643095357faabfc57db.md)     
+                    * **file** [**AnalogInput.cpp**](AnalogInput_8cpp.md)     
+                    * **file** [**AnalogInput.h**](AnalogInput_8h.md) _Continuous analog input (potentiometer / axis) for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
                 * **dir** [**AnalogMultiPos**](dir_869066037a4dfe81b59e09c740cc62d3.md)     
                     * **file** [**AnalogMultiPos.cpp**](AnalogMultiPos_8cpp.md)     
                     * **file** [**AnalogMultiPos.h**](AnalogMultiPos_8h.md) _Resistor-ladder multi-position selector for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
