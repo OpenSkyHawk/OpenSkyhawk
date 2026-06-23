@@ -1,6 +1,6 @@
 # RotaryEncoder — Technical Specification
 
-**Status:** Done (compile-gated; hardware bench pending)
+**Status:** Done (hardware-verified — 7/7 envs PASS 2026-06-23)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#rotaryencoder-new`
 **Depends on:** `PinRef.md`, `PanelGroup.md`
 
