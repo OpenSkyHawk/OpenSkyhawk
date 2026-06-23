@@ -13,21 +13,21 @@
 
 namespace OpenSkyhawk {
 
-/** @brief Quadrature transitions per mechanical detent (match to the encoder). */
-enum StepsPerDetent : uint8_t {
-    ONE_STEP_PER_DETENT    = 1,
-    TWO_STEPS_PER_DETENT   = 2,
-    FOUR_STEPS_PER_DETENT  = 4,
-    EIGHT_STEPS_PER_DETENT = 8,
+/** @brief Quadrature transitions per mechanical detent (match to the encoder). Scoped enum. */
+enum class EncoderStepsPerDetent : uint8_t {
+    One   = 1,
+    Two   = 2,
+    Four  = 4,
+    Eight = 8,
 };
 
 /**
  * @brief Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN
- *        frame + payload encoding this encoder uses per detent.
+ *        frame + payload encoding this encoder uses per detent. Scoped enum.
  */
-enum RotaryMode : uint8_t {
-    REL = 0,  ///< variable_step knob: emit signed ±step on canIdEvtRel; bridge formats `%+d`.
-    DIR = 1,  ///< fixed_step selector: emit signed ±1 on canIdEvtDir; bridge formats `INC`/`DEC`.
+enum class EncoderMode : uint8_t {
+    Rel,  ///< variable_step knob: emit signed ±step on canIdEvtRel; bridge formats `%+d`.
+    Dir,  ///< fixed_step selector: emit signed ±1 on canIdEvtDir; bridge formats `INC`/`DEC`.
 };
 
 /**
@@ -41,7 +41,7 @@ enum RotaryMode : uint8_t {
  * and the delta is reduced by one detent. `stepsPerDetent` sets how many quadrature transitions make
  * one emitted click — set it to the encoder's transitions-per-detent so one physical click = one EVT.
  *
- * Two modes, chosen at construction (see RotaryMode):
+ * Two modes, chosen at construction (see EncoderMode):
  * - **REL** (variable_step knob, e.g. ASN-41 nav): emits `±step` on `canIdEvtRel`; the bridge sends
  *   `%+d` (e.g. `"+3200"`). `step` is build-side feel (default 3200 ≈ DCS suggested_step, ~20
  *   detents per full throw); lower it for a finer knob. The magnitude lives here on the node, so
@@ -66,13 +66,13 @@ public:
      * @param controlId       DCSIN_* or CTRL_* constant. Determines PanelBridge routing.
      * @param pinA            quadrature channel A.
      * @param pinB            quadrature channel B (swap A/B to reverse the sensed direction).
-     * @param stepsPerDetent  quadrature transitions per emitted click (default ONE; match the encoder).
-     * @param mode            REL (variable_step, ±step) or DIR (fixed_step, ±1). Default REL.
+     * @param stepsPerDetent  quadrature transitions per emitted click (default One; match the encoder).
+     * @param mode            EncoderMode::Rel (variable_step, ±step) or ::Dir (fixed_step, ±1). Default Rel.
      * @param step            REL magnitude emitted per detent (default DEFAULT_STEP). Ignored in DIR.
      */
     RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                  StepsPerDetent stepsPerDetent = ONE_STEP_PER_DETENT,
-                  RotaryMode mode = REL, int16_t step = DEFAULT_STEP);
+                  EncoderStepsPerDetent stepsPerDetent = EncoderStepsPerDetent::One,
+                  EncoderMode mode = EncoderMode::Rel, int16_t step = DEFAULT_STEP);
 
     /** @brief Read the quadrature state, accumulate, emit a direction once a detent completes. */
     void poll() override;
@@ -106,7 +106,7 @@ private:
     uint16_t   _controlId;
     PinRef     _pinA;
     PinRef     _pinB;
-    RotaryMode _mode;
+    EncoderMode _mode;
     int16_t    _step;        ///< REL magnitude per detent (unused in DIR).
     uint8_t    _stepsPerDetent;
     uint8_t    _lastState;   ///< last 2-bit Gray state.

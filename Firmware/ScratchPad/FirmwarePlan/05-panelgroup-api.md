@@ -226,8 +226,7 @@ OpenSkyhawk::ActionButton iffDec(DCSIN_IFF_CODE_DEC, PinRef(exp1, PORT_A, 6));
 Quadrature encoder (A/B pins). Mirrors `DcsBios::RotaryEncoder` behaviour: accumulates delta;
 fires CAN EVT when `|delta| >= stepsPerDetent`. VALUE: 1 = clockwise, 0 = counter-clockwise.
 
-`StepsPerDetent` enum: `ONE_STEP_PER_DETENT`, `TWO_STEPS_PER_DETENT`, `FOUR_STEPS_PER_DETENT`,
-`EIGHT_STEPS_PER_DETENT`.
+`EncoderStepsPerDetent` scoped enum: `EncoderStepsPerDetent::One`, `::Two`, `::Four`, `::Eight`.
 
 Read model: PanelGroup polls `poll()` each loop, decoding the cached A/B bits — refreshed on the
 MCP23017 interrupt, **not** a per-encoder ISR. The detent period at human turn speeds (≥ ~10 ms) is
@@ -237,7 +236,7 @@ well within the expander INT-refresh latency. (Verify the 11-encoder throughput 
 OpenSkyhawk::RotaryEncoder altSet(DCSIN_ALT_SET,
                                    PinRef(expander2, PORT_A, 6),
                                    PinRef(expander2, PORT_A, 7),
-                                   ONE_STEP_PER_DETENT);
+                                   EncoderStepsPerDetent::One);
 ```
 
 ### RotaryAcceleratedEncoder *(new)*
@@ -262,7 +261,7 @@ PanelBridge dispatches: 0 → `arg0`, 1 → `arg1`, 2 → `arg0fast`, 3 → `arg
 OpenSkyhawk::RotaryAcceleratedEncoder navKnob(DCSIN_PPOS_LAT_KNB,
                                                PinRef(expander1, PORT_B, 0),
                                                PinRef(expander1, PORT_B, 1),
-                                               ONE_STEP_PER_DETENT);
+                                               EncoderStepsPerDetent::One);
 ```
 
 ### RotarySwitch *(new)*

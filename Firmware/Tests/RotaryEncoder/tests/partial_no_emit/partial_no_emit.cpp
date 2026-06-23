@@ -1,6 +1,6 @@
 // RotaryEncoder — partial_no_emit test
 //
-// At OpenSkyhawk::FOUR_STEPS_PER_DETENT, movement that does not complete a detent (here 2 of 4 transitions)
+// At OpenSkyhawk::EncoderStepsPerDetent::Four, movement that does not complete a detent (here 2 of 4 transitions)
 // accumulates delta but emits nothing — the click only fires on a full detent.
 //
 // Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
@@ -11,7 +11,7 @@
 
 static constexpr uint16_t CTRL_ID = 0x567B;
 
-OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::FOUR_STEPS_PER_DETENT);
+OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::EncoderStepsPerDetent::Four);
 
 void setup() {
     STM32Board::setDebug(true);

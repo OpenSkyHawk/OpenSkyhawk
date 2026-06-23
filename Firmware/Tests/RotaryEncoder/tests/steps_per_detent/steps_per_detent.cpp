@@ -1,6 +1,6 @@
 // RotaryEncoder — steps_per_detent test
 //
-// At ONE_STEP_PER_DETENT every quadrature transition emits. A full CW cycle (4 transitions) →
+// At EncoderStepsPerDetent::One every quadrature transition emits. A full CW cycle (4 transitions) →
 // 4 CW EVTs. Confirms the stepsPerDetent divisor: a 1-step encoder reports every edge.
 //
 // Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
@@ -11,7 +11,7 @@
 
 static constexpr uint16_t CTRL_ID = 0x567B;
 
-OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::ONE_STEP_PER_DETENT);
+OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::EncoderStepsPerDetent::One);
 
 void setup() {
     STM32Board::setDebug(true);
