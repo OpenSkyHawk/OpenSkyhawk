@@ -1,6 +1,6 @@
 # AnalogMultiPos — Technical Specification
 
-**Status:** Done (compile-gated; hardware bench pending)
+**Status:** Done (hardware-verified — 5/5 scenarios PASS 2026-06-23)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#analogmultipos-new`
 **Depends on:** `MultiPosInput.md`, `PinRef.md`, `PanelGroup.md`
 
