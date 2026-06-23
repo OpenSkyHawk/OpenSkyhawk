@@ -116,59 +116,54 @@ they need for control declarations.
 ```cpp
 struct DcsBiosInputEntry {
     uint16_t    cmdId;     // DCSIN_* compact command ID
-    uint8_t     type;      // SWITCH, ACTION, ENCODER, ACCEL_ENCODER, MULTIPOS
     const char* name;      // DCS-BIOS control name for sendDcsBiosMessage()
-    const char* arg0;      // value=0 argument: "0", "DEC", or position string
-    const char* arg1;      // value=1 argument: "1", "INC", or null for MULTIPOS
-    const char* arg0fast;  // ACCEL_ENCODER only: fast decrement arg
-    const char* arg1fast;  // ACCEL_ENCODER only: fast increment arg
 };
 ```
 
 The table is sorted by `cmdId`. Lookup is binary search: ~8–9 comparisons for the full
-A-4E-C control set (~300 entries). Flash cost: ~6–8 KB. RAM cost: zero.
+A-4E-C control set (~150 input entries). Flash cost: ~3–4 KB (names only). RAM cost: zero.
 
 ---
 
-## Value Encoding by Type
+## Dispatch form by CAN frame (#147)
 
-| Type | PanelGroup sends | PanelBridge calls |
-|------|-----------------|-------------------|
-| `SWITCH` | 0 or 1 | `sendDcsBiosMessage(name, arg0_or_arg1)` |
-| `ACTION` | 1 (press only) | `sendDcsBiosMessage(name, arg0)` — no release message |
-| `ENCODER` | 0=CCW, 1=CW | `sendDcsBiosMessage(name, arg0_or_arg1)` (typically "DEC"/"INC") |
-| `ACCEL_ENCODER` | 0=slow CCW, 1=slow CW, 2=fast CCW, 3=fast CW | `sendDcsBiosMessage(name, matched_arg)` — value maps to arg0/arg1/arg0fast/arg1fast |
+The dispatch **form is sourced from the PanelGroup input class** — specifically the CAN frame the
+node emits on — **not** inferred from the JSON or stored in the map. The map carries only
+`controlId → name`; PanelBridge reads the payload as the frame dictates and formats the argument:
 
-> **Why 4 numeric values and not strings:** DCS-BIOS Arduino library sends argument strings
-> directly (e.g. `"DEC"`, `"INC"`, `"FAST_DEC"`, `"FAST_INC"`) because it runs on the same
-> MCU as the encoder. In our architecture, PanelGroup cannot send strings over CAN (4-byte
-> payload limit). The 4-value encoding is a **compact CAN transport layer** — PanelBridge
-> maps the received value to the appropriate argument string via the input map entry fields.
-| `MULTIPOS` | position index 0–N, **or any 16-bit integer** | `sendDcsBiosMessage(name, itoa(value))` — caller-managed `char` buffer ≥ 6 bytes |
+| Frame | PanelGroup sends | PanelBridge formats | DCS-BIOS interface |
+|-------|-----------------|---------------------|--------------------|
+| `EVT_n` (`canIdEvt`, **ABS**) | absolute `uint16` | `sendDcsBiosMessage(name, "%u")` | `set_state` |
+| `EVT_REL_n` (`canIdEvtRel`, **REL**) | signed `±step` (`int16`) | `sendDcsBiosMessage(name, "%+d")` | `variable_step` |
+| `EVT_DIR_n` (`canIdEvtDir`, **DIR**) | signed `±1` (`int16`) | `sendDcsBiosMessage(name, "INC"/"DEC")` | `fixed_step` |
 
-**Class-to-type mapping:**
+> **Why the form is the frame, not a map field:** the *same* DCS control can be driven by different
+> physical classes — a `fixed_step+set_state` selector is ABS as a switch, DIR as an encoder — so the
+> form cannot be inferred from the JSON; it is a property of the class the sketch instantiates. The
+> emitting node declares the form by which frame it sends on, so the bridge needs only the name.
+> Strings stay off the wire: PanelGroup cannot send `"+3200"`/`"INC"` over the 4-byte CAN payload, so
+> it sends the numeric value and the bridge formats per frame. This retired the generator's
+> `classify_input` type inference, the per-control `arg*` columns, and the `InputType` codes.
 
-| Input class | Dispatch type |
-|-------------|---------------|
-| `Switch2Pos` | `SWITCH` |
-| `Switch3Pos`, `SwitchMultiPos`, `AnalogMultiPos`, `RotarySwitch` | `MULTIPOS` |
-| `ActionButton` | `ACTION` — arg1 and fast args are null |
-| `RotaryEncoder` | `ENCODER` |
-| `RotaryAcceleratedEncoder` | `ACCEL_ENCODER` |
-| `AnalogInput` (DCS-BIOS routed) | `MULTIPOS` — 16-bit ADC value sent as integer string |
+**Class-to-frame mapping:**
+
+| Input class | Frame / form |
+|-------------|--------------|
+| `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`, `AnalogMultiPos`, `AnalogInput` | `EVT_n` — ABS (`%u` → set_state) |
+| `RotaryEncoder` (REL mode) | `EVT_REL_n` — `±step` (`%+d` → variable_step) |
+| `RotaryEncoder` (DIR mode) | `EVT_DIR_n` — `±1` (INC/DEC → fixed_step) |
+| `RotaryAcceleratedEncoder` | `EVT_REL_n` — a larger `±step` at speed (REL subsumes acceleration) |
 
 ---
 
-## Generator Mapping Rules (Phase 1)
+## Generator mapping (collapsed, #147)
 
-| JSON `inputs[].interface` | Generated type | Notes |
-|--------------------|----------------|-------|
-| `action` | `ACTION` | arg0 = JSON `argument` value; arg1/fast args null |
-| `fixed_step` | `ENCODER` | arg0 = `"DEC"`, arg1 = `"INC"` |
-| `set_state`, max_value == 1 | `SWITCH` | arg0 = `"0"`, arg1 = `"1"` |
-| `set_state`, max_value > 1 | `MULTIPOS` | arg0 unused; value sent as `itoa(value)` |
-| Two `fixed_step` interfaces (slow + fast variants) | `ACCEL_ENCODER` | arg0/arg1 = slow dec/inc; arg0fast/arg1fast = fast dec/inc |
-| Paired boolean controls (guarded switch: cover + switch) | **Not generated** | Unsupported gap — skip and document in `GENERATOR_GAPS.md` |
+`gen_a4ec.py` no longer infers a dispatch type from the JSON interfaces. Every input control (any
+control with an `inputs` array) maps to a single `{ DCSIN_<name>, "<name>" }` row — `controlId →
+name`, sorted by `cmdId` for the bridge's binary search. There is no per-control type or argument,
+and no "unsupported interface" gap (name-only is interface-agnostic). `DCSIN_*` IDs are assigned
+from the committed append-only `id_ledger.json`, so a snapshot refresh never renumbers existing
+controls — it only appends new ones at `max+1` and retires removed ones.
 
 ---
 

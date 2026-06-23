@@ -60,87 +60,9 @@ def test_flatten_removes_category_level():
     assert "TEST" not in controls
 
 
-# ── classify_input ────────────────────────────────────────────────────────────
-
-def test_switch_mapping():
-    inputs = [
-        {"interface": "action",    "argument": "TOGGLE"},
-        {"interface": "fixed_step"},
-        {"interface": "set_state", "max_value": 1},
-    ]
-    result = G.classify_input("ALPHA_SWITCH", inputs)
-    assert result["type"] == G.INPUT_TYPE_SWITCH
-    assert result["arg0"] == "0"
-    assert result["arg1"] == "1"
-    assert result["arg0fast"] is None
-    assert result["arg1fast"] is None
-
-
-def test_multipos_mapping():
-    inputs = [
-        {"interface": "fixed_step"},
-        {"interface": "set_state", "max_value": 2},
-    ]
-    result = G.classify_input("BETA_MULTIPOS", inputs)
-    assert result["type"] == G.INPUT_TYPE_MULTIPOS
-    assert result["arg0"] is None
-    assert result["arg1"] is None
-
-
-def test_encoder_mapping():
-    inputs = [{"interface": "fixed_step"}]
-    result = G.classify_input("DELTA_ENCODER", inputs)
-    assert result["type"] == G.INPUT_TYPE_ENCODER
-    assert result["arg0"] == "DEC"
-    assert result["arg1"] == "INC"
-
-
-def test_accel_encoder_mapping():
-    inputs = [
-        {"interface": "fixed_step",
-         "argument_decrement": "DEC",  "argument_increment": "INC"},
-        {"interface": "fixed_step",
-         "argument_decrement": "DEC_FAST", "argument_increment": "INC_FAST"},
-    ]
-    result = G.classify_input("EPSILON_ACCEL", inputs)
-    assert result["type"] == G.INPUT_TYPE_ACCEL_ENCODER
-    assert result["arg0"]     == "DEC"
-    assert result["arg1"]     == "INC"
-    assert result["arg0fast"] == "DEC_FAST"
-    assert result["arg1fast"] == "INC_FAST"
-
-
-def test_action_mapping():
-    inputs = [{"interface": "action", "argument": "1"}]
-    result = G.classify_input("GAMMA_ACTION", inputs)
-    assert result["type"] == G.INPUT_TYPE_ACTION
-    assert result["arg0"] == "1"
-    assert result["arg1"] is None
-
-
-def test_analog_mapping():
-    inputs = [
-        {"interface": "set_state",    "max_value": 65535},
-        {"interface": "variable_step","max_value": 65535, "suggested_step": 3200},
-    ]
-    result = G.classify_input("IOTA_VARSTEP", inputs)
-    assert result["type"] == G.INPUT_TYPE_ANALOG
-    assert result["arg0"]     is None
-    assert result["arg1"]     is None
-    assert result["arg0fast"] is None
-    assert result["arg1fast"] is None
-
-
-def test_cover_maps_as_switch():
-    inputs = [
-        {"interface": "action",    "argument": "TOGGLE"},
-        {"interface": "fixed_step"},
-        {"interface": "set_state", "max_value": 1},
-    ]
-    result = G.classify_input("ZETA_COVER", inputs)
-    assert result["type"] == G.INPUT_TYPE_SWITCH
-    assert result["arg0"] == "0"
-    assert result["arg1"] == "1"
+# classify_input + InputType were removed in #147 — the map is now controlId → name only, and the
+# dispatch form comes from the PanelGroup input class via the CAN frame it emits on. The collapse
+# is covered by the emitted-content + real-data regression tests further down.
 
 
 # ── build_input_entries ───────────────────────────────────────────────────────
@@ -289,32 +211,30 @@ def test_inputmap_includes_cmdids():
     assert '#include <A4EC_CmdIds.h>' in content
 
 
-def test_inputmap_switch_args():
+def test_inputmap_collapsed_to_name_only():
+    """#147: rows are { DCSIN_<name>, "<name>" } — no InputType, no per-control arg columns."""
     _, entries, _, _, _ = run_against_fixture()
     content = G.emit_inputmap(entries, "fixture.jsonp", "2025-01-01T00:00:00Z")
-    assert 'InputType::SWITCH' in content
-    assert '"0"' in content
-    assert '"1"' in content
+    assert 'InputType' not in content                       # no dispatch type codes
+    assert 'arg0' not in content                            # no arg columns
+    assert 'uint16_t    cmdId;' in content and 'const char* name;' in content
+    assert '{ DCSIN_ALPHA_SWITCH, "ALPHA_SWITCH" }' in content
+    # the variable_step knob that used to be force-classified ANALOG is now just a name
+    assert '{ DCSIN_IOTA_VARSTEP, "IOTA_VARSTEP" }' in content
 
 
-def test_inputmap_multipos_nullptrs():
-    _, entries, _, _, _ = run_against_fixture()
-    content = G.emit_inputmap(entries, "fixture.jsonp", "2025-01-01T00:00:00Z")
-    assert 'InputType::MULTIPOS' in content
-
-
-def test_inputmap_analog_type():
-    _, entries, _, _, _ = run_against_fixture()
-    content = G.emit_inputmap(entries, "fixture.jsonp", "2025-01-01T00:00:00Z")
-    assert 'InputType::ANALOG' in content
-
-
-def test_inputmap_accel_encoder_args():
-    _, entries, _, _, _ = run_against_fixture()
-    content = G.emit_inputmap(entries, "fixture.jsonp", "2025-01-01T00:00:00Z")
-    assert 'InputType::ACCEL_ENCODER' in content
-    assert '"DEC_FAST"' in content
-    assert '"INC_FAST"' in content
+def test_real_data_map_is_name_only(tmp_path):
+    """Regression vs the committed snapshot: a known variable_step knob maps to name only —
+    not a forced dispatch type (the #147 break)."""
+    real = G.flatten_controls(G.load_data(G.COMMITTED_SNAPSHOT))
+    entries, gaps = G.build_input_entries(real, tmp_path / "ledger.json")
+    assert gaps == []                                       # every input control maps
+    by_name = {e["name"]: e for e in entries}
+    assert "ASN41_MAGVAR_KNB" in by_name
+    assert set(by_name["ASN41_MAGVAR_KNB"].keys()) == {"name", "cmdId"}   # no type/args
+    content = G.emit_inputmap(entries, "A-4E-C.jsonp", "2025-01-01T00:00:00Z")
+    assert '{ DCSIN_ASN41_MAGVAR_KNB, "ASN41_MAGVAR_KNB" }' in content
+    assert 'InputType' not in content
 
 
 def test_gaps_file_always_emitted():
