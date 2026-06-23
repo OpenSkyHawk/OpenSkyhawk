@@ -48,7 +48,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | `SwitchMultiPos` | **Implemented** (hardware-verified) | N-pin rotary, one active. value = index |
 | `AnalogMultiPos` | **Implemented** (hardware-verified) | Resistor-ladder selector on one analog pin |
 | `ActionButton` | Phase 4 — not started | Momentary; fires on press only |
-| `RotaryEncoder` | **Implemented** (hardware-verified) | Quadrature encoder. value 0=CCW, 1=CW |
+| `RotaryEncoder` | **Implemented** (dual-mode REL/DIR, #147) | Quadrature encoder, relative. REL → ±step (continuous knobs); DIR → ±1 (no-indicator selectors) |
 | `RotaryAcceleratedEncoder` | Phase 4 — not started | Encoder with slow/fast (4-value scheme) |
 | `RotarySwitch` | Phase 4 — not started | Encoder used as an N-position absolute switch |
 | `AnalogInput` | **Implemented** (hardware-verified) | Continuous analog, normalised to 16-bit (EWMA + hysteresis) |

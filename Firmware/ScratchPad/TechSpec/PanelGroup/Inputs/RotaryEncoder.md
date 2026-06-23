@@ -1,6 +1,6 @@
 # RotaryEncoder — Technical Specification
 
-**Status:** Done (hardware-verified — 7/7 envs PASS 2026-06-23)
+**Status:** Dual-mode REL/DIR rework (#147) — 8/8 envs compile; hardware-verify pending. (Prior single-mode 0/1 build: hardware-verified 2026-06-23.)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#rotaryencoder-new`
 **Depends on:** `PinRef.md`, `PanelGroup.md`
 
@@ -8,9 +8,15 @@
 
 ## Responsibility
 
-Incremental quadrature rotary encoder on two pins (A/B). Emits a **direction** per detent over CAN
-(`ENCODER` dispatch): **1 = clockwise, 0 = counter-clockwise**. A direct `InputBase` subclass — a
+Incremental quadrature rotary encoder on two pins (A/B). Emits a **signed relative value** per detent
+over CAN — direction in the sign, magnitude set by the **mode**. A direct `InputBase` subclass — a
 *relative* control: it reports motion, not an absolute position.
+
+Two modes (`RotaryMode`, chosen at construction):
+- **REL** (`variable_step` knob — ASN-41 nav, altimeter): emits `±step` (default 3200) on
+  `canIdEvtRel`; the bridge formats `%+d`. `step` is build-side feel and lives on the node.
+- **DIR** (`fixed_step` selector with no indicator — ARC-51 freq): emits `±1` on `canIdEvtDir`; the
+  bridge formats `INC`/`DEC`. Stateless — DCS owns the position and clamps at the band edges.
 
 Handles:
 - **quadrature decode** — reads the 2-bit Gray state `(A<<1)|B`; a transition table accumulates a
@@ -18,11 +24,12 @@ Handles:
 - **detent scaling** — emits a click only when `|delta| >= stepsPerDetent`, then reduces the delta
   by one detent. `stepsPerDetent` (1 / 2 / 4 / 8) matches the encoder's transitions-per-detent so
   one physical click = one EVT; it also rejects sub-detent jitter;
-- **direction** — CW (1) / CCW (0); swap A/B to reverse the sensed direction.
+- **direction** — CW positive / CCW negative; swap A/B to reverse the sensed direction.
 
 Does **not** debounce on a timer (the quadrature table + detent divisor reject glitches), interpret
 `controlId`, or enable internal pull-ups. `forceReport()` resyncs state and emits **nothing** — a
-relative control has no baseline.
+relative control has no baseline, so **both modes are preset-safe** (never clobber a mission preset
+at boot / SYNC).
 
 ---
 
@@ -38,18 +45,19 @@ Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/
 
 Self-contained — **no encoder hardware**. `debugSeed(state)` sets the starting Gray state and
 `debugStep(ab)` feeds the next 2-bit A/B state through the decoder; assertions are on
-`emitCount()` / `lastDir()` (`#ifdef ROTARYENCODER_TEST`). CAN runs in **normal mode** so the node
+`emitCount()` / `lastValue()` / `lastFrame()` (`#ifdef ROTARYENCODER_TEST`). CAN runs in **normal mode** so the node
 ACKs the PanelBridge. No jumpers or encoder needed (a real detented encoder on A/B is an optional
 throughput sanity check on the bench).
 
 | Scenario env | Verifies |
 |---|---|
-| `test_cw_detent` | CW Gray cycle 0→1→3→2→0 → one CW (1) EVT at FOUR_STEPS_PER_DETENT |
-| `test_ccw_detent` | CCW cycle 0→2→3→1→0 → one CCW (0) EVT |
+| `test_cw_detent` | CW cycle 0→1→3→2→0 → one REL EVT (`+step`) on `canIdEvtRel` at FOUR_STEPS |
+| `test_ccw_detent` | CCW cycle 0→2→3→1→0 → one REL EVT (`-step`) |
+| `test_dir_mode` | DIR mode: CW → `+1` on `canIdEvtDir`; CCW → `-1` |
 | `test_steps_per_detent` | ONE_STEP_PER_DETENT → every transition emits (4 per cycle) |
 | `test_partial_no_emit` | 2 of 4 transitions → delta held, no EVT |
 | `test_bounce` | jitter within a detent (4-step) → no spurious EVT |
-| `test_reversal` | CW detent then CCW detent → 1 then 0, no stuck state |
+| `test_reversal` | CW detent then CCW detent → `+step` then `-step`, no stuck state |
 | `test_force_report_noop` | `forceReport()` emits nothing; a later transition still emits |
 
 ---
@@ -61,11 +69,14 @@ enum StepsPerDetent : uint8_t {
     ONE_STEP_PER_DETENT = 1, TWO_STEPS_PER_DETENT = 2,
     FOUR_STEPS_PER_DETENT = 4, EIGHT_STEPS_PER_DETENT = 8,
 };
+enum RotaryMode : uint8_t { REL = 0, DIR = 1 };   // REL: ±step → %+d.  DIR: ±1 → INC/DEC.
 
 class RotaryEncoder : public InputBase {
 public:
+    static constexpr int16_t DEFAULT_STEP = 3200;  // DCS suggested_step (~20 detents/full throw)
     RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                  StepsPerDetent stepsPerDetent = ONE_STEP_PER_DETENT);
+                  StepsPerDetent stepsPerDetent = ONE_STEP_PER_DETENT,
+                  RotaryMode mode = REL, int16_t step = DEFAULT_STEP);
     void poll() override;          // decode + emit on detent
     void forceReport() override;   // resync state, NO EVT (relative)
     void configure() override;
@@ -73,13 +84,15 @@ protected:
     uint8_t readState();           // (pinA << 1) | pinB
 private:
     void decode(uint8_t state);    // transition table → delta → emit
-    void emit(uint16_t dir);
-    // _pinA, _pinB, _stepsPerDetent, _lastState, _delta, _initialized
+    void emit(int8_t dir);         // dir = +1 (CW) / -1 (CCW); mode picks frame + value
+    // _pinA, _pinB, _mode, _step, _stepsPerDetent, _lastState, _delta, _initialized
 };
 ```
 
-The `StepsPerDetent` enum is in namespace `OpenSkyhawk`; reference it as
-`OpenSkyhawk::FOUR_STEPS_PER_DETENT` (or `using namespace OpenSkyhawk;`).
+The `StepsPerDetent` + `RotaryMode` enums are in namespace `OpenSkyhawk`; reference them as
+`OpenSkyhawk::FOUR_STEPS_PER_DETENT` / `OpenSkyhawk::DIR` (or `using namespace OpenSkyhawk;`). The
+ctor keeps `stepsPerDetent` 4th (a hardware property always worth setting), so an existing
+single-mode call still compiles as REL; add `DIR` (and an optional `step`) for the selector case.
 
 ---
 
@@ -127,8 +140,8 @@ void RotaryEncoder::decode(uint8_t state) {
         case 3: if (state == 1) _delta--; if (state == 2) _delta++; break;
     }
     _lastState = state;
-    if (_delta >=  (int8_t)_stepsPerDetent) { emit(1); _delta -= _stepsPerDetent; }   // CW
-    if (_delta <= -(int8_t)_stepsPerDetent) { emit(0); _delta += _stepsPerDetent; }   // CCW
+    if (_delta >=  (int8_t)_stepsPerDetent) { emit(+1); _delta -= _stepsPerDetent; }   // CW
+    if (_delta <= -(int8_t)_stepsPerDetent) { emit(-1); _delta += _stepsPerDetent; }   // CCW
 }
 ```
 
@@ -151,16 +164,22 @@ item flagged on the controller — verify at B6.
 
 ### EVT transmission & dispatch
 
-`CANProtocol::sendBatched(canIdEvt(NODE_ID), {controlId, dir})` + `[ENC]` debug line. PanelBridge's
-**`ENCODER` dispatch is already wired**; it maps `dir` 0/1 to the control's DCS-BIOS argument strings
-(`"DEC"`/`"INC"` for `fixed_step`; the ± increment for `variable_step`) from the input-map entry —
-so the **same class drives both kinds**, the difference is entirely in the map.
+`emit(dir)` (dir = +1 CW / −1 CCW) computes the value + frame from the mode and calls
+`CANProtocol::sendBatched(frame, {controlId, (uint16_t)value})` + an `[ENC]` debug line:
 
-> **Deferred (panel-build, not this class):** `tools/gen_a4ec/gen_a4ec.py` currently classifies the
-> A-4E-C encoder controls (`ARC51_FREQ_*` as `set_state`, the `*_KNB` knobs as `variable_step`) as
-> `MULTIPOS` / `ANALOG`. They need a curated override to emit `ENCODER` + the dec/inc args so they
-> dispatch correctly end-to-end. This rides with the ASN-41 / ARC-51 panel build (B6), where the
-> mixed-input mapping is exercised against live DCS-BIOS.
+| mode | value | frame | bridge formats | DCS interface |
+|---|---|---|---|---|
+| REL | `±step` (e.g. ±3200) | `canIdEvtRel(NODE_ID)` | `%+d` | `variable_step` |
+| DIR | `±1` | `canIdEvtDir(NODE_ID)` | `INC`/`DEC` | `fixed_step` |
+
+The dispatch **form is the CAN frame**, not an input-map field — the bridge reads the payload as
+`int16` and formats by which frame it arrived on (#147). The generated map carries only
+`controlId → name`; there are no per-control dec/inc args, and the REL step magnitude lives entirely
+on the node (this ctor) so retuning a knob's feel needs only a node reflash, never a bridge rebuild.
+
+> **Sequencing:** the bridge REL/DIR dispatch + the map collapse land in #147's bridge PR. Until
+> then the bridge drops `canIdEvtRel`/`canIdEvtDir` frames — harmless, no encoder controller is
+> assembled yet.
 
 ---
 
@@ -169,5 +188,5 @@ so the **same class drives both kinds**, the difference is entirely in the map.
 | Dependency | Source | Notes |
 |---|---|---|
 | PanelGroup | `Firmware/Libraries/PanelGroup` | InputBase, PinRef |
-| CANProtocol | `Firmware/Libraries/CANProtocol` | ControlPacket, sendBatched, canIdEvt |
+| CANProtocol | `Firmware/Libraries/CANProtocol` | ControlPacket, sendBatched, canIdEvtRel/canIdEvtDir |
 | STM32Board | `Firmware/Libraries/STM32Board` | diagSerial (debug line) |

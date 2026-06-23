@@ -30,9 +30,9 @@ void setup() {
 
     gEnc.debugSeed(0);
     gEnc.debugStep(1); gEnc.debugStep(3); gEnc.debugStep(2); gEnc.debugStep(0);   // CW cycle
-    check("ONE_STEP: full CW cycle -> 4 EVTs, dir CW(1)", gEnc.emitCount() == 4 && gEnc.lastDir() == 1);
+    check("ONE_STEP: full CW cycle -> 4 EVTs, REL +step", gEnc.emitCount() == 4 && gEnc.lastValue() == 3200);
 
-    CANProtocol::flushBatched(canIdEvt(NODE_ID));
+    CANProtocol::flushBatched(canIdEvtRel(NODE_ID));
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
 

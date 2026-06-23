@@ -6,16 +6,18 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include "RotaryEncoder.h"
-#include <CANProtocol.h>  // sendBatched, canIdEvt, ControlPacket
+#include <CANProtocol.h>  // sendBatched, canIdEvtRel, canIdEvtDir, ControlPacket
 #include <STM32Board.h>
 
 namespace OpenSkyhawk {
 
 RotaryEncoder::RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                             StepsPerDetent stepsPerDetent)
+                             StepsPerDetent stepsPerDetent, RotaryMode mode, int16_t step)
     : _controlId(controlId),
       _pinA(pinA),
       _pinB(pinB),
+      _mode(mode),
+      _step(step),
       _stepsPerDetent((uint8_t)stepsPerDetent),
       _lastState(0),
       _delta(0),
@@ -30,16 +32,22 @@ uint8_t RotaryEncoder::readState() {
     return (uint8_t)(((_pinA.read() ? 1u : 0u) << 1) | (_pinB.read() ? 1u : 0u));
 }
 
-void RotaryEncoder::emit(uint16_t dir) {
-    CANProtocol::sendBatched(canIdEvt(NODE_ID), ControlPacket{_controlId, dir});
+void RotaryEncoder::emit(int8_t dir) {
+    // dir = +1 (CW) / -1 (CCW). REL → ±step on the relative frame; DIR → ±1 on the directional
+    // frame. The bridge reads the payload as int16 and formats by frame (%+d vs INC/DEC).
+    const int16_t  value = (_mode == REL) ? (int16_t)(dir * _step) : (int16_t)dir;
+    const uint32_t frame = (_mode == REL) ? canIdEvtRel(NODE_ID) : canIdEvtDir(NODE_ID);
+    CANProtocol::sendBatched(frame, ControlPacket{_controlId, (uint16_t)value});
 #ifdef ROTARYENCODER_TEST
     _emitCount++;
-    _lastDir = (int8_t)dir;
+    _lastValue = value;
+    _lastFrame = frame;
 #endif
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[ENC] 0x")); d.print(_controlId, HEX);
-        d.print(F(": "));       d.println(dir);   // 1 = CW, 0 = CCW
+        d.print(_mode == REL ? F(" REL ") : F(" DIR "));
+        d.println(value);   // signed: + = CW, - = CCW
     }
 }
 
@@ -54,11 +62,11 @@ void RotaryEncoder::decode(uint8_t state) {
     _lastState = state;
 
     if (_delta >= (int8_t)_stepsPerDetent) {       // clockwise
-        emit(1);
+        emit(+1);
         _delta -= (int8_t)_stepsPerDetent;
     }
     if (_delta <= -(int8_t)_stepsPerDetent) {      // counter-clockwise
-        emit(0);
+        emit(-1);
         _delta += (int8_t)_stepsPerDetent;
     }
 }

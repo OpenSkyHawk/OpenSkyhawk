@@ -75,6 +75,16 @@ constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 /** @brief Input event frame ID for node n. Range 0x201-0x23F. */
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
 
+/** @brief Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a
+ *         signed ±step (int16); the bridge formats it `%+d` for a DCS-BIOS variable_step control.
+ *         Range 0x501-0x53F. */
+constexpr uint32_t canIdEvtRel(uint8_t n) { return 0x500 + n; }
+
+/** @brief Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is
+ *         a signed ±1 (int16); the bridge formats it `INC`/`DEC` for a DCS-BIOS fixed_step control.
+ *         Range 0x601-0x63F. */
+constexpr uint32_t canIdEvtDir(uint8_t n) { return 0x600 + n; }
+
 /** @brief TEST_SEQ echo frame ID for node n. Range 0x301-0x33F. */
 constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 
