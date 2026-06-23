@@ -12,7 +12,7 @@ Incremental quadrature rotary encoder on two pins (A/B). Emits a **signed relati
 over CAN — direction in the sign, magnitude set by the **mode**. A direct `InputBase` subclass — a
 *relative* control: it reports motion, not an absolute position.
 
-Two modes (`RotaryMode`, chosen at construction):
+Two modes (`EncoderMode`, chosen at construction):
 - **REL** (`variable_step` knob — ASN-41 nav, altimeter): emits `±step` (default 3200) on
   `canIdEvtRel`; the bridge formats `%+d`. `step` is build-side feel and lives on the node.
 - **DIR** (`fixed_step` selector with no indicator — ARC-51 freq): emits `±1` on `canIdEvtDir`; the
@@ -54,7 +54,7 @@ throughput sanity check on the bench).
 | `test_cw_detent` | CW cycle 0→1→3→2→0 → one REL EVT (`+step`) on `canIdEvtRel` at FOUR_STEPS |
 | `test_ccw_detent` | CCW cycle 0→2→3→1→0 → one REL EVT (`-step`) |
 | `test_dir_mode` | DIR mode: CW → `+1` on `canIdEvtDir`; CCW → `-1` |
-| `test_steps_per_detent` | ONE_STEP_PER_DETENT → every transition emits (4 per cycle) |
+| `test_steps_per_detent` | EncoderStepsPerDetent::One → every transition emits (4 per cycle) |
 | `test_partial_no_emit` | 2 of 4 transitions → delta held, no EVT |
 | `test_bounce` | jitter within a detent (4-step) → no spurious EVT |
 | `test_reversal` | CW detent then CCW detent → `+step` then `-step`, no stuck state |
@@ -65,18 +65,15 @@ throughput sanity check on the bench).
 ## Public API
 
 ```cpp
-enum StepsPerDetent : uint8_t {
-    ONE_STEP_PER_DETENT = 1, TWO_STEPS_PER_DETENT = 2,
-    FOUR_STEPS_PER_DETENT = 4, EIGHT_STEPS_PER_DETENT = 8,
-};
-enum RotaryMode : uint8_t { REL = 0, DIR = 1 };   // REL: ±step → %+d.  DIR: ±1 → INC/DEC.
+enum class EncoderStepsPerDetent : uint8_t { One = 1, Two = 2, Four = 4, Eight = 8 };
+enum class EncoderMode : uint8_t { Rel, Dir };   // Rel: ±step → %+d.  Dir: ±1 → INC/DEC.
 
 class RotaryEncoder : public InputBase {
 public:
     static constexpr int16_t DEFAULT_STEP = 3200;  // DCS suggested_step (~20 detents/full throw)
     RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                  StepsPerDetent stepsPerDetent = ONE_STEP_PER_DETENT,
-                  RotaryMode mode = REL, int16_t step = DEFAULT_STEP);
+                  EncoderStepsPerDetent stepsPerDetent = EncoderStepsPerDetent::One,
+                  EncoderMode mode = EncoderMode::Rel, int16_t step = DEFAULT_STEP);
     void poll() override;          // decode + emit on detent
     void forceReport() override;   // resync state, NO EVT (relative)
     void configure() override;
@@ -89,10 +86,11 @@ private:
 };
 ```
 
-The `StepsPerDetent` + `RotaryMode` enums are in namespace `OpenSkyhawk`; reference them as
-`OpenSkyhawk::FOUR_STEPS_PER_DETENT` / `OpenSkyhawk::DIR` (or `using namespace OpenSkyhawk;`). The
-ctor keeps `stepsPerDetent` 4th (a hardware property always worth setting), so an existing
-single-mode call still compiles as REL; add `DIR` (and an optional `step`) for the selector case.
+The `EncoderStepsPerDetent` + `EncoderMode` enums are scoped (`enum class`) in namespace
+`OpenSkyhawk`; reference them as `OpenSkyhawk::EncoderStepsPerDetent::Four` /
+`OpenSkyhawk::EncoderMode::Dir` (or `using namespace OpenSkyhawk;`). The ctor keeps `stepsPerDetent`
+4th (a hardware property always worth setting), so a REL knob just sets that; add `EncoderMode::Dir`
+(and an optional `step`) for the selector case.
 
 ---
 
@@ -112,7 +110,7 @@ MCP23017 exp1(0x21, Wire);
 OpenSkyhawk::RotaryEncoder ppLatKnb(DCSIN_PPOS_LAT_KNB,
                                     PinRef(exp1, PORT_A, 0),
                                     PinRef(exp1, PORT_A, 1),
-                                    OpenSkyhawk::FOUR_STEPS_PER_DETENT);
+                                    OpenSkyhawk::EncoderStepsPerDetent::Four);
 
 void setup() {
     Wire.begin();

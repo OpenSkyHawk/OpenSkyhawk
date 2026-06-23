@@ -11,7 +11,7 @@
 
 static constexpr uint16_t CTRL_ID = 0x567B;
 
-OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::ONE_STEP_PER_DETENT);
+OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::EncoderStepsPerDetent::One);
 
 void setup() {
     STM32Board::setDebug(true);

@@ -1,6 +1,6 @@
 // RotaryEncoder — bounce test
 //
-// At OpenSkyhawk::FOUR_STEPS_PER_DETENT, jitter back and forth within a detent (forward 1 / back 1, repeated)
+// At OpenSkyhawk::EncoderStepsPerDetent::Four, jitter back and forth within a detent (forward 1 / back 1, repeated)
 // keeps |delta| below the detent threshold → no spurious EVT. This is the detent-level glitch
 // rejection (stepsPerDetent > 1).
 //
@@ -12,7 +12,7 @@
 
 static constexpr uint16_t CTRL_ID = 0x567B;
 
-OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::FOUR_STEPS_PER_DETENT);
+OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::EncoderStepsPerDetent::Four);
 
 void setup() {
     STM32Board::setDebug(true);

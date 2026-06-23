@@ -1,7 +1,7 @@
 // RotaryEncoder — ccw_detent test
 //
 // A full counter-clockwise cycle (Gray states 0->2->3->1->0) accumulates -4 steps → one REL EVT
-// (-step) at OpenSkyhawk::FOUR_STEPS_PER_DETENT. Assertions on emitCount()/lastValue().
+// (-step) at OpenSkyhawk::EncoderStepsPerDetent::Four. Assertions on emitCount()/lastValue().
 //
 // Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
 
@@ -11,7 +11,7 @@
 
 static constexpr uint16_t CTRL_ID = 0x567B;
 
-OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::FOUR_STEPS_PER_DETENT);
+OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::EncoderStepsPerDetent::Four);
 
 void setup() {
     STM32Board::setDebug(true);

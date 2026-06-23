@@ -1,7 +1,7 @@
 // RotaryEncoder — reversal test
 //
 // A CW detent then a CCW detent emit +step (CW) then -step (CCW). Confirms direction tracking across a
-// reversal with no stuck state. OpenSkyhawk::FOUR_STEPS_PER_DETENT.
+// reversal with no stuck state. OpenSkyhawk::EncoderStepsPerDetent::Four.
 //
 // Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
 
@@ -11,7 +11,7 @@
 
 static constexpr uint16_t CTRL_ID = 0x567B;
 
-OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::FOUR_STEPS_PER_DETENT);
+OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1), OpenSkyhawk::EncoderStepsPerDetent::Four);
 
 void setup() {
     STM32Board::setDebug(true);

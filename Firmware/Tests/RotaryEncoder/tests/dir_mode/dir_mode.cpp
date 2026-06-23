@@ -2,7 +2,7 @@
 //
 // DIR mode (fixed_step selector with no indicator, e.g. ARC-51 freq): each detent emits a signed
 // ±1 DIRECTION on the DIR frame (canIdEvtDir), which the bridge turns into INC/DEC. Confirms the
-// value (±1, not ±step) and the frame routing distinct from REL. OpenSkyhawk::FOUR_STEPS_PER_DETENT.
+// value (±1, not ±step) and the frame routing distinct from REL. OpenSkyhawk::EncoderStepsPerDetent::Four.
 //
 // Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
 
@@ -13,7 +13,7 @@
 static constexpr uint16_t CTRL_ID = 0x567B;
 
 OpenSkyhawk::RotaryEncoder gEnc(CTRL_ID, PinRef(PA0), PinRef(PA1),
-                                OpenSkyhawk::FOUR_STEPS_PER_DETENT, OpenSkyhawk::DIR);
+                                OpenSkyhawk::EncoderStepsPerDetent::Four, OpenSkyhawk::EncoderMode::Dir);
 
 void setup() {
     STM32Board::setDebug(true);
