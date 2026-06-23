@@ -14,8 +14,9 @@ the threshold check — this handles DCS-BIOS outputs that pack multiple flags i
 16-bit word at a single address. Self-registers into PanelGroup's OutputBase list.
 
 Does **not** apply PWM or dimming — that is `AnalogOutput`'s responsibility. Does **not**
-buffer or cache the last-received value. Does **not** communicate with PanelBridge
-directly. Does **not** interpret what the DCS-BIOS address means.
+communicate with PanelBridge directly, or interpret what the DCS-BIOS address means. It **does**
+keep the last on/off state (`_lastOn` / `_hasState`) and skips the pin write when the newly decoded
+state is unchanged — a redundant-write dedup, not value buffering.
 
 ---
 
@@ -281,12 +282,14 @@ For MCP23017-backed PinRefs, `_pin.write(value)` calls PanelGroup's expander wri
 path, which updates the internal output latch cache and issues an I2C write. The write
 is synchronous — the I2C transaction completes before `write()` returns.
 
-### No state caching
+### State dedup (and power-cycle recovery)
 
-LED does not track the last-written state. If the node power-cycles, all LEDs return
-to off (from `configure()`) and remain off until PanelBridge re-sends CTRL_BCAST.
-PanelBridge is responsible for re-broadcasting DCS state after detecting a node READY
-frame. LED needs no recovery logic.
+LED caches the last decoded on/off state (`_lastOn`, guarded by `_hasState`) and **skips the pin
+write when the state is unchanged** — a repeated CTRL_BCAST value costs no I2C traffic. This is a
+write dedup, not value persistence: on power-cycle, `_hasState` resets, all LEDs return to off (from
+`configure()`), and they stay off until PanelBridge re-broadcasts DCS state after a node READY
+frame. LED needs no recovery logic of its own. (Covered by the `test_dedup` scenario — a repeated
+value writes the pin exactly once.)
 
 ---
 

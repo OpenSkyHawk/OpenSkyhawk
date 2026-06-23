@@ -18,6 +18,9 @@ void OpenSkyhawk::LED::onControlPacket(uint16_t controlId, uint16_t value) {
     _lastOn   = on;
     _hasState = true;
     _pin.write(_reverse ? !on : on);
+#ifdef LED_TEST
+    _writeCount++;
+#endif
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[LED] 0x")); d.print(_controlId, HEX);

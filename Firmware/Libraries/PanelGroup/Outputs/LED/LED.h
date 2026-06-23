@@ -65,13 +65,21 @@ public:
      */
     void onControlPacket(uint16_t controlId, uint16_t value) override;
 
+#ifdef LED_TEST
+    /** @brief Test seam — count of actual pin writes (dedup-suppressed packets excluded). */
+    uint16_t writeCount() const { return _writeCount; }
+#endif
+
 private:
     uint16_t _controlId;
     uint16_t _mask;
     PinRef   _pin;
     bool     _reverse;   ///< true = current-sink wiring (LOW = on)
-    bool     _lastOn   = false;
-    bool     _hasState = false;  ///< false until first matching CTRL_BCAST received
+    bool     _lastOn   = false;   ///< last written state — dedup reference
+    bool     _hasState = false;   ///< false until first matching CTRL_BCAST received
+#ifdef LED_TEST
+    uint16_t _writeCount = 0;     ///< test seam: actual pin writes (post-dedup)
+#endif
 };
 
 } // namespace OpenSkyhawk
