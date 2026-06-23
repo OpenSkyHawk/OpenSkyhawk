@@ -149,6 +149,14 @@ bool AnalogInput::shouldEmit(uint16_t v) const {         // ports DcsBios Potent
 actual reading (no ramp-from-zero), then emits unconditionally. `poll()` throttles reads to `POLL_MS`
 and delegates to `sample()`.
 
+**ADC source resolution:** `PinRef::readAnalog()` returns a 16-bit value, but the STM32F103 ADC is
+**12-bit** hardware — `STM32Board::begin()` calls `analogReadResolution(16)` and the STM32duino
+framework left-shifts the reading (×16) to fill the `uint16_t`. A GPIO input therefore carries 16-bit
+*format* with 12-bit *real* resolution and tops at **65520** (low 4 bits always 0). The near-rail
+force-send still reaches the rail (65520 > 65535 − `hysteresis`); for an exact 0–65535 span set
+`maxRaw = 65520`. 12-bit is ample for the pot inputs this class serves (ARC-51 VOL). (ADS1115 channels
+are a true 15-bit single-ended read ×2 → 0–65534.)
+
 **FirmwarePlan reconciliation:** `FirmwarePlan/05` and the earlier stub specified a plain "32-count
 dead-band" with no smoothing. This implementation instead ports the **DcsBios `PotentiometerEWMA`**
 recipe (EWMA + hysteresis + near-rail), because the ×16 STM32 scaling amplifies ADC noise more than
