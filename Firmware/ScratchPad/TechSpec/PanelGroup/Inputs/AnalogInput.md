@@ -49,7 +49,7 @@ CAN runs in **normal mode** so the node ACKs the PanelBridge. No jumpers or pot 
 | `test_reverse` | `reverse = true` inverts the mapping (minRaw → 65535) |
 | `test_hysteresis` | a sub-`hysteresis` change emits nothing; a larger one emits and tracks |
 | `test_ewma` | one EWMA step lands ≈ 1/8 toward the target; many steps converge |
-| `test_near_rail` | a reading moving into a rail band is emitted (endpoints always reached) |
+| `test_near_rail` | a **sub-hysteresis** move into a rail band still emits (clause isolated via `emitCount`); a full sweep lands on each rail |
 | `test_force_report` | boot read emits the current value once; repeats on a second call |
 | `test_shift_bounds` | `ewmaShift` capped at 15 — a full-scale seed does not overflow the int32 acc |
 
