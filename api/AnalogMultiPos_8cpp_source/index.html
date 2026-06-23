@@ -3950,6 +3950,13 @@ uint16_t AnalogMultiPos::resolve(uint16_t raw) const {
             }
         }
 
+        // Keep the band reachable when detents sit &lt; 2*deadband apart: the trimmed edges would
+        // otherwise invert (lo &gt; hi) and swallow the position. Clamp so the band always contains
+        // the position's own value (it loses the hysteresis gap, but stays selectable).
+        int32_t pv = static_cast&lt;int32_t&gt;(posValAt(i));
+        if (lo &gt; pv) lo = pv;
+        if (hi &lt; pv) hi = pv;
+
         if (static_cast&lt;int32_t&gt;(raw) &gt;= lo &amp;&amp; static_cast&lt;int32_t&gt;(raw) &lt;= hi) return i;
     }
     return NO_POSITION;   // in a deadband gap → base holds the last position (hysteresis)
