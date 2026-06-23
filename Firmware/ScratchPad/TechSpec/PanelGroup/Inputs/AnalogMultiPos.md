@@ -105,7 +105,10 @@ void loop()  { PanelGroup::loop(); }   // polls the input, drains CAN — nothin
 
 `ANALOG_NC = 0xFFFF` — a `posVals[]` entry meaning "this position has no detent". It shares the
 numeric value of `MultiPosInput::NO_POSITION` but is a *different concept* (an authoring sentinel in
-the ladder, vs. the readRaw "nothing active" return). The position array is caller-owned (or
+the ladder, vs. the readRaw "nothing active" return). It is the `uint16_t` parallel of
+`SwitchMultiPos`'s `PIN_NC` — same "no physical input at this index" role, but a `uint16_t`
+sentinel rather than a `PinRef` because `posVals` holds ADC values; kept `== MultiPosInput::NO_POSITION`
+so the family shares one sentinel value. The position array is caller-owned (or
 `nullptr` for the shorthand); per-instance state otherwise.
 
 ---
@@ -144,8 +147,11 @@ uint16_t AnalogMultiPos::resolve(uint16_t raw) const {
 ### ADC throttle & debounce
 
 `readRaw()` re-reads the ADC at most every `POLL_MS` (8 ms), caching the resolved index between
-reads. The base debounce window is **0** — the deadband gaps provide the filtering, so no timer is
-needed; emit-on-change still fires only when the resolved index changes.
+reads. `forceReport()` (boot burst, SYNC_REQ) **bypasses the throttle** and samples the current ADC —
+it must report the present position, never a stale or uninitialised cache (at boot, before `millis()`
+reaches `POLL_MS`, an un-bypassed throttle would emit position 0). The base debounce window is **0** —
+the deadband gaps provide the filtering, so no timer is needed; emit-on-change still fires only when
+the resolved index changes.
 
 ### EVT transmission
 

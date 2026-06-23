@@ -30,6 +30,11 @@ void AnalogMultiPos::configure() {
     _pin.configureAsInput();
 }
 
+void AnalogMultiPos::forceReport() {
+    _forceRead = true;   // boot / SYNC_REQ must sample the current ADC, not a stale throttle cache
+    MultiPosInput::forceReport();
+}
+
 uint16_t AnalogMultiPos::posValAt(uint8_t i) const {
     if (_posVals) return _posVals[i];
     if (_numPositions <= 1) return 0;
@@ -66,7 +71,8 @@ uint16_t AnalogMultiPos::resolve(uint16_t raw) const {
 
 uint16_t AnalogMultiPos::readRaw() {
     uint32_t now = millis();
-    if (now - _lastReadMs >= POLL_MS) {
+    if (_forceRead || now - _lastReadMs >= POLL_MS) {
+        _forceRead  = false;
         _lastReadMs = now;
         uint16_t raw =
 #ifdef ANALOGMULTIPOS_TEST

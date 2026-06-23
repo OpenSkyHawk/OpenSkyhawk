@@ -14,8 +14,15 @@
 
 namespace OpenSkyhawk {
 
-/** @brief posVals[] sentinel: a position with no physical detent (no distinct voltage). */
-static constexpr uint16_t ANALOG_NC = 0xFFFF;
+/**
+ * @brief `posVals[]` sentinel: a position with no physical detent (no distinct voltage).
+ *
+ * The uint16_t analog of `SwitchMultiPos`'s `PIN_NC` — same "this position index has no physical
+ * input" role, but a different sentinel because an analog ladder is an array of ADC *values*
+ * (uint16_t), not `PinRef`s. Kept `== MultiPosInput::NO_POSITION` (both 0xFFFF) so there is one
+ * sentinel value across the MULTIPOS family.
+ */
+static constexpr uint16_t ANALOG_NC = MultiPosInput::NO_POSITION;
 
 /**
  * @brief Resistor-ladder multi-position selector — one analog `PinRef`, a different voltage per
@@ -70,11 +77,21 @@ public:
     /** @brief Configure the pin as an input. Called by PanelGroup::setup(). */
     void configure() override;
 
+    /**
+     * @brief Force a fresh ADC sample (bypassing the read throttle), then emit the baseline.
+     *
+     * The boot EVT burst and SYNC_REQ must report the *current* position, never a stale cache: at
+     * boot — before millis() reaches POLL_MS — the throttle would otherwise return the
+     * uninitialised NO_POSITION cache and the base would emit position 0; and a SYNC arriving
+     * within POLL_MS of the last poll-read would echo an old reading. Overrides the base.
+     */
+    void forceReport() override;
+
 #ifdef ANALOGMULTIPOS_TEST
     /** @brief Test seam — resolve a raw 16-bit ADC value to an index (bypasses ADC + throttle). */
     uint16_t debugResolve(uint16_t raw) const { return resolve(raw); }
     /** @brief Test seam — inject the next ADC reading (overrides the hardware read). */
-    void debugSetRaw(uint16_t raw) { _testRaw = raw; _testRawSet = true; _lastReadMs = 0; }
+    void debugSetRaw(uint16_t raw) { _testRaw = raw; _testRawSet = true; _forceRead = true; }
 #endif
 
 protected:
@@ -90,6 +107,7 @@ private:
     uint16_t        _deadband;
     uint16_t        _cachedIdx;   ///< last resolved index (held between throttled reads)
     uint32_t        _lastReadMs;
+    bool            _forceRead = true;  ///< next readRaw() samples fresh — boot / forceReport / SYNC
 #ifdef ANALOGMULTIPOS_TEST
     uint16_t        _testRaw    = 0;
     bool            _testRawSet = false;
