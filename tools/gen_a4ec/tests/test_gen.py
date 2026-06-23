@@ -26,9 +26,12 @@ def load_fixture() -> dict:
     return G.flatten_controls(G.load_data(FIXTURE))
 
 
-def run_against_fixture() -> tuple:
+def run_against_fixture(ledger_path=None) -> tuple:
     controls = load_fixture()
-    input_entries, input_gaps = G.build_input_entries(controls)
+    if ledger_path is None:
+        # Isolated, non-existent path → fresh sequential assignment; never touches the real ledger.
+        ledger_path = Path(tempfile.mkdtemp()) / "ledger.json"
+    input_entries, input_gaps = G.build_input_entries(controls, ledger_path)
     output_entries, output_gaps = G.build_output_entries(controls)
     return controls, input_entries, input_gaps, output_entries, output_gaps
 
@@ -334,7 +337,7 @@ def test_full_run_writes_all_files(tmp_path, monkeypatch):
 
     controls = load_fixture()
     ts = "2025-01-01T00:00:00Z"
-    input_entries,  input_gaps  = G.build_input_entries(controls)
+    input_entries,  input_gaps  = G.build_input_entries(controls, tmp_path / "ledger.json")
     output_entries, output_gaps = G.build_output_entries(controls)
     all_gaps = input_gaps + output_gaps
 
@@ -350,3 +353,82 @@ def test_full_run_writes_all_files(tmp_path, monkeypatch):
 
     for filename in writes:
         assert (tmp_path / filename).exists(), f"{filename} was not written"
+
+
+# ── append-only id ledger ─────────────────────────────────────────────────────
+
+def _switch_control() -> dict:
+    return {
+        "inputs": [{"interface": "action", "argument": "TOGGLE"},
+                   {"interface": "fixed_step"},
+                   {"interface": "set_state", "max_value": 1}],
+        "outputs": [],
+    }
+
+
+def test_ledger_fresh_run_sequential_from_base(tmp_path):
+    """No ledger → controls numbered alphabetically from DCSIN_BASE (matches historical output)."""
+    ledger = tmp_path / "ledger.json"
+    entries, _ = G.build_input_entries(load_fixture(), ledger)
+    assert entries[0]["cmdId"] == G.DCSIN_BASE
+    assert [e["cmdId"] for e in entries] == [G.DCSIN_BASE + i for i in range(len(entries))]
+    assert ledger.exists()
+
+
+def test_ledger_regen_is_noop(tmp_path):
+    """Second run reuses every id — no renumbering."""
+    ledger = tmp_path / "ledger.json"
+    controls = load_fixture()
+    first, _  = G.build_input_entries(controls, ledger)
+    second, _ = G.build_input_entries(controls, ledger)
+    assert {e["name"]: e["cmdId"] for e in first} == {e["name"]: e["cmdId"] for e in second}
+
+
+def test_ledger_new_control_appends_at_end(tmp_path):
+    """An alphabetically-first new control gets max+1; every existing id is unchanged."""
+    ledger = tmp_path / "ledger.json"
+    controls = load_fixture()
+    before = {e["name"]: e["cmdId"] for e in G.build_input_entries(controls, ledger)[0]}
+    max_id = max(before.values())
+
+    controls["AAA_NEW_SWITCH"] = _switch_control()   # sorts first → would shift ids under the old scheme
+    after = {e["name"]: e["cmdId"] for e in G.build_input_entries(controls, ledger)[0]}
+
+    for name, cid in before.items():
+        assert after[name] == cid, f"{name} renumbered {cid:#x} -> {after[name]:#x}"
+    assert after["AAA_NEW_SWITCH"] == max_id + 1
+
+
+def test_ledger_removed_control_id_retired(tmp_path):
+    """A removed control keeps its id reserved; a later new control does not reuse it."""
+    ledger = tmp_path / "ledger.json"
+    controls = load_fixture()
+    before = {e["name"]: e["cmdId"] for e in G.build_input_entries(controls, ledger)[0]}
+    removed = max(before, key=lambda n: before[n])
+    removed_id = before[removed]
+
+    del controls[removed]
+    controls["ZZZ_NEW_SWITCH"] = _switch_control()
+    after = {e["name"]: e["cmdId"] for e in G.build_input_entries(controls, ledger)[0]}
+
+    assert after["ZZZ_NEW_SWITCH"] != removed_id          # retired id not reused
+    assert after["ZZZ_NEW_SWITCH"] == removed_id + 1      # appended past the retired max
+    saved = json.loads(ledger.read_text())
+    assert saved.get(removed) == removed_id               # ledger retains the retired id
+
+
+def test_inputmap_emitted_in_cmdid_order(tmp_path):
+    """InputMap rows ascend by cmdId (binary-search invariant) even when an append breaks name order."""
+    import re
+    ledger = tmp_path / "ledger.json"
+    controls = load_fixture()
+    G.build_input_entries(controls, ledger)
+    controls["AAA_NEW_SWITCH"] = _switch_control()       # name-first but id-last (appended)
+    entries, _ = G.build_input_entries(controls, ledger)
+
+    content = G.emit_inputmap(entries, "fixture.jsonp", "2025-01-01T00:00:00Z")
+    rows = re.findall(r"\{ DCSIN_(\w+),", content)
+    by_name = {e["name"]: e["cmdId"] for e in entries}
+    ordered_ids = [by_name[n] for n in rows]
+    assert ordered_ids == sorted(ordered_ids)             # rows ascend by cmdId
+    assert rows[0] != "AAA_NEW_SWITCH"                    # not first despite alphabetical name
