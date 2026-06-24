@@ -98,9 +98,12 @@ DrumDisplay radioDrum(oledRadio, ARC51_READOUT, drumMux, /*channel*/ 1, DrumFont
 //          the ch1 drum above then displays — a closed loop on this one node.
 //   pots : ARC51_VOL continuous (EWMA) + ARC51_MODE 4-position selector (equal-spacing bands).
 // Encoders set plain INPUT (no internal pull-up) → external 10kΩ pull-ups to 3V3 on A/B, common→GND.
-RotaryEncoder  destLat (DCSIN_DEST_LAT_KNB,     PinRef(PA8), PinRef(PB5), EncoderStepsPerDetent::Four);
+// step 1600 (½ the JSON suggested_step) = 1 digit per detent on the DEST_LAT readout — bench-tuned feel.
+RotaryEncoder  destLat (DCSIN_DEST_LAT_KNB,     PinRef(PA8), PinRef(PB5), EncoderStepsPerDetent::Four, EncoderMode::Rel, /*step=*/1600);
 RotaryEncoder  freq10  (DCSIN_ARC51_FREQ_10MHZ, PinRef(PB3), PinRef(PB4), EncoderStepsPerDetent::Four, EncoderMode::Dir);
-AnalogInput    arcVol  (DCSIN_ARC51_VOL,  PinRef(PA2));
+// hysteresis 1024 (≈64 steps over the throw) — default 128 floods DCS-BIOS import on a sweep (~125
+// cmd/s) and lags the cockpit seconds behind; 1024 cuts that ~5× while staying smooth for a vol knob.
+AnalogInput    arcVol  (DCSIN_ARC51_VOL,  PinRef(PA2), /*reverse=*/false, 0, 65535, /*hysteresis=*/1024);
 AnalogMultiPos arcMode (DCSIN_ARC51_MODE, PinRef(PA3), 4);
 
 void setup() {
