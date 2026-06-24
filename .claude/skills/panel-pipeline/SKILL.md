@@ -1,6 +1,6 @@
 ---
 name: panel-pipeline
-description: Orchestrate building an OpenSkyhawk cockpit controller end-to-end — research → schematic → CAD → backlight → PCB → firmware → order → assembly → test. Use when starting a new panel or controller, advancing one to its next stage, resuming a partially-built one (detect where it stands and continue), or partitioning the cockpit's panels into controllers. A thin orchestrator: it sequences stages, enforces gates, keeps the GitHub Projects + repo tracking in sync, owns the cross-cutting decisions (controller grouping, NODE_ID, prerequisites), and delegates the discipline work to panel-mapping, pcb-design, cad, firmware, and verify. Multi-session and resumable.
+description: Orchestrate building an OpenSkyhawk cockpit controller end-to-end — research → schematic → CAD → backlight → PCB → firmware → order → assembly → test. Use when starting a new panel or controller, advancing one to its next stage, resuming a partially-built one (detect where it stands and continue), or partitioning the cockpit's panels into controllers. A thin orchestrator: it sequences stages, enforces gates, keeps the GitHub Projects + repo tracking + InvenTree inventory/cost in sync, owns the cross-cutting decisions (controller grouping, NODE_ID, prerequisites), and delegates the discipline work to panel-mapping, pcb-design, cad, firmware, and verify. Multi-session and resumable.
 ---
 
 # Panel Pipeline — controller build orchestrator
@@ -201,6 +201,8 @@ so this skill (not a template) owns the structure.
   `pcb-design-rules`.
 - Place (LEDs on the front face, everything else on the back) + route (JLCPCB 2-layer, DRC) →
   **gerbers + BOM** (JLC part numbers).
+- **BOM → InvenTree** — create/confirm each part (+ supplier part) and build the panel **Assembly**'s
+  BOM (see *Inventory & cost tracking*).
 - **B3 ↔ B5 iterate** — the board outline fits the panel; the PCB-front LED positions must align
   with the backplate passthrough holes.
 - Gate: DRC clean + gerbers.
@@ -220,9 +222,42 @@ so this skill (not a template) owns the structure.
 ### B7 Order / B8 Assembly / B9 Test · *human*
 
 - **B7** — gerbers + BOM → JLCPCB order, source parts. Human (financial). **Async** (fab/ship wait).
+  Mirror each order (JLC / LCSC) as an InvenTree **Purchase Order** — part lines + shipping/tax as
+  extra lines; **receive** on arrival → stock at landed cost (see *Inventory & cost tracking*).
 - **B8** — solder (T962 reflow) + install + harness.
 - **B9** — flash + verify each control in DCS (inputs register, gauges/backlight move, CAN reaches
   CONNECTED). AI supplies the checklist (`verify`). → **Done**.
+
+---
+
+## Inventory & cost tracking (InvenTree)
+
+Components, BOMs, and orders are tracked in **InvenTree** (self-hosted, `http://192.168.85.85`, LXC
+on pve2) — the **system of record for inventory + cost**. Goal: per-panel **cost-to-source** and,
+with labor + machine time, a **sell price** (panels sold **assembled**). This skill wires panel
+parts / BOMs / orders into InvenTree; it does **not** duplicate it. Live state, IDs, and API gotchas
+live in memory `project_inventree`.
+
+- **3-layer part identity:** Part → **ManufacturerPart** (real maker + MPN) → **SupplierPart**
+  (LCSC / JLCPCB + SKU + price). LCSC/JLC are *distributors*, not makers.
+- **Categories:** `Electronics{Passives,Semiconductors,Connectors,Modules,Crystals}` · `Controls`
+  (HMI: switches / encoders / pots / buttons / indicators) · `Fabricated{3D-Printed,Laser-Cut,UV}` ·
+  `RawMaterial` (units: filament g / resin mL / sheet cm² / ink mL) · `Fasteners` · `Bare PCB` ·
+  `Assemblies`.
+- **A panel = an InvenTree Assembly** whose BOM = the PanelGroup base assembly + panel-specific
+  HMI / fabricated / fastener parts + its bare PCB. Multi-level → per-panel cost rolls up.
+- **Touchpoints:**
+  - **B1 / B5** — as parts are selected, create/confirm them in InvenTree (HMI → `Controls`, etc.)
+    and build the panel Assembly's BOM. The per-panel HMI part list is derivable from the control
+    inventory (`docs/_source/a4ec-control-inventory.csv`) via FW-class → physical-part map.
+  - **B7** — each LCSC / JLC order → a **Purchase Order** (part lines + shipping/tax as *extra
+    lines*); **receive** on arrival → stock at landed cost.
+  - **Cost → price** — BOM rollup = material; add **`Assembly Labor (hr)` + `Machine time` virtual
+    BOM parts** (priced per the build's labor/machine rates) → fully-loaded unit cost → set the
+    assembly's **Sale Price** → margin. A **Build Order** is the production run (consumes component
+    stock, outputs the assembly at build cost).
+- **Access:** API token at `~/.config/inventree/token` (read it, never commit/echo). Small LXC →
+  **retry + backoff on HTTP 500** (DB-lock) for bulk writes.
 
 ---
 
@@ -250,7 +285,7 @@ so this skill (not a template) owns the structure.
   6. **Analysis notes** — AI-generated prose: confirmed control types, physical layout findings, design decisions, open questions.
   7. **Inputs** — table: `Control | Identifier | DCS-BIOS addr | FW class | Notes`
   8. **Outputs** — table: `Display group | Identifiers | Digits | Flag | FW class`
-  9. **Component Summary** — AI-generated I²C device + discrete-driver + STM32-direct-pin tables for the panel's own I/O (parts + LCSC + addresses/pins). Per-panel scope; the controller-wide budget + remaining-pin availability lives on the controller issue, not here.
+  9. **Component Summary** — AI-generated I²C device + discrete-driver + STM32-direct-pin tables for the panel's own I/O (parts + LCSC + addresses/pins). Per-panel scope; the controller-wide budget + remaining-pin availability lives on the controller issue, not here. Each part is tracked in **InvenTree** (Part + SupplierPart + price); the panel itself is an InvenTree **Assembly** with a BOM — see *Inventory & cost tracking*.
 
   When updating a ticket: **always fetch the current body first**, extract Notes + Screenshot verbatim, then rebuild as fetched-Notes + fetched-Screenshot + updated AI sections. **Never reconstruct from memory or session context** — the user edits Notes and Screenshot directly in the GitHub UI, and overwriting them destroys their work irreversibly.
 - **NODE_ID** — claimed per controller in `Firmware/NODE_IDS.md` at A2.
