@@ -267,6 +267,14 @@ with labor + machine time, a **sell price** (panels sold **assembled**). This sk
 parts / BOMs / orders into InvenTree; it does **not** duplicate it. Live state, IDs, and API gotchas
 live in memory `project_inventree`.
 
+**Boundary — InvenTree is downstream of design.** Part selection (B1–B5) is **engineering-driven**;
+stock / availability **never** drives what part you pick. InvenTree consumes the *finalized* BOM —
+the dependency flows one way (design → BOM → InvenTree, never back). The only feedback loop is
+*"can I build N now?"* (Build Orders vs stock — a production question, not a design one). The
+committed KiCad project stays **self-contained on `PCB/Libraries/`** (LCSC / MPN as symbol fields);
+InvenTree is a **decoupled downstream consumer**, never referenced in the project's lib tables (the
+repo is public — no live link to the private instance).
+
 - **3-layer part identity:** Part → **ManufacturerPart** (real maker + MPN) → **SupplierPart**
   (LCSC / JLCPCB + SKU + price). LCSC/JLC are *distributors*, not makers.
 - **Categories:** `Electronics{Passives,Semiconductors,Connectors,Modules,Crystals}` · `Controls`
@@ -276,9 +284,10 @@ live in memory `project_inventree`.
 - **A panel = an InvenTree Assembly** whose BOM = the PanelGroup base assembly + panel-specific
   HMI / fabricated / fastener parts + its bare PCB. Multi-level → per-panel cost rolls up.
 - **Touchpoints:**
-  - **B1 / B5** — as parts are selected, create/confirm them in InvenTree (HMI → `Controls`, etc.)
-    and build the panel Assembly's BOM. The per-panel HMI part list is derivable from the control
-    inventory (`docs/_source/a4ec-control-inventory.csv`) via FW-class → physical-part map.
+  - **B5 (post-BOM)** — push the *finalized* KiCad BOM → InvenTree (Ki-nTree or CSV import) →
+    creates the parts (HMI → `Controls`, etc.) + the panel **Assembly**'s BOM. **Decoupled push,
+    not a live KiCad link.** Per-panel part list also derivable from the control inventory
+    (`docs/_source/a4ec-control-inventory.csv`) via FW-class → physical-part map.
   - **B7** — each LCSC / JLC order → a **Purchase Order** (part lines + shipping/tax as *extra
     lines*); **receive** on arrival → stock at landed cost.
   - **Cost → price** — BOM rollup = material; add **`Assembly Labor (hr)` + `Machine time` virtual
