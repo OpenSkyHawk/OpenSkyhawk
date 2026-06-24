@@ -1,6 +1,6 @@
 # DrumDisplay — Technical Specification
 
-**Status:** Done (hardware-verified — mux + readouts on real OLEDs, 2026-06-22; bench-fix PR #136)
+**Status:** Done (hardware-verified — mux + readouts on real OLEDs, 2026-06-22; bench-fix PR #136). + I2C circuit breaker #164 (compile-gated; bench pending)
 **FirmwarePlan ref:** issue #113 (OLED drum readout)
 **Depends on:** `PanelGroup.md`, `Helpers/I2cMux.md`, `olikraus/U8g2`
 
@@ -220,6 +220,23 @@ its tape/glyph/flag, and issues one `sendBuffer()`.
 A muxed instance calls `mux.select(channel)` before the blank in `configure()` and before the
 `sendBuffer()` in `update()`, so interleaved panels sharing identical 0x3C addresses never receive
 the wrong buffer. `I2cMux::select()` caches the last channel and skips redundant writes.
+
+### I2C circuit breaker (#164)
+
+`DrumDisplay` mixes in `I2cHealth` and gates every render (the `configure()` blank + the `update()`
+send) behind `i2cReachable()`. `i2cProbe()`:
+
+- **muxed:** a **forced** `select(channel, true)` (uncached write — confirms the mux *and* re-routes,
+  so a mux reset / power-glitch recovers) then `deviceAcks(oledAddr)` for the OLED on the branch —
+  classifying the failure `Fault::Mux` vs `Fault::Device` (feeds #163).
+- **direct-bus:** probes the OLED address on `Wire`. (A direct OLED on `Wire1` isn't covered yet — put
+  it on the mux, or a follow-up adds a bus handle.)
+
+A dead/absent panel → the render is skipped and the breaker backs off ~2 s between re-probes, so a
+missing OLED can no longer stall `PanelGroup::loop()` and flap the node. The decode path
+(`onControlPacket`) does no I2C, so the value stays current and the first reachable frame catches up —
+no stale freeze. The OLED address is read from `_oled->getU8x8()->i2c_address`. Pair with
+`-DI2C_TIMEOUT_TICK=10` on the sketch so each transaction is bounded (the breaker bounds *frequency*).
 
 ---
 

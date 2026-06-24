@@ -41,16 +41,27 @@ public:
     /**
      * @brief Route the bus to one downstream channel.
      * @param channel  Channel 0–7. Values above 7 are clamped to 7.
-     * @return true if the channel is selected (write issued, or already current);
-     *         false on I2C NAK.
-     * @note Writes a single byte (1 << channel); skipped when channel == last selected.
-     *       Callers sharing one mux across several devices MUST call this immediately
-     *       before each downstream I2C op — an interleaved driver can change the channel.
+     * @param force    Write the channel byte even if it matches the cache. Use on health/recovery
+     *                 paths: a TCA9548A that reset / power-glitched comes back with no channel
+     *                 selected while the cache still matches, so a plain select() would skip the write
+     *                 and the branch would stay dark forever.
+     * @return true if the channel is selected (write ACKed, or already current and not forced);
+     *         false on I2C NAK — also invalidates the cache so the next select re-routes.
+     * @note Writes a single byte (1 << channel); skipped when channel == last selected unless forced.
+     *       Callers sharing one mux across several devices MUST call this immediately before each
+     *       downstream I2C op — an interleaved driver can change the channel.
      */
-    bool select(uint8_t channel);
+    bool select(uint8_t channel, bool force = false);
 
     /** @brief Disable all channels (control byte 0x00). Optional bus quiescing. */
     void disableAll();
+
+    /**
+     * @brief Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?
+     * @param addr7  7-bit address of the device behind the selected branch.
+     * @return true if the device ACKs. Call select(channel) first to route the bus to it.
+     */
+    bool deviceAcks(uint8_t addr7);
 
 private:
     uint8_t  _addr;         // TCA9548A 7-bit address

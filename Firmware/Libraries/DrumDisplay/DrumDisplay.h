@@ -29,6 +29,7 @@
 #include <PanelGroup.h>      // OutputBase
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
+#include <Helpers/I2cHealth/I2cHealth.h>
 
 namespace OpenSkyhawk {
 
@@ -131,8 +132,11 @@ struct DrumReadout {
  * only decodes + flags dirty (cheap); update() does the ~60 fps gate, channel reselect,
  * ease+snap, render, and the single expensive sendBuffer().
  */
-class DrumDisplay : public OutputBase {
+class DrumDisplay : public OutputBase, public I2cHealth {
 public:
+    /** @brief Which I2C hop failed the last reachability probe (feeds node health reporting, #163). */
+    enum class Fault : uint8_t { None, Mux, Device };
+
     /**
      * @brief Construct and register a direct-bus drum display.
      * @param oled       Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this.
@@ -213,10 +217,27 @@ public:
     uint8_t debugCellCount() const  { return _nCells; }      ///< test-only: laid-out visual cell count
     int16_t debugRowWidth() const;                           ///< test-only: total laid-out width, px
     int16_t debugCellX0() const     { return _nCells ? _cellX[0] : 0; }  ///< test-only: leftmost cell X, px
+    bool     debugHealthy() const     { return i2cHealthy(); }                  ///< test-only: breaker state
+    uint8_t  debugFault() const       { return static_cast<uint8_t>(_fault); }  ///< test-only: 0=None 1=Mux 2=Device
+    uint32_t debugRenderCount() const { return _renderCount; }                  ///< test-only: sendBuffer() count
+    void     debugForceProbe(int v)   { _probeOverride = v; }                   ///< test-only: -1 real / 0 fail / 1 ok
+    bool     debugReachable()          { return i2cReachable(); }               ///< test-only: drive the breaker gate
+    uint32_t debugProbeCount() const   { return _probeCount; }                  ///< test-only: i2cProbe() calls
 #endif
+
+protected:
+    bool i2cProbe() override;  // I2cHealth contract: mux present + OLED ACKs on its channel; sets _fault
 
 private:
     static constexpr uint8_t MAX_CELLS = 8;  // 6 digits + 1 glyph + 1 flag
+
+    uint8_t oledAddr() const;        // OLED 7-bit address, read from the U8G2 object (for the probe)
+    Fault   _fault = Fault::None;    // which hop failed the last probe (mux vs device)
+#ifdef DRUMDISPLAY_TEST
+    uint32_t _renderCount  = 0;      // sendBuffer() calls — render-skip assertion
+    uint32_t _probeCount   = 0;      // i2cProbe() calls — back-off assertion
+    int      _probeOverride = -1;    // -1 = real probe, 0 = force fail, 1 = force ok
+#endif
 
     // collaborators / config (plain // — EXTRACT_PRIVATE NO, not rendered in API docs)
     U8G2*              _oled;        // caller-owned panel

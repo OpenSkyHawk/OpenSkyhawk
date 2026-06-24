@@ -107,15 +107,44 @@ void DrumDisplay::onControlPacket(uint16_t controlId, uint16_t value) {
     }
 }
 
+// ── i2cProbe / oledAddr — I2cHealth reachability contract ──────────────────────
+
+bool DrumDisplay::i2cProbe() {
+#ifdef DRUMDISPLAY_TEST
+    _probeCount++;
+    if (_probeOverride >= 0) { _fault = _probeOverride ? Fault::None : Fault::Device; return _probeOverride != 0; }
+#endif
+    if (!_mux) {                                       // direct-bus: probe the OLED on the default bus (Wire)
+        Wire.beginTransmission(oledAddr());            // NOTE: assumes Wire; a direct OLED on Wire1 isn't covered yet
+        const bool ok = (Wire.endTransmission() == 0);
+        _fault = ok ? Fault::None : Fault::Device;
+        return ok;
+    }
+    // Muxed: FORCE-write the channel (uncached) so a mux reset / power-glitch is re-routed; a NAK on
+    // that write means the mux itself is gone. Then probe the OLED on the now-selected branch.
+    if (!_mux->select(_channel, /*force=*/true)) { _fault = Fault::Mux;    return false; }
+    if (!_mux->deviceAcks(oledAddr()))           { _fault = Fault::Device; return false; }
+    _fault = Fault::None;
+    return true;
+}
+
+uint8_t DrumDisplay::oledAddr() const {
+    return static_cast<uint8_t>(_oled->getU8x8()->i2c_address >> 1);  // U8g2 stores the 8-bit (shifted) addr
+}
+
 // ── configure — auto-fit geometry, blank ───────────────────────────────────────
 
 void DrumDisplay::configure() {
-    if (_mux) _mux->select(_channel);
     _oled->setFont(fontPtr());
     _oled->setFontPosCenter();
-    fitGeometry();
+    fitGeometry();                       // geometry from the U8G2 buffer dims — no I2C
     _oled->clearBuffer();
-    _oled->sendBuffer();  // blank until the first packet arrives (_hasState stays false)
+    if (i2cReachable()) {                // blank the panel; skip + trip the breaker if it's absent at boot
+        _oled->sendBuffer();
+#ifdef DRUMDISPLAY_TEST
+        _renderCount++;
+#endif
+    }
 }
 
 // ── fitGeometry — descriptor mm + font + offset → px (replaces hardcoded consts) ─
@@ -250,6 +279,10 @@ void DrumDisplay::update() {
                                                       // (_geomDirty forces a frame after setOffset/setFontSize)
     _lastFrameMs = now;
 
+    // Skip the render if the panel/mux is unreachable — keeps _dirty + tape positions, so the next
+    // reachable frame catches up to the live value (no stale freeze). Probes ~every 2 s while dead.
+    if (!i2cReachable()) return;
+
     if (_geomDirty) {
         _oled->setFont(fontPtr());
         _oled->setFontPosCenter();
@@ -296,6 +329,9 @@ void DrumDisplay::update() {
         }
     }
     _oled->setMaxClipWindow();
+#ifdef DRUMDISPLAY_TEST
+    _renderCount++;
+#endif
     _oled->sendBuffer();  // the one expensive I2C op
 }
 

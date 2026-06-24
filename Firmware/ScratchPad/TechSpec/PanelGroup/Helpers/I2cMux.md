@@ -40,8 +40,9 @@ namespace OpenSkyhawk {
 class I2cMux {
 public:
     explicit I2cMux(uint8_t addr = 0x70, TwoWire& wire = Wire);  // no I²C here
-    bool select(uint8_t channel);   // route bus to channel 0–7; true on ACK / already-current
+    bool select(uint8_t channel, bool force = false);  // route to 0–7; force = uncached write (recovery)
     void disableAll();              // control byte 0x00 (optional bus quiescing)
+    bool deviceAcks(uint8_t addr7); // probe a device on the CURRENTLY selected channel
 };
 
 }  // namespace OpenSkyhawk
@@ -69,6 +70,24 @@ bool I2cMux::select(uint8_t channel) {
 written one, so repeated `select()` of the same channel costs no I²C. `_lastChannel` starts at −1
 (nothing selected). Callers sharing one mux across several devices **must** call `select()`
 immediately before each downstream I²C op — an interleaved driver can change the live channel.
+
+### Health probes + recovery (circuit breaker)
+
+For the I2C circuit breaker (`I2cHealth`, #164), a muxed output probes reachability with a **forced**
+`select(channel, /*force=*/true)` then `deviceAcks(deviceAddr)`:
+
+- **`select(channel, force=true)`** writes the channel byte unconditionally (bypassing the
+  last-channel cache) and returns the mux's ACK — this confirms the mux is alive **and** actually
+  re-routes the branch. Critical for recovery: a TCA9548A that reset / power-glitched comes back with
+  no channel selected while the cache still matches, so a plain cached `select()` would skip the write
+  and the branch would stay dark forever. On a NAK, `select()` also **invalidates the cache**
+  (`_lastChannel = -1`) so the next call re-writes.
+- **`deviceAcks(addr7)`** then probes the device on the now-selected branch.
+
+A NAK on the forced select ⇒ the mux is gone; a NAK on `deviceAcks` ⇒ the device is gone — the order
+classifies *which* hop failed, for node health reporting (#163). Pair with a short `-DI2C_TIMEOUT_TICK`
+build flag: the breaker bounds probe *frequency*, the timeout bounds each *transaction* so a
+stuck/floating bus can't block the loop.
 
 ### Why a separate helper
 
