@@ -127,14 +127,14 @@ of truth, the Projects are the generated tracker.** Get the field/option node ID
 issues are **public** since the repo is public — the Projects stay private via their own ACL):
 
 1. Create the **controller** issue — label `controller`, add to #2, set build `Status`. Body =
-   member panels + NODE_ID + I/O architecture. Each controller step (B6 Firmware · B9 Integration
-   test · host/MCU PCB · B7 Order · B8 Assembly) is its own **sub-issue** (label `build-step`)
-   under the controller.
+   member panels + NODE_ID + I/O architecture. Each controller step (B6 Firmware · host/MCU PCB ·
+   B7 Order · B8 Assembly · B9 Integration test) is its own **sub-issue** (label `build-step`)
+   under the controller, created in build order.
 2. For each member panel: **convert** its #1 draft → issue (`convertProjectV2DraftIssueItemToIssue`),
    label `panel`, keep it in #1 *and* add to #2, then **link as a sub-issue** of the controller (`addSubIssue`).
 3. Panel issue body = its control inventory (B1 / `panel-mapping` output). Each panel step
-   (B2 Schematic · B5 PCB · B3 CAD · B4 Backlight) is its own **sub-issue** (label `build-step`)
-   under the panel.
+   (B2 Schematic · B3 CAD · B4 Backlight · B5 PCB) is its own **sub-issue** (label `build-step`)
+   under the panel, created in build order.
 4. **Close** a step sub-issue when its PR merges (link with `Closes #<step>`); advance the
    controller `Status` as steps complete. All panel sub-issues closed = hardware done → finish
    group firmware + test.
