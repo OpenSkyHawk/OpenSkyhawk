@@ -127,22 +127,27 @@ of truth, the Projects are the generated tracker.** Get the field/option node ID
 issues are **public** since the repo is public — the Projects stay private via their own ACL):
 
 1. Create the **controller** issue — label `controller`, add to #2, set build `Status`. Body =
-   group checklist: `- [ ] B6 Firmware  - [ ] B9 Integration test  - [ ] host/MCU PCB  - [ ] B7 Order  - [ ] B8 Assembly`
-   + member panels + NODE_ID.
+   member panels + NODE_ID + I/O architecture. Each controller step (B6 Firmware · host/MCU PCB ·
+   B7 Order · B8 Assembly · B9 Integration test) is its own **sub-issue** (label `build-step`)
+   under the controller, created in build order.
 2. For each member panel: **convert** its #1 draft → issue (`convertProjectV2DraftIssueItemToIssue`),
    label `panel`, keep it in #1 *and* add to #2, then **link as a sub-issue** of the controller (`addSubIssue`).
-3. Panel issue body = its control inventory (B1 / `panel-mapping` output) + panel checklist:
-   `- [ ] B2 Schematic  - [ ] B5 PCB  - [ ] B3 CAD  - [ ] B4 Backlight`.
-4. Check a step when its PR merges (`- [ ] B2 Schematic #123`); advance the controller `Status`
-   as steps complete. All panel sub-issues closed = hardware done → finish group firmware + test.
+3. Panel issue body = its control inventory (B1 / `panel-mapping` output). Each panel step
+   (B2 Schematic · B3 CAD · B4 Backlight · B5 PCB) is its own **sub-issue** (label `build-step`)
+   under the panel, created in build order.
+4. **Close** a step sub-issue when its PR merges (link with `Closes #<step>`); advance the
+   controller `Status` as steps complete. All panel sub-issues closed = hardware done → finish
+   group firmware + test.
 
 **Sub-tasks are defined by issue type:** `controller` → firmware/test/order/assembly · `panel` →
-schematic/PCB/CAD/backlight. Default is **2-level** (panels = sub-issues, steps = checklists; ~80
-issues total). Switch a controller to **3-level** (each step its own sub-issue nested under the
-panel — GitHub nests ≤8 deep) only when it needs assignable/PR-tracked steps or fine % roll-up.
-Steps are **tasks** (checkboxes); the **checkpoint** is the `Status` field they advance; reserve
-**Milestones** for coarse gates (a console, a release). Issue templates have no per-template ACL,
-so this skill (not a template) owns the structure.
+schematic/PCB/CAD/backlight. **Default is 3-level** — every build step is its own **sub-issue**
+(label `build-step`; controller steps under the controller, panel steps under the panel; GitHub
+nests ≤8 deep), giving assignable, PR-closable steps + fine progress roll-up on the parent.
+**2-level** (steps as body checkboxes, no step issues) is the lighter fallback for a quick or
+low-priority controller. **Step sub-issues are NOT added to the Projects board** — they roll up
+under their parent; only controllers (#2) + panels (#1 + #2) sit on the board. The **checkpoint**
+is the `Status` field; reserve **Milestones** for coarse gates (a console, a release). Issue
+templates have no per-template ACL, so this skill (not a template) owns the structure.
 
 ---
 
@@ -150,23 +155,47 @@ so this skill (not a template) owns the structure.
 
 ### B1 — Research (deep) · `panel-mapping` · *AI drafts → human photos + in-sim type confirm*
 
-- Confirm the estimated control types **in the real sim**; capture reference photos (human).
-- **Dimensions** (× 1.10) + switch **center-to-center spacing** → CAD.
-- **Part selection** per control; detailed **control → MCP23017-pin / ADS1115-channel** map.
-- **Gap analysis** — for each control type, check the OpenSkyhawk building block exists: **both**
-  the **firmware class** (e.g. `OpenSkyhawk::Switch3Pos`) **and** the **KiCad symbol / Design
-  Block**. For each missing piece, **create a per-board prerequisite ticket** — a **blocker on this
-  specific controller**. A missing **class** blocks **B6**; a missing **symbol** blocks **B2**.
-  **Implementing a new control type is OUT OF SCOPE of this pipeline** — it is its own firmware /
-  KiCad effort (TechSpec + prototype, e.g. how `Switch2Pos` was built). The pipeline only flags it,
-  tickets it, and blocks the board until it lands.
-  Implemented today: `Switch2Pos`, `LED`, `PinRef`. Planned/missing: `Switch3Pos`, `ActionButton`,
-  `SwitchMultiPos`/`RotarySwitch`, `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder`, `DrumDisplay`,
-  `NeedleGauge` (pointer gauges — Switec/AccelStepper/servo backends, supersedes ServoOutput +
-  AccelStepperOutput), `AngleSensor`, `SwitchWithCover2Pos`.
-  This **confirms the A1 provisional Ready/Blocked** classification now that types are sim-verified.
-- Out: Controls Inventory + I/O Summary + Dimensions + prerequisites → Project item / issue body +
-  `docs/_source/controllers/<Panel>.md`.
+A1 gave the type *estimate*; B1 makes it build-ready — **AI drafts from the A4EC Lua
+(`clickabledata.lua` gestures) + DCS-BIOS + the A1 analysis; human confirms each control in the
+real sim.** Deliverables:
+
+- **Interaction model — per control, sim-confirmed.** *How the pilot operates it*, beyond the type:
+  physical action (toggle up/down · push momentary/latching · rotate detented-N-pos / continuous /
+  multi-turn · pull-to-unlock · **concentric** inner/outer · **guarded** · **spring-return**), exact
+  **positions + labels**, detent feel, special behaviours (push-to-set, spring-loaded slew,
+  lift-lock). Drives part selection + confirms the FW class. Record as an **`Interaction`** column in
+  the Inputs table (the *how*, beside FW class = the *what*).
+- Confirm control **types in the real sim**; capture reference photos (human). **Dimensions** (×1.10)
+  + switch **centre-to-centre spacing** → CAD. **Part selection** per control.
+- **Engineering pass (controller-wide):**
+  - **Pin budget** — tally against the base (13 breakout GPIO / 8 ADC-capable · 2 I²C buses, ≤8
+    MCP23017 & ≤4 ADS1115 per bus). Confirm it fits with headroom.
+  - **Gauge type + drive** — classify every gauge: **DrumDisplay = OLED** (I²C, cheap buffer write)
+    vs **NeedleGauge = stepper / DRV8833** (needs fast coil drive). **MCP23017-driven steppers are
+    I²C-rate-limited** (~490 steps/s @400 kHz, *shared per bus*) — default to MCP for low/slow gauge
+    counts, but **bench-validate the real step rate + smoothness before B5** (hard gate; don't lay
+    out copper on an unproven rate). Fast / dense clusters → direct MCU GPIO or the **74HC595
+    shift-register backend (#133)**. **DrumDisplay = OLED supersedes any motorized-drum assumption —
+    recount expanders / steppers on that basis** (it usually collapses them).
+  - **Inter-panel connections** — per host↔sub-panel link: I²C harness (8-pin JST-XH:
+    SDA/SCL/INT_A/INT_B/+3V3/GND/spare-analog), analog passthrough → host ADC, what stays **local**
+    (stepper coils + local MCP — don't cross the harness), backlight +12 V, power.
+  - **Pin map per MCU (NODE)** — the authoritative table B2 consumes: every STM32 pin → function,
+    I²C addressing (MCP23017 0x20–0x27/bus, OLED mux channels), INT routing.
+- **Gap analysis** — for each control type, check the OpenSkyhawk building block exists: **both** the
+  **firmware class** (e.g. `OpenSkyhawk::Switch3Pos`) **and** the **KiCad symbol / Design Block**.
+  Each missing piece → a **per-board prerequisite ticket** (blocker on this controller): missing
+  **class** blocks **B6**, missing **symbol** blocks **B2**. **Building a new control type is OUT OF
+  SCOPE here** — its own firmware / KiCad effort (TechSpec + prototype, e.g. how `Switch2Pos` was
+  built); the pipeline flags, tickets, and blocks until it lands. Implemented today: `Switch2Pos ·
+  Switch3Pos · SwitchMultiPos · AnalogMultiPos · AnalogInput · RotaryEncoder · LED · DrumDisplay
+  (OLED) · NeedleGauge · PinRef`. Missing/planned: `ActionButton · AngleSensor · SwitchWithCover2Pos
+  · ServoMotor (#132)`; fast-coil backend `74HC595 (#133)`. **Confirms the A1 provisional
+  Ready/Blocked** now that types are sim-verified.
+- **Body cleanup** — refine the A1 first-pass into build-ready issue bodies; **preserve Notes +
+  Screenshot verbatim** (humans own those).
+- Out: Controls Inventory + **Interaction** + I/O Summary + Dimensions + **Pin map** + prerequisites
+  → Project item / issue body + `docs/_source/controllers/<Panel>.md`.
 
 ### B2 — Schematic · `pcb-design` · *AI analysis → human draws → AI reviews*
 
