@@ -52,6 +52,22 @@ public:
     /** @brief Disable all channels (control byte 0x00). Optional bus quiescing. */
     void disableAll();
 
+    /**
+     * @brief Probe the mux's own control-register address — does the TCA9548A ACK?
+     * @return true if the mux ACKs at its 7-bit address.
+     * @note An uncached address probe — always touches the bus, unlike select() (which caches the
+     *       last channel and may skip the I2C entirely, so it can't detect a mux that has gone away).
+     *       Use for circuit-breaker health checks ([[I2cHealth]]).
+     */
+    bool isPresent();
+
+    /**
+     * @brief Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?
+     * @param addr7  7-bit address of the device behind the selected branch.
+     * @return true if the device ACKs. Call select(channel) first to route the bus to it.
+     */
+    bool deviceAcks(uint8_t addr7);
+
 private:
     uint8_t  _addr;         // TCA9548A 7-bit address
     TwoWire* _wire;         // bus the mux is on

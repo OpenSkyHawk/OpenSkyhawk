@@ -40,8 +40,10 @@ namespace OpenSkyhawk {
 class I2cMux {
 public:
     explicit I2cMux(uint8_t addr = 0x70, TwoWire& wire = Wire);  // no I²C here
-    bool select(uint8_t channel);   // route bus to channel 0–7; true on ACK / already-current
+    bool select(uint8_t channel);   // route bus to channel 0–7; true on ACK / already-current (cached)
     void disableAll();              // control byte 0x00 (optional bus quiescing)
+    bool isPresent();               // uncached probe of the mux's own 0x70 — health check
+    bool deviceAcks(uint8_t addr7); // probe a device on the CURRENTLY selected channel
 };
 
 }  // namespace OpenSkyhawk
@@ -69,6 +71,16 @@ bool I2cMux::select(uint8_t channel) {
 written one, so repeated `select()` of the same channel costs no I²C. `_lastChannel` starts at −1
 (nothing selected). Callers sharing one mux across several devices **must** call `select()`
 immediately before each downstream I²C op — an interleaved driver can change the live channel.
+
+### Health probes (circuit breaker)
+
+`isPresent()` and `deviceAcks(addr7)` are **uncached** address probes (`beginTransmission` →
+`endTransmission`, no payload) backing the I2C circuit breaker (`I2cHealth`, #164). `select()`'s
+last-channel cache means a repeated `select()` of the same channel returns `true` **without touching
+the bus**, so it cannot notice a mux that has since vanished — these always issue real I²C. A muxed
+output probes `isPresent()` (mux at 0x70) first, then `select(channel)`, then `deviceAcks(deviceAddr)`
+to confirm the device on that branch; the two-step order also classifies *which* hop failed (mux vs
+device) for node health reporting (#163).
 
 ### Why a separate helper
 

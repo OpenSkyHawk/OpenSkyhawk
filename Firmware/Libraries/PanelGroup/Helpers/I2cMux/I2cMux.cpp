@@ -29,6 +29,16 @@ void I2cMux::disableAll() {
     _lastChannel = -1;
 }
 
+bool I2cMux::isPresent() {
+    _wire->beginTransmission(_addr);
+    return _wire->endTransmission() == 0;
+}
+
+bool I2cMux::deviceAcks(uint8_t addr7) {
+    _wire->beginTransmission(addr7);
+    return _wire->endTransmission() == 0;
+}
+
 }  // namespace OpenSkyhawk
 
 #endif  // ARDUINO_ARCH_STM32
