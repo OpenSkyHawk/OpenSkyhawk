@@ -12,6 +12,12 @@
 // OLED drum readouts — TCA9548A @ 0x70 on I2C1 (SCL=PB8, SDA=PB9), each panel @ 0x3C:
 //   ch0 → current longitude  (NAV_CURPOS_LON, 6 digits + E/W flag)
 //   ch1 → ARC-51 UHF frequency (ARC51_FREQ, 5 digits + '.', e.g. 225.50)
+// DCS-routed inputs (bench: 2 EC11 encoders + 2 pots — see README.md for wiring + pull-ups):
+//   RotaryEncoder REL  DEST_LAT_KNB     PA8/PB5  → ±step  / canIdEvtRel / "%+d"
+//   RotaryEncoder DIR  ARC51_FREQ_10MHZ PB3/PB4  → ±1     / canIdEvtDir / INC-DEC (steps ch1 drum)
+//   AnalogInput        ARC51_VOL        PA2 pot  → 16-bit / canIdEvt    / "%u"
+//   AnalogMultiPos     ARC51_MODE       PA3 pot  → index  / canIdEvt    / "%u"
+//   (PB3/PB4 are JTAG-DP pins — setup() remaps SWJ→SWD-only to free them; ST-Link still flashes.)
 
 #include <Wire.h>
 #include <OpenSkyhawk.h>
@@ -83,8 +89,27 @@ static const DrumReadout ARC51_READOUT = {
 DrumDisplay lonDrum  (oledLon,   LON_READOUT,   drumMux, /*channel*/ 0, DrumFont::LARGE);
 DrumDisplay radioDrum(oledRadio, ARC51_READOUT, drumMux, /*channel*/ 1, DrumFont::LARGE);
 
+// ── DCS-routed inputs — 2 EC11 encoders + 2 pots (bench) ────────────────────────
+// Exercises all four input dispatch forms live against DCS (#147 acceptance + the first real-pot
+// run for the analog ABS classes, previously only debugSetRaw-seam-verified). Each auto-registers,
+// so PanelGroup::setup()/loop() poll them and emit on change — no per-control code in loop().
+//   REL  : turning DEST_LAT_KNB emits ±step (default 3200) → bridge "%+d" → DCS nudges the dest lat.
+//   DIR  : turning ARC51_FREQ_10MHZ emits ±1 → bridge INC/DEC → DCS steps the 10 MHz digit, which
+//          the ch1 drum above then displays — a closed loop on this one node.
+//   pots : ARC51_VOL continuous (EWMA) + ARC51_MODE 4-position selector (equal-spacing bands).
+// Encoders set plain INPUT (no internal pull-up) → external 10kΩ pull-ups to 3V3 on A/B, common→GND.
+RotaryEncoder  destLat (DCSIN_DEST_LAT_KNB,     PinRef(PA8), PinRef(PB5), EncoderStepsPerDetent::Four);
+RotaryEncoder  freq10  (DCSIN_ARC51_FREQ_10MHZ, PinRef(PB3), PinRef(PB4), EncoderStepsPerDetent::Four, EncoderMode::Dir);
+AnalogInput    arcVol  (DCSIN_ARC51_VOL,  PinRef(PA2));
+AnalogMultiPos arcMode (DCSIN_ARC51_MODE, PinRef(PA3), 4);
+
 void setup() {
     STM32Board::setDebug(true);
+
+    // Free the DIR encoder's PB3/PB4 (default JTAG-DP pins) — remap SWJ to SWD-only. SWD (PA13/PA14)
+    // stays live so ST-Link still flashes; only the unused JTAG pins are released.
+    __HAL_RCC_AFIO_CLK_ENABLE();
+    __HAL_AFIO_REMAP_SWJ_NOJTAG();
 
     // Bring each OLED up on its own mux channel BEFORE PanelGroup::setup() (which calls
     // configure() on every output): begin() must precede configure(), each on its channel.
