@@ -14,6 +14,20 @@ DCS ⇄ SimGateway (RP2040, USB↔UART) ⇄ PanelBridge (STM32 NODE 0, CAN maste
   APN-153 DRIFT needle, two OLED drums) were bench-verified 2026-06-15; the **inputs below were
   added for the #147 live-DCS acceptance**.
 
+## Bench sketches (PanelGroup side)
+
+| Sketch | Use |
+|---|---|
+| `PanelGroup/` | the full "every control class" node — needs **all** its hardware present (LED, stepper, mux + 2 OLEDs) |
+| `PanelGroupInputs/` | inputs-only node (4 inputs, no outputs) — use when only the inputs are wired |
+| `WiringCheck/` | standalone raw GPIO/ADC diagnostic (no CAN/sim) — verify input wiring before the full chain |
+
+> **Gotcha — don't flash the full `PanelGroup` node with its OLEDs absent.** It drives the OLED
+> DrumDisplays every loop; with the OLEDs unplugged, the live DCS export keeps triggering renders to
+> the missing devices, each I2C transaction blocks on the HAL timeout, the loop stalls, and the node
+> flaps online/offline (heartbeat starved). On a partial-hardware bench use `PanelGroupInputs`. The
+> proper fix — a non-blocking circuit breaker so a dead I2C device can't stall the loop — is #164.
+
 ## Inputs under test (PanelGroup node)
 
 The four DCS-routed input **dispatch forms**, end-to-end — and the first **real-pot → DCS** run for
