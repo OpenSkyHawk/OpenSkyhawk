@@ -4065,6 +4065,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Switches &amp; Controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rotary-encoders-ec11-bare-quadrature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotary encoders (EC11 / bare quadrature)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#potentiometers-analog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Potentiometers (analog)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freeing-the-jtag-pins-for-breakout-gpio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Freeing the JTAG pins for breakout GPIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4606,6 +4645,31 @@ bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated 
 <ul>
 <li>Toggle switches: 12 mm (standard), ~6 mm (ECM modules)</li>
 </ul>
+<h3 id="rotary-encoders-ec11-bare-quadrature">Rotary encoders (EC11 / bare quadrature)</h3>
+<ul>
+<li>A and B → two GPIO, each with a <strong>10 kΩ pull-up to 3V3</strong>. The <code>RotaryEncoder</code> class sets a plain
+  <code>INPUT</code> (no internal pull-up), so an open contact floats without the external resistor. Common → GND.</li>
+<li>The integral push-switch on a 5-pin EC11 is a separate SPST — wire it as its own <code>Switch2Pos</code>, or
+  leave the two switch pins unconnected if out of scope.</li>
+<li>Reverse the sensed direction by swapping the A/B pins — no firmware change.</li>
+</ul>
+<h3 id="potentiometers-analog">Potentiometers (analog)</h3>
+<ul>
+<li>A pot is already a divider: wiper → an <strong>ADC pin</strong>, the two ends → <code>+3V3</code> and <code>GND</code>. No added
+  resistors.</li>
+<li><strong>High end → 3V3, never 5 V.</strong> The STM32F103 ADC pins (PA0–PA7, PB0, PB1) are <strong>not 5 V-tolerant</strong>;
+  5 V damages them. Reverse the travel by swapping the end terminals.</li>
+</ul>
+<h3 id="freeing-the-jtag-pins-for-breakout-gpio">Freeing the JTAG pins for breakout GPIO</h3>
+<p><code>PA15</code> (JTDI), <code>PB3</code> (JTDO), <code>PB4</code> (NJTRST) power up as the JTAG-DP. On the <strong>PanelGroup base</strong> they
+are exposed as remap-gated breakout pins; to use them as ordinary GPIO, remap SWJ to SWD-only early
+in <code>setup()</code>. This keeps SWD (PA13/PA14) live so ST-Link still flashes, and releases only the three
+JTAG pins:</p>
+<pre><code class="language-cpp">__HAL_RCC_AFIO_CLK_ENABLE();
+__HAL_AFIO_REMAP_SWJ_NOJTAG();   // JTAG off, SWD on → PA15/PB3/PB4 usable as GPIO
+</code></pre>
+<p>The Gateway/Bridge base leaves these NC — it has enough clean breakout pins not to bother (see
+<a href="../base-boards/">base boards</a>).</p>
 <h2 id="can-transceiver">CAN Transceiver</h2>
 <p><strong>Selected: SN65HVD230</strong> — SOIC-8, 3.3V logic.</p>
 <ul>
