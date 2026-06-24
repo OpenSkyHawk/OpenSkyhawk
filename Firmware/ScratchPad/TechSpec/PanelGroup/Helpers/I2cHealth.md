@@ -79,6 +79,14 @@ bool i2cReachable() {
 `i2cProbe()` should be cheap (a single bounded address probe) and record any fault detail the device
 wants to report (e.g. mux vs device) for node health (#163).
 
+### Bounding each transaction
+
+The breaker bounds how *often* a dead device is probed, not how long a single transaction blocks. On a
+stuck or floating bus one `endTransmission()` can still block on the STM32 core's default I2C timeout
+(`I2C_TIMEOUT_TICK`, 100 ms). Pair the breaker with a build-flag override on any I2C node —
+**`-DI2C_TIMEOUT_TICK=10`** — so each transaction is bounded to ~10 ms. Healthy OLED/MCP/ADS transfers
+are well under that; a dead device is skipped by the breaker, not transacted.
+
 ---
 
 ## Dependencies

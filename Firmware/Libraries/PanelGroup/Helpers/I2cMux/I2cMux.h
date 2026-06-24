@@ -41,25 +41,20 @@ public:
     /**
      * @brief Route the bus to one downstream channel.
      * @param channel  Channel 0–7. Values above 7 are clamped to 7.
-     * @return true if the channel is selected (write issued, or already current);
-     *         false on I2C NAK.
-     * @note Writes a single byte (1 << channel); skipped when channel == last selected.
-     *       Callers sharing one mux across several devices MUST call this immediately
-     *       before each downstream I2C op — an interleaved driver can change the channel.
+     * @param force    Write the channel byte even if it matches the cache. Use on health/recovery
+     *                 paths: a TCA9548A that reset / power-glitched comes back with no channel
+     *                 selected while the cache still matches, so a plain select() would skip the write
+     *                 and the branch would stay dark forever.
+     * @return true if the channel is selected (write ACKed, or already current and not forced);
+     *         false on I2C NAK — also invalidates the cache so the next select re-routes.
+     * @note Writes a single byte (1 << channel); skipped when channel == last selected unless forced.
+     *       Callers sharing one mux across several devices MUST call this immediately before each
+     *       downstream I2C op — an interleaved driver can change the channel.
      */
-    bool select(uint8_t channel);
+    bool select(uint8_t channel, bool force = false);
 
     /** @brief Disable all channels (control byte 0x00). Optional bus quiescing. */
     void disableAll();
-
-    /**
-     * @brief Probe the mux's own control-register address — does the TCA9548A ACK?
-     * @return true if the mux ACKs at its 7-bit address.
-     * @note An uncached address probe — always touches the bus, unlike select() (which caches the
-     *       last channel and may skip the I2C entirely, so it can't detect a mux that has gone away).
-     *       Use for circuit-breaker health checks ([[I2cHealth]]).
-     */
-    bool isPresent();
 
     /**
      * @brief Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?

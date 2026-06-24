@@ -114,10 +114,16 @@ bool DrumDisplay::i2cProbe() {
     _probeCount++;
     if (_probeOverride >= 0) { _fault = _probeOverride ? Fault::None : Fault::Device; return _probeOverride != 0; }
 #endif
-    if (!_mux) return true;                                       // direct-bus: not gated here (no mux handle)
-    if (!_mux->isPresent())            { _fault = Fault::Mux;    return false; }  // 1) mux 0x70 reachable?
-    _mux->select(_channel);                                                       //    route the branch
-    if (!_mux->deviceAcks(oledAddr())) { _fault = Fault::Device; return false; }  // 2) OLED on the extension?
+    if (!_mux) {                                       // direct-bus: probe the OLED on the default bus (Wire)
+        Wire.beginTransmission(oledAddr());            // NOTE: assumes Wire; a direct OLED on Wire1 isn't covered yet
+        const bool ok = (Wire.endTransmission() == 0);
+        _fault = ok ? Fault::None : Fault::Device;
+        return ok;
+    }
+    // Muxed: FORCE-write the channel (uncached) so a mux reset / power-glitch is re-routed; a NAK on
+    // that write means the mux itself is gone. Then probe the OLED on the now-selected branch.
+    if (!_mux->select(_channel, /*force=*/true)) { _fault = Fault::Mux;    return false; }
+    if (!_mux->deviceAcks(oledAddr()))           { _fault = Fault::Device; return false; }
     _fault = Fault::None;
     return true;
 }
