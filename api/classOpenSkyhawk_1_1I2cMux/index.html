@@ -3919,6 +3919,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-deviceacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function deviceAcks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-disableall" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3985,12 +3996,16 @@
 <td style="text-align: left;"><a href="#function-i2cmux"><strong>I2cMux</strong></a> (uint8_t addr=0x70, TwoWire &amp; wire=Wire) <br><em>Construct a mux handle. No I2C occurs here.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-deviceacks"><strong>deviceAcks</strong></a> (uint8_t addr7) <br><em>Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-disableall"><strong>disableAll</strong></a> () <br><em>Disable all channels (control byte 0x00). Optional bus quiescing.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
-<td style="text-align: left;"><a href="#function-select"><strong>select</strong></a> (uint8_t channel) <br><em>Route the bus to one downstream channel.</em></td>
+<td style="text-align: left;"><a href="#function-select"><strong>select</strong></a> (uint8_t channel, bool force=false) <br><em>Route the bus to one downstream channel.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4011,6 +4026,20 @@
 </ul>
 <hr>
 
+<h3 id="function-deviceacks">function deviceAcks</h3>
+<p><em>Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?</em> </p>
+<pre><code class="language-C++">bool OpenSkyhawk::I2cMux::deviceAcks (
+    uint8_t addr7
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>addr7</code> 7-bit address of the device behind the selected branch. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>true if the device ACKs. Call select(channel) first to route the bus to it. </p>
+<hr>
+
 <h3 id="function-disableall">function disableAll</h3>
 <p><em>Disable all channels (control byte 0x00). Optional bus quiescing.</em> </p>
 <pre><code class="language-C++">void OpenSkyhawk::I2cMux::disableAll () 
@@ -4020,17 +4049,19 @@
 <h3 id="function-select">function select</h3>
 <p><em>Route the bus to one downstream channel.</em> </p>
 <pre><code class="language-C++">bool OpenSkyhawk::I2cMux::select (
-    uint8_t channel
+    uint8_t channel,
+    bool force=false
 ) 
 </code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>channel</code> Channel 0–7. Values above 7 are clamped to 7. </li>
+<li><code>force</code> Write the channel byte even if it matches the cache. Use on health/recovery paths: a TCA9548A that reset / power-glitched comes back with no channel selected while the cache still matches, so a plain <a href="./#function-select"><strong>select()</strong></a> would skip the write and the branch would stay dark forever. </li>
 </ul>
 <p><strong>Returns:</strong></p>
-<p>true if the channel is selected (write issued, or already current); false on I2C NAK. </p>
+<p>true if the channel is selected (write ACKed, or already current and not forced); false on I2C NAK — also invalidates the cache so the next select re-routes. </p>
 <p><strong>Note:</strong></p>
-<p>Writes a single byte (1 &lt;&lt; channel); skipped when channel == last selected. Callers sharing one mux across several devices MUST call this immediately before each downstream I2C op — an interleaved driver can change the channel. </p>
+<p>Writes a single byte (1 &lt;&lt; channel); skipped when channel == last selected unless forced. Callers sharing one mux across several devices MUST call this immediately before each downstream I2C op — an interleaved driver can change the channel. </p>
 <hr>
 
 <hr />

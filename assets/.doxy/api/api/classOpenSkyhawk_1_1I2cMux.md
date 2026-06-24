@@ -53,8 +53,9 @@ _Selects one downstream channel of a TCA9548A I2C multiplexer._ [More...](#detai
 | Type | Name |
 | ---: | :--- |
 |   | [**I2cMux**](#function-i2cmux) (uint8\_t addr=0x70, TwoWire & wire=Wire) <br>_Construct a mux handle. No I2C occurs here._  |
+|  bool | [**deviceAcks**](#function-deviceacks) (uint8\_t addr7) <br>_Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?_  |
 |  void | [**disableAll**](#function-disableall) () <br>_Disable all channels (control byte 0x00). Optional bus quiescing._  |
-|  bool | [**select**](#function-select) (uint8\_t channel) <br>_Route the bus to one downstream channel._  |
+|  bool | [**select**](#function-select) (uint8\_t channel, bool force=false) <br>_Route the bus to one downstream channel._  |
 
 
 
@@ -124,6 +125,40 @@ explicit OpenSkyhawk::I2cMux::I2cMux (
 
 
 
+### function deviceAcks 
+
+_Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?_ 
+```C++
+bool OpenSkyhawk::I2cMux::deviceAcks (
+    uint8_t addr7
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `addr7` 7-bit address of the device behind the selected branch. 
+
+
+
+**Returns:**
+
+true if the device ACKs. Call select(channel) first to route the bus to it. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
 ### function disableAll 
 
 _Disable all channels (control byte 0x00). Optional bus quiescing._ 
@@ -143,7 +178,8 @@ void OpenSkyhawk::I2cMux::disableAll ()
 _Route the bus to one downstream channel._ 
 ```C++
 bool OpenSkyhawk::I2cMux::select (
-    uint8_t channel
+    uint8_t channel,
+    bool force=false
 ) 
 ```
 
@@ -155,19 +191,20 @@ bool OpenSkyhawk::I2cMux::select (
 
 
 * `channel` Channel 0–7. Values above 7 are clamped to 7. 
+* `force` Write the channel byte even if it matches the cache. Use on health/recovery paths: a TCA9548A that reset / power-glitched comes back with no channel selected while the cache still matches, so a plain [**select()**](classOpenSkyhawk_1_1I2cMux.md#function-select) would skip the write and the branch would stay dark forever. 
 
 
 
 **Returns:**
 
-true if the channel is selected (write issued, or already current); false on I2C NAK. 
+true if the channel is selected (write ACKed, or already current and not forced); false on I2C NAK — also invalidates the cache so the next select re-routes. 
 
 
 
 
 **Note:**
 
-Writes a single byte (1 &lt;&lt; channel); skipped when channel == last selected. Callers sharing one mux across several devices MUST call this immediately before each downstream I2C op — an interleaved driver can change the channel. 
+Writes a single byte (1 &lt;&lt; channel); skipped when channel == last selected unless forced. Callers sharing one mux across several devices MUST call this immediately before each downstream I2C op — an interleaved driver can change the channel. 
 
 
 

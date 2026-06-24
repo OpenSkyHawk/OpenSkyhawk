@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d35/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/I2cHealth_8h/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp} - OpenSkyhawk</title>
+        <title>File I2cHealth.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp" class="md-skip">
+        <a href="#file-i2chealthh" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+              File I2cHealth.h
             
           </span>
         </div>
@@ -3867,6 +3867,47 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespaces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed Description
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3885,10 +3926,53 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp">Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a></p>
+<h1 id="file-i2chealthh">File I2cHealth.h</h1>
+<p><a href="../files/"><strong>FileList</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_9e93d9a1721bcf27b2030ff612e0fc11/"><strong>Helpers</strong></a> <strong>&gt;</strong> <a href="../dir_741d33806df633606a48f25556e87791/"><strong>I2cHealth</strong></a> <strong>&gt;</strong> <a href="./"><strong>I2cHealth.h</strong></a></p>
+<p><a href="../I2cHealth_8h_source/">Go to the source code of this file</a></p>
+<p><em>Circuit-breaker mixin ("trait") for I2C-backed device classes.</em> <a href="#detailed-description">More...</a></p>
+<ul>
+<li><code>#include &lt;Arduino.h&gt;</code></li>
+</ul>
+<h2 id="namespaces">Namespaces</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">namespace</td>
+<td style="text-align: left;"><a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>I2cHealth</strong></a> <br><em>Per-device I2C circuit breaker. Mix into any class that talks to an I2C device.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="detailed-description">Detailed Description</h2>
+<p>A blocking I2C transaction to an absent or dead device stalls <code>PanelGroup::loop()</code> and starves the node heartbeat — the bridge then flaps the node online/offline (#164). Any <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> class that drives an I2C device <strong>mixes this in</strong> and implements <code>i2cProbe()</code> (its own reachability check); it then gates every I2C op behind <code>i2cReachable()</code>. A dead device drops from "block every
+loop" to "one probe every <code>I2C\_RETRY\_MS</code>", and auto-recovers when it returns. The class's data/decode path must stay I2C-free, so values stay current and the next reachable frame catches up to the live value instead of showing a stale one.</p>
+<p>This is the C++ analog of a trait: shared behaviour lives here, the contract (<code>i2cProbe()</code>) is pure-virtual so a mixing class cannot compile without honouring it.</p>
+<p><strong>Version:</strong></p>
+<p>0.1.0 </p>
+<p><strong>Copyright:</strong></p>
+<p>GPL-2.0-only — see Firmware/LICENSE </p>
 <hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp</code></p>
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h</code></p>
 
 
 

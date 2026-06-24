@@ -16,7 +16,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="56" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="56" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="67" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="67" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cMux_1acf7d3f87fce5bc85d0f4701047a04562" prot="private" static="no" mutable="no">
         <type>TwoWire *</type>
@@ -30,7 +30,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="57" column="13" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="57" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="68" column="13" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="68" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cMux_1aae8f998ea8bd974632beac37268c9d30" prot="private" static="no" mutable="no">
         <type>int8_t</type>
@@ -44,7 +44,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="58" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="58" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="69" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="69" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -91,15 +91,20 @@
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="39" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="12" bodyend="13"/>
       </memberdef>
-      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cMux_1a0bb6bcecf4a0026ed71819d154f64f36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool OpenSkyhawk::I2cMux::select</definition>
-        <argsstring>(uint8_t channel)</argsstring>
+        <argsstring>(uint8_t channel, bool force=false)</argsstring>
         <name>select</name>
         <qualifiedname>OpenSkyhawk::I2cMux::select</qualifiedname>
         <param>
           <type>uint8_t</type>
           <declname>channel</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>force</declname>
+          <defval>false</defval>
         </param>
         <briefdescription>
 <para>Route the bus to one downstream channel. </para>
@@ -113,16 +118,24 @@
 <para>Channel 0–7. Values above 7 are clamped to 7. </para>
 </parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>force</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Write the channel byte even if it matches the cache. Use on health/recovery paths: a TCA9548A that reset / power-glitched comes back with no channel selected while the cache still matches, so a plain <ref refid="classOpenSkyhawk_1_1I2cMux_1a0bb6bcecf4a0026ed71819d154f64f36" kindref="member">select()</ref> would skip the write and the branch would stay dark forever. </para>
+</parameterdescription>
+</parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>true if the channel is selected (write issued, or already current); false on I2C NAK. </para>
+<simplesect kind="return"><para>true if the channel is selected (write ACKed, or already current and not forced); false on I2C NAK — also invalidates the cache so the next select re-routes. </para>
 </simplesect>
-<simplesect kind="note"><para>Writes a single byte (1 &lt;&lt; channel); skipped when channel == last selected. Callers sharing one mux across several devices MUST call this immediately before each downstream I2C op — an interleaved driver can change the channel. </para>
+<simplesect kind="note"><para>Writes a single byte (1 &lt;&lt; channel); skipped when channel == last selected unless forced. Callers sharing one mux across several devices MUST call this immediately before each downstream I2C op — an interleaved driver can change the channel. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="50" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="15" bodyend="23"/>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="54" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="15" bodyend="23"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1I2cMux_1a3868588f78df77d77ac654ff959830bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -137,23 +150,55 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="53" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="25" bodyend="30"/>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="57" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="25" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cMux_1a213f771197ff3fe573e9a16340626a9d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::I2cMux::deviceAcks</definition>
+        <argsstring>(uint8_t addr7)</argsstring>
+        <name>deviceAcks</name>
+        <qualifiedname>OpenSkyhawk::I2cMux::deviceAcks</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>addr7</declname>
+        </param>
+        <briefdescription>
+<para>Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK? </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>addr7</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>7-bit address of the device behind the selected branch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the device ACKs. Call select(channel) first to route the bus to it. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="64" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.cpp" bodystart="32" bodyend="35"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Selects one downstream channel of a TCA9548A I2C multiplexer. </para>
     </briefdescription>
     <detaileddescription>
-<para>Stateless beyond a last-selected cache: select(ch) writes the 1-of-8 channel bitmask to the TCA9548A control register only when the requested channel differs from the last one written, so repeated <ref refid="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" kindref="member">select()</ref> of the same channel costs no I2C. Construct one per physical TCA9548A. The sketch owns Wire.begin(); <ref refid="classOpenSkyhawk_1_1I2cMux" kindref="compound">I2cMux</ref> never starts the bus and performs no I2C in its constructor. </para>
+<para>Stateless beyond a last-selected cache: select(ch) writes the 1-of-8 channel bitmask to the TCA9548A control register only when the requested channel differs from the last one written, so repeated <ref refid="classOpenSkyhawk_1_1I2cMux_1a0bb6bcecf4a0026ed71819d154f64f36" kindref="member">select()</ref> of the same channel costs no I2C. Construct one per physical TCA9548A. The sketch owns Wire.begin(); <ref refid="classOpenSkyhawk_1_1I2cMux" kindref="compound">I2cMux</ref> never starts the bus and performs no I2C in its constructor. </para>
     </detaileddescription>
-    <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="32" column="1" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="32" bodyend="59"/>
+    <location file="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" line="32" column="1" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cMux/I2cMux.h" bodystart="32" bodyend="70"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1I2cMux_1a9fd480d296453c1a3aeee2c0c9ef47ee" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>_addr</name></member>
       <member refid="classOpenSkyhawk_1_1I2cMux_1aae8f998ea8bd974632beac37268c9d30" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>_lastChannel</name></member>
       <member refid="classOpenSkyhawk_1_1I2cMux_1acf7d3f87fce5bc85d0f4701047a04562" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>_wire</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1a213f771197ff3fe573e9a16340626a9d" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>deviceAcks</name></member>
       <member refid="classOpenSkyhawk_1_1I2cMux_1a3868588f78df77d77ac654ff959830bd" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>disableAll</name></member>
       <member refid="classOpenSkyhawk_1_1I2cMux_1a2625ae62c98a7bbaf1a6f7da9e017ec7" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>I2cMux</name></member>
-      <member refid="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>select</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cMux_1a0bb6bcecf4a0026ed71819d154f64f36" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cMux</scope><name>select</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

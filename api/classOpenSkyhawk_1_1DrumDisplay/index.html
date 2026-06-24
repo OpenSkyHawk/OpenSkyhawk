@@ -3874,6 +3874,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#public-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3896,10 +3907,43 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#public-functions-inherited-from-openskyhawki2chealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions inherited from OpenSkyhawk::I2cHealth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-static-functions-inherited-from-openskyhawkoutputbase" class="md-nav__link">
     <span class="md-ellipsis">
       
         Public Static Functions inherited from OpenSkyhawk::OutputBase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-static-attributes-inherited-from-openskyhawki2chealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Static Attributes inherited from OpenSkyhawk::I2cHealth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions
       
     </span>
   </a>
@@ -3918,6 +3962,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#protected-functions-inherited-from-openskyhawki2chealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions inherited from OpenSkyhawk::I2cHealth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#detailed-description" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3925,6 +3980,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-types-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Types Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Types Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enum-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum Fault
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4022,6 +4105,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#protected-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protected Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-i2cprobe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function i2cProbe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4048,7 +4159,22 @@
 <ul>
 <li><code>#include &lt;DrumDisplay.h&gt;</code></li>
 </ul>
-<p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
+<p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a>,  <a href="../classOpenSkyhawk_1_1I2cHealth/">OpenSkyhawk::I2cHealth</a></p>
+<h2 id="public-types">Public Types</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-fault"><strong>Fault</strong></a>  <br><em>Which I2C hop failed the last reachability probe (feeds node health reporting, #163).</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -4116,6 +4242,22 @@
 </tr>
 </tbody>
 </table>
+<h2 id="public-functions-inherited-from-openskyhawki2chealth">Public Functions inherited from OpenSkyhawk::I2cHealth</h2>
+<p>See <a href="../classOpenSkyhawk_1_1I2cHealth/">OpenSkyhawk::I2cHealth</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1I2cHealth/#function-i2chealthy"><strong>i2cHealthy</strong></a> () const<br><em>Breaker state — true while the device last probed reachable.</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-static-functions-inherited-from-openskyhawkoutputbase">Public Static Functions inherited from OpenSkyhawk::OutputBase</h2>
 <p>See <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
 <table>
@@ -4129,6 +4271,37 @@
 <tr>
 <td style="text-align: right;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> *</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-head"><strong>head</strong></a> () <br><em>Head of the self-registered linked list.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="protected-static-attributes-inherited-from-openskyhawki2chealth">Protected Static Attributes inherited from OpenSkyhawk::I2cHealth</h2>
+<p>See <a href="../classOpenSkyhawk_1_1I2cHealth/">OpenSkyhawk::I2cHealth</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1I2cHealth/#variable-i2c_retry_ms"><strong>I2C_RETRY_MS</strong></a>   = <code>2000</code><br><em>Back-off between retries once tripped (ms). A couple of seconds keeps the bus quiet.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="protected-functions">Protected Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">virtual bool</td>
+<td style="text-align: left;"><a href="#function-i2cprobe"><strong>i2cProbe</strong></a> () override<br><em>Contract: probe this device's reachability (e.g. the mux ACKs</em> <em>and</em> <em>the device ACKs).</em></td>
 </tr>
 </tbody>
 </table>
@@ -4148,8 +4321,42 @@
 </tr>
 </tbody>
 </table>
+<h2 id="protected-functions-inherited-from-openskyhawki2chealth">Protected Functions inherited from OpenSkyhawk::I2cHealth</h2>
+<p>See <a href="../classOpenSkyhawk_1_1I2cHealth/">OpenSkyhawk::I2cHealth</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">virtual bool</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1I2cHealth/#function-i2cprobe"><strong>i2cProbe</strong></a> () = 0<br><em>Contract: probe this device's reachability (e.g. the mux ACKs</em> <em>and</em> <em>the device ACKs).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1I2cHealth/#function-i2creachable"><strong>i2cReachable</strong></a> () <br><em>Gate for every I2C op. Rate-limits the probe while tripped; trips/heals on the result.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1I2cHealth/#function-i2chealth"><strong>~I2cHealth</strong></a> () = default<br></td>
+</tr>
+</tbody>
+</table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Construct at global scope so <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> self-registers it. <a href="./#function-oncontrolpacket"><strong>onControlPacket()</strong></a> only decodes + flags dirty (cheap); <a href="./#function-update"><strong>update()</strong></a> does the ~60 fps gate, channel reselect, ease+snap, render, and the single expensive sendBuffer(). </p>
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+<h3 id="enum-fault">enum Fault</h3>
+<p><em>Which I2C hop failed the last reachability probe (feeds node health reporting, #163).</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::DrumDisplay::Fault {
+    None,
+    Mux,
+    Device
+};
+</code></pre>
+<hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-drumdisplay-12">function DrumDisplay [1/2]</h3>
 <p><em>Construct and register a direct-bus drum display.</em> </p>
@@ -4262,6 +4469,17 @@
 <p><strong>Note:</strong></p>
 <p>Called every loop(). ~60 fps frame gate; early-out when idle (settled AND not dirty). On a live frame: mux.select(channel), ease each place toward target/10^place with SNAP_SETTLE jump handling, render every cell with setClipWindow, then one sendBuffer(). </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-update"><em>OpenSkyhawk::OutputBase::update</em></a></p>
+<hr>
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+<h3 id="function-i2cprobe">function i2cProbe</h3>
+<p><em>Contract: probe this device's reachability (e.g. the mux ACKs</em> <em>and</em> <em>the device ACKs).</em></p>
+<pre><code class="language-C++">virtual bool OpenSkyhawk::DrumDisplay::i2cProbe () override
+</code></pre>
+<p><strong>Returns:</strong></p>
+<p>true if reachable. The implementer records any fault detail it wants to report. </p>
+<p><strong>Note:</strong></p>
+<p>Must be cheap — a single address probe, no payload — and must not throw or block beyond one bounded I2C transaction. </p>
+<p>Implements <a href="../classOpenSkyhawk_1_1I2cHealth/#function-i2cprobe"><em>OpenSkyhawk::I2cHealth::i2cProbe</em></a></p>
 <hr>
 
 <hr />

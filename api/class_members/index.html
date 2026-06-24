@@ -4490,6 +4490,7 @@
 <li><strong>digitWidthMm</strong> (<a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>OpenSkyhawk::DrumReadout</strong></a>)</li>
 <li><strong>dispatch</strong> (<a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a>, <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>, <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a>)</li>
 <li><strong>debounceMs</strong> (<a href="../structOpenSkyhawk_1_1HomeSensor/"><strong>OpenSkyhawk::HomeSensor</strong></a>)</li>
+<li><strong>deviceAcks</strong> (<a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a>)</li>
 <li><strong>disableAll</strong> (<a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a>)</li>
 <li><strong>DEFAULT_STEP</strong> (<a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>OpenSkyhawk::RotaryEncoder</strong></a>)</li>
 <li><strong>decode</strong> (<a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>OpenSkyhawk::RotaryEncoder</strong></a>)</li>
@@ -4505,6 +4506,7 @@
 <h2 id="f">f</h2>
 <ul>
 <li><strong>forceReport</strong> (<a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>OpenSkyhawk::AnalogInput</strong></a>, <a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>, <a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a>, <a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>OpenSkyhawk::MultiPosInput</strong></a>, <a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>OpenSkyhawk::RotaryEncoder</strong></a>, <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>OpenSkyhawk::Switch2Pos</strong></a>)</li>
+<li><strong>Fault</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>fitGeometry</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>fontPtr</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>faces</strong> (<a href="../structOpenSkyhawk_1_1DrumFlag/"><strong>OpenSkyhawk::DrumFlag</strong></a>)</li>
@@ -4533,7 +4535,11 @@
 <h2 id="i">i</h2>
 <ul>
 <li><strong>isValid</strong> (<a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>OpenSkyhawk::AnalogMultiPos</strong></a>)</li>
+<li><strong>i2cProbe</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>, <a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>OpenSkyhawk::I2cHealth</strong></a>)</li>
 <li><strong>interDigitGapMm</strong> (<a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>OpenSkyhawk::DrumReadout</strong></a>)</li>
+<li><strong>I2C_RETRY_MS</strong> (<a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>OpenSkyhawk::I2cHealth</strong></a>)</li>
+<li><strong>i2cHealthy</strong> (<a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>OpenSkyhawk::I2cHealth</strong></a>)</li>
+<li><strong>i2cReachable</strong> (<a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>OpenSkyhawk::I2cHealth</strong></a>)</li>
 <li><strong>I2cMux</strong> (<a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a>)</li>
 <li><strong>InputBase</strong> (<a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a>)</li>
 <li><strong>isGpio</strong> (<a href="../classPinRef/"><strong>PinRef</strong></a>)</li>
@@ -4571,6 +4577,7 @@
 </ul>
 <h2 id="o">o</h2>
 <ul>
+<li><strong>oledAddr</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>onControlPacket</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>, <a href="../classOpenSkyhawk_1_1LED/"><strong>OpenSkyhawk::LED</strong></a>, <a href="../classOpenSkyhawk_1_1NeedleGauge/"><strong>OpenSkyhawk::NeedleGauge</strong></a>, <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a>)</li>
 <li><strong>OutputBase</strong> (<a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a>)</li>
 </ul>
@@ -4648,6 +4655,7 @@
 </ul>
 <h2 id="_1">~</h2>
 <ul>
+<li><strong>~I2cHealth</strong> (<a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>OpenSkyhawk::I2cHealth</strong></a>)</li>
 <li><strong>~MotorDriver</strong> (<a href="../classOpenSkyhawk_1_1MotorDriver/"><strong>OpenSkyhawk::MotorDriver</strong></a>)</li>
 </ul>
 <h2 id="_">_</h2>
@@ -4677,6 +4685,7 @@
 <li><strong>_colW</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_cy</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_dirty</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
+<li><strong>_fault</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_flagPos</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_flagTarget</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
 <li><strong>_flagW</strong> (<a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>OpenSkyhawk::DrumDisplay</strong></a>)</li>
@@ -4698,6 +4707,8 @@
 <li><strong>_next</strong> (<a href="../classOpenSkyhawk_1_1HIDAxis/"><strong>OpenSkyhawk::HIDAxis</strong></a>, <a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>, <a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a>, <a href="../classOpenSkyhawk_1_1InputBase/"><strong>OpenSkyhawk::InputBase</strong></a>, <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OpenSkyhawk::OutputBase</strong></a>)</li>
 <li><strong>_buttonIndex</strong> (<a href="../classOpenSkyhawk_1_1HIDButton/"><strong>OpenSkyhawk::HIDButton</strong></a>)</li>
 <li><strong>_hatIndex</strong> (<a href="../classOpenSkyhawk_1_1HIDHatSwitch/"><strong>OpenSkyhawk::HIDHatSwitch</strong></a>)</li>
+<li><strong>_i2cHealthy</strong> (<a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>OpenSkyhawk::I2cHealth</strong></a>)</li>
+<li><strong>_i2cLastAttempt</strong> (<a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>OpenSkyhawk::I2cHealth</strong></a>)</li>
 <li><strong>_addr</strong> (<a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a>)</li>
 <li><strong>_lastChannel</strong> (<a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a>)</li>
 <li><strong>_wire</strong> (<a href="../classOpenSkyhawk_1_1I2cMux/"><strong>OpenSkyhawk::I2cMux</strong></a>)</li>

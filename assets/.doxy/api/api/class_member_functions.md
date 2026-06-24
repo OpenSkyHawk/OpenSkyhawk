@@ -25,6 +25,7 @@
 * **drawFlag** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **drawTape** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **dispatch** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md))
+* **deviceAcks** ([**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md))
 * **disableAll** ([**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md))
 * **decode** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 
@@ -59,6 +60,9 @@
 ## i
 
 * **isValid** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
+* **i2cProbe** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md))
+* **i2cHealthy** ([**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md))
+* **i2cReachable** ([**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md))
 * **I2cMux** ([**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md))
 * **InputBase** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md))
 * **isGpio** ([**PinRef**](classPinRef.md))
@@ -84,6 +88,7 @@
 
 ## o
 
+* **oledAddr** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **onControlPacket** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
 * **OutputBase** ([**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
 
@@ -147,6 +152,7 @@
 
 ## ~
 
+* **~I2cHealth** ([**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md))
 * **~MotorDriver** ([**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md))
 
 

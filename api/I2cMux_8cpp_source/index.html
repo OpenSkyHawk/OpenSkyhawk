@@ -3898,13 +3898,13 @@ namespace OpenSkyhawk {
 I2cMux::I2cMux(uint8_t addr, TwoWire&amp; wire)
     : _addr(addr), _wire(&amp;wire), _lastChannel(-1) {}
 
-bool I2cMux::select(uint8_t channel) {
+bool I2cMux::select(uint8_t channel, bool force) {
     if (channel &gt; 7) channel = 7;
-    if (static_cast&lt;int8_t&gt;(channel) == _lastChannel) return true;  // skip redundant write
+    if (!force &amp;&amp; static_cast&lt;int8_t&gt;(channel) == _lastChannel) return true;  // skip redundant write (unless forced)
     _wire-&gt;beginTransmission(_addr);
     _wire-&gt;write(static_cast&lt;uint8_t&gt;(1u &lt;&lt; channel));
     bool ok = (_wire-&gt;endTransmission() == 0);
-    if (ok) _lastChannel = static_cast&lt;int8_t&gt;(channel);
+    _lastChannel = ok ? static_cast&lt;int8_t&gt;(channel) : -1;  // invalidate cache on NAK → next select re-routes (mux reset)
     return ok;
 }
 
@@ -3913,6 +3913,11 @@ void I2cMux::disableAll() {
     _wire-&gt;write(static_cast&lt;uint8_t&gt;(0x00));
     _wire-&gt;endTransmission();
     _lastChannel = -1;
+}
+
+bool I2cMux::deviceAcks(uint8_t addr7) {
+    _wire-&gt;beginTransmission(addr7);
+    return _wire-&gt;endTransmission() == 0;
 }
 
 }  // namespace OpenSkyhawk

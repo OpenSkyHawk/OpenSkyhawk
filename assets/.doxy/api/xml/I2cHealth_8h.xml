@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="I2cHealth_8h" kind="file" language="C++">
+    <compoundname>I2cHealth.h</compoundname>
+    <includes local="no">Arduino.h</includes>
+    <includedby refid="DrumDisplay_8h" local="no">Firmware/Libraries/DrumDisplay/DrumDisplay.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h</label>
+        <link refid="I2cHealth_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Arduino.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
+        <link refid="DrumDisplay_8cpp"/>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.h</label>
+        <link refid="DrumDisplay_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h</label>
+        <link refid="I2cHealth_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1I2cHealth" prot="public">OpenSkyhawk::I2cHealth</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>Circuit-breaker mixin (&quot;trait&quot;) for I2C-backed device classes. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A blocking I2C transaction to an absent or dead device stalls <computeroutput><ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref></computeroutput> and starves the node heartbeat — the bridge then flaps the node online/offline (#164). Any <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> class that drives an I2C device <bold>mixes this in</bold> and implements <computeroutput>i2cProbe()</computeroutput> (its own reachability check); it then gates every I2C op behind <computeroutput>i2cReachable()</computeroutput>. A dead device drops from &quot;block every
+loop&quot; to &quot;one probe every `I2C_RETRY_MS`&quot;, and auto-recovers when it returns. The class&apos;s data/decode path must stay I2C-free, so values stay current and the next reachable frame catches up to the live value instead of showing a stale one.</para>
+<para>This is the C++ analog of a trait: shared behaviour lives here, the contract (<computeroutput>i2cProbe()</computeroutput>) is pure-virtual so a mixing class cannot compile without honouring it.</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="classOpenSkyhawk_1_1I2cHealth" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1I2cHealth" kindref="compound">I2cHealth</ref><sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="36" refid="classOpenSkyhawk_1_1I2cHealth_1af6987340b270c40fa568672d6034238c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1af6987340b270c40fa568672d6034238c" kindref="member">i2cHealthy</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_i2cHealthy;<sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DRUMDISPLAY_TEST</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>debugExpireBackoff()<sp/>{<sp/>_i2cLastAttempt<sp/>=<sp/>millis()<sp/>-<sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" kindref="member">I2C_RETRY_MS</ref><sp/>-<sp/>1;<sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="50" refid="classOpenSkyhawk_1_1I2cHealth_1a43673387ef8d4452cebc52e425c7e00b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1a43673387ef8d4452cebc52e425c7e00b" kindref="member">i2cProbe</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="classOpenSkyhawk_1_1I2cHealth_1a5fcb10799ffe0355107c2b3e01b7a138" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1a5fcb10799ffe0355107c2b3e01b7a138" kindref="member">i2cReachable</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_i2cHealthy<sp/>&amp;&amp;<sp/>(now<sp/>-<sp/>_i2cLastAttempt)<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" kindref="member">I2C_RETRY_MS</ref>)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">//<sp/>tripped<sp/>→<sp/>back<sp/>off</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_i2cLastAttempt<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(_i2cHealthy<sp/>=<sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1a43673387ef8d4452cebc52e425c7e00b" kindref="member">i2cProbe</ref>());</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" kindref="member">I2C_RETRY_MS</ref><sp/>=<sp/>2000;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="classOpenSkyhawk_1_1I2cHealth_1abaddf32d89819c4d82433871b64bcaf2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1I2cHealth_1abaddf32d89819c4d82433871b64bcaf2" kindref="member">~I2cHealth</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">//<sp/>protected,<sp/>non-virtual:<sp/>a<sp/>mixin,<sp/>never<sp/>deleted<sp/>through<sp/>this<sp/>type</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_i2cHealthy<sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>_i2cLastAttempt<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h"/>
+  </compounddef>
+</doxygen>

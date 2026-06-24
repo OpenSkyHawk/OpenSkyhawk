@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1I2cHealth" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>OpenSkyhawk::I2cHealth</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1DrumDisplay" prot="public" virt="non-virtual">OpenSkyhawk::DrumDisplay</derivedcompoundref>
+    <includes refid="I2cHealth_8h" local="no">I2cHealth.h</includes>
+    <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::I2cHealth::I2C_RETRY_MS</definition>
+        <argsstring></argsstring>
+        <name>I2C_RETRY_MS</name>
+        <qualifiedname>OpenSkyhawk::I2cHealth::I2C_RETRY_MS</qualifiedname>
+        <initializer>= 2000</initializer>
+        <briefdescription>
+<para>Back-off between retries once tripped (ms). A couple of seconds keeps the bus quiet. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="64" column="31" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cHealth_1aad69b34d194e01e10267cc031cda235b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::I2cHealth::_i2cHealthy</definition>
+        <argsstring></argsstring>
+        <name>_i2cHealthy</name>
+        <qualifiedname>OpenSkyhawk::I2cHealth::_i2cHealthy</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="69" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1I2cHealth_1a2ba70afcf06ca1ce6bdcc018b7398ef0" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::I2cHealth::_i2cLastAttempt</definition>
+        <argsstring></argsstring>
+        <name>_i2cLastAttempt</name>
+        <qualifiedname>OpenSkyhawk::I2cHealth::_i2cLastAttempt</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="70" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cHealth_1af6987340b270c40fa568672d6034238c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::I2cHealth::i2cHealthy</definition>
+        <argsstring>() const</argsstring>
+        <name>i2cHealthy</name>
+        <qualifiedname>OpenSkyhawk::I2cHealth::i2cHealthy</qualifiedname>
+        <briefdescription>
+<para>Breaker state — true while the device last probed reachable. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="36" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cHealth_1a43673387ef8d4452cebc52e425c7e00b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool OpenSkyhawk::I2cHealth::i2cProbe</definition>
+        <argsstring>()=0</argsstring>
+        <name>i2cProbe</name>
+        <qualifiedname>OpenSkyhawk::I2cHealth::i2cProbe</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1acbdd7533aba2b23c5f2a20e43f315ec2">i2cProbe</reimplementedby>
+        <briefdescription>
+<para>Contract: probe this device&apos;s reachability (e.g. the mux ACKs <emphasis>and</emphasis> the device ACKs). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if reachable. The implementer records any fault detail it wants to report. </para>
+</simplesect>
+<simplesect kind="note"><para>Must be cheap — a single address probe, no payload — and must not throw or block beyond one bounded I2C transaction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="50" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cHealth_1a5fcb10799ffe0355107c2b3e01b7a138" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::I2cHealth::i2cReachable</definition>
+        <argsstring>()</argsstring>
+        <name>i2cReachable</name>
+        <qualifiedname>OpenSkyhawk::I2cHealth::i2cReachable</qualifiedname>
+        <briefdescription>
+<para>Gate for every I2C op. Rate-limits the probe while tripped; trips/heals on the result. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true → safe to talk to the device; false → skip the op (dead/absent, backing off). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="56" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" bodystart="56" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1I2cHealth_1abaddf32d89819c4d82433871b64bcaf2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::I2cHealth::~I2cHealth</definition>
+        <argsstring>()=default</argsstring>
+        <name>~I2cHealth</name>
+        <qualifiedname>OpenSkyhawk::I2cHealth::~I2cHealth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="66" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Per-device I2C circuit breaker. Mix into any class that talks to an I2C device. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Usage: <computeroutput>class Foo : public <ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>, public <ref refid="classOpenSkyhawk_1_1I2cHealth" kindref="compound">I2cHealth</ref> { bool <ref refid="classOpenSkyhawk_1_1I2cHealth_1a43673387ef8d4452cebc52e425c7e00b" kindref="member">i2cProbe()</ref> override {...} };</computeroutput> then <computeroutput>if (!i2cReachable()) return;</computeroutput> before any I2C transaction. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::DrumDisplay</label>
+        <link refid="classOpenSkyhawk_1_1DrumDisplay"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::I2cHealth</label>
+        <link refid="classOpenSkyhawk_1_1I2cHealth"/>
+      </node>
+    </inheritancegraph>
+    <location file="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" line="33" column="1" bodyfile="Firmware/Libraries/PanelGroup/Helpers/I2cHealth/I2cHealth.h" bodystart="33" bodyend="71"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1I2cHealth_1aad69b34d194e01e10267cc031cda235b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cHealth</scope><name>_i2cHealthy</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cHealth_1a2ba70afcf06ca1ce6bdcc018b7398ef0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::I2cHealth</scope><name>_i2cLastAttempt</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::I2cHealth</scope><name>I2C_RETRY_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cHealth_1af6987340b270c40fa568672d6034238c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::I2cHealth</scope><name>i2cHealthy</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cHealth_1a43673387ef8d4452cebc52e425c7e00b" prot="protected" virt="pure-virtual"><scope>OpenSkyhawk::I2cHealth</scope><name>i2cProbe</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cHealth_1a5fcb10799ffe0355107c2b3e01b7a138" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::I2cHealth</scope><name>i2cReachable</name></member>
+      <member refid="classOpenSkyhawk_1_1I2cHealth_1abaddf32d89819c4d82433871b64bcaf2" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::I2cHealth</scope><name>~I2cHealth</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

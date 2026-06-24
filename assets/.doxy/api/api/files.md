@@ -30,6 +30,8 @@ Here is a list of all files with brief descriptions:
                     * **file** [**StepperMotor.cpp**](StepperMotor_8cpp.md)     
                     * **file** [**StepperMotor.h**](StepperMotor_8h.md) _Non-blocking 4-wire stepper driver on_ [_**PinRef**_](classPinRef.md) _coils._    
             * **dir** [**Helpers**](dir_9e93d9a1721bcf27b2030ff612e0fc11.md)     
+                * **dir** [**I2cHealth**](dir_741d33806df633606a48f25556e87791.md)     
+                    * **file** [**I2cHealth.h**](I2cHealth_8h.md) _Circuit-breaker mixin ("trait") for I2C-backed device classes._     
                 * **dir** [**I2cMux**](dir_b0e3ddf276daac85bddb20c46644a5c8.md)     
                     * **file** [**I2cMux.cpp**](I2cMux_8cpp.md)     
                     * **file** [**I2cMux.h**](I2cMux_8h.md) _TCA9548A 1-to-8 I2C multiplexer channel selector for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    

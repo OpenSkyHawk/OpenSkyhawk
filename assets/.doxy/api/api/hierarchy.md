@@ -16,6 +16,8 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
     * **class** [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._ 
     * **class** [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md) _Digital_ [_**LED**_](classOpenSkyhawk_1_1LED.md) _output. Drives a pin based on a DCS-BIOS state value._
     * **class** [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._
+* **class** [**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md) _Per-device I2C circuit breaker. Mix into any class that talks to an I2C device._     
+    * **class** [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._ 
 * **class** [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) _HID axis handler. Declared at sketch scope for each joystick axis._ 
 * **class** [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md) _HID button handler. Declared at sketch scope for each button._ 
 * **class** [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md) _HID hat switch handler. Declared at sketch scope for each hat switch._ 

@@ -3901,9 +3901,11 @@ class I2cMux {
 public:
     explicit I2cMux(uint8_t addr = 0x70, TwoWire&amp; wire = Wire);
 
-    bool select(uint8_t channel);
+    bool select(uint8_t channel, bool force = false);
 
     void disableAll();
+
+    bool deviceAcks(uint8_t addr7);
 
 private:
     uint8_t  _addr;         // TCA9548A 7-bit address

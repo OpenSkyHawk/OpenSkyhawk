@@ -13,6 +13,7 @@ _Rolling mechanical-drum OLED readout output for_ [_**OpenSkyhawk**_](namespaceO
 * `#include <PanelGroup.h>`
 * `#include <U8g2lib.h>`
 * `#include <Helpers/I2cMux/I2cMux.h>`
+* `#include <Helpers/I2cHealth/I2cHealth.h>`
 
 
 

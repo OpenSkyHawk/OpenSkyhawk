@@ -61,7 +61,12 @@
     <member refid="structDcsBiosInputEntry_1adea4723339818331154a098605820a17" kind="variable"><name>name</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1DrumDisplay" kind="class"><name>OpenSkyhawk::DrumDisplay</name>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66" kind="enum"><name>Fault</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66a6adf97f83acf6453d4a6a4b1070f3754" kind="enumvalue"><name>None</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66ab464e7ce32ef74e4dc12b182dcc6c16f" kind="enumvalue"><name>Mux</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66ae0ac20adce6ffee48c7151b070aa5737" kind="enumvalue"><name>Device</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a8bb1b71baaa98e331bbc670ee5e43732" kind="variable"><name>MAX_CELLS</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a509fc31e28b8a7fd651c9df5a9192fb5" kind="variable"><name>_fault</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a426c7e311441d324874b8843abfade58" kind="variable"><name>_oled</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a34fb43a079191d1fd07ef2199163e018" kind="variable"><name>_r</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1f5b68bc775592185cadf36ac66ffe46" kind="variable"><name>_mux</name></member>
@@ -94,6 +99,8 @@
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" kind="function"><name>update</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab15d2fb278c66698cac2217425362c64" kind="function"><name>setFontSize</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab69abf397e28b6c10101a8d3b0127ede" kind="function"><name>setOffset</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1acbdd7533aba2b23c5f2a20e43f315ec2" kind="function"><name>i2cProbe</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab2d9540e2aee62338fab97b1b794fe96" kind="function"><name>oledAddr</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a4b7ab58b82ec352abd2d91d5a87b4746" kind="function"><name>fitGeometry</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ae646eecafa86229cd454e58119a1900b" kind="function"><name>drawTape</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a686d20d40dc2c8c162da5acd2f46502d" kind="function"><name>drawFlag</name></member>
@@ -181,13 +188,23 @@
     <member refid="structOpenSkyhawk_1_1HomeSensor_1a7ea76a4281982540e4cf46f73157e90c" kind="variable"><name>debounceMs</name></member>
     <member refid="structOpenSkyhawk_1_1HomeSensor_1a9dfe5790f1e4876df74c051ac9ec36de" kind="variable"><name>maxSeekSteps</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1I2cHealth" kind="class"><name>OpenSkyhawk::I2cHealth</name>
+    <member refid="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" kind="variable"><name>I2C_RETRY_MS</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cHealth_1aad69b34d194e01e10267cc031cda235b" kind="variable"><name>_i2cHealthy</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cHealth_1a2ba70afcf06ca1ce6bdcc018b7398ef0" kind="variable"><name>_i2cLastAttempt</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cHealth_1af6987340b270c40fa568672d6034238c" kind="function"><name>i2cHealthy</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cHealth_1a43673387ef8d4452cebc52e425c7e00b" kind="function"><name>i2cProbe</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cHealth_1a5fcb10799ffe0355107c2b3e01b7a138" kind="function"><name>i2cReachable</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cHealth_1abaddf32d89819c4d82433871b64bcaf2" kind="function"><name>~I2cHealth</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1I2cMux" kind="class"><name>OpenSkyhawk::I2cMux</name>
     <member refid="classOpenSkyhawk_1_1I2cMux_1a9fd480d296453c1a3aeee2c0c9ef47ee" kind="variable"><name>_addr</name></member>
     <member refid="classOpenSkyhawk_1_1I2cMux_1acf7d3f87fce5bc85d0f4701047a04562" kind="variable"><name>_wire</name></member>
     <member refid="classOpenSkyhawk_1_1I2cMux_1aae8f998ea8bd974632beac37268c9d30" kind="variable"><name>_lastChannel</name></member>
     <member refid="classOpenSkyhawk_1_1I2cMux_1a2625ae62c98a7bbaf1a6f7da9e017ec7" kind="function"><name>I2cMux</name></member>
-    <member refid="classOpenSkyhawk_1_1I2cMux_1a8ebd5069cbad5b205b3679f49bf1d250" kind="function"><name>select</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cMux_1a0bb6bcecf4a0026ed71819d154f64f36" kind="function"><name>select</name></member>
     <member refid="classOpenSkyhawk_1_1I2cMux_1a3868588f78df77d77ac654ff959830bd" kind="function"><name>disableAll</name></member>
+    <member refid="classOpenSkyhawk_1_1I2cMux_1a213f771197ff3fe573e9a16340626a9d" kind="function"><name>deviceAcks</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1InputBase" kind="class"><name>OpenSkyhawk::InputBase</name>
     <member refid="classOpenSkyhawk_1_1InputBase_1a142fd89c2bdb94646013b04f6c107aaf" kind="variable"><name>_head</name></member>
@@ -401,17 +418,17 @@
     <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
     <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d35" kind="namespace"><name>@35</name>
+  <compound refid="namespace_0d36" kind="namespace"><name>@36</name>
   </compound>
-  <compound refid="namespace_0d39" kind="namespace"><name>@39</name>
-    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d39_1ab9d78c3fcfa6927060769b08403da2b3a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274d" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274dab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274daa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d39_1a197b0ad0c6b319390aaf481406cf274da9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d40" kind="namespace"><name>@40</name>
+    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998d" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998daa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998da1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998da03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15f" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15fab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15faa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15fa9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
   </compound>
@@ -1403,6 +1420,8 @@
   </compound>
   <compound refid="StepperMotor_8h" kind="file"><name>StepperMotor.h</name>
   </compound>
+  <compound refid="I2cHealth_8h" kind="file"><name>I2cHealth.h</name>
+  </compound>
   <compound refid="I2cMux_8cpp" kind="file"><name>I2cMux.cpp</name>
   </compound>
   <compound refid="I2cMux_8h" kind="file"><name>I2cMux.h</name>
@@ -1506,6 +1525,8 @@
   <compound refid="dir_9e93d9a1721bcf27b2030ff612e0fc11" kind="dir"><name>Firmware/Libraries/PanelGroup/Helpers</name>
   </compound>
   <compound refid="dir_8de7ffd664ed88ad14416481a318893f" kind="dir"><name>Firmware/Libraries/HIDControls</name>
+  </compound>
+  <compound refid="dir_741d33806df633606a48f25556e87791" kind="dir"><name>Firmware/Libraries/PanelGroup/Helpers/I2cHealth</name>
   </compound>
   <compound refid="dir_b0e3ddf276daac85bddb20c46644a5c8" kind="dir"><name>Firmware/Libraries/PanelGroup/Helpers/I2cMux</name>
   </compound>

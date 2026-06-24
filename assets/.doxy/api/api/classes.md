@@ -53,6 +53,8 @@
 
 ## i
 
+* [**I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**InputBase**](classOpenSkyhawk_1_1InputBase.md)

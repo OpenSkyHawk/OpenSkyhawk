@@ -15,6 +15,7 @@
 #include <PanelGroup.h>      // OutputBase
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
+#include <Helpers/I2cHealth/I2cHealth.h>
 
 namespace OpenSkyhawk {
 
@@ -72,8 +73,10 @@ struct DrumReadout {
 
 // ── The output class ──────────────────────────────────────────────────────────
 
-class DrumDisplay : public OutputBase {
+class DrumDisplay : public OutputBase, public I2cHealth {
 public:
+    enum class Fault : uint8_t { None, Mux, Device };
+
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
                 DrumFont font = DrumFont::LARGE,
                 float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
@@ -99,10 +102,27 @@ public:
     uint8_t debugCellCount() const  { return _nCells; }      
     int16_t debugRowWidth() const;                           
     int16_t debugCellX0() const     { return _nCells ? _cellX[0] : 0; }  
+    bool     debugHealthy() const     { return i2cHealthy(); }                  
+    uint8_t  debugFault() const       { return static_cast<uint8_t>(_fault); }  
+    uint32_t debugRenderCount() const { return _renderCount; }                  
+    void     debugForceProbe(int v)   { _probeOverride = v; }                   
+    bool     debugReachable()          { return i2cReachable(); }               
+    uint32_t debugProbeCount() const   { return _probeCount; }                  
 #endif
+
+protected:
+    bool i2cProbe() override;  // I2cHealth contract: mux present + OLED ACKs on its channel; sets _fault
 
 private:
     static constexpr uint8_t MAX_CELLS = 8;  // 6 digits + 1 glyph + 1 flag
+
+    uint8_t oledAddr() const;        // OLED 7-bit address, read from the U8G2 object (for the probe)
+    Fault   _fault = Fault::None;    // which hop failed the last probe (mux vs device)
+#ifdef DRUMDISPLAY_TEST
+    uint32_t _renderCount  = 0;      // sendBuffer() calls — render-skip assertion
+    uint32_t _probeCount   = 0;      // i2cProbe() calls — back-off assertion
+    int      _probeOverride = -1;    // -1 = real probe, 0 = force fail, 1 = force ok
+#endif
 
     // collaborators / config (plain // — EXTRACT_PRIVATE NO, not rendered in API docs)
     U8G2*              _oled;        // caller-owned panel

@@ -14,7 +14,32 @@ _Rolling-drum OLED readout. One instance == one OLED panel._ [More...](#detailed
 
 
 
-Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
+Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md),  [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Public Types
+
+| Type | Name |
+| ---: | :--- |
+| enum uint8\_t | [**Fault**](#enum-fault)  <br>_Which I2C hop failed the last reachability probe (feeds node health reporting, #163)._  |
+
+
+
+
+
+
 
 
 
@@ -94,6 +119,15 @@ See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
 | virtual void | [**update**](classOpenSkyhawk_1_1OutputBase.md#function-update) () <br>_Called every_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
 
 
+## Public Functions inherited from OpenSkyhawk::I2cHealth
+
+See [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
+
+| Type | Name |
+| ---: | :--- |
+|  bool | [**i2cHealthy**](classOpenSkyhawk_1_1I2cHealth.md#function-i2chealthy) () const<br>_Breaker state — true while the device last probed reachable._  |
+
+
 
 
 ## Public Static Functions inherited from OpenSkyhawk::OutputBase
@@ -129,6 +163,13 @@ See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
 
 
 
+## Protected Static Attributes inherited from OpenSkyhawk::I2cHealth
+
+See [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
+
+| Type | Name |
+| ---: | :--- |
+|  constexpr uint32\_t | [**I2C\_RETRY\_MS**](classOpenSkyhawk_1_1I2cHealth.md#variable-i2c_retry_ms)   = `2000`<br>_Back-off between retries once tripped (ms). A couple of seconds keeps the bus quiet._  |
 
 
 
@@ -145,6 +186,33 @@ See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Protected Functions
+
+| Type | Name |
+| ---: | :--- |
+| virtual bool | [**i2cProbe**](#function-i2cprobe) () override<br>_Contract: probe this device's reachability (e.g. the mux ACKs_ _and_ _the device ACKs)._ |
 
 
 ## Protected Functions inherited from OpenSkyhawk::OutputBase
@@ -154,6 +222,19 @@ See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
 | Type | Name |
 | ---: | :--- |
 |   | [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md#function-outputbase) () <br>_Registers this instance into the linked list._  |
+
+
+## Protected Functions inherited from OpenSkyhawk::I2cHealth
+
+See [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
+
+| Type | Name |
+| ---: | :--- |
+| virtual bool | [**i2cProbe**](classOpenSkyhawk_1_1I2cHealth.md#function-i2cprobe) () = 0<br>_Contract: probe this device's reachability (e.g. the mux ACKs_ _and_ _the device ACKs)._ |
+|  bool | [**i2cReachable**](classOpenSkyhawk_1_1I2cHealth.md#function-i2creachable) () <br>_Gate for every I2C op. Rate-limits the probe while tripped; trips/heals on the result._  |
+|   | [**~I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md#function-i2chealth) () = default<br> |
+
+
 
 
 
@@ -167,6 +248,26 @@ Construct at global scope so [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md)
 
 
     
+## Public Types Documentation
+
+
+
+
+### enum Fault 
+
+_Which I2C hop failed the last reachability probe (feeds node health reporting, #163)._ 
+```C++
+enum OpenSkyhawk::DrumDisplay::Fault {
+    None,
+    Mux,
+    Device
+};
+```
+
+
+
+
+<hr>
 ## Public Functions Documentation
 
 
@@ -416,6 +517,42 @@ Called every loop(). ~60 fps frame gate; early-out when idle (settled AND not di
 
         
 Implements [*OpenSkyhawk::OutputBase::update*](classOpenSkyhawk_1_1OutputBase.md#function-update)
+
+
+<hr>
+## Protected Functions Documentation
+
+
+
+
+### function i2cProbe 
+
+_Contract: probe this device's reachability (e.g. the mux ACKs_ _and_ _the device ACKs)._
+```C++
+virtual bool OpenSkyhawk::DrumDisplay::i2cProbe () override
+```
+
+
+
+
+
+**Returns:**
+
+true if reachable. The implementer records any fault detail it wants to report. 
+
+
+
+
+**Note:**
+
+Must be cheap — a single address probe, no payload — and must not throw or block beyond one bounded I2C transaction. 
+
+
+
+
+
+        
+Implements [*OpenSkyhawk::I2cHealth::i2cProbe*](classOpenSkyhawk_1_1I2cHealth.md#function-i2cprobe)
 
 
 <hr>
