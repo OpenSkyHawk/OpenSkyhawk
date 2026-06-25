@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/_source/architecture/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/References/datasheets/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Repository Structure - OpenSkyhawk</title>
+        <title>Component Datasheets - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#repository-structure" class="md-skip">
+        <a href="#component-datasheets" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Repository Structure
+              Component Datasheets
             
           </span>
         </div>
@@ -3885,37 +3885,51 @@
   
 
 
-<h1 id="repository-structure">Repository Structure</h1>
-<p>Organized by discipline, then by console position (Left / Center / Right):</p>
-<ul>
-<li><code>CAD/</code> — source CAD models (<code>.f3d</code> or <code>.FCStd</code>; tooling under evaluation, Fusion 360 vs FreeCAD — see design decision D8). STLs and STEP exports are gitignored; generate from source.</li>
-<li><code>PCB/</code> — KiCad projects. <code>PCB/&lt;Console&gt;/&lt;Controller&gt;/</code> holds one KiCad project per physical PCB. <code>PCB/Libraries/</code> holds shared symbols and footprints.</li>
-<li><code>Firmware/</code> — PlatformIO projects (preferred) or Arduino sketches. <code>Firmware/&lt;name&gt;/</code> — one production firmware sketch per folder (STM32 or RP2040, flat — no MCU-type subdirectory). <code>Firmware/Libraries/</code> — shared code; STM32 and RP2040 libraries in separate subdirectories.</li>
-<li><code>docs/References/</code> — cockpit photos, manuals, screenshots; <code>docs/References/datasheets/</code> — component datasheets.</li>
-<li><code>docs/_source/controllers/</code> — per-controller reference docs (pinout, I²C addresses, CAN IDs).</li>
-</ul>
-<h1 id="firmware-architecture">Firmware Architecture</h1>
-<p><strong>Authoritative spec:</strong> <code>Firmware/ScratchPad/FirmwarePlan/README.md</code><br />
-<strong>Implementation specs:</strong> <code>Firmware/ScratchPad/TechSpec/README.md</code></p>
-<p>Three-tier architecture: <strong>SimGateway</strong> (RP2040) ↔ <strong>PanelBridge</strong> (STM32, CAN master) ↔ <strong>PanelGroup</strong> nodes (STM32, CAN sub-nodes). The FirmwarePlan documents are split by contract boundary and are the source of truth for all firmware behaviour.</p>
-<p>Key facts that affect PCB and hardware decisions:</p>
-<ul>
-<li><strong>MCUs:</strong> STM32F103C8 (LQFP48) for <strong>all</strong> CAN avionics nodes — incl. PanelBridge (compiled ≈26 KB, fits C8's 64 KB). STM32F103CB (128 KB) is a drop-in fallback (same footprint) only if a build ever exceeds 64 KB — not currently needed by any board. RP2040 off-the-shelf modules for SimGateway and HID flight controls (no custom PCB for RP2040)</li>
-<li><strong>CAN transceiver:</strong> SN65HVD230 on PA11/PA12 per STM32 board</li>
-<li><strong>NODE_ID:</strong> assigned per board via <code>platformio.ini</code> <code>build_flags = -DNODE_ID=N</code>; visible to all translation units as a compile-time constant</li>
-<li><strong>Reserved STM32 pins:</strong> see <code>FirmwarePlan/08-hardware-firmware-contracts.md</code></li>
-<li><strong>Toolchain:</strong> PlatformIO (<code>platformio.ini</code> + <code>src/main.cpp</code>); STM32duino Arduino-compatible framework</li>
-<li><strong>Naming:</strong> functional names from the start — <code>Center_Armament</code>, <code>Left_ECM</code>, etc. No <code>Controller_NN</code> placeholders</li>
-<li><strong>Licensing:</strong> GPL v2 (<code>Firmware/LICENSE</code>) due to DCS-BIOS dependency</li>
-</ul>
-<h1 id="pcb-architecture">PCB Architecture</h1>
-<p>Each physical PCB is its own KiCad project. Controller groups live under a shared parent folder:</p>
-<pre><code>PCB/&lt;Console&gt;/&lt;ControllerGroup&gt;/
-├── &lt;ControllerGroup&gt;_MCU/    ← main board (MCU + panel switches/LEDs merged)
-├── &lt;Panel_A&gt;/                ← breakout board, harness to MCU board
-└── &lt;Panel_B&gt;/                ← breakout board, harness to MCU board
-</code></pre>
-<p>Main boards have LEDs on the front side and all other components on the back side.</p>
+<h1 id="component-datasheets">Component Datasheets</h1>
+<p>Vendor datasheets for parts used across OpenSkyhawk boards. Filed here for reference; the
+authoritative part selection lives in each board's schematic + the controller mirrors under
+<code>docs/_source/controllers/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Datasheet</th>
+<th>Part</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="MCP23017_Microchip_DS20001952C.pdf">MCP23017 (Microchip DS20001952C)</a></td>
+<td>MCP23017-E/SS 16-bit I²C I/O expander (SSOP-28)</td>
+<td>every PanelGroup breakout board</td>
+</tr>
+<tr>
+<td><a href="DRV8833_TI_motor-driver.pdf">DRV8833 (TI)</a></td>
+<td>DRV8833 dual H-bridge (HTSSOP <code>PWP</code> / TSSOP <code>PW</code>)</td>
+<td>NeedleGauge stepper drive (e.g. APN-153 DRIFT)</td>
+</tr>
+<tr>
+<td><a href="Switec_X27_stepper_JukenSwiss.pdf">Switec X27 (Juken Swiss)</a></td>
+<td>X27 air-core gauge stepper (2-coil bipolar, 1/3°/step, 5 V/20 mA)</td>
+<td>NeedleGauge needles (X27.589 = APN-153 DRIFT)</td>
+</tr>
+<tr>
+<td><a href="SSD1306_OLED_0.91in_128x32_I2C.pdf">SSD1306 0.91″ 128×32 I²C OLED</a></td>
+<td>0.91″ SSD1306 I²C OLED module</td>
+<td>DrumDisplay readouts (APN-153 GND SPEED)</td>
+</tr>
+<tr>
+<td><a href="ALPHA_SR26_rotary-switch.pdf">ALPHA SR26 rotary switch</a></td>
+<td>SR26-series rotary, 30° changeover (SR2611F solder-lug / SR2612F PCB)</td>
+<td>SwitchMultiPos selectors (APN-153 DOPPLER_SEL)</td>
+</tr>
+<tr>
+<td><a href="R16-503_illuminated_pushbutton.pdf">R16-503 illuminated pushbutton</a></td>
+<td>16 mm illuminated pushbutton, 3 VDC LED (no-lock <code>/BD</code> momentary · self-lock <code>/AD</code>)</td>
+<td>Switch2Pos + LED indicators (APN-153 MEM)</td>
+</tr>
+</tbody>
+</table>
 
 
 
