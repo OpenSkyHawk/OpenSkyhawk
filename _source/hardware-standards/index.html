@@ -4069,6 +4069,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#rotary-switches-multi-position-selectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotary switches (multi-position selectors)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#rotary-encoders-ec11-bare-quadrature" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4407,7 +4418,7 @@
 <li>Drives one X27.589 Switec stepper (bipolar, <strong>~945 partial steps/315°</strong> = 1/3°/step, 1080 steps/full-rev; 180–300 Ω coils, ~15–30 mA at 5 V)</li>
 <li>VM supply: 2–10.8 V (use 5 V); VINT: 3.3 V output (bypass with 100 nF to GND — do not drive with external supply)</li>
 <li>VCP (charge pump): 100 nF cap to VM — required for internal charge pump</li>
-<li><strong>~SLEEP pin (active LOW)</strong>: driven HIGH from <code>setup()</code> before the homing sequence runs — motor requires active driver output for homing torque. Remains HIGH permanently after that. Anti-twitch is achieved by homing to position 0 before DCS connects, not by disabling the driver.</li>
+<li><strong>~SLEEP pin (active LOW) — sim-gated, not held HIGH.</strong> The driver <strong>sleeps</strong> (~SLEEP LOW) until the sim connects; on connect the firmware drives ~SLEEP HIGH, runs the homing sequence, then <strong>syncs the gauge to the current DCS value</strong>; on disconnect it returns ~SLEEP LOW. This de-energises the coils when idle (no holding current / heat — important for the heavier servos) and gives free power-up anti-twitch (coils off until there is something to display). ~SLEEP must be a <strong>controlled GPIO</strong> — STM32 GPIO on host boards, an <strong>MCP23017 output on sub-panels</strong> — with a <strong>10 kΩ pull-down to GND</strong> so it defaults LOW (asleep) before the MCU/MCP configures it. <strong>Never tie ~SLEEP to +3V3.</strong></li>
 <li>AISEN / BISEN: current sense inputs — tie to GND (no current regulation needed; X27.589 coil resistance limits current naturally at 5 V)</li>
 <li>~FAULT: open-drain fault output — leave NC in this revision</li>
 <li>No current-regulation passives needed; X27.589 coil resistance limits current naturally at 5 V</li>
@@ -4644,6 +4655,19 @@ bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated 
 <h2 id="switches-controls">Switches &amp; Controls</h2>
 <ul>
 <li>Toggle switches: 12 mm (standard), ~6 mm (ECM modules)</li>
+</ul>
+<h3 id="rotary-switches-multi-position-selectors">Rotary switches (multi-position selectors)</h3>
+<ul>
+<li>Three standard variants, distinguished by <strong>detent angle</strong>: <strong>12-position (30°)</strong>, <strong>8-position (45°)</strong>,
+  <strong>6-position (60°)</strong> — positions in 360° = 360° ÷ angle. Pick the variant whose detent angle matches
+  the real selector.</li>
+<li>Use <strong>fewer positions</strong> than the variant's max where needed, and limit travel with a <strong>CAD turn-limiter
+  in the bezel</strong> (preferred — repeatable across prints) rather than the switch's adjustable stop washer.
+  Example: a 5-position selector at 30° detent = the <strong>12-position variant, CAD-limited to 5</strong> (≈120° throw).</li>
+<li>Wire as <code>SwitchMultiPos</code>: <strong>one GPIO per used position</strong>, common → <strong>GND</strong> (MCP23017 or STM32 breakout).
+  Prefer this over a resistor-ladder (<code>AnalogMultiPos</code>) when GPIO is plentiful — no ladder tolerance or
+  ADC-threshold calibration; reserve the ladder for when GPIO/ADC-routing is tight.</li>
+<li>High-count or freely-spinning knobs (&gt;12 positions, continuous) use a <strong><code>RotaryEncoder</code></strong> instead.</li>
 </ul>
 <h3 id="rotary-encoders-ec11-bare-quadrature">Rotary encoders (EC11 / bare quadrature)</h3>
 <ul>
