@@ -5,7 +5,7 @@ Organized by discipline, then by console position (Left / Center / Right):
 - `CAD/` — source CAD models (`.f3d` or `.FCStd`; tooling under evaluation, Fusion 360 vs FreeCAD — see design decision D8). STLs and STEP exports are gitignored; generate from source.
 - `PCB/` — KiCad projects. `PCB/<Console>/<Controller>/` holds one KiCad project per physical PCB. `PCB/Libraries/` holds shared symbols and footprints.
 - `Firmware/` — PlatformIO projects (preferred) or Arduino sketches. `Firmware/<name>/` — one production firmware sketch per folder (STM32 or RP2040, flat — no MCU-type subdirectory). `Firmware/Libraries/` — shared code; STM32 and RP2040 libraries in separate subdirectories.
-- `docs/References/` — cockpit photos, manuals, screenshots. `docs/Datasheets/` — component datasheets.
+- `docs/References/` — cockpit photos, manuals, screenshots; `docs/References/datasheets/` — component datasheets.
 - `docs/_source/controllers/` — per-controller reference docs (pinout, I²C addresses, CAN IDs).
 
 # Firmware Architecture
