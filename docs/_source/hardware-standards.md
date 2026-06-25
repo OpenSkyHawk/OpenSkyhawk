@@ -90,7 +90,7 @@ DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated
 - Drives one X27.589 Switec stepper (bipolar, **~945 partial steps/315°** = 1/3°/step, 1080 steps/full-rev; 180–300 Ω coils, ~15–30 mA at 5 V)
 - VM supply: 2–10.8 V (use 5 V); VINT: 3.3 V output (bypass with 100 nF to GND — do not drive with external supply)
 - VCP (charge pump): 100 nF cap to VM — required for internal charge pump
-- **~SLEEP pin (active LOW)**: driven HIGH from `setup()` before the homing sequence runs — motor requires active driver output for homing torque. Remains HIGH permanently after that. Anti-twitch is achieved by homing to position 0 before DCS connects, not by disabling the driver.
+- **~SLEEP pin (active LOW) — sim-gated, not held HIGH.** The driver **sleeps** (~SLEEP LOW) until the sim connects; on connect the firmware drives ~SLEEP HIGH, runs the homing sequence, then **syncs the gauge to the current DCS value**; on disconnect it returns ~SLEEP LOW. This de-energises the coils when idle (no holding current / heat — important for the heavier servos) and gives free power-up anti-twitch (coils off until there is something to display). ~SLEEP must be a **controlled GPIO** — STM32 GPIO on host boards, an **MCP23017 output on sub-panels** — with a **10 kΩ pull-down to GND** so it defaults LOW (asleep) before the MCU/MCP configures it. **Never tie ~SLEEP to +3V3.**
 - AISEN / BISEN: current sense inputs — tie to GND (no current regulation needed; X27.589 coil resistance limits current naturally at 5 V)
 - ~FAULT: open-drain fault output — leave NC in this revision
 - No current-regulation passives needed; X27.589 coil resistance limits current naturally at 5 V
@@ -200,6 +200,19 @@ LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the sign
 ## Switches & Controls
 
 - Toggle switches: 12 mm (standard), ~6 mm (ECM modules)
+
+### Rotary switches (multi-position selectors)
+
+- Three standard variants, distinguished by **detent angle**: **12-position (30°)**, **8-position (45°)**,
+  **6-position (60°)** — positions in 360° = 360° ÷ angle. Pick the variant whose detent angle matches
+  the real selector.
+- Use **fewer positions** than the variant's max where needed, and limit travel with a **CAD turn-limiter
+  in the bezel** (preferred — repeatable across prints) rather than the switch's adjustable stop washer.
+  Example: a 5-position selector at 30° detent = the **12-position variant, CAD-limited to 5** (≈120° throw).
+- Wire as `SwitchMultiPos`: **one GPIO per used position**, common → **GND** (MCP23017 or STM32 breakout).
+  Prefer this over a resistor-ladder (`AnalogMultiPos`) when GPIO is plentiful — no ladder tolerance or
+  ADC-threshold calibration; reserve the ladder for when GPIO/ADC-routing is tight.
+- High-count or freely-spinning knobs (>12 positions, continuous) use a **`RotaryEncoder`** instead.
 
 ### Rotary encoders (EC11 / bare quadrature)
 
