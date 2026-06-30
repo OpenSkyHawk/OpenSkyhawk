@@ -22,7 +22,7 @@ harness out to the APN-153 and ARC-51 sub-panels.
 | Control | Identifier | DCS-BIOS (addr/mask) | FW class | Interaction |
 |---|---|---|---|---|
 | Function Selector | `NAV_SEL` | 0x8522 / 0x0038 | `AnalogMultiPos` | 5-pos OFF/STBY/D1/D2/TEST; resistor ladder → host ADC PA0; selects which dest (D1/D2) the Dest readout shows |
-| Present Lat knob / push | `PPOS_LAT_KNB` / `PPOS_LAT_BTN` | 0x8524 · 0x8522/0x0040 | `RotaryEncoder` REL + `Switch2Pos` | push-to-set, multi-turn ±3200 |
+| Present Lat knob / push | `PPOS_LAT_KNB` / `PPOS_LAT_BTN` | 0x8524 · 0x8522/0x0040 | `RotaryEncoder` REL + `Switch2Pos` | push-to-set, multi-turn |
 | Present Lon knob / push | `PPOS_LON_KNB` / `PPOS_LON_BTN` | 0x8526 · 0x8522/0x0080 | `RotaryEncoder` REL + `Switch2Pos` | push-to-set |
 | Dest Lat knob / push | `DEST_LAT_KNB` / `DEST_LAT_BTN` | 0x8528 · 0x8522/0x0100 | `RotaryEncoder` REL + `Switch2Pos` | push-to-set |
 | Dest Lon knob / push | `DEST_LON_KNB` / `DEST_LON_BTN` | 0x852A · 0x8522/0x0200 | `RotaryEncoder` REL + `Switch2Pos` | push-to-set |
@@ -33,6 +33,8 @@ harness out to the APN-153 and ARC-51 sub-panels.
 | Dest Lon Slew | `ASN41_LON_SLEW` | 0x8544 / 0x0180 | `Switch3Pos` | spring-centred momentary L/R; concentric with the push-set encoder |
 
 `0x8522` is a packed word — NAV_SEL + the 7 pushes on distinct bitmasks. `NAV_DEAD` (0x8554) is a different panel — excluded. 25 digital input lines + 1 ADC.
+
+**Encoder REL step (bench, PR #165):** the 4 position knobs (PPOS/DEST lat-lon) use `step=1600` = 1 digit/detent — `step=3200` (the JSON suggested_step) over-steps. MagVar/WindSpeed/WindDir default 3200 pending per-knob feel (likely also 1600). Set per-ctor in the B6 sketch; class `DEFAULT_STEP` stays 3200.
 
 ### Outputs — 7 OLED readouts
 
