@@ -3907,6 +3907,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#source-fusing-per-console-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source fusing &amp; per-console injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#psu-source-supply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PSU / source supply
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4264,10 +4286,12 @@ are injected elsewhere on the bus and pass straight through.</p>
   so cumulative chain current is a non-issue on-board. <code>+5V</code> is low-current (logic + DRV8833
   stepper VM; backlight is on 12V) — route wide (~0.5 mm+) or pour it too.</li>
 <li><strong>Harness:</strong> 18 AWG silicone on the bus (16 AWG also fine — match the Mini-Fit crimp terminal
-  to the gauge). Mini-Fit Jr ≤ 9 A/pin → ~10× margin over the ~2.3 A system; current is never
-  the limit. <strong>No per-board fusing</strong> (simplicity); GND stays common + continuous (CAN
-  reference) — never fused. Optional later: a polyfuse on a board's <em>local</em> 12V tap for fault
-  isolation (pour passes through untouched).</li>
+  to the gauge). Mini-Fit Jr <strong>8-circuit, all-loaded, 18 AWG = ~8 A/pin</strong> (the 9 A figure is for
+  ≤3 circuits) → per-pin actual ~2–2.5 A (12V 2 pins / 5V 1 pin / GND 3 pins) = <strong>~3.5–4× margin.</strong>
+  <strong>No per-<em>board</em> fusing, but fuse source-side</strong> (see <em>Source fusing</em> below — the PSU's OCP
+  protects the PSU, not the harness). GND stays common + continuous (CAN reference) — <strong>never
+  fused.</strong> The THT bus pins double as <strong>large plated-through vias</strong> stitching top↔bottom GND at the
+  connector.</li>
 <li><strong>Connector copper (Milestone-2 layout rules):</strong></li>
 <li><strong>Place J_BUS_IN / J_BUS_OUT adjacent</strong> — power pass-through becomes a short pin-to-pin
     bridge (minimal R / neck risk). Reserve <strong>wire-exit room for both fat 18 AWG silicone
@@ -4286,6 +4310,65 @@ are injected elsewhere on the bus and pass straight through.</p>
   ~2.3 A bus. The constraint is the <strong>narrowest neck</strong>: keep ≥ ~1 mm (aim ≥ 2 mm) past any via,
   hole, cutout, or other-net island; don't let a same-layer signal split the channel; stitch
   layer changes with ≥ 4–6 power vias. Sketches: <a href="../base-boards-power-pour.svg">power-pour layout</a>.</li>
+</ul>
+<h3 id="source-fusing-per-console-injection">Source fusing &amp; per-console injection</h3>
+<p><strong>The PSU's OCP protects the PSU, not the harness.</strong> A single-rail ATX +12V trips at ~40 A — it
+would dump tens of amps into a fault long before that, cooking a ~8 A connector pin / 1 mm trace.
+So protect <strong>at the supply, sized to the harness:</strong></p>
+<ul>
+<li><strong>Fuse each rail at the PSU / injection point</strong> — <strong>+12V ~5 A · +5V ~3 A</strong> (rule: load &lt; fuse &lt;
+  weakest copper). <strong>GND is never fused</strong> (CAN reference + return).</li>
+<li><strong>The fuse sets the copper, not the connector</strong> — size traces/pours for the <em>fuse</em> rating, not the
+  connector's theoretical max. A 5 A fuse means the copper only ever sees 5 A, so 1 oz pours / wide
+  bridges are ample (1 mm 1 oz ≈ 2.5 A).</li>
+<li><strong>Load reality:</strong> whole cockpit ≈ 3 A @12V (backlight) + ~2 A @5V ≈ ~50 W → a <strong>350–450 W
+  single-rail ATX is ample</strong> (500 W is overkill). Only <strong>+12V</strong> can be multi-rail; <strong>+5V/+3.3V are
+  always single-rail.</strong> Use +12V (backlight) + +5V (logic + DRV8833 VM) + GND; boards regulate their
+  own 3V3 (AMS1117), so +3.3V/+5VSB/−12V go unused. Parallel the ATX 24-pin's duplicate rail pins.</li>
+</ul>
+<p><strong>Per-console injection (scaling lever — see #202).</strong> Default = one daisy-chain (power passes through
+every board; the first board's pass-through bridge carries the <strong>cumulative</strong> downstream current). To
+scale or isolate:</p>
+<ul>
+<li><strong>Inject +12V/+5V per console</strong> and <strong>break that rail's pass-through</strong> (leave its <code>J_BUS_OUT</code> pin
+  NC) → each segment carries only <em>its</em> downstream load. Per group: <strong>&lt;1 A @12V</strong> (a 1 mm trace
+  suffices), modest @5V. The <strong>pour is only needed on the pass-through bridge</strong> that carries the
+  cumulative — the board's own tap to local circuits is a light trace.</li>
+<li><strong>GND + CAN stay continuous</strong> across all segments — never segment them.</li>
+<li>Make the 12V/5V pass-through <strong>optional</strong> (jumper / DNP) so a zone can be re-injected later with no
+  redesign.</li>
+<li><strong>+12V gets the full pass-through treatment even on pass-through-only boards</strong> (e.g. Gateway/Bridge
+  draws no local 12V but still carries the cumulative downstream).</li>
+<li>Contingency: a <strong>power-distribution + monitoring CAN node</strong> (#202) — STM32 + per-zone INA219 +
+  eFuse breakers, telemetry → PanelBridge — measures the (unknown) consumption <em>and</em> provides the
+  injection points.</li>
+</ul>
+<h3 id="psu-source-supply">PSU / source supply</h3>
+<p><strong>Source = a fully-modular ATX PSU</strong> (DC-DC topology — no minimum-load resistor needed; safe at the
+cockpit's ~50 W). Selected: <strong>GOLDEN FIELD NX650</strong> (650 W, 80+ Gold, fully modular, ~$60) —
+over-provisioned ~13×, bought for clean modular cabling + expansion headroom (a tier-1 450 W is a
+fine alternative).</p>
+<ul>
+<li><strong>Turn-on:</strong> no motherboard → <strong>jumper PS_ON# (green, 24-pin pin 16) → GND</strong> (add a switch).
+  Optional later: a small always-on MCU on <strong>+5VSB</strong> (always live, 2.5 A) toggles PS_ON# = soft power
+  button + AC-present sense. Don't run panel logic off +5VSB — use the main +5V.</li>
+<li><strong>Single +12V rail (54 A) → source-fusing is MANDATORY.</strong> Consumer ATX has <strong>no per-pin /
+  per-connector protection</strong> — only rail-level OCP (~60 A) + dead-short SCP. A fault pulling 15 A
+  through a 5 A connector burns it long before OCP notices. <strong>The per-lead fuse <em>is</em> the
+  per-connector protection</strong> (12V ~5 A / 5V ~3 A, GND unfused).</li>
+<li><strong>+5V is only on the IDE/SATA cables</strong> — PCIe / CPU / 12V-2x6 are <strong>+12V-only</strong>. The NX650 ships
+  <strong>2× IDE cables (3×SATA + 1×Molex each)</strong> → only <strong>2 independent feeds that carry 5 V</strong>. For a 3rd
+  console build a 3rd IDE/SATA cable or a custom <strong>6-pin → Mini-Fit Jr</strong> lead. Use the <strong>Molex ends
+  (~11 A)</strong> for heavier feeds, SATA (~few A) for light; 12V-only zones (backlight) can use the PCIe
+  cable.</li>
+<li><strong>All ports share the same internal rails</strong> (single-rail DC-DC) — the limit is the
+  <strong>cable/connector</strong>, not a separate rail. Sum of all leads ≪ 54 A / 18 A.</li>
+<li><strong>⚠️ Modular cables are brand-specific</strong> — ATX 3.1 standardizes only the <em>device-side</em> connectors
+  (SATA/Molex/PCIe/24-pin), <strong>not</strong> the PSU-side modular sockets. Never reuse another PSU's modular
+  cables (wrong PSU-side pinout = +12V onto GND). Tap the standard device-side, or meter the PSU-side
+  before building custom leads.</li>
+<li>Mechanical: needs an <strong>ATX PSU mount</strong> + <strong>IEC C13 cord</strong>; ECO fan likely zero-RPM at this load —
+  ensure enclosure airflow.</li>
 </ul>
 <hr />
 <h2 id="board-1-gatewaybridge">Board 1 — Gateway/Bridge</h2>
