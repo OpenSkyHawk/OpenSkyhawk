@@ -40,6 +40,10 @@ build/
 .pio/
 **/.pio/
 **/.vscode/
+# PlatformIO auto-generates a per-project .gitignore (.pio + .vscode) in every
+# Firmware project — redundant, root covers both above. Ignore them so they
+# never show as untracked/modified.
+Firmware/**/.gitignore
 
 # KiCad Fabrication Toolkit
 fabrication-toolkit-options.json
