@@ -38,15 +38,17 @@ A **controller** = one STM32 PanelGroup MCU = one CAN **NODE_ID**, hosting a **h
 breakouts within ~12–18"**. GitHub Project #1 keeps **one item per physical panel**; the build pipeline runs
 **per controller** (Project #2). The grouping rule + budgets are summarized in A2 below.
 
-**Multi-board controllers get a system interconnect / harness artifact** — a controller-scoped,
-**documentation-only** KiCad project (block-per-board diagram + harness nets; no PCB/gerbers/DRC) that
-captures how the host + sub-panel boards wire together. KiCad can't live-link separate projects, so it is
-the **interface contract**: harness pinouts defined once, each board's connector conforms (use KiCad-10
-**Design Blocks** for the connector interfaces to keep system-sheet ↔ board projects in sync). It is **not**
-a per-panel B2 deliverable and is **not** a gated build-step — it's a **living doc**: drafted once the
-controller architecture is firm, used as the connector contract during each panel's B2, finalized for B7/B8
-harness build. Lives at `PCB/<Console>/<Group>/<Group>_System/`, referenced on the controller issue.
-**Single-board controllers skip it.**
+**System Architecture — one master cockpit drill-down** (`PCB/System/OpenSkyhawk_System/`,
+**documentation-only**: hierarchical block + harness diagram, no PCB/gerbers/DRC). A single KiCad
+multi-sheet project for the whole cockpit, mirroring the repo (`<Console>/<Group>/<Board>`) +
+Projects (console → controller → panel): **ROOT** = full cockpit (3 console sheets · SimGateway ↔
+PanelBridge ↔ PC · CAN backbone + power tree as flat global nets · notes block) → **Console** sheets →
+**Controller** sheets (host + panel **symbols**, harness wired pin-level; panels are symbols, not a 4th
+tier). KiCad can't live-link projects, so it's the **interface contract** — harness pinouts/bus structure
+defined once, each board's connector conforms; symbols shared from `Libraries/OpenSkyhawk.kicad_sym`.
+It is **not** a per-panel B2 deliverable and **not** a gated build-step — a **living doc** that grows one
+controller sub-sheet at a time, used as the connector contract during B2 and the harness build at B7/B8.
+**Each controller is a sub-sheet, not its own project.** (OpenHornet's `OH-INTERCONNECT` is the model.)
 
 ## Readiness — pick what's buildable now
 
