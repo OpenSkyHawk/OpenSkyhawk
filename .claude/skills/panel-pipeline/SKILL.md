@@ -38,6 +38,16 @@ A **controller** = one STM32 PanelGroup MCU = one CAN **NODE_ID**, hosting a **h
 breakouts within ~12–18"**. GitHub Project #1 keeps **one item per physical panel**; the build pipeline runs
 **per controller** (Project #2). The grouping rule + budgets are summarized in A2 below.
 
+**Multi-board controllers get a system interconnect / harness artifact** — a controller-scoped,
+**documentation-only** KiCad project (block-per-board diagram + harness nets; no PCB/gerbers/DRC) that
+captures how the host + sub-panel boards wire together. KiCad can't live-link separate projects, so it is
+the **interface contract**: harness pinouts defined once, each board's connector conforms (use KiCad-10
+**Design Blocks** for the connector interfaces to keep system-sheet ↔ board projects in sync). It is **not**
+a per-panel B2 deliverable and is **not** a gated build-step — it's a **living doc**: drafted once the
+controller architecture is firm, used as the connector contract during each panel's B2, finalized for B7/B8
+harness build. Lives at `PCB/<Console>/<Group>/<Group>_System/`, referenced on the controller issue.
+**Single-board controllers skip it.**
+
 ## Readiness — pick what's buildable now
 
 A panel/controller is **Ready** when every control type it uses already has an implemented
