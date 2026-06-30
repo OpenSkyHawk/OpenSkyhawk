@@ -120,6 +120,34 @@ scale or isolate:
   eFuse breakers, telemetry → PanelBridge — measures the (unknown) consumption *and* provides the
   injection points.
 
+### PSU / source supply
+
+**Source = a fully-modular ATX PSU** (DC-DC topology — no minimum-load resistor needed; safe at the
+cockpit's ~50 W). Selected: **GOLDEN FIELD NX650** (650 W, 80+ Gold, fully modular, ~$60) —
+over-provisioned ~13×, bought for clean modular cabling + expansion headroom (a tier-1 450 W is a
+fine alternative).
+
+- **Turn-on:** no motherboard → **jumper PS_ON# (green, 24-pin pin 16) → GND** (add a switch).
+  Optional later: a small always-on MCU on **+5VSB** (always live, 2.5 A) toggles PS_ON# = soft power
+  button + AC-present sense. Don't run panel logic off +5VSB — use the main +5V.
+- **Single +12V rail (54 A) → source-fusing is MANDATORY.** Consumer ATX has **no per-pin /
+  per-connector protection** — only rail-level OCP (~60 A) + dead-short SCP. A fault pulling 15 A
+  through a 5 A connector burns it long before OCP notices. **The per-lead fuse *is* the
+  per-connector protection** (12V ~5 A / 5V ~3 A, GND unfused).
+- **+5V is only on the IDE/SATA cables** — PCIe / CPU / 12V-2x6 are **+12V-only**. The NX650 ships
+  **2× IDE cables (3×SATA + 1×Molex each)** → only **2 independent feeds that carry 5 V**. For a 3rd
+  console build a 3rd IDE/SATA cable or a custom **6-pin → Mini-Fit Jr** lead. Use the **Molex ends
+  (~11 A)** for heavier feeds, SATA (~few A) for light; 12V-only zones (backlight) can use the PCIe
+  cable.
+- **All ports share the same internal rails** (single-rail DC-DC) — the limit is the
+  **cable/connector**, not a separate rail. Sum of all leads ≪ 54 A / 18 A.
+- **⚠️ Modular cables are brand-specific** — ATX 3.1 standardizes only the *device-side* connectors
+  (SATA/Molex/PCIe/24-pin), **not** the PSU-side modular sockets. Never reuse another PSU's modular
+  cables (wrong PSU-side pinout = +12V onto GND). Tap the standard device-side, or meter the PSU-side
+  before building custom leads.
+- Mechanical: needs an **ATX PSU mount** + **IEC C13 cord**; ECO fan likely zero-RPM at this load —
+  ensure enclosure airflow.
+
 ---
 
 ## Board 1 — Gateway/Bridge
