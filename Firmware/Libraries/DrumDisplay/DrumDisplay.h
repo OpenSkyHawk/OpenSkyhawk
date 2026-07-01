@@ -56,6 +56,16 @@ enum class DrumScroll : uint8_t {
     SNAP_SETTLE = 1,  ///< snap near target on large jumps, then ease the last bit — default
 };
 
+/**
+ * @brief Leading-zero handling for a readout's high-order digit cells.
+ * @note Suppress blanks the high-order zero cells down to the target's significant-digit count
+ *       (units always shows, so 0 renders "0"); animation is unchanged. Keep is fixed width.
+ */
+enum class LeadingZero : uint8_t {
+    Keep     = 0,  ///< render all nDigits — fixed width (default)
+    Suppress = 1,  ///< blank leading zeros — variable width (e.g. ARC-51 preset channel 1..20)
+};
+
 // ── Descriptor structs (mm-based, resolution-independent) ─────────────────────
 
 /**
@@ -121,6 +131,8 @@ struct DrumReadout {
     DrumFlag flag;                    ///< optional flag (flag.enabled == false ⇒ none)
     DrumScroll scroll;                ///< EASE_ONLY or SNAP_SETTLE
     float    snapThreshold;           ///< |target−pos| (digit units) above which SNAP_SETTLE teleports
+    LeadingZero leadingZero = LeadingZero::Keep;  ///< default Keep = all nDigits (omit it); set
+                                      ///< for variable-width readouts (ARC-51 channel 1..20 → "1".."20").
 };
 
 // ── The output class ──────────────────────────────────────────────────────────
@@ -216,6 +228,7 @@ public:
     long    debugFlagTarget() const { return _flagTarget; }  ///< test-only: decoded flag face index
     uint8_t debugCellCount() const  { return _nCells; }      ///< test-only: laid-out visual cell count
     int16_t debugRowWidth() const;                           ///< test-only: total laid-out width, px
+    uint8_t debugVisibleDigits() const { return visibleDigits(); }  ///< test-only: digit cells drawn (leading zeros blanked)
     int16_t debugCellX0() const     { return _nCells ? _cellX[0] : 0; }  ///< test-only: leftmost cell X, px
     bool     debugHealthy() const     { return i2cHealthy(); }                  ///< test-only: breaker state
     uint8_t  debugFault() const       { return static_cast<uint8_t>(_fault); }  ///< test-only: 0=None 1=Mux 2=Device
@@ -276,6 +289,7 @@ private:
     void drawTape(int16_t cx, float p, int16_t w);   // ported rolling digit tape
     void drawFlag(int16_t cx, float p, int16_t w);   // ported 2-face flag tape
     bool settled() const;                            // every |target/10^k − pos[k]| < epsilon
+    uint8_t visibleDigits() const;                   // significant digit cells to draw (== nDigits unless suppressLeadingZero)
     const uint8_t* fontPtr() const;                  // ProFont face for _font
     static long decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits);
 };

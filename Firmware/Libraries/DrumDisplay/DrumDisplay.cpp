@@ -313,12 +313,14 @@ void DrumDisplay::update() {
     _oled->clearBuffer();
     _oled->setFont(fontPtr());
     _oled->setFontPosCenter();
+    const uint8_t vis = visibleDigits();  // low-order cells to draw; leading zeros above this stay blank
     for (uint8_t ci = 0; ci < _nCells; ci++) {
         int16_t cx = _cellX[ci];
         int16_t w  = _cellW[ci];
         _oled->setClipWindow(cx, _cy - _cellH / 2, cx + w, _cy + _cellH / 2);
         if (_cellKind[ci] == KIND_DIGIT) {
-            drawTape(cx, _pos[_cellData[ci]], w);
+            const uint8_t place = static_cast<uint8_t>(_cellData[ci]);
+            if (place < vis) drawTape(cx, _pos[place], w);  // else leading-zero cell → left blank
         } else if (_cellKind[ci] == KIND_GLYPH) {
             const DrumGlyph& g = _r->glyphs[_cellData[ci]];
             char s[2] = { g.ch, 0 };
@@ -358,6 +360,17 @@ bool DrumDisplay::settled() const {
     }
     if (_r->flag.enabled && fabsf(static_cast<float>(_flagTarget) - _flagPos) > SETTLE_EPS) return false;
     return true;
+}
+
+// Number of low-order digit cells to actually draw. With LeadingZero::Suppress the high-order
+// zero cells are blanked down to the significant-digit count of the current target (min 1, so
+// zero still shows a single "0"). Keep (default) → every cell draws, preserving fixed width.
+uint8_t DrumDisplay::visibleDigits() const {
+    if (_r->leadingZero == LeadingZero::Keep) return _r->nDigits;
+    uint8_t nSig = 1;
+    long t = _target < 0 ? -_target : _target;
+    while (t >= 10 && nSig < _r->nDigits) { t /= 10; nSig++; }
+    return nSig;
 }
 
 const uint8_t* DrumDisplay::fontPtr() const {
