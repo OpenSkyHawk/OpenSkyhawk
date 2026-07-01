@@ -67,6 +67,7 @@
 | enum uint8\_t | [**EncoderMode**](#enum-encodermode)  <br>_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. Scoped enum._  |
 | enum uint8\_t | [**EncoderStepsPerDetent**](#enum-encoderstepsperdetent)  <br>_Quadrature transitions per mechanical detent (match to the encoder). Scoped enum._  |
 | enum uint8\_t | [**HomeMode**](#enum-homemode)  <br>_How the driver establishes its zero reference at boot._  |
+| enum uint8\_t | [**LeadingZero**](#enum-leadingzero)  <br>_Leading-zero handling for a readout's high-order digit cells._  |
 | enum uint8\_t | [**StepPattern**](#enum-steppattern)  <br>_Coil energising sequence._  |
 
 
@@ -254,6 +255,34 @@ enum OpenSkyhawk::HomeMode {
 
 
 
+
+<hr>
+
+
+
+### enum LeadingZero 
+
+_Leading-zero handling for a readout's high-order digit cells._ 
+```C++
+enum OpenSkyhawk::LeadingZero {
+    Keep = 0,
+    Suppress = 1
+};
+```
+
+
+
+
+
+**Note:**
+
+Suppress blanks the high-order zero cells down to the target's significant-digit count (units always shows, so 0 renders "0"); animation is unchanged. Keep is fixed width. 
+
+
+
+
+
+        
 
 <hr>
 

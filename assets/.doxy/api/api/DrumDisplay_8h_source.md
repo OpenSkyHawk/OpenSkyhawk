@@ -31,6 +31,11 @@ enum class DrumScroll : uint8_t {
     SNAP_SETTLE = 1,  
 };
 
+enum class LeadingZero : uint8_t {
+    Keep     = 0,  
+    Suppress = 1,  
+};
+
 // ── Descriptor structs (mm-based, resolution-independent) ─────────────────────
 
 struct DrumSource {
@@ -56,19 +61,22 @@ struct DrumFlag {
 };
 
 struct DrumReadout {
+    // ── required: sources + geometry (always set) ──
     const DrumSource* sources;        
     uint8_t  nSources;                
     uint8_t  nDigits;                 
     float    digitWidthMm;            
     float    digitHeightMm;           
     float    interDigitGapMm;         
-    float    groupGapMm;              
-    uint8_t  groupSize;               
-    const DrumGlyph* glyphs;          
-    uint8_t  nGlyphs;                 
-    DrumFlag flag;                    
-    DrumScroll scroll;                
-    float    snapThreshold;           
+    // ── optional: default-member-initialized, set only when non-default (use designated init) ──
+    float    groupGapMm     = 0.0f;               
+    uint8_t  groupSize      = 0;                  
+    const DrumGlyph* glyphs = nullptr;            
+    uint8_t  nGlyphs        = 0;                  
+    DrumFlag flag           = {};                 
+    DrumScroll scroll       = DrumScroll::SNAP_SETTLE;  
+    float    snapThreshold  = 3.0f;               
+    LeadingZero leadingZero = LeadingZero::Keep;  
 };
 
 // ── The output class ──────────────────────────────────────────────────────────
@@ -101,6 +109,7 @@ public:
     long    debugFlagTarget() const { return _flagTarget; }  
     uint8_t debugCellCount() const  { return _nCells; }      
     int16_t debugRowWidth() const;                           
+    uint8_t debugVisibleDigits() const { return visibleDigits(); }  
     int16_t debugCellX0() const     { return _nCells ? _cellX[0] : 0; }  
     bool     debugHealthy() const     { return i2cHealthy(); }                  
     uint8_t  debugFault() const       { return static_cast<uint8_t>(_fault); }  
@@ -161,6 +170,7 @@ private:
     void drawTape(int16_t cx, float p, int16_t w);   // ported rolling digit tape
     void drawFlag(int16_t cx, float p, int16_t w);   // ported 2-face flag tape
     bool settled() const;                            // every |target/10^k − pos[k]| < epsilon
+    uint8_t visibleDigits() const;                   // significant digit cells to draw (== nDigits unless suppressLeadingZero)
     const uint8_t* fontPtr() const;                  // ProFont face for _font
     static long decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits);
 };

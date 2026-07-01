@@ -38,16 +38,17 @@ _Complete description of one rolling readout: its sources, geometry, glyphs, fla
 | ---: | :--- |
 |  float | [**digitHeightMm**](#variable-digitheightmm)  <br>_digit cell (roll window) height, mm_  |
 |  float | [**digitWidthMm**](#variable-digitwidthmm)  <br>_digit cell (window aperture) width, mm_  |
-|  [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) | [**flag**](#variable-flag)  <br>_optional flag (flag.enabled == false ⇒ none)_  |
-|  const [**DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) \* | [**glyphs**](#variable-glyphs)  <br>_fixed glyphs (decimal point etc.); nullptr if none_  |
-|  float | [**groupGapMm**](#variable-groupgapmm)  <br>_extra gap at group boundaries, mm (0 if ungrouped)_  |
-|  uint8\_t | [**groupSize**](#variable-groupsize)  <br>_digits per group for groupGap insertion (0 = no grouping)_  |
+|  [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) | [**flag**](#variable-flag)   = `{}`<br>_optional flag ({} ⇒ disabled)_  |
+|  const [**DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) \* | [**glyphs**](#variable-glyphs)   = `nullptr`<br>_fixed glyphs (decimal point etc.); nullptr if none_  |
+|  float | [**groupGapMm**](#variable-groupgapmm)   = `0.0f`<br>_extra gap at group boundaries, mm (0 if ungrouped)_  |
+|  uint8\_t | [**groupSize**](#variable-groupsize)   = `0`<br>_digits per group for groupGap insertion (0 = no grouping)_  |
 |  float | [**interDigitGapMm**](#variable-interdigitgapmm)  <br>_gap between adjacent cells, mm_  |
+|  [**LeadingZero**](namespaceOpenSkyhawk.md#enum-leadingzero) | [**leadingZero**](#variable-leadingzero)   = `LeadingZero::Keep`<br>_Keep (default) = all nDigits; Suppress = variable width._  |
 |  uint8\_t | [**nDigits**](#variable-ndigits)  <br>_total digit columns in the combined number (1..6)_  |
-|  uint8\_t | [**nGlyphs**](#variable-nglyphs)  <br>_element count of_ `glyphs` __ |
+|  uint8\_t | [**nGlyphs**](#variable-nglyphs)   = `0`<br>_element count of_ `glyphs` __ |
 |  uint8\_t | [**nSources**](#variable-nsources)  <br>_element count of_ `sources` __ |
-|  [**DrumScroll**](namespaceOpenSkyhawk.md#enum-drumscroll) | [**scroll**](#variable-scroll)  <br>_EASE\_ONLY or SNAP\_SETTLE._  |
-|  float | [**snapThreshold**](#variable-snapthreshold)  <br>_\|target−pos\| (digit units) above which SNAP\_SETTLE teleports_  |
+|  [**DrumScroll**](namespaceOpenSkyhawk.md#enum-drumscroll) | [**scroll**](#variable-scroll)   = `DrumScroll::SNAP\_SETTLE`<br>_EASE\_ONLY or SNAP\_SETTLE (default)_  |
+|  float | [**snapThreshold**](#variable-snapthreshold)   = `3.0f`<br>_\|target−pos\| (digit units) above which SNAP\_SETTLE teleports_  |
 |  const [**DrumSource**](structOpenSkyhawk_1_1DrumSource.md) \* | [**sources**](#variable-sources)  <br>_array of digit sources_  |
 
 
@@ -142,7 +143,7 @@ float OpenSkyhawk::DrumReadout::digitWidthMm;
 
 ### variable flag 
 
-_optional flag (flag.enabled == false ⇒ none)_ 
+_optional flag ({} ⇒ disabled)_ 
 ```C++
 DrumFlag OpenSkyhawk::DrumReadout::flag;
 ```
@@ -210,6 +211,20 @@ float OpenSkyhawk::DrumReadout::interDigitGapMm;
 
 
 
+### variable leadingZero 
+
+_Keep (default) = all nDigits; Suppress = variable width._ 
+```C++
+LeadingZero OpenSkyhawk::DrumReadout::leadingZero;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable nDigits 
 
 _total digit columns in the combined number (1..6)_ 
@@ -254,7 +269,7 @@ uint8_t OpenSkyhawk::DrumReadout::nSources;
 
 ### variable scroll 
 
-_EASE\_ONLY or SNAP\_SETTLE._ 
+_EASE\_ONLY or SNAP\_SETTLE (default)_ 
 ```C++
 DrumScroll OpenSkyhawk::DrumReadout::scroll;
 ```

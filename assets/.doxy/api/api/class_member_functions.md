@@ -139,6 +139,7 @@
 
 ## v
 
+* **visibleDigits** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **valueToPos** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 
 

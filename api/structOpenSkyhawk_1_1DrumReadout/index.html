@@ -3985,6 +3985,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-leadingzero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable leadingZero
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-ndigits" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4100,23 +4111,27 @@
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../structOpenSkyhawk_1_1DrumFlag/"><strong>DrumFlag</strong></a></td>
-<td style="text-align: left;"><a href="#variable-flag"><strong>flag</strong></a>  <br><em>optional flag (flag.enabled == false ⇒ none)</em></td>
+<td style="text-align: left;"><a href="#variable-flag"><strong>flag</strong></a>   = <code>{}</code><br><em>optional flag ({} ⇒ disabled)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">const <a href="../structOpenSkyhawk_1_1DrumGlyph/"><strong>DrumGlyph</strong></a> *</td>
-<td style="text-align: left;"><a href="#variable-glyphs"><strong>glyphs</strong></a>  <br><em>fixed glyphs (decimal point etc.); nullptr if none</em></td>
+<td style="text-align: left;"><a href="#variable-glyphs"><strong>glyphs</strong></a>   = <code>nullptr</code><br><em>fixed glyphs (decimal point etc.); nullptr if none</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">float</td>
-<td style="text-align: left;"><a href="#variable-groupgapmm"><strong>groupGapMm</strong></a>  <br><em>extra gap at group boundaries, mm (0 if ungrouped)</em></td>
+<td style="text-align: left;"><a href="#variable-groupgapmm"><strong>groupGapMm</strong></a>   = <code>0.0f</code><br><em>extra gap at group boundaries, mm (0 if ungrouped)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint8_t</td>
-<td style="text-align: left;"><a href="#variable-groupsize"><strong>groupSize</strong></a>  <br><em>digits per group for groupGap insertion (0 = no grouping)</em></td>
+<td style="text-align: left;"><a href="#variable-groupsize"><strong>groupSize</strong></a>   = <code>0</code><br><em>digits per group for groupGap insertion (0 = no grouping)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">float</td>
 <td style="text-align: left;"><a href="#variable-interdigitgapmm"><strong>interDigitGapMm</strong></a>  <br><em>gap between adjacent cells, mm</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../namespaceOpenSkyhawk/#enum-leadingzero"><strong>LeadingZero</strong></a></td>
+<td style="text-align: left;"><a href="#variable-leadingzero"><strong>leadingZero</strong></a>   = <code>LeadingZero::Keep</code><br><em>Keep (default) = all nDigits; Suppress = variable width.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint8_t</td>
@@ -4124,7 +4139,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">uint8_t</td>
-<td style="text-align: left;"><a href="#variable-nglyphs"><strong>nGlyphs</strong></a>  <br><em>element count of</em> <code>glyphs</code> __</td>
+<td style="text-align: left;"><a href="#variable-nglyphs"><strong>nGlyphs</strong></a>   = <code>0</code><br><em>element count of</em> <code>glyphs</code> __</td>
 </tr>
 <tr>
 <td style="text-align: right;">uint8_t</td>
@@ -4132,11 +4147,11 @@
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../namespaceOpenSkyhawk/#enum-drumscroll"><strong>DrumScroll</strong></a></td>
-<td style="text-align: left;"><a href="#variable-scroll"><strong>scroll</strong></a>  <br><em>EASE_ONLY or SNAP_SETTLE.</em></td>
+<td style="text-align: left;"><a href="#variable-scroll"><strong>scroll</strong></a>   = <code>DrumScroll::SNAP\_SETTLE</code><br><em>EASE_ONLY or SNAP_SETTLE (default)</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">float</td>
-<td style="text-align: left;"><a href="#variable-snapthreshold"><strong>snapThreshold</strong></a>  <br><em>|target−pos| (digit units) above which SNAP_SETTLE teleports</em></td>
+<td style="text-align: left;"><a href="#variable-snapthreshold"><strong>snapThreshold</strong></a>   = <code>3.0f</code><br><em>|target−pos| (digit units) above which SNAP_SETTLE teleports</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">const <a href="../structOpenSkyhawk_1_1DrumSource/"><strong>DrumSource</strong></a> *</td>
@@ -4161,7 +4176,7 @@
 <hr>
 
 <h3 id="variable-flag">variable flag</h3>
-<p><em>optional flag (flag.enabled == false ⇒ none)</em> </p>
+<p><em>optional flag ({} ⇒ disabled)</em> </p>
 <pre><code class="language-C++">DrumFlag OpenSkyhawk::DrumReadout::flag;
 </code></pre>
 <hr>
@@ -4190,6 +4205,12 @@
 </code></pre>
 <hr>
 
+<h3 id="variable-leadingzero">variable leadingZero</h3>
+<p><em>Keep (default) = all nDigits; Suppress = variable width.</em> </p>
+<pre><code class="language-C++">LeadingZero OpenSkyhawk::DrumReadout::leadingZero;
+</code></pre>
+<hr>
+
 <h3 id="variable-ndigits">variable nDigits</h3>
 <p><em>total digit columns in the combined number (1..6)</em> </p>
 <pre><code class="language-C++">uint8_t OpenSkyhawk::DrumReadout::nDigits;
@@ -4209,7 +4230,7 @@
 <hr>
 
 <h3 id="variable-scroll">variable scroll</h3>
-<p><em>EASE_ONLY or SNAP_SETTLE.</em> </p>
+<p><em>EASE_ONLY or SNAP_SETTLE (default)</em> </p>
 <pre><code class="language-C++">DrumScroll OpenSkyhawk::DrumReadout::scroll;
 </code></pre>
 <hr>

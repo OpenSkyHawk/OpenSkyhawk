@@ -120,6 +120,7 @@
 ## l
 
 * **loopsWaited** ([**BatchState**](structBatchState.md))
+* **leadingZero** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **LED** ([**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md))
 * **len** ([**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
 
@@ -223,6 +224,7 @@
 
 ## v
 
+* **visibleDigits** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **valueToPos** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 
 

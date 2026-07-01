@@ -98,6 +98,40 @@
         </inbodydescription>
         <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="54" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="54" bodyend="57"/>
       </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a3620da88d73c267e0647ad4acb87b95f" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>LeadingZero</name>
+        <qualifiedname>OpenSkyhawk::LeadingZero</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a3620da88d73c267e0647ad4acb87b95fa02bce93bff905887ad2233110bf9c49e" prot="public">
+          <name>Keep</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+<para>render all nDigits — fixed width (default) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a3620da88d73c267e0647ad4acb87b95fa853fbbeb76e35bea97202cc179baa627" prot="public">
+          <name>Suppress</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+<para>blank leading zeros — variable width (e.g. ARC-51 preset channel 1..20) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Leading-zero handling for a readout&apos;s high-order digit cells. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Suppress blanks the high-order zero cells down to the target&apos;s significant-digit count (units always shows, so 0 renders &quot;0&quot;); animation is unchanged. Keep is fixed width. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="64" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="64" bodyend="67"/>
+      </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a44270c556b4ccc8c2444fe69213675a7" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
         <name>HomeMode</name>

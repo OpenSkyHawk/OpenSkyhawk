@@ -86,6 +86,7 @@
 ## l
 
 * **loopsWaited** ([**BatchState**](structBatchState.md))
+* **leadingZero** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **len** ([**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
 
 

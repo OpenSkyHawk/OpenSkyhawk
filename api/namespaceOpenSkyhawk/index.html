@@ -4007,6 +4007,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#enum-leadingzero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum LeadingZero
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-steppattern" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4405,6 +4416,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-leadingzero"><strong>LeadingZero</strong></a>  <br><em>Leading-zero handling for a readout's high-order digit cells.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-steppattern"><strong>StepPattern</strong></a>  <br><em>Coil energising sequence.</em></td>
 </tr>
 </tbody>
@@ -4555,6 +4570,17 @@
     SENSOR
 };
 </code></pre>
+<hr>
+
+<h3 id="enum-leadingzero">enum LeadingZero</h3>
+<p><em>Leading-zero handling for a readout's high-order digit cells.</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::LeadingZero {
+    Keep = 0,
+    Suppress = 1
+};
+</code></pre>
+<p><strong>Note:</strong></p>
+<p>Suppress blanks the high-order zero cells down to the target's significant-digit count (units always shows, so 0 renders "0"); animation is unchanged. Keep is fixed width. </p>
 <hr>
 
 <h3 id="enum-steppattern">enum StepPattern</h3>
