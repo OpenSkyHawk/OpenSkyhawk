@@ -67,6 +67,11 @@ committed code under `Firmware/Libraries/`.
   STM32Board → PanelBridge / SimGateway → PanelGroup (PinRef → PanelGroup → Inputs/Outputs).
 - **Toolchain:** PlatformIO. STM32 = `platform = ststm32`, `framework = arduino`. RP2040 =
   `earlephilhower` core with `-DUSE_TINYUSB`.
+- **C++ standard:** any project using `DrumDisplay` needs `-std=gnu++20` +
+  `build_unflags = -std=gnu++17` — its `DrumReadout` descriptors are C++20 designated
+  initializers. Already baked into the `PanelGroup` scaffold template, so B6 sketches get it by
+  default; add it explicitly to a standalone test project. The whole PanelGroup dep stack
+  (U8g2 / MCP23017 / ADS1X15) is gnu++20-clean.
 
 ## Verify
 
