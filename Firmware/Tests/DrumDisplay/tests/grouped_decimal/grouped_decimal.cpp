@@ -26,8 +26,9 @@ static const DrumGlyph ALT_ADJ_DOT[] = {
     { '.', 2, 1.8f },
 };
 static const DrumReadout ALT_ADJ = {
-    ALT_ADJ_SRC, 3, 4, 4.5f, 8.0f, 1.0f, 0.0f, 0, ALT_ADJ_DOT, 1,
-    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = ALT_ADJ_SRC, .nSources = 3, .nDigits = 4,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
+    .glyphs = ALT_ADJ_DOT, .nGlyphs = 1,
 };
 
 DrumDisplay alt(oled, ALT_ADJ, DrumFont::LARGE);

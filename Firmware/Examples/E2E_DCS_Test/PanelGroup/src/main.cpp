@@ -65,9 +65,9 @@ static const DrumSource LON_SRC[] = {
     { A_4E_C_NAV_CURPOS_LON_00000X, A_4E_C_NAV_CURPOS_LON_00000X_AM, 1, 0 },
 };
 static const DrumReadout LON_READOUT = {
-    LON_SRC, 6, 6, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
-    { true, A_4E_C_NAV_CURPOS_LON_00000X, A_4E_C_NAV_CURPOS_LON_00000X_AM, "EW", 6, 5.5f },
-    DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = LON_SRC, .nSources = 6, .nDigits = 6,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
+    .flag = { .enabled = true, .address = A_4E_C_NAV_CURPOS_LON_00000X, .mask = A_4E_C_NAV_CURPOS_LON_00000X_AM, .faces = "EW", .atVisualCol = 6, .widthMm = 5.5f },
 };
 
 // ARC-51 UHF displayed frequency — 5 digits (2+1+2) + '.' (the value the MHz selector sets).
@@ -81,9 +81,9 @@ static const DrumSource ARC51_SRC[] = {
 };
 static const DrumGlyph ARC51_DOT[] = { { '.', 3, 1.8f } };
 static const DrumReadout ARC51_READOUT = {
-    ARC51_SRC, 3, 5, 4.5f, 8.0f, 1.0f, 0.0f, 0, ARC51_DOT, 1,
-    { false, 0, 0, nullptr, 0, 0.0f },
-    DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = ARC51_SRC, .nSources = 3, .nDigits = 5,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
+    .glyphs = ARC51_DOT, .nGlyphs = 1,
 };
 
 DrumDisplay lonDrum  (oledLon,   LON_READOUT,   drumMux, /*channel*/ 0, DrumFont::LARGE);
