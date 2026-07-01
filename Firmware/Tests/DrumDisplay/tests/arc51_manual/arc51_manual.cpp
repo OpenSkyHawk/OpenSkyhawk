@@ -25,8 +25,8 @@ static const DrumSource ARC51_MANUAL_SRC[] = {
     { A_4E_C_ARC51_FREQ_50KHZ, A_4E_C_ARC51_FREQ_50KHZ_AM, 1, 0 },
 };
 static const DrumReadout ARC51_FREQ_MANUAL = {
-    ARC51_MANUAL_SRC, 3, 3, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
-    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = ARC51_MANUAL_SRC, .nSources = 3, .nDigits = 3,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
 };
 
 DrumDisplay freq(oled, ARC51_FREQ_MANUAL, DrumFont::LARGE);

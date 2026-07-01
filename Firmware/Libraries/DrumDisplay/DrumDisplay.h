@@ -118,21 +118,22 @@ struct DrumFlag {
  *       the pitch to the pixel width.
  */
 struct DrumReadout {
+    // ── required: sources + geometry (always set) ──
     const DrumSource* sources;        ///< array of digit sources
     uint8_t  nSources;                ///< element count of @c sources
     uint8_t  nDigits;                 ///< total digit columns in the combined number (1..6)
     float    digitWidthMm;            ///< digit cell (window aperture) width,  mm
     float    digitHeightMm;           ///< digit cell (roll window) height, mm
     float    interDigitGapMm;         ///< gap between adjacent cells, mm
-    float    groupGapMm;              ///< extra gap at group boundaries, mm (0 if ungrouped)
-    uint8_t  groupSize;               ///< digits per group for groupGap insertion (0 = no grouping)
-    const DrumGlyph* glyphs;          ///< fixed glyphs (decimal point etc.); nullptr if none
-    uint8_t  nGlyphs;                 ///< element count of @c glyphs
-    DrumFlag flag;                    ///< optional flag (flag.enabled == false ⇒ none)
-    DrumScroll scroll;                ///< EASE_ONLY or SNAP_SETTLE
-    float    snapThreshold;           ///< |target−pos| (digit units) above which SNAP_SETTLE teleports
-    LeadingZero leadingZero = LeadingZero::Keep;  ///< default Keep = all nDigits (omit it); set
-                                      ///< for variable-width readouts (ARC-51 channel 1..20 → "1".."20").
+    // ── optional: default-member-initialized, set only when non-default (use designated init) ──
+    float    groupGapMm     = 0.0f;               ///< extra gap at group boundaries, mm (0 if ungrouped)
+    uint8_t  groupSize      = 0;                  ///< digits per group for groupGap insertion (0 = no grouping)
+    const DrumGlyph* glyphs = nullptr;            ///< fixed glyphs (decimal point etc.); nullptr if none
+    uint8_t  nGlyphs        = 0;                  ///< element count of @c glyphs
+    DrumFlag flag           = {};                 ///< optional flag ({} ⇒ disabled)
+    DrumScroll scroll       = DrumScroll::SNAP_SETTLE;  ///< EASE_ONLY or SNAP_SETTLE (default)
+    float    snapThreshold  = 3.0f;               ///< |target−pos| (digit units) above which SNAP_SETTLE teleports
+    LeadingZero leadingZero = LeadingZero::Keep;  ///< Keep (default) = all nDigits; Suppress = variable width
 };
 
 // ── The output class ──────────────────────────────────────────────────────────

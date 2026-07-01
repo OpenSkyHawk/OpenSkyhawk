@@ -30,8 +30,8 @@ static const DrumSource SPEED_SRC[] = {
     { A_4E_C_APN153_SPEED_00X, A_4E_C_APN153_SPEED_00X_AM, 1, 0 },
 };
 static const DrumReadout APN153_SPEED = {
-    SPEED_SRC, 3, 3, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
-    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = SPEED_SRC, .nSources = 3, .nDigits = 3,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
 };
 
 I2cMux mux(0x70, Wire);

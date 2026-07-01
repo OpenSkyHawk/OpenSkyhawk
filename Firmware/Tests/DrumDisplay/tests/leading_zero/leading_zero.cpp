@@ -30,13 +30,14 @@ static uint16_t digitVal(int d) {  // value that decodes to single digit d (roun
 
 // suppress ON — the ARC-51 channel window
 static const DrumReadout CH_SUPPRESS = {
-    CH_SRC, 2, 2, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
-    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f, LeadingZero::Suppress,
+    .sources = CH_SRC, .nSources = 2, .nDigits = 2,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
+    .leadingZero = LeadingZero::Suppress,
 };
 // suppress OFF — control: default behaviour (leadingZero defaults to Keep, not specified)
 static const DrumReadout CH_PLAIN = {
-    CH_SRC, 2, 2, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
-    { false, 0, 0, nullptr, 0, 0.0f }, DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = CH_SRC, .nSources = 2, .nDigits = 2,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
 };
 
 DrumDisplay chSup(oledA, CH_SUPPRESS, DrumFont::LARGE);

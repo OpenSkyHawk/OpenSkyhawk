@@ -24,9 +24,9 @@ static const DrumSource MAGVAR_SRC[] = {
 };
 // TODO(bench): rightmost source carries the ones digit and/or the E/W hemisphere — confirm.
 static const DrumReadout ASN41_MAGVAR = {
-    MAGVAR_SRC, 5, 5, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
-    { true, A_4E_C_ASN41_MAGVAR_0000X, A_4E_C_ASN41_MAGVAR_0000X_AM, "EW", 5, 5.5f },
-    DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = MAGVAR_SRC, .nSources = 5, .nDigits = 5,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
+    .flag = { .enabled = true, .address = A_4E_C_ASN41_MAGVAR_0000X, .mask = A_4E_C_ASN41_MAGVAR_0000X_AM, .faces = "EW", .atVisualCol = 5, .widthMm = 5.5f },
 };
 
 DrumDisplay magvar(oled, ASN41_MAGVAR, DrumFont::LARGE);

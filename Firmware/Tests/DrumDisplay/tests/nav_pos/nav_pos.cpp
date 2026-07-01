@@ -28,9 +28,9 @@ static const DrumSource LON_SRC[] = {
 };
 // TODO(bench): rightmost source carries the ones digit and/or the E/W hemisphere — confirm.
 static const DrumReadout NAV_CURPOS_LON = {
-    LON_SRC, 6, 6, 4.5f, 8.0f, 1.0f, 0.0f, 0, nullptr, 0,
-    { true, A_4E_C_NAV_CURPOS_LON_00000X, A_4E_C_NAV_CURPOS_LON_00000X_AM, "EW", 6, 5.5f },
-    DrumScroll::SNAP_SETTLE, 3.0f,
+    .sources = LON_SRC, .nSources = 6, .nDigits = 6,
+    .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
+    .flag = { .enabled = true, .address = A_4E_C_NAV_CURPOS_LON_00000X, .mask = A_4E_C_NAV_CURPOS_LON_00000X_AM, .faces = "EW", .atVisualCol = 6, .widthMm = 5.5f },
 };
 
 DrumDisplay lon(oled, NAV_CURPOS_LON, DrumFont::LARGE);
