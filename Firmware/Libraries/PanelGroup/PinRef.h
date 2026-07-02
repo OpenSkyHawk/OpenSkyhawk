@@ -2,8 +2,9 @@
  * @file PinRef.h
  * @brief Hardware pin abstraction for OpenSkyhawk panel controls.
  *
- * @details Abstracts three hardware pin sources behind a single interface:
- * direct STM32 GPIO, MCP23017 expander GPIO, and ADS1115 ADC channel.
+ * @details Abstracts four hardware pin sources behind a single interface:
+ * direct STM32 GPIO, MCP23017 expander GPIO, ADS1115 ADC channel, and a
+ * ShiftBus bit (74HC165 input / 74HC595 output over SPI).
  * Used by all input and output classes so control declarations are identical
  * regardless of where the physical pin lives.
  *
@@ -20,9 +21,11 @@
 #include <Arduino.h>
 
 // Forward declarations — PinRef.h stores pointers; full types are not needed here.
-// Complete definitions: MCP23017 via <MCP23017.h>, ADS1115 via <ADS1115.h>.
+// Complete definitions: MCP23017 via <MCP23017.h>, ADS1115 via <ADS1115.h>,
+// ShiftBus via <Helpers/ShiftBus/ShiftBus.h>.
 class MCP23017;  ///< blemasle/arduino-mcp23017 library class
 class ADS1115;   ///< Thin wrapper over Adafruit_ADS1115; see ADS1115.h
+namespace OpenSkyhawk { class ShiftBus; }  ///< 74HC165/'595 SPI shift-register bus
 
 static constexpr uint8_t PORT_A = 0;  ///< MCP23017 GPA port constant for constructors
 static constexpr uint8_t PORT_B = 1;  ///< MCP23017 GPB port constant for constructors
@@ -61,6 +64,19 @@ public:
     PinRef(ADS1115& adc, uint8_t channel);
 
     /**
+     * @brief Shift-register bus bit ('165 input or '595 output).
+     *
+     * @details Direction is set at configure time by the consuming class —
+     * configureAsInput() binds the pin to the '165 chain, configureAsOutput() to the
+     * '595 chain (the MCP IODIR pattern). @p chip means "position within that chain".
+     *
+     * @param bus   ShiftBus instance — normally the pre-defined global `ShiftBus1`.
+     * @param chip  Position along the cascade, 0 = nearest the MCU.
+     * @param bit   Dn ('165) or Qn ('595) pin of that chip, 0–7.
+     */
+    PinRef(OpenSkyhawk::ShiftBus& bus, uint8_t chip, uint8_t bit);
+
+    /**
      * @brief No-connect sentinel — represents a position with no physical pin.
      *
      * @details All reads return false / 0. All writes are no-ops.
@@ -81,6 +97,7 @@ public:
      * GPIO: digitalRead(pin) — true when the pin is HIGH.
      * MCP23017: cached bit from PanelGroup's last INTCAP or port read. No I2C.
      * ADS1115: true if readAnalog() > 32767 (half-scale threshold).
+     * ShiftBus: cached '165 frame bit (input) or last written '595 bit (output). No SPI.
      * NC: always false.
      *
      * @return true = HIGH, false = LOW.
@@ -207,6 +224,7 @@ private:
         GPIO,  ///< Direct STM32 GPIO pin
         MCP,   ///< MCP23017 expander GPIO
         ADS,   ///< ADS1115 ADC channel
+        SR,    ///< ShiftBus bit — '165 input or '595 output (direction set at configure)
         NC,    ///< No-connect sentinel
     };
 
@@ -216,6 +234,8 @@ private:
         uint8_t pin;                                                ///< GPIO pin number
         struct { MCP23017* chip; uint8_t port; uint8_t bit; } mcp; ///< MCP23017 source
         struct { ADS1115*  adc;  uint8_t channel;           } ads; ///< ADS1115 source
+        struct { OpenSkyhawk::ShiftBus* bus; uint8_t chip;
+                 uint8_t bit; bool isOut;                   } sr;  ///< ShiftBus source
     } _src;
 };
 

@@ -114,7 +114,7 @@ OpenSkyhawk::RotaryEncoder ppLatKnb(DCSIN_PPOS_LAT_KNB,
 
 void setup() {
     Wire.begin();
-    PanelGroup::registerExpander(exp1, PB8, PB9);   // INT pins on I2C2
+    PanelGroup::registerExpander(exp1, PB12, PB13); // INT pins (PB8/PB9 = ShiftBus LOAD/LATCH)
     PanelGroup::setup();
 }
 

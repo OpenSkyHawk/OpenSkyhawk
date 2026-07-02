@@ -215,7 +215,7 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PIN_TRIGGER, /*reverse=*/true);
 
 void setup() {
     Wire.begin();
-    PanelGroup::registerExpander(exp1, PB3, PB4);  // INTA→PB3, INTB→PB4
+    PanelGroup::registerExpander(exp1, PB12, PB13);  // INTA→PB12, INTB→PB13
     PanelGroup::setup();   // inits expanders, emits boot EVT burst (calls poll() on all
                            // inputs including both Switch2Pos objects), sends READY frame
 }

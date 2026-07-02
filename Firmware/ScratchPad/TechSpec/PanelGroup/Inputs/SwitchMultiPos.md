@@ -115,7 +115,7 @@ OpenSkyhawk::SwitchMultiPos shrikeSel(DCSIN_SHRIKE_SEL_KNB, SHRIKE_SEL_PINS, 5);
 
 void setup() {
     Wire.begin();
-    PanelGroup::registerExpander(exp1, PB3, PB4);
+    PanelGroup::registerExpander(exp1, PB12, PB13);
     PanelGroup::setup();   // inits expanders, boot EVT burst (forceReport on every input)
 }
 

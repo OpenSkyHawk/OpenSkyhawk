@@ -444,7 +444,7 @@ OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION_A, 0x4000, PIN_CAUTION_LED)
 
 void setup() {
     Wire.begin();                                       // I2C buses before PanelGroup
-    PanelGroup::registerExpander(exp1, PB3, PB4);      // INTA→PB3, INTB→PB4
+    PanelGroup::registerExpander(exp1, PB12, PB13);    // INTA→PB12, INTB→PB13
     PanelGroup::setup();                                // boot sequence steps 1–8
 }
 
