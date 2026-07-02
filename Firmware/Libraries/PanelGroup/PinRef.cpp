@@ -255,6 +255,8 @@ void PinRef::configureAsOutput() {
 bool PinRef::isNC()   const { return _type == Type::NC; }
 bool PinRef::isGpio() const { return _type == Type::GPIO; }
 
+bool PinRef::isSampledSource() const { return _type == Type::SR; }
+
 uint8_t PinRef::gpioPin() const {
     if (_type == Type::GPIO) return _src.pin;
 #ifdef PINREF_DEBUG

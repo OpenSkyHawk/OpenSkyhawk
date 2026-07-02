@@ -208,6 +208,17 @@ public:
     bool isGpio() const;
 
     /**
+     * @brief True when this pin's cached state is refreshed by a high-rate sampler that
+     *        runs independently of PanelGroup::loop() (today: ShiftBus timer-ISR sampling).
+     *
+     * @details Lets an input class decide whether InputBase::sampleTick() should own its
+     * decode: a pin whose cache only refreshes at loop rate (GPIO/MCP/ADS) gains nothing
+     * from sampler ownership and keeps its loop-rate path. The class never needs to know
+     * which sampler exists — only what its own pin promises.
+     */
+    bool isSampledSource() const;
+
+    /**
      * @brief Return the raw Arduino pin number for GPIO PinRefs.
      *
      * @details Used by output classes that must call APIs requiring a raw pin number,

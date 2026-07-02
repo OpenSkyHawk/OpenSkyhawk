@@ -21,19 +21,18 @@
 static constexpr uint16_t CTRL_ID = 0x3A01;   // bench id — DOPPLER_SEL stand-in
 
 const PinRef SEL_PINS[] = {
-    PinRef(ShiftBus1, 0, 0),
-    PinRef(ShiftBus1, 0, 1),
-    PinRef(ShiftBus1, 0, 2),
-    PinRef(ShiftBus1, 0, 3),
-    PinRef(ShiftBus1, 0, 4),
+    PinRef(ShiftBus1, 0, 0),   // switch A
+    PinRef(ShiftBus1, 0, 1),   // switch B
+    PinRef(ShiftBus1, 0, 2),   // switch C
+    PinRef(ShiftBus1, 0, 3),   // switch D
 };
 
-OpenSkyhawk::SwitchMultiPos gSel(CTRL_ID, SEL_PINS, 5, /*reverse=*/true);  // active-HIGH bench
+OpenSkyhawk::SwitchMultiPos gSel(CTRL_ID, SEL_PINS, 4, /*reverse=*/true);  // active-HIGH bench
 
 void setup() {
     STM32Board::setDebug(true);
     PanelGroup::setup();   // zero-setup lifecycle: the SR PinRefs announced ShiftBus1
-    STM32Board::diagSerial().println("=== ShiftBus bench gate 1: '165 multipos (jumper D0-D4 to 3V3, pull-downs) ===");
+    STM32Board::diagSerial().println("=== ShiftBus bench gate 1: '165 multipos (switches on D0-D3, active-high, pull-downs) ===");
 }
 
 void loop() {
@@ -44,8 +43,8 @@ void loop() {
     if (millis() - lastPrint >= 1000) {
         lastPrint = millis();
         auto& d = STM32Board::diagSerial();
-        d.print(F("[gate1] D4..D0 = "));
-        for (int8_t b = 4; b >= 0; b--) d.print(SEL_PINS[b].read() ? '1' : '0');
+        d.print(F("[gate1] D3..D0 = "));
+        for (int8_t b = 3; b >= 0; b--) d.print(SEL_PINS[b].read() ? '1' : '0');
         d.println();
     }
 }

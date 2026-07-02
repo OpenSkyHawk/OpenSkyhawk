@@ -85,6 +85,11 @@ void RotaryEncoder::decode(uint8_t state) {
 void RotaryEncoder::sampleTick() {
     // Generic InputBase high-rate hook — the encoder does not know (or care) who calls it.
     // ISR-safe: cached pin reads + the transition table, no CAN.
+    // Decline ownership unless BOTH pins are sampler-refreshed sources (ShiftBus '165):
+    // a GPIO/MCP-pinned encoder on a mixed node keeps its loop-rate decode unchanged —
+    // its cache only refreshes at loop rate, so sampler ownership would gain nothing and
+    // silently rewire behavior the SHIFTBUS_ISR_HZ flag has no business touching.
+    if (!(_pinA.isSampledSource() && _pinB.isSampledSource())) return;
     // Claim ownership BEFORE the initialized check: once a sampler ticks at all, poll()
     // must never decode again, or a poll between forceReport() and the next tick could be
     // preempted mid-decode by this ISR (torn _delta/_lastState).

@@ -1,7 +1,7 @@
 // ShiftBus — bench gate 6: EC11 encoder fidelity through a real 74HC165
 //
 // THE decision gate (#197): spin the EC11s fast — zero missed counts?
-// Two encoders on '165 chip 0: enc1 A=D0 B=D1 (REL), enc2 A=D2 B=D3 (DIR).
+// Encoders on '165 chip 0: enc1 A=D4(E) B=D5(F) (REL — bench wiring), enc2 A=D2 B=D3 (DIR).
 // Bench wiring: 10 k pull-DOWNs to GND on D0–D3, encoder commons to 3V3 (active-high).
 // Quadrature is polarity-agnostic — inverting both channels relabels the Gray states and
 // the transition table yields the same direction, so no code change vs the production
@@ -33,7 +33,7 @@ static constexpr uint32_t STALL_PERIOD_MS = 100;   // ~10 flushes/s, ASN-41-ish 
 static constexpr uint16_t CTRL_REL = 0x3B01;   // bench ids
 static constexpr uint16_t CTRL_DIR = 0x3B02;
 
-OpenSkyhawk::RotaryEncoder gEnc1(CTRL_REL, PinRef(ShiftBus1, 0, 0), PinRef(ShiftBus1, 0, 1),
+OpenSkyhawk::RotaryEncoder gEnc1(CTRL_REL, PinRef(ShiftBus1, 0, 4), PinRef(ShiftBus1, 0, 5),
                                  OpenSkyhawk::EncoderStepsPerDetent::Four,
                                  OpenSkyhawk::EncoderMode::Rel);
 OpenSkyhawk::RotaryEncoder gEnc2(CTRL_DIR, PinRef(ShiftBus1, 0, 2), PinRef(ShiftBus1, 0, 3),

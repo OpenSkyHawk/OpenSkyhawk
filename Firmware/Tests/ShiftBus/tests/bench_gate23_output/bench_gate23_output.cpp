@@ -1,8 +1,9 @@
 // ShiftBus — bench gates 2+3(+4): 74HC595 → DRV8833 → X27 stepper, plus direct-drive LED
 //
-// '595 chip 0 map (the APN-153 node shape): Q0–Q3 → DRV8833 AIN1/AIN2/BIN1/BIN2,
-// Q4 → DRV8833 nSLEEP (10 k pull-down), Q5 → LED + series R (direct drive — no MOSFET;
-// gate 3 also observes brightness/cleanliness at the '595 pin budget).
+// '595 chip 0 map (bench breadboard — DIP pins 1..6 used straight down one side):
+// Q1–Q4 → DRV8833 AIN1/AIN2/BIN1/BIN2, Q5 → DRV8833 nSLEEP (module silk EEP; 10 k
+// pull-down), Q6 → LED + series R (direct drive — no MOSFET; gate 3 also observes
+// brightness/cleanliness at the '595 pin budget). Q0 (DIP pin 15) unused.
 //
 // The stepper sweeps continuously between two targets through the production path:
 // StepperMotor coils are SR PinRefs; each step = writeDeferred ×4 + flushExpanderWrites()
@@ -26,13 +27,13 @@ using namespace OpenSkyhawk;
 const StepperConfig kCfg = makeX27Config(/*homePosition=*/0, /*parkPosition=*/0,
                                          /*minPos=*/0, /*maxPos=*/900);
 
-StepperMotor gMotor(PinRef(ShiftBus1, 0, 0), PinRef(ShiftBus1, 0, 1),
-                    PinRef(ShiftBus1, 0, 2), PinRef(ShiftBus1, 0, 3),
+StepperMotor gMotor(PinRef(ShiftBus1, 0, 1), PinRef(ShiftBus1, 0, 2),
+                    PinRef(ShiftBus1, 0, 3), PinRef(ShiftBus1, 0, 4),
                     kCfg,
                     /*homeSense=*/PinRef(),
-                    /*sleepEn=*/PinRef(ShiftBus1, 0, 4));
+                    /*sleepEn=*/PinRef(ShiftBus1, 0, 5));
 
-PinRef gLed(ShiftBus1, 0, 5);
+PinRef gLed(ShiftBus1, 0, 6);
 
 // StepperMotor is a MotorDriver, not an OutputBase — a thin shim gives it loop updates
 // and drives the sweep, standing in for the NeedleGauge that owns it in production.
@@ -46,10 +47,22 @@ public:
     void update() override {
         gMotor.update();
         const uint32_t now = millis();
+        // Rate measurement (the #122 method): time the 900-step sweep, report on arrival.
+        if (_sweeping && gMotor.position() == (_toMax ? 900 : 0)) {
+            _sweeping = false;
+            const uint32_t ms = now - _sweepT0;
+            auto& d = STM32Board::diagSerial();
+            d.print(F("[gate2] 900 steps in ")); d.print(ms);
+            d.print(F(" ms = "));               d.print((900UL * 1000UL) / ms);
+            d.print(F(" steps/s = "));          d.print((300UL * 1000UL) / ms);
+            d.println(F(" deg/s"));
+        }
         if (_homed && now - _lastSweep >= 3000) {   // 900 steps = 300° well inside 3 s
             _lastSweep = now;
             _toMax = !_toMax;
             gMotor.moveTo(_toMax ? 900 : 0);
+            _sweepT0 = now;
+            _sweeping = true;
             auto& d = STM32Board::diagSerial();
             d.print(F("[gate2] sweep -> ")); d.println(_toMax ? 900 : 0);
         }
@@ -66,8 +79,8 @@ public:
         _lastSweep = millis();
     }
 private:
-    bool     _homed = false, _toMax = false, _ledOn = false;
-    uint32_t _lastSweep = 0, _lastBlink = 0;
+    bool     _homed = false, _toMax = false, _ledOn = false, _sweeping = false;
+    uint32_t _lastSweep = 0, _lastBlink = 0, _sweepT0 = 0;
 };
 
 SweepRig gRig;
