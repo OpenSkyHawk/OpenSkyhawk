@@ -2,7 +2,10 @@
 //
 // THE decision gate (#197): spin the EC11s fast — zero missed counts?
 // Two encoders on '165 chip 0: enc1 A=D0 B=D1 (REL), enc2 A=D2 B=D3 (DIR).
-// 10 k pull-ups on every input; encoder commons to GND.
+// Bench wiring: 10 k pull-DOWNs to GND on D0–D3, encoder commons to 3V3 (active-high).
+// Quadrature is polarity-agnostic — inverting both channels relabels the Gray states and
+// the transition table yields the same direction, so no code change vs the production
+// pull-up/common-to-GND wiring.
 //
 // Build twice and compare (same sketch, two envs):
 //   bench_gate6_encoder      — loop-poll decode (today's mode)

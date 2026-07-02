@@ -1,15 +1,17 @@
 // ShiftBus — bench gate 1: simulated multipos selector through a real 74HC165
 //
-// SwitchMultiPos on '165 chip 0, D0–D4, one-hot: each input has a 10 k pull-up to 3V3;
-// "select" a position by jumpering that D-pin to GND (no real rotary switch wasted).
+// SwitchMultiPos on '165 chip 0, D0–D4, one-hot, ACTIVE-HIGH (reverse=true): each input
+// has a 10 k pull-DOWN to GND (easier breadboard routing); "select" a position by
+// jumpering that D-pin to 3V3 (no real rotary switch wasted). Production panels keep the
+// pull-up/active-low convention — reverse exists for exactly this kind of flip.
 // Full production path: PanelGroup::setup()/loop() → cached SR reads → debounce →
 // one-hot decode → CAN EVT to the PanelBridge.
 //
 // Rig: 74HC165 on the standard pins (SCK=PB3 MISO=PB4 MOSI=PB5 LOAD=PB8), CAN bus to the
 // PanelBridge. Watch the diag serial: position prints on every confirmed change.
 //
-// PASS (gate 1): reported position matches the grounded pin, no phantom positions while
-// moving the jumper, boot forceReport shows the initial position.
+// PASS (gate 1): reported position matches the 3V3-jumpered pin, no phantom positions
+// while moving the jumper, boot forceReport shows the initial position.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -26,12 +28,12 @@ const PinRef SEL_PINS[] = {
     PinRef(ShiftBus1, 0, 4),
 };
 
-OpenSkyhawk::SwitchMultiPos gSel(CTRL_ID, SEL_PINS, 5);
+OpenSkyhawk::SwitchMultiPos gSel(CTRL_ID, SEL_PINS, 5, /*reverse=*/true);  // active-HIGH bench
 
 void setup() {
     STM32Board::setDebug(true);
     PanelGroup::setup();   // zero-setup lifecycle: the SR PinRefs announced ShiftBus1
-    STM32Board::diagSerial().println("=== ShiftBus bench gate 1: '165 multipos (jumper D0-D4 to GND) ===");
+    STM32Board::diagSerial().println("=== ShiftBus bench gate 1: '165 multipos (jumper D0-D4 to 3V3, pull-downs) ===");
 }
 
 void loop() {
