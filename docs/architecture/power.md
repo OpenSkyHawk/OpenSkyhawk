@@ -12,7 +12,7 @@ controller groups over **Molex Mini-Fit Jr** connectors. **Each board generates 
 
 | Rail | Source | Used for |
 |------|--------|----------|
-| 12 V | ATX PSU, main bus | LED backlight strings; **servos via a local 5/6 V buck** (guideline — never off logic 5 V); input to local 5 V buck on high-current boards |
+| 12 V | ATX PSU, main bus | LED backlight strings; **servos, when fitted, via a local 5/6 V buck** (never off logic 5 V); input to local 5 V buck on high-current boards |
 | 5 V | ATX PSU, main bus | Input to the local 3.3 V regulator; stepper driver motor supply (VM) |
 | 3.3 V | Generated **on each board** | STM32 / RP2040 logic, MCP23017, ADS1115, SN65HVD230 |
 
@@ -44,19 +44,21 @@ servo-driving board runs higher — see *Servos* below):
 | 5 V → stepper driver VM | 15–30 mA | 50 mA |
 | 3.3 V → STM32 + MCP23017 + CAN | ~125 mA | ~175 mA |
 
-Across a full ~20-board cockpit that's roughly **3 A at 12 V** LED-only, rising to **~6–8 A** once
-servos are on 12 V (see below), plus ~2 A at 5 V — still a small fraction of what the ATX supply
-delivers. The build uses a fully-modular **GOLDEN FIELD NX650**, heavily over-provisioned; a
-350–450 W single-rail ATX would be ample.
+Across a full ~20-board cockpit that's roughly **3 A at 12 V** today (LED-only), plus ~2 A at 5 V — a
+small fraction of what the ATX supply delivers. **No servos are fitted yet;** when they are, powering
+them off 12 V (below) adds ~1–1.5 A per console → **~6–8 A** cockpit-wide, so leave headroom. The
+build uses a fully-modular **GOLDEN FIELD NX650**, heavily over-provisioned; a 350–450 W single-rail
+ATX would be ample.
 
-### Servos — a 12 V load (guideline)
+### Servos — a 12 V load (planned guideline)
 
-Servos run off the **12 V line through a local 5/6 V buck**, **never logic 5 V**. Five to six servos
-per console draw ~2–3 A running (up to ~6 A stall) — on the shared 5 V logic rail that means
-brownouts and I²C glitches. On 12 V the same load is **~1–1.5 A per console** (the buck roughly
-halves rail current) and stays isolated from logic; add a local bulk cap + polyfuse. A servo-driving
-board therefore **exceeds the ≤ 500 mA logic+LED figure above** — budget servos separately as a 12 V
-load, captured by that console's 12 V current monitoring.
+**No servos in the cockpit yet — this is how they should draw power when added.** Run them off the
+**12 V line through a local 5/6 V buck**, **never logic 5 V**: five to six servos per console draw
+~2–3 A running (up to ~6 A stall), which on the shared 5 V logic rail means brownouts and I²C
+glitches. On 12 V the same load is **~1–1.5 A per console** (the buck roughly halves rail current)
+and stays isolated from logic; add a local bulk cap + polyfuse. A servo-driving board therefore
+**exceeds the ≤ 500 mA logic+LED figure above** — budget servos separately as a 12 V load, captured
+by that console's 12 V current monitoring.
 
 ## Source protection — fused per-console injection
 
@@ -98,8 +100,9 @@ the rest of the cockpit and its harness.
 ## TBD — not yet specified
 
 !!! note "Marked TBD because it isn't in source material yet"
-    - **Actuator boards** (solenoids, large steppers) are **not yet designed** — servos now have a
-      guideline (12 V → local buck, above). Each will need its own power-budget analysis before PCB
-      work — flyback protection, dedicated supply rails, and driver selection are all open. The established boundary is that logic +
+    - **Actuator boards** (solenoids, large steppers, servos) are **not yet designed**. Servos'
+      power sourcing is already decided (12 V → local buck, above); the rest — flyback protection,
+      dedicated supply rails, driver selection — is open. Each will need its own power-budget
+      analysis before PCB work. The established boundary is that logic +
       LED boards stay ≤ 500 mA at 12 V; actuator boards are sized to their specific loads and
       require separate design review.
