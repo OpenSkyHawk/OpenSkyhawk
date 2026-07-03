@@ -98,7 +98,7 @@ So protect **at the supply, sized to the harness:**
   fuse, sparing the rest of the bus). Rule: **segment peak × margin ≤ fuse ≤ weakest downstream
   copper** (the ~2.5 A 1 mm 1 oz trace is the floor). Consoles draw ~1 A @12V, so **low-single-amp
   slow-blow** fuses fit under that trace (slow-blow — LED strings / buck inputs inrush at power-on).
-  The blanket **+12V ~5 A · +5V ~3 A** is only the whole-bus upper bound; per console it comes down.
+  The blanket **+12V ~5 A · +5V ~3–4 A** is only the whole-bus upper bound; per console it comes down.
   **GND is never fused** (CAN reference + return).
 - **The fuse sets the copper, not the connector** — size traces/pours for the *fuse* rating, not the
   connector's theoretical max. A 5 A fuse means the copper only ever sees 5 A, so 1 oz pours / wide
