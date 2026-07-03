@@ -1,5 +1,6 @@
 {
   "board": {
+    "3dviewports": [],
     "design_settings": {
       "defaults": {
         "board_outline_line_width": 0.05,
@@ -22,17 +23,17 @@
         "other_text_size_v": 1.0,
         "other_text_thickness": 0.15,
         "other_text_upright": false,
+        "pads": {
+          "drill": 0.8,
+          "height": 1.6,
+          "width": 1.6
+        },
         "silk_line_width": 0.16,
         "silk_text_italic": false,
         "silk_text_size_h": 1.0,
         "silk_text_size_v": 1.0,
         "silk_text_thickness": 0.16,
         "silk_text_upright": false,
-        "pads": {
-          "drill": 0.8,
-          "height": 1.6,
-          "width": 1.6
-        },
         "zones": {
           "min_clearance": 0.25
         }
@@ -84,13 +85,208 @@
           "drill": 0.4
         }
       ]
+    },
+    "ipc2581": {
+      "bom_rev": "",
+      "dist": "",
+      "distpn": "",
+      "internal_id": "",
+      "mfg": "",
+      "mpn": "",
+      "sch_revision": "1.0"
+    },
+    "layer_pairs": [],
+    "layer_presets": [],
+    "viewports": []
+  },
+  "boards": [],
+  "component_class_settings": {
+    "assignments": [],
+    "meta": {
+      "version": 0
+    },
+    "sheet_component_classes": {
+      "enabled": false
     }
+  },
+  "cvpcb": {
+    "equivalence_files": []
   },
   "erc": {
     "erc_exclusions": [],
     "meta": {
       "version": 0
     },
+    "pin_map": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        2,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        2,
+        1,
+        2,
+        0,
+        0,
+        1,
+        0,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        2,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        2,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        2,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        2,
+        0,
+        0,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
     "rule_severities": {
       "bus_definition_conflict": "error",
       "bus_entry_needed": "error",
@@ -152,26 +348,6 @@
     "filename": "PDU.kicad_pro",
     "version": 3
   },
-  "schematic": {
-    "annotate_start_num": 0,
-    "bom_export_filename": "${PROJECTNAME}.csv",
-    "meta": {
-      "version": 1
-    },
-    "top_level_sheets": [
-      {
-        "filename": "PDU.kicad_sch",
-        "name": "PDU",
-        "uuid": "fb008fba-1646-454b-b7aa-cdbce59e6515"
-      }
-    ]
-  },
-  "sheets": [
-    [
-      "fb008fba-1646-454b-b7aa-cdbce59e6515",
-      "PDU"
-    ]
-  ],
   "net_settings": {
     "classes": [
       {
@@ -196,20 +372,20 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_via_gap": 0.25,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.2,
         "diff_pair_width": 0.2,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "LED_Trunk",
+        "name": "CAN",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.5,
+        "track_width": 0.2,
         "tuning_profile": "",
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
         "wire_width": 6
       },
       {
@@ -234,20 +410,20 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.2,
-        "diff_pair_via_gap": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "CAN",
+        "name": "LED_Trunk",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.5,
         "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
         "wire_width": 6
       },
       {
@@ -301,5 +477,149 @@
         "pattern": "+5V"
       }
     ]
+  },
+  "pcbnew": {
+    "last_paths": {
+      "idf": "",
+      "netlist": "",
+      "plot": "",
+      "specctra_dsn": "",
+      "vrml": ""
+    },
+    "page_layout_descr_file": ""
+  },
+  "schematic": {
+    "annotate_start_num": 0,
+    "annotation": {
+      "method": 0,
+      "sort_order": 0
+    },
+    "bom_export_filename": "${PROJECTNAME}.csv",
+    "bom_fmt_presets": [],
+    "bom_fmt_settings": {
+      "field_delimiter": ",",
+      "keep_line_breaks": false,
+      "keep_tabs": false,
+      "name": "CSV",
+      "ref_delimiter": ",",
+      "ref_range_delimiter": "",
+      "string_delimiter": "\""
+    },
+    "bom_presets": [],
+    "bom_settings": {
+      "exclude_dnp": false,
+      "fields_ordered": [
+        {
+          "group_by": false,
+          "label": "Reference",
+          "name": "Reference",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Qty",
+          "name": "${QUANTITY}",
+          "show": true
+        },
+        {
+          "group_by": true,
+          "label": "Value",
+          "name": "Value",
+          "show": true
+        },
+        {
+          "group_by": true,
+          "label": "DNP",
+          "name": "${DNP}",
+          "show": true
+        },
+        {
+          "group_by": true,
+          "label": "Exclude from BOM",
+          "name": "${EXCLUDE_FROM_BOM}",
+          "show": true
+        },
+        {
+          "group_by": true,
+          "label": "Exclude from Board",
+          "name": "${EXCLUDE_FROM_BOARD}",
+          "show": true
+        },
+        {
+          "group_by": true,
+          "label": "Footprint",
+          "name": "Footprint",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Datasheet",
+          "name": "Datasheet",
+          "show": true
+        }
+      ],
+      "filter_string": "",
+      "group_symbols": true,
+      "include_excluded_from_bom": true,
+      "name": "Default Editing",
+      "sort_asc": true,
+      "sort_field": "Reference"
+    },
+    "bus_aliases": {},
+    "connection_grid_size": 50.0,
+    "drawing": {
+      "dashed_lines_dash_length_ratio": 12.0,
+      "dashed_lines_gap_length_ratio": 3.0,
+      "default_line_thickness": 6.0,
+      "default_text_size": 50.0,
+      "field_names": [],
+      "hop_over_size_choice": 0,
+      "intersheets_ref_own_page": false,
+      "intersheets_ref_prefix": "",
+      "intersheets_ref_short": false,
+      "intersheets_ref_show": false,
+      "intersheets_ref_suffix": "",
+      "junction_size_choice": 3,
+      "label_size_ratio": 0.375,
+      "operating_point_overlay_i_precision": 3,
+      "operating_point_overlay_i_range": "~A",
+      "operating_point_overlay_v_precision": 3,
+      "operating_point_overlay_v_range": "~V",
+      "overbar_offset_ratio": 1.23,
+      "pin_symbol_size": 25.0,
+      "text_offset_ratio": 0.15
+    },
+    "legacy_lib_dir": "",
+    "legacy_lib_list": [],
+    "meta": {
+      "version": 1
+    },
+    "page_layout_descr_file": "",
+    "plot_directory": "",
+    "reuse_designators": true,
+    "subpart_first_id": 65,
+    "subpart_id_separator": 0,
+    "top_level_sheets": [
+      {
+        "filename": "PDU.kicad_sch",
+        "name": "PDU",
+        "uuid": "fb008fba-1646-454b-b7aa-cdbce59e6515"
+      }
+    ],
+    "used_designators": "R1-14,FB1,C1-9,#PWR1-30,D1-5,TH1,U1-3,F1-2,J1-2",
+    "variants": []
+  },
+  "sheets": [
+    [
+      "fb008fba-1646-454b-b7aa-cdbce59e6515",
+      "PDU"
+    ]
+  ],
+  "text_variables": {},
+  "tuning_profiles": {
+    "meta": {
+      "version": 0
+    },
+    "tuning_profiles_impedance_geometric": []
   }
 }

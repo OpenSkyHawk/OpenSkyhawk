@@ -68,20 +68,22 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 - Fuse IS the per-connector protection (single-rail PSU has no per-lead OCP). Fuse-open ⇒ V-sense both sides (B5).
 - Data-driven final sizing (Rev1 instrumentation) → blade swaps freely.
 
-### B5. Fuse-open + rail voltage sense  [PASSIVES — divider → STM32 ADC]
-- 4 dividers = both sides × 2 fuses. 12V→**33k/10k** (2.79V@12V, headroom ~14V); 5V→**10k/16k** (~3.1V).
-- **0.1% 25ppm Rs** (~2c ea — cheap enough to just use). Uncalibrated ±24mV on 12V, under 100mV target → voltage accuracy stands without the per-board cal (cal still helps VDDA/current). Best tempco of the stack.
-- Values: 12V 33k/10k, 5V 10k/13k (0603). Resolution 3.5mV/LSB — far finer than needed.
-- RC 100nF at tap; bottom-R ≤10k (clean ADC S/H); series top-R also limits pin fault current.
-- (Grade history: tolerance is cal-removable so 1% would also work; 0.1% chosen since ~2c makes it moot + no cal dependence for V.)
-- Real drift source = **STM32 ADC ref = VDDA (3V3 rail)**, not the rail itself → LM4040 (B1b) corrects it.
-- ADC budget: 2× INA180 (I) + 4 dividers (V) + 1 NTC = **7 external ch**. F103C8 has 10 external. Vrefint + internal-temp are on-chip channels (no external pin). Fits.
+### B5. Rail voltage sense  [PASSIVES — divider → STM32 ADC]  [LOAD-SIDE ONLY, 2 dividers]
+- **2 dividers = delivered +12V, +5V only** (user 2026-07-03: "we only care about 12 and 5"). NO source-side / pre-fuse taps.
+- **Fuse-open = inferred from rail-low**, NOT a pre/post comparison. 12V fuse blow → `12V_READ_ADC`≈0 (board alive on 5V → flags it). 5V fuse blow → board loses power → drops off CAN (silence = the alert). Explicit fuse-open dropped.
+- Values: 12V→**33k/10k** (2.79V@12V, ~3.0V@13V); 5V→**10k/13k** (2.83V@5V, ~3.1V@5.5V). **0.1% 25ppm 0603** (~2c). Uncalibrated ±24mV on 12V, under 100mV target.
+- Per divider: Ra top, Rb bottom, **Rs 1k** series to ADC (fault-limit + anti-alias w/ Cf), **Cf 100nF** AT the ADC pin. Resolution 3.5mV/LSB.
+- Nets: `12V_READ_ADC`, `5V_READ_ADC` → MCU sheet ADC pins (hier/global labels). Real drift source = VDDA (3V3 rail) → corrected via internal Vrefint (B1b).
+- BOM: 33k ×1, 10k ×2, 13k ×1 (0.1%) + 1k ×2 + 100nF ×2.
+- ADC budget: 2× INA180 (I) + 2 dividers (V) + 1 NTC = **5 external ch**. F103C8 has 10. Ample.
 
-### B6. PSU-side power input connector  [LOCKED: Mini-Fit Jr 6-pin 2×3]
-- **Molex Mini-Fit Jr 2×3 (6-pin)** (house standard, ~9–10 A/pin @18AWG, keyed crimp).
-- Pinout: **2×+12V / 1×+5V / 3×GND** → 12V 2.5A/pin, 5V 2A, GND (7A return) 2.3A/pin — comfortable margin. Matches old ticket spec.
-- Rationale: GND carries both rails' return (~7A) → spread over 3 pins. (4-pin works but GND 3.5A/pin.)
-- Y-harness: PSU → PDU input (this 6-pin); PDU → J_BUS_OUT (power) + CAN from prev node's J_BUS_OUT.
+### B6. PDU power-input connector  [LOCKED: Mini-Fit Jr 4-pin 2×2 (J_PSU_IN)]
+- **Molex Mini-Fit Jr 2×2 (4-circuit), vertical PCB header** — KiCad footprint **`Connector_Molex:Molex_Mini-Fit_Jr_5566-04A2_2x02_P4.20mm_Vertical`** (in STOCK lib — no custom footprint). Same **5566 family** as J_BUS (5566-08A2) → shared crimp terminals/tooling.
+- Pinout **pin1 +12V · pin2 GND · pin3 GND · pin4 +5V** (12V & 5V non-adjacent, GND between where layout allows). ~9A/pin → 12V ~3A / 5V ~1A / GND split 2 pins ≪ 9A. Ample.
+- **House-connector = board-to-board feed** (NOT direct PSU). PDU is fed from a future **power-entry/bridging board** (24-pin ATX in → per-console Mini-Fit feed out, ~216W, 2L/2oz — deferred, task_ab680ebd). ATX/PSU-brand specifics confined to that one entry board; the PDU is now a pure house-connector board.
+- **INTERIM (until entry board):** hand-built harness — PSU Molex/SATA device end → crimp → Mini-Fit Jr → PDU. Match pinout (1=12V/2=3=GND/4=5V), 18–20 AWG so it's reusable as the entry-board feed later. Board unchanged either way.
+- **History:** Mini-Fit Jr 6-pin → Molex-4 peripheral (direct-PSU idea) → **back to Mini-Fit Jr 4-pin** once the entry-board architecture was adopted (PDU feeds from it, so house connector is right). PCIe 6-pin ruled out (12V-only).
+- ⚠ PSU identity unconfirmed (docs say GOLDEN FIELD NX650; a Thermaltake Toughpower GF1 diagram surfaced) — reconcile at entry-board design; doesn't affect the PDU (house connector now).
 
 ### B7. Bulk capacitance at injection
 - Electrolytic/poly bulk on 12V + 5V post-fuse (inrush + local stiffening). Values TBD by load.
@@ -119,13 +121,54 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 - [x] **Voltage** → dividers → ADC (B5); VDDA corrected via free internal Vrefint (LM4040 dropped). [LOCKED — cost path over INA219]
 - [x] **Temp** → 1× NTC 10k 1206 (between 12V/5V pours) + STM32 internal temp (free). [LOCKED]
 - [x] **B4 fuse** → MINI blade + Littelfuse 153-PC PCB holder (swappable). [LOCKED]
-- [x] **B6 PSU input connector** → Molex Mini-Fit Jr **6-pin 2×3** (2×12V/1×5V/3×GND). [LOCKED]
+- [x] **B6 power-input connector** → **Mini-Fit Jr 4-pin 2×2** (5566-04A2, stock KiCad footprint), 12V/GND/GND/5V. Board-to-board feed from future power-entry board (task_ab680ebd). [LOCKED]
 - [x] **Datasheets verified** → INA180A2 (SBOS741H) ✓ +zero-cal note · shunt CSRF2512 ✓ · NTC C52155460 ✓. Pending: 153-PC holder + Mini-Fit exact PN at BOM.
 - [x] **B8 soft-power PS_ON#** → DROPPED (not on these cards; PSU always-on jumper). [LOCKED]
 - [x] **STM32 variant** → STM32F103C8 (light telemetry FW fits 64KB). [LOCKED]
 - Sourcing: **LCSC** (order source) — carry C-numbers on all parts.
 
 ## ALL SENSING + POWER-PATH DECISIONS LOCKED 2026-07-03 → ready to scaffold PCB/Base/Power.
+
+---
+
+## SCHEMATIC FRONT-END DRAWN 2026-07-03 (`PDU.kicad_sch`, Rev 1.0)
+
+Blocks drawn (PDU-specific; standard STM32 block imported separately):
+- **Input/fuse/TVS** — J2 J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (D2 SMBJ12A on 12V, D1 SMBJ5.0A on 5V, cathode→rail/anode→GND, pre-fuse) → fuse (F2 5A on 12V, F1 2A on 5V) → `+12V_FUSED`/`+5V_FUSED`.
+- **Voltage sense** (load-side only): `+12V`→33k/10k→1k→`12V_READ_ADC`+100nF; `+5V`→10k/13k→1k→`5V_READ_ADC`+100nF.
+- **Current sense**: R1/R2 shunt (10mΩ) in rail `+xV_FUSED`→`+xV`; U1/U2 INA180A2 (IN+=fused/high, IN−=delivered/low), VS=+3V3+100nF, OUT→1k→`I_12V_ADC`/`I_5V_ADC`+100nF.
+- **Temp**: +3V3→10k→[NTC TH1→GND]→1k→`NTC_ADC`+100nF.
+- **STM32 (U3)**: VDDA filter = **FB1 ferrite bead** (`+3V3→VDDA`) + **C8 100nF ∥ C9 1µF** to VSSA; VSS/VSSA→GND. Symbol shows CBTx — set value to **C8** at BOM (same footprint).
+- **Power indicators**: D3 (12V_ST) + R13 4.7k off `+12V`; D4 (5V_ST) + R14 1.5k off `+5V`; anode→rail, cathode→R→GND (~2mA).
+
+**Final ADC map** (5 external ch, 5/10 used):
+`PA0`=12V_READ · `PA1`=5V_READ · `PA2`=I_12V · `PA3`=I_5V · `PA6`=NTC. + internal Vrefint (IN17) + internal temp (IN16) in FW.
+
+**CAN-node reuse (firmware, verified in code):**
+- **STM32Board** class = status LED (PB14 red/PB15 green, state machine: BOOTING/NORMAL/CONNECTED/CAN_ERROR/BUS_OFF/WARNING) + DiagSerial (USART1 PA9/PA10) + CAN peripheral config (SN65HVD230 PA11/PA12 @500k). Does NOT start CAN.
+- **CANProtocol** class = actual bus ops (start/filter/send/status). Full node = STM32Board + CANProtocol.
+- **Base status LEDs (PB14/PB15) = node health** (imported). PDU **power indicators (D3/D4) = rail health, MCU-independent** (light even if MCU dead).
+- **Pins RESERVED by STM32Board** (don't reuse for ADC): PB14/PB15 (LED), PA9/PA10 (UART), PA11/PA12 (CAN). Our ADC (PA0-3,PA6) clears them ✓.
+- PDU FW to add: **NODE_ID 1-63** (0=PanelBridge), telemetry frames (rail V/I/temp/fault bitmap), setWarning() on fault, setLinkActive() on data.
+
+**Remaining:** import standard block (VDD decoupling + 8MHz xtal + BOOT0/NRST + SWD + SN65HVD230 CAN + AMS1117 5→3V3 + J_BUS out) · assign footprints (**verify shunt C53115028 = 2 vs 4 terminal** for R1/R2 symbol) · ERC/DRC.
+
+---
+
+## BOM — LCSC part numbers (known parts, confirmed)
+
+| Ref | Function | MPN | Pkg | LCSC | Qty |
+|---|---|---|---|---|---|
+| U1,U2 | current-sense amp (gain 50) | INA180A2IDBVR | SOT-23-5 | **C192764** | 2 |
+| R1,R2 | shunt 10mΩ 2728 4W ±25ppm | HoRCG27284R010F1T | 2728 | **C53115028** | 2 |
+| TH1 | NTC 10k B3450 ±1% | ANTC3216-103F3450FB | 1206 | **C52155460** | 1 |
+| F1,F2 | MINI-blade fuse holder | XF-508P-B-B | DIP-4 | **C19727305** | 2 |
+| U3 | MCU (set value C8) | STM32F103C8T6 | LQFP-48 | **C8734** | 1 |
+| — | CAN transceiver | SN65HVD230DR | SOIC-8 | **C12084** | 1 |
+| — | LDO 5→3.3V | AMS1117-3.3 | SOT-223 | **C6186** | 1 |
+
+**C-number TBD (assign at footprint pass / order):** TVS SMBJ12A + SMBJ5.0A · MINI blade fuses 5A/2A · Mini-Fit Jr 5566-04A2 (J_PSU_IN) + 2× 5566-08A2 (J_BUS) · ferrite bead 600Ω@100MHz · LEDs (D3/D4 + base r/g) · 8MHz crystal · all R/C passives (dividers 0.1% 25ppm, 1k, decoupling 100nF/1µF/4.7µF).
+- INA180A2 pins A (IDBVR). Shunt terminal count (2 vs 4) still to verify → picks R1/R2 footprint + symbol.
 
 ## D. Not on this board (confirm exclusions)
 - Servo buck (AP63205) → panel boards. 3V3 gen local per board (AMS1117). No central 3V3 monitor.
