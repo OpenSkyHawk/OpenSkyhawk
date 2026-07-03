@@ -89,6 +89,14 @@ Partition all panels into controllers with the **3 hard gates**, then claim NODE
 3. **PERIPHERALS** — steppers / servos / Hall. Gauges route through an I²C expander at low step
    rates; direct-MCU-GPIO stepping is ~4/MCU. (Full budgets: the controller-grouping design note.)
 
+**Backend / interface class per sub-panel** (#197 decision — hardware-standards →
+Shift-Register I/O): panels with **rotary encoders or fast gauges (≳150 °/s)** → SPI-class
+(74HC ShiftBus J_SR leg, `SHIFTBUS_ISR_HZ=1000`; one end-node leg per host chain); everything
+else → I²C-class (MCP/OLED/ADS — internals free, the connector is the standard). Weigh
+**OLED + fast-gauge co-residency** on one node: a display flush stalls same-node stepper slews
+regardless of backend (+35 % w/ jitter at a simulated 25 ms flush); slow rare slews (APN-153
+DRIFT) accepted.
+
 Bias to **split** — up to 63 CAN nodes are essentially free. Grouping is **provisional here**
 (mod-file distances) and **confirmed at B3 CAD** against the real harness path (re-split if a
 breakout exceeds 18"). Claim each NODE_ID in `Firmware/NODE_IDS.md`.

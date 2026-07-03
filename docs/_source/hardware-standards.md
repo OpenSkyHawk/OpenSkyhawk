@@ -122,6 +122,58 @@ DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated
 - Or an **active I²C buffer** (P82B715 / PCA9600 / LTC4311) to hold 400 kHz over 12–18".
 - Verify on a scope (SCL rise time) with the **fully populated** bus (MCP + OLED + ADS) for realistic capacitance.
 
+## Shift-Register I/O — 74HC165 / 74HC595 (ShiftBus)
+
+The SPI shift-register backend (#197/#133, bench-decided 2026-07-02; firmware
+`ShiftBus` — TechSpec `Firmware/ScratchPad/TechSpec/PanelGroup/Helpers/ShiftBus.md`).
+One shared SPI bus per node: a '165 chain (inputs, MISO) + a '595 chain (outputs, MOSI)
+on one SCK, coordinated by full-duplex full-frame transfers bounded by the LOAD ('165
+SH/LD̄) and LATCH ('595 STCP) strobes.
+
+### Interface-class selection (which backend a panel gets)
+
+The standard lives at the **connector, not the chip**: sub-panels are I²C-class or
+SPI-class devices, chosen by physics:
+
+| Panel profile | Backend | Basis (bench, #197 gates) |
+|---|---|---|
+| Rotary encoders, any count | **SPI-class** ('165 + `SHIFTBUS_ISR_HZ=1000`) | loop-poll captured ~34 % of fast-spin detents under a 25 ms loop stall; 1 kHz ISR captured 100 % |
+| Fast gauges (≳150 °/s slew demand) | **SPI-class** ('595 → DRV8833) | '595 path measured 1,137 steps/s sweep-avg (motor-limited) vs 490 on MCP@400 kHz (bus-limited) |
+| Mixed I/O + steppers | SPI-class only if a row above applies | slow needles (≈163 °/s on MCP) are fine on I²C-class |
+| Switches / lamps / slow needle / OLED | **I²C-class** (MCP23017 / direct) | no fidelity or speed pressure; MCP stays fully supported |
+
+An I²C-class panel with same-address devices (multiple 0x3C OLEDs) muxes them behind a
+**panel-local TCA9548A**; same-address devices may never sit on a trunk that also carries
+them behind a mux (address shadowing while a channel is open).
+
+### Design rules
+
+| Rule | Detail |
+|---|---|
+| **'165 input bias — bussed 10 k array on ALL 8 inputs, every chip** | Common pin → 3V3, used or not. Zero static cost on unpopulated inputs, uniform layout, and every spare stays wire-and-go (no respin for a hard-grounded spare). Switch/encoder commons → GND (active-low). |
+| **'595 output drive** | ≤4 mA indicator LED → direct drive + series R (push-pull, ~6 mA/pin recommended, 70 mA/chip total). >6 mA, any 5 V/12 V rail load, or chip total nearing 70 mA → 2N7002 + 100 k gate pulldown. DRV8833 inputs are µA logic — never count against the budget. |
+| **DRV8833 VM ≤ 10.8 V — steppers NEVER on 12 V** | Absolute maximum. Stepper supply = 5 V (bench-validated). Servos = 12 V + panel-local buck (never a 5 V rail). |
+| **SPI bus is dedicated** | The '165 QH output never tristates — MISO cannot be shared with any other SPI reader. Chains daisy without limit; capacity never forces a second bus. |
+| **Standard pins** | SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. On mixed nodes MCP INT lines move to **PB12/PB13**. |
+| **Remote legs** | 33 Ω series on SCK/LOAD/LATCH; ~1 MHz SPI tolerates ~12" harness. |
+
+### Chip placement (guidance, per-controller call at B2)
+
+- *Hot-swappable / serviceable peripherals* (gauge clusters): chips on the **hub board**,
+  star wiring — unplugging a peripheral leaves the chain intact, inputs held by their bias.
+- *Fixed remote sub-panels* (ARC-51-style): chips on the **sub-panel**, bus wiring via the
+  J_SR leg.
+- Chips-on-peripheral chains break when a link is unplugged (downstream latches noise) —
+  fine for planned reconfiguration, wrong for casual unplugging.
+
+### Co-residency note (bench-simulated, #197)
+
+A blocked loop stalls same-node stepper slews **regardless of coil backend** (step timing
+runs in `update()`): a simulated 25 ms display flush stretched a slew +35 % with visible
+jitter. Real-flush arithmetic: 128×64 OLED ≈ 23 ms @400 kHz, ≈90 ms @100 kHz. Weigh
+OLED + fast-gauge co-residency at grouping time; slow rare slews (APN-153 DRIFT) are
+accepted. Real measurement lands with E2E (#137).
+
 ## Screws
 
 | Screw | Use |
@@ -139,6 +191,35 @@ DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated
 | JST-XH | 2.54 mm | Signal/logic harnesses — MCU ↔ breakout (I²C, interrupts, analog) and switch wiring | Engineer PA-09 |
 
 **Minimum pitch: 2.54 mm.** Nothing smaller is used anywhere in the build.
+**Two families only — no new connector families / crimp toolsets are ever introduced**
+(Micro-Fit et al. rejected on tooling grounds).
+
+### Harness interface classes (the connector IS the standard)
+
+Every harness belongs to one class; unique pin count per family = mechanical mis-mate
+protection. **Wires are not color-coded — pin position is the only identification**;
+build-time reference = the connector diagrams on the published Connector & Harness Guide.
+Pinouts below are the fabbed Rev 1 truth (J_BUS / J_BL / J_I2C) or the adopted proposal
+(J_SR, dual-BL).
+
+| Class | Pins | Pinout | Family |
+|---|---|---|---|
+| CAN trunk + power (`J_BUS_IN/OUT`, hosts only, daisy) | 8 (2×4) | 1,2=+12V · 3=+5V · 4,7,8=GND · 5=CANH · 6=CANL | Mini-Fit Jr |
+| Backlight single-zone (`J_BL`) | 2 (1×2) | 1=SW_RETURN · 2=+12V | Mini-Fit Jr |
+| Backlight dual-zone + utility 5 V (gauge panels) | 4 (2×2) | 1=BL1_RET · 2=+12V · 3=BL2_RET · 4=+5V | Mini-Fit Jr |
+| I²C leg (`J_I2C1/2`) | 8 | 1=SDA · 2=SCL · 3,4=GND · 5=+3V3 · 6=INT_A · 7=INT_B · 8=spare — **no +5V** | JST-XH |
+| SPI leg (`J_SR`, end-of-chain, one per host chain) | 7 | 1=SCK · 2=MOSI · 3=MISO · 4=GND · 5=+3V3 · 6=LOAD · 7=LATCH | JST-XH |
+
+- **Layer scope:** trunk terminates at host boards only; a sub-panel's full interface =
+  one signal leg + a backlight cable. Hosts may carry multiple parallel connectors of a
+  class (several `J_BL` on a zone, several `J_I2C` on a bus) — sized at B2. Exception:
+  SPI chains are series — one end-node leg per host chain (chain-through connectors =
+  future class, specified with the first gauge-cluster controller).
+- **Dual-zone rule:** gauge-bearing panels carry two dimming zones (legend + instrument,
+  the aircraft's dimmer split). Utility +5 V on that cable = small loads only (≲50 mA,
+  return via the signal-cable GND); **servos never** — 12 V + panel-local buck.
+- **SPI chain-role principle (adopted):** connector classes map to chain roles
+  (chain-through vs end-node), not device types; one host chain composes them freely.
 
 **Wire gauge:** 16–18 AWG silicone on the **main bus** (power + CAN daisy-chain); 24 AWG on
 signal/logic harnesses (I²C, interrupts, switches). Match the Mini-Fit Jr crimp terminal to the
@@ -311,6 +392,9 @@ violating them causes functional failures that cannot be fixed after fabrication
 | Chip | Affected pins | Rule | Reason |
 |---|---|---|---|
 | MCP23017 | GPA7, GPB7 | **Output only — never configure as inputs** | Silicon bug confirmed by Microchip (datasheet Rev D, June 2022): SDA signal is corrupted if pin voltage changes during an I2C bit transmission, causing bus malfunction. The IODIR register physically allows input mode but it is unsafe. |
+| 74HC165 | all 8 D inputs | **Bussed 10 k array to 3V3 on all 8, used or not** | CMOS inputs float otherwise (noise, oscillation, phantom reads); array costs nothing on unpopulated inputs and keeps spares wire-and-go. |
+| 74HC165/595 | VCC | **3V3 only when signaled by a 3V3 host** | Plain 74HC at VCC=5 V sets VIH=3.5 V — above the STM32's 3.3 V drive (marginal, lot/temperature-dependent). Remote modules without 3V3: local SOT-23 LDO from 5 V. |
+| DRV8833 | VM | **≤ 10.8 V absolute — never the 12 V rail** | Datasheet absolute maximum; stepper supply is 5 V (bench-validated). |
 
 **MCP23017 input capacity: 14 pins per chip** (GPA0–GPA6 + GPB0–GPB6).  
 GPA7 and GPB7 may drive LEDs, enables, or any other output load without restriction.  
