@@ -9,7 +9,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**CANProtocol**](namespaceCANProtocol.md)     
 * **namespace** [**DcsBios**](namespaceDcsBios.md)     
 * **struct** [**DcsBiosInputEntry**](structDcsBiosInputEntry.md)     
-* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk.md)     
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk.md) _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._    
     * **struct** [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) _One point on the acceleration curve (SwitecX25 form)._     
     * **class** [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) _Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) _Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._    
@@ -32,12 +32,14 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._    
     * **class** [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) _Abstract base for all DCS-driven output objects._     
     * **class** [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) _Incremental quadrature encoder on two pins (A/B). Emits a signed_ **relative** _value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
+    * **class** [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) _One shared SPI shift-register bus ('165 inputs + '595 outputs)._     
     * **struct** [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) _Full per-instance stepper configuration. Authored per sketch (panel wiring)._     
     * **class** [**StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md) _Non-blocking instrument-gauge stepper driven through_ [_**PinRef**_](classPinRef.md) _coils._    
     * **class** [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md) _Debounced 2-position switch. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md) _Three-position switch (ON-OFF-ON / spring-centred) on two pins. Emits 0 / 1 / 2 over CAN (MULTIPOS dispatch)._     
     * **class** [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md) _Multi-position rotary selector — N discrete pins, exactly one active at a time. Emits the active position index 0..N-1 over CAN (MULTIPOS dispatch)._     
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d12.md) 
+* **struct** [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)     
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     
 * **namespace** [**PanelGroup**](namespacePanelGroup.md) _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._    
 * **class** [**PinRef**](classPinRef.md) _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _input and output classes._    
@@ -46,6 +48,6 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d8.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d36.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d40.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d38.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d42.md)     
 

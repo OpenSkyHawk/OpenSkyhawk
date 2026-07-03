@@ -1,0 +1,797 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1ShiftBus" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::ShiftBus</compoundname>
+    <includes refid="ShiftBus_8h" local="no">ShiftBus.h</includes>
+    <innerclass refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer" prot="private">OpenSkyhawk::ShiftBus::IsrConsumer</innerclass>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::ShiftBus::MAX_CHAIN</definition>
+        <argsstring></argsstring>
+        <name>MAX_CHAIN</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::MAX_CHAIN</qualifiedname>
+        <initializer>= 8</initializer>
+        <briefdescription>
+<para>chips per direction (64 in + 64 out) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="42" column="30" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a28a246d6b47e2e4a01db863531f0776d" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::ShiftBus::MAX_ISR_CONSUMERS</definition>
+        <argsstring></argsstring>
+        <name>MAX_ISR_CONSUMERS</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::MAX_ISR_CONSUMERS</qualifiedname>
+        <initializer>= 16</initializer>
+        <briefdescription>
+<para>sampled encoders per bus </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="43" column="30" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a62b30038231583a1e927871785c03249" prot="private" static="no" mutable="no">
+        <type>SPIClass *</type>
+        <definition>SPIClass* OpenSkyhawk::ShiftBus::_spi</definition>
+        <argsstring></argsstring>
+        <name>_spi</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_spi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="164" column="14" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a36c8fb997273e52a5d60200ee5c85da9" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_sckPin</definition>
+        <argsstring></argsstring>
+        <name>_sckPin</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_sckPin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="165" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a52b8f5b680dbf5c385f844bc9bbdf556" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_misoPin</definition>
+        <argsstring></argsstring>
+        <name>_misoPin</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_misoPin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="166" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a6c0d34737f445d57a6ed189152c5defd" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_mosiPin</definition>
+        <argsstring></argsstring>
+        <name>_mosiPin</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_mosiPin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="167" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="167" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a104ad29484732bf689a13c2c50e51da0" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_loadPin</definition>
+        <argsstring></argsstring>
+        <name>_loadPin</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_loadPin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="168" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="168" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a8213401e56dbcd414568a8983d80cddc" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_latchPin</definition>
+        <argsstring></argsstring>
+        <name>_latchPin</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_latchPin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="169" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a0ca5232de50f9d48c741d1f6db6ddd30" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_nIn</definition>
+        <argsstring></argsstring>
+        <name>_nIn</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_nIn</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="171" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="171" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1ae37b2724dfbb7f262d325c7db0940ff4" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_nOut</definition>
+        <argsstring></argsstring>
+        <name>_nOut</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_nOut</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="172" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="172" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a725f4025f0654a0f654c902302a0fae0" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::_active</definition>
+        <argsstring></argsstring>
+        <name>_active</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_active</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="173" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="173" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a28785c7880e9305d22ecf27f582f7b8c" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::_begun</definition>
+        <argsstring></argsstring>
+        <name>_begun</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_begun</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="174" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="174" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1ab8edd72e7db4a2fd7fb22437a6614a73" prot="private" static="no" mutable="no">
+        <type>volatile bool</type>
+        <definition>volatile bool OpenSkyhawk::ShiftBus::_dirty</definition>
+        <argsstring></argsstring>
+        <name>_dirty</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_dirty</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="175" column="19" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="175" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a83e8356cab5e13a0007bd8b9f882e5ae" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_inFrame[MAX_CHAIN]</definition>
+        <argsstring>[MAX_CHAIN]</argsstring>
+        <name>_inFrame</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_inFrame</qualifiedname>
+        <initializer>= {0}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="181" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="181" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1aca295d3583e73835d27f72e369d0d454" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_stage[MAX_CHAIN]</definition>
+        <argsstring>[MAX_CHAIN]</argsstring>
+        <name>_stage</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_stage</qualifiedname>
+        <initializer>= {0}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="182" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="182" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a74c75b120f613f7459aa6c79904ef502" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_outFrame[MAX_CHAIN]</definition>
+        <argsstring>[MAX_CHAIN]</argsstring>
+        <name>_outFrame</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_outFrame</qualifiedname>
+        <initializer>= {0}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="183" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="183" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a13393a3c3a3711f6400feed46a97a0d2" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_wire[MAX_CHAIN]</definition>
+        <argsstring>[MAX_CHAIN]</argsstring>
+        <name>_wire</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_wire</qualifiedname>
+        <initializer>= {0}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="184" column="15" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="184" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1ad2fe85e937de4556ec4e593ecca3c334" prot="private" static="no" mutable="no">
+        <type>volatile bool</type>
+        <definition>volatile bool OpenSkyhawk::ShiftBus::_isrActive</definition>
+        <argsstring></argsstring>
+        <name>_isrActive</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_isrActive</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="187" column="19" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1aa813f514f5535a8b46aa043b05e15989" prot="private" static="no" mutable="no">
+        <type>IsrConsumer</type>
+        <definition>IsrConsumer OpenSkyhawk::ShiftBus::_consumers[MAX_ISR_CONSUMERS]</definition>
+        <argsstring>[MAX_ISR_CONSUMERS]</argsstring>
+        <name>_consumers</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_consumers</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="189" column="17" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a84fdc8ca59f84643516562708c7f77b3" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::ShiftBus::_consumerCount</definition>
+        <argsstring></argsstring>
+        <name>_consumerCount</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_consumerCount</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="190" column="17" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="190" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ShiftBus_1a09324827dec930589a1137e35dd76875" prot="private" static="yes" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref> *</type>
+        <definition>ShiftBus * OpenSkyhawk::ShiftBus::_isrInstance</definition>
+        <argsstring></argsstring>
+        <name>_isrInstance</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::_isrInstance</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="192" column="21" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="192" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1ab4716ed602bf2089907b0237d1d44d54" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::ShiftBus::ShiftBus</definition>
+        <argsstring>(SPIClass &amp;spi, uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin, uint8_t loadPin, uint8_t latchPin)</argsstring>
+        <name>ShiftBus</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::ShiftBus</qualifiedname>
+        <param>
+          <type>SPIClass &amp;</type>
+          <declname>spi</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>sckPin</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>misoPin</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>mosiPin</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>loadPin</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>latchPin</declname>
+        </param>
+        <briefdescription>
+<para>Construct a bus. No hardware activity — <ref refid="classOpenSkyhawk_1_1ShiftBus_1abccf62ebf0eddd3b77a7b14ea0899e04" kindref="member">begin()</ref> runs in <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>spi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SPI peripheral. Dedicated to this bus — the &apos;165 QH output is never tristated, so MISO cannot be shared with another SPI reader. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sckPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SPI clock pin (must belong to <computeroutput>spi</computeroutput> — e.g. PB3 for SPI1-remap). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>misoPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SPI MISO pin (← &apos;165 QH). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mosiPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SPI MOSI pin (→ &apos;595 DS). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>loadPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&apos;165 SH/LD̄ strobe (idles HIGH; pulsed LOW to capture inputs). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>latchPin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>&apos;595 STCP strobe (pulsed HIGH to publish outputs). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="55" column="5" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="36" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a0f5eb11945ce4f597e795a7b45123c11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::noteInput</definition>
+        <argsstring>(uint8_t chip)</argsstring>
+        <name>noteInput</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::noteInput</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>chip</declname>
+        </param>
+        <briefdescription>
+<para>configureAsInput() hook: mark active, grow the &apos;165 chain to cover <computeroutput>chip</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="61" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="44" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a3975dc3fd67e924eb9a3ce2e073ac832" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::noteOutput</definition>
+        <argsstring>(uint8_t chip)</argsstring>
+        <name>noteOutput</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::noteOutput</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>chip</declname>
+        </param>
+        <briefdescription>
+<para>configureAsOutput() hook: mark active, grow the &apos;595 chain to cover <computeroutput>chip</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="64" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="50" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1adb20dabbfaffd618b2b5f11cdbce6e64" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::readBit</definition>
+        <argsstring>(uint8_t chip, uint8_t bit) const</argsstring>
+        <name>readBit</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::readBit</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <briefdescription>
+<para>Cached &apos;165 input bit — no bus traffic. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>With ISR sampling active, a multi-bit consumer reading bit-by-bit can see two sample instants mixed within one poll (the ISR replaces the whole frame between reads). Debounced/hold-last consumers (<ref refid="classOpenSkyhawk_1_1MultiPosInput" kindref="compound">MultiPosInput</ref>) absorb this; do not add an unfiltered multi-bit consumer without considering it. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="73" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="58" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a926a16dcbf93ee4ab721cd38816c167f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::readOutBit</definition>
+        <argsstring>(uint8_t chip, uint8_t bit) const</argsstring>
+        <name>readOutBit</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::readOutBit</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <briefdescription>
+<para>Last written &apos;595 output bit (<ref refid="classPinRef_1a2f38bed5de65575b4e243d8cb9349f90" kindref="member">PinRef::read()</ref> on an output pin). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="76" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="63" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1ab9a4ffa319e57d03f90b50ad77a9f12e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::writeBit</definition>
+        <argsstring>(uint8_t chip, uint8_t bit, bool v)</argsstring>
+        <name>writeBit</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::writeBit</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+<para>Set a &apos;595 stage bit + mark the stage dirty. Published by the next loop-context <ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer()</ref>/flushNow() (commit), never mid-group by the sampling ISR. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Writes land in a loop-owned stage frame; the ISR ships only the last committed frame. A multi-pin group (<ref refid="classOpenSkyhawk_1_1StepperMotor" kindref="compound">StepperMotor</ref>&apos;s four coils) therefore always reaches the &apos;595 outputs as one atomic pattern, regardless of ISR timing between the writes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="86" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="68" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a081a5b52ed6efcaa1175cf92c6c98790" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::readLiveBit</definition>
+        <argsstring>(uint8_t chip, uint8_t bit)</argsstring>
+        <name>readLiveBit</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::readLiveBit</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>chip</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>bit</declname>
+        </param>
+        <briefdescription>
+<para>Live &apos;165 read — one <ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer()</ref>, then the cached bit. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="89" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="79" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a87bdab733bc6b96f29b8cd6f956a5a9f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::dirty</definition>
+        <argsstring>() const</argsstring>
+        <name>dirty</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::dirty</qualifiedname>
+        <briefdescription>
+<para>Pending output changes not yet shifted? </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="92" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="92" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1aa7bc241b5edc02ba9031585bea6b88d8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::active</definition>
+        <argsstring>() const</argsstring>
+        <name>active</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::active</qualifiedname>
+        <briefdescription>
+<para>Any SR pin configured on this bus? Dormant buses skip <ref refid="classOpenSkyhawk_1_1ShiftBus_1abccf62ebf0eddd3b77a7b14ea0899e04" kindref="member">begin()</ref> entirely. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="95" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="95" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1abccf62ebf0eddd3b77a7b14ea0899e04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::begin</qualifiedname>
+        <briefdescription>
+<para>Claim pins + start SPI. Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> for active buses only. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Releases JTAG (SWJ → SWD-only; PB3/PB4 are JTDO/NJTRST) so the SPI1-remap pins are usable, configures LOAD/LATCH strobes, starts SPI, shifts an all-zeros output frame<itemizedlist>
+<listitem><para>latch (defined &apos;595 state as early as possible), then runs one <ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer()</ref> to prime the input cache before the forceReport() boot burst reads it. </para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="107" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="86" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::transfer</definition>
+        <argsstring>()</argsstring>
+        <name>transfer</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::transfer</qualifiedname>
+        <briefdescription>
+<para>One bus transaction: LOAD pulse → full-duplex SPI of the auto-sized frame (outputs written, inputs captured) → LATCH pulse. Clears the dirty flag. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>When ISR sampling is active, loop-context callers are wrapped in a short interrupt-masked critical section so the frame buffers stay single-owner. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="116" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="128" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1ae75478c850d65fc3cfcf9a2410aef9a4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::flushNow</definition>
+        <argsstring>()</argsstring>
+        <name>flushNow</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::flushNow</qualifiedname>
+        <briefdescription>
+<para><ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer()</ref> immediately — <ref refid="classOpenSkyhawk_1_1StepperMotor" kindref="compound">StepperMotor</ref>&apos;s per-step flush path. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="119" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="119" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a5e021b5064e287a5e0ed79d1582087c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::beginIsrSampling</definition>
+        <argsstring>(TIM_TypeDef *tim, uint16_t sampleHz)</argsstring>
+        <name>beginIsrSampling</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::beginIsrSampling</qualifiedname>
+        <param>
+          <type>TIM_TypeDef *</type>
+          <declname>tim</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>sampleHz</declname>
+        </param>
+        <briefdescription>
+<para>Start a hardware timer that runs <ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer()</ref> + all registered consumer hooks every tick. Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> when SHIFTBUS_ISR_HZ is defined. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Timer instance (TIM2 by default — TIM3 is backlight PWM). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sampleHz</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sample rate (e.g. 1000). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The ISR performs no CAN, no I2C, no allocation. Consumers read cached bits only. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="130" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="201" bodyend="220"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a746d196ffbe5cb9b7079cbf5a33ff0c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::addIsrConsumer</definition>
+        <argsstring>(void(*hook)(void *ctx), void *ctx)</argsstring>
+        <name>addIsrConsumer</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::addIsrConsumer</qualifiedname>
+        <param>
+          <type>void(*)(void *ctx)</type>
+          <declname>hook</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+<para>Register a hook called from the sampling ISR after each <ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer()</ref>. Used by <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" kindref="member">RotaryEncoder::configure()</ref> to auto-attach SR-pinned encoders. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="136" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="222" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a010b76f8dec12440850227fcf7007f13" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ShiftBus::isrActive</definition>
+        <argsstring>() const</argsstring>
+        <name>isrActive</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::isrActive</qualifiedname>
+        <briefdescription>
+<para>True once <ref refid="classOpenSkyhawk_1_1ShiftBus_1a5e021b5064e287a5e0ed79d1582087c6" kindref="member">beginIsrSampling()</ref> has started the timer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="139" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="139" bodyend="139"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a924c27b86f9ce648718800a3423113ff" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::doTransfer</definition>
+        <argsstring>(bool commitStage)</argsstring>
+        <name>doTransfer</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::doTransfer</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>commitStage</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="162" column="10" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="142" bodyend="189"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ShiftBus_1a2aab0f664d9e90fb5c8bce3af29024a3" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ShiftBus::isrTrampoline</definition>
+        <argsstring>()</argsstring>
+        <name>isrTrampoline</name>
+        <qualifiedname>OpenSkyhawk::ShiftBus::isrTrampoline</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="191" column="17" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="193" bodyend="199"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>One shared SPI shift-register bus (&apos;165 inputs + &apos;595 outputs). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Constructor stores parameters only — no SPI, no GPIO, no cross-global calls (static-init safe; the PIN_NC lesson). All hardware work happens in <ref refid="classOpenSkyhawk_1_1ShiftBus_1abccf62ebf0eddd3b77a7b14ea0899e04" kindref="member">begin()</ref>, called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> for buses that have at least one configured SR pin. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="40" column="1" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" bodystart="40" bodyend="200"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a725f4025f0654a0f654c902302a0fae0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_active</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a28785c7880e9305d22ecf27f582f7b8c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_begun</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a84fdc8ca59f84643516562708c7f77b3" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_consumerCount</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1aa813f514f5535a8b46aa043b05e15989" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_consumers</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1ab8edd72e7db4a2fd7fb22437a6614a73" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_dirty</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a83e8356cab5e13a0007bd8b9f882e5ae" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_inFrame</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1ad2fe85e937de4556ec4e593ecca3c334" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_isrActive</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a09324827dec930589a1137e35dd76875" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_isrInstance</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a8213401e56dbcd414568a8983d80cddc" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_latchPin</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a104ad29484732bf689a13c2c50e51da0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_loadPin</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a52b8f5b680dbf5c385f844bc9bbdf556" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_misoPin</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a6c0d34737f445d57a6ed189152c5defd" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_mosiPin</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a0ca5232de50f9d48c741d1f6db6ddd30" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_nIn</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1ae37b2724dfbb7f262d325c7db0940ff4" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_nOut</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a74c75b120f613f7459aa6c79904ef502" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_outFrame</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a36c8fb997273e52a5d60200ee5c85da9" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_sckPin</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a62b30038231583a1e927871785c03249" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_spi</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1aca295d3583e73835d27f72e369d0d454" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_stage</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a13393a3c3a3711f6400feed46a97a0d2" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>_wire</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1aa7bc241b5edc02ba9031585bea6b88d8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>active</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a746d196ffbe5cb9b7079cbf5a33ff0c6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>addIsrConsumer</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1abccf62ebf0eddd3b77a7b14ea0899e04" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>begin</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a5e021b5064e287a5e0ed79d1582087c6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>beginIsrSampling</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a87bdab733bc6b96f29b8cd6f956a5a9f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>dirty</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a924c27b86f9ce648718800a3423113ff" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>doTransfer</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1ae75478c850d65fc3cfcf9a2410aef9a4" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>flushNow</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a010b76f8dec12440850227fcf7007f13" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>isrActive</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a2aab0f664d9e90fb5c8bce3af29024a3" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>isrTrampoline</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>MAX_CHAIN</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a28a246d6b47e2e4a01db863531f0776d" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>MAX_ISR_CONSUMERS</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a0f5eb11945ce4f597e795a7b45123c11" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>noteInput</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a3975dc3fd67e924eb9a3ce2e073ac832" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>noteOutput</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1adb20dabbfaffd618b2b5f11cdbce6e64" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>readBit</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a081a5b52ed6efcaa1175cf92c6c98790" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>readLiveBit</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a926a16dcbf93ee4ab721cd38816c167f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>readOutBit</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1ab4716ed602bf2089907b0237d1d44d54" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>ShiftBus</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>transfer</name></member>
+      <member refid="classOpenSkyhawk_1_1ShiftBus_1ab9a4ffa319e57d03f90b50ad77a9f12e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ShiftBus</scope><name>writeBit</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

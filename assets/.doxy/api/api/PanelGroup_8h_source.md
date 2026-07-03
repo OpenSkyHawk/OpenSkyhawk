@@ -17,6 +17,7 @@
 #include <MCP23017.h>
 #include "ADS1115.h"
 #include "PinRef.h"
+#include "Helpers/ShiftBus/ShiftBus.h"   // ShiftBus + the pre-defined ShiftBus1 instance
 #include <CANProtocol.h>
 
 // ── OpenSkyhawk base classes ──────────────────────────────────────────────────
@@ -30,6 +31,8 @@ public:
     virtual void poll() = 0;
 
     virtual void forceReport() = 0;
+
+    virtual void sampleTick() {}
 
     static InputBase* head();
 
@@ -99,6 +102,8 @@ namespace PanelGroup {
     void flushExpanderWrites();
 
     bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit);
+
+    void noteShiftBus(OpenSkyhawk::ShiftBus& bus);
 
 } // namespace PanelGroup
 

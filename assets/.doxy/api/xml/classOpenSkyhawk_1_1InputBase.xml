@@ -21,7 +21,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="103" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="103" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="117" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="117" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -37,7 +37,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="104" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="104" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="118" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="118" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -62,7 +62,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="73" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="73" bodyend="73"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="75" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="75" bodyend="75"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -82,7 +82,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="82" column="18"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="84" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -103,7 +103,24 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="91" column="18"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="93" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1addb3ef7b8d33fee0bcdd6db53f504040" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::InputBase::sampleTick</definition>
+        <argsstring>()</argsstring>
+        <name>sampleTick</name>
+        <qualifiedname>OpenSkyhawk::InputBase::sampleTick</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd">sampleTick</reimplementedby>
+        <briefdescription>
+<para>High-rate sample hook — called from a sampling ISR when the node runs one (e.g. <ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref> timer sampling, -DSHIFTBUS_ISR_HZ). Default no-op. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Implementations must be ISR-safe: read cached pin state only, no CAN, no I2C, no allocation. Level-sampled inputs never need this; <ref refid="classOpenSkyhawk_1_1RotaryEncoder" kindref="compound">RotaryEncoder</ref> overrides it to decode quadrature at the sample rate (loop stalls then cannot lose transitions). The input class does not know who calls this or at what rate — <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> owns the wiring. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="105" column="18" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="105" bodyend="105"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> *</type>
@@ -118,7 +135,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="97" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="129" bodyend="129"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="111" column="15" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="146" bodyend="146"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
@@ -135,7 +152,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="94" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="128" bodyend="128"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="108" column="22" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="145" bodyend="145"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -152,7 +169,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="100" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="125" bodyend="125"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="114" column="5" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="142" bodyend="142"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -209,7 +226,7 @@
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="62" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="62" bodyend="105"/>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.h" line="64" column="1" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.h" bodystart="64" bodyend="119"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1InputBase_1a142fd89c2bdb94646013b04f6c107aaf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>_head</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1a3622edc9b321fe7abc09b54bf087e45c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>_next</name></member>
@@ -219,6 +236,7 @@
       <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>InputBase</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::InputBase</scope><name>next</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" prot="public" virt="pure-virtual"><scope>OpenSkyhawk::InputBase</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1addb3ef7b8d33fee0bcdd6db53f504040" prot="public" virt="virtual"><scope>OpenSkyhawk::InputBase</scope><name>sampleTick</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

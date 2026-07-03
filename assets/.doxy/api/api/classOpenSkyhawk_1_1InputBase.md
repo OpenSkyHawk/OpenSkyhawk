@@ -57,6 +57,7 @@ Inherited by the following classes: [OpenSkyhawk::AnalogInput](classOpenSkyhawk_
 | virtual void | [**forceReport**](#function-forcereport) () = 0<br>_Read hardware state and emit a CAN EVT unconditionally._  |
 |  [**InputBase**](classOpenSkyhawk_1_1InputBase.md) \* | [**next**](#function-next) () const<br>_Next input in the list; nullptr at end._  |
 | virtual void | [**poll**](#function-poll) () = 0<br>_Read hardware state and emit a CAN EVT if state changed._  |
+| virtual void | [**sampleTick**](#function-sampletick) () <br>_High-rate sample hook — called from a sampling ISR when the node runs one (e.g._ [_**ShiftBus**_](classOpenSkyhawk_1_1ShiftBus.md) _timer sampling, -DSHIFTBUS\_ISR\_HZ). Default no-op._ |
 
 
 ## Public Static Functions
@@ -170,6 +171,24 @@ virtual void OpenSkyhawk::InputBase::poll () = 0
 
 
 Called by [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) every iteration. Must be non-blocking. Implementations apply their own debounce / filtering and call [**CANProtocol::sendBatched()**](namespaceCANProtocol.md#function-sendbatched) only on confirmed state change. 
+
+
+        
+
+<hr>
+
+
+
+### function sampleTick 
+
+_High-rate sample hook — called from a sampling ISR when the node runs one (e.g._ [_**ShiftBus**_](classOpenSkyhawk_1_1ShiftBus.md) _timer sampling, -DSHIFTBUS\_ISR\_HZ). Default no-op._
+```C++
+inline virtual void OpenSkyhawk::InputBase::sampleTick () 
+```
+
+
+
+Implementations must be ISR-safe: read cached pin state only, no CAN, no I2C, no allocation. Level-sampled inputs never need this; [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) overrides it to decode quadrature at the sample rate (loop stalls then cannot lose transitions). The input class does not know who calls this or at what rate — [**PanelGroup**](namespacePanelGroup.md) owns the wiring. 
 
 
         

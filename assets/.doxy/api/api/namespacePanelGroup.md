@@ -53,6 +53,7 @@ _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md)
 | ---: | :--- |
 |  void | [**flushExpanderWrites**](#function-flushexpanderwrites) () <br>_Push every port dirtied by_ [_**writeCachedPinDeferred()**_](namespacePanelGroup.md#function-writecachedpindeferred) _— one writePort() each._ |
 |  void | [**loop**](#function-loop) () <br>_Run all_ [_**PanelGroup**_](namespacePanelGroup.md) _work. Call once per_[_**loop()**_](namespacePanelGroup.md#function-loop) _iteration._ |
+|  void | [**noteShiftBus**](#function-noteshiftbus) ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) & bus) <br>_Collect a ShiftBus at configure time. Called by_ [_**PinRef::configureAsInput()**_](classPinRef.md#function-configureasinput) _/ configureAsOutput() on SR pins — never by sketches (zero-setup lifecycle)._ |
 |  bool | [**readCachedPin**](#function-readcachedpin) (const MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_Return cached MCP23017 pin state. Called by_ [_**PinRef::read()**_](classPinRef.md#function-read) _. No I2C._ |
 |  bool | [**readLivePin**](#function-readlivepin) (MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache._  |
 |  void | [**registerADC**](#function-registeradc) ([**ADS1115**](classADS1115.md) & adc, uint8\_t addr=0x48, TwoWire & wire=Wire) <br>_Register an_ [_**ADS1115**_](classADS1115.md) _ADC. Call before_[_**setup()**_](namespacePanelGroup.md#function-setup) _._ |
@@ -144,6 +145,26 @@ Each call:
 * Heartbeat: send HB\_n every 500 ms. 
 
 
+
+
+        
+
+<hr>
+
+
+
+### function noteShiftBus 
+
+_Collect a ShiftBus at configure time. Called by_ [_**PinRef::configureAsInput()**_](classPinRef.md#function-configureasinput) _/ configureAsOutput() on SR pins — never by sketches (zero-setup lifecycle)._
+```C++
+void PanelGroup::noteShiftBus (
+    OpenSkyhawk::ShiftBus & bus
+) 
+```
+
+
+
+Deduplicated. [**setup()**](namespacePanelGroup.md#function-setup) begin()s every collected bus after step 3; [**loop()**](namespacePanelGroup.md#function-loop) transfers them each iteration; [**flushExpanderWrites()**](namespacePanelGroup.md#function-flushexpanderwrites) flushes dirty ones. 
 
 
         

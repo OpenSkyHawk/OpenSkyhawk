@@ -24,6 +24,11 @@ _Hardware pin abstraction for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pan
 
 
 
+## Namespaces
+
+| Type | Name |
+| ---: | :--- |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._ |
 
 
 ## Classes
@@ -48,7 +53,7 @@ _Hardware pin abstraction for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pan
 
 | Type | Name |
 | ---: | :--- |
-|  constexpr uint8\_t | [**PORT\_A**](#variable-port_a)   = `0`<br>_Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._ |
+|  constexpr uint8\_t | [**PORT\_A**](#variable-port_a)   = `0`<br>_&lt; 74HC165/'595 SPI shift-register bus_  |
 |  constexpr uint8\_t | [**PORT\_B**](#variable-port_b)   = `1`<br>_MCP23017 GPB port constant for constructors._  |
 
 
@@ -95,7 +100,7 @@ _Hardware pin abstraction for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pan
 ## Detailed Description
 
 
-Abstracts three hardware pin sources behind a single interface: direct STM32 GPIO, MCP23017 expander GPIO, and [**ADS1115**](classADS1115.md) ADC channel. Used by all input and output classes so control declarations are identical regardless of where the physical pin lives.
+Abstracts four hardware pin sources behind a single interface: direct STM32 GPIO, MCP23017 expander GPIO, [**ADS1115**](classADS1115.md) ADC channel, and a ShiftBus bit (74HC165 input / 74HC595 output over SPI). Used by all input and output classes so control declarations are identical regardless of where the physical pin lives.
 
 
 Contains no logic beyond read/write dispatch — no debounce, no filtering, no state. [**PinRef**](classPinRef.md) objects are value types: live on the stack or as class members, never heap-allocated.
@@ -152,7 +157,7 @@ See also: ANALOG\_NC (0xFFFF) for AnalogMultiPos unused voltage levels.
 
 ### variable PORT\_A 
 
-_Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
+_&lt; 74HC165/'595 SPI shift-register bus_ 
 ```C++
 constexpr uint8_t PORT_A;
 ```

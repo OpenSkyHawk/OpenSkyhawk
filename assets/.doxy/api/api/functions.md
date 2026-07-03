@@ -22,6 +22,11 @@
 * **HAL\_CAN\_MspInit** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
 
+## k
+
+* **kShiftBusSettings** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
+
+
 ## _
 
 * **\_applyFilters** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))

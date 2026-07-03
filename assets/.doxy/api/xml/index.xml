@@ -214,9 +214,14 @@
     <member refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c" kind="function"><name>configure</name></member>
     <member refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45" kind="function"><name>poll</name></member>
     <member refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92" kind="function"><name>forceReport</name></member>
+    <member refid="classOpenSkyhawk_1_1InputBase_1addb3ef7b8d33fee0bcdd6db53f504040" kind="function"><name>sampleTick</name></member>
     <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" kind="function"><name>next</name></member>
     <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" kind="function"><name>head</name></member>
     <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" kind="function"><name>InputBase</name></member>
+  </compound>
+  <compound refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer" kind="struct"><name>OpenSkyhawk::ShiftBus::IsrConsumer</name>
+    <member refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer_1a6662c7beec7a3f2f395b5ea96c5f50f4" kind="variable"><name>hook</name></member>
+    <member refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer_1a9cc737b2a0afbaddc63ab01583424fa0" kind="variable"><name>ctx</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1LED" kind="class"><name>OpenSkyhawk::LED</name>
     <member refid="classOpenSkyhawk_1_1LED_1ad57a3ff5da6e6065366eac585b12d244" kind="variable"><name>_controlId</name></member>
@@ -279,6 +284,7 @@
     <member refid="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60aa4b03abff0e37da035d6fc0f9a4b1235" kind="enumvalue"><name>GPIO</name></member>
     <member refid="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60aaaad5def9c9014028bbdba28e341feb7" kind="enumvalue"><name>MCP</name></member>
     <member refid="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60af657a47bbdb90f97364138eb933d13cb" kind="enumvalue"><name>ADS</name></member>
+    <member refid="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60a8cb2010d27e13509d364436256e972c0" kind="enumvalue"><name>SR</name></member>
     <member refid="classPinRef_1adea7265fed7b3ef6f5a6c505ae247d60a90581d96b500fd2d3fd701a583409cb8" kind="enumvalue"><name>NC</name></member>
     <member refid="classPinRef_1a36ae609316307230881dd49321c3a45c" kind="variable"><name>_type</name></member>
     <member refid="classPinRef_1a169d76bc37d58d27f6ec5157555ec0e9" kind="variable"><name>_src</name></member>
@@ -290,9 +296,14 @@
     <member refid="classPinRef_1a44f250ed3f1327876adc437f797127a5" kind="variable"><name>adc</name></member>
     <member refid="classPinRef_1a9ded8eb8756032181d243e81d6486ba5" kind="variable"><name>channel</name></member>
     <member refid="classPinRef_1af49bbd360a2e5834cad1b1b054b06c86" kind="variable"><name>ads</name></member>
+    <member refid="classPinRef_1a48f698aa067d9e5b8d3cdf8be458f540" kind="variable"><name>bus</name></member>
+    <member refid="classPinRef_1a6df324935d5def0cd61dc68736958272" kind="variable"><name>chip</name></member>
+    <member refid="classPinRef_1adb4429aed7ec500c9529a8ab60d12d3d" kind="variable"><name>isOut</name></member>
+    <member refid="classPinRef_1afb417d1d5494ba75bf9e0c7e52e4a33f" kind="variable"><name>sr</name></member>
     <member refid="classPinRef_1a1a39e46cfc347bdfebf78fabd37e8d57" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1ab04330ae4e468f50efac724e7b230740" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1a94a6a5253fef0b8c33d7caa514e55dd4" kind="function"><name>PinRef</name></member>
+    <member refid="classPinRef_1aa0ee4a61b28b16a2a264b4d9744847f0" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1a9fc468d55c56b5ef69e447e1c50467f8" kind="function"><name>PinRef</name></member>
     <member refid="classPinRef_1a2f38bed5de65575b4e243d8cb9349f90" kind="function"><name>read</name></member>
     <member refid="classPinRef_1ac2195c891574cd919350cdf0a8e9bef1" kind="function"><name>readLive</name></member>
@@ -304,6 +315,7 @@
     <member refid="classPinRef_1aaa068f47fc479c9d3b52d1ec6b3f0060" kind="function"><name>configureAsOutput</name></member>
     <member refid="classPinRef_1a71e09b7334dd00fe246dd2e3d9b53154" kind="function"><name>isNC</name></member>
     <member refid="classPinRef_1ae6528461c2bb1e094fd7aa5e038705f6" kind="function"><name>isGpio</name></member>
+    <member refid="classPinRef_1aa62a3dabcea18b586c55e4c5a0b23f33" kind="function"><name>isSampledSource</name></member>
     <member refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kind="function"><name>gpioPin</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1RotaryEncoder" kind="class"><name>OpenSkyhawk::RotaryEncoder</name>
@@ -316,19 +328,63 @@
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1af89eac629614783498bfd6d46580f2fb" kind="variable"><name>_stepsPerDetent</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" kind="variable"><name>_lastState</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" kind="variable"><name>_delta</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1aec91b691b0e339480a740d21c2eb1dfe" kind="variable"><name>_pendingDetents</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6903cb09bc6973d5f682f5d2374d6feb" kind="variable"><name>_sampled</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" kind="variable"><name>_initialized</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a375402a3323aa232e3085649c0e6a106" kind="function"><name>RotaryEncoder</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" kind="function"><name>poll</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" kind="function"><name>forceReport</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" kind="function"><name>sampleTick</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" kind="function"><name>readState</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a8e81cbad00fab9236a9db28bd0aece82" kind="function"><name>decode</name></member>
-    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2330448c45cd481e05d5ad2f405e3e55" kind="function"><name>emit</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3f240c0d7af1fe087ab3ecd1c4a2ae09" kind="function"><name>drainPending</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a88bab25abb126cc696c9392ab742338b" kind="function"><name>emit</name></member>
   </compound>
   <compound refid="structRxQueueEntry" kind="struct"><name>RxQueueEntry</name>
     <member refid="structRxQueueEntry_1a758987839532de7c7ef2e059f552b033" kind="variable"><name>canId</name></member>
     <member refid="structRxQueueEntry_1ad7f337951df4e0a7075dd47a8ca93d7c" kind="variable"><name>len</name></member>
     <member refid="structRxQueueEntry_1ad621304447b625321e0cfe744e57d1ea" kind="variable"><name>data</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1ShiftBus" kind="class"><name>OpenSkyhawk::ShiftBus</name>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kind="variable"><name>MAX_CHAIN</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a28a246d6b47e2e4a01db863531f0776d" kind="variable"><name>MAX_ISR_CONSUMERS</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a62b30038231583a1e927871785c03249" kind="variable"><name>_spi</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a36c8fb997273e52a5d60200ee5c85da9" kind="variable"><name>_sckPin</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a52b8f5b680dbf5c385f844bc9bbdf556" kind="variable"><name>_misoPin</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a6c0d34737f445d57a6ed189152c5defd" kind="variable"><name>_mosiPin</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a104ad29484732bf689a13c2c50e51da0" kind="variable"><name>_loadPin</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a8213401e56dbcd414568a8983d80cddc" kind="variable"><name>_latchPin</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a0ca5232de50f9d48c741d1f6db6ddd30" kind="variable"><name>_nIn</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1ae37b2724dfbb7f262d325c7db0940ff4" kind="variable"><name>_nOut</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a725f4025f0654a0f654c902302a0fae0" kind="variable"><name>_active</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a28785c7880e9305d22ecf27f582f7b8c" kind="variable"><name>_begun</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1ab8edd72e7db4a2fd7fb22437a6614a73" kind="variable"><name>_dirty</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a83e8356cab5e13a0007bd8b9f882e5ae" kind="variable"><name>_inFrame</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1aca295d3583e73835d27f72e369d0d454" kind="variable"><name>_stage</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a74c75b120f613f7459aa6c79904ef502" kind="variable"><name>_outFrame</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a13393a3c3a3711f6400feed46a97a0d2" kind="variable"><name>_wire</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1ad2fe85e937de4556ec4e593ecca3c334" kind="variable"><name>_isrActive</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1aa813f514f5535a8b46aa043b05e15989" kind="variable"><name>_consumers</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a84fdc8ca59f84643516562708c7f77b3" kind="variable"><name>_consumerCount</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a09324827dec930589a1137e35dd76875" kind="variable"><name>_isrInstance</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1ab4716ed602bf2089907b0237d1d44d54" kind="function"><name>ShiftBus</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a0f5eb11945ce4f597e795a7b45123c11" kind="function"><name>noteInput</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a3975dc3fd67e924eb9a3ce2e073ac832" kind="function"><name>noteOutput</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1adb20dabbfaffd618b2b5f11cdbce6e64" kind="function"><name>readBit</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a926a16dcbf93ee4ab721cd38816c167f" kind="function"><name>readOutBit</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1ab9a4ffa319e57d03f90b50ad77a9f12e" kind="function"><name>writeBit</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a081a5b52ed6efcaa1175cf92c6c98790" kind="function"><name>readLiveBit</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a87bdab733bc6b96f29b8cd6f956a5a9f" kind="function"><name>dirty</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1aa7bc241b5edc02ba9031585bea6b88d8" kind="function"><name>active</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1abccf62ebf0eddd3b77a7b14ea0899e04" kind="function"><name>begin</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kind="function"><name>transfer</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1ae75478c850d65fc3cfcf9a2410aef9a4" kind="function"><name>flushNow</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a5e021b5064e287a5e0ed79d1582087c6" kind="function"><name>beginIsrSampling</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a746d196ffbe5cb9b7079cbf5a33ff0c6" kind="function"><name>addIsrConsumer</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a010b76f8dec12440850227fcf7007f13" kind="function"><name>isrActive</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a924c27b86f9ce648718800a3423113ff" kind="function"><name>doTransfer</name></member>
+    <member refid="classOpenSkyhawk_1_1ShiftBus_1a2aab0f664d9e90fb5c8bce3af29024a3" kind="function"><name>isrTrampoline</name></member>
   </compound>
   <compound refid="structOpenSkyhawk_1_1StepperConfig" kind="struct"><name>OpenSkyhawk::StepperConfig</name>
     <member refid="structOpenSkyhawk_1_1StepperConfig_1ae37146eb146907e2e8ae9210df1252ed" kind="variable"><name>stepsPerRev</name></member>
@@ -420,17 +476,17 @@
     <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
     <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d36" kind="namespace"><name>@36</name>
+  <compound refid="namespace_0d38" kind="namespace"><name>@38</name>
   </compound>
-  <compound refid="namespace_0d40" kind="namespace"><name>@40</name>
-    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998d" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998daa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998da1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d40_1ac1f82a591fac533e79d58a07dede998da03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15f" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15fab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15faa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d40_1aecb5a0d5cb01666bd73d54bbb801c15fa9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d42" kind="namespace"><name>@42</name>
+    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dc" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dcaa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dca1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dca03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
   </compound>
@@ -512,6 +568,7 @@
     <member refid="namespacePanelGroup_1ae8692730dbfd3bce4ea3c7dcff6e8141" kind="function"><name>writeCachedPin</name></member>
     <member refid="namespacePanelGroup_1af2310707319e7fc952ed42f012e4a5d2" kind="function"><name>writeCachedPinDeferred</name></member>
     <member refid="namespacePanelGroup_1a6fd20dab9d69da52144a1e8d24ac6b56" kind="function"><name>flushExpanderWrites</name></member>
+    <member refid="namespacePanelGroup_1a311ffdd9e1637bdc133ec29760716eeb" kind="function"><name>noteShiftBus</name></member>
     <member refid="namespacePanelGroup_1aae9c2ee79d4f68b5e0882d14972e1685" kind="function"><name>readLivePin</name></member>
   </compound>
   <compound refid="namespaceSimGateway" kind="namespace"><name>SimGateway</name>
@@ -1431,6 +1488,18 @@
   </compound>
   <compound refid="I2cMux_8h" kind="file"><name>I2cMux.h</name>
   </compound>
+  <compound refid="ShiftBus_8cpp" kind="file"><name>ShiftBus.cpp</name>
+    <member refid="ShiftBus_8cpp_1ac6fe7f0bb8012cdad4044185c3285eb8" kind="define"><name>SHIFTBUS_SCK</name></member>
+    <member refid="ShiftBus_8cpp_1a19016134396b00b291f1de8c19c44af0" kind="define"><name>SHIFTBUS_MISO</name></member>
+    <member refid="ShiftBus_8cpp_1a79136ad499cc3e5052205ff02846b1a9" kind="define"><name>SHIFTBUS_MOSI</name></member>
+    <member refid="ShiftBus_8cpp_1a4cb4e9bb3f45994e66c3b7063c2373e4" kind="define"><name>SHIFTBUS_LOAD</name></member>
+    <member refid="ShiftBus_8cpp_1adb399e95684488af1f11aa9f1a5a4b77" kind="define"><name>SHIFTBUS_LATCH</name></member>
+    <member refid="ShiftBus_8cpp_1af10ae0980631927896b51a2b7cf9555e" kind="variable"><name>ShiftBus1</name></member>
+    <member refid="ShiftBus_8cpp_1a777528e47956079bf6b84fee372c340f" kind="function"><name>kShiftBusSettings</name></member>
+  </compound>
+  <compound refid="ShiftBus_8h" kind="file"><name>ShiftBus.h</name>
+    <member refid="ShiftBus_8h_1a7caf40ee58bccc9ab50fe3508190cc34" kind="variable"><name>ShiftBus1</name></member>
+  </compound>
   <compound refid="AnalogInput_8cpp" kind="file"><name>AnalogInput.cpp</name>
   </compound>
   <compound refid="AnalogInput_8h" kind="file"><name>AnalogInput.h</name>
@@ -1554,6 +1623,8 @@
   <compound refid="dir_54a06c409a6161127d200302d3061b3f" kind="dir"><name>Firmware/Libraries/PanelGroup</name>
   </compound>
   <compound refid="dir_d61b64c3ddc6557ee529e3725418e11d" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder</name>
+  </compound>
+  <compound refid="dir_5de82edf055e68e6d2d76fc20b67149e" kind="dir"><name>Firmware/Libraries/PanelGroup/Helpers/ShiftBus</name>
   </compound>
   <compound refid="dir_a54aa0246e1c520ae49dfef506a428ca" kind="dir"><name>Firmware/Libraries/SimGateway</name>
   </compound>

@@ -29,7 +29,7 @@ _TCA9548A 1-to-8 I2C multiplexer channel selector for_ [_**OpenSkyhawk**_](names
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br> |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._ |
 
 
 ## Classes

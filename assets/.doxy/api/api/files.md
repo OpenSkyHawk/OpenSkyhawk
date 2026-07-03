@@ -35,6 +35,9 @@ Here is a list of all files with brief descriptions:
                 * **dir** [**I2cMux**](dir_b0e3ddf276daac85bddb20c46644a5c8.md)     
                     * **file** [**I2cMux.cpp**](I2cMux_8cpp.md)     
                     * **file** [**I2cMux.h**](I2cMux_8h.md) _TCA9548A 1-to-8 I2C multiplexer channel selector for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    
+                * **dir** [**ShiftBus**](dir_5de82edf055e68e6d2d76fc20b67149e.md)     
+                    * **file** [**ShiftBus.cpp**](ShiftBus_8cpp.md)     
+                    * **file** [**ShiftBus.h**](ShiftBus_8h.md) _Shared SPI shift-register bus — 74HC165 input chain + 74HC595 output chain._     
             * **dir** [**Inputs**](dir_2e07d2b82251b5bb8c3d5a17dd64c04b.md)     
                 * **dir** [**AnalogInput**](dir_36f5dbe195072643095357faabfc57db.md)     
                     * **file** [**AnalogInput.cpp**](AnalogInput_8cpp.md)     

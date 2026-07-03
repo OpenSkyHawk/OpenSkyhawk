@@ -4034,6 +4034,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-sampletick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function sampleTick
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4132,7 +4143,11 @@
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
-<td style="text-align: left;"><a href="#function-poll"><strong>poll</strong></a> () override<br><em>Read the quadrature state, accumulate, emit a direction once a detent completes.</em></td>
+<td style="text-align: left;"><a href="#function-poll"><strong>poll</strong></a> () override<br><em>Decode at loop rate (unless a sampler ticks), then drain pending detents → EVTs.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="#function-sampletick"><strong>sampleTick</strong></a> () override<br><em>ISR-safe quadrature decode of one sample → pending detents. No CAN.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4161,6 +4176,10 @@
 <tr>
 <td style="text-align: right;">virtual void</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><strong>poll</strong></a> () = 0<br><em>Read hardware state and emit a CAN EVT if state changed.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/#function-sampletick"><strong>sampleTick</strong></a> () <br><em>High-rate sample hook — called from a sampling ISR when the node runs one (e.g.</em> <a href="../classOpenSkyhawk_1_1ShiftBus/"><em><strong>ShiftBus</strong></em></a> <em>timer sampling, -DSHIFTBUS_ISR_HZ). Default no-op.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4217,6 +4236,7 @@
 * <strong>REL</strong> (variable_step knob, e.g. ASN-41 nav): emits <code>±step</code> on <code>canIdEvtRel</code>; the bridge sends <code>%+d</code> (e.g. <code>"+3200"</code>). <code>step</code> is build-side feel (default 3200 ≈ DCS suggested_step, ~20 detents per full throw); lower it for a finer knob. The magnitude lives here on the node, so retuning needs only a node reflash — never a bridge rebuild.
 * <strong>DIR</strong> (fixed_step selector with no indicator, e.g. ARC-51 freq): emits <code>±1</code> on <code>canIdEvtDir</code>; the bridge sends <code>INC</code>/<code>DEC</code>. Stateless — DCS owns the position and clamps at the band edges.</p>
 <p>Both modes are preset-safe: <a href="./#function-forcereport"><strong>forceReport()</strong></a> resyncs the last Gray state and emits <strong>nothing</strong> — a relative control has no baseline to assert at boot / SYNC, so it never clobbers a mission preset. <a href="./#function-configure"><strong>configure()</strong></a> does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).</p>
+<p><strong>High-rate sampling (#197):</strong> <a href="./#function-sampletick"><strong>sampleTick()</strong></a> (the generic <a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> hook) decodes one quadrature sample and accumulates <em>pending detents</em>; <a href="./#function-poll"><strong>poll()</strong></a> drains and emits. When a sampling ISR runs <a href="./#function-sampletick"><strong>sampleTick()</strong></a> at kHz rate (<a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> wires this — the encoder does not know who samples it or from where), a loop stalled by an OLED flush no longer loses transitions. CAN traffic never originates in <a href="./#function-sampletick"><strong>sampleTick()</strong></a>. Without a sampler, <a href="./#function-poll"><strong>poll()</strong></a> decodes at loop rate exactly as before. Loop-side API is unchanged in both modes.</p>
 <p>Dispatch is sourced from the class (the CAN frame), not the input map — see #147. </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-default_step">variable DEFAULT_STEP</h3>
@@ -4262,10 +4282,17 @@
 <hr>
 
 <h3 id="function-poll">function poll</h3>
-<p><em>Read the quadrature state, accumulate, emit a direction once a detent completes.</em> </p>
+<p><em>Decode at loop rate (unless a sampler ticks), then drain pending detents → EVTs.</em> </p>
 <pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::poll () override
 </code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><em>OpenSkyhawk::InputBase::poll</em></a></p>
+<hr>
+
+<h3 id="function-sampletick">function sampleTick</h3>
+<p><em>ISR-safe quadrature decode of one sample → pending detents. No CAN.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::sampleTick () override
+</code></pre>
+<p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-sampletick"><em>OpenSkyhawk::InputBase::sampleTick</em></a></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-readstate">function readState</h3>

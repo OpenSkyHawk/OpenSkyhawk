@@ -28,7 +28,7 @@ _Circuit-breaker mixin ("trait") for I2C-backed device classes._ [More...](#deta
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br> |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._ |
 
 
 ## Classes

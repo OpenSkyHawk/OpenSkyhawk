@@ -81,7 +81,8 @@ Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1Inp
 |   | [**RotaryEncoder**](#function-rotaryencoder) (uint16\_t controlId, [**PinRef**](classPinRef.md) pinA, [**PinRef**](classPinRef.md) pinB, [**EncoderStepsPerDetent**](namespaceOpenSkyhawk.md#enum-encoderstepsperdetent) stepsPerDetent=EncoderStepsPerDetent::One, [**EncoderMode**](namespaceOpenSkyhawk.md#enum-encodermode) mode=EncoderMode::Rel, int16\_t step=[**DEFAULT\_STEP**](classOpenSkyhawk_1_1RotaryEncoder.md#variable-default_step)) <br>_Construct a quadrature encoder._  |
 | virtual void | [**configure**](#function-configure) () override<br>_Configure both pins as inputs. Called by_ [_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _._ |
 | virtual void | [**forceReport**](#function-forcereport) () override<br>_Resync the last state; emit nothing (relative control — no baseline)._  |
-| virtual void | [**poll**](#function-poll) () override<br>_Read the quadrature state, accumulate, emit a direction once a detent completes._  |
+| virtual void | [**poll**](#function-poll) () override<br>_Decode at loop rate (unless a sampler ticks), then drain pending detents → EVTs._  |
+| virtual void | [**sampleTick**](#function-sampletick) () override<br>_ISR-safe quadrature decode of one sample → pending detents. No CAN._  |
 
 
 ## Public Functions inherited from OpenSkyhawk::InputBase
@@ -94,6 +95,7 @@ See [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 | virtual void | [**forceReport**](classOpenSkyhawk_1_1InputBase.md#function-forcereport) () = 0<br>_Read hardware state and emit a CAN EVT unconditionally._  |
 |  [**InputBase**](classOpenSkyhawk_1_1InputBase.md) \* | [**next**](classOpenSkyhawk_1_1InputBase.md#function-next) () const<br>_Next input in the list; nullptr at end._  |
 | virtual void | [**poll**](classOpenSkyhawk_1_1InputBase.md#function-poll) () = 0<br>_Read hardware state and emit a CAN EVT if state changed._  |
+| virtual void | [**sampleTick**](classOpenSkyhawk_1_1InputBase.md#function-sampletick) () <br>_High-rate sample hook — called from a sampling ISR when the node runs one (e.g._ [_**ShiftBus**_](classOpenSkyhawk_1_1ShiftBus.md) _timer sampling, -DSHIFTBUS\_ISR\_HZ). Default no-op._ |
 
 
 
@@ -181,6 +183,9 @@ Two modes, chosen at construction (see EncoderMode):
 
 
 Both modes are preset-safe: [**forceReport()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-forcereport) resyncs the last Gray state and emits **nothing** — a relative control has no baseline to assert at boot / SYNC, so it never clobbers a mission preset. [**configure()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-configure) does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).
+
+
+**High-rate sampling (#197):** [**sampleTick()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-sampletick) (the generic [**InputBase**](classOpenSkyhawk_1_1InputBase.md) hook) decodes one quadrature sample and accumulates _pending detents_; [**poll()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-poll) drains and emits. When a sampling ISR runs [**sampleTick()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-sampletick) at kHz rate ([**PanelGroup**](namespacePanelGroup.md) wires this — the encoder does not know who samples it or from where), a loop stalled by an OLED flush no longer loses transitions. CAN traffic never originates in [**sampleTick()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-sampletick). Without a sampler, [**poll()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-poll) decodes at loop rate exactly as before. Loop-side API is unchanged in both modes.
 
 
 Dispatch is sourced from the class (the CAN frame), not the input map — see #147. 
@@ -279,7 +284,7 @@ Implements [*OpenSkyhawk::InputBase::forceReport*](classOpenSkyhawk_1_1InputBase
 
 ### function poll 
 
-_Read the quadrature state, accumulate, emit a direction once a detent completes._ 
+_Decode at loop rate (unless a sampler ticks), then drain pending detents → EVTs._ 
 ```C++
 virtual void OpenSkyhawk::RotaryEncoder::poll () override
 ```
@@ -287,6 +292,22 @@ virtual void OpenSkyhawk::RotaryEncoder::poll () override
 
 
 Implements [*OpenSkyhawk::InputBase::poll*](classOpenSkyhawk_1_1InputBase.md#function-poll)
+
+
+<hr>
+
+
+
+### function sampleTick 
+
+_ISR-safe quadrature decode of one sample → pending detents. No CAN._ 
+```C++
+virtual void OpenSkyhawk::RotaryEncoder::sampleTick () override
+```
+
+
+
+Implements [*OpenSkyhawk::InputBase::sampleTick*](classOpenSkyhawk_1_1InputBase.md#function-sampletick)
 
 
 <hr>

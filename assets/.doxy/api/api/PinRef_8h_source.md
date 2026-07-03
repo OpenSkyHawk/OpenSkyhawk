@@ -15,9 +15,11 @@
 #include <Arduino.h>
 
 // Forward declarations — PinRef.h stores pointers; full types are not needed here.
-// Complete definitions: MCP23017 via <MCP23017.h>, ADS1115 via <ADS1115.h>.
+// Complete definitions: MCP23017 via <MCP23017.h>, ADS1115 via <ADS1115.h>,
+// ShiftBus via <Helpers/ShiftBus/ShiftBus.h>.
 class MCP23017;  
 class ADS1115;   
+namespace OpenSkyhawk { class ShiftBus; }  
 
 static constexpr uint8_t PORT_A = 0;  
 static constexpr uint8_t PORT_B = 1;  
@@ -32,6 +34,8 @@ public:
     PinRef(MCP23017& chip, uint8_t port, uint8_t bit);
 
     PinRef(ADS1115& adc, uint8_t channel);
+
+    PinRef(OpenSkyhawk::ShiftBus& bus, uint8_t chip, uint8_t bit);
 
     constexpr PinRef() : _type(Type::NC), _src{} {}
 
@@ -57,6 +61,8 @@ public:
 
     bool isGpio() const;
 
+    bool isSampledSource() const;
+
     uint8_t gpioPin() const;
 
 private:
@@ -64,6 +70,7 @@ private:
         GPIO,  
         MCP,   
         ADS,   
+        SR,    
         NC,    
     };
 
@@ -73,6 +80,8 @@ private:
         uint8_t pin;                                                
         struct { MCP23017* chip; uint8_t port; uint8_t bit; } mcp; 
         struct { ADS1115*  adc;  uint8_t channel;           } ads; 
+        struct { OpenSkyhawk::ShiftBus* bus; uint8_t chip;
+                 uint8_t bit; bool isOut;                   } sr;  
     } _src;
 };
 

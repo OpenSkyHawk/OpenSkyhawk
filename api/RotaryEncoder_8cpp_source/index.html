@@ -3907,6 +3907,8 @@ RotaryEncoder::RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
       _stepsPerDetent((uint8_t)stepsPerDetent),
       _lastState(0),
       _delta(0),
+      _pendingDetents(0),
+      _sampled(false),
       _initialized(false) {}
 
 void RotaryEncoder::configure() {
@@ -3918,10 +3920,12 @@ uint8_t RotaryEncoder::readState() {
     return (uint8_t)(((_pinA.read() ? 1u : 0u) &lt;&lt; 1) | (_pinB.read() ? 1u : 0u));
 }
 
-void RotaryEncoder::emit(int8_t dir) {
-    // dir = +1 (CW) / -1 (CCW). REL → ±step on the relative frame; DIR → ±1 on the directional
-    // frame. The bridge reads the payload as int16 and formats by frame (%+d vs INC/DEC).
-    const int16_t  value = (_mode == EncoderMode::Rel) ? (int16_t)(dir * _step) : (int16_t)dir;
+void RotaryEncoder::emit(int8_t detents) {
+    // REL → one frame carrying detents×step (coalesced burst reads as one bigger twist,
+    // same DCS result, fewer frames); DIR → ±1 per frame (DCS steps one position per
+    // INC/DEC, so a burst must stay one frame per detent — the caller loops).
+    const int16_t  value = (_mode == EncoderMode::Rel) ? (int16_t)(detents * _step)
+                                                       : (int16_t)detents;
     const uint32_t frame = (_mode == EncoderMode::Rel) ? canIdEvtRel(NODE_ID) : canIdEvtDir(NODE_ID);
     CANProtocol::sendBatched(frame, ControlPacket{_controlId, (uint16_t)value});
 #ifdef ROTARYENCODER_TEST
@@ -3939,6 +3943,9 @@ void RotaryEncoder::emit(int8_t dir) {
 
 void RotaryEncoder::decode(uint8_t state) {
     // Quadrature transition table — ported verbatim from DcsBios RotaryEncoder (Encoders.h).
+    // Runs wherever the sampling happens — sampleTick() (possibly ISR context) once a
+    // sampler ticks, poll() otherwise; never both. Completed detents go to _pendingDetents;
+    // emission always happens loop-side in drainPending().
     switch (_lastState) {
         case 0: if (state == 2) _delta--; if (state == 1) _delta++; break;
         case 1: if (state == 0) _delta--; if (state == 3) _delta++; break;
@@ -3947,26 +3954,84 @@ void RotaryEncoder::decode(uint8_t state) {
     }
     _lastState = state;
 
+    // Pending cap: REL coalesces on drain, so deep accumulation is cheap (one frame);
+    // DIR emits one CAN frame per detent — an absurd backlog (multi-second stall while
+    // spinning) would flood the 16-slot TX ring and silently drop frames, so clamp it.
+    const int8_t cap = (_mode == EncoderMode::Dir) ? 8 : INT8_MAX;
     if (_delta &gt;= (int8_t)_stepsPerDetent) {       // clockwise
-        emit(+1);
+        if (_pendingDetents &lt;  cap) _pendingDetents = _pendingDetents + 1;
         _delta -= (int8_t)_stepsPerDetent;
     }
     if (_delta &lt;= -(int8_t)_stepsPerDetent) {      // counter-clockwise
-        emit(-1);
+        if (_pendingDetents &gt; -cap) _pendingDetents = _pendingDetents - 1;
         _delta += (int8_t)_stepsPerDetent;
     }
 }
 
+void RotaryEncoder::sampleTick() {
+    // Generic InputBase high-rate hook — the encoder does not know (or care) who calls it.
+    // ISR-safe: cached pin reads + the transition table, no CAN.
+    // Decline ownership unless BOTH pins are sampler-refreshed sources (ShiftBus '165):
+    // a GPIO/MCP-pinned encoder on a mixed node keeps its loop-rate decode unchanged —
+    // its cache only refreshes at loop rate, so sampler ownership would gain nothing and
+    // silently rewire behavior the SHIFTBUS_ISR_HZ flag has no business touching.
+    if (!(_pinA.isSampledSource() &amp;&amp; _pinB.isSampledSource())) return;
+    // Claim ownership BEFORE the initialized check: once a sampler ticks at all, poll()
+    // must never decode again, or a poll between forceReport() and the next tick could be
+    // preempted mid-decode by this ISR (torn _delta/_lastState).
+    _sampled = true;
+    if (!_initialized) return;
+    decode(readState());
+}
+
+void RotaryEncoder::drainPending() {
+    // Read-and-clear must be atomic against a sampler ticking from ISR context. Masking
+    // unconditionally costs a few cycles and spares this class any knowledge of whether
+    // (or from where) a sampler runs.
+    noInterrupts();
+    int8_t d = _pendingDetents;
+    _pendingDetents = 0;
+    interrupts();
+    if (d == 0) return;
+#ifdef ROTARYENCODER_TEST
+    _netDetents += d;
+#endif
+
+    if (_mode == EncoderMode::Rel) {
+        // Coalesce, chunked so detents×step stays within int16. Magnitude-based so a
+        // negative step (direction-invert config) chunks correctly too.
+        const int16_t mag = (_step &lt; 0) ? (int16_t)-_step : _step;
+        const int16_t maxChunk = (mag &gt; 1) ? (int16_t)(32767 / mag) : 127;
+        while (d != 0) {
+            int8_t chunk = d;
+            if (chunk &gt;  maxChunk) chunk = (int8_t)maxChunk;
+            if (chunk &lt; -maxChunk) chunk = (int8_t)-maxChunk;
+            emit(chunk);
+            d = (int8_t)(d - chunk);
+        }
+    } else {
+        while (d &gt; 0) { emit(+1); d--; }
+        while (d &lt; 0) { emit(-1); d++; }
+    }
+}
+
 void RotaryEncoder::forceReport() {
-    _lastState   = readState();   // resync so the first poll sees no spurious transition
-    _delta       = 0;
-    _initialized = true;
+    // Resync so the first decode sees no spurious transition. Masked against a sampler
+    // (SYNC_REQ arrives in loop context).
+    noInterrupts();
+    _lastState      = readState();
+    _delta          = 0;
+    _pendingDetents = 0;
+    _initialized    = true;
+    interrupts();
     // No EVT — a relative encoder has no absolute state to report at boot / SYNC.
 }
 
 void RotaryEncoder::poll() {
     if (!_initialized) return;
-    decode(readState());
+    // Once a sampler ticks, it owns the decode; poll() only drains.
+    if (!_sampled) decode(readState());
+    drainPending();
 }
 
 }  // namespace OpenSkyhawk

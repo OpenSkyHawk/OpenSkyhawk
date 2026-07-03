@@ -11,8 +11,9 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include "PinRef.h"
-#include "ADS1115.h"     // full ADS1115 type for readSingleEnded()
-#include <MCP23017.h>    // full MCP23017 type for reference binding
+#include "ADS1115.h"                       // full ADS1115 type for readSingleEnded()
+#include <MCP23017.h>                      // full MCP23017 type for reference binding
+#include "Helpers/ShiftBus/ShiftBus.h"     // full ShiftBus type for the SR dispatch
 
 #ifdef PINREF_DEBUG
 #include <STM32Board.h>
@@ -30,6 +31,7 @@ namespace PanelGroup {
     void writeCachedPin(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
     void writeCachedPinDeferred(MCP23017& chip, uint8_t port, uint8_t bit, bool value);
     bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit);
+    void noteShiftBus(OpenSkyhawk::ShiftBus& bus);  // configure-time bus auto-collection
 }
 
 // ── PIN_NC definition ─────────────────────────────────────────────────────────
@@ -51,6 +53,12 @@ PinRef::PinRef(ADS1115& adc, uint8_t channel) : _type(Type::ADS) {
     adc.setGain(GAIN_ONE); // ±4.096V FSR — best resolution for 0–3.3V inputs
 }
 
+PinRef::PinRef(OpenSkyhawk::ShiftBus& bus, uint8_t chip, uint8_t bit) : _type(Type::SR) {
+    // Direction is unknown until configureAsInput()/configureAsOutput(); default to input
+    // so a read before configure() hits the (all-zero) '165 cache instead of the out frame.
+    _src.sr = { &bus, chip, bit, /*isOut=*/false };
+}
+
 // Default no-connect ctor is constexpr, defined inline in PinRef.h (constant-initialized
 // so PIN_NC is safe in global array initialisers — no static-init-order hazard).
 
@@ -64,6 +72,9 @@ bool PinRef::read() const {
         return PanelGroup::readCachedPin(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit);
     case Type::ADS:
         return readAnalog() > 32767u;
+    case Type::SR:
+        return _src.sr.isOut ? _src.sr.bus->readOutBit(_src.sr.chip, _src.sr.bit)
+                             : _src.sr.bus->readBit(_src.sr.chip, _src.sr.bit);
     case Type::NC:
     default:
         return false;
@@ -80,6 +91,9 @@ bool PinRef::readLive() const {
         return PanelGroup::readLivePin(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit);
     case Type::ADS:
         return readAnalog() > 32767u;                  // already live
+    case Type::SR:
+        return _src.sr.isOut ? _src.sr.bus->readOutBit(_src.sr.chip, _src.sr.bit)
+                             : _src.sr.bus->readLiveBit(_src.sr.chip, _src.sr.bit);
     case Type::NC:
     default:
         return false;
@@ -104,6 +118,11 @@ uint16_t PinRef::readAnalog() const {
         STM32Board::log("[PinRef] readAnalog on MCP23017 pin — not supported, returns 0");
 #endif
         return 0;
+    case Type::SR:
+#ifdef PINREF_DEBUG
+        STM32Board::log("[PinRef] readAnalog on ShiftBus pin — digital only, returns 0");
+#endif
+        return 0;
     case Type::NC:
     default:
         return 0;
@@ -125,6 +144,16 @@ void PinRef::write(bool value) {
         STM32Board::log("[PinRef] write on ADS1115 pin — input-only, no-op");
 #endif
         break;
+    case Type::SR:
+        if (_src.sr.isOut) {
+            // SR writes are inherently deferred: set the frame bit; the next transfer()
+            // (loop step, ISR tick, or flushExpanderWrites) publishes it.
+            _src.sr.bus->writeBit(_src.sr.chip, _src.sr.bit, value);
+        }
+#ifdef PINREF_DEBUG
+        else STM32Board::log("[PinRef] write on ShiftBus input ('165) pin — no-op");
+#endif
+        break;
     case Type::NC:
     default:
         break;
@@ -138,6 +167,9 @@ void PinRef::writeDeferred(bool value) {
         break;
     case Type::MCP:
         PanelGroup::writeCachedPinDeferred(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit, value);
+        break;
+    case Type::SR:
+        write(value);   // SR writes are already deferred — same path
         break;
     case Type::ADS:
     case Type::NC:
@@ -157,6 +189,11 @@ void PinRef::writeAnalog(uint16_t val) {
     case Type::MCP:
 #ifdef PINREF_DEBUG
         STM32Board::log("[PinRef] writeAnalog on MCP23017 pin — no PWM, no-op");
+#endif
+        break;
+    case Type::SR:
+#ifdef PINREF_DEBUG
+        STM32Board::log("[PinRef] writeAnalog on ShiftBus pin — no PWM, no-op");
 #endif
         break;
     case Type::ADS:
@@ -181,6 +218,13 @@ void PinRef::configureAsInput() {
         // Flat pin: 0-7 = PORT A, 8-15 = PORT B. INPUT sets IODIR=1, GPPU=0.
         _src.mcp.chip->pinMode(_src.mcp.port * 8 + _src.mcp.bit, INPUT);
         break;
+    case Type::SR:
+        // Bind to the '165 chain (the MCP IODIR pattern: direction set here, not in the
+        // constructor). Also grows the chain length + collects the bus for begin().
+        _src.sr.isOut = false;
+        _src.sr.bus->noteInput(_src.sr.chip);
+        PanelGroup::noteShiftBus(*_src.sr.bus);
+        break;
     case Type::ADS:
     case Type::NC:
     default:
@@ -199,6 +243,12 @@ void PinRef::configureAsOutput() {
         // Flat pin: 0-7 = PORT A, 8-15 = PORT B. OUTPUT sets IODIR=0, GPPU=0.
         _src.mcp.chip->pinMode(_src.mcp.port * 8 + _src.mcp.bit, OUTPUT);
         break;
+    case Type::SR:
+        // Bind to the '595 chain.
+        _src.sr.isOut = true;
+        _src.sr.bus->noteOutput(_src.sr.chip);
+        PanelGroup::noteShiftBus(*_src.sr.bus);
+        break;
     case Type::ADS:
 #ifdef PINREF_DEBUG
         STM32Board::log("[PinRef] configureAsOutput on ADS1115 pin — input-only, no-op");
@@ -214,6 +264,8 @@ void PinRef::configureAsOutput() {
 
 bool PinRef::isNC()   const { return _type == Type::NC; }
 bool PinRef::isGpio() const { return _type == Type::GPIO; }
+
+bool PinRef::isSampledSource() const { return _type == Type::SR; }
 
 uint8_t PinRef::gpioPin() const {
     if (_type == Type::GPIO) return _src.pin;

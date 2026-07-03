@@ -42,12 +42,15 @@ public:
 
     void configure() override;
 
+    void sampleTick() override;
+
 #ifdef ROTARYENCODER_TEST
-    void debugSeed(uint8_t state) { _lastState = (uint8_t)(state & 0x3); _delta = 0; _initialized = true; }
-    void debugStep(uint8_t ab) { decode((uint8_t)(ab & 0x3)); }
+    void debugSeed(uint8_t state) { _lastState = (uint8_t)(state & 0x3); _delta = 0; _pendingDetents = 0; _initialized = true; }
+    void debugStep(uint8_t ab) { decode((uint8_t)(ab & 0x3)); drainPending(); }
     uint16_t emitCount() const { return _emitCount; }
     int16_t lastValue() const { return _lastValue; }
     uint32_t lastFrame() const { return _lastFrame; }
+    int32_t netDetents() const { return _netDetents; }
 #endif
 
 protected:
@@ -55,7 +58,8 @@ protected:
 
 private:
     void decode(uint8_t state);          
-    void emit(int8_t dir);               
+    void drainPending();                 
+    void emit(int8_t detents);           
 
     uint16_t   _controlId;
     PinRef     _pinA;
@@ -65,11 +69,14 @@ private:
     uint8_t    _stepsPerDetent;
     uint8_t    _lastState;   
     int8_t     _delta;       
+    volatile int8_t _pendingDetents;  
+    volatile bool   _sampled;         
     bool       _initialized; 
 #ifdef ROTARYENCODER_TEST
     uint16_t _emitCount = 0;
     int16_t  _lastValue = 0;
     uint32_t _lastFrame = 0;
+    int32_t  _netDetents = 0;
 #endif
 };
 

@@ -45,6 +45,11 @@
 * **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
+## n
+
+* **noteShiftBus** ([**PanelGroup**](namespacePanelGroup.md))
+
+
 ## o
 
 * **onReceive** ([**CANProtocol**](namespaceCANProtocol.md))

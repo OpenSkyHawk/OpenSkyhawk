@@ -15,6 +15,7 @@ _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pa
 * `#include <MCP23017.h>`
 * `#include "ADS1115.h"`
 * `#include "PinRef.h"`
+* `#include "Helpers/ShiftBus/ShiftBus.h"`
 * `#include <CANProtocol.h>`
 
 
@@ -33,7 +34,7 @@ _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _pa
 
 | Type | Name |
 | ---: | :--- |
-| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br> |
+| namespace | [**OpenSkyhawk**](namespaceOpenSkyhawk.md) <br>_Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._ |
 | namespace | [**PanelGroup**](namespacePanelGroup.md) <br>_Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._ |
 
 
@@ -118,7 +119,8 @@ OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM,
 
 void setup() {
     Wire.begin();
-    PanelGroup::registerExpander(exp1, PB3, PB4);  // INTA→PB3, INTB→PB4
+    PanelGroup::registerExpander(exp1, PB12, PB13);  // INTA→PB12, INTB→PB13
+    // (PB3–PB5/PB8/PB9 belong to ShiftBus1 on a node that also uses shift registers)
     PanelGroup::registerADC(adc1, 0x48, Wire);
     PanelGroup::setup();
 }

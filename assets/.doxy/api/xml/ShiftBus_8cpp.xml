@@ -1,0 +1,387 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="ShiftBus_8cpp" kind="file" language="C++">
+    <compoundname>ShiftBus.cpp</compoundname>
+    <includes refid="ShiftBus_8h" local="yes">ShiftBus.h</includes>
+    <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp</label>
+        <link refid="ShiftBus_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ShiftBus.h</label>
+        <link refid="ShiftBus_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Arduino.h</label>
+      </node>
+      <node id="4">
+        <label>SPI.h</label>
+      </node>
+      <node id="6">
+        <label>stm32f1xx_hal_can.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="ShiftBus_8cpp_1ac6fe7f0bb8012cdad4044185c3285eb8" prot="public" static="no">
+        <name>SHIFTBUS_SCK</name>
+        <initializer>PB3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" line="14" column="9" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ShiftBus_8cpp_1a19016134396b00b291f1de8c19c44af0" prot="public" static="no">
+        <name>SHIFTBUS_MISO</name>
+        <initializer>PB4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" line="17" column="9" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ShiftBus_8cpp_1a79136ad499cc3e5052205ff02846b1a9" prot="public" static="no">
+        <name>SHIFTBUS_MOSI</name>
+        <initializer>PB5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" line="20" column="9" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ShiftBus_8cpp_1a4cb4e9bb3f45994e66c3b7063c2373e4" prot="public" static="no">
+        <name>SHIFTBUS_LOAD</name>
+        <initializer>PB8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" line="23" column="9" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ShiftBus_8cpp_1adb399e95684488af1f11aa9f1a5a4b77" prot="public" static="no">
+        <name>SHIFTBUS_LATCH</name>
+        <initializer>PB9</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" line="26" column="9" bodyfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" bodystart="26" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="ShiftBus_8cpp_1af10ae0980631927896b51a2b7cf9555e" prot="public" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">OpenSkyhawk::ShiftBus</ref></type>
+        <definition>OpenSkyhawk::ShiftBus ShiftBus1(SPI, PB3, PB4, PB5, PB8, PB9)</definition>
+        <argsstring>(SPI, PB3, PB4, PB5, PB8, PB9)</argsstring>
+        <name>ShiftBus1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" line="238" column="23"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="ShiftBus_8cpp_1a777528e47956079bf6b84fee372c340f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const SPISettings</type>
+        <definition>static const SPISettings kShiftBusSettings</definition>
+        <argsstring>(1000000, MSBFIRST, SPI_MODE0)</argsstring>
+        <name>kShiftBusSettings</name>
+        <param>
+          <type>1000000</type>
+        </param>
+        <param>
+          <type>MSBFIRST</type>
+        </param>
+        <param>
+          <type>SPI_MODE0</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" line="30" column="26" declfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp" declline="30" declcolumn="26"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ShiftBus_8h" kindref="compound">ShiftBus.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Standard<sp/>pin<sp/>assignment<sp/>for<sp/>the<sp/>pre-defined<sp/>ShiftBus1<sp/>(override<sp/>via<sp/>build<sp/>flags)<sp/>──</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SHIFTBUS_SCK</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SHIFTBUS_SCK<sp/><sp/><sp/>PB3<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SPI1<sp/>remap<sp/>(JTDO<sp/>—<sp/>JTAG<sp/>released<sp/>in<sp/>begin(),<sp/>SWD<sp/>unaffected)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SHIFTBUS_MISO</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SHIFTBUS_MISO<sp/><sp/>PB4<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SPI1<sp/>remap<sp/>(NJTRST)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SHIFTBUS_MOSI</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SHIFTBUS_MOSI<sp/><sp/>PB5<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SPI1<sp/>remap</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SHIFTBUS_LOAD</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SHIFTBUS_LOAD<sp/><sp/>PB8<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;165<sp/>SH/LD̄</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SHIFTBUS_LATCH</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SHIFTBUS_LATCH<sp/>PB9<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;595<sp/>STCP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>~1<sp/>MHz:<sp/>comfortable<sp/>for<sp/>74HC<sp/>at<sp/>3.3<sp/>V<sp/>and<sp/>for<sp/>a<sp/>~12&quot;<sp/>remote<sp/>harness<sp/>leg<sp/>(33<sp/>Ω<sp/>series<sp/>R).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SPISettings<sp/><ref refid="ShiftBus_8cpp_1a777528e47956079bf6b84fee372c340f" kindref="member">kShiftBusSettings</ref>(1000000,<sp/>MSBFIRST,<sp/>SPI_MODE0);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">ShiftBus*<sp/>ShiftBus::_isrInstance<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1ShiftBus_1ab4716ed602bf2089907b0237d1d44d54" kindref="member">ShiftBus::ShiftBus</ref>(SPIClass&amp;<sp/>spi,<sp/>uint8_t<sp/>sckPin,<sp/>uint8_t<sp/>misoPin,<sp/>uint8_t<sp/>mosiPin,</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>loadPin,<sp/>uint8_t<sp/>latchPin)</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_spi(&amp;spi),<sp/>_sckPin(sckPin),<sp/>_misoPin(misoPin),<sp/>_mosiPin(mosiPin),</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_loadPin(loadPin),<sp/>_latchPin(latchPin)<sp/>{}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Nothing<sp/>else:<sp/>constructors<sp/>of<sp/>global<sp/>buses<sp/>run<sp/>during<sp/>static<sp/>init,<sp/>before<sp/>HAL<sp/>init.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>configure-time<sp/>notification<sp/>(PinRef::configureAsInput/Output)<sp/>──────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::noteInput(uint8_t<sp/>chip)<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>&gt;=<sp/>MAX_CHAIN)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>+<sp/>1<sp/>&gt;<sp/>_nIn)<sp/>_nIn<sp/>=<sp/>chip<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>_active<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::noteOutput(uint8_t<sp/>chip)<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>&gt;=<sp/>MAX_CHAIN)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>+<sp/>1<sp/>&gt;<sp/>_nOut)<sp/>_nOut<sp/>=<sp/>chip<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>_active<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Frame<sp/>access<sp/>────────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ShiftBus::readBit(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>&gt;=<sp/>MAX_CHAIN<sp/>||<sp/>bit<sp/>&gt;<sp/>7)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(_inFrame[chip]<sp/>&gt;&gt;<sp/>bit)<sp/>&amp;<sp/>1u;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ShiftBus::readOutBit(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>&gt;=<sp/>MAX_CHAIN<sp/>||<sp/>bit<sp/>&gt;<sp/>7)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(_stage[chip]<sp/>&gt;&gt;<sp/>bit)<sp/>&amp;<sp/>1u;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>last<sp/>written<sp/>(staged)<sp/>value</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::writeBit(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>v)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>&gt;=<sp/>MAX_CHAIN<sp/>||<sp/>bit<sp/>&gt;<sp/>7)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Stage<sp/>is<sp/>loop-owned<sp/>—<sp/>the<sp/>ISR<sp/>only<sp/>ships<sp/>the<sp/>committed<sp/>_outFrame,<sp/>so<sp/>a<sp/>multi-pin</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>group<sp/>(four<sp/>stepper<sp/>coils)<sp/>staged<sp/>across<sp/>several<sp/>calls<sp/>can<sp/>never<sp/>reach<sp/>the<sp/>outputs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>half-written.<sp/>No<sp/>masking<sp/>needed<sp/>here;<sp/>the<sp/>commit<sp/>in<sp/>doTransfer()<sp/>is<sp/>the<sp/>sync<sp/>point.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>mask<sp/>=<sp/>(uint8_t)(1u<sp/>&lt;&lt;<sp/>bit);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(v)<sp/>_stage[chip]<sp/>|=<sp/><sp/>mask;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/>_stage[chip]<sp/>&amp;=<sp/>~mask;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>_dirty<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ShiftBus::readLiveBit(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit)<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>transfer();</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>readBit(chip,<sp/>bit);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Lifecycle<sp/>───────────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::begin()<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kindref="member">_begun</ref><sp/>||<sp/>!_active)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kindref="member">_begun</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(STM32F1xx)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Release<sp/>JTAG<sp/>so<sp/>PB3<sp/>(JTDO)<sp/>/<sp/>PB4<sp/>(NJTRST)<sp/>become<sp/>GPIO/SPI.<sp/>SWD<sp/>(PA13/PA14)<sp/>retained.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(The<sp/>core&apos;s<sp/>pin_DisconnectDebug<sp/>does<sp/>this<sp/>too<sp/>when<sp/>the<sp/>pins<sp/>map;<sp/>explicit<sp/>is<sp/>cheap</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>insurance<sp/>and<sp/>self-documenting.)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>__HAL_RCC_AFIO_CLK_ENABLE();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>__HAL_AFIO_REMAP_SWJ_NOJTAG();</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Strobes<sp/>idle:<sp/>LOAD<sp/>high<sp/>(&apos;165<sp/>shift<sp/>mode),<sp/>LATCH<sp/>low<sp/>(&apos;595<sp/>waits<sp/>for<sp/>a<sp/>rising<sp/>edge).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(_loadPin,<sp/>OUTPUT);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(_loadPin,<sp/>HIGH);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>pinMode(_latchPin,<sp/>OUTPUT);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(_latchPin,<sp/>LOW);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SHIFTBUS_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_testBypass)<sp/>{<sp/>doTransfer(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}<sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>SPI<sp/>in<sp/>chip-less<sp/>logic<sp/>tests</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>_spi-&gt;setSCLK(_sckPin);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>_spi-&gt;setMISO(_misoPin);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>_spi-&gt;setMOSI(_mosiPin);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>_spi-&gt;begin();</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Defined<sp/>&apos;595<sp/>state<sp/>as<sp/>early<sp/>as<sp/>possible:<sp/>the<sp/>power-on<sp/>shift/storage<sp/>registers<sp/>are</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>undefined<sp/>(OĒ<sp/>is<sp/>tied<sp/>to<sp/>GND<sp/>—<sp/>stance<sp/>(a),<sp/>boot<sp/>twitch<sp/>is<sp/>cosmetic).<sp/>The<sp/>stage<sp/>is</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>all<sp/>zeros<sp/>here,<sp/>so<sp/>the<sp/>first<sp/>transfer<sp/>publishes<sp/>an<sp/>all-off<sp/>frame,<sp/>then<sp/>primes<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;165<sp/>cache<sp/>for<sp/>the<sp/>forceReport()<sp/>boot<sp/>burst.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>doTransfer(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[ShiftBus]<sp/>begin:<sp/>in=&quot;</highlight><highlight class="normal">));<sp/><sp/>d.print(_nIn);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>out=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(_nOut);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>frame=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print((</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)max(_nIn,<sp/>_nOut));</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.println(F(</highlight><highlight class="stringliteral">&quot;B&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::transfer()<sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kindref="member">_begun</ref>)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Loop-context<sp/>call<sp/>while<sp/>the<sp/>sampling<sp/>ISR<sp/>owns<sp/>the<sp/>cadence:<sp/>mask<sp/>interrupts<sp/>for<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>µs-scale<sp/>transaction<sp/>so<sp/>ISR<sp/>and<sp/>loop<sp/>never<sp/>interleave<sp/>on<sp/>the<sp/>frame<sp/>buffers.<sp/>The</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>window<sp/>is<sp/>bounded<sp/>(≤<sp/>MAX_CHAIN<sp/>bytes<sp/>at<sp/>1<sp/>MHz<sp/>≈<sp/>64<sp/>µs<sp/>+<sp/>strobes);<sp/>no<sp/>CAN/I2C<sp/>inside.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_isrActive)<sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>noInterrupts();</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>doTransfer(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>interrupts();</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>doTransfer(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::doTransfer(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>commitStage)<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Commit:<sp/>publish<sp/>staged<sp/>writeBit()<sp/>changes<sp/>into<sp/>the<sp/>frame<sp/>the<sp/>wire<sp/>ships.<sp/>Only</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>loop-context<sp/>paths<sp/>commit<sp/>(transfer/flushNow<sp/>—<sp/>masked<sp/>when<sp/>the<sp/>ISR<sp/>runs);<sp/>the<sp/>ISR</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>never<sp/>commits,<sp/>so<sp/>it<sp/>can<sp/>never<sp/>latch<sp/>a<sp/>half-staged<sp/>multi-pin<sp/>group.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(commitStage<sp/>&amp;&amp;<sp/>_dirty)<sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>MAX_CHAIN;<sp/>i++)<sp/>_outFrame[i]<sp/>=<sp/>_stage[i];</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_dirty<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>n<sp/>=<sp/>max(_nIn,<sp/>_nOut);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SHIFTBUS_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>_transferCount++;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Build<sp/>the<sp/>wire<sp/>frame.<sp/>MSB-first,<sp/>so<sp/>byte<sp/>chip<sp/>bit<sp/>n<sp/>=<sp/>pin<sp/>Dn/Qn.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;595:<sp/>the<sp/>LAST<sp/>byte<sp/>shifted<sp/>lands<sp/>in<sp/>chip<sp/>0<sp/>(nearest<sp/>the<sp/>MCU)<sp/>→<sp/>transmit</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>outFrame[nOut-1]<sp/>…<sp/>outFrame[0],<sp/>padded<sp/>in<sp/>FRONT<sp/>when<sp/>the<sp/>&apos;165<sp/>chain<sp/>is<sp/>longer</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(leading<sp/>pad<sp/>bits<sp/>fall<sp/>off<sp/>the<sp/>far<sp/>end<sp/>of<sp/>the<sp/>&apos;595<sp/>chain).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;165:<sp/>the<sp/>FIRST<sp/>byte<sp/>received<sp/>is<sp/>chip<sp/>0<sp/>→<sp/>inFrame[i]<sp/>=<sp/>wire[i]<sp/>straight.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>pad<sp/>=<sp/>n<sp/>-<sp/>_nOut;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>pad;<sp/>i++)<sp/><sp/>_wire[i]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_nOut;<sp/>i++)<sp/>_wire[pad<sp/>+<sp/>i]<sp/>=<sp/>_outFrame[_nOut<sp/>-<sp/>1<sp/>-<sp/>i];</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SHIFTBUS_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>MAX_CHAIN;<sp/>i++)<sp/>_wireTx[i]<sp/>=<sp/>_wire[i];</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_testBypass)<sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>MAX_CHAIN;<sp/>i++)<sp/>_inFrame[i]<sp/>=<sp/>_testIn[i];</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;165<sp/>capture:<sp/>pulse<sp/>SH/LD̄<sp/>low.<sp/>Data-sheet<sp/>minimum<sp/>pulse<sp/>width<sp/>is<sp/>tens<sp/>of<sp/>ns;<sp/>two</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>digitalWrite()<sp/>calls<sp/>at<sp/>72<sp/>MHz<sp/>are<sp/>comfortably<sp/>above<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(_loadPin,<sp/>LOW);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(_loadPin,<sp/>HIGH);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>_spi-&gt;beginTransaction(<ref refid="ShiftBus_8cpp_1a777528e47956079bf6b84fee372c340f" kindref="member">kShiftBusSettings</ref>);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>_spi-&gt;transfer(_wire,<sp/>n);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>in-place<sp/>full-duplex:<sp/>TX<sp/>consumed,<sp/>RX<sp/>replaces</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>_spi-&gt;endTransaction();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>_nIn;<sp/>i++)<sp/>_inFrame[i]<sp/>=<sp/>_wire[i];</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;595<sp/>publish:<sp/>STCP<sp/>rising<sp/>edge<sp/>copies<sp/>the<sp/>(freshly<sp/>re-shifted)<sp/>frame<sp/>to<sp/>the<sp/>outputs.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(_latchPin,<sp/>HIGH);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/>digitalWrite(_latchPin,<sp/>LOW);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Timer-ISR<sp/>sampling<sp/>──────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::isrTrampoline()<sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>ShiftBus*<sp/>bus<sp/>=<sp/>_isrInstance;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!bus)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>bus-&gt;doTransfer(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/><sp/></highlight><highlight class="comment">//<sp/>ISR<sp/>ships<sp/>the<sp/>committed<sp/>frame<sp/>only<sp/>—<sp/>never<sp/>commits<sp/>stage</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>bus-&gt;_consumerCount;<sp/>i++)</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bus-&gt;_consumers[i].hook(bus-&gt;_consumers[i].ctx);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::beginIsrSampling(TIM_TypeDef*<sp/>tim,<sp/>uint16_t<sp/>sampleHz)<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="STM32Board_8cpp_1a7bcc3982f0082bdf33e47f9a8de9c349" kindref="member">_begun</ref><sp/>||<sp/>_isrActive<sp/>||<sp/>sampleHz<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_isrInstance<sp/>&amp;&amp;<sp/>_isrInstance<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kindref="member">STM32Board::log</ref>(</highlight><highlight class="stringliteral">&quot;[ShiftBus]<sp/>ISR<sp/>sampling<sp/>already<sp/>claimed<sp/>by<sp/>another<sp/>bus<sp/>—<sp/>skipped&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>_isrInstance<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Setup-time<sp/>allocation<sp/>only<sp/>(never<sp/>in<sp/>the<sp/>ISR);<sp/>the<sp/>timer<sp/>lives<sp/>for<sp/>the<sp/>node&apos;s<sp/>uptime.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>HardwareTimer*<sp/>timer<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>HardwareTimer(tim);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>timer-&gt;setOverflow(sampleHz,<sp/>HERTZ_FORMAT);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>timer-&gt;attachInterrupt(isrTrampoline);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>_isrActive<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>set<sp/>before<sp/>resume<sp/>so<sp/>the<sp/>first<sp/>tick<sp/>sees<sp/>a<sp/>consistent<sp/>flag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>timer-&gt;resume();</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[ShiftBus]<sp/>ISR<sp/>sampling<sp/>@&quot;</highlight><highlight class="normal">));<sp/>d.print(sampleHz);<sp/>d.println(F(</highlight><highlight class="stringliteral">&quot;<sp/>Hz&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="220"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ShiftBus::addIsrConsumer(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*hook)(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>ctx),<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>ctx)<sp/>{</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_consumerCount<sp/>&gt;=<sp/>MAX_ISR_CONSUMERS)<sp/>{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" kindref="member">STM32Board::log</ref>(</highlight><highlight class="stringliteral">&quot;[ShiftBus]<sp/>MAX_ISR_CONSUMERS<sp/>exceeded<sp/>—<sp/>consumer<sp/>dropped&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_isrActive)<sp/>noInterrupts();</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/>_consumers[_consumerCount]<sp/>=<sp/>{<sp/>hook,<sp/>ctx<sp/>};</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/>_consumerCount++;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_isrActive)<sp/>interrupts();</highlight></codeline>
+<codeline lineno="231"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Pre-defined<sp/>global<sp/>instance<sp/>────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Static-init<sp/>safe:<sp/>the<sp/>constructor<sp/>stores<sp/>the<sp/>SPI<sp/>pointer<sp/>+<sp/>pin<sp/>numbers<sp/>and<sp/>nothing<sp/>else.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">OpenSkyhawk::ShiftBus</ref><sp/><ref refid="ShiftBus_8cpp_1af10ae0980631927896b51a2b7cf9555e" kindref="member">ShiftBus1</ref>(SPI,<sp/><ref refid="ShiftBus_8cpp_1ac6fe7f0bb8012cdad4044185c3285eb8" kindref="member">SHIFTBUS_SCK</ref>,<sp/><ref refid="ShiftBus_8cpp_1a19016134396b00b291f1de8c19c44af0" kindref="member">SHIFTBUS_MISO</ref>,<sp/><ref refid="ShiftBus_8cpp_1a79136ad499cc3e5052205ff02846b1a9" kindref="member">SHIFTBUS_MOSI</ref>,</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ShiftBus_8cpp_1a4cb4e9bb3f45994e66c3b7063c2373e4" kindref="member">SHIFTBUS_LOAD</ref>,<sp/><ref refid="ShiftBus_8cpp_1adb399e95684488af1f11aa9f1a5a4b77" kindref="member">SHIFTBUS_LATCH</ref>);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp"/>
+  </compounddef>
+</doxygen>

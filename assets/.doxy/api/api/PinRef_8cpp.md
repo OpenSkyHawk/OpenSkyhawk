@@ -13,6 +13,7 @@
 * `#include "PinRef.h"`
 * `#include "ADS1115.h"`
 * `#include <MCP23017.h>`
+* `#include "Helpers/ShiftBus/ShiftBus.h"`
 
 
 

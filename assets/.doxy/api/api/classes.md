@@ -59,6 +59,7 @@
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**InputBase**](classOpenSkyhawk_1_1InputBase.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)
 
 
 ## l
@@ -101,6 +102,8 @@
 
 ## s
 
+* [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md)

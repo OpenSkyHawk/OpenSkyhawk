@@ -6,15 +6,15 @@
     <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
     <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
     <incdepgraph>
-      <node id="10">
+      <node id="12">
         <label>CANProtocol.h</label>
         <link refid="CANProtocol_8h"/>
-        <childnode refid="11" relation="include">
+        <childnode refid="13" relation="include">
         </childnode>
-        <childnode refid="12" relation="include">
+        <childnode refid="14" relation="include">
         </childnode>
       </node>
-      <node id="12">
+      <node id="14">
         <label>HIDControls.h</label>
         <link refid="HIDControls_8h"/>
       </node>
@@ -24,14 +24,22 @@
         <childnode refid="8" relation="include">
         </childnode>
       </node>
+      <node id="10">
+        <label>Helpers/ShiftBus/ShiftBus.h</label>
+        <link refid="ShiftBus_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
       <node id="1">
         <label>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp</label>
         <link refid="RotaryEncoder_8cpp"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="10" relation="include">
+        <childnode refid="12" relation="include">
         </childnode>
-        <childnode refid="13" relation="include">
+        <childnode refid="15" relation="include">
         </childnode>
       </node>
       <node id="2">
@@ -55,6 +63,8 @@
         </childnode>
         <childnode refid="10" relation="include">
         </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
       </node>
       <node id="9">
         <label>PinRef.h</label>
@@ -62,12 +72,12 @@
         <childnode refid="4" relation="include">
         </childnode>
       </node>
-      <node id="13">
+      <node id="15">
         <label>STM32Board.h</label>
         <link refid="STM32Board_8h"/>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
+        <childnode refid="16" relation="include">
         </childnode>
       </node>
       <node id="8">
@@ -79,13 +89,16 @@
       <node id="6">
         <label>MCP23017.h</label>
       </node>
+      <node id="11">
+        <label>SPI.h</label>
+      </node>
       <node id="5">
         <label>Wire.h</label>
       </node>
-      <node id="11">
+      <node id="13">
         <label>stdint.h</label>
       </node>
-      <node id="14">
+      <node id="16">
         <label>stm32f1xx_hal_can.h</label>
       </node>
     </incdepgraph>
@@ -117,71 +130,136 @@
 <codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_stepsPerDetent((uint8_t)stepsPerDetent),</highlight></codeline>
 <codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_lastState(0),</highlight></codeline>
 <codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_delta(0),</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_initialized(false)<sp/>{}</highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::configure()<sp/>{</highlight></codeline>
-<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>_pinA.configureAsInput();</highlight></codeline>
-<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>_pinB.configureAsInput();</highlight></codeline>
-<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal">uint8_t<sp/>RotaryEncoder::readState()<sp/>{</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint8_t)(((_pinA.read()<sp/>?<sp/>1u<sp/>:<sp/>0u)<sp/>&lt;&lt;<sp/>1)<sp/>|<sp/>(_pinB.read()<sp/>?<sp/>1u<sp/>:<sp/>0u));</highlight></codeline>
-<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::emit(int8_t<sp/>dir)<sp/>{</highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>dir<sp/>=<sp/>+1<sp/>(CW)<sp/>/<sp/>-1<sp/>(CCW).<sp/>REL<sp/>→<sp/>±step<sp/>on<sp/>the<sp/>relative<sp/>frame;<sp/>DIR<sp/>→<sp/>±1<sp/>on<sp/>the<sp/>directional</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>frame.<sp/>The<sp/>bridge<sp/>reads<sp/>the<sp/>payload<sp/>as<sp/>int16<sp/>and<sp/>formats<sp/>by<sp/>frame<sp/>(%+d<sp/>vs<sp/>INC/DEC).</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/><sp/>value<sp/>=<sp/>(_mode<sp/>==<sp/>EncoderMode::Rel)<sp/>?<sp/>(int16_t)(dir<sp/>*<sp/>_step)<sp/>:<sp/>(int16_t)dir;</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>frame<sp/>=<sp/>(_mode<sp/>==<sp/>EncoderMode::Rel)<sp/>?<sp/><ref refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" kindref="member">canIdEvtRel</ref>(NODE_ID)<sp/>:<sp/><ref refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" kindref="member">canIdEvtDir</ref>(NODE_ID);</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kindref="member">CANProtocol::sendBatched</ref>(frame,<sp/>ControlPacket{_controlId,<sp/>(uint16_t)value});</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROTARYENCODER_TEST</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>_emitCount++;</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastValue<sp/>=<sp/>value;</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastFrame<sp/>=<sp/>frame;</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[ENC]<sp/>0x&quot;</highlight><highlight class="normal">));<sp/>d.print(_controlId,<sp/>HEX);</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(_mode<sp/>==<sp/>EncoderMode::Rel<sp/>?<sp/>F(</highlight><highlight class="stringliteral">&quot;<sp/>REL<sp/>&quot;</highlight><highlight class="normal">)<sp/>:<sp/>F(</highlight><highlight class="stringliteral">&quot;<sp/>DIR<sp/>&quot;</highlight><highlight class="normal">));</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.println(value);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>signed:<sp/>+<sp/>=<sp/>CW,<sp/>-<sp/>=<sp/>CCW</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::decode(uint8_t<sp/>state)<sp/>{</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Quadrature<sp/>transition<sp/>table<sp/>—<sp/>ported<sp/>verbatim<sp/>from<sp/>DcsBios<sp/>RotaryEncoder<sp/>(Encoders.h).</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(_lastState)<sp/>{</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>0:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>2)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>1)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>1:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>0)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>3)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>2:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>3)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>0)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>3:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>1)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>2)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastState<sp/>=<sp/>state;</highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_delta<sp/>&gt;=<sp/>(int8_t)_stepsPerDetent)<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>clockwise</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>emit(+1);</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_delta<sp/>-=<sp/>(int8_t)_stepsPerDetent;</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_delta<sp/>&lt;=<sp/>-(int8_t)_stepsPerDetent)<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>counter-clockwise</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>emit(-1);</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_delta<sp/>+=<sp/>(int8_t)_stepsPerDetent;</highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"></highlight></codeline>
-<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::forceReport()<sp/>{</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastState<sp/><sp/><sp/>=<sp/>readState();<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>resync<sp/>so<sp/>the<sp/>first<sp/>poll<sp/>sees<sp/>no<sp/>spurious<sp/>transition</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>_delta<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>_initialized<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>No<sp/>EVT<sp/>—<sp/>a<sp/>relative<sp/>encoder<sp/>has<sp/>no<sp/>absolute<sp/>state<sp/>to<sp/>report<sp/>at<sp/>boot<sp/>/<sp/>SYNC.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="81"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::poll()<sp/>{</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_initialized)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>decode(readState());</highlight></codeline>
-<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="87"><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_pendingDetents(0),</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_sampled(false),</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_initialized(false)<sp/>{}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::configure()<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>_pinA.configureAsInput();</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>_pinB.configureAsInput();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">uint8_t<sp/>RotaryEncoder::readState()<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint8_t)(((_pinA.read()<sp/>?<sp/>1u<sp/>:<sp/>0u)<sp/>&lt;&lt;<sp/>1)<sp/>|<sp/>(_pinB.read()<sp/>?<sp/>1u<sp/>:<sp/>0u));</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::emit(int8_t<sp/>detents)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>REL<sp/>→<sp/>one<sp/>frame<sp/>carrying<sp/>detents×step<sp/>(coalesced<sp/>burst<sp/>reads<sp/>as<sp/>one<sp/>bigger<sp/>twist,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>same<sp/>DCS<sp/>result,<sp/>fewer<sp/>frames);<sp/>DIR<sp/>→<sp/>±1<sp/>per<sp/>frame<sp/>(DCS<sp/>steps<sp/>one<sp/>position<sp/>per</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>INC/DEC,<sp/>so<sp/>a<sp/>burst<sp/>must<sp/>stay<sp/>one<sp/>frame<sp/>per<sp/>detent<sp/>—<sp/>the<sp/>caller<sp/>loops).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/><sp/>value<sp/>=<sp/>(_mode<sp/>==<sp/>EncoderMode::Rel)<sp/>?<sp/>(int16_t)(detents<sp/>*<sp/>_step)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>(int16_t)detents;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>frame<sp/>=<sp/>(_mode<sp/>==<sp/>EncoderMode::Rel)<sp/>?<sp/><ref refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" kindref="member">canIdEvtRel</ref>(NODE_ID)<sp/>:<sp/><ref refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" kindref="member">canIdEvtDir</ref>(NODE_ID);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kindref="member">CANProtocol::sendBatched</ref>(frame,<sp/>ControlPacket{_controlId,<sp/>(uint16_t)value});</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROTARYENCODER_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>_emitCount++;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastValue<sp/>=<sp/>value;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastFrame<sp/>=<sp/>frame;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" kindref="member">STM32Board::isDebug</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1ac15332e6dc99a200f3ea4d3a0a70276d" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[ENC]<sp/>0x&quot;</highlight><highlight class="normal">));<sp/>d.print(_controlId,<sp/>HEX);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(_mode<sp/>==<sp/>EncoderMode::Rel<sp/>?<sp/>F(</highlight><highlight class="stringliteral">&quot;<sp/>REL<sp/>&quot;</highlight><highlight class="normal">)<sp/>:<sp/>F(</highlight><highlight class="stringliteral">&quot;<sp/>DIR<sp/>&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.println(value);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>signed:<sp/>+<sp/>=<sp/>CW,<sp/>-<sp/>=<sp/>CCW</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::decode(uint8_t<sp/>state)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Quadrature<sp/>transition<sp/>table<sp/>—<sp/>ported<sp/>verbatim<sp/>from<sp/>DcsBios<sp/>RotaryEncoder<sp/>(Encoders.h).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Runs<sp/>wherever<sp/>the<sp/>sampling<sp/>happens<sp/>—<sp/>sampleTick()<sp/>(possibly<sp/>ISR<sp/>context)<sp/>once<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>sampler<sp/>ticks,<sp/>poll()<sp/>otherwise;<sp/>never<sp/>both.<sp/>Completed<sp/>detents<sp/>go<sp/>to<sp/>_pendingDetents;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>emission<sp/>always<sp/>happens<sp/>loop-side<sp/>in<sp/>drainPending().</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(_lastState)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>0:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>2)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>1)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>1:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>0)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>3)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>2:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>3)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>0)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>3:<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>1)<sp/>_delta--;<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(state<sp/>==<sp/>2)<sp/>_delta++;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastState<sp/>=<sp/>state;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Pending<sp/>cap:<sp/>REL<sp/>coalesces<sp/>on<sp/>drain,<sp/>so<sp/>deep<sp/>accumulation<sp/>is<sp/>cheap<sp/>(one<sp/>frame);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>DIR<sp/>emits<sp/>one<sp/>CAN<sp/>frame<sp/>per<sp/>detent<sp/>—<sp/>an<sp/>absurd<sp/>backlog<sp/>(multi-second<sp/>stall<sp/>while</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>spinning)<sp/>would<sp/>flood<sp/>the<sp/>16-slot<sp/>TX<sp/>ring<sp/>and<sp/>silently<sp/>drop<sp/>frames,<sp/>so<sp/>clamp<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int8_t<sp/>cap<sp/>=<sp/>(_mode<sp/>==<sp/>EncoderMode::Dir)<sp/>?<sp/>8<sp/>:<sp/>INT8_MAX;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_delta<sp/>&gt;=<sp/>(int8_t)_stepsPerDetent)<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>clockwise</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_pendingDetents<sp/>&lt;<sp/><sp/>cap)<sp/>_pendingDetents<sp/>=<sp/>_pendingDetents<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_delta<sp/>-=<sp/>(int8_t)_stepsPerDetent;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_delta<sp/>&lt;=<sp/>-(int8_t)_stepsPerDetent)<sp/>{<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>counter-clockwise</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_pendingDetents<sp/>&gt;<sp/>-cap)<sp/>_pendingDetents<sp/>=<sp/>_pendingDetents<sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_delta<sp/>+=<sp/>(int8_t)_stepsPerDetent;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::sampleTick()<sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Generic<sp/>InputBase<sp/>high-rate<sp/>hook<sp/>—<sp/>the<sp/>encoder<sp/>does<sp/>not<sp/>know<sp/>(or<sp/>care)<sp/>who<sp/>calls<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ISR-safe:<sp/>cached<sp/>pin<sp/>reads<sp/>+<sp/>the<sp/>transition<sp/>table,<sp/>no<sp/>CAN.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Decline<sp/>ownership<sp/>unless<sp/>BOTH<sp/>pins<sp/>are<sp/>sampler-refreshed<sp/>sources<sp/>(ShiftBus<sp/>&apos;165):</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>GPIO/MCP-pinned<sp/>encoder<sp/>on<sp/>a<sp/>mixed<sp/>node<sp/>keeps<sp/>its<sp/>loop-rate<sp/>decode<sp/>unchanged<sp/>—</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>its<sp/>cache<sp/>only<sp/>refreshes<sp/>at<sp/>loop<sp/>rate,<sp/>so<sp/>sampler<sp/>ownership<sp/>would<sp/>gain<sp/>nothing<sp/>and</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>silently<sp/>rewire<sp/>behavior<sp/>the<sp/>SHIFTBUS_ISR_HZ<sp/>flag<sp/>has<sp/>no<sp/>business<sp/>touching.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!(_pinA.isSampledSource()<sp/>&amp;&amp;<sp/>_pinB.isSampledSource()))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Claim<sp/>ownership<sp/>BEFORE<sp/>the<sp/>initialized<sp/>check:<sp/>once<sp/>a<sp/>sampler<sp/>ticks<sp/>at<sp/>all,<sp/>poll()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>must<sp/>never<sp/>decode<sp/>again,<sp/>or<sp/>a<sp/>poll<sp/>between<sp/>forceReport()<sp/>and<sp/>the<sp/>next<sp/>tick<sp/>could<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>preempted<sp/>mid-decode<sp/>by<sp/>this<sp/>ISR<sp/>(torn<sp/>_delta/_lastState).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>_sampled<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_initialized)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>decode(readState());</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::drainPending()<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Read-and-clear<sp/>must<sp/>be<sp/>atomic<sp/>against<sp/>a<sp/>sampler<sp/>ticking<sp/>from<sp/>ISR<sp/>context.<sp/>Masking</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>unconditionally<sp/>costs<sp/>a<sp/>few<sp/>cycles<sp/>and<sp/>spares<sp/>this<sp/>class<sp/>any<sp/>knowledge<sp/>of<sp/>whether</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(or<sp/>from<sp/>where)<sp/>a<sp/>sampler<sp/>runs.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>noInterrupts();</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>int8_t<sp/>d<sp/>=<sp/>_pendingDetents;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>_pendingDetents<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>interrupts();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(d<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ROTARYENCODER_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>_netDetents<sp/>+=<sp/>d;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_mode<sp/>==<sp/>EncoderMode::Rel)<sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Coalesce,<sp/>chunked<sp/>so<sp/>detents×step<sp/>stays<sp/>within<sp/>int16.<sp/>Magnitude-based<sp/>so<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>negative<sp/>step<sp/>(direction-invert<sp/>config)<sp/>chunks<sp/>correctly<sp/>too.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/>mag<sp/>=<sp/>(_step<sp/>&lt;<sp/>0)<sp/>?<sp/>(int16_t)-_step<sp/>:<sp/>_step;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/>maxChunk<sp/>=<sp/>(mag<sp/>&gt;<sp/>1)<sp/>?<sp/>(int16_t)(32767<sp/>/<sp/>mag)<sp/>:<sp/>127;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(d<sp/>!=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int8_t<sp/>chunk<sp/>=<sp/>d;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chunk<sp/>&gt;<sp/><sp/>maxChunk)<sp/>chunk<sp/>=<sp/>(int8_t)maxChunk;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chunk<sp/>&lt;<sp/>-maxChunk)<sp/>chunk<sp/>=<sp/>(int8_t)-maxChunk;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>emit(chunk);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d<sp/>=<sp/>(int8_t)(d<sp/>-<sp/>chunk);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(d<sp/>&gt;<sp/>0)<sp/>{<sp/>emit(+1);<sp/>d--;<sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(d<sp/>&lt;<sp/>0)<sp/>{<sp/>emit(-1);<sp/>d++;<sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::forceReport()<sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Resync<sp/>so<sp/>the<sp/>first<sp/>decode<sp/>sees<sp/>no<sp/>spurious<sp/>transition.<sp/>Masked<sp/>against<sp/>a<sp/>sampler</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(SYNC_REQ<sp/>arrives<sp/>in<sp/>loop<sp/>context).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>noInterrupts();</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastState<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>readState();</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>_delta<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>_pendingDetents<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>_initialized<sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>interrupts();</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>No<sp/>EVT<sp/>—<sp/>a<sp/>relative<sp/>encoder<sp/>has<sp/>no<sp/>absolute<sp/>state<sp/>to<sp/>report<sp/>at<sp/>boot<sp/>/<sp/>SYNC.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RotaryEncoder::poll()<sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_initialized)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Once<sp/>a<sp/>sampler<sp/>ticks,<sp/>it<sp/>owns<sp/>the<sp/>decode;<sp/>poll()<sp/>only<sp/>drains.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_sampled)<sp/>decode(readState());</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>drainPending();</highlight></codeline>
+<codeline lineno="149"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp"/>
   </compounddef>

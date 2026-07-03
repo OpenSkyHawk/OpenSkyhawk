@@ -3916,7 +3916,7 @@
 <li><strong>namespace</strong> <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a>     </li>
 <li><strong>namespace</strong> <a href="../namespaceDcsBios/"><strong>DcsBios</strong></a>     </li>
 <li><strong>struct</strong> <a href="../structDcsBiosInputEntry/"><strong>DcsBiosInputEntry</strong></a>     </li>
-<li><strong>namespace</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a>     <ul>
+<li><strong>namespace</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <em>Thin wrapper over Adafruit_ADS1115; see</em> <a href="../ADS1115_8h/"><em><strong>ADS1115.h</strong></em></a> <em>.</em>    <ul>
 <li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1AccelPoint/"><strong>AccelPoint</strong></a> <em>One point on the acceleration curve (SwitecX25 form).</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>AnalogInput</strong></a> <em>Continuous analog input — one analog</em> <code>PinRef</code> <em>, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em>    </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>AnalogMultiPos</strong></a> <em>Resistor-ladder multi-position selector — one analog</em> <code>PinRef</code> <em>, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch).</em>    </li>
@@ -3939,6 +3939,7 @@
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1NeedleGauge/"><strong>NeedleGauge</strong></a> <em>DCS-driven pointer gauge over any</em> <a href="../classOpenSkyhawk_1_1MotorDriver/"><em><strong>MotorDriver</strong></em></a> <em>backend.</em>    </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> <em>Abstract base for all DCS-driven output objects.</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>RotaryEncoder</strong></a> <em>Incremental quadrature encoder on two pins (A/B). Emits a signed</em> <strong>relative</strong> <em>value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em>    </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1ShiftBus/"><strong>ShiftBus</strong></a> <em>One shared SPI shift-register bus ('165 inputs + '595 outputs).</em>     </li>
 <li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a> <em>Full per-instance stepper configuration. Authored per sketch (panel wiring).</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1StepperMotor/"><strong>StepperMotor</strong></a> <em>Non-blocking instrument-gauge stepper driven through</em> <a href="../classPinRef/"><em><strong>PinRef</strong></em></a> <em>coils.</em>    </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>Switch2Pos</strong></a> <em>Debounced 2-position switch. Self-registers into</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em>    </li>
@@ -3947,6 +3948,7 @@
 </ul>
 </li>
 <li><strong>namespace</strong> <a href="../namespaceOpenSkyhawk_1_1_0d12/"><strong>OpenSkyhawk</strong></a> </li>
+<li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer/"><strong>IsrConsumer</strong></a>     </li>
 <li><strong>namespace</strong> <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>     </li>
 <li><strong>namespace</strong> <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> <em>Static singleton for CAN sub-node (</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>) firmware.</em>    </li>
 <li><strong>class</strong> <a href="../classPinRef/"><strong>PinRef</strong></a> <em>Hardware pin abstraction used by all</em> <a href="../namespaceOpenSkyhawk/"><em><strong>OpenSkyhawk</strong></em></a> <em>input and output classes.</em>    </li>
@@ -3955,8 +3957,8 @@
 <li><strong>namespace</strong> <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a>     </li>
 <li><strong>struct</strong> <a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a>     </li>
 <li><strong>namespace</strong> <a href="../namespace_0d8/"><strong>anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}</strong></a> </li>
-<li><strong>namespace</strong> <a href="../namespace_0d36/"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a> </li>
-<li><strong>namespace</strong> <a href="../namespace_0d40/"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a>     </li>
+<li><strong>namespace</strong> <a href="../namespace_0d38/"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a> </li>
+<li><strong>namespace</strong> <a href="../namespace_0d42/"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a>     </li>
 </ul>
 
 

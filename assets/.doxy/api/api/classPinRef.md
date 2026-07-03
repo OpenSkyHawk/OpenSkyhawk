@@ -39,11 +39,15 @@ _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.
 |  [**ADS1115**](classADS1115.md) \* | [**adc**](#variable-adc)  <br> |
 |  struct [**PinRef**](classPinRef.md) | [**ads**](#variable-ads)  <br>[_**ADS1115**_](classADS1115.md) _source._ |
 |  uint8\_t | [**bit**](#variable-bit)  <br> |
+|  [**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) \* | [**bus**](#variable-bus)  <br> |
 |  uint8\_t | [**channel**](#variable-channel)  <br> |
-|  MCP23017 \* | [**chip**](#variable-chip)  <br> |
+|  MCP23017 \* | [**chip**](#variable-chip-12)  <br> |
+|  uint8\_t | [**chip**](#variable-chip-22)  <br> |
+|  bool | [**isOut**](#variable-isout)  <br> |
 |  struct [**PinRef**](classPinRef.md) | [**mcp**](#variable-mcp)  <br>_MCP23017 source._  |
 |  uint8\_t | [**pin**](#variable-pin)  <br>_GPIO pin number._  |
 |  uint8\_t | [**port**](#variable-port)  <br> |
+|  struct [**PinRef**](classPinRef.md) | [**sr**](#variable-sr)  <br>_ShiftBus source._  |
 
 
 
@@ -64,15 +68,17 @@ _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.
 
 | Type | Name |
 | ---: | :--- |
-|   | [**PinRef**](#function-pinref-14) (uint8\_t pin) <br>_Direct STM32 GPIO pin._  |
-|   | [**PinRef**](#function-pinref-24) (MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_MCP23017 expander GPIO._  |
-|   | [**PinRef**](#function-pinref-34) ([**ADS1115**](classADS1115.md) & adc, uint8\_t channel) <br>[_**ADS1115**_](classADS1115.md) _ADC channel._ |
-|  constexpr | [**PinRef**](#function-pinref-44) () <br>_No-connect sentinel — represents a position with no physical pin._  |
+|   | [**PinRef**](#function-pinref-15) (uint8\_t pin) <br>_Direct STM32 GPIO pin._  |
+|   | [**PinRef**](#function-pinref-25) (MCP23017 & chip, uint8\_t port, uint8\_t bit) <br>_MCP23017 expander GPIO._  |
+|   | [**PinRef**](#function-pinref-35) ([**ADS1115**](classADS1115.md) & adc, uint8\_t channel) <br>[_**ADS1115**_](classADS1115.md) _ADC channel._ |
+|   | [**PinRef**](#function-pinref-45) ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) & bus, uint8\_t chip, uint8\_t bit) <br>_Shift-register bus bit ('165 input or '595 output)._  |
+|  constexpr | [**PinRef**](#function-pinref-55) () <br>_No-connect sentinel — represents a position with no physical pin._  |
 |  void | [**configureAsInput**](#function-configureasinput) () <br>_Configure this pin as a digital input._  |
 |  void | [**configureAsOutput**](#function-configureasoutput) () <br>_Configure this pin as a digital output._  |
 |  uint8\_t | [**gpioPin**](#function-gpiopin) () const<br>_Return the raw Arduino pin number for GPIO PinRefs._  |
 |  bool | [**isGpio**](#function-isgpio) () const<br>_Returns true if this_ [_**PinRef**_](classPinRef.md) _wraps a direct STM32 GPIO pin._ |
 |  bool | [**isNC**](#function-isnc) () const<br>_Returns true if this is the NC (no-connect) sentinel._  |
+|  bool | [**isSampledSource**](#function-issampledsource) () const<br>_True when this pin's cached state is refreshed by a high-rate sampler that runs independently of_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _(today: ShiftBus timer-ISR sampling)._ |
 |  bool | [**read**](#function-read) () const<br>_Digital read._  |
 |  uint16\_t | [**readAnalog**](#function-readanalog) () const<br>_Analog read, normalised to 16-bit (0–65535)._  |
 |  bool | [**readLive**](#function-readlive) () const<br>_Live digital read — bypasses any cache._  |
@@ -159,6 +165,19 @@ uint8_t PinRef::bit;
 
 
 
+### variable bus 
+
+```C++
+OpenSkyhawk::ShiftBus* PinRef::bus;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable channel 
 
 ```C++
@@ -172,10 +191,36 @@ uint8_t PinRef::channel;
 
 
 
-### variable chip 
+### variable chip [1/2]
 
 ```C++
 MCP23017* PinRef::chip;
+```
+
+
+
+
+<hr>
+
+
+
+### variable chip [2/2]
+
+```C++
+uint8_t PinRef::chip;
+```
+
+
+
+
+<hr>
+
+
+
+### variable isOut 
+
+```C++
+bool PinRef::isOut;
 ```
 
 
@@ -223,12 +268,26 @@ uint8_t PinRef::port;
 
 
 <hr>
+
+
+
+### variable sr 
+
+_ShiftBus source._ 
+```C++
+struct PinRef PinRef::sr;
+```
+
+
+
+
+<hr>
 ## Public Functions Documentation
 
 
 
 
-### function PinRef [1/4]
+### function PinRef [1/5]
 
 _Direct STM32 GPIO pin._ 
 ```C++
@@ -255,7 +314,7 @@ explicit PinRef::PinRef (
 
 
 
-### function PinRef [2/4]
+### function PinRef [2/5]
 
 _MCP23017 expander GPIO._ 
 ```C++
@@ -286,7 +345,7 @@ PinRef::PinRef (
 
 
 
-### function PinRef [3/4]
+### function PinRef [3/5]
 
 [_**ADS1115**_](classADS1115.md) _ADC channel._
 ```C++
@@ -315,7 +374,41 @@ PinRef::PinRef (
 
 
 
-### function PinRef [4/4]
+### function PinRef [4/5]
+
+_Shift-register bus bit ('165 input or '595 output)._ 
+```C++
+PinRef::PinRef (
+    OpenSkyhawk::ShiftBus & bus,
+    uint8_t chip,
+    uint8_t bit
+) 
+```
+
+
+
+Direction is set at configure time by the consuming class — [**configureAsInput()**](classPinRef.md#function-configureasinput) binds the pin to the '165 chain, [**configureAsOutput()**](classPinRef.md#function-configureasoutput) to the '595 chain (the MCP IODIR pattern). `chip` means "position within that chain".
+
+
+
+
+**Parameters:**
+
+
+* `bus` ShiftBus instance — normally the pre-defined global `ShiftBus1`. 
+* `chip` Position along the cascade, 0 = nearest the MCU. 
+* `bit` Dn ('165) or Qn ('595) pin of that chip, 0–7. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function PinRef [5/5]
 
 _No-connect sentinel — represents a position with no physical pin._ 
 ```C++
@@ -466,6 +559,24 @@ bool PinRef::isNC () const
 
 
 
+### function isSampledSource 
+
+_True when this pin's cached state is refreshed by a high-rate sampler that runs independently of_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _(today: ShiftBus timer-ISR sampling)._
+```C++
+bool PinRef::isSampledSource () const
+```
+
+
+
+Lets an input class decide whether InputBase::sampleTick() should own its decode: a pin whose cache only refreshes at loop rate (GPIO/MCP/ADS) gains nothing from sampler ownership and keeps its loop-rate path. The class never needs to know which sampler exists — only what its own pin promises. 
+
+
+        
+
+<hr>
+
+
+
 ### function read 
 
 _Digital read._ 
@@ -475,7 +586,7 @@ bool PinRef::read () const
 
 
 
-GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from [**PanelGroup**](namespacePanelGroup.md)'s last INTCAP or port read. No I2C. [**ADS1115**](classADS1115.md): true if [**readAnalog()**](classPinRef.md#function-readanalog) &gt; 32767 (half-scale threshold). NC: always false.
+GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from [**PanelGroup**](namespacePanelGroup.md)'s last INTCAP or port read. No I2C. [**ADS1115**](classADS1115.md): true if [**readAnalog()**](classPinRef.md#function-readanalog) &gt; 32767 (half-scale threshold). ShiftBus: cached '165 frame bit (input) or last written '595 bit (output). No SPI. NC: always false.
 
 
 

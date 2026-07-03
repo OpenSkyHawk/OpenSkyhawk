@@ -1,0 +1,366 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="ShiftBus_8h" kind="file" language="C++">
+    <compoundname>ShiftBus.h</compoundname>
+    <includes local="no">Arduino.h</includes>
+    <includes local="no">SPI.h</includes>
+    <includedby refid="ShiftBus_8cpp" local="yes">Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp</includedby>
+    <includedby refid="PanelGroup_8h" local="yes">Firmware/Libraries/PanelGroup/PanelGroup.h</includedby>
+    <includedby refid="PinRef_8cpp" local="yes">Firmware/Libraries/PanelGroup/PinRef.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h</label>
+        <link refid="ShiftBus_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Arduino.h</label>
+      </node>
+      <node id="3">
+        <label>SPI.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="5">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
+        <link refid="DrumDisplay_8cpp"/>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.h</label>
+        <link refid="DrumDisplay_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp</label>
+        <link refid="StepperMotor_8cpp"/>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp</label>
+        <link refid="ShiftBus_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h</label>
+        <link refid="ShiftBus_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp</label>
+        <link refid="AnalogInput_8cpp"/>
+      </node>
+      <node id="9">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h</label>
+        <link refid="AnalogInput_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp</label>
+        <link refid="AnalogMultiPos_8cpp"/>
+      </node>
+      <node id="11">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h</label>
+        <link refid="AnalogMultiPos_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp</label>
+        <link refid="MultiPosInput_8cpp"/>
+      </node>
+      <node id="13">
+        <label>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h</label>
+        <link refid="MultiPosInput_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp</label>
+        <link refid="RotaryEncoder_8cpp"/>
+      </node>
+      <node id="19">
+        <label>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h</label>
+        <link refid="RotaryEncoder_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</label>
+        <link refid="Switch2Pos_8cpp"/>
+      </node>
+      <node id="21">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h</label>
+        <link refid="Switch2Pos_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.cpp</label>
+        <link refid="Switch3Pos_8cpp"/>
+      </node>
+      <node id="15">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h</label>
+        <link refid="Switch3Pos_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.cpp</label>
+        <link refid="SwitchMultiPos_8cpp"/>
+      </node>
+      <node id="17">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.h</label>
+        <link refid="SwitchMultiPos_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+      <node id="24">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</label>
+        <link refid="LED_8cpp"/>
+      </node>
+      <node id="23">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.h</label>
+        <link refid="LED_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</label>
+        <link refid="NeedleGauge_8cpp"/>
+      </node>
+      <node id="25">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</label>
+        <link refid="NeedleGauge_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
+        <link refid="PanelGroup_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Firmware/Libraries/PanelGroup/PinRef.cpp</label>
+        <link refid="PinRef_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1ShiftBus" prot="public">OpenSkyhawk::ShiftBus</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer" prot="private">OpenSkyhawk::ShiftBus::IsrConsumer</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="ShiftBus_8h_1a7caf40ee58bccc9ab50fe3508190cc34" prot="public" static="no" extern="yes" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">OpenSkyhawk::ShiftBus</ref></type>
+        <definition>OpenSkyhawk::ShiftBus ShiftBus1</definition>
+        <argsstring></argsstring>
+        <name>ShiftBus1</name>
+        <briefdescription>
+<para>Pre-defined bus on the standard pins — SPI1-remap SCK=PB3 / MISO=PB4 / MOSI=PB5, LOAD=PB8, LATCH=PB9 (one contiguous header run with I2C1: PB9..PB3). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Override per board with -DSHIFTBUS_SCK=... / _MISO / _MOSI / _LOAD / _LATCH. Dormant (zero cost) unless a sketch declares a <ref refid="classPinRef" kindref="compound">PinRef</ref> on it. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" line="211" column="30" declfile="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h" declline="211" declcolumn="30"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Shared SPI shift-register bus — 74HC165 input chain + 74HC595 output chain. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>One ShiftBus instance owns one SPI bus carrying both chains: &apos;165 (parallel-in/serial-out) on MISO and &apos;595 (serial-in/parallel-out) on MOSI, sharing SCK. A &apos;165 read clocks the shared SCK and scrambles the &apos;595 shift stage (latched outputs are unaffected), so every transaction is one full-duplex transfer(): pulse LOAD to capture the &apos;165 inputs, shift the complete output frame while receiving the complete input frame, pulse LATCH to publish the &apos;595 outputs. There is no partial read and no partial write.</para>
+<para>Sketches normally use the pre-defined global instance <computeroutput>ShiftBus1</computeroutput> (the TwoWire/Wire pattern) and perform no setup at all — declaring an SR-backed <ref refid="classPinRef" kindref="compound">PinRef</ref> is the only opt-in. <ref refid="classPinRef_1ad51eae7d77cc3ec606471f314aa8dd57" kindref="member">PinRef::configureAsInput()</ref>/configureAsOutput() notify the bus (direction, chain length); <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> then begin()s every active bus. A bus with no SR pins stays dormant: SPI.begin() is never called.</para>
+<para>TechSpec: Firmware/ScratchPad/TechSpec/PanelGroup/Helpers/ShiftBus.md (issues #197 / #133).</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;SPI.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="classOpenSkyhawk_1_1ShiftBus" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref><sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="42" refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>8;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="43" refid="classOpenSkyhawk_1_1ShiftBus_1a28a246d6b47e2e4a01db863531f0776d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a28a246d6b47e2e4a01db863531f0776d" kindref="member">MAX_ISR_CONSUMERS</ref><sp/>=<sp/>16;<sp/><sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref>(SPIClass&amp;<sp/>spi,<sp/>uint8_t<sp/>sckPin,<sp/>uint8_t<sp/>misoPin,<sp/>uint8_t<sp/>mosiPin,</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>loadPin,<sp/>uint8_t<sp/>latchPin);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>PinRef<sp/>backend<sp/>—<sp/>package-internal,<sp/>mirrors<sp/>the<sp/>MCP<sp/>cache<sp/>bridge<sp/>─────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a0f5eb11945ce4f597e795a7b45123c11" kindref="member">noteInput</ref>(uint8_t<sp/>chip);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a3975dc3fd67e924eb9a3ce2e073ac832" kindref="member">noteOutput</ref>(uint8_t<sp/>chip);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1adb20dabbfaffd618b2b5f11cdbce6e64" kindref="member">readBit</ref>(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a926a16dcbf93ee4ab721cd38816c167f" kindref="member">readOutBit</ref>(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1ab9a4ffa319e57d03f90b50ad77a9f12e" kindref="member">writeBit</ref>(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>v);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a081a5b52ed6efcaa1175cf92c6c98790" kindref="member">readLiveBit</ref>(uint8_t<sp/>chip,<sp/>uint8_t<sp/>bit);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="classOpenSkyhawk_1_1ShiftBus_1a87bdab733bc6b96f29b8cd6f956a5a9f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a87bdab733bc6b96f29b8cd6f956a5a9f" kindref="member">dirty</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_dirty;<sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="classOpenSkyhawk_1_1ShiftBus_1aa7bc241b5edc02ba9031585bea6b88d8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1aa7bc241b5edc02ba9031585bea6b88d8" kindref="member">active</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_active;<sp/>}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Lifecycle<sp/>—<sp/>called<sp/>by<sp/>PanelGroup<sp/>─────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1abccf62ebf0eddd3b77a7b14ea0899e04" kindref="member">begin</ref>();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer</ref>();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119" refid="classOpenSkyhawk_1_1ShiftBus_1ae75478c850d65fc3cfcf9a2410aef9a4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1ae75478c850d65fc3cfcf9a2410aef9a4" kindref="member">flushNow</ref>()<sp/>{<sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a2e1656093004f20f89703be7fd9d6443" kindref="member">transfer</ref>();<sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Timer-ISR<sp/>sampling<sp/>(encoder-feel<sp/>mode,<sp/>-DSHIFTBUS_ISR_HZ)<sp/>────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a5e021b5064e287a5e0ed79d1582087c6" kindref="member">beginIsrSampling</ref>(TIM_TypeDef*<sp/>tim,<sp/>uint16_t<sp/>sampleHz);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a746d196ffbe5cb9b7079cbf5a33ff0c6" kindref="member">addIsrConsumer</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>(*hook)(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>ctx),<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>ctx);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139" refid="classOpenSkyhawk_1_1ShiftBus_1a010b76f8dec12440850227fcf7007f13" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a010b76f8dec12440850227fcf7007f13" kindref="member">isrActive</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_isrActive;<sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SHIFTBUS_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Test<sp/>seams<sp/>—<sp/>chip-less<sp/>logic<sp/>tests<sp/>(no<sp/>SPI,<sp/>no<sp/>strobe<sp/>pins)<sp/>──────────────</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testSetBypass(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>on)<sp/>{<sp/>_testBypass<sp/>=<sp/>on;<sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>testInjectIn(uint8_t<sp/>chip,<sp/>uint8_t<sp/>value)<sp/>{<sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>)<sp/>_testIn[chip]<sp/>=<sp/>value;<sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>testOutFrame(uint8_t<sp/>chip)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(chip<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>)<sp/>?<sp/>_outFrame[chip]<sp/>:<sp/>0;<sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>testWire(uint8_t<sp/>i)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(i<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>)<sp/>?<sp/>_wireTx[i]<sp/>:<sp/>0;<sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>testTransferCount()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_transferCount;<sp/>}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>testChainIn()</highlight><highlight class="keyword"><sp/><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_nIn;<sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>testChainOut()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_nOut;<sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Unguarded<sp/>body;<sp/>callers<sp/>handle<sp/>the<sp/>ISR<sp/>critical<sp/>section.<sp/>commitStage:<sp/>loop-context</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>paths<sp/>publish<sp/>pending<sp/>writeBit()<sp/>stage<sp/>changes;<sp/>the<sp/>ISR<sp/>passes<sp/>false<sp/>so<sp/>it<sp/>never</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ships<sp/>a<sp/>half-written<sp/>multi-pin<sp/>group.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>doTransfer(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>commitStage);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>SPIClass*<sp/>_spi;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_sckPin;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_misoPin;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_mosiPin;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_loadPin;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_latchPin;</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_nIn<sp/><sp/>=<sp/>0;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;165<sp/>chips<sp/>in<sp/>use<sp/>(auto-sized<sp/>at<sp/>configure)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_nOut<sp/>=<sp/>0;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;595<sp/>chips<sp/>in<sp/>use</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_active<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_begun<sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">volatile</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_dirty<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>stage<sp/>differs<sp/>from<sp/>committed<sp/>frame</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Concurrency<sp/>model<sp/>(no-LTO<sp/>assumption):<sp/>the<sp/>frames<sp/>are<sp/>plain<sp/>bytes<sp/>shared<sp/>between<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>sampling<sp/>ISR<sp/>and<sp/>loop<sp/>context.<sp/>Safe<sp/>because<sp/>all<sp/>cross-context<sp/>access<sp/>goes<sp/>through</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>out-of-line<sp/>methods<sp/>in<sp/>this<sp/>TU<sp/>(the<sp/>compiler<sp/>cannot<sp/>cache<sp/>them<sp/>across<sp/>calls)<sp/>and</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>byte<sp/>load/store<sp/>is<sp/>atomic<sp/>on<sp/>Cortex-M3.<sp/>Revisit<sp/>if<sp/>LTO<sp/>is<sp/>ever<sp/>enabled.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_inFrame[<ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>]<sp/><sp/>=<sp/>{0};<sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;165<sp/>cache:<sp/>[chip]<sp/>=<sp/>D7..D0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_stage[<ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>]<sp/><sp/><sp/><sp/>=<sp/>{0};<sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;595<sp/>staging:<sp/>loop-owned,<sp/>writeBit()<sp/>target</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_outFrame[<ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>]<sp/>=<sp/>{0};<sp/><sp/></highlight><highlight class="comment">//<sp/>&apos;595<sp/>committed<sp/>frame:<sp/>what<sp/>transfers<sp/>ship</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/>_wire[<ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>]<sp/><sp/><sp/><sp/><sp/>=<sp/>{0};<sp/><sp/></highlight><highlight class="comment">//<sp/>scratch<sp/>for<sp/>the<sp/>in-place<sp/>full-duplex<sp/>transfer</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ISR<sp/>sampling</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">volatile</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_isrActive<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">IsrConsumer<sp/>{<sp/>void<sp/>(*hook)(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*);<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>ctx;<sp/>};</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>IsrConsumer<sp/>_consumers[<ref refid="classOpenSkyhawk_1_1ShiftBus_1a28a246d6b47e2e4a01db863531f0776d" kindref="member">MAX_ISR_CONSUMERS</ref>];</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/>_consumerCount<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>isrTrampoline();<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>static<sp/>→<sp/>member<sp/>via<sp/>_isrInstance<sp/>(one<sp/>ISR<sp/>bus<sp/>supported)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus_1ab4716ed602bf2089907b0237d1d44d54" kindref="member">ShiftBus</ref>*<sp/>_isrInstance;</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SHIFTBUS_TEST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_testBypass<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>_testIn[<ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>]<sp/><sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>_wireTx[<ref refid="classOpenSkyhawk_1_1ShiftBus_1a7a21d2480a5c8340a9612b14f92f1d67" kindref="member">MAX_CHAIN</ref>]<sp/><sp/>=<sp/>{0};<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TX<sp/>wire<sp/>snapshot<sp/>(reversal/pad<sp/>coverage)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>_transferCount<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">OpenSkyhawk::ShiftBus</ref><sp/><ref refid="ShiftBus_8h_1a7caf40ee58bccc9ab50fe3508190cc34" kindref="member">ShiftBus1</ref>;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.h"/>
+  </compounddef>
+</doxygen>

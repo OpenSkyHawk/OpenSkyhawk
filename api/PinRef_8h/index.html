@@ -3874,6 +3874,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespaces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#classes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4011,6 +4022,21 @@
 <ul>
 <li><code>#include &lt;Arduino.h&gt;</code></li>
 </ul>
+<h2 id="namespaces">Namespaces</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">namespace</td>
+<td style="text-align: left;"><a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <br><em>Thin wrapper over Adafruit_ADS1115; see</em> <a href="../ADS1115_8h/"><em><strong>ADS1115.h</strong></em></a> <em>.</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="classes">Classes</h2>
 <table>
 <thead>
@@ -4052,7 +4078,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-port_a"><strong>PORT_A</strong></a>   = <code>0</code><br><em>Thin wrapper over Adafruit_ADS1115; see</em> <a href="../ADS1115_8h/"><em><strong>ADS1115.h</strong></em></a> <em>.</em></td>
+<td style="text-align: left;"><a href="#variable-port_a"><strong>PORT_A</strong></a>   = <code>0</code><br><em>&lt; 74HC165/'595 SPI shift-register bus</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
@@ -4061,7 +4087,7 @@
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>Abstracts three hardware pin sources behind a single interface: direct STM32 GPIO, MCP23017 expander GPIO, and <a href="../classADS1115/"><strong>ADS1115</strong></a> ADC channel. Used by all input and output classes so control declarations are identical regardless of where the physical pin lives.</p>
+<p>Abstracts four hardware pin sources behind a single interface: direct STM32 GPIO, MCP23017 expander GPIO, <a href="../classADS1115/"><strong>ADS1115</strong></a> ADC channel, and a ShiftBus bit (74HC165 input / 74HC595 output over SPI). Used by all input and output classes so control declarations are identical regardless of where the physical pin lives.</p>
 <p>Contains no logic beyond read/write dispatch — no debounce, no filtering, no state. <a href="../classPinRef/"><strong>PinRef</strong></a> objects are value types: live on the stack or as class members, never heap-allocated.</p>
 <p><strong>Version:</strong></p>
 <p>0.1.0 </p>
@@ -4078,7 +4104,7 @@
 <hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-port_a">variable PORT_A</h3>
-<p><em>Thin wrapper over Adafruit_ADS1115; see</em> <a href="../ADS1115_8h/"><em><strong>ADS1115.h</strong></em></a> <em>.</em></p>
+<p><em>&lt; 74HC165/'595 SPI shift-register bus</em> </p>
 <pre><code class="language-C++">constexpr uint8_t PORT_A;
 </code></pre>
 <p>MCP23017 GPA port constant for constructors </p>

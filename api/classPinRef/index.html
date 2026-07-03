@@ -3952,6 +3952,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable bus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-channel" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3963,10 +3974,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#variable-chip" class="md-nav__link">
+  <a href="#variable-chip-12" class="md-nav__link">
     <span class="md-ellipsis">
       
-        variable chip
+        variable chip [1/2]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-chip-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable chip [2/2]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-isout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable isOut
       
     </span>
   </a>
@@ -4006,6 +4039,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#variable-sr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable sr
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4024,10 +4068,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#function-pinref-14" class="md-nav__link">
+  <a href="#function-pinref-15" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function PinRef [1/4]
+        function PinRef [1/5]
       
     </span>
   </a>
@@ -4035,10 +4079,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-pinref-24" class="md-nav__link">
+  <a href="#function-pinref-25" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function PinRef [2/4]
+        function PinRef [2/5]
       
     </span>
   </a>
@@ -4046,10 +4090,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-pinref-34" class="md-nav__link">
+  <a href="#function-pinref-35" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function PinRef [3/4]
+        function PinRef [3/5]
       
     </span>
   </a>
@@ -4057,10 +4101,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-pinref-44" class="md-nav__link">
+  <a href="#function-pinref-45" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function PinRef [4/4]
+        function PinRef [4/5]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-pinref-55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function PinRef [5/5]
       
     </span>
   </a>
@@ -4116,6 +4171,17 @@
     <span class="md-ellipsis">
       
         function isNC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-issampledsource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function isSampledSource
       
     </span>
   </a>
@@ -4241,12 +4307,24 @@
 <td style="text-align: left;"><a href="#variable-bit"><strong>bit</strong></a>  <br></td>
 </tr>
 <tr>
+<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1ShiftBus/"><strong>OpenSkyhawk::ShiftBus</strong></a> *</td>
+<td style="text-align: left;"><a href="#variable-bus"><strong>bus</strong></a>  <br></td>
+</tr>
+<tr>
 <td style="text-align: right;">uint8_t</td>
 <td style="text-align: left;"><a href="#variable-channel"><strong>channel</strong></a>  <br></td>
 </tr>
 <tr>
 <td style="text-align: right;">MCP23017 *</td>
-<td style="text-align: left;"><a href="#variable-chip"><strong>chip</strong></a>  <br></td>
+<td style="text-align: left;"><a href="#variable-chip-12"><strong>chip</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#variable-chip-22"><strong>chip</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-isout"><strong>isOut</strong></a>  <br></td>
 </tr>
 <tr>
 <td style="text-align: right;">struct <a href="./"><strong>PinRef</strong></a></td>
@@ -4259,6 +4337,10 @@
 <tr>
 <td style="text-align: right;">uint8_t</td>
 <td style="text-align: left;"><a href="#variable-port"><strong>port</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct <a href="./"><strong>PinRef</strong></a></td>
+<td style="text-align: left;"><a href="#variable-sr"><strong>sr</strong></a>  <br><em>ShiftBus source.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4273,19 +4355,23 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-pinref-14"><strong>PinRef</strong></a> (uint8_t pin) <br><em>Direct STM32 GPIO pin.</em></td>
+<td style="text-align: left;"><a href="#function-pinref-15"><strong>PinRef</strong></a> (uint8_t pin) <br><em>Direct STM32 GPIO pin.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-pinref-24"><strong>PinRef</strong></a> (MCP23017 &amp; chip, uint8_t port, uint8_t bit) <br><em>MCP23017 expander GPIO.</em></td>
+<td style="text-align: left;"><a href="#function-pinref-25"><strong>PinRef</strong></a> (MCP23017 &amp; chip, uint8_t port, uint8_t bit) <br><em>MCP23017 expander GPIO.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-pinref-34"><strong>PinRef</strong></a> (<a href="../classADS1115/"><strong>ADS1115</strong></a> &amp; adc, uint8_t channel) <br><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC channel.</em></td>
+<td style="text-align: left;"><a href="#function-pinref-35"><strong>PinRef</strong></a> (<a href="../classADS1115/"><strong>ADS1115</strong></a> &amp; adc, uint8_t channel) <br><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC channel.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="#function-pinref-45"><strong>PinRef</strong></a> (<a href="../classOpenSkyhawk_1_1ShiftBus/"><strong>OpenSkyhawk::ShiftBus</strong></a> &amp; bus, uint8_t chip, uint8_t bit) <br><em>Shift-register bus bit ('165 input or '595 output).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr</td>
-<td style="text-align: left;"><a href="#function-pinref-44"><strong>PinRef</strong></a> () <br><em>No-connect sentinel — represents a position with no physical pin.</em></td>
+<td style="text-align: left;"><a href="#function-pinref-55"><strong>PinRef</strong></a> () <br><em>No-connect sentinel — represents a position with no physical pin.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -4306,6 +4392,10 @@
 <tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#function-isnc"><strong>isNC</strong></a> () const<br><em>Returns true if this is the NC (no-connect) sentinel.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-issampledsource"><strong>isSampledSource</strong></a> () const<br><em>True when this pin's cached state is refreshed by a high-rate sampler that runs independently of</em> <a href="../namespacePanelGroup/#function-loop"><em><strong>PanelGroup::loop()</strong></em></a> <em>(today: ShiftBus timer-ISR sampling).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
@@ -4352,13 +4442,28 @@
 </code></pre>
 <hr>
 
+<h3 id="variable-bus">variable bus</h3>
+<pre><code class="language-C++">OpenSkyhawk::ShiftBus* PinRef::bus;
+</code></pre>
+<hr>
+
 <h3 id="variable-channel">variable channel</h3>
 <pre><code class="language-C++">uint8_t PinRef::channel;
 </code></pre>
 <hr>
 
-<h3 id="variable-chip">variable chip</h3>
+<h3 id="variable-chip-12">variable chip [1/2]</h3>
 <pre><code class="language-C++">MCP23017* PinRef::chip;
+</code></pre>
+<hr>
+
+<h3 id="variable-chip-22">variable chip [2/2]</h3>
+<pre><code class="language-C++">uint8_t PinRef::chip;
+</code></pre>
+<hr>
+
+<h3 id="variable-isout">variable isOut</h3>
+<pre><code class="language-C++">bool PinRef::isOut;
 </code></pre>
 <hr>
 
@@ -4378,8 +4483,14 @@
 <pre><code class="language-C++">uint8_t PinRef::port;
 </code></pre>
 <hr>
+
+<h3 id="variable-sr">variable sr</h3>
+<p><em>ShiftBus source.</em> </p>
+<pre><code class="language-C++">struct PinRef PinRef::sr;
+</code></pre>
+<hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
-<h3 id="function-pinref-14">function PinRef [1/4]</h3>
+<h3 id="function-pinref-15">function PinRef [1/5]</h3>
 <p><em>Direct STM32 GPIO pin.</em> </p>
 <pre><code class="language-C++">explicit PinRef::PinRef (
     uint8_t pin
@@ -4391,7 +4502,7 @@
 </ul>
 <hr>
 
-<h3 id="function-pinref-24">function PinRef [2/4]</h3>
+<h3 id="function-pinref-25">function PinRef [2/5]</h3>
 <p><em>MCP23017 expander GPIO.</em> </p>
 <pre><code class="language-C++">PinRef::PinRef (
     MCP23017 &amp; chip,
@@ -4407,7 +4518,7 @@
 </ul>
 <hr>
 
-<h3 id="function-pinref-34">function PinRef [3/4]</h3>
+<h3 id="function-pinref-35">function PinRef [3/5]</h3>
 <p><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC channel.</em></p>
 <pre><code class="language-C++">PinRef::PinRef (
     ADS1115 &amp; adc,
@@ -4421,7 +4532,24 @@
 </ul>
 <hr>
 
-<h3 id="function-pinref-44">function PinRef [4/4]</h3>
+<h3 id="function-pinref-45">function PinRef [4/5]</h3>
+<p><em>Shift-register bus bit ('165 input or '595 output).</em> </p>
+<pre><code class="language-C++">PinRef::PinRef (
+    OpenSkyhawk::ShiftBus &amp; bus,
+    uint8_t chip,
+    uint8_t bit
+) 
+</code></pre>
+<p>Direction is set at configure time by the consuming class — <a href="./#function-configureasinput"><strong>configureAsInput()</strong></a> binds the pin to the '165 chain, <a href="./#function-configureasoutput"><strong>configureAsOutput()</strong></a> to the '595 chain (the MCP IODIR pattern). <code>chip</code> means "position within that chain".</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>bus</code> ShiftBus instance — normally the pre-defined global <code>ShiftBus1</code>. </li>
+<li><code>chip</code> Position along the cascade, 0 = nearest the MCU. </li>
+<li><code>bit</code> Dn ('165) or Qn ('595) pin of that chip, 0–7. </li>
+</ul>
+<hr>
+
+<h3 id="function-pinref-55">function PinRef [5/5]</h3>
 <p><em>No-connect sentinel — represents a position with no physical pin.</em> </p>
 <pre><code class="language-C++">inline constexpr PinRef::PinRef () 
 </code></pre>
@@ -4472,11 +4600,18 @@
 </code></pre>
 <hr>
 
+<h3 id="function-issampledsource">function isSampledSource</h3>
+<p><em>True when this pin's cached state is refreshed by a high-rate sampler that runs independently of</em> <a href="../namespacePanelGroup/#function-loop"><em><strong>PanelGroup::loop()</strong></em></a> <em>(today: ShiftBus timer-ISR sampling).</em></p>
+<pre><code class="language-C++">bool PinRef::isSampledSource () const
+</code></pre>
+<p>Lets an input class decide whether InputBase::sampleTick() should own its decode: a pin whose cache only refreshes at loop rate (GPIO/MCP/ADS) gains nothing from sampler ownership and keeps its loop-rate path. The class never needs to know which sampler exists — only what its own pin promises. </p>
+<hr>
+
 <h3 id="function-read">function read</h3>
 <p><em>Digital read.</em> </p>
 <pre><code class="language-C++">bool PinRef::read () const
 </code></pre>
-<p>GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s last INTCAP or port read. No I2C. <a href="../classADS1115/"><strong>ADS1115</strong></a>: true if <a href="./#function-readanalog"><strong>readAnalog()</strong></a> &gt; 32767 (half-scale threshold). NC: always false.</p>
+<p>GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s last INTCAP or port read. No I2C. <a href="../classADS1115/"><strong>ADS1115</strong></a>: true if <a href="./#function-readanalog"><strong>readAnalog()</strong></a> &gt; 32767 (half-scale threshold). ShiftBus: cached '165 frame bit (input) or last written '595 bit (output). No SPI. NC: always false.</p>
 <p><strong>Returns:</strong></p>
 <p>true = HIGH, false = LOW. </p>
 <hr>

@@ -3973,6 +3973,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-sampletick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function sampleTick
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4086,6 +4097,10 @@
 <td style="text-align: right;">virtual void</td>
 <td style="text-align: left;"><a href="#function-poll"><strong>poll</strong></a> () = 0<br><em>Read hardware state and emit a CAN EVT if state changed.</em></td>
 </tr>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="#function-sampletick"><strong>sampleTick</strong></a> () <br><em>High-rate sample hook — called from a sampling ISR when the node runs one (e.g.</em> <a href="../classOpenSkyhawk_1_1ShiftBus/"><em><strong>ShiftBus</strong></em></a> <em>timer sampling, -DSHIFTBUS_ISR_HZ). Default no-op.</em></td>
+</tr>
 </tbody>
 </table>
 <h2 id="public-static-functions">Public Static Functions</h2>
@@ -4147,6 +4162,13 @@
 <pre><code class="language-C++">virtual void OpenSkyhawk::InputBase::poll () = 0
 </code></pre>
 <p>Called by <a href="../namespacePanelGroup/#function-loop"><strong>PanelGroup::loop()</strong></a> every iteration. Must be non-blocking. Implementations apply their own debounce / filtering and call <a href="../namespaceCANProtocol/#function-sendbatched"><strong>CANProtocol::sendBatched()</strong></a> only on confirmed state change. </p>
+<hr>
+
+<h3 id="function-sampletick">function sampleTick</h3>
+<p><em>High-rate sample hook — called from a sampling ISR when the node runs one (e.g.</em> <a href="../classOpenSkyhawk_1_1ShiftBus/"><em><strong>ShiftBus</strong></em></a> <em>timer sampling, -DSHIFTBUS_ISR_HZ). Default no-op.</em></p>
+<pre><code class="language-C++">inline virtual void OpenSkyhawk::InputBase::sampleTick () 
+</code></pre>
+<p>Implementations must be ISR-safe: read cached pin state only, no CAN, no I2C, no allocation. Level-sampled inputs never need this; <a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>RotaryEncoder</strong></a> overrides it to decode quadrature at the sample rate (loop stalls then cannot lose transitions). The input class does not know who calls this or at what rate — <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> owns the wiring. </p>
 <hr>
 <h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
 <h3 id="function-head">function head</h3>

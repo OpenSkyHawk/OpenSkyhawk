@@ -3930,6 +3930,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-noteshiftbus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function noteShiftBus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-readcachedpin" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4063,6 +4074,10 @@
 <td style="text-align: left;"><a href="#function-loop"><strong>loop</strong></a> () <br><em>Run all</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>work. Call once per</em><a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-noteshiftbus"><strong>noteShiftBus</strong></a> (<a href="../classOpenSkyhawk_1_1ShiftBus/"><strong>OpenSkyhawk::ShiftBus</strong></a> &amp; bus) <br><em>Collect a ShiftBus at configure time. Called by</em> <a href="../classPinRef/#function-configureasinput"><em><strong>PinRef::configureAsInput()</strong></em></a> <em>/ configureAsOutput() on SR pins — never by sketches (zero-setup lifecycle).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#function-readcachedpin"><strong>readCachedPin</strong></a> (const MCP23017 &amp; chip, uint8_t port, uint8_t bit) <br><em>Return cached MCP23017 pin state. Called by</em> <a href="../classPinRef/#function-read"><em><strong>PinRef::read()</strong></em></a> <em>. No I2C.</em></td>
 </tr>
@@ -4118,6 +4133,15 @@
 * <a href="../namespaceCANProtocol/#function-drain"><strong>CANProtocol::drain()</strong></a> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
 * update() on all OutputBase objects.
 * Heartbeat: send HB_n every 500 ms. </p>
+<hr>
+
+<h3 id="function-noteshiftbus">function noteShiftBus</h3>
+<p><em>Collect a ShiftBus at configure time. Called by</em> <a href="../classPinRef/#function-configureasinput"><em><strong>PinRef::configureAsInput()</strong></em></a> <em>/ configureAsOutput() on SR pins — never by sketches (zero-setup lifecycle).</em></p>
+<pre><code class="language-C++">void PanelGroup::noteShiftBus (
+    OpenSkyhawk::ShiftBus &amp; bus
+) 
+</code></pre>
+<p>Deduplicated. <a href="./#function-setup"><strong>setup()</strong></a> begin()s every collected bus after step 3; <a href="./#function-loop"><strong>loop()</strong></a> transfers them each iteration; <a href="./#function-flushexpanderwrites"><strong>flushExpanderWrites()</strong></a> flushes dirty ones. </p>
 <hr>
 
 <h3 id="function-readcachedpin">function readCachedPin</h3>

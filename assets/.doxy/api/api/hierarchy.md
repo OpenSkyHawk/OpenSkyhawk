@@ -24,6 +24,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **class** [**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md) _Selects one downstream channel of a TCA9548A I2C multiplexer._ 
 * **class** [**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md) _Common interface every motor/servo backend implements._     
     * **class** [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md) _Non-blocking instrument-gauge stepper driven through_ [_**PinRef**_](classPinRef.md) _coils._
+* **class** [**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) _One shared SPI shift-register bus ('165 inputs + '595 outputs)._ 
 * **class** [**PinRef**](classPinRef.md) _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _input and output classes._
 * **struct** [**BatchState**](structBatchState.md) 
 * **struct** [**DcsBiosInputEntry**](structDcsBiosInputEntry.md) 
@@ -35,6 +36,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **struct** [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md) _Value → position calibration for one gauge._ 
 * **struct** [**OpenSkyhawk::HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) _Home-sensor parameters (_ HomeMode::SENSOR _only)._
 * **struct** [**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) _Full per-instance stepper configuration. Authored per sketch (panel wiring)._ 
+* **struct** [**OpenSkyhawk::ShiftBus::IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md) 
 * **struct** [**RxQueueEntry**](structRxQueueEntry.md) 
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md) 
 * **class** **Adafruit_ADS1115**    
