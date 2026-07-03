@@ -103,7 +103,8 @@ So protect **at the supply, sized to the harness:**
   footprint — the split is in the injection harness, not the connector. Rule: **segment peak × margin
   ≤ fuse ≤ weakest downstream copper** (the ~2.5 A 1 mm 1 oz trace is the floor). Consoles draw ~1 A @12V, so **low-single-amp
   slow-blow** fuses fit under that trace (slow-blow — LED strings / buck inputs inrush at power-on).
-  The blanket **+12V ~5 A · +5V ~3–4 A** is only the whole-bus upper bound; per console it comes down.
+  The calculated blanket **+12V 5 A · +5V 4 A** (5V poured, not a 0.5 mm trace) is the whole-bus
+  upper bound; per console it comes down.
   **GND is never fused** (CAN reference + return).
 - **The fuse sets the copper, not the connector** — size traces/pours for the *fuse* rating, not the
   connector's theoretical max. A 5 A fuse means the copper only ever sees 5 A, so 1 oz pours / wide
