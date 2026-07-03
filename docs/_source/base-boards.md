@@ -93,12 +93,15 @@ are injected elsewhere on the bus and pass straight through.
 would dump tens of amps into a fault long before that, cooking a ~8 A connector pin / 1 mm trace.
 So protect **at the supply, sized to the harness:**
 
-- **Fuse each rail at every per-console injection point** (PSU → the console's `J_BUS_IN`), sized to
-  *that console's* draw — the fuse **protects all boards downstream of it** on that rail (a console
-  fault opens only that console's fuse, sparing the rest of the bus). Segmentation rides the existing
-  8-pin `J_BUS`: break **+12V/+5V** on `J_BUS_OUT` (pins 1,2,3) while **GND + CAN** (pins 4–8) stay
-  continuous — no separate power connector. Rule: **segment peak × margin ≤ fuse ≤ weakest downstream
-  copper** (the ~2.5 A 1 mm 1 oz trace is the floor). Consoles draw ~1 A @12V, so **low-single-amp
+- **Fuse each rail at every per-console injection node**, sized to *that console's* draw — the fuse
+  **protects all boards downstream of it** on that rail (a console fault opens only that console's
+  fuse, sparing the rest of the bus). At an injection node the 8-pin `J_BUS_IN` is **split-sourced**
+  from two harnesses: **+12V/+5V + GND come from the PSU** (through this console's fuse), while
+  **CANH/CANL + GND come from the previous node's `J_BUS_OUT`** — that node's power pins dead-end
+  there, so **power never crosses the console boundary** while **CAN stays one continuous bus**. GND
+  is the single common net tying both (reference + return). The board keeps one 8-pin `J_BUS`
+  footprint — the split is in the injection harness, not the connector. Rule: **segment peak × margin
+  ≤ fuse ≤ weakest downstream copper** (the ~2.5 A 1 mm 1 oz trace is the floor). Consoles draw ~1 A @12V, so **low-single-amp
   slow-blow** fuses fit under that trace (slow-blow — LED strings / buck inputs inrush at power-on).
   The blanket **+12V ~5 A · +5V ~3–4 A** is only the whole-bus upper bound; per console it comes down.
   **GND is never fused** (CAN reference + return).
