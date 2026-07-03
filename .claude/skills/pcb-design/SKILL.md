@@ -42,9 +42,18 @@ minimal root schematic, and updates the panel's GitHub Project item.
 
 ## I/O wiring quick map (from a panel's control inventory)
 
-A panel's control inventory (built by the `panel-mapping` skill) drives the I/O:
+A panel's control inventory (built by the `panel-mapping` skill) drives the I/O. **First
+decide the panel's interface class** (hardware-standards → Shift-Register I/O): encoders
+or fast gauges → SPI-class (74HC ShiftBus); otherwise I²C-class:
 
-- digital switch/button → MCP23017 GPIO (14 inputs/chip; 3-pos = 2 GPIO; n-pos rotary = n GPIO)
+- **SPI-class panel**: inputs → 74HC165 chain (encoders/switches; **bussed 10 k array to
+  3V3 on ALL 8 inputs of every chip**, commons to GND); outputs → 74HC595 chain (coils via
+  DRV8833 with **VM on 5 V — never 12 V, abs max 10.8 V**; indicator LEDs ≤4 mA direct +
+  series R, >6 mA → 2N7002). Standard pins SCK=PB3/MISO=PB4/MOSI=PB5/LOAD=PB8/LATCH=PB9;
+  tie-offs '165 CLK_INH→GND + chain-end SER→GND, '595 MR̄→3V3 + OĒ→GND; 100 nF per chip;
+  33 Ω series on SCK/LOAD/LATCH for remote legs; J_SR leg per the harness table.
+- digital switch/button (I²C-class) → MCP23017 GPIO (14 inputs/chip; 3-pos = 2 GPIO;
+  n-pos rotary = n GPIO; **INT lines on PB12/PB13 when the node also carries a ShiftBus**)
 - continuous pot / analog axis → ADS1115 channel (or STM32 ADC) with a 1 kΩ + 100 nF RC filter
 - LED zone → IRLML2502 low-side MOSFET, gate from STM32 3.3 V PWM; 5-LED series strings, one
   current-limiting resistor per string (120 Ω default)
@@ -56,4 +65,6 @@ skill — this skill owns the wiring and verification.
 ## Verify
 
 `kicad-cli sch erc` (clean) and `kicad-cli pcb drc` (clean against the JLCPCB rules) before
-calling a board done — see `docs/_source/kicad.md` for the CLI.
+calling a board done — see `docs/_source/kicad.md` for the CLI. Boards with a shift-register
+block: verify against the ShiftBus pin standard (PB3/4/5/8/9; MCP INTs on PB12/PB13 when
+mixed) and the harness interface-class table in `docs/_source/hardware-standards.md`.

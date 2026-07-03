@@ -217,6 +217,34 @@ to the repo, while **STL/STEP exports** are gitignored and published via GitHub 
 
 ---
 
+## D9 — Sub-panel I/O: 74HC shift registers over SPI, chosen by physics
+
+**Decision:** panels with rotary encoders or fast gauges use **74HC165/74HC595 shift-register
+chains over SPI** (the `ShiftBus` backend); everything else may stay on **MCP23017/I²C**. The
+standard lives at the **connector, not the chip**: a sub-panel is an *I²C-class* or *SPI-class*
+device by its interface, and its internals are its own business.
+
+Both backends were bench-raced (2026-07, issues #197/#133). The numbers made the call:
+
+- **Encoder fidelity** is the disqualifier for I²C: with the loop blocked 25 ms per 100 ms
+  (an OLED display flush), loop-rate polling captured only **~34 %** of fast-spin encoder
+  detents. The shift-register chain sampled from a 1 kHz timer interrupt captured **100 %**,
+  both directions — SPI reads are interrupt-safe in a way blocking I²C never is.
+- **Stepper coil drive** through a '595 chain measured **1,137 steps/s** (motor-limited —
+  the bus stopped being the bottleneck) vs ~490 steps/s through an MCP23017 at 400 kHz
+  (bus-limited).
+- Shift chains also scale differently: data is **regenerated at every chip**, so chain length
+  doesn't accumulate bus capacitance the way I²C does, and unlimited chips ride one 5-pin bus.
+
+The MCP23017 remains fully supported and is still the right choice for switch-and-lamp panels
+that already sit on an I²C leg — no encoders, no speed pressure, fewer wires.
+
+Full rules and the harness interface-class table: the
+[Hardware Standards](../hardware/standards.md) Shift-Register I/O section and the
+[Connector & Harness Guide](../hardware/connectors.md).
+
+---
+
 ## Related reading
 
 - [CAN Bus Protocol](can-bus.md) — the full frame ID table, `ControlPacket` wire format,
