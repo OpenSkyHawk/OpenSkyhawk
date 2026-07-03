@@ -121,6 +121,12 @@ scale or isolate:
   NC) → each segment carries only *its* downstream load. Per group: **<1 A @12V** (a 1 mm trace
   suffices), modest @5V. The **pour is only needed on the pass-through bridge** that carries the
   cumulative — the board's own tap to local circuits is a light trace.
+- **Granularity follows consumption.** A console is the default zone; a **power-hungry group
+  graduates to its own dedicated PDU** — 12V/5V fed straight from the PSU into that group, its own
+  fuse sized to just that load — isolating it from the shared console feed. The PSU's ~54 A @12V is
+  ample headroom; the per-zone fuse is **downstream protection + fault isolation, not source
+  rationing.** (Rev1 default = ~3 PDUs, one per console — see #202; measured data decides which
+  groups justify a dedicated one.)
 - **GND + CAN stay continuous** across all segments — never segment them.
 - Make the 12V/5V pass-through **optional** (jumper / DNP) so a zone can be re-injected later with no
   redesign.

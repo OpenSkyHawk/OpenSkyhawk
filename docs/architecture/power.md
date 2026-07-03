@@ -60,8 +60,13 @@ the rest of the cockpit and its harness.
   margin) and below the weakest copper it protects — today the ~2.5 A narrow bus trace. A console
   draws little (~1 A at 12 V), so slow-blow fuses in the low single amps are typical — slow-blow
   because LED strings and buck inputs inrush at power-on.
+- **Granularity follows consumption.** A console is the default injection zone; a **power-hungry
+  group can get its own dedicated PDU** — 12 V/5 V straight from the PSU, its own fuse sized to just
+  that group — so it is isolated and does not load the shared console feed. The PSU sources ~54 A at
+  12 V (ample headroom); the per-zone fuse exists to **protect the downstream harness and contain a
+  fault**, not to ration the supply.
 - **The PSU's own OCP protects the PSU, not your harness** — a single-rail ATX only trips at tens
-  of amps, long after a thin lead would cook. The per-console fuse is what actually protects the
+  of amps, long after a thin lead would cook. The per-zone fuse is what actually protects the
   wiring.
 - A planned **power-distribution CAN node** adds live per-console current telemetry and active
   eFuse breaking **on top of** — not instead of — these baseline fuses.
