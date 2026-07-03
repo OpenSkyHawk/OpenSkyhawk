@@ -26,7 +26,8 @@
  *
  * void setup() {
  *     Wire.begin();
- *     PanelGroup::registerExpander(exp1, PB3, PB4);  // INTA→PB3, INTB→PB4
+ *     PanelGroup::registerExpander(exp1, PB12, PB13);  // INTA→PB12, INTB→PB13
+ *     // (PB3–PB5/PB8/PB9 belong to ShiftBus1 on a node that also uses shift registers)
  *     PanelGroup::registerADC(adc1, 0x48, Wire);
  *     PanelGroup::setup();
  * }
@@ -45,6 +46,7 @@
 #include <MCP23017.h>
 #include "ADS1115.h"
 #include "PinRef.h"
+#include "Helpers/ShiftBus/ShiftBus.h"   // ShiftBus + the pre-defined ShiftBus1 instance
 #include <CANProtocol.h>
 
 // ── OpenSkyhawk base classes ──────────────────────────────────────────────────
@@ -89,6 +91,18 @@ public:
      * calls have a valid comparison point.
      */
     virtual void forceReport() = 0;
+
+    /**
+     * @brief High-rate sample hook — called from a sampling ISR when the node runs one
+     *        (e.g. ShiftBus timer sampling, -DSHIFTBUS_ISR_HZ). Default no-op.
+     *
+     * Implementations must be ISR-safe: read cached pin state only, no CAN, no I2C,
+     * no allocation. Level-sampled inputs never need this; RotaryEncoder overrides it
+     * to decode quadrature at the sample rate (loop stalls then cannot lose transitions).
+     * The input class does not know who calls this or at what rate — PanelGroup owns
+     * the wiring.
+     */
+    virtual void sampleTick() {}
 
     /** @brief Head of the self-registered linked list. */
     static InputBase* head();
@@ -302,6 +316,15 @@ namespace PanelGroup {
      *       cache (e.g. blocking homing on an MCP-backed home sensor). One I2C transaction per call.
      */
     bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit);
+
+    /**
+     * @brief Collect a ShiftBus at configure time. Called by PinRef::configureAsInput() /
+     *        configureAsOutput() on SR pins — never by sketches (zero-setup lifecycle).
+     *
+     * Deduplicated. setup() begin()s every collected bus after step 3; loop() transfers
+     * them each iteration; flushExpanderWrites() flushes dirty ones.
+     */
+    void noteShiftBus(OpenSkyhawk::ShiftBus& bus);
 
 } // namespace PanelGroup
 

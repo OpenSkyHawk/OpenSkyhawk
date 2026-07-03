@@ -103,7 +103,7 @@ OpenSkyhawk::Switch3Pos latSlew(DCSIN_ASN41_LAT_SLEW,
 
 void setup() {
     Wire.begin();
-    PanelGroup::registerExpander(exp1, PB3, PB4);
+    PanelGroup::registerExpander(exp1, PB12, PB13);
     PanelGroup::setup();   // inits expanders, boot EVT burst (forceReport on every input)
 }
 

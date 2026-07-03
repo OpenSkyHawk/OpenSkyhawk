@@ -46,10 +46,10 @@ MCP23017 exp2(0x21, Wire);
 MCP23017 exp3(0x22, Wire);
 
 // Dedicated interrupt pins (one chip per STM32 pin):
-PanelGroup::registerExpander(exp1, PB3,  PB4);   // INTA→PB3, INTB→PB4
+PanelGroup::registerExpander(exp1, PB12, PB13);  // INTA→PB12, INTB→PB13
 
 // MIRROR mode (same pin for INTA and INTB — PanelGroup sets IOCON.MIRROR):
-PanelGroup::registerExpander(exp1, PB3, PB3);    // both ports → PB3
+PanelGroup::registerExpander(exp1, PB12, PB12);  // both ports → PB12
 
 // Shared interrupt line (wired-OR on PCB):
 PanelGroup::registerExpander(exp2, PA4, PA5);

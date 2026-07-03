@@ -205,7 +205,7 @@ OpenSkyhawk::LED fireWarning(A_4E_C_AOA_RED,     A_4E_C_AOA_RED_AM,     PIN_AOA_
 
 void setup() {
     Wire.begin();
-    PanelGroup::registerExpander(exp1, PB3, PB4);  // INTA→PB3, INTB→PB4
+    PanelGroup::registerExpander(exp1, PB12, PB13);  // INTA→PB12, INTB→PB13
     PanelGroup::setup();   // inits expanders, calls configure() on all OutputBase
                            // objects (drives all LEDs LOW), emits boot EVT burst,
                            // sends READY frame

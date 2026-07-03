@@ -1,16 +1,17 @@
 #ifdef ARDUINO_ARCH_STM32
 
-#include "PanelGroup.h"
+#include "PanelGroup.h"   // pulls in Helpers/ShiftBus/ShiftBus.h
 #include <STM32Board.h>
 
 // ── Internal state ────────────────────────────────────────────────────────────
 
 namespace {
 
-static constexpr uint8_t MAX_EXPANDERS = 8;
-static constexpr uint8_t MAX_ADCS      = 8;
-static constexpr uint8_t MAX_INT_PINS  = 8;  // max unique STM32 interrupt pins
-static constexpr uint8_t NO_INT_PIN    = 0xFF; // polling-fallback sentinel
+static constexpr uint8_t MAX_EXPANDERS   = 8;
+static constexpr uint8_t MAX_ADCS        = 8;
+static constexpr uint8_t MAX_INT_PINS    = 8;    // max unique STM32 interrupt pins
+static constexpr uint8_t MAX_SHIFT_BUSES = 2;    // ShiftBus1 + one custom-pin instance
+static constexpr uint8_t NO_INT_PIN      = 0xFF; // polling-fallback sentinel
 
 struct ExpanderEntry {
     MCP23017* chip;
@@ -35,6 +36,11 @@ static uint8_t       _expanderCount = 0;
 
 static ADCEntry _adcs[MAX_ADCS];
 static uint8_t  _adcCount = 0;
+
+// ShiftBuses collected at configure time via PinRef (zero-setup lifecycle) — usually
+// just the pre-defined ShiftBus1; a custom-pin instance lands here the same way.
+static OpenSkyhawk::ShiftBus* _shiftBuses[MAX_SHIFT_BUSES];
+static uint8_t                _shiftBusCount = 0;
 
 // Unique STM32 interrupt pins and their flags
 static uint8_t          _intPins[MAX_INT_PINS];
@@ -114,6 +120,17 @@ static void onSyncReq() {
         p->forceReport();
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
 }
+
+#ifdef SHIFTBUS_ISR_HZ
+// ShiftBus sampling-ISR consumer: tick every input's high-rate hook. Inputs stay ignorant
+// of who samples them (sampleTick() is the generic InputBase seam); PanelGroup owns the
+// wiring between the bus ISR and the input list. Default sampleTick() is a no-op, so
+// level-sampled inputs cost one vtable call per tick.
+static void sampleTickAllInputs(void*) {
+    for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next())
+        p->sampleTick();
+}
+#endif
 
 } // anonymous namespace
 
@@ -212,6 +229,21 @@ void setup() {
     // Step 3 — configure each pin via its owning input/output object
     for (auto* p = OpenSkyhawk::InputBase::head();  p; p = p->next()) p->configure();
     for (auto* p = OpenSkyhawk::OutputBase::head(); p; p = p->next()) p->configure();
+
+    // Step 3b — start every ShiftBus collected during configure (zero-setup lifecycle:
+    // SR PinRefs self-announced via noteShiftBus). begin() zeros the '595 frame and primes
+    // the '165 cache so the step-6 forceReport() burst reads real input state. A node with
+    // no SR pins never reaches here — the bus stays dormant, SPI.begin() is never called.
+    for (uint8_t i = 0; i < _shiftBusCount; i++) {
+        _shiftBuses[i]->begin();
+#ifdef SHIFTBUS_ISR_HZ
+#ifndef SHIFTBUS_ISR_TIM
+#define SHIFTBUS_ISR_TIM TIM2   // free on this variant: tone=TIM3, servo=TIM4, backlight=TIM3
+#endif
+        _shiftBuses[i]->addIsrConsumer(sampleTickAllInputs, nullptr);
+        _shiftBuses[i]->beginIsrSampling(SHIFTBUS_ISR_TIM, SHIFTBUS_ISR_HZ);
+#endif
+    }
 
     // Step 2d — enable interrupt-on-change, read baseline, attach STM32 ISRs
     for (uint8_t i = 0; i < _expanderCount; i++) {
@@ -327,6 +359,17 @@ void loop() {
         }
     }
 
+    // 2b. ShiftBus service — one full-duplex transaction per bus per iteration: refreshes
+    // the '165 cache for the input polls below and pushes '595 bits dirtied last iteration.
+    // With ISR sampling active the timer owns the cadence; the loop only flushes pending
+    // output changes (the ISR transfer would push them within a tick anyway — this just
+    // keeps output latency at loop rate when the ISR runs slow).
+    for (uint8_t i = 0; i < _shiftBusCount; i++) {
+        OpenSkyhawk::ShiftBus* b = _shiftBuses[i];
+        if (b->isrActive()) { if (b->dirty()) b->flushNow(); }
+        else                b->transfer();
+    }
+
     // 3. Poll all inputs
     for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next()) p->poll();
 
@@ -395,12 +438,27 @@ void writeCachedPinDeferred(MCP23017& chip, uint8_t port, uint8_t bit, bool valu
 
 // Push every port dirtied by writeCachedPinDeferred() — one writePort() per dirty port.
 // Cheap no-op when nothing is pending (the common GPIO-only path just scans the flags).
+// Also flushes dirty ShiftBuses: a StepperMotor with '595-backed coils gets one SPI burst
+// per step through the exact same call it already makes for MCP coils.
 void flushExpanderWrites() {
     for (uint8_t i = 0; i < _expanderCount; i++) {
         ExpanderEntry& e = _expanders[i];
         if (e.portAdirty) { e.chip->writePort(MCP23017Port::A, e.portAcache); e.portAdirty = false; }
         if (e.portBdirty) { e.chip->writePort(MCP23017Port::B, e.portBcache); e.portBdirty = false; }
     }
+    for (uint8_t i = 0; i < _shiftBusCount; i++) {
+        if (_shiftBuses[i]->dirty()) _shiftBuses[i]->flushNow();
+    }
+}
+
+void noteShiftBus(OpenSkyhawk::ShiftBus& bus) {
+    for (uint8_t i = 0; i < _shiftBusCount; i++)
+        if (_shiftBuses[i] == &bus) return;   // deduplicate
+    if (_shiftBusCount >= MAX_SHIFT_BUSES) {
+        STM32Board::log("[PanelGroup] MAX_SHIFT_BUSES exceeded — bus not serviced");
+        return;
+    }
+    _shiftBuses[_shiftBusCount++] = &bus;
 }
 
 bool readLivePin(MCP23017& chip, uint8_t port, uint8_t bit) {
