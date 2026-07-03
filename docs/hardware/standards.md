@@ -56,6 +56,28 @@ current-limiting resistor per string.
   (no gate driver). PWM duty sets average brightness.
 - **LEDs on the front face; resistors, MOSFETs, and everything else on the back.**
 
+## Shift-register I/O — 74HC165 / 74HC595 (ShiftBus)
+
+The SPI shift-register backend for sub-panel I/O, bench-decided against the MCP23017
+(see [D9](../architecture/design-decisions.md)). Panels are **I²C-class or SPI-class by
+their connector**, chosen by physics: rotary encoders or fast gauges (≳150 °/s) → SPI-class;
+everything else is fine on I²C-class. Key rules:
+
+- **74HC165 inputs:** bussed 10 k resistor array to 3V3 on **all 8 inputs of every chip**,
+  used or not; switch/encoder commons to GND (active-low).
+- **74HC595 outputs:** indicator LEDs ≤4 mA drive directly with a series resistor; anything
+  above ~6 mA, any 5 V/12 V rail load, or a chip total nearing 70 mA gets a 2N7002 MOSFET.
+- **DRV8833 motor supply is 5 V — never the 12 V rail** (10.8 V absolute maximum).
+  Servos take 12 V through a panel-local buck, never a 5 V rail.
+- **The SPI bus is dedicated** — a '165's data output never tristates, so the bus is the
+  shift chains' alone. Chains daisy without limit; capacity never needs a second bus.
+- **Standard pins:** SCK=PB3 · MISO=PB4 · MOSI=PB5 · LOAD=PB8 · LATCH=PB9 — one contiguous
+  header run with I²C1. On mixed nodes the MCP23017 INT lines move to PB12/PB13.
+
+Full rules, the measured numbers, and chip-placement guidance:
+`docs/_source/hardware-standards.md` (Shift-Register I/O section). Harness pinouts:
+the [Connector & Harness Guide](connectors.md).
+
 ## The other reference pages
 
 - **[Mechanical Standards](mechanical-standards.md)** — screws, gauges, switch sizes, panel dims

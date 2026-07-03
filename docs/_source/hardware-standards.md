@@ -196,8 +196,11 @@ accepted. Real measurement lands with E2E (#137).
 
 ### Harness interface classes (the connector IS the standard)
 
-Every harness belongs to one class; unique pin count per family = mechanical mis-mate
-protection. **Wires are not color-coded — pin position is the only identification**;
+Every **inter-board harness** belongs to one class; unique pin count per family =
+mechanical mis-mate protection **among interface-class connectors** (generic intra-panel
+switch harnesses are excluded from the guarantee — they stay on 4/6-pin JST-XH, leaving
+7/8-pin reserved for the interface legs; both ends of a switch harness live on one
+assembly, so location disambiguates them). **Wires are not color-coded — pin position is the only identification**;
 build-time reference = the connector diagrams on the published Connector & Harness Guide.
 Pinouts below are the fabbed Rev 1 truth (J_BUS / J_BL / J_I2C) or the adopted proposal
 (J_SR, dual-BL).
@@ -253,7 +256,9 @@ Pins 1/2 both connect to +12V net. Pins 4/7/8 all connect to GND plane. CANH/CAN
 ### JST-XH (intra-group harnesses + switch wiring)
 
 - **PCB footprint:** Through-hole, single-row, vertical
-- **Standard sizes:** 4-pin, 6-pin, 8-pin — choose by pin count, leave no pins empty
+- **Standard sizes:** 4-pin, 6-pin for generic intra-panel switch harnesses; **7-pin and
+  8-pin are reserved for the interface-class legs** (J_SR = 7, J_I2C = 8) so a generic
+  harness can never mate an interface socket. Choose by pin count, leave no pins empty.
 - Rated 3A per pin — sufficient for 12V LED lines and all signal/power within a controller group
 - Polarized housing — one insertion orientation only
 - Switches share a common GND within each connector group; one GND pin per connector
