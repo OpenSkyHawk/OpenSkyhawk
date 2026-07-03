@@ -4007,6 +4007,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#shift-register-io-74hc165-74hc595-shiftbus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shift-Register I/O — 74HC165 / 74HC595 (ShiftBus)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shift-Register I/O — 74HC165 / 74HC595 (ShiftBus)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interface-class-selection-which-backend-a-panel-gets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface-class selection (which backend a panel gets)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chip-placement-guidance-per-controller-call-at-b2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chip placement (guidance, per-controller call at B2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#co-residency-note-bench-simulated-197" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Co-residency note (bench-simulated, #197)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#screws" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4028,6 +4089,17 @@
   
     <nav class="md-nav" aria-label="Connectors">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#harness-interface-classes-the-connector-is-the-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Harness interface classes (the connector IS the standard)
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#molex-mini-fit-jr-main-bus-led-power" class="md-nav__link">
@@ -4471,6 +4543,99 @@
 <li>Or an <strong>active I²C buffer</strong> (P82B715 / PCA9600 / LTC4311) to hold 400 kHz over 12–18".</li>
 <li>Verify on a scope (SCL rise time) with the <strong>fully populated</strong> bus (MCP + OLED + ADS) for realistic capacitance.</li>
 </ul>
+<h2 id="shift-register-io-74hc165-74hc595-shiftbus">Shift-Register I/O — 74HC165 / 74HC595 (ShiftBus)</h2>
+<p>The SPI shift-register backend (#197/#133, bench-decided 2026-07-02; firmware
+<code>ShiftBus</code> — TechSpec <code>Firmware/ScratchPad/TechSpec/PanelGroup/Helpers/ShiftBus.md</code>).
+One shared SPI bus per node: a '165 chain (inputs, MISO) + a '595 chain (outputs, MOSI)
+on one SCK, coordinated by full-duplex full-frame transfers bounded by the LOAD ('165
+SH/LD̄) and LATCH ('595 STCP) strobes.</p>
+<h3 id="interface-class-selection-which-backend-a-panel-gets">Interface-class selection (which backend a panel gets)</h3>
+<p>The standard lives at the <strong>connector, not the chip</strong>: sub-panels are I²C-class or
+SPI-class devices, chosen by physics:</p>
+<table>
+<thead>
+<tr>
+<th>Panel profile</th>
+<th>Backend</th>
+<th>Basis (bench, #197 gates)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rotary encoders, any count</td>
+<td><strong>SPI-class</strong> ('165 + <code>SHIFTBUS_ISR_HZ=1000</code>)</td>
+<td>loop-poll captured ~34 % of fast-spin detents under a 25 ms loop stall; 1 kHz ISR captured 100 %</td>
+</tr>
+<tr>
+<td>Fast gauges (≳150 °/s slew demand)</td>
+<td><strong>SPI-class</strong> ('595 → DRV8833)</td>
+<td>'595 path measured 1,137 steps/s sweep-avg (motor-limited) vs 490 on MCP@400 kHz (bus-limited)</td>
+</tr>
+<tr>
+<td>Mixed I/O + steppers</td>
+<td>SPI-class only if a row above applies</td>
+<td>slow needles (≈163 °/s on MCP) are fine on I²C-class</td>
+</tr>
+<tr>
+<td>Switches / lamps / slow needle / OLED</td>
+<td><strong>I²C-class</strong> (MCP23017 / direct)</td>
+<td>no fidelity or speed pressure; MCP stays fully supported</td>
+</tr>
+</tbody>
+</table>
+<p>An I²C-class panel with same-address devices (multiple 0x3C OLEDs) muxes them behind a
+<strong>panel-local TCA9548A</strong>; same-address devices may never sit on a trunk that also carries
+them behind a mux (address shadowing while a channel is open).</p>
+<h3 id="design-rules">Design rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>'165 input bias — bussed 10 k array on ALL 8 inputs, every chip</strong></td>
+<td>Common pin → 3V3, used or not. Zero static cost on unpopulated inputs, uniform layout, and every spare stays wire-and-go (no respin for a hard-grounded spare). Switch/encoder commons → GND (active-low).</td>
+</tr>
+<tr>
+<td><strong>'595 output drive</strong></td>
+<td>≤4 mA indicator LED → direct drive + series R (push-pull, ~6 mA/pin recommended, 70 mA/chip total). &gt;6 mA, any 5 V/12 V rail load, or chip total nearing 70 mA → 2N7002 + 100 k gate pulldown. DRV8833 inputs are µA logic — never count against the budget.</td>
+</tr>
+<tr>
+<td><strong>DRV8833 VM ≤ 10.8 V — steppers NEVER on 12 V</strong></td>
+<td>Absolute maximum. Stepper supply = 5 V (bench-validated). Servos = 12 V + panel-local buck (never a 5 V rail).</td>
+</tr>
+<tr>
+<td><strong>SPI bus is dedicated</strong></td>
+<td>The '165 QH output never tristates — MISO cannot be shared with any other SPI reader. Chains daisy without limit; capacity never forces a second bus.</td>
+</tr>
+<tr>
+<td><strong>Standard pins</strong></td>
+<td>SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. On mixed nodes MCP INT lines move to <strong>PB12/PB13</strong>.</td>
+</tr>
+<tr>
+<td><strong>Remote legs</strong></td>
+<td>33 Ω series on SCK/LOAD/LATCH; ~1 MHz SPI tolerates ~12" harness.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="chip-placement-guidance-per-controller-call-at-b2">Chip placement (guidance, per-controller call at B2)</h3>
+<ul>
+<li><em>Hot-swappable / serviceable peripherals</em> (gauge clusters): chips on the <strong>hub board</strong>,
+  star wiring — unplugging a peripheral leaves the chain intact, inputs held by their bias.</li>
+<li><em>Fixed remote sub-panels</em> (ARC-51-style): chips on the <strong>sub-panel</strong>, bus wiring via the
+  J_SR leg.</li>
+<li>Chips-on-peripheral chains break when a link is unplugged (downstream latches noise) —
+  fine for planned reconfiguration, wrong for casual unplugging.</li>
+</ul>
+<h3 id="co-residency-note-bench-simulated-197">Co-residency note (bench-simulated, #197)</h3>
+<p>A blocked loop stalls same-node stepper slews <strong>regardless of coil backend</strong> (step timing
+runs in <code>update()</code>): a simulated 25 ms display flush stretched a slew +35 % with visible
+jitter. Real-flush arithmetic: 128×64 OLED ≈ 23 ms @400 kHz, ≈90 ms @100 kHz. Weigh
+OLED + fast-gauge co-residency at grouping time; slow rare slews (APN-153 DRIFT) are
+accepted. Real measurement lands with E2E (#137).</p>
 <h2 id="screws">Screws</h2>
 <table>
 <thead>
@@ -4523,7 +4688,72 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Minimum pitch: 2.54 mm.</strong> Nothing smaller is used anywhere in the build.</p>
+<p><strong>Minimum pitch: 2.54 mm.</strong> Nothing smaller is used anywhere in the build.
+<strong>Two families only — no new connector families / crimp toolsets are ever introduced</strong>
+(Micro-Fit et al. rejected on tooling grounds).</p>
+<h3 id="harness-interface-classes-the-connector-is-the-standard">Harness interface classes (the connector IS the standard)</h3>
+<p>Every <strong>inter-board harness</strong> belongs to one class; unique pin count per family =
+mechanical mis-mate protection <strong>among interface-class connectors</strong> (generic intra-panel
+switch harnesses are excluded from the guarantee — they stay on 4/6-pin JST-XH, leaving
+7/8-pin reserved for the interface legs; both ends of a switch harness live on one
+assembly, so location disambiguates them). <strong>Wires are not color-coded — pin position is the only identification</strong>;
+build-time reference = the connector diagrams on the published Connector &amp; Harness Guide.
+Pinouts below are the fabbed Rev 1 truth (J_BUS / J_BL / J_I2C) or the adopted proposal
+(J_SR, dual-BL).</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Pins</th>
+<th>Pinout</th>
+<th>Family</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CAN trunk + power (<code>J_BUS_IN/OUT</code>, hosts only, daisy)</td>
+<td>8 (2×4)</td>
+<td>1,2=+12V · 3=+5V · 4,7,8=GND · 5=CANH · 6=CANL</td>
+<td>Mini-Fit Jr</td>
+</tr>
+<tr>
+<td>Backlight single-zone (<code>J_BL</code>)</td>
+<td>2 (1×2)</td>
+<td>1=SW_RETURN · 2=+12V</td>
+<td>Mini-Fit Jr</td>
+</tr>
+<tr>
+<td>Backlight dual-zone + utility 5 V (gauge panels)</td>
+<td>4 (2×2)</td>
+<td>1=BL1_RET · 2=+12V · 3=BL2_RET · 4=+5V</td>
+<td>Mini-Fit Jr</td>
+</tr>
+<tr>
+<td>I²C leg (<code>J_I2C1/2</code>)</td>
+<td>8</td>
+<td>1=SDA · 2=SCL · 3,4=GND · 5=+3V3 · 6=INT_A · 7=INT_B · 8=spare — <strong>no +5V</strong></td>
+<td>JST-XH</td>
+</tr>
+<tr>
+<td>SPI leg (<code>J_SR</code>, end-of-chain, one per host chain)</td>
+<td>7</td>
+<td>1=SCK · 2=MOSI · 3=MISO · 4=GND · 5=+3V3 · 6=LOAD · 7=LATCH</td>
+<td>JST-XH</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Layer scope:</strong> trunk terminates at host boards only; a sub-panel's full interface =
+  one signal leg + a backlight cable. Hosts may carry multiple parallel connectors of a
+  class (several <code>J_BL</code> on a zone, several <code>J_I2C</code> on a bus) — sized at B2. Exception:
+  SPI chains are series — one end-node leg per host chain (chain-through connectors =
+  future class, specified with the first gauge-cluster controller).</li>
+<li><strong>Dual-zone rule:</strong> gauge-bearing panels carry two dimming zones (legend + instrument,
+  the aircraft's dimmer split). Utility +5 V on that cable = small loads only (≲50 mA,
+  return via the signal-cable GND); <strong>servos never</strong> — 12 V + panel-local buck.</li>
+<li><strong>SPI chain-role principle (adopted):</strong> connector classes map to chain roles
+  (chain-through vs end-node), not device types; one host chain composes them freely.</li>
+</ul>
 <p><strong>Wire gauge:</strong> 16–18 AWG silicone on the <strong>main bus</strong> (power + CAN daisy-chain); 24 AWG on
 signal/logic harnesses (I²C, interrupts, switches). Match the Mini-Fit Jr crimp terminal to the
 bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated terminal (5556 won't crimp 16 AWG).</p>
@@ -4592,7 +4822,9 @@ bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated 
 <h3 id="jst-xh-intra-group-harnesses-switch-wiring">JST-XH (intra-group harnesses + switch wiring)</h3>
 <ul>
 <li><strong>PCB footprint:</strong> Through-hole, single-row, vertical</li>
-<li><strong>Standard sizes:</strong> 4-pin, 6-pin, 8-pin — choose by pin count, leave no pins empty</li>
+<li><strong>Standard sizes:</strong> 4-pin, 6-pin for generic intra-panel switch harnesses; <strong>7-pin and
+  8-pin are reserved for the interface-class legs</strong> (J_SR = 7, J_I2C = 8) so a generic
+  harness can never mate an interface socket. Choose by pin count, leave no pins empty.</li>
 <li>Rated 3A per pin — sufficient for 12V LED lines and all signal/power within a controller group</li>
 <li>Polarized housing — one insertion orientation only</li>
 <li>Switches share a common GND within each connector group; one GND pin per connector</li>
@@ -4795,6 +5027,24 @@ violating them causes functional failures that cannot be fixed after fabrication
 <td>GPA7, GPB7</td>
 <td><strong>Output only — never configure as inputs</strong></td>
 <td>Silicon bug confirmed by Microchip (datasheet Rev D, June 2022): SDA signal is corrupted if pin voltage changes during an I2C bit transmission, causing bus malfunction. The IODIR register physically allows input mode but it is unsafe.</td>
+</tr>
+<tr>
+<td>74HC165</td>
+<td>all 8 D inputs</td>
+<td><strong>Bussed 10 k array to 3V3 on all 8, used or not</strong></td>
+<td>CMOS inputs float otherwise (noise, oscillation, phantom reads); array costs nothing on unpopulated inputs and keeps spares wire-and-go.</td>
+</tr>
+<tr>
+<td>74HC165/595</td>
+<td>VCC</td>
+<td><strong>3V3 only when signaled by a 3V3 host</strong></td>
+<td>Plain 74HC at VCC=5 V sets VIH=3.5 V — above the STM32's 3.3 V drive (marginal, lot/temperature-dependent). Remote modules without 3V3: local SOT-23 LDO from 5 V.</td>
+</tr>
+<tr>
+<td>DRV8833</td>
+<td>VM</td>
+<td><strong>≤ 10.8 V absolute — never the 12 V rail</strong></td>
+<td>Datasheet absolute maximum; stepper supply is 5 V (bench-validated).</td>
 </tr>
 </tbody>
 </table>

@@ -1192,6 +1192,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#shift-register-io-74hc165-74hc595-shiftbus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shift-register I/O — 74HC165 / 74HC595 (ShiftBus)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-other-reference-pages" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4053,6 +4064,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#shift-register-io-74hc165-74hc595-shiftbus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shift-register I/O — 74HC165 / 74HC595 (ShiftBus)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-other-reference-pages" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4150,6 +4172,26 @@ current-limiting resistor per string.</p>
   (no gate driver). PWM duty sets average brightness.</li>
 <li><strong>LEDs on the front face; resistors, MOSFETs, and everything else on the back.</strong></li>
 </ul>
+<h2 id="shift-register-io-74hc165-74hc595-shiftbus">Shift-register I/O — 74HC165 / 74HC595 (ShiftBus)</h2>
+<p>The SPI shift-register backend for sub-panel I/O, bench-decided against the MCP23017
+(see <a href="../../architecture/design-decisions/">D9</a>). Panels are <strong>I²C-class or SPI-class by
+their connector</strong>, chosen by physics: rotary encoders or fast gauges (≳150 °/s) → SPI-class;
+everything else is fine on I²C-class. Key rules:</p>
+<ul>
+<li><strong>74HC165 inputs:</strong> bussed 10 k resistor array to 3V3 on <strong>all 8 inputs of every chip</strong>,
+  used or not; switch/encoder commons to GND (active-low).</li>
+<li><strong>74HC595 outputs:</strong> indicator LEDs ≤4 mA drive directly with a series resistor; anything
+  above ~6 mA, any 5 V/12 V rail load, or a chip total nearing 70 mA gets a 2N7002 MOSFET.</li>
+<li><strong>DRV8833 motor supply is 5 V — never the 12 V rail</strong> (10.8 V absolute maximum).
+  Servos take 12 V through a panel-local buck, never a 5 V rail.</li>
+<li><strong>The SPI bus is dedicated</strong> — a '165's data output never tristates, so the bus is the
+  shift chains' alone. Chains daisy without limit; capacity never needs a second bus.</li>
+<li><strong>Standard pins:</strong> SCK=PB3 · MISO=PB4 · MOSI=PB5 · LOAD=PB8 · LATCH=PB9 — one contiguous
+  header run with I²C1. On mixed nodes the MCP23017 INT lines move to PB12/PB13.</li>
+</ul>
+<p>Full rules, the measured numbers, and chip-placement guidance:
+<code>docs/_source/hardware-standards.md</code> (Shift-Register I/O section). Harness pinouts:
+the <a href="../connectors/">Connector &amp; Harness Guide</a>.</p>
 <h2 id="the-other-reference-pages">The other reference pages</h2>
 <ul>
 <li><strong><a href="../mechanical-standards/">Mechanical Standards</a></strong> — screws, gauges, switch sizes, panel dims</li>

@@ -1000,6 +1000,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#d9-sub-panel-io-74hc-shift-registers-over-spi-chosen-by-physics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D9 — Sub-panel I/O: 74HC shift registers over SPI, chosen by physics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4119,6 +4130,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#d9-sub-panel-io-74hc-shift-registers-over-spi-chosen-by-physics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D9 — Sub-panel I/O: 74HC shift registers over SPI, chosen by physics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4398,6 +4420,29 @@ alignment with the open source nature of the project, and it has a KiCad StepUp 
 direct PCB → CAD fit-check workflow. The decision will be documented here once finalised.</p>
 <p>The file-management policy holds regardless of tool choice: CAD <strong>source</strong> files are committed
 to the repo, while <strong>STL/STEP exports</strong> are gitignored and published via GitHub Releases.</p>
+<hr />
+<h2 id="d9-sub-panel-io-74hc-shift-registers-over-spi-chosen-by-physics">D9 — Sub-panel I/O: 74HC shift registers over SPI, chosen by physics</h2>
+<p><strong>Decision:</strong> panels with rotary encoders or fast gauges use <strong>74HC165/74HC595 shift-register
+chains over SPI</strong> (the <code>ShiftBus</code> backend); everything else may stay on <strong>MCP23017/I²C</strong>. The
+standard lives at the <strong>connector, not the chip</strong>: a sub-panel is an <em>I²C-class</em> or <em>SPI-class</em>
+device by its interface, and its internals are its own business.</p>
+<p>Both backends were bench-raced (2026-07, issues #197/#133). The numbers made the call:</p>
+<ul>
+<li><strong>Encoder fidelity</strong> is the disqualifier for I²C: with the loop blocked 25 ms per 100 ms
+  (an OLED display flush), loop-rate polling captured only <strong>~34 %</strong> of fast-spin encoder
+  detents. The shift-register chain sampled from a 1 kHz timer interrupt captured <strong>100 %</strong>,
+  both directions — SPI reads are interrupt-safe in a way blocking I²C never is.</li>
+<li><strong>Stepper coil drive</strong> through a '595 chain measured <strong>1,137 steps/s</strong> (motor-limited —
+  the bus stopped being the bottleneck) vs ~490 steps/s through an MCP23017 at 400 kHz
+  (bus-limited).</li>
+<li>Shift chains also scale differently: data is <strong>regenerated at every chip</strong>, so chain length
+  doesn't accumulate bus capacitance the way I²C does, and unlimited chips ride one 5-pin bus.</li>
+</ul>
+<p>The MCP23017 remains fully supported and is still the right choice for switch-and-lamp panels
+that already sit on an I²C leg — no encoders, no speed pressure, fewer wires.</p>
+<p>Full rules and the harness interface-class table: the
+<a href="../../hardware/standards/">Hardware Standards</a> Shift-Register I/O section and the
+<a href="../../hardware/connectors/">Connector &amp; Harness Guide</a>.</p>
 <hr />
 <h2 id="related-reading">Related reading</h2>
 <ul>
