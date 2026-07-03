@@ -43,8 +43,32 @@ Standard MCU and breakout boards are designed to stay within **≤ 500 mA at 12 
 | 5 V → stepper driver VM | 15–30 mA | 50 mA |
 | 3.3 V → STM32 + MCP23017 + CAN | ~125 mA | ~175 mA |
 
-Across a full ~20-board cockpit that's roughly **2.3 A at 12 V** — well under 10% of what a
-500–600 W ATX supply delivers on its 12 V rail.
+Across a full ~20-board cockpit that's roughly **3 A at 12 V** (plus ~2 A at 5 V, ≈ 50 W
+total) — a small fraction of what the ATX supply delivers. The build uses a fully-modular
+**GOLDEN FIELD NX650**, heavily over-provisioned; a 350–450 W single-rail ATX would be ample.
+
+## Source protection — fused per-console injection
+
+The ATX feed splits into **per-console segments**, and each segment is injected through its own
+**fuse per rail**. A console's fuse is sized to that console's draw and **protects every board
+downstream of it** on that rail — a fault in one console opens only that console's fuse, sparing
+the rest of the cockpit and its harness.
+
+- **One fuse per rail per console**, at the injection point (12 V and 5 V). **GND and CAN are
+  never fused** — they stay common and continuous as the bus reference and return.
+- **Sized to consumption, capped by copper.** The rating sits above the segment's peak draw (with
+  margin) and below the weakest copper it protects — today the ~2.5 A narrow bus trace. A console
+  draws little (~1 A at 12 V), so slow-blow fuses in the low single amps are typical — slow-blow
+  because LED strings and buck inputs inrush at power-on.
+- **The PSU's own OCP protects the PSU, not your harness** — a single-rail ATX only trips at tens
+  of amps, long after a thin lead would cook. The per-console fuse is what actually protects the
+  wiring.
+- A planned **power-distribution CAN node** adds live per-console current telemetry and active
+  eFuse breaking **on top of** — not instead of — these baseline fuses.
+
+!!! note "Exact values live in the hardware source"
+    Fuse ratings, trace widths, and injection copper are specified in the base-boards hardware
+    source; this page is the overview.
 
 ## Cross-tier notes
 

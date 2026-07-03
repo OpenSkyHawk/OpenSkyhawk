@@ -93,8 +93,13 @@ are injected elsewhere on the bus and pass straight through.
 would dump tens of amps into a fault long before that, cooking a ~8 A connector pin / 1 mm trace.
 So protect **at the supply, sized to the harness:**
 
-- **Fuse each rail at the PSU / injection point** — **+12V ~5 A · +5V ~3 A** (rule: load < fuse <
-  weakest copper). **GND is never fused** (CAN reference + return).
+- **Fuse each rail at every per-console injection point**, sized to *that console's* draw — the fuse
+  **protects all boards downstream of it** on that rail (a console fault opens only that console's
+  fuse, sparing the rest of the bus). Rule: **segment peak × margin ≤ fuse ≤ weakest downstream
+  copper** (the ~2.5 A 1 mm 1 oz trace is the floor). Consoles draw ~1 A @12V, so **low-single-amp
+  slow-blow** fuses fit under that trace (slow-blow — LED strings / buck inputs inrush at power-on).
+  The blanket **+12V ~5 A · +5V ~3 A** is only the whole-bus upper bound; per console it comes down.
+  **GND is never fused** (CAN reference + return).
 - **The fuse sets the copper, not the connector** — size traces/pours for the *fuse* rating, not the
   connector's theoretical max. A 5 A fuse means the copper only ever sees 5 A, so 1 oz pours / wide
   bridges are ample (1 mm 1 oz ≈ 2.5 A).
@@ -116,9 +121,10 @@ scale or isolate:
   redesign.
 - **+12V gets the full pass-through treatment even on pass-through-only boards** (e.g. Gateway/Bridge
   draws no local 12V but still carries the cumulative downstream).
-- Contingency: a **power-distribution + monitoring CAN node** (#202) — STM32 + per-zone INA219 +
+- Contingency: a **power-distribution + monitoring CAN node** (#202) — STM32 + per-zone INA226 +
   eFuse breakers, telemetry → PanelBridge — measures the (unknown) consumption *and* provides the
-  injection points.
+  injection points. Its eFuse breaking sits **on top of** the baseline per-console fuse (telemetry +
+  active trip), not instead of it.
 
 ### PSU / source supply
 
