@@ -56,10 +56,11 @@ the rest of the cockpit and its harness.
 
 - **One fuse per rail per console**, at the injection point (12 V and 5 V). **GND and CAN are
   never fused** — they stay common and continuous as the bus reference and return.
-- **Sized to consumption, capped by copper.** The rating sits above the segment's peak draw (with
-  margin) and below the weakest copper it protects — today the ~2.5 A narrow bus trace. A console
-  draws little (~1 A at 12 V), so slow-blow fuses in the low single amps are typical — slow-blow
-  because LED strings and buck inputs inrush at power-on.
+- **Sized to consumption; copper sized to the fuse.** The rating sits above the segment's peak draw
+  (with margin), and the fused power traces are then sized to clear it — **5 mm of 1 oz copper carries
+  ~7 A**, comfortably above the 5 A / 4 A blanket. (A 1 mm trace is ~2.5 A — that's a local sub-1 A
+  tap only, never the fused trunk.) A console draws little (~1 A at 12 V), so slow-blow fuses in the
+  low single amps are typical — slow-blow because LED strings and buck inputs inrush at power-on.
 - **Granularity follows consumption.** A console is the default injection zone; a **power-hungry
   group can get its own dedicated PDU** — 12 V/5 V straight from the PSU, its own fuse sized to just
   that group — so it is isolated and does not load the shared console feed. The PSU sources ~54 A at

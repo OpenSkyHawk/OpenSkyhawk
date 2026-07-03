@@ -82,10 +82,12 @@ are injected elsewhere on the bus and pass straight through.
   any *routed* power segment defaults wide — but the **pours carry the bulk** 12V/GND current.
   Added to the project-template and the existing KiCad projects (Armament_MCU, Misc_Switch_Panel,
   AWRS_Panel). Template `zones.min_clearance` = 0.25 so pours flood to the pads.
-- **Pour sizing:** current never sets the pour width — 1 mm of 1 oz copper already carries the
-  ~2.3 A bus. The constraint is the **narrowest neck**: keep ≥ ~1 mm (aim ≥ 2 mm) past any via,
-  hole, cutout, or other-net island; don't let a same-layer signal split the channel; stitch
-  layer changes with ≥ 4–6 power vias. Sketches: [power-pour layout](base-boards-power-pour.svg).
+- **Pour sizing:** the pour area ≫ any trace, so the binding constraint is the **narrowest neck**,
+  and the neck must clear the **fuse protecting that segment** (see *Source fusing*): a per-console
+  injected segment (≤ ~3 A) wants **≥ 2 mm**; a whole-bus non-injected path at the 5 A blanket wants
+  **≥ 5 mm (1 oz external ≈ 7 A)**. Keep that width past any via, hole, cutout, or other-net island;
+  don't let a same-layer signal split the channel; stitch layer changes with ≥ 4–6 power vias.
+  Sketches: [power-pour layout](base-boards-power-pour.svg).
 
 ### Source fusing & per-console injection
 
@@ -101,10 +103,11 @@ So protect **at the supply, sized to the harness:**
   there, so **power never crosses the console boundary** while **CAN stays one continuous bus**. GND
   is the single common net tying both (reference + return). The board keeps one 8-pin `J_BUS`
   footprint — the split is in the injection harness, not the connector. Rule: **segment peak × margin
-  ≤ fuse ≤ weakest downstream copper** (the ~2.5 A 1 mm 1 oz trace is the floor). Consoles draw ~1 A @12V, so **low-single-amp
-  slow-blow** fuses fit under that trace (slow-blow — LED strings / buck inputs inrush at power-on).
-  The calculated blanket **+12V 5 A · +5V 4 A** (5V poured, not a 0.5 mm trace) is the whole-bus
-  upper bound; per console it comes down.
+  ≤ fuse ≤ fused-path copper** — and **size the copper to the fuse**: 5 mm of 1 oz (external) ≈ **7 A**,
+  clearing the 5 A / 4 A blanket with margin. (The ~2.5 A / 1 mm figure is a local sub-1 A tap only,
+  never the fused trunk.) Consoles draw ~1 A @12V, so per-console fuses drop to **low single amps**,
+  slow-blow (LED strings / buck inputs inrush at power-on). The calculated blanket **+12V 5 A · +5V 4 A**
+  (5V poured, not a 0.5 mm trace) is the whole-bus upper bound; per console it comes down.
   **GND is never fused** (CAN reference + return).
 - **The fuse sets the copper, not the connector** — size traces/pours for the *fuse* rating, not the
   connector's theoretical max. A 5 A fuse means the copper only ever sees 5 A, so 1 oz pours / wide
