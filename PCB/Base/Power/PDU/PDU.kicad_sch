@@ -7,7 +7,7 @@
 	(title_block
 		(title "PDU")
 		(date "2026-07-03")
-		(rev "1.0")
+		(rev "0.1.0")
 		(company "OpenSkyhawk")
 	)
 	(lib_symbols
@@ -992,6 +992,222 @@
 				)
 				(pin passive line
 					(at 7.62 0 180)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector_Generic:Conn_02x02_Odd_Even"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 1.27 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_02x02_Odd_Even"
+				(at 1.27 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_2x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_02x02_Odd_Even_1_1"
+				(rectangle
+					(start -1.27 1.27)
+					(end 3.81 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 3.81 0.127)
+					(end 2.54 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 3.81 -2.413)
+					(end 2.54 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 0 180)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 -2.54 180)
 					(length 3.81)
 					(name "Pin_4"
 						(effects
@@ -2670,204 +2886,6 @@
 						)
 					)
 					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "Device:R_Shunt"
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
-				(at -2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "R_Shunt"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Shunt resistor with Kelvin connections"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "R res shunt resistor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "R_*Shunt*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "R_Shunt_0_1"
-				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -2.54) (xy 1.27 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 2.54) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "R_Shunt_1_1"
-				(pin passive line
-					(at 0 5.08 270)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 2.54 180)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 -2.54 180)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -5.08 90)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -6608,6 +6626,12 @@
 		(uuid "3c091c83-b5ae-4b02-8a71-734a3408a6d1")
 	)
 	(junction
+		(at 34.29 152.4)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "437e0779-e62c-4455-a2e5-635d8c3ced0f")
+	)
+	(junction
 		(at 320.04 156.21)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6698,10 +6722,22 @@
 		(uuid "8b3c88b7-83b2-4020-820b-0b48780c9864")
 	)
 	(junction
+		(at 34.29 160.02)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "96b12398-8175-4764-a93f-9292621de12f")
+	)
+	(junction
 		(at 180.34 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a5c2bd32-4b7a-4e4b-93ea-a48a0bde855e")
+	)
+	(junction
+		(at 35.56 208.28)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a70af23c-5e5f-4cb1-a0ba-050647987c23")
 	)
 	(junction
 		(at 77.47 156.21)
@@ -6732,6 +6768,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b683f83d-59c4-4d88-9c52-d29229fa6f9f")
+	)
+	(junction
+		(at 35.56 200.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b9304722-ceb9-4ec6-ab85-7ede93e020de")
 	)
 	(junction
 		(at 323.85 38.1)
@@ -6914,6 +6956,16 @@
 	(no_connect
 		(at 339.09 91.44)
 		(uuid "f28bbf66-24d7-4f3d-8654-77a248030dd3")
+	)
+	(wire
+		(pts
+			(xy 34.29 151.13) (xy 34.29 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "014fb7df-642b-41a6-b22d-72665196d014")
 	)
 	(wire
 		(pts
@@ -7107,6 +7159,16 @@
 	)
 	(wire
 		(pts
+			(xy 35.56 200.66) (xy 38.1 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1d52c0c6-768f-43b9-af5a-aa9ab380600a")
+	)
+	(wire
+		(pts
 			(xy 356.87 142.24) (xy 359.41 142.24)
 		)
 		(stroke
@@ -7284,6 +7346,16 @@
 			(type default)
 		)
 		(uuid "392875f9-9f2e-4ea1-8dbc-a1cf3003927d")
+	)
+	(wire
+		(pts
+			(xy 36.83 160.02) (xy 34.29 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a2605c5-4aff-4aef-a7d8-29fb773c7e92")
 	)
 	(wire
 		(pts
@@ -7697,6 +7769,16 @@
 	)
 	(wire
 		(pts
+			(xy 38.1 207.01) (xy 38.1 208.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "67983cd0-4dc4-41e8-98e2-b4a1fbea8ee5")
+	)
+	(wire
+		(pts
 			(xy 332.74 48.26) (xy 332.74 50.8)
 		)
 		(stroke
@@ -7754,6 +7836,16 @@
 			(type default)
 		)
 		(uuid "6c8406ec-951f-44c4-a5ea-37c6d62f3438")
+	)
+	(wire
+		(pts
+			(xy 36.83 152.4) (xy 34.29 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70bf3eed-e4d2-4047-8f33-40c7321a54f3")
 	)
 	(wire
 		(pts
@@ -7854,6 +7946,16 @@
 			(type default)
 		)
 		(uuid "882a2447-c072-4082-a8e9-4edd555380bb")
+	)
+	(wire
+		(pts
+			(xy 38.1 201.93) (xy 38.1 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "887bd69a-3d1f-4fbd-b839-bae380ab3705")
 	)
 	(wire
 		(pts
@@ -8014,6 +8116,16 @@
 			(type default)
 		)
 		(uuid "a0655883-d899-4d55-b3a7-4a4d3fdd8afb")
+	)
+	(wire
+		(pts
+			(xy 35.56 208.28) (xy 35.56 209.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a3c5af89-039a-4c95-8b3a-d2ed7507a827")
 	)
 	(wire
 		(pts
@@ -8297,6 +8409,16 @@
 	)
 	(wire
 		(pts
+			(xy 38.1 208.28) (xy 35.56 208.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c67f73e2-c799-466e-81ad-1994158b4bfc")
+	)
+	(wire
+		(pts
 			(xy 38.1 207.01) (xy 46.99 207.01)
 		)
 		(stroke
@@ -8357,6 +8479,16 @@
 	)
 	(wire
 		(pts
+			(xy 34.29 160.02) (xy 34.29 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1559bb6-5832-495a-a738-344f56f4e6c7")
+	)
+	(wire
+		(pts
 			(xy 354.33 38.1) (xy 354.33 60.96)
 		)
 		(stroke
@@ -8394,6 +8526,16 @@
 			(type default)
 		)
 		(uuid "d81b0754-b6ea-4cae-931d-7ce774a7f548")
+	)
+	(wire
+		(pts
+			(xy 36.83 153.67) (xy 36.83 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d8ab628d-550e-4884-bce5-e6e31ed532c9")
 	)
 	(wire
 		(pts
@@ -8487,6 +8629,16 @@
 	)
 	(wire
 		(pts
+			(xy 35.56 199.39) (xy 35.56 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e403f73a-0881-4c51-8079-036941d1d2b2")
+	)
+	(wire
+		(pts
 			(xy 391.16 166.37) (xy 391.16 165.1)
 		)
 		(stroke
@@ -8574,6 +8726,16 @@
 			(type default)
 		)
 		(uuid "ec9a51fe-f290-4ad0-9bf3-937a40426daa")
+	)
+	(wire
+		(pts
+			(xy 36.83 158.75) (xy 36.83 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f0d3491b-b1d7-4d86-af0d-233e0a5c45fb")
 	)
 	(wire
 		(pts
@@ -9128,7 +9290,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "014f6d28-fce9-447c-a156-5c4e7f47c79b")
-		(property "Reference" "#PWR042"
+		(property "Reference" "#PWR050"
 			(at 262.89 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -9188,7 +9350,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR042")
+					(reference "#PWR050")
 					(unit 1)
 				)
 			)
@@ -9206,7 +9368,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "023cfe3f-1a52-41c4-8835-05cfa0f9dfd7")
-		(property "Reference" "J9"
+		(property "Reference" "J2"
 			(at 191.77 38.1 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9286,7 +9448,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "J9")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -9304,7 +9466,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "025bf51f-c0a1-4919-a16a-ec060c3497ce")
-		(property "Reference" "#PWR05"
+		(property "Reference" "#PWR07"
 			(at 41.91 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -9365,7 +9527,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR05")
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -9383,7 +9545,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "04a32827-610c-456e-9e48-6d61c0663127")
-		(property "Reference" "#PWR050"
+		(property "Reference" "#PWR055"
 			(at 325.12 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -9443,7 +9605,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR050")
+					(reference "#PWR055")
 					(unit 1)
 				)
 			)
@@ -9461,7 +9623,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0b5b647f-a139-4d1a-8b52-0143b8cb4270")
-		(property "Reference" "#PWR020"
+		(property "Reference" "#PWR018"
 			(at 57.15 199.39 0)
 			(hide yes)
 			(show_name no)
@@ -9521,7 +9683,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR020")
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
@@ -9538,7 +9700,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "0c41ddbf-da86-4ccd-9779-7ebcb9dc826a")
-		(property "Reference" "#PWR051"
+		(property "Reference" "#PWR036"
 			(at 191.77 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -9598,7 +9760,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR051")
+					(reference "#PWR036")
 					(unit 1)
 				)
 			)
@@ -9616,7 +9778,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0c7df27c-82cd-4bd8-8df0-a5b7a16a5a4d")
-		(property "Reference" "#PWR058"
+		(property "Reference" "#PWR029"
 			(at 132.08 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -9676,7 +9838,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR058")
+					(reference "#PWR029")
 					(unit 1)
 				)
 			)
@@ -9694,7 +9856,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0d6f678a-2ec5-42f9-af9a-06746d7a91f4")
-		(property "Reference" "#PWR012"
+		(property "Reference" "#PWR05"
 			(at 35.56 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -9754,7 +9916,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR012")
+					(reference "#PWR05")
 					(unit 1)
 				)
 			)
@@ -9782,7 +9944,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3.3k"
+		(property "Value" "1K"
 			(at 248.92 158.75 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9852,7 +10014,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "133016f0-3866-4424-bd5a-1cd58fc9fec2")
-		(property "Reference" "#FLG01"
+		(property "Reference" "#FLG03"
 			(at 113.665 36.83 0)
 			(hide yes)
 			(show_name no)
@@ -9912,7 +10074,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#FLG01")
+					(reference "#FLG03")
 					(unit 1)
 				)
 			)
@@ -9930,7 +10092,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1604b686-c325-4d2c-983f-c5cdbf1e4a98")
-		(property "Reference" "J1"
+		(property "Reference" "J6"
 			(at 276.86 146.0499 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9997,7 +10159,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "J1")
+					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -10015,7 +10177,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1746e006-5a45-4fff-999d-a405fc3981cb")
-		(property "Reference" "C21"
+		(property "Reference" "C8"
 			(at 115.57 39.3699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10079,7 +10241,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C21")
+					(reference "C8")
 					(unit 1)
 				)
 			)
@@ -10097,7 +10259,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "197c73e9-6d95-4455-a88a-a50be67fa082")
-		(property "Reference" "R6"
+		(property "Reference" "R7"
 			(at 50.8 101.5999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10119,7 +10281,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 48.26 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -10161,7 +10323,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R6")
+					(reference "R7")
 					(unit 1)
 				)
 			)
@@ -10268,7 +10430,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1b5c1d9d-85cd-4e10-81e5-ea4847a08366")
-		(property "Reference" "#PWR031"
+		(property "Reference" "#PWR030"
 			(at 180.34 91.44 0)
 			(hide yes)
 			(show_name no)
@@ -10328,7 +10490,93 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR031")
+					(reference "#PWR030")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_02x02_Odd_Even")
+		(at 59.69 36.83 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1e5a65ab-e102-42a1-8edb-91efbc3f3bea")
+		(property "Reference" "J1"
+			(at 60.96 30.48 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "J_PSU_IN"
+			(at 60.96 33.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 59.69 36.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 59.69 36.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 59.69 36.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "3"
+			(uuid "0ce34a43-2eb7-4d0d-97e5-be669a0ecccb")
+		)
+		(pin "1"
+			(uuid "cf9cf57e-4daa-4e41-8d22-19627fc8fd48")
+		)
+		(pin "2"
+			(uuid "6267ec2b-f192-4af4-9e5e-ba0a90fc224d")
+		)
+		(pin "4"
+			(uuid "e46e09bd-5dcf-4ff0-9da7-7b1b5f459697")
+		)
+		(instances
+			(project "PDU"
+				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -10345,7 +10593,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "1e9a2b05-af7c-46d8-92cf-d78be4e059ab")
-		(property "Reference" "#PWR049"
+		(property "Reference" "#PWR044"
 			(at 224.79 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -10405,7 +10653,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR049")
+					(reference "#PWR044")
 					(unit 1)
 				)
 			)
@@ -10423,7 +10671,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1ed7cf05-b62a-47bb-bbc1-56eb55428213")
-		(property "Reference" "#PWR010"
+		(property "Reference" "#PWR020"
 			(at 64.77 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -10483,7 +10731,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR010")
+					(reference "#PWR020")
 					(unit 1)
 				)
 			)
@@ -10500,7 +10748,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "1f3b080e-c385-4916-a09f-7901fc30bc35")
-		(property "Reference" "D9"
+		(property "Reference" "D3"
 			(at 182.88 147.32 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10575,7 +10823,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "D9")
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -10592,7 +10840,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "1f411967-d1e1-4b26-bbda-26f009fe2b78")
-		(property "Reference" "C17"
+		(property "Reference" "C13"
 			(at 316.23 43.18 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10603,7 +10851,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100nf"
+		(property "Value" "100nF"
 			(at 313.69 46.99 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10656,7 +10904,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C17")
+					(reference "C13")
 					(unit 1)
 				)
 			)
@@ -10674,7 +10922,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "221cac81-e598-4db4-a858-8cd5385ed5d4")
-		(property "Reference" "U3"
+		(property "Reference" "U5"
 			(at 361.5533 142.24 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10877,7 +11125,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "U3")
+					(reference "U5")
 					(unit 1)
 				)
 			)
@@ -10894,7 +11142,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "23085e4b-2d0d-4220-8eb2-3f1cf454ed33")
-		(property "Reference" "C19"
+		(property "Reference" "C21"
 			(at 377.19 157.48 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10956,7 +11204,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C19")
+					(reference "C21")
 					(unit 1)
 				)
 			)
@@ -10973,7 +11221,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "24322f6e-d823-45b4-8c28-d2d22cb64307")
-		(property "Reference" "R20"
+		(property "Reference" "R13"
 			(at 177.8 157.48 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11037,7 +11285,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R20")
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -11055,7 +11303,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "24d10be3-c506-40b7-a3af-cd1a5b22ecde")
-		(property "Reference" "#PWR011"
+		(property "Reference" "#PWR04"
 			(at 35.56 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -11115,7 +11363,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR011")
+					(reference "#PWR04")
 					(unit 1)
 				)
 			)
@@ -11225,7 +11473,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "26d186fb-00ef-452d-b65e-0af650221a83")
-		(property "Reference" "#PWR018"
+		(property "Reference" "#PWR024"
 			(at 77.47 175.26 0)
 			(hide yes)
 			(show_name no)
@@ -11285,7 +11533,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR018")
+					(reference "#PWR024")
 					(unit 1)
 				)
 			)
@@ -11303,7 +11551,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2e78ba9f-0c06-4962-b9d9-c158e8bd944f")
-		(property "Reference" "#PWR022"
+		(property "Reference" "#PWR06"
 			(at 35.56 252.73 0)
 			(hide yes)
 			(show_name no)
@@ -11363,7 +11611,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR022")
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -11381,7 +11629,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2f7a2425-cd9a-498a-8bde-fb0640e279cb")
-		(property "Reference" "#PWR046"
+		(property "Reference" "#PWR054"
 			(at 318.77 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -11441,7 +11689,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR046")
+					(reference "#PWR054")
 					(unit 1)
 				)
 			)
@@ -11459,7 +11707,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "309ead52-d1d1-41bc-bcc9-4dd923922696")
-		(property "Reference" "#PWR014"
+		(property "Reference" "#PWR02"
 			(at 34.29 154.94 0)
 			(hide yes)
 			(show_name no)
@@ -11519,7 +11767,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR014")
+					(reference "#PWR02")
 					(unit 1)
 				)
 			)
@@ -11537,7 +11785,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "324c0300-40ce-4c94-8284-a31becbf863f")
-		(property "Reference" "#PWR027"
+		(property "Reference" "#PWR033"
 			(at 180.34 167.64 0)
 			(hide yes)
 			(show_name no)
@@ -11597,7 +11845,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR027")
+					(reference "#PWR033")
 					(unit 1)
 				)
 			)
@@ -11772,7 +12020,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3474432f-bf53-4c99-b33d-bcf67d5958c5")
-		(property "Reference" "#PWR038"
+		(property "Reference" "#PWR045"
 			(at 226.06 167.64 0)
 			(hide yes)
 			(show_name no)
@@ -11832,7 +12080,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR038")
+					(reference "#PWR045")
 					(unit 1)
 				)
 			)
@@ -11872,7 +12120,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Inductor_SMD:L_0805_2012Metric"
 			(at 360.172 40.64 90)
 			(hide yes)
 			(show_name no)
@@ -11932,7 +12180,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "40c99ffa-557d-468e-846f-87748a5cda5f")
-		(property "Reference" "#PWR023"
+		(property "Reference" "#PWR019"
 			(at 60.96 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -11992,7 +12240,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR023")
+					(reference "#PWR019")
 					(unit 1)
 				)
 			)
@@ -12071,6 +12319,88 @@
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
 					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 34.29 156.21 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "435fe4c6-0174-492e-b650-0b71e1e86699")
+		(property "Reference" "R1"
+			(at 36.83 154.9399 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10m"
+			(at 36.83 157.4799 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 32.512 156.21 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 34.29 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 34.29 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "20de67c8-97ac-4ce3-a67f-9dffcf0ce7a7")
+		)
+		(pin "2"
+			(uuid "de783dab-4c5a-42b4-91ef-7570062fa470")
+		)
+		(instances
+			(project "PDU"
+				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
+					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -12243,7 +12573,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "45ad9491-2dfb-40b2-b2b1-8214e126154f")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR021"
 			(at 64.77 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -12303,7 +12633,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR09")
+					(reference "#PWR021")
 					(unit 1)
 				)
 			)
@@ -12321,7 +12651,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4d68bdd3-4b6a-4ea5-9bd6-de06541ee19d")
-		(property "Reference" "C11"
+		(property "Reference" "C10"
 			(at 184.15 96.9009 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12385,7 +12715,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C11")
+					(reference "C10")
 					(unit 1)
 				)
 			)
@@ -12403,7 +12733,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5204f6e6-15d8-4675-a6bd-3c577e3b902f")
-		(property "Reference" "R8"
+		(property "Reference" "R10"
 			(at 57.15 91.44 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12423,7 +12753,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 57.15 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -12465,7 +12795,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R8")
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -12483,7 +12813,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5216a1b5-4437-456d-9793-5d6f052237dd")
-		(property "Reference" "#PWR040"
+		(property "Reference" "#PWR046"
 			(at 236.22 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -12544,7 +12874,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR040")
+					(reference "#PWR046")
 					(unit 1)
 				)
 			)
@@ -12562,7 +12892,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "529dbd2f-b175-4eb2-a088-49e2c79f9a20")
-		(property "Reference" "#PWR04"
+		(property "Reference" "#PWR014"
 			(at 54.61 53.34 0)
 			(hide yes)
 			(show_name no)
@@ -12622,7 +12952,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR04")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -12640,7 +12970,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5543ab99-f69a-44fb-a7b9-b18bccbdaa58")
-		(property "Reference" "#PWR02"
+		(property "Reference" "#PWR025"
 			(at 96.52 33.02 0)
 			(hide yes)
 			(show_name no)
@@ -12700,7 +13030,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR02")
+					(reference "#PWR025")
 					(unit 1)
 				)
 			)
@@ -12717,7 +13047,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "589fa5f0-5fab-4d07-9faa-1de5cecb2169")
-		(property "Reference" "#PWR055"
+		(property "Reference" "#PWR026"
 			(at 111.76 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -12778,7 +13108,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR055")
+					(reference "#PWR026")
 					(unit 1)
 				)
 			)
@@ -12795,7 +13125,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "59d35fbf-2900-4518-99e8-ba1944454234")
-		(property "Reference" "C7"
+		(property "Reference" "C3"
 			(at 62.23 265.43 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12815,7 +13145,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 60.96 262.89 0)
 			(hide yes)
 			(show_name no)
@@ -12857,7 +13187,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C7")
+					(reference "C3")
 					(unit 1)
 				)
 			)
@@ -12875,7 +13205,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5bc2f0fb-b25a-4f15-880a-7eb4ef898124")
-		(property "Reference" "C1"
+		(property "Reference" "C4"
 			(at 67.31 77.4762 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12897,7 +13227,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 64.77 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -12939,7 +13269,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C1")
+					(reference "C4")
 					(unit 1)
 				)
 			)
@@ -12956,7 +13286,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "607f11e9-1026-44fa-9175-2f194719a2de")
-		(property "Reference" "C10"
+		(property "Reference" "C14"
 			(at 320.04 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13020,7 +13350,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C10")
+					(reference "C14")
 					(unit 1)
 				)
 			)
@@ -13038,7 +13368,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "60df2cd1-345f-41fe-a774-5d2654bc6cf0")
-		(property "Reference" "R3"
+		(property "Reference" "R6"
 			(at 50.8 77.4699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13060,7 +13390,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 48.26 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -13102,7 +13432,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R3")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -13120,7 +13450,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "635e1a2e-5136-45e8-b0db-1a159aa7a66f")
-		(property "Reference" "#PWR026"
+		(property "Reference" "#PWR058"
 			(at 355.6 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -13180,7 +13510,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR026")
+					(reference "#PWR058")
 					(unit 1)
 				)
 			)
@@ -13197,7 +13527,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "6383bc80-d57d-432d-95b7-a31e2702481d")
-		(property "Reference" "U5"
+		(property "Reference" "U4"
 			(at 254 90.17 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13279,7 +13609,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "U5")
+					(reference "U4")
 					(unit 1)
 				)
 			)
@@ -13375,7 +13705,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "665879d0-43b9-40f3-a238-6673464b2ecb")
-		(property "Reference" "#FLG04"
+		(property "Reference" "#FLG01"
 			(at 27.94 34.925 0)
 			(hide yes)
 			(show_name no)
@@ -13435,7 +13765,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#FLG04")
+					(reference "#FLG01")
 					(unit 1)
 				)
 			)
@@ -13473,7 +13803,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 43.18 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -13533,7 +13863,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6c3bcd9e-5347-4928-a410-56fadea94784")
-		(property "Reference" "C13"
+		(property "Reference" "C11"
 			(at 215.9 96.9009 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13597,7 +13927,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C13")
+					(reference "C11")
 					(unit 1)
 				)
 			)
@@ -13614,7 +13944,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "6c762a4e-0769-42b1-b5cf-aef6791e739f")
-		(property "Reference" "D2"
+		(property "Reference" "D1"
 			(at 48.26 40.6399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13824,7 +14154,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "D2")
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -13841,7 +14171,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "6dae5216-4666-4cc1-842b-70d25ce15880")
-		(property "Reference" "D8"
+		(property "Reference" "D4"
 			(at 196.85 147.32 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13916,7 +14246,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "D8")
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -13933,7 +14263,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "6fef6bf0-0722-4adf-ab66-7982d2179084")
-		(property "Reference" "#PWR047"
+		(property "Reference" "#PWR034"
 			(at 181.61 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -13993,7 +14323,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR047")
+					(reference "#PWR034")
 					(unit 1)
 				)
 			)
@@ -14011,7 +14341,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7334a9d4-4169-47aa-80c0-c28598678399")
-		(property "Reference" "C22"
+		(property "Reference" "C9"
 			(at 135.89 39.3699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14075,7 +14405,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C22")
+					(reference "C9")
 					(unit 1)
 				)
 			)
@@ -14093,7 +14423,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "75654672-c295-4880-b194-3d9030442c38")
-		(property "Reference" "#PWR021"
+		(property "Reference" "#PWR023"
 			(at 73.66 223.52 0)
 			(hide yes)
 			(show_name no)
@@ -14153,7 +14483,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR021")
+					(reference "#PWR023")
 					(unit 1)
 				)
 			)
@@ -14171,7 +14501,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7652e31c-0fd7-480f-8279-542caa93c099")
-		(property "Reference" "#PWR013"
+		(property "Reference" "#PWR03"
 			(at 34.29 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -14231,7 +14561,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR013")
+					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -14249,7 +14579,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7702f1d0-ebbc-4881-ad60-124b9721ddc9")
-		(property "Reference" "C3"
+		(property "Reference" "C1"
 			(at 58.42 139.6935 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14271,7 +14601,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 55.88 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -14313,7 +14643,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C3")
+					(reference "C1")
 					(unit 1)
 				)
 			)
@@ -14331,7 +14661,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "78dd6c43-7d21-4846-b266-eb0900465a08")
-		(property "Reference" "#PWR029"
+		(property "Reference" "#PWR032"
 			(at 180.34 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -14391,7 +14721,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR029")
+					(reference "#PWR032")
 					(unit 1)
 				)
 			)
@@ -14408,7 +14738,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "7a8d3779-184f-476b-b7c5-1eea27120dbe")
-		(property "Reference" "#PWR057"
+		(property "Reference" "#PWR028"
 			(at 132.08 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -14468,7 +14798,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR057")
+					(reference "#PWR028")
 					(unit 1)
 				)
 			)
@@ -14485,7 +14815,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "7e199202-cf4e-4d49-ad1b-0d9afd4ed237")
-		(property "Reference" "C15"
+		(property "Reference" "C17"
 			(at 337.82 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14549,7 +14879,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C15")
+					(reference "C17")
 					(unit 1)
 				)
 			)
@@ -14566,7 +14896,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "7f6e1197-174b-4d61-ad89-116e9ca1d3f7")
-		(property "Reference" "C9"
+		(property "Reference" "C19"
 			(at 372.8907 50.2188 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14586,7 +14916,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 370.84 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -14628,7 +14958,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C9")
+					(reference "C19")
 					(unit 1)
 				)
 			)
@@ -14646,7 +14976,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "81c56892-894f-4681-bdcf-9dc8e74c96a2")
-		(property "Reference" "R10"
+		(property "Reference" "R11"
 			(at 68.5801 207.01 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14668,7 +14998,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 67.31 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -14710,7 +15040,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R10")
+					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -14896,7 +15226,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8738f34c-dbd5-493d-b301-62e0b033655f")
-		(property "Reference" "#PWR052"
+		(property "Reference" "#PWR053"
 			(at 306.07 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -14956,7 +15286,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR052")
+					(reference "#PWR053")
 					(unit 1)
 				)
 			)
@@ -14974,7 +15304,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8798c4b3-6d60-49eb-a93c-7c489ad087e9")
-		(property "Reference" "#PWR043"
+		(property "Reference" "#PWR051"
 			(at 262.89 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -15034,7 +15364,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR043")
+					(reference "#PWR051")
 					(unit 1)
 				)
 			)
@@ -15072,7 +15402,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Mini-Fit_Jr_5566-04A_2x02_P4.20mm_Vertical"
 			(at 223.52 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15305,7 +15635,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9779fdb6-b1ec-4f6e-85f7-4418e09bcb85")
-		(property "Reference" "#PWR036"
+		(property "Reference" "#PWR040"
 			(at 208.28 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -15365,7 +15695,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR036")
+					(reference "#PWR040")
 					(unit 1)
 				)
 			)
@@ -15383,7 +15713,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "97f2c1ae-0a2c-43f7-a711-b4364771697e")
-		(property "Reference" "R11"
+		(property "Reference" "R3"
 			(at 41.91 250.19 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15403,7 +15733,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 41.91 255.27 0)
 			(hide yes)
 			(show_name no)
@@ -15445,7 +15775,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R11")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -15462,7 +15792,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "98b2b8b1-70da-44d0-a5de-ed22091fed7d")
-		(property "Reference" "J7"
+		(property "Reference" "J4"
 			(at 257.81 38.1 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15533,7 +15863,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "J7")
+					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -15551,7 +15881,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "99522647-7a95-4b90-ba3c-6c7ab6206405")
-		(property "Reference" "#PWR017"
+		(property "Reference" "#PWR012"
 			(at 50.8 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -15611,7 +15941,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR017")
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -15629,7 +15959,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9967150a-c076-4422-9804-8a1b8d73885d")
-		(property "Reference" "R12"
+		(property "Reference" "R8"
 			(at 53.34 250.19 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15649,7 +15979,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 53.34 255.27 0)
 			(hide yes)
 			(show_name no)
@@ -15691,7 +16021,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R12")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -15709,7 +16039,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "99c46f6e-a318-4cdc-b84e-7045f431a7f8")
-		(property "Reference" "#PWR037"
+		(property "Reference" "#PWR041"
 			(at 208.28 167.64 0)
 			(hide yes)
 			(show_name no)
@@ -15769,7 +16099,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR037")
+					(reference "#PWR041")
 					(unit 1)
 				)
 			)
@@ -15787,7 +16117,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9abee38e-0e1c-41a2-9d37-3a1ef01251c7")
-		(property "Reference" "#PWR054"
+		(property "Reference" "#PWR057"
 			(at 354.33 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -15847,7 +16177,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR054")
+					(reference "#PWR057")
 					(unit 1)
 				)
 			)
@@ -15864,7 +16194,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "9bbd9acb-6042-423c-ac99-2427c7725e0f")
-		(property "Reference" "F1"
+		(property "Reference" "F2"
 			(at 87.63 34.29 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15884,7 +16214,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "OpenSkyhawk:FUSE-TH_4P-L16.0-W6.7"
 			(at 87.63 38.608 90)
 			(hide yes)
 			(show_name no)
@@ -15926,7 +16256,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "F1")
+					(reference "F2")
 					(unit 1)
 				)
 			)
@@ -16024,7 +16354,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "a03eaa88-aba3-48c4-8285-d698773e8db3")
-		(property "Reference" "#FLG03"
+		(property "Reference" "#FLG04"
 			(at 133.985 35.56 0)
 			(hide yes)
 			(show_name no)
@@ -16084,7 +16414,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#FLG03")
+					(reference "#FLG04")
 					(unit 1)
 				)
 			)
@@ -16101,7 +16431,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "a25c1a91-0d33-42e4-9c43-46b2dcee6ac3")
-		(property "Reference" "F2"
+		(property "Reference" "F1"
 			(at 33.02 41.91 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16121,7 +16451,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "OpenSkyhawk:FUSE-TH_4P-L16.0-W6.7"
 			(at 33.02 38.608 90)
 			(hide yes)
 			(show_name no)
@@ -16163,7 +16493,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "F2")
+					(reference "F1")
 					(unit 1)
 				)
 			)
@@ -16181,7 +16511,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a541ee16-7267-4c54-9553-3f0c652cce3f")
-		(property "Reference" "#PWR039"
+		(property "Reference" "#PWR047"
 			(at 246.38 167.64 0)
 			(hide yes)
 			(show_name no)
@@ -16241,7 +16571,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR039")
+					(reference "#PWR047")
 					(unit 1)
 				)
 			)
@@ -16324,94 +16654,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R_Shunt")
-		(at 35.56 204.47 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a688aca4-9fa3-43e5-991c-2a6bc8faa330")
-		(property "Reference" "R2"
-			(at 33.02 203.1999 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "R_Shunt"
-			(at 33.02 205.7399 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 33.782 204.47 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 35.56 204.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Shunt resistor with Kelvin connections"
-			(at 35.56 204.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "5008d9b2-0b47-4837-96fb-707d10975c9c")
-		)
-		(pin "1"
-			(uuid "86c6a749-e04e-4690-a59d-8032ff38cc80")
-		)
-		(pin "3"
-			(uuid "03e383b8-7e5c-44c8-8442-a5e51315362a")
-		)
-		(pin "4"
-			(uuid "cbd27d37-8a1d-49d5-8571-bd6a6cfaf1af")
-		)
-		(instances
-			(project "PDU"
-				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 349.25 44.45 0)
 		(unit 1)
@@ -16422,7 +16664,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "a9ce0585-6120-4b6d-803a-d5bf618928b6")
-		(property "Reference" "C16"
+		(property "Reference" "C18"
 			(at 346.71 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16441,7 +16683,7 @@
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
@@ -16486,7 +16728,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C16")
+					(reference "C18")
 					(unit 1)
 				)
 			)
@@ -16581,7 +16823,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b0841869-0103-47cd-bd7c-56289e8a0ed3")
-		(property "Reference" "#PWR045"
+		(property "Reference" "#PWR052"
 			(at 269.24 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -16641,7 +16883,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR045")
+					(reference "#PWR052")
 					(unit 1)
 				)
 			)
@@ -16739,7 +16981,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "b30e9743-71aa-4068-b48f-2c5a7a78f242")
-		(property "Reference" "R19"
+		(property "Reference" "R14"
 			(at 191.77 157.48 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16803,95 +17045,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R19")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Shunt")
-		(at 34.29 156.21 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ba734823-29bf-40ee-960f-328ecb9cdd8f")
-		(property "Reference" "R1"
-			(at 31.75 154.9399 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "R_Shunt"
-			(at 31.75 157.4799 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 32.512 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 34.29 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Shunt resistor with Kelvin connections"
-			(at 34.29 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "cffa3cfa-d413-4373-8b2c-64844683f8da")
-		)
-		(pin "1"
-			(uuid "b150b81b-f4d6-46ee-95c3-1eff59a9bef0")
-		)
-		(pin "3"
-			(uuid "20185645-446f-4520-9b87-1565b0d88ac5")
-		)
-		(pin "4"
-			(uuid "13352ac0-102c-4c19-a3bb-698d1b6ce7a0")
-		)
-		(instances
-			(project "PDU"
-				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R1")
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -16908,7 +17062,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "bb87a411-0cba-420c-9fb3-de1329342082")
-		(property "Reference" "C8"
+		(property "Reference" "C20"
 			(at 381.7553 50.1713 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16928,7 +17082,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 379.73 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -16970,7 +17124,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C8")
+					(reference "C20")
 					(unit 1)
 				)
 			)
@@ -16987,7 +17141,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "bc9a3562-6372-439c-9f0e-045f47bb2fa2")
-		(property "Reference" "#PWR048"
+		(property "Reference" "#PWR035"
 			(at 187.96 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -17048,7 +17202,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR048")
+					(reference "#PWR035")
 					(unit 1)
 				)
 			)
@@ -17066,7 +17220,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bcb46b0a-3b22-4883-9600-32bbf6a462bc")
-		(property "Reference" "#PWR08"
+		(property "Reference" "#PWR010"
 			(at 48.26 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -17126,7 +17280,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR08")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
@@ -17144,7 +17298,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bd91f7d7-9863-4f9b-8729-4c4bd386fe80")
-		(property "Reference" "#PWR028"
+		(property "Reference" "#PWR038"
 			(at 194.31 167.64 0)
 			(hide yes)
 			(show_name no)
@@ -17204,7 +17358,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR028")
+					(reference "#PWR038")
 					(unit 1)
 				)
 			)
@@ -17243,7 +17397,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 46.99 261.62 0)
 			(hide yes)
 			(show_name no)
@@ -17303,7 +17457,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c165eacc-d714-450a-bcf6-642af8ea6a7e")
-		(property "Reference" "#PWR033"
+		(property "Reference" "#PWR039"
 			(at 195.58 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -17363,7 +17517,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR033")
+					(reference "#PWR039")
 					(unit 1)
 				)
 			)
@@ -17457,7 +17611,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "caf13952-4e90-4ca7-8ff7-c32dacff6ab9")
-		(property "Reference" "#PWR032"
+		(property "Reference" "#PWR031"
 			(at 180.34 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -17517,7 +17671,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR032")
+					(reference "#PWR031")
 					(unit 1)
 				)
 			)
@@ -17535,7 +17689,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cc079777-8620-4b49-a019-eb25b7f01d34")
-		(property "Reference" "#PWR024"
+		(property "Reference" "#PWR09"
 			(at 46.99 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -17595,7 +17749,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR024")
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -17613,7 +17767,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cde9ef2a-f3be-4dff-b757-f168beca8acc")
-		(property "Reference" "C2"
+		(property "Reference" "C5"
 			(at 67.31 101.6062 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17635,7 +17789,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 64.77 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -17677,7 +17831,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C2")
+					(reference "C5")
 					(unit 1)
 				)
 			)
@@ -17772,7 +17926,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d2d96fb6-7486-406d-8f15-b20c40f19fe1")
-		(property "Reference" "#PWR019"
+		(property "Reference" "#PWR017"
 			(at 57.15 191.77 0)
 			(hide yes)
 			(show_name no)
@@ -17832,7 +17986,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR019")
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)
@@ -17849,7 +18003,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "d3e7b20d-4034-4ac8-8681-e6c08dff593b")
-		(property "Reference" "C18"
+		(property "Reference" "C15"
 			(at 325.12 166.37 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17913,7 +18067,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C18")
+					(reference "C15")
 					(unit 1)
 				)
 			)
@@ -17931,7 +18085,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d5b1fcad-7650-4523-a61c-1db89753ea6f")
-		(property "Reference" "#PWR059"
+		(property "Reference" "#PWR060"
 			(at 375.92 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -17991,7 +18145,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR059")
+					(reference "#PWR060")
 					(unit 1)
 				)
 			)
@@ -18009,7 +18163,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d6ade146-575a-40bc-8327-997c5128c198")
-		(property "Reference" "#PWR030"
+		(property "Reference" "#PWR037"
 			(at 194.31 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -18069,7 +18223,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR030")
+					(reference "#PWR037")
 					(unit 1)
 				)
 			)
@@ -18087,7 +18241,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d87425fd-087e-49c6-9d1f-8b3665c22a7d")
-		(property "Reference" "#PWR053"
+		(property "Reference" "#PWR056"
 			(at 340.36 160.02 0)
 			(hide yes)
 			(show_name no)
@@ -18148,15 +18302,15 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR053")
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x02_Counter_Clockwise")
-		(at 59.69 36.83 0)
+		(lib_id "Device:R")
+		(at 35.56 204.47 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -18165,29 +18319,31 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "d9ddd45c-3640-4f86-a1c6-cac562d0f207")
-		(property "Reference" "J2"
-			(at 60.96 30.48 0)
+		(uuid "d968d305-de54-4360-8960-0fbe1fd5c735")
+		(property "Reference" "R2"
+			(at 38.1 203.1999 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "J_PSU_IN"
-			(at 60.96 33.02 0)
+		(property "Value" "10m"
+			(at 38.1 205.7399 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 59.69 36.83 0)
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+			(at 33.782 204.47 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18198,7 +18354,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 59.69 36.83 0)
+			(at 35.56 204.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18208,8 +18364,8 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x02, counter clockwise pin numbering scheme (similar to DIP package numbering), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 59.69 36.83 0)
+		(property "Description" "Resistor"
+			(at 35.56 204.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18218,23 +18374,17 @@
 					(size 1.27 1.27)
 				)
 			)
-		)
-		(pin "2"
-			(uuid "986a66ff-49e4-4e26-818e-ce309cb1ffe3")
-		)
-		(pin "4"
-			(uuid "acd00818-2e0a-4f8a-8467-6bbe71ced151")
-		)
-		(pin "3"
-			(uuid "14b4a0d5-0946-496b-9e78-cb60e8fbd99d")
 		)
 		(pin "1"
-			(uuid "2c4b548e-6f06-4c30-8671-177356039764")
+			(uuid "0eb867e4-8bf9-468b-9b52-69454c8518cb")
+		)
+		(pin "2"
+			(uuid "2ca444b9-00bb-44fb-ac3d-c669d0ac898b")
 		)
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "J2")
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -18251,7 +18401,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "da75e2b1-c754-4075-9ef3-bf124ab61075")
-		(property "Reference" "C14"
+		(property "Reference" "C16"
 			(at 328.93 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18315,7 +18465,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C14")
+					(reference "C16")
 					(unit 1)
 				)
 			)
@@ -18332,7 +18482,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "dcca90f9-f7ad-4ce2-b78d-a3e7794743ab")
-		(property "Reference" "R13"
+		(property "Reference" "R19"
 			(at 270.51 97.79 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18394,7 +18544,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R13")
+					(reference "R19")
 					(unit 1)
 				)
 			)
@@ -18493,7 +18643,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "dee9c927-89d1-40a3-9ac7-60b7be34d9c7")
-		(property "Reference" "R7"
+		(property "Reference" "R9"
 			(at 57.15 68.58 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18513,7 +18663,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 57.15 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -18555,7 +18705,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R7")
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -18572,7 +18722,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "df1b5be5-e509-4eba-bab5-0fa139a284f1")
-		(property "Reference" "R14"
+		(property "Reference" "R20"
 			(at 313.69 167.64 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18634,7 +18784,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R14")
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -18651,7 +18801,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "dfcd45be-2274-45ae-af7d-b32788afd532")
-		(property "Reference" "C20"
+		(property "Reference" "C22"
 			(at 375.92 167.64 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18715,7 +18865,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C20")
+					(reference "C22")
 					(unit 1)
 				)
 			)
@@ -18732,7 +18882,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "dfec0430-bdba-4233-8c28-c81d53adc9f3")
-		(property "Reference" "C4"
+		(property "Reference" "C7"
 			(at 78.74 166.37 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18752,7 +18902,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 77.47 163.83 0)
 			(hide yes)
 			(show_name no)
@@ -18794,7 +18944,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C4")
+					(reference "C7")
 					(unit 1)
 				)
 			)
@@ -18812,7 +18962,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "dfed4eca-773a-4a3d-8e76-12981a827ec0")
-		(property "Reference" "#PWR025"
+		(property "Reference" "#PWR059"
 			(at 361.95 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -18872,7 +19022,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR025")
+					(reference "#PWR059")
 					(unit 1)
 				)
 			)
@@ -18991,7 +19141,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 43.18 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -19050,7 +19200,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "e30ba4ae-73ef-44be-a4a2-f4c90dbc0607")
-		(property "Reference" "D1"
+		(property "Reference" "D2"
 			(at 77.47 39.37 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19260,7 +19410,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "D1")
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -19278,7 +19428,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e7c930fc-7028-4996-a1d7-716db479e647")
-		(property "Reference" "U4"
+		(property "Reference" "U3"
 			(at 195.58 86.36 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19343,7 +19493,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "U4")
+					(reference "U3")
 					(unit 1)
 				)
 			)
@@ -19380,7 +19530,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 73.66 212.09 0)
 			(hide yes)
 			(show_name no)
@@ -19440,7 +19590,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e98afdbc-b768-4e11-a5dc-d6c6d367430c")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR011"
 			(at 48.26 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -19500,7 +19650,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR07")
+					(reference "#PWR011")
 					(unit 1)
 				)
 			)
@@ -19518,7 +19668,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ea2837ec-bea1-48d8-8164-e30b565d5a95")
-		(property "Reference" "#PWR060"
+		(property "Reference" "#PWR013"
 			(at 52.07 218.44 0)
 			(hide yes)
 			(show_name no)
@@ -19578,7 +19728,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR060")
+					(reference "#PWR013")
 					(unit 1)
 				)
 			)
@@ -19606,7 +19756,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3.3k"
+		(property "Value" "1K"
 			(at 228.6 158.75 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19677,7 +19827,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ecba42d4-a282-45eb-9b50-c162586037ce")
-		(property "Reference" "#PWR056"
+		(property "Reference" "#PWR027"
 			(at 111.76 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -19737,7 +19887,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR056")
+					(reference "#PWR027")
 					(unit 1)
 				)
 			)
@@ -19926,7 +20076,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f91aafe7-d2b3-4a90-b009-811f71b80b87")
-		(property "Reference" "C5"
+		(property "Reference" "C2"
 			(at 59.69 189.2235 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19948,7 +20098,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 57.15 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -19990,7 +20140,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C5")
+					(reference "C2")
 					(unit 1)
 				)
 			)
@@ -20008,7 +20158,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f9fc2b50-fd6c-4f3b-bb83-2140c7fa2f90")
-		(property "Reference" "#PWR035"
+		(property "Reference" "#PWR043"
 			(at 212.09 109.22 0)
 			(hide yes)
 			(show_name no)
@@ -20068,7 +20218,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR035")
+					(reference "#PWR043")
 					(unit 1)
 				)
 			)
@@ -20086,7 +20236,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fa4b0934-1c92-4431-b62f-c1e4008ff4e9")
-		(property "Reference" "#PWR03"
+		(property "Reference" "#PWR022"
 			(at 67.31 53.34 0)
 			(hide yes)
 			(show_name no)
@@ -20146,7 +20296,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR03")
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -20164,7 +20314,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fbb2898e-acbd-4d4c-8dff-d11f7198bb29")
-		(property "Reference" "#PWR06"
+		(property "Reference" "#PWR08"
 			(at 41.91 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -20225,7 +20375,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR06")
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)
@@ -20243,7 +20393,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fcb5c422-417e-4a84-b3ab-5d10c6aa0236")
-		(property "Reference" "#PWR034"
+		(property "Reference" "#PWR042"
 			(at 212.09 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -20303,7 +20453,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR034")
+					(reference "#PWR042")
 					(unit 1)
 				)
 			)
@@ -20321,7 +20471,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fcef1e40-6784-4d0b-92fd-0f52286b80d0")
-		(property "Reference" "R9"
+		(property "Reference" "R12"
 			(at 72.3901 158.75 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20343,7 +20493,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 71.12 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -20385,7 +20535,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "R9")
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -20402,7 +20552,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "fdfefb6c-0e27-42ca-a5d1-0369a8197f91")
-		(property "Reference" "#PWR044"
+		(property "Reference" "#PWR049"
 			(at 250.19 118.11 0)
 			(hide yes)
 			(show_name no)
@@ -20462,7 +20612,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR044")
+					(reference "#PWR049")
 					(unit 1)
 				)
 			)
@@ -20480,7 +20630,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ffc41ad6-de8b-4b83-8319-7dd32cefed95")
-		(property "Reference" "#PWR041"
+		(property "Reference" "#PWR048"
 			(at 250.19 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -20540,7 +20690,7 @@
 		(instances
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "#PWR041")
+					(reference "#PWR048")
 					(unit 1)
 				)
 			)

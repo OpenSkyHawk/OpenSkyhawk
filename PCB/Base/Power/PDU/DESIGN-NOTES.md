@@ -40,10 +40,11 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 - F103 Vrefint not per-chip trimmed (±~3% absolute) but tracks load/temp drift — enough for ballpark.
 - **LM4040 dropped** — ~$0.60 (not $0.15) precision ref; overkill vs Vrefint for ballpark goal. Revisit only if absolute-V accuracy becomes a requirement.
 
-### B2. Shunt resistor ×2 — 10 mΩ  [LOCKED: HoRCG27284R010F1T, C53115028]
-- **Milliohm HoRCG27284R010F1T** — 2728, **4W**, ±1%, **±25 ppm/°C**, LCSC **C53115028**, $0.22@5.
-- Chosen over CSRF2512FT10L0 (C346481, 2512 2W ±100ppm): **±25ppm = 4× better tempco** (0.1% vs 0.4% current-gain drift /40°C — the part we can't zero-cal out), cheaper, bigger 2728 = better Kelvin-pad geometry + thermal. 4W overkill (max dissipation ~0.25W @5A) but free.
-- Kelvin sense: thin dedicated traces off the pad corners to INA180 IN+/IN− — never share high-current copper. 2728 gives room for clean Kelvin pads.
+### B2. Shunt resistor ×2 — 10 mΩ 2512  [FINAL: CSRF2512FT10L0, C346481, 2-terminal]
+- **Stackpole CSRF2512FT10L0** — **2512**, 2W, ±1%, **±100 ppm/°C**, **2-terminal**, LCSC **C346481**. Footprint = STOCK **`Resistor_SMD:R_2512_6332Metric`**. Symbol = 2-pin `Device:R` (value 10m).
+- **Reverted from HoRCG27284 (2728, ±25ppm, C53115028)** during layout: the 2728 had NO stock KiCad footprint + no working EasyEDA model (easyeda2kicad API failed) → would need hand-draw. CSRF2512 = 2512 with a stock footprint, cheap, and ±100ppm is acceptable (±12mA/40°C at 3A, inside ballpark). Traded ±25ppm (nice-to-have) for a stock footprint.
+- **2-terminal → Kelvin via LAYOUT:** route INA180 IN+/IN− to the **inner corners of the two pads**, off the fat current copper (poor-man's Kelvin — adequate for INA180 ±1% class). Current in/out on the outer pad ends.
+- Wiring: 2-pin R in the rail (`+xV_FUSED → R → +xV`); INA IN+ on fused/high side, IN− on delivered/low side (same 2 nets/terminals).
 - On INA180 gain 50: FS = 3.3V/(50×10mΩ) = 6.6A (covers 5A fuse); ~1.6mA/LSB @12-bit.
 
 ### B3. Temperature — 1× NTC (between pours) + STM32 internal  [LOCKED]
@@ -161,7 +162,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 | Ref | Function | MPN | Pkg | LCSC | Qty |
 |---|---|---|---|---|---|
 | U1,U2 | current-sense amp (gain 50) | INA180A2IDBVR | SOT-23-5 | **C192764** | 2 |
-| R1,R2 | shunt 10mΩ 2728 4W ±25ppm | HoRCG27284R010F1T | 2728 | **C53115028** | 2 |
+| R1,R2 | shunt 10mΩ 2512 2W ±100ppm (2-term) | CSRF2512FT10L0 | 2512 | **C346481** | 2 |
 | TH1 | NTC 10k B3450 ±1% | ANTC3216-103F3450FB | 1206 | **C52155460** | 1 |
 | F1,F2 | MINI-blade fuse holder | XF-508P-B-B | DIP-4 | **C19727305** | 2 |
 | U3 | MCU (set value C8) | STM32F103C8T6 | LQFP-48 | **C8734** | 1 |
@@ -170,6 +171,26 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 
 **C-number TBD (assign at footprint pass / order):** TVS SMBJ12A + SMBJ5.0A · MINI blade fuses 5A/2A · Mini-Fit Jr 5566-04A2 (J_PSU_IN) + 2× 5566-08A2 (J_BUS) · ferrite bead 600Ω@100MHz · LEDs (D3/D4 + base r/g) · 8MHz crystal · all R/C passives (dividers 0.1% 25ppm, 1k, decoupling 100nF/1µF/4.7µF).
 - INA180A2 pins A (IDBVR). Shunt terminal count (2 vs 4) still to verify → picks R1/R2 footprint + symbol.
+
+---
+
+## FW CALIBRATION architecture (carry-forward for PDU firmware)
+
+**Per-BOARD, not per-revision** — cal captures each unit's own AMS1117 VDDA, INA180 offsets, shunt/R tolerances. **Same firmware binary on every unit**; cal = **DATA** in a reserved flash page (F103 has no EEPROM → emulate EEPROM in a dedicated flash page). **Memory-map the cal page outside the code region so a FW update that doesn't erase it preserves cal.** One image ships to all units; each self-cals once + stores its constants.
+
+**REQUIRED cals** (needed to meet spec; both FW-internal, no probes):
+1. **VDDA cal** — ADC ref = VDDA (AMS1117 ±1–2%). Read internal **Vrefint** → compute true VDDA → correct all readings. (Better absolute: DMM-measure the 3.3V rail once, pass as param.) Uncal = **±1.5–2% scale on ALL readings** → 12V ±180–240mV (>100mV target), 3A ±45–60mA (>20mA target).
+2. **INA180 zero-offset cal** — INA offset ±500µV@12V → **±15–50mA idle offset floor**. Read INA output at **no load**, store, subtract. This is the mission-critical one (Rev1 = measure idle current).
+
+**OPTIONAL cals** (only for tighter than ballpark): current gain (known bench current + meter) · voltage (DMM per rail) · NTC one-point (thermometer). 0.1% dividers + the 2 required cals already hit ±10–20mA / 100mV / ±0.5°C.
+
+**TRIGGER:** primary = **CAN command** (from SkyHawkClient / bring-up tool → node runs cal, ACKs result over CAN); fallback = **DiagSerial `CAL`** on J6 UART (bench); safety-net = **auto-if-cal-page-blank** on first boot.
+
+**GUARD (critical):** INA zero-cal MUST verify **~zero load current first** (read raw current; if loaded, **refuse + report** — else it calibrates a real current out as "offset"). VDDA just reads Vrefint (no condition).
+
+**FLOW:** trigger → verify no-load → sample → compute → write cal page + valid/magic flag → report success/fail (CAN + serial).
+
+**EQUIPMENT:** required = board power + **ST-Link** (already needed to flash) + **no load connected**; optional DMM for better VDDA. Optional cals add DMM + bench electronic load. At ~3 boards = 3 quick runs; scales to end-of-line for production (automate over CAN).
 
 ## D. Not on this board (confirm exclusions)
 - Servo buck (AP63205) → panel boards. 3V3 gen local per board (AMS1117). No central 3V3 monitor.
