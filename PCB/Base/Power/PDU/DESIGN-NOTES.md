@@ -157,20 +157,55 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 
 ---
 
-## BOM — LCSC part numbers (known parts, confirmed)
+## BOM — LCSC part numbers  [CLOSED 2026-07-04, all verified]
 
+> **InvenTree = source of truth for LCSC on reused parts** (http://192.168.85.85). On conflict the InvenTree SupplierPart SKU wins. AMS1117 corrected C6186→**C347222** per InvenTree pk13. Every new-part LCSC below datasheet-verified this session.
+
+**Active / new-sourced:**
 | Ref | Function | MPN | Pkg | LCSC | Qty |
 |---|---|---|---|---|---|
-| U1,U2 | current-sense amp (gain 50) | INA180A2IDBVR | SOT-23-5 | **C192764** | 2 |
-| R1,R2 | shunt 10mΩ 2512 2W ±100ppm (2-term) | CSRF2512FT10L0 | 2512 | **C346481** | 2 |
+| U1,U2 | current-sense amp gain 50 | INA180A2IDBVR | SOT-23-5 | **C192764** | 2 |
+| R1,R2 | shunt 10mΩ 2W ±100ppm 2-term | CSRF2512FT10L0 | 2512 | **C346481** | 2 |
 | TH1 | NTC 10k B3450 ±1% | ANTC3216-103F3450FB | 1206 | **C52155460** | 1 |
-| F1,F2 | MINI-blade fuse holder | XF-508P-B-B | DIP-4 | **C19727305** | 2 |
-| U3 | MCU (set value C8) | STM32F103C8T6 | LQFP-48 | **C8734** | 1 |
-| — | CAN transceiver | SN65HVD230DR | SOIC-8 | **C12084** | 1 |
-| — | LDO 5→3.3V | AMS1117-3.3 | SOT-223 | **C6186** | 1 |
+| F1,F2 | MINI-blade fuse holder | XF-508P-B-B | DIP-4 THT | **C19727305** | 2 |
+| D1 | TVS 12V rail clamp | SMBJ12A | SMB/DO-214AA | **C42368008** | 1 |
+| D2 | TVS 5V rail clamp | SMBJ5.0A | SMB/DO-214AA | **C113974** | 1 |
+| FB1 | VDDA ferrite bead 600Ω@100MHz | TDK MPZ2012S601AT000 | 0805 | **C21519** | 1 |
+| R4 | 12V divider top 0.1% 25ppm | Viking ARG05BTC3302 | 0805 | **C2828767** | 1 |
+| R7 | 5V divider bottom 0.1% 25ppm | YAGEO RT0805BRD0713KL | 0805 | **C865184** | 1 |
+| R6,R20 | divider 10k 0.1% 25ppm | Viking ARG05BTC1002 | 0805 | **C406725** | 2 |
+| R8-12,R15-17 | 1k series/anti-alias (0.1% 25ppm) | YAGEO RT0805BRD071KL | 0805 | **C110774** | 8 |
+| R14 | 1.5k 5V-status LED limit 1% | CHANGLONG CL0805FN1K5PS | 0805 | **C49254235** | 1 |
+| J1,J3 | Mini-Fit-Jr 5566 4-pin (chxunda clone OK) | XD-5566-2×2A | 2×2 4.2mm | **C20608114** | 2 |
+| J2 | Mini-Fit-Jr 5566 8-pin (chxunda clone OK) | XD-5566-2×4A | 2×4 4.2mm | **C20608116** | 1 |
+| D3,D4,D5,D7 | status/indicator LED green | (InvenTree pk27) | 0805 | **C19171393** | 4 |
+| D6 | indicator LED red | (InvenTree pk28) | 0805 | **C19171391** | 1 |
 
-**C-number TBD (assign at footprint pass / order):** TVS SMBJ12A + SMBJ5.0A · MINI blade fuses 5A/2A · Mini-Fit Jr 5566-04A2 (J_PSU_IN) + 2× 5566-08A2 (J_BUS) · ferrite bead 600Ω@100MHz · LEDs (D3/D4 + base r/g) · 8MHz crystal · all R/C passives (dividers 0.1% 25ppm, 1k, decoupling 100nF/1µF/4.7µF).
-- INA180A2 pins A (IDBVR). Shunt terminal count (2 vs 4) still to verify → picks R1/R2 footprint + symbol.
+**Reused — InvenTree SKUs (authoritative):**
+| Ref | Part | LCSC |
+|---|---|---|
+| U5 | STM32F103C8T6 | C8734 |
+| U4 | SN65HVD230DR | C12084 |
+| U3 | AMS1117-3.3 | C347222 |
+| Y1 | 8MHz crystal | C20617997 |
+| SW1 | 6mm tactile RESET | C2939600 |
+| J6 | JST-XH B3B 3-pin | C51940188 |
+| R3,R5,R_BOOT1 | 10K 1% pulldown (NRST/BOOT0) | C844937 |
+| R13 | 4.7K 1% | C844941 |
+| R18 | 33 1% | C2090807 |
+| R19 | 120 1% CAN term | C844816 |
+| C1-7,C12-18,C20 | 100nF | C1711 |
+| C8,C9 | 10µF 0805 | C669099 |
+| C10 | 10µF elec 4×5.4 | C3343 |
+| C11 | 22µF elec 4×5.4 | C72502 |
+| C19 | 1µF | C28323 |
+| C21,C22 | 22pF C0G | C1804 |
+
+**Off-board consumable (not PCBA):** MINI blade fuses **5A** (12V) + **2A** (5V) — hand-inserted into F1/F2 holders. Order separately or use on-hand automotive MINI (5A tan / 2A grey).
+
+**On hand (user-supplied, no order):** J4 1×05 + J5 1×02 pin headers.
+
+**Divider grades matched:** 33K/13K/10K all thin-film 0.1% 25ppm (C2828767 / C865184 / C406725) — 5V + 12V divider ratios temp-honest; FW cal handles offset, tempco within <100mV target. (Earlier 13K C2991327 = 100ppm rejected; 1K C54921104 was mislabeled 13k, rejected.)
 
 ---
 
