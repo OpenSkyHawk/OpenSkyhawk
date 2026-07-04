@@ -151,7 +151,8 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 - **Pins RESERVED by STM32Board** (don't reuse for ADC): PB14/PB15 (LED), PA9/PA10 (UART), PA11/PA12 (CAN). Our ADC (PA0-3,PA6) clears them ✓.
 - PDU FW to add: **NODE_ID 1-63** (0=PanelBridge), telemetry frames (rail V/I/temp/fault bitmap), setWarning() on fault, setLinkActive() on data.
 
-**Remaining:** import standard block (VDD decoupling + 8MHz xtal + BOOT0/NRST + SWD + SN65HVD230 CAN + AMS1117 5→3V3 + J_BUS out) · assign footprints (**verify shunt C53115028 = 2 vs 4 terminal** for R1/R2 symbol) · ERC/DRC.
+**SCHEMATIC COMPLETE + ERC-CLEAN 2026-07-03.** Standard STM32 block imported (VDD decoupling 5×100nF + 8MHz xtal Y1/22pF + BOOT0 10k-pulldown + NRST reset SW1/10k/100nF + SWD J7 + SN65HVD230 U5 [Rs pin8→GND high-speed, pin2→GND, Vref pin5 NC] + AMS1117 U4 [10µF in/22µF out] + status LEDs + diag serial J1 + mounting holes H1-4). CAN connectors: **J3 CAN-in (2×2 CANH/CANL/GND)** + **J9 J_BUS_OUT (8-pin power+CAN)** + J5 J_CAN_TERM (120Ω R13, populate if end-node) = split-source injection. PWR_FLAG on +12V/+5V/+12V_IN/+5V_IN/+3V3/GND; 10µF bulk C21/C22 per rail (injection; downstream panels self-decouple). Decoupling stack: 22µF reg-out + 100nF/VDD-pin + bead-VDDA + 10µF/rail.
+**Remaining:** assign footprints (**verify shunt C53115028 = 2 vs 4 terminal** for R1/R2 symbol) · DRC after layout (B3).
 
 ---
 
