@@ -80,7 +80,7 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 
 ### B6. PDU power-input connector  [LOCKED: Mini-Fit Jr 4-pin 2×2 (J_PSU_IN)]
 - **Molex Mini-Fit Jr 2×2 (4-circuit), vertical PCB header** — KiCad footprint **`Connector_Molex:Molex_Mini-Fit_Jr_5566-04A2_2x02_P4.20mm_Vertical`** (in STOCK lib — no custom footprint). Same **5566 family** as J_BUS (5566-08A2) → shared crimp terminals/tooling.
-- Pinout **pin1 +12V · pin2 GND · pin3 GND · pin4 +5V** (12V & 5V non-adjacent, GND between where layout allows). ~9A/pin → 12V ~3A / 5V ~1A / GND split 2 pins ≪ 9A. Ample.
+- Pinout **as fabricated (J1 pads, authoritative):** **pin1 +12V · pin2 +5V · pin3 GND · pin4 GND**. ~9A/pin → 12V ~3A / 5V ~1A / GND split 2 pins ≪ 9A. Ample. ⚠ **Harness MUST crimp to this board pinout** — earlier "12V/5V non-adjacent, GND-between" intent was NOT realized on the routed board (12V/5V land adjacent p1/p2); boards fabbed → this is the truth, don't build to any older note.
 - **House-connector = board-to-board feed** (NOT direct PSU). PDU is fed from a future **power-entry/bridging board** (24-pin ATX in → per-console Mini-Fit feed out, ~216W, 2L/2oz — deferred, task_ab680ebd). ATX/PSU-brand specifics confined to that one entry board; the PDU is now a pure house-connector board.
 - **INTERIM (until entry board):** hand-built harness — PSU Molex/SATA device end → crimp → Mini-Fit Jr → PDU. Match pinout (1=12V/2=3=GND/4=5V), 18–20 AWG so it's reusable as the entry-board feed later. Board unchanged either way.
 - **History:** Mini-Fit Jr 6-pin → Molex-4 peripheral (direct-PSU idea) → **back to Mini-Fit Jr 4-pin** once the entry-board architecture was adopted (PDU feeds from it, so house connector is right). PCIe 6-pin ruled out (12V-only).
@@ -135,7 +135,7 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 ## SCHEMATIC FRONT-END DRAWN 2026-07-03 (`PDU.kicad_sch`, Rev 1.0)
 
 Blocks drawn (PDU-specific; standard STM32 block imported separately):
-- **Input/fuse/TVS** — J2 J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (D2 SMBJ12A on 12V, D1 SMBJ5.0A on 5V, cathode→rail/anode→GND, pre-fuse) → fuse (F2 5A on 12V, F1 2A on 5V) → `+12V_FUSED`/`+5V_FUSED`.
+- **Input/fuse/TVS** (refs **per fabricated board**) — **J1** J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (**D1 SMBJ12A on 12V, D2 SMBJ5.0A on 5V**, cathode→rail/anode→GND, pre-fuse) → fuse (**F1 5A on 12V, F2 2A on 5V**) → `+12V_FUSED`/`+5V_FUSED`. (Matches BOM table above: D1=C42368008 12V clamp, D2=C113974 5V clamp.)
 - **Voltage sense** (load-side only): `+12V`→33k/10k→1k→`12V_READ_ADC`+100nF; `+5V`→10k/13k→1k→`5V_READ_ADC`+100nF.
 - **Current sense**: R1/R2 shunt (10mΩ) in rail `+xV_FUSED`→`+xV`; U1/U2 INA180A2 (IN+=fused/high, IN−=delivered/low), VS=+3V3+100nF, OUT→1k→`I_12V_ADC`/`I_5V_ADC`+100nF.
 - **Temp**: +3V3→10k→[NTC TH1→GND]→1k→`NTC_ADC`+100nF.
@@ -152,7 +152,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 - **Pins RESERVED by STM32Board** (don't reuse for ADC): PB14/PB15 (LED), PA9/PA10 (UART), PA11/PA12 (CAN). Our ADC (PA0-3,PA6) clears them ✓.
 - PDU FW to add: **NODE_ID 1-63** (0=PanelBridge), telemetry frames (rail V/I/temp/fault bitmap), setWarning() on fault, setLinkActive() on data.
 
-**SCHEMATIC COMPLETE + ERC-CLEAN 2026-07-03.** Standard STM32 block imported (VDD decoupling 5×100nF + 8MHz xtal Y1/22pF + BOOT0 10k-pulldown + NRST reset SW1/10k/100nF + SWD J7 + SN65HVD230 U5 [Rs pin8→GND high-speed, pin2→GND, Vref pin5 NC] + AMS1117 U4 [10µF in/22µF out] + status LEDs + diag serial J1 + mounting holes H1-4). CAN connectors: **J3 CAN-in (2×2 CANH/CANL/GND)** + **J9 J_BUS_OUT (8-pin power+CAN)** + J5 J_CAN_TERM (120Ω R13, populate if end-node) = split-source injection. PWR_FLAG on +12V/+5V/+12V_IN/+5V_IN/+3V3/GND; 10µF bulk C21/C22 per rail (injection; downstream panels self-decouple). Decoupling stack: 22µF reg-out + 100nF/VDD-pin + bead-VDDA + 10µF/rail.
+**SCHEMATIC COMPLETE + ERC-CLEAN 2026-07-03.** *(Historical snapshot — some designators below are pre-final draft refs. **Authoritative refs = the fabricated board / BOM table:** J1=J_PSU_IN, J2=J_BUS_OUT, J3=J_BUS_IN(CAN), J4=J_SWD, J5=J_CAN_TERM, J6=J_DIAG.)* Standard STM32 block imported (VDD decoupling 5×100nF + 8MHz xtal Y1/22pF + BOOT0 10k-pulldown + NRST reset SW1/10k/100nF + SWD J7 + SN65HVD230 U5 [Rs pin8→GND high-speed, pin2→GND, Vref pin5 NC] + AMS1117 U4 [10µF in/22µF out] + status LEDs + diag serial J1 + mounting holes H1-4). CAN connectors: **J3 CAN-in (2×2 CANH/CANL/GND)** + **J9 J_BUS_OUT (8-pin power+CAN)** + J5 J_CAN_TERM (120Ω R13, populate if end-node) = split-source injection. PWR_FLAG on +12V/+5V/+12V_IN/+5V_IN/+3V3/GND; 10µF bulk C21/C22 per rail (injection; downstream panels self-decouple). Decoupling stack: 22µF reg-out + 100nF/VDD-pin + bead-VDDA + 10µF/rail.
 **Remaining:** assign footprints (**verify shunt C53115028 = 2 vs 4 terminal** for R1/R2 symbol) · DRC after layout (B3).
 
 ---
