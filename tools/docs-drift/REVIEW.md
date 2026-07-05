@@ -26,7 +26,7 @@ Structured tables (NODE_IDs, etc.) are already kept in sync by transclusion +
 | `CLAUDE.md` (project rules, decisions) | architecture / contributing / hardware pages |
 | `Firmware/Panels/**`, `Firmware/Libraries/**`, `Firmware/NODE_IDS.md` | `docs/firmware/**`, panel pages |
 | `PCB/**`, `CAD/**` (new boards / panels) | `docs/hardware/**`, `docs/panels/**`, kit pages |
-| Notion **Panels** DB (status past *Schematics*) | a matching page must exist under `docs/` |
+| **GitHub Projects #2** (Controller Build, org `OpenSkyHawk`) — panel/controller past the schematic stage (B2+) | a matching page must exist under `docs/` |
 
 ## Step 1 — Establish the window
 
@@ -86,12 +86,21 @@ For each changed source item, decide whether a published page is now wrong or mi
 Use judgement — only flag real, actionable mismatches. A reworded sentence in a source
 file with no factual change is **not** drift.
 
-## Step 4 — Notion cross-check (best effort)
+## Step 4 — Build-page cross-check (best effort)
 
-If the Notion MCP is available, list **Panels** DB pages whose Status is past *Schematics*
-(Schematics, CAD, PCB Layout, Ordering, Assembly, Testing, Done) and confirm each panel
-has a page under `docs/`. Flag any built/in-progress panel with no docs page. If Notion is
-not reachable, note "Notion cross-check skipped" in the issue and continue — do not fail.
+Panel and controller **build tracking lives in GitHub Projects** (org `OpenSkyHawk`), **not
+Notion** — the legacy Notion Panels DB is research-reference only, so do **not** use it as
+the build tracker. If GitHub Projects is reachable, list **Project #2 (Controller Build)**
+items and confirm each controller/panel past the schematic stage (B2+) has a page under
+`docs/`:
+
+```bash
+gh project item-list 2 --owner OpenSkyHawk --format json
+```
+
+Flag any built/in-progress controller or panel with no docs page. If the check can't run,
+note "build-page cross-check skipped" in the issue and continue — do not fail. (Notion still
+holds non-panel data — Tasks DB, project notes — but that is out of scope for this review.)
 
 ## Step 5 — Write the issue
 
@@ -132,7 +141,7 @@ Ignored `docs/api/` (auto-generated).
 - [ ] `<doc page>` conflicts with `<source file>`: <one line>.
 
 ## Notes
-- Notion cross-check: <done / skipped>.
+- Build-page cross-check (GitHub Projects #2): <done / skipped>.
 - Commits reviewed: <range or shas>.
 ```
 
