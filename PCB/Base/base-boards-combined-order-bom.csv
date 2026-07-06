@@ -9,15 +9,18 @@ Resistor,R,100k,0805,0,2,10,20,,0805 1%,PanelGroup MOSFET gate pulldown
 Capacitor,C,100nF,0805,8,8,80,100,,X7R 50V,Decoupling + bus-entry HF; normalize C1 "100nf" -> 100nF
 Capacitor,C,22pF,0805,2,2,20,30,,C0G/NP0 50V,Crystal load caps - C0G dielectric only
 Capacitor,C,1uF,0805,1,1,10,20,,X7R,VDDA filter
-Capacitor,C,10uF,0805,2,2,20,30,,X5R 25V,"Bus-entry bulk C14(+5V)/C15(+12V). 25V for +12V DC-bias derating. X5R = cheaper/Basic, fine here"
+Capacitor,C,10uF,0805,1,1,10,20,,X5R 25V,"Bus-entry bulk C14 (+5V). 25V fine on the 5V rail. X5R = cheaper/Basic"
+Capacitor,C,10uF,0805,1,1,10,20,C49010152,X5R 35V,"Bus-entry bulk C15 (+12V). 35V for +12V DC-bias derating + headroom over the 19.9V SMBJ12A clamp"
 Capacitor (polarized),C,10uF,Elec 4x5.4 SMD,1,1,10,15,,Alu electrolytic >=16V,AMS1117 input bulk - mind polarity
 Capacitor (polarized),C,22uF,Elec 4x5.4 SMD,1,1,10,15,,Alu electrolytic >=10V,AMS1117 output bulk (loop stability) - mind polarity
+TVS,D,SMBJ12A,SMB/DO-214AA,1,1,10,20,C42368008,SMBJ12A,"Input-rail TVS +12V->GND at J_BUS_IN. Unidirectional, 19.9V clamp. Fleet standard (both boards)"
+TVS,D,SMBJ6.0A,SMB/DO-214AA,1,1,10,20,C5331096,SMBJ6.0A (MSKSEMI),"Input-rail TVS +5V->GND at J_BUS_IN. Unidirectional, 10.3V clamp. Fleet standard (both boards). MOQ 20"
 LED,D,Green,0805,3,2,25,35,,Yellow-green ~2.1V Vf,NOT pure-green (~3.1V wont light on 3.3V rail)
 LED,D,Red,0805,2,1,15,25,,Standard red 0805,
 IC,U1,STM32F103C8T6,LQFP-48,1,1,10,12,,STM32F103C8T6,+2 spare (reflow risk). Often LCSC Extended
 IC,U2,SN65HVD230DR,SOIC-8,1,1,10,12,,SN65HVD230DR,CAN transceiver. Rs=GND high-speed
 IC,U3,AMS1117-3.3,SOT-223,1,1,10,13,,AMS1117-3.3,LDO. LCSC Basic
-MOSFET,Q,IRLML2502,SOT-23,0,2,10,15,,IRLML2502,Logic-level N-ch backlight driver (PanelGroup only)
+MOSFET,Q,AO3400A,SOT-23,0,2,10,15,C49195711,AO3400A,"Logic-level N-ch backlight driver (PanelGroup only). 30V (was IRLML2502 20V) for headroom over the 19.9V TVS clamp; Vgs op @2.5V so 3.3V-driven"
 Module,U4,RP2040-Zero,Waveshare module,1,0,5,6,,Waveshare RP2040-Zero,May NOT be on LCSC - order Waveshare/Amazon. THT hand-solder
 Crystal,Y1,8MHz,SMD 5.0x3.2mm 2-pad,1,1,10,13,,8MHz CL~18-20pF,Match load to the 22pF caps
 Switch,SW1,Tactile RESET,6mm THT,1,1,10,13,,6mm THT tactile,THT - hand-solder
