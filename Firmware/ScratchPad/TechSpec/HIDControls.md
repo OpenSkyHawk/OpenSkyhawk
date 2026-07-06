@@ -2,7 +2,7 @@
 
 **Status:** Done
 **FirmwarePlan ref:** `FirmwarePlan/07-simgateway-api.md#hid-controlid-allocation`, `FirmwarePlan/02-can-protocol.md`
-**Depends on:** *(none — platform-agnostic constants only)*
+**Depends on:** `<stdint.h>` (fixed-width base type for the `NodeFaultId` enum) — otherwise platform-agnostic
 
 ---
 
@@ -11,8 +11,13 @@
 Header-only library defining CTRL_* controlId constants for all HID axes and buttons.
 Shared between STM32 (via CANProtocol) and RP2040 (SimGateway sketches).
 
-Contains only `#define` constants — no classes, no functions, no state. Not a compile
+Contains `#define` constants plus the `NodeFaultId` enum (node fault codes, #163) — no
+functions, no state. Includes `<stdint.h>` for the enum's `uint8_t` base. Not a compile
 unit; `library.json` marks it as header-only with no platform restriction.
+
+Also hosts the **NODE_STATUS wire contract** (`NODE_STATUS_PROTO_VERSION`, `_REQ_ADDR`,
+`_MSG_NAME`, `_END_MSG_NAME`) — the canonical source the client syncs against — and
+`NodeFaultId`, the canonical `HEALTH_n` `faultId` dictionary (see below).
 
 ---
 
@@ -85,8 +90,32 @@ next unused value in the axis (0x0010–0x001F), hat (0x0020–0x002F), or butto
 (0x0030–0x00AF) range. Update
 `HIDAxis` or `HIDButton` declarations in the relevant sketch.
 
+### Node-status + fault contract (PanelBridge → host)
+
+HIDControls.h also owns the node-status wire contract and the fault-code dictionary — the
+canonical source the client (`sync-a4ec.ts`) mirrors:
+
+```cpp
+#define NODE_STATUS_PROTO_VERSION 2          // bump on any _NODE_STATUS wire change
+#define NODE_STATUS_REQ_ADDR      0x86FE     // host→device roster-request export address
+#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
+#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
+
+// HEALTH_n faultId values (#163). Coarse, one active at a time; the exact device is logged
+// on the node's DiagSerial, not the wire. Client maps id → human label (SkyHawkClient#40).
+enum class NodeFaultId : uint8_t {
+    NONE           = 0x00,
+    I2C_PERIPHERAL = 0x01,   // an I2C device (OLED/mux/expander) tripped its I2cHealth breaker
+    // 0x02–0xFF reserved for future fault sources
+};
+```
+
+Add new fault codes by appending an enum value (no wire/proto change — `faultId` is a byte);
+mirror the label in the client's fault table.
+
 ---
 
 ## Dependencies
 
-None. `HIDControls.h` uses only `#pragma once` and integer literals.
+`<stdint.h>` only (fixed-width base for the `NodeFaultId` enum). Otherwise `#pragma once`,
+integer literals, string literals, and one enum — no other headers, no platform restriction.

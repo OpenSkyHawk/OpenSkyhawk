@@ -116,6 +116,9 @@ public:
 
     void setFontSize(DrumFont font);                            // runtime; re-fits next frame
     void setOffset(float xOffsetMm, float yOffsetMm);          // runtime mm; re-registers next frame
+
+    uint8_t     faultCode() const override;    // #163: I2C_PERIPHERAL when breaker tripped, else 0
+    const char* faultDetail() const override;  // #163: DiagSerial-only hop string (Mux/Device)
 };
 
 }  // namespace OpenSkyhawk
