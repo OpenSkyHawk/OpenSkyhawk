@@ -233,4 +233,4 @@ telemetry with no trip point. The frame is the shared node-health contract (#221
   `HEALTH_0` already represents that board's thermal zone — a second sensor there is redundant.
 
 **Affects:** `02-can-protocol.md`, `08-hardware-firmware-contracts.md`, `docs/_source/hardware-standards.md`,
-`NodeStatus.h` (`_NODE_STATUS` proto v2), SkyHawkClient (host surfacing).
+`CANProtocol.h` (`_NODE_STATUS` proto v2 + `NodeFaultId`), SkyHawkClient (host surfacing).

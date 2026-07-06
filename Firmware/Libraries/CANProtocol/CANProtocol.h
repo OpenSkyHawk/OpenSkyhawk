@@ -121,6 +121,39 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 /** @brief Boot-complete READY frame ID for node n. Range 0x401-0x43F. */
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
+// ── Node-status host contract + fault dictionary (#86 / #163) ─────────────────
+// How PanelBridge reports connected PanelGroup nodes + their health to the host
+// (OpenSkyhawk Client) over DCS-BIOS. Lives here (the CAN-membership layer, alongside
+// NodeHealthPayload / canIdHealth) rather than in HIDControls.h (HID controlId constants
+// only). **This is the canonical contract source the client's sync-a4ec.ts parses** — bump
+// NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.
+//
+//   NODE_STATUS_REQ_ADDR     host→device DCS-BIOS export address the client writes to request
+//                            the roster. Above every real A-4E-C output (~0x8554).
+//   NODE_STATUS_MSG_NAME     device→host per-node status command name (leading underscore).
+//   NODE_STATUS_END_MSG_NAME device→host burst terminator; arg = node count.
+//
+// _NODE_STATUS arg: 26 hex chars — nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)
+//   dieTempC(2) hFlags(2) faultMask(2) faultId(2). The last four are the node's cached HEALTH_n
+//   telemetry (proto v2); see FirmwarePlan/04-dcs-bios-integration.md for the full field decode.
+#define NODE_STATUS_PROTO_VERSION 2
+#define NODE_STATUS_REQ_ADDR      0x86FE
+#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
+#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
+
+/**
+ * @brief HEALTH_n `faultId` values (#163) — the node fault dictionary.
+ *
+ * Coarse, one active at a time: the CAN wire carries just this generic id; the exact failing
+ * device is logged on the node's DiagSerial tap, not the frame. The client maps id → human
+ * label (SkyHawkClient#40). Grow as new fault sources appear.
+ */
+enum class NodeFaultId : uint8_t {
+    NONE           = 0x00,
+    I2C_PERIPHERAL = 0x01,  // an I2C device (OLED / mux / expander) tripped its I2cHealth breaker
+    // 0x02-0xFF reserved for future fault sources (stepper, ADC, …)
+};
+
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally
 // separate from the 11-bit CAN arbitration IDs above.

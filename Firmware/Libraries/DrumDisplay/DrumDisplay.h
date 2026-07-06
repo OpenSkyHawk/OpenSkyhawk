@@ -27,7 +27,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <PanelGroup.h>      // OutputBase
-#include <NodeStatus.h>      // NodeFaultId (#163)
+#include <CANProtocol.h>     // NodeFaultId (#163)
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
 #include <Helpers/I2cHealth/I2cHealth.h>

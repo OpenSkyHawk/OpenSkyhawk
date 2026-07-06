@@ -158,7 +158,7 @@ public:
      * Rolled up across all outputs into the HEALTH_n frame's faultId. Must be cheap and
      * const — read cached state only (e.g. an I2cHealth breaker flag), never an I2C
      * transaction — it is called from the periodic health path. Default: never faults.
-     * @return A NodeFaultId value (see NodeStatus.h), or 0 if healthy.
+     * @return A NodeFaultId value (see CANProtocol.h), or 0 if healthy.
      */
     virtual uint8_t faultCode() const { return 0; }
 
