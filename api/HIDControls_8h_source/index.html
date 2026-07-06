@@ -3936,20 +3936,27 @@
 //                         Argument = node count in the burst. Lets the client
 //                         know a roster reply is complete and reconcile/prune.
 //
-// _NODE_STATUS argument: 18 chars, each field its numeric value as fixed-width
+// _NODE_STATUS argument: 26 chars, each field its numeric value as fixed-width
 // uppercase hex (most-significant nibble first):
 //   nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)
+//     dieTempC(2) hFlags(2) faultMask(2) faultId(2)
 //   present: 01 alive, 00 removed.  flags: bit0 BOFF, bit1 EPVF.
 //   esr: low byte TEC, high byte REC.  nodeId range 1–63.
 //   uptime/rxCount are uint16 — wrap at 65535 (~18 h / 65 k frames). Treat as
 //   health indicators, not monotonic counters.
+//   The last four fields are the node's cached HEALTH_n telemetry (proto v2):
+//     dieTempC: int8 two's-complement whole °C (internal MCU sensor — UNCALIBRATED,
+//       die not ambient). 80 = INT8_MIN = not-yet-seen → render unknown.
+//     hFlags:  node health bits — bit0 overheat, bit1 degraded.
+//     faultMask/faultId: tripped-peripheral bitmap + detail id (0 until #163 populates;
+//       faultId is an index into a client-side lookup table — no strings on the wire).
 //
 // Emission: a single bare _NODE_STATUS is a live delta (apply immediately). A
 // request/boot reply is N _NODE_STATUS messages followed by _NODE_STATUS_END &lt;count&gt;;
 // that set is the authoritative present-roster — prune nodes absent from it.
 // Silent death (yank / bus-off) is reported as present=00 by PanelBridge's 3 s
 // heartbeat timeout; a periodic client request reconciles any lost delta.
-#define NODE_STATUS_PROTO_VERSION 1
+#define NODE_STATUS_PROTO_VERSION 2
 #define NODE_STATUS_REQ_ADDR      0x86FE
 #define NODE_STATUS_MSG_NAME      &quot;_NODE_STATUS&quot;
 #define NODE_STATUS_END_MSG_NAME  &quot;_NODE_STATUS_END&quot;

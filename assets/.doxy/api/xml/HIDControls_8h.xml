@@ -355,14 +355,14 @@
       </memberdef>
       <memberdef kind="define" id="HIDControls_8h_1a82b54ce9fac2a1c2716554b3294d7afd" prot="public" static="no">
         <name>NODE_STATUS_PROTO_VERSION</name>
-        <initializer>1</initializer>
+        <initializer>2</initializer>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="78" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="78" bodyend="-1"/>
+        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="85" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="85" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="HIDControls_8h_1a0cad7c81046100af2cc52603e4c4b548" prot="public" static="no">
         <name>NODE_STATUS_REQ_ADDR</name>
@@ -373,7 +373,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="79" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="79" bodyend="-1"/>
+        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="86" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="86" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="HIDControls_8h_1ae899313135cc6e871ad3602f82e290bb" prot="public" static="no">
         <name>NODE_STATUS_MSG_NAME</name>
@@ -384,7 +384,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="80" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="80" bodyend="-1"/>
+        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="87" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="87" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="HIDControls_8h_1ab959bf73571c86cfb6f0221fe6247e96" prot="public" static="no">
         <name>NODE_STATUS_END_MSG_NAME</name>
@@ -395,7 +395,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="81" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="81" bodyend="-1"/>
+        <location file="Firmware/Libraries/HIDControls/HIDControls.h" line="88" column="9" bodyfile="Firmware/Libraries/HIDControls/HIDControls.h" bodystart="88" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -459,23 +459,30 @@
 <codeline lineno="62"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Argument<sp/>=<sp/>node<sp/>count<sp/>in<sp/>the<sp/>burst.<sp/>Lets<sp/>the<sp/>client</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="63"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>know<sp/>a<sp/>roster<sp/>reply<sp/>is<sp/>complete<sp/>and<sp/>reconcile/prune.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="64"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"></highlight><highlight class="comment">//<sp/>_NODE_STATUS<sp/>argument:<sp/>18<sp/>chars,<sp/>each<sp/>field<sp/>its<sp/>numeric<sp/>value<sp/>as<sp/>fixed-width</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="comment">//<sp/>_NODE_STATUS<sp/>argument:<sp/>26<sp/>chars,<sp/>each<sp/>field<sp/>its<sp/>numeric<sp/>value<sp/>as<sp/>fixed-width</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="66"><highlight class="normal"></highlight><highlight class="comment">//<sp/>uppercase<sp/>hex<sp/>(most-significant<sp/>nibble<sp/>first):</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="67"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>nodeId(2)<sp/>present(2)<sp/>flags(2)<sp/>uptime(4)<sp/>rxCount(4)<sp/>esr(4)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>present:<sp/>01<sp/>alive,<sp/>00<sp/>removed.<sp/><sp/>flags:<sp/>bit0<sp/>BOFF,<sp/>bit1<sp/>EPVF.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>esr:<sp/>low<sp/>byte<sp/>TEC,<sp/>high<sp/>byte<sp/>REC.<sp/><sp/>nodeId<sp/>range<sp/>1–63.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>uptime/rxCount<sp/>are<sp/>uint16<sp/>—<sp/>wrap<sp/>at<sp/>65535<sp/>(~18<sp/>h<sp/>/<sp/>65<sp/>k<sp/>frames).<sp/>Treat<sp/>as</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>health<sp/>indicators,<sp/>not<sp/>monotonic<sp/>counters.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="73"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Emission:<sp/>a<sp/>single<sp/>bare<sp/>_NODE_STATUS<sp/>is<sp/>a<sp/>live<sp/>delta<sp/>(apply<sp/>immediately).<sp/>A</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">//<sp/>request/boot<sp/>reply<sp/>is<sp/>N<sp/>_NODE_STATUS<sp/>messages<sp/>followed<sp/>by<sp/>_NODE_STATUS_END<sp/>&lt;count&gt;;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal"></highlight><highlight class="comment">//<sp/>that<sp/>set<sp/>is<sp/>the<sp/>authoritative<sp/>present-roster<sp/>—<sp/>prune<sp/>nodes<sp/>absent<sp/>from<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Silent<sp/>death<sp/>(yank<sp/>/<sp/>bus-off)<sp/>is<sp/>reported<sp/>as<sp/>present=00<sp/>by<sp/>PanelBridge&apos;s<sp/>3<sp/>s</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">//<sp/>heartbeat<sp/>timeout;<sp/>a<sp/>periodic<sp/>client<sp/>request<sp/>reconciles<sp/>any<sp/>lost<sp/>delta.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="78" refid="HIDControls_8h_1a82b54ce9fac2a1c2716554b3294d7afd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_PROTO_VERSION<sp/>1</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="79" refid="HIDControls_8h_1a0cad7c81046100af2cc52603e4c4b548" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_REQ_ADDR<sp/><sp/><sp/><sp/><sp/><sp/>0x86FE</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="80" refid="HIDControls_8h_1ae899313135cc6e871ad3602f82e290bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_STATUS&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="81" refid="HIDControls_8h_1ab959bf73571c86cfb6f0221fe6247e96" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_END_MSG_NAME<sp/><sp/>&quot;_NODE_STATUS_END&quot;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>dieTempC(2)<sp/>hFlags(2)<sp/>faultMask(2)<sp/>faultId(2)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>present:<sp/>01<sp/>alive,<sp/>00<sp/>removed.<sp/><sp/>flags:<sp/>bit0<sp/>BOFF,<sp/>bit1<sp/>EPVF.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>esr:<sp/>low<sp/>byte<sp/>TEC,<sp/>high<sp/>byte<sp/>REC.<sp/><sp/>nodeId<sp/>range<sp/>1–63.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>uptime/rxCount<sp/>are<sp/>uint16<sp/>—<sp/>wrap<sp/>at<sp/>65535<sp/>(~18<sp/>h<sp/>/<sp/>65<sp/>k<sp/>frames).<sp/>Treat<sp/>as</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>health<sp/>indicators,<sp/>not<sp/>monotonic<sp/>counters.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/>The<sp/>last<sp/>four<sp/>fields<sp/>are<sp/>the<sp/>node&apos;s<sp/>cached<sp/>HEALTH_n<sp/>telemetry<sp/>(proto<sp/>v2):</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>dieTempC:<sp/>int8<sp/>two&apos;s-complement<sp/>whole<sp/>°C<sp/>(internal<sp/>MCU<sp/>sensor<sp/>—<sp/>UNCALIBRATED,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>die<sp/>not<sp/>ambient).<sp/>80<sp/>=<sp/>INT8_MIN<sp/>=<sp/>not-yet-seen<sp/>→<sp/>render<sp/>unknown.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>hFlags:<sp/><sp/>node<sp/>health<sp/>bits<sp/>—<sp/>bit0<sp/>overheat,<sp/>bit1<sp/>degraded.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>faultMask/faultId:<sp/>tripped-peripheral<sp/>bitmap<sp/>+<sp/>detail<sp/>id<sp/>(0<sp/>until<sp/>#163<sp/>populates;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>faultId<sp/>is<sp/>an<sp/>index<sp/>into<sp/>a<sp/>client-side<sp/>lookup<sp/>table<sp/>—<sp/>no<sp/>strings<sp/>on<sp/>the<sp/>wire).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Emission:<sp/>a<sp/>single<sp/>bare<sp/>_NODE_STATUS<sp/>is<sp/>a<sp/>live<sp/>delta<sp/>(apply<sp/>immediately).<sp/>A</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="comment">//<sp/>request/boot<sp/>reply<sp/>is<sp/>N<sp/>_NODE_STATUS<sp/>messages<sp/>followed<sp/>by<sp/>_NODE_STATUS_END<sp/>&lt;count&gt;;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="comment">//<sp/>that<sp/>set<sp/>is<sp/>the<sp/>authoritative<sp/>present-roster<sp/>—<sp/>prune<sp/>nodes<sp/>absent<sp/>from<sp/>it.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Silent<sp/>death<sp/>(yank<sp/>/<sp/>bus-off)<sp/>is<sp/>reported<sp/>as<sp/>present=00<sp/>by<sp/>PanelBridge&apos;s<sp/>3<sp/>s</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="comment">//<sp/>heartbeat<sp/>timeout;<sp/>a<sp/>periodic<sp/>client<sp/>request<sp/>reconciles<sp/>any<sp/>lost<sp/>delta.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="HIDControls_8h_1a82b54ce9fac2a1c2716554b3294d7afd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_PROTO_VERSION<sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="HIDControls_8h_1a0cad7c81046100af2cc52603e4c4b548" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_REQ_ADDR<sp/><sp/><sp/><sp/><sp/><sp/>0x86FE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="HIDControls_8h_1ae899313135cc6e871ad3602f82e290bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_STATUS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="HIDControls_8h_1ab959bf73571c86cfb6f0221fe6247e96" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_END_MSG_NAME<sp/><sp/>&quot;_NODE_STATUS_END&quot;</highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/HIDControls/HIDControls.h"/>
   </compounddef>

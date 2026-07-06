@@ -3893,6 +3893,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="MCU">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-die-temperature-telemetry-firmware-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal die-temperature telemetry (firmware-only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4408,6 +4425,26 @@
 <li><strong>PA11/PA12</strong> are shared between USB and CAN — the two peripherals cannot be used simultaneously; pick one at firmware init</li>
 <li>CAN bus is the primary inter-board protocol; USB used only for initial flashing/debug</li>
 <li>Use the bare die (not Blue Pill module) on MCU boards — fewer passive conflicts, smaller footprint</li>
+</ul>
+<h3 id="internal-die-temperature-telemetry-firmware-only">Internal die-temperature telemetry (firmware-only)</h3>
+<p>Every STM32 CAN node reports its own MCU <strong>internal die temperature</strong> (ADC ch16) as cheap
+health telemetry. This is a <strong>firmware convention with no schematic or BOM impact</strong> — the sensor
+is on-die, needs no external parts, and applies to every existing and future STM32 board
+unchanged. (Vrefint, ch17, is read on-node to reference the reading to Vdd, but Vdd itself is
+not transmitted — per-node rail voltage is the PDU's job, not generic node health.)</p>
+<ul>
+<li>Sent on a dedicated <strong>HEALTH_n CAN frame</strong> (<code>0x140+n</code>), 1 s cadence, default-on. PanelBridge
+  caches each node's value and forwards it to the host client. Firmware detail lives in the
+  <code>firmware</code> skill / FirmwarePlan <code>02-can-protocol.md</code>.</li>
+<li><strong>The reading is UNCALIBRATED.</strong> The STM32F103 temperature sensor has no factory trim, so
+  absolute accuracy is only ~±few °C. It measures <strong>die</strong> temperature (not ambient) and carries
+  a self-heat offset. Use it for <strong>relative trend and a per-node overheat flag</strong>, never as a
+  precise ambient or hot-spot measurement.</li>
+<li><strong>Boards that need accurate hot-spot temperatures still use external NTCs</strong> — e.g. the PDU's
+  shunt/fuse zones. The internal sensor complements, does not replace, dedicated sensing.</li>
+<li>One reading per STM32 node. On a board that carries both an STM32 and an RP2040 (the shared
+  Bridge/Gateway PCB), the STM32's HEALTH frame represents that board's thermal zone; the RP2040
+  is not separately instrumented.</li>
 </ul>
 <h2 id="rp2040-hid-controllers">RP2040 HID Controllers</h2>
 <p><strong>Role:</strong> USB HID devices connecting directly to the PC — flight stick, throttle, rudder pedals, button boxes. No custom PCB; use off-the-shelf modules.</p>

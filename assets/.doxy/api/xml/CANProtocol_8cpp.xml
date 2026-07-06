@@ -878,11 +878,27 @@
 <codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p;</highlight></codeline>
 <codeline lineno="378"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="379"><highlight class="normal"></highlight></codeline>
-<codeline lineno="380"><highlight class="normal">uint32_t<sp/><ref refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kindref="member">txDropCount</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8cpp_1ae18bc05d725d5b3c6ecfbdb005c6797e" kindref="member">_txDrops</ref>;<sp/>}</highlight></codeline>
-<codeline lineno="381"><highlight class="normal"></highlight></codeline>
-<codeline lineno="382"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>CANProtocol</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="383"><highlight class="normal"></highlight></codeline>
-<codeline lineno="384"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="380"><highlight class="normal">NodeHealthPayload<sp/><ref refid="namespaceCANProtocol_1ab87b599918486c07aa90269998e189d9" kindref="member">makeNodeHealthPayload</ref>(uint8_t<sp/>nodeId,<sp/>int8_t<sp/>dieTempC)<sp/>{</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/>NodeHealthPayload<sp/>p;</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/>p.nodeId<sp/><sp/><sp/>=<sp/>nodeId;</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/>p.dieTempC<sp/>=<sp/>dieTempC;</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/>p.flags<sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>NODE_OVERHEAT_C</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Overheat<sp/>trip<sp/>is<sp/>opt-in:<sp/>the<sp/>internal<sp/>sensor<sp/>is<sp/>uncalibrated,<sp/>so<sp/>a<sp/>sane<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>needs<sp/>field<sp/>data<sp/>first.<sp/>Only<sp/>compute<sp/>the<sp/>flag<sp/>when<sp/>a<sp/>build<sp/>defines<sp/>NODE_OVERHEAT_C.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dieTempC<sp/>!=<sp/>INT8_MIN<sp/>&amp;&amp;<sp/>dieTempC<sp/>&gt;=<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)(NODE_OVERHEAT_C))<sp/>p.flags<sp/>|=<sp/>0x01;<sp/><sp/></highlight><highlight class="comment">//<sp/>bit0=overheat</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="389"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/>p.faultMask<sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">//<sp/>reserved<sp/>for<sp/>#163<sp/>(degraded/fault<sp/>rollup)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/>p.faultId<sp/><sp/><sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">//<sp/>reserved<sp/>for<sp/>#163</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/>p.rsvd[0]<sp/>=<sp/>p.rsvd[1]<sp/>=<sp/>p.rsvd[2]<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p;</highlight></codeline>
+<codeline lineno="394"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"></highlight></codeline>
+<codeline lineno="396"><highlight class="normal">uint32_t<sp/><ref refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kindref="member">txDropCount</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8cpp_1ae18bc05d725d5b3c6ecfbdb005c6797e" kindref="member">_txDrops</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"></highlight></codeline>
+<codeline lineno="398"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>CANProtocol</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="399"><highlight class="normal"></highlight></codeline>
+<codeline lineno="400"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp"/>
   </compounddef>

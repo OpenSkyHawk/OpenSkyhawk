@@ -42,6 +42,7 @@
 ## m
 
 * **makeHeartbeatPayload** ([**CANProtocol**](namespaceCANProtocol.md))
+* **makeNodeHealthPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
@@ -72,6 +73,8 @@
 * **readLivePin** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerADC** ([**PanelGroup**](namespacePanelGroup.md))
 * **registerExpander** ([**PanelGroup**](namespacePanelGroup.md))
+* **readDieTempC** ([**STM32Board**](namespaceSTM32Board.md))
+* **readVddMv** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## s

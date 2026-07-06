@@ -274,6 +274,47 @@
         </inbodydescription>
         <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="208" column="19" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="208" bodyend="208" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="141" declcolumn="23"/>
       </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a480fa3dcf5774e6950fb3a0f23e94759" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t STM32Board::readVddMv</definition>
+        <argsstring>()</argsstring>
+        <name>readVddMv</name>
+        <qualifiedname>STM32Board::readVddMv</qualifiedname>
+        <briefdescription>
+<para>Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Uses the STM32F103 typical Vrefint of 1.20 V (the F103 has no VREFINT_CAL factory value), so absolute accuracy is limited; good for relative trend. </para>
+</simplesect>
+<simplesect kind="return"><para>Vdd in millivolts, or 0 if the internal reference is unavailable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="222" column="10" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="222" bodyend="230" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="165" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSTM32Board_1a7d2ec3789c2b1dd22bd0bec6c1064b89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int8_t</type>
+        <definition>int8_t STM32Board::readDieTempC</definition>
+        <argsstring>()</argsstring>
+        <name>readDieTempC</name>
+        <qualifiedname>STM32Board::readDieTempC</qualifiedname>
+        <briefdescription>
+<para>Read the MCU&apos;s built-in internal temperature sensor (ADC ch16). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Free per-node thermal telemetry — no external parts, no PCB change. Reads ATEMP and AVREF (Vrefint) and converts with STM32F103 datasheet typicals (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.</para>
+<para><simplesect kind="note"><para>UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend / overheat flagging, not precise ambient measurement. </para>
+</simplesect>
+<simplesect kind="return"><para>Die temperature in whole °C, or INT8_MIN if the internal channels are unavailable on this variant. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="232" column="8" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="232" bodyend="245" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="156" declcolumn="12"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>

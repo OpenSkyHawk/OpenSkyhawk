@@ -62,6 +62,10 @@ namespace STM32Board {
 
     CAN_HandleTypeDef* canHandle();
 
+    int8_t readDieTempC();
+
+    uint16_t readVddMv();
+
 #ifdef STM32BOARD_TEST
     LedState currentState();
 #endif

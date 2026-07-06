@@ -91,7 +91,7 @@ _CAN controlId constants for HID axes and buttons._ [More...](#detailed-descript
 | define  | [**CTRL\_ZOOM**](HIDControls_8h.md#define-ctrl_zoom)  `0x0016`<br> |
 | define  | [**NODE\_STATUS\_END\_MSG\_NAME**](HIDControls_8h.md#define-node_status_end_msg_name)  `"\_NODE\_STATUS\_END"`<br> |
 | define  | [**NODE\_STATUS\_MSG\_NAME**](HIDControls_8h.md#define-node_status_msg_name)  `"\_NODE\_STATUS"`<br> |
-| define  | [**NODE\_STATUS\_PROTO\_VERSION**](HIDControls_8h.md#define-node_status_proto_version)  `1`<br> |
+| define  | [**NODE\_STATUS\_PROTO\_VERSION**](HIDControls_8h.md#define-node_status_proto_version)  `2`<br> |
 | define  | [**NODE\_STATUS\_REQ\_ADDR**](HIDControls_8h.md#define-node_status_req_addr)  `0x86FE`<br> |
 
 ## Detailed Description
@@ -299,7 +299,7 @@ GPL-2.0-only — see Firmware/LICENSE
 ### define NODE\_STATUS\_PROTO\_VERSION 
 
 ```C++
-#define NODE_STATUS_PROTO_VERSION `1`
+#define NODE_STATUS_PROTO_VERSION `2`
 ```
 
 

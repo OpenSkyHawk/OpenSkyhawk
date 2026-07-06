@@ -3926,6 +3926,8 @@ namespace PanelBridge {
     void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
                            uint16_t rxCount, uint16_t esr);
 
+    void testFeedHealth(uint8_t nodeId, int8_t dieTempC);
+
     void testRequestNodeStatus();
 
     void testCheckTimeouts(uint32_t now);

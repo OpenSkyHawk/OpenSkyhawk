@@ -4013,6 +4013,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-readdietempc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function readDieTempC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-readvddmv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function readVddMv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-setdebug" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4136,6 +4158,14 @@
 <td style="text-align: left;"><a href="#function-oncanstatus"><strong>onCanStatus</strong></a> (<a href="../CANProtocol_8h/#enum-canstatus"><strong>CanStatus</strong></a> status) <br><em>CAN bus status event handler — maps CanStatus to LED state.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">int8_t</td>
+<td style="text-align: left;"><a href="#function-readdietempc"><strong>readDieTempC</strong></a> () <br><em>Read the MCU's built-in internal temperature sensor (ADC ch16).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-readvddmv"><strong>readVddMv</strong></a> () <br><em>Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-setdebug"><strong>setDebug</strong></a> (bool on) <br><em>Enable or disable DiagSerial output.</em></td>
 </tr>
@@ -4222,6 +4252,27 @@
 <ul>
 <li><code>status</code> New CAN bus status reported by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a>. </li>
 </ul>
+<hr>
+
+<h3 id="function-readdietempc">function readDieTempC</h3>
+<p><em>Read the MCU's built-in internal temperature sensor (ADC ch16).</em> </p>
+<pre><code class="language-C++">int8_t STM32Board::readDieTempC () 
+</code></pre>
+<p>Free per-node thermal telemetry — no external parts, no PCB change. Reads ATEMP and AVREF (Vrefint) and converts with STM32F103 datasheet typicals (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.</p>
+<p><strong>Note:</strong></p>
+<p>UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend / overheat flagging, not precise ambient measurement. </p>
+<p><strong>Returns:</strong></p>
+<p>Die temperature in whole °C, or INT8_MIN if the internal channels are unavailable on this variant. </p>
+<hr>
+
+<h3 id="function-readvddmv">function readVddMv</h3>
+<p><em>Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17).</em> </p>
+<pre><code class="language-C++">uint16_t STM32Board::readVddMv () 
+</code></pre>
+<p><strong>Note:</strong></p>
+<p>Uses the STM32F103 typical Vrefint of 1.20 V (the F103 has no VREFINT_CAL factory value), so absolute accuracy is limited; good for relative trend. </p>
+<p><strong>Returns:</strong></p>
+<p>Vdd in millivolts, or 0 if the internal reference is unavailable. </p>
 <hr>
 
 <h3 id="function-setdebug">function setDebug</h3>

@@ -3943,6 +3943,7 @@ static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
 
 // Timers
 static uint32_t _lastHeartbeatMs  = 0;
+static uint32_t _lastHealthMs     = 0;  // node-health/thermal telemetry cadence (1 s)
 static uint32_t _lastFallbackMs   = 0;
 static uint32_t _lastMasterMs     = 0;     // millis() of last HB_0 seen
 static bool     _everSawMaster    = false; // arm the timeout only after the first HB_0
@@ -4276,6 +4277,22 @@ void loop() {
         CANProtocol::send(canIdHb(NODE_ID),
                           reinterpret_cast&lt;const uint8_t*&gt;(&amp;hb), sizeof(hb));
     }
+
+    // 6b. Node-health telemetry every 1000 ms — free internal die temp + Vdd (default-on;
+    // build with -DNODE_HEALTH_TELEM=0 to disable). Half the heartbeat rate: trend data.
+#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
+    if (now - _lastHealthMs &gt;= 1000) {
+        _lastHealthMs = now;
+        NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
+            NODE_ID, STM32Board::readDieTempC());
+        CANProtocol::send(canIdHealth(NODE_ID),
+                          reinterpret_cast&lt;const uint8_t*&gt;(&amp;h), sizeof(h));
+#ifdef NODE_OVERHEAT_C
+        // Raise-only: don't clear here or we'd stomp the master-loss WARNING latch.
+        if (h.flags &amp; 0x01) STM32Board::setWarning(true);  // local overheat → status-LED WARNING
+#endif
+    }
+#endif
 
     // 7. Master-loss watchdog: once a master has been seen, raise WARNING if HB_0 stops.
     // Cleared in onCanReceive() when the next HB_0 arrives.

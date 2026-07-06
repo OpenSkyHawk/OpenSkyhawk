@@ -33,6 +33,15 @@ struct __attribute__((packed)) HeartbeatPayload {
     uint16_t esr;      
 };
 
+struct __attribute__((packed)) NodeHealthPayload {
+    uint8_t  nodeId;     
+    int8_t   dieTempC;   
+    uint8_t  flags;      
+    uint8_t  faultMask;  
+    uint8_t  faultId;    
+    uint8_t  rsvd[3];    
+};
+
 enum class CanStatus {
     STARTING,   
     NORMAL,     
@@ -49,6 +58,8 @@ static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;
 // ── CAN ID functions (per-node IDs computed from NODE_ID) ─────────────────────
 
 constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
+
+constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
 
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
 
@@ -131,6 +142,8 @@ namespace CANProtocol {
     bool busOff();
 
     HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount);
+
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC);
 
     uint32_t txDropCount();
 

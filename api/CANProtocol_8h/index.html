@@ -4195,6 +4195,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-canidhealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function canIdHealth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-canidready" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4366,6 +4377,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#function-canidhealth"><strong>canIdHealth</strong></a> (uint8_t n) <br><em>Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>. Carries NodeHealthPayload (internal die temp + Vdd).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
 <td style="text-align: left;"><a href="#function-canidready"><strong>canIdReady</strong></a> (uint8_t n) <br><em>Boot-complete READY frame ID for node n. Range 0x401-0x43F.</em></td>
 </tr>
 </tbody>
@@ -4374,7 +4389,7 @@
 <p>Owns all CAN bus interaction for <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> nodes. Types and constants (ControlPacket, CanStatus, frame IDs, CAN ID functions) are platform-agnostic. The runtime namespace (filters, lifecycle, send, callbacks, diagnostics) is STM32-only and guarded by ARDUINO_ARCH_STM32. CAN arbitration IDs (CAN_ID_*, canId*()) and payload ControlPacket::controlId values are separate namespaces; equal numeric values do not conflict because they occupy different CAN frame fields.</p>
 <p>Dependency: <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> must be called before <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>. <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> owns CAN bus operation; <a href="../namespaceSTM32Board/"><strong>STM32Board</strong></a> owns peripheral hardware init.</p>
 <p><strong>Version:</strong></p>
-<p>0.2.0 </p>
+<p>0.3.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
@@ -4473,10 +4488,18 @@
     (packed)
 ) 
 </code></pre>
+<p>8-byte payload carried by HEALTH_n frames — per-node health telemetry.</p>
 <p>8-byte payload carried by HB_n heartbeat frames.</p>
 <p>Two ControlPackets packed into one 8-byte input/output CAN frame.</p>
 <p>Used by CTRL_BCAST and EVT_n only. Slot B controlId == 0x0000 signals an empty/padding slot.</p>
-<p>Sent every 500 ms by <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> nodes. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reads HB_1–HB_63 to track <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> health and populate diagnostics. HB_0 is reserved but not transmitted. </p>
+<p>Sent every 500 ms by <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> nodes. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reads HB_1–HB_63 to track <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> health and populate diagnostics. HB_0 is reserved but not transmitted.</p>
+<p>Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:
+* Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal temperature sensor (ADC ch16); no external parts, no PCB change.
+* Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a tripped peripheral (e.g. an I2cHealth circuit breaker). Transmit 0 until that lands. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.</p>
+<p><strong>Note:</strong></p>
+<p>The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute, measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend and per-node overheat flagging, not precise ambient measurement. </p>
+<p><strong>Note:</strong></p>
+<p>Rail voltage/current is intentionally NOT here — that is the PDU's dedicated power telemetry (#202, real INA226 sensors), not generic per-node health. </p>
 <hr>
 
 <h3 id="function-canidecho">function canIdEcho</h3>
@@ -4514,6 +4537,14 @@
 <h3 id="function-canidhb">function canIdHb</h3>
 <p><em>Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
 <pre><code class="language-C++">constexpr uint32_t canIdHb (
+    uint8_t n
+) 
+</code></pre>
+<hr>
+
+<h3 id="function-canidhealth">function canIdHealth</h3>
+<p><em>Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>. Carries NodeHealthPayload (internal die temp + Vdd).</em></p>
+<pre><code class="language-C++">constexpr uint32_t canIdHealth (
     uint8_t n
 ) 
 </code></pre>

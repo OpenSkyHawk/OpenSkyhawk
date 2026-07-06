@@ -4097,6 +4097,43 @@ void log(const char* msg) {
 HardwareSerial&amp; diagSerial()     { return _diag; }
 CAN_HandleTypeDef* canHandle()   { return &amp;_hcan; }
 
+// ── Internal die-temperature telemetry ──────────────────────────────────────────
+// Free node health from the F103's built-in sensor (ADC ch16) + Vrefint (ch17); no
+// external parts. STM32duino's analogRead(ATEMP)/analogRead(AVREF) enable TSVREFE and
+// pick the internal channels. Conversion uses F103 datasheet typicals (uncalibrated —
+// no factory trim), referencing Vsense to the Vdd derived from Vrefint.
+#if defined(ATEMP) &amp;&amp; defined(AVREF)
+static constexpr uint32_t ADC_FULL     = 1UL &lt;&lt; 16;  // full-scale count at analogReadResolution(16)
+static constexpr uint32_t VREFINT_MV   = 1200;       // F103 Vrefint typical (no VREFINT_CAL on F103)
+static constexpr int32_t  V25_MV       = 1430;       // temp-sensor output at 25 °C, typical
+static constexpr int32_t  AVG_SLOPE_10 = 43;         // Avg_Slope 4.3 mV/°C, ×10 for integer math
+#endif
+
+uint16_t readVddMv() {
+#if defined(ATEMP) &amp;&amp; defined(AVREF)
+    uint32_t vref = analogRead(AVREF);
+    if (vref == 0) return 0;
+    return (uint16_t)(VREFINT_MV * ADC_FULL / vref);
+#else
+    return 0;
+#endif
+}
+
+int8_t readDieTempC() {
+#if defined(ATEMP) &amp;&amp; defined(AVREF)
+    uint16_t vdd = readVddMv();
+    if (vdd == 0) return INT8_MIN;  // internal reference unreadable → unavailable
+    uint32_t traw = analogRead(ATEMP);
+    int32_t vsense_mv = (int32_t)((uint64_t)traw * vdd / ADC_FULL);
+    int32_t tempC = ((V25_MV - vsense_mv) * 10) / AVG_SLOPE_10 + 25;
+    if (tempC &lt;= INT8_MIN) tempC = INT8_MIN + 1;  // reserve INT8_MIN as the &quot;unavailable&quot; sentinel
+    if (tempC &gt;  INT8_MAX) tempC = INT8_MAX;
+    return (int8_t)tempC;
+#else
+    return INT8_MIN;
+#endif
+}
+
 #ifdef STM32BOARD_TEST
 LedState currentState() { return _state; }
 #endif

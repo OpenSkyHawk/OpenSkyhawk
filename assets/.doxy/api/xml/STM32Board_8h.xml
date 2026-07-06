@@ -122,7 +122,7 @@
 </listitem><listitem><para>CAN : SN65HVD230 on PA11 (RX) / PA12 (TX)</para>
 </listitem></itemizedlist>
 </para>
-<para><simplesect kind="version"><para>0.3.0 </para>
+<para><simplesect kind="version"><para>0.4.0 </para>
 </simplesect>
 <simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
 </simplesect>
@@ -183,13 +183,17 @@
 <codeline lineno="134"><highlight class="normal"></highlight></codeline>
 <codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>CAN_HandleTypeDef*<sp/><ref refid="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" kindref="member">canHandle</ref>();</highlight></codeline>
 <codeline lineno="142"><highlight class="normal"></highlight></codeline>
-<codeline lineno="143"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>STM32BOARD_TEST</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>currentState();</highlight></codeline>
-<codeline lineno="152"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="153"><highlight class="normal"></highlight></codeline>
-<codeline lineno="154"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>STM32Board</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="155"><highlight class="normal"></highlight></codeline>
-<codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>int8_t<sp/><ref refid="namespaceSTM32Board_1a7d2ec3789c2b1dd22bd0bec6c1064b89" kindref="member">readDieTempC</ref>();</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="namespaceSTM32Board_1a480fa3dcf5774e6950fb3a0f23e94759" kindref="member">readVddMv</ref>();</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>STM32BOARD_TEST</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>currentState();</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>STM32Board</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/STM32Board/STM32Board.h"/>
   </compounddef>

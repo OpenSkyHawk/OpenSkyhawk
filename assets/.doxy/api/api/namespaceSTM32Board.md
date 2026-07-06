@@ -63,6 +63,8 @@
 |  bool | [**isDebug**](#function-isdebug) () <br>_Returns true when debug output is enabled._  |
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
 |  void | [**onCanStatus**](#function-oncanstatus) ([**CanStatus**](CANProtocol_8h.md#enum-canstatus) status) <br>_CAN bus status event handler — maps CanStatus to LED state._  |
+|  int8\_t | [**readDieTempC**](#function-readdietempc) () <br>_Read the MCU's built-in internal temperature sensor (ADC ch16)._  |
+|  uint16\_t | [**readVddMv**](#function-readvddmv) () <br>_Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17)._  |
 |  void | [**setDebug**](#function-setdebug) (bool on) <br>_Enable or disable DiagSerial output._  |
 |  void | [**setLinkActive**](#function-setlinkactive) (bool active) <br>_Signal that application data is actively flowing → CONNECTED (green solid)._  |
 |  void | [**setWarning**](#function-setwarning) (bool on=true) <br>_Raise or clear the WARNING condition — red/green alternating at 500 ms._  |
@@ -273,6 +275,73 @@ Register with CANProtocol::onStatusChange(STM32Board::onCanStatus) in setup(). N
 
 
 * `status` New CAN bus status reported by [**CANProtocol**](namespaceCANProtocol.md). 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function readDieTempC 
+
+_Read the MCU's built-in internal temperature sensor (ADC ch16)._ 
+```C++
+int8_t STM32Board::readDieTempC () 
+```
+
+
+
+Free per-node thermal telemetry — no external parts, no PCB change. Reads ATEMP and AVREF (Vrefint) and converts with STM32F103 datasheet typicals (V25 = 1.43 V, Avg\_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.
+
+
+
+
+**Note:**
+
+UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend / overheat flagging, not precise ambient measurement. 
+
+
+
+
+**Returns:**
+
+Die temperature in whole °C, or INT8\_MIN if the internal channels are unavailable on this variant. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function readVddMv 
+
+_Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17)._ 
+```C++
+uint16_t STM32Board::readVddMv () 
+```
+
+
+
+
+
+**Note:**
+
+Uses the STM32F103 typical Vrefint of 1.20 V (the F103 has no VREFINT\_CAL factory value), so absolute accuracy is limited; good for relative trend. 
+
+
+
+
+**Returns:**
+
+Vdd in millivolts, or 0 if the internal reference is unavailable. 
+
 
 
 

@@ -57,6 +57,7 @@
 |  void | [**filterAcceptId**](#function-filteracceptid) (uint32\_t canId) <br>_Accept a specific CAN ID. Use for_ [_**PanelGroup**_](namespacePanelGroup.md) _nodes._ |
 |  void | [**flushBatched**](#function-flushbatched) (uint32\_t canId) <br>_Force a half-full ControlPacketPair batch to send immediately._  |
 |  HeartbeatPayload | [**makeHeartbeatPayload**](#function-makeheartbeatpayload) (uint8\_t nodeId, uint16\_t rxCount) <br>_Build the standard 8-byte heartbeat payload for the current node._  |
+|  NodeHealthPayload | [**makeNodeHealthPayload**](#function-makenodehealthpayload) (uint8\_t nodeId, int8\_t dieTempC) <br>_Build the 8-byte node-health payload for the current node._  |
 |  void | [**onReceive**](#function-onreceive) ([**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) cb) <br>_Register a general-purpose RX frame handler._  |
 |  void | [**onStatusChange**](#function-onstatuschange) ([**CanStatusCallback**](CANProtocol_8h.md#typedef-canstatuscallback) cb) <br>_Register a CAN bus status change callback._  |
 |  void | [**onSyncReq**](#function-onsyncreq) ([**CanSyncReqCallback**](CANProtocol_8h.md#typedef-cansyncreqcallback) cb) <br>_Register a SYNC\_REQ handler._  |
@@ -246,6 +247,45 @@ Fills uptime, CAN health flags, and ESR-derived TEC/REC from [**CANProtocol**](n
 **Returns:**
 
 Fully populated HeartbeatPayload ready to send as HB\_n. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function makeNodeHealthPayload 
+
+_Build the 8-byte node-health payload for the current node._ 
+```C++
+NodeHealthPayload CANProtocol::makeNodeHealthPayload (
+    uint8_t nodeId,
+    int8_t dieTempC
+) 
+```
+
+
+
+Packs the internal die temperature (read via [**STM32Board::readDieTempC()**](namespaceSTM32Board.md#function-readdietempc)) into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE\_OVERHEAT\_C is defined at build time and dieTempC meets it; otherwise flags is 0 (pure telemetry). Fault + reserved fields are zeroed.
+
+
+
+
+**Parameters:**
+
+
+* `nodeId` Node ID (1-63 [**PanelGroup**](namespacePanelGroup.md); 0 [**PanelBridge**](namespacePanelBridge.md)). 
+* `dieTempC` Internal die temp in whole °C (INT8\_MIN = unavailable). 
+
+
+
+**Returns:**
+
+Fully populated NodeHealthPayload ready to send as HEALTH\_n. 
 
 
 

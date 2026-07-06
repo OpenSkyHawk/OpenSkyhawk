@@ -50,7 +50,12 @@ struct NodeState {
     bool     everSeen;
     uint32_t lastSeenMs;
 #ifdef PANELBRIDGE_NODE_STATUS
-    HeartbeatPayload last;   // last HB payload, surfaced to the host (#86)
+    HeartbeatPayload last;          // last HB payload, surfaced to the host (#86)
+    // Cached NodeHealthPayload fields from the node's last HEALTH_n frame (#221 contract):
+    int8_t   dieTempC    = INT8_MIN; // internal die temp °C (INT8_MIN = unseen) — #213
+    uint8_t  healthFlags = 0;        // overheat (#213) / degraded (#163) bits
+    uint8_t  faultMask   = 0;        // tripped-peripheral bitmap — #163
+    uint8_t  faultId     = 0;        // fault detail / device id — #163
 #endif
 };
 
@@ -59,6 +64,7 @@ static void (*_cbAlive)(uint8_t)          = nullptr;
 static void (*_cbDead)(uint8_t)           = nullptr;
 static uint8_t        _deadCount          = 0;    // tracked nodes currently timed-out (drives WARNING)
 static uint32_t       _lastMasterHbMs     = 0;    // millis() of last HB_0 transmit
+static uint32_t       _lastHealthMs       = 0;    // millis() of last HEALTH_0 transmit (#213)
 
 #ifdef PANELBRIDGE_NODE_STATUS
 // ── Node-status reporting (#86) ──────────────────────────────────────────────
@@ -66,13 +72,19 @@ static uint32_t       _lastMasterHbMs     = 0;    // millis() of last HB_0 trans
 // command messages on a reserved control name. Owned entirely by PanelBridge;
 // SimGateway relays the ASCII verbatim. See HIDControls.h for the wire format.
 
-// Emit one node's status: _NODE_STATUS <nodeId present flags uptime rxCount esr> (18 hex chars).
+// Emit one node's status (proto v2, 26 hex chars):
+//   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId>
+// The last four come from the node's HEALTH_n frame (#221 contract). dieTempC 80 = not-yet-seen;
+// hFlags/faultMask/faultId are 0 until the degraded feature (#163) populates them.
 static void emitNode(uint8_t nodeId, bool present) {
-    const HeartbeatPayload& hb = _nodes[nodeId - 1].last;
-    char hex[19];
-    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X",
+    const NodeState& ns = _nodes[nodeId - 1];
+    const HeartbeatPayload& hb = ns.last;
+    char hex[27];
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X",
              (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
-             (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr);
+             (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr,
+             (unsigned)(uint8_t)ns.dieTempC,
+             (unsigned)ns.healthFlags, (unsigned)ns.faultMask, (unsigned)ns.faultId);
     DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
 }
 
@@ -265,6 +277,24 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         return;
     }
 
+    // HEALTH_1 – HEALTH_63: cache internal die temp + Vdd for host reporting (#213).
+    // Cache only — HB owns liveness/SYNC, so a health frame never triggers markNodeAlive.
+    if (canId >= canIdHealth(1) && canId <= canIdHealth(MAX_NODE_ID)) {
+#ifdef PANELBRIDGE_NODE_STATUS
+        if (len >= sizeof(NodeHealthPayload)) {
+            uint8_t nodeId = (uint8_t)(canId - canIdHealth(0));
+            NodeHealthPayload h;
+            memcpy(&h, data, sizeof(h));
+            NodeState& ns = _nodes[nodeId - 1];
+            ns.dieTempC    = h.dieTempC;
+            ns.healthFlags = h.flags;
+            ns.faultMask   = h.faultMask;
+            ns.faultId     = h.faultId;
+        }
+#endif
+        return;
+    }
+
     // EVT_1 – EVT_63: 8-byte ControlPacketPair, dispatch each non-null slot
     if (canId >= canIdEvt(1) && canId <= canIdEvt(MAX_NODE_ID)) {
         if (len < 8) return;
@@ -432,6 +462,17 @@ void loop() {
         CANProtocol::send(canIdHb(0), reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
     }
 
+    // Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal
+    // die temp + Vdd alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0 disables).
+#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
+    if (now - _lastHealthMs >= 1000) {
+        _lastHealthMs = now;
+        NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
+            0, STM32Board::readDieTempC());
+        CANProtocol::send(canIdHealth(0), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
+    }
+#endif
+
     auto& diag = STM32Board::diagSerial();
     while (diag.available()) {
         char c = (char)diag.read();
@@ -480,6 +521,11 @@ void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
     HeartbeatPayload hb{ nodeId, flags, uptime, rxCount, esr };
     memcpy(&_nodes[nodeId - 1].last, &hb, sizeof(hb));
     markNodeAlive(nodeId, millis());
+}
+
+void testFeedHealth(uint8_t nodeId, int8_t dieTempC) {
+    // Mirrors the HEALTH_n branch of onCanRx: cache only, no liveness change.
+    _nodes[nodeId - 1].dieTempC = dieTempC;
 }
 
 void testRequestNodeStatus() { emitAllNodes(); }
