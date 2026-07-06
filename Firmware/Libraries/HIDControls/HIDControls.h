@@ -44,4 +44,3 @@
 
 #define CTRL_ID_HID_MIN 0x0010  // First valid HID controlId
 #define CTRL_ID_HID_MAX 0x00FF  // Last reserved HID controlId
-
