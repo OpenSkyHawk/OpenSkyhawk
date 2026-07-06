@@ -108,7 +108,7 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 
 **Protection — input-rail TVS = FLEET STANDARD (task_de8956f7); CAN TVS DROPPED:**
 - **12V input TVS → SMBJ12A** (SMB/DO-214AA) to GND.
-- **5V input TVS → SMBJ5.0A** to GND.
+- **5V input TVS → SMBJ6.0A** (SMB/DO-214AA) to GND. *(Changed from SMBJ5.0A 2026-07-05: 5.0A standoff sits at nominal 5.0V and leaks ≤800µA near the +5% rail corner; 6.0A standoff clears 5.25V → leakage ~0. Identical footprint, drop-in — only value/MPN/LCSC change. Clamp 9.2→10.3V, still < DRV8833 VM 11.8V.)* 12V stays SMBJ12A (leaks only 5µA; 13A would eat cap-clamp margin for no gain).
 - **CAN bus TVS → DROPPED.** SN65HVD230 has built-in **±16kV HBM** bus ESD = covers the real indoor threat (handling ESD). External PESD1CAN only adds industrial surge/EFT (long cables, switching) → not seen in an indoor cockpit. (DNP footprint optional if ever wanted.)
 - Rationale: input TVS cheap (~$0.10 ea), guards rails against PSU power-on overshoot/hot-plug (transceiver ESD does nothing for rails). Fleet standard = **input-rail TVS only** (bake into #201 Power block + hardware-standards; roll into PanelGroup_Base pending rev + Gateway_Bridge next rev). PDU includes from start.
 
@@ -135,7 +135,7 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 ## SCHEMATIC FRONT-END DRAWN 2026-07-03 (`PDU.kicad_sch`, Rev 1.0)
 
 Blocks drawn (PDU-specific; standard STM32 block imported separately):
-- **Input/fuse/TVS** (refs **per fabricated board**) — **J1** J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (**D1 SMBJ12A on 12V, D2 SMBJ5.0A on 5V**, cathode→rail/anode→GND, pre-fuse) → fuse (**F1 5A on 12V, F2 2A on 5V**) → `+12V_FUSED`/`+5V_FUSED`. (Matches BOM table above: D1=C42368008 12V clamp, D2=C113974 5V clamp.)
+- **Input/fuse/TVS** (refs **per fabricated board**) — **J1** J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (**D1 SMBJ12A on 12V, D2 SMBJ6.0A on 5V**, cathode→rail/anode→GND, pre-fuse) → fuse (**F1 5A on 12V, F2 2A on 5V**) → `+12V_FUSED`/`+5V_FUSED`. (Matches BOM table above: D1=C42368008 12V clamp, D2=C5331096 5V clamp.) **D2 schematic symbol still shows SMBJ5.0A → swap to SMBJ6.0A on the next KiCad touch (GUI: same DO-214AA footprint, change value/MPN/LCSC only — no layout change).**
 - **Voltage sense** (load-side only): `+12V`→33k/10k→1k→`12V_READ_ADC`+100nF; `+5V`→10k/13k→1k→`5V_READ_ADC`+100nF.
 - **Current sense**: R1/R2 shunt (10mΩ) in rail `+xV_FUSED`→`+xV`; U1/U2 INA180A2 (IN+=fused/high, IN−=delivered/low), VS=+3V3+100nF, OUT→1k→`I_12V_ADC`/`I_5V_ADC`+100nF.
 - **Temp**: +3V3→10k→[NTC TH1→GND]→1k→`NTC_ADC`+100nF.
@@ -153,7 +153,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 - PDU FW to add: **NODE_ID 1-63** (0=PanelBridge), telemetry frames (rail V/I/temp/fault bitmap), setWarning() on fault, setLinkActive() on data.
 
 **SCHEMATIC COMPLETE + ERC-CLEAN 2026-07-03.** *(Historical snapshot — some designators below are pre-final draft refs. **Authoritative refs = the fabricated board / BOM table:** J1=J_PSU_IN, J2=J_BUS_OUT, J3=J_BUS_IN(CAN), J4=J_SWD, J5=J_CAN_TERM, J6=J_DIAG.)* Standard STM32 block imported (VDD decoupling 5×100nF + 8MHz xtal Y1/22pF + BOOT0 10k-pulldown + NRST reset SW1/10k/100nF + SWD J7 + SN65HVD230 U5 [Rs pin8→GND high-speed, pin2→GND, Vref pin5 NC] + AMS1117 U4 [10µF in/22µF out] + status LEDs + diag serial J1 + mounting holes H1-4). CAN connectors: **J3 CAN-in (2×2 CANH/CANL/GND)** + **J9 J_BUS_OUT (8-pin power+CAN)** + J5 J_CAN_TERM (120Ω R13, populate if end-node) = split-source injection. PWR_FLAG on +12V/+5V/+12V_IN/+5V_IN/+3V3/GND; 10µF bulk C21/C22 per rail (injection; downstream panels self-decouple). Decoupling stack: 22µF reg-out + 100nF/VDD-pin + bead-VDDA + 10µF/rail.
-**Remaining:** assign footprints (**verify shunt C53115028 = 2 vs 4 terminal** for R1/R2 symbol) · DRC after layout (B3).
+**Remaining:** *(all resolved at PCB close, PR #217 — board DRC 0/0.)* Shunt = **CSRF2512FT10L0, C346481, 2512, 2-terminal** (2728 C53115028 ±25 ppm reverted — no stock KiCad footprint; see B2).
 
 ---
 
@@ -169,7 +169,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 | TH1 | NTC 10k B3450 ±1% | ANTC3216-103F3450FB | 1206 | **C52155460** | 1 |
 | F1,F2 | MINI-blade fuse holder | XF-508P-B-B | DIP-4 THT | **C19727305** | 2 |
 | D1 | TVS 12V rail clamp | SMBJ12A | SMB/DO-214AA | **C42368008** | 1 |
-| D2 | TVS 5V rail clamp | SMBJ5.0A | SMB/DO-214AA | **C113974** | 1 |
+| D2 | TVS 5V rail clamp | SMBJ6.0A | SMB/DO-214AA | **C5331096** | 1 |
 | FB1 | VDDA ferrite bead 600Ω@100MHz | TDK MPZ2012S601AT000 | 0805 | **C21519** | 1 |
 | R4 | 12V divider top 0.1% 25ppm | Viking ARG05BTC3302 | 0805 | **C2828767** | 1 |
 | R7 | 5V divider bottom 0.1% 25ppm | YAGEO RT0805BRD0713KL | 0805 | **C865184** | 1 |
