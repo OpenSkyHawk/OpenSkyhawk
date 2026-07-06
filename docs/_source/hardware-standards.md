@@ -88,15 +88,16 @@ Local decoupling required on every board: 100 nF + 10 µF per rail, placed close
 | Rail | Part | Package | LCSC | Symbol | Standoff | Clamp @ Ipp |
 |---|---|---|---|---|---|---|
 | +12 V input | **SMBJ12A** (unidir.) | SMB / DO-214AA | C42368008 | `OpenSkyhawk:SMBJ12A` | 12 V | 19.9 V @ 30.2 A |
-| +5 V input | **SMBJ5.0A** (unidir.) | SMB / DO-214AA | C113974 | `OpenSkyhawk:SMBJ5.0A` | 5.0 V | 9.2 V @ 65.2 A |
+| +5 V input | **SMBJ6.0A** (unidir.) | SMB / DO-214AA | C140903 | `OpenSkyhawk:SMBJ6.0A` | 6.0 V | 10.3 V @ 58.3 A |
 
 - **Placement:** at the input / injection connector, **cathode → rail, anode → GND**, before the fuse and bulk caps. Short, wide anode→GND path (low-inductance clamp reference). Reference designators are per-board (e.g. PDU: D1 = 12 V, D2 = 5 V).
-- **Clamp headroom:** 12 V clamp 19.9 V < AP63205 abs-max 40 V and 25 V bulk caps; 5 V clamp 9.2 V < AMS1117 abs-max 15 V and DRV8833 VM abs-max 11.8 V.
-- **5 V standoff caveat:** SMBJ5.0A standoff (5.0 V) sits close to a +5 % rail (5.25 V) → sub-mW reverse leakage above 5.0 V (IR ≤ 800 µA @ 5.0 V), but stays under the 6.40 V min breakdown → no conduction in normal operation. SMBJ5.0A is the correct low-clamp choice; SMBJ6.0A only if leakage ever matters, at a higher clamp.
+- **Standoff sits above the rail (no knee operation):** the standoff (max continuous) voltage must exceed the rail's +5 % worst case — 12.6 V on the 12 V rail, 5.25 V on the 5 V rail. SMBJ12A (12 V standoff) leaks only 5 µA at the knee → fine as-is. On the 5 V rail, **SMBJ6.0A (6.0 V standoff) is chosen over SMBJ5.0A**: 5.0 V standoff sits *at* nominal and leaks up to 800 µA near the +5 % corner, whereas 6.0 V clears 5.25 V cleanly → leakage ~0 in normal operation. The 6.0 V part costs only ~1 V more clamp (10.3 V vs 9.2 V), still well under downstream limits.
+- **Clamp headroom:** 12 V clamp 19.9 V < AP63205 abs-max 40 V and 25 V bulk caps; 5 V clamp 10.3 V < AMS1117 abs-max 15 V and DRV8833 VM abs-max 11.8 V.
+- **12 V rail bulk cap ≥ 25 V.** The clamp voltage passes through the fuse onto the downstream bulk cap during a transient, so the cap must be rated above the clamp — a 16 V part would be over-stressed by the 19.9 V clamp on a hot-plug. (This is also why the 12 V rail stays on **SMBJ12A**, not SMBJ13A: 13A's 21.5 V clamp squeezes the margin to a 25 V cap for no leakage benefit.)
 
 **CAN-bus TVS is deliberately excluded.** The SN65HVD230 transceiver already carries ±16 kV HBM built-in bus ESD, which covers the realistic indoor threat (handling ESD). An external CAN TVS (e.g. PESD1CAN) only buys industrial surge / EFT margin that an indoor cockpit with short CAN runs will never see. Do not populate CAN-bus TVS — optionally leave a DNP footprint on the CAN pair only.
 
-> **Status: adopted, bench-pending.** First fabricated on the PDU board (#202); not yet hardware-verified. Roll-in to `PanelGroup_Base` / `Gateway_Bridge` and extraction into the #201 `Power` design block wait on the PDU bench (esp. the 5 V standoff-margin check).
+> **Status: adopted.** Part selection is a paper decision (catalog TVS, spec-guaranteed clamp) — the SMBJ6.0A choice designs out the 5 V leakage concern, so no dedicated bench campaign is required. First fabricated on the PDU board (#202); confirm at the PDU's normal power-on (rails read normal, TVS parts cool). Roll-in to `PanelGroup_Base` / `Gateway_Bridge` (drop-in — identical DO-214AA footprint) and extraction into the #201 `Power` design block ride the boards' next revision.
 
 ## Stepper Driver
 
