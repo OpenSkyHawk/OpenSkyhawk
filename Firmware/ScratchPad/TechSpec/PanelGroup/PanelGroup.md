@@ -258,7 +258,7 @@ public:
 
     /**
      * @brief Node-health fault code for this output (#163). 0 = healthy; a NodeFaultId
-     *        (HIDControls.h) otherwise. Rolled up into the HEALTH_n frame's faultId.
+     *        (NodeStatus.h) otherwise. Rolled up into the HEALTH_n frame's faultId.
      *        Default: never faults. Must be const + cheap (cached state, no I2C op).
      */
     virtual uint8_t faultCode() const { return 0; }

@@ -24,7 +24,7 @@ namespace DcsBios {
 #include <CANProtocol.h>
 #include <STM32Board.h>
 #include <A4EC_InputMap.h>
-#include <HIDControls.h>   // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
+#include <NodeStatus.h>    // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <string.h>
 
 namespace {
