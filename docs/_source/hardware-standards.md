@@ -81,6 +81,23 @@ PlatformIO with `earlephilhower/arduino-pico` platform (preferred) or Arduino ID
 
 Local decoupling required on every board: 100 nF + 10 µF per rail, placed close to each IC. Never use a linear regulator for 12 V → 5 V conversion.
 
+### Input-Rail Transient Protection (TVS)
+
+**Fleet standard: every CAN-node board carries a unidirectional TVS from each input power rail to GND, at the input connector.** Cheap (~$0.10 ea) insurance against PSU power-on overshoot and hot-plug transients on the distributed 12 V / 5 V bus. Not strictly required indoors on a clean ATX PSU, but adopted fleet-wide because the transceiver's bus ESD does nothing for the power rails.
+
+| Rail | Part | Package | LCSC | Symbol | Standoff | Clamp @ Ipp |
+|---|---|---|---|---|---|---|
+| +12 V input | **SMBJ12A** (unidir.) | SMB / DO-214AA | C42368008 | `OpenSkyhawk:SMBJ12A` | 12 V | 19.9 V @ 30.2 A |
+| +5 V input | **SMBJ5.0A** (unidir.) | SMB / DO-214AA | C113974 | `OpenSkyhawk:SMBJ5.0A` | 5.0 V | 9.2 V @ 65.2 A |
+
+- **Placement:** at the input / injection connector, **cathode → rail, anode → GND**, before the fuse and bulk caps. Short, wide anode→GND path (low-inductance clamp reference). Reference designators are per-board (e.g. PDU: D1 = 12 V, D2 = 5 V).
+- **Clamp headroom:** 12 V clamp 19.9 V < AP63205 abs-max 40 V and 25 V bulk caps; 5 V clamp 9.2 V < AMS1117 abs-max 15 V and DRV8833 VM abs-max 11.8 V.
+- **5 V standoff caveat:** SMBJ5.0A standoff (5.0 V) sits close to a +5 % rail (5.25 V) → sub-mW reverse leakage above 5.0 V (IR ≤ 800 µA @ 5.0 V), but stays under the 6.40 V min breakdown → no conduction in normal operation. SMBJ5.0A is the correct low-clamp choice; SMBJ6.0A only if leakage ever matters, at a higher clamp.
+
+**CAN-bus TVS is deliberately excluded.** The SN65HVD230 transceiver already carries ±16 kV HBM built-in bus ESD, which covers the realistic indoor threat (handling ESD). An external CAN TVS (e.g. PESD1CAN) only buys industrial surge / EFT margin that an indoor cockpit with short CAN runs will never see. Do not populate CAN-bus TVS — optionally leave a DNP footprint on the CAN pair only.
+
+> **Status: adopted, bench-pending.** First fabricated on the PDU board (#202); not yet hardware-verified. Roll-in to `PanelGroup_Base` / `Gateway_Bridge` and extraction into the #201 `Power` design block wait on the PDU bench (esp. the 5 V standoff-margin check).
+
 ## Stepper Driver
 
 **Selected: DRV8833PWPR (TI)** — dual H-bridge, TSSOP-16-EP. **LCSC: C50506**
