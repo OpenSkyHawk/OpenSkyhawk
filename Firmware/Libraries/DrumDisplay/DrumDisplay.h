@@ -27,6 +27,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <PanelGroup.h>      // OutputBase
+#include <HIDControls.h>     // NodeFaultId (#163)
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
 #include <Helpers/I2cHealth/I2cHealth.h>
@@ -223,6 +224,24 @@ public:
      *       nudge is sub-pixel and may not move. The 1.3" 128x64 (~0.23 mm/px) is the coarser panel.
      */
     void setOffset(float xOffsetMm, float yOffsetMm);
+
+    /**
+     * @brief Node-health fault code (#163): I2C_PERIPHERAL when the breaker is tripped, else 0.
+     * @note Reads the cached breaker state only — no I2C transaction. Safe for the health path.
+     */
+    uint8_t faultCode() const override {
+        return i2cHealthy() ? 0 : static_cast<uint8_t>(NodeFaultId::I2C_PERIPHERAL);
+    }
+
+    /** @brief DiagSerial-only fault detail (#163): which I2C hop failed the last probe. */
+    const char* faultDetail() const override {
+        if (i2cHealthy()) return "";
+        switch (_fault) {
+            case Fault::Mux:    return "I2C mux unreachable";
+            case Fault::Device: return "OLED not responding";
+            default:            return "I2C peripheral fault";
+        }
+    }
 
 #ifdef DRUMDISPLAY_TEST
     long    debugTarget() const     { return _target; }      ///< test-only: decoded combined number

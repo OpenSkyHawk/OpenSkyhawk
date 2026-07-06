@@ -3,7 +3,7 @@
  * @brief CAN controlId constants for HID axes and buttons.
  *
  * Shared between STM32 (via CANProtocol) and RP2040 (SimGateway sketches).
- * Contains only `#define` constants — no classes, no functions, no state.
+ * Contains `#define` constants and simple enums — no functions, no state.
  *
  * controlId routing by range:
  *   0x0010–0x001F  HID axes        — routed to axis setters on SimGateway
@@ -16,6 +16,7 @@
  */
 
 #pragma once
+#include <stdint.h>
 
 // ── HID axes — controlId range 0x0010–0x001F (16 slots) ──────────────────────
 
@@ -86,3 +87,13 @@
 #define NODE_STATUS_REQ_ADDR      0x86FE
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
+
+// ── Node fault codes — HEALTH_n faultId values (#163) ─────────────────────────
+// Coarse, one active at a time: the CAN wire carries just this generic id; the exact
+// failing device is logged on the node's DiagSerial tap, not the frame. The client maps
+// id → human label (SkyHawkClient#40). Grow as new fault sources appear.
+enum class NodeFaultId : uint8_t {
+    NONE           = 0x00,
+    I2C_PERIPHERAL = 0x01,  // an I2C device (OLED / mux / expander) tripped its I2cHealth breaker
+    // 0x02–0xFF reserved for future fault sources (stepper, ADC, …)
+};

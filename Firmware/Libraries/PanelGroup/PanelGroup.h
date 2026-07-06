@@ -152,6 +152,24 @@ public:
      */
     virtual void update() {}
 
+    /**
+     * @brief Node-health fault code for this output (#163). 0 = healthy.
+     *
+     * Rolled up across all outputs into the HEALTH_n frame's faultId. Must be cheap and
+     * const — read cached state only (e.g. an I2cHealth breaker flag), never an I2C
+     * transaction — it is called from the periodic health path. Default: never faults.
+     * @return A NodeFaultId value (see HIDControls.h), or 0 if healthy.
+     */
+    virtual uint8_t faultCode() const { return 0; }
+
+    /**
+     * @brief Human-readable fault detail for the local DiagSerial tap only (#163).
+     *
+     * Never transmitted on the wire — the CAN frame carries only the coarse faultCode().
+     * @return A short static string naming the failing peripheral, or "" if healthy.
+     */
+    virtual const char* faultDetail() const { return ""; }
+
     /** @brief Head of the self-registered linked list. */
     static OutputBase* head();
 
