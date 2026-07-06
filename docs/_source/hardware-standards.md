@@ -88,7 +88,7 @@ Local decoupling required on every board: 100 nF + 10 µF per rail, placed close
 | Rail | Part | Package | LCSC | Symbol | Standoff | Clamp @ Ipp |
 |---|---|---|---|---|---|---|
 | +12 V input | **SMBJ12A** (unidir.) | SMB / DO-214AA | C42368008 | `OpenSkyhawk:SMBJ12A` | 12 V | 19.9 V @ 30.2 A |
-| +5 V input | **SMBJ6.0A** (unidir.) | SMB / DO-214AA | C140903 | `OpenSkyhawk:SMBJ6.0A` | 6.0 V | 10.3 V @ 58.3 A |
+| +5 V input | **SMBJ6.0A** (unidir.) | SMB / DO-214AA | C5331096 | `OpenSkyhawk:SMBJ6.0A` | 6.0 V | 10.3 V @ 58.3 A |
 
 - **Placement:** at the input / injection connector, **cathode → rail, anode → GND**, before the fuse and bulk caps. Short, wide anode→GND path (low-inductance clamp reference). Reference designators are per-board (e.g. PDU: D1 = 12 V, D2 = 5 V).
 - **Standoff sits above the rail (no knee operation):** the standoff (max continuous) voltage must exceed the rail's +5 % worst case — 12.6 V on the 12 V rail, 5.25 V on the 5 V rail. SMBJ12A (12 V standoff) leaks only 5 µA at the knee → fine as-is. On the 5 V rail, **SMBJ6.0A (6.0 V standoff) is chosen over SMBJ5.0A**: 5.0 V standoff sits *at* nominal and leaks up to 800 µA near the +5 % corner, whereas 6.0 V clears 5.25 V cleanly → leakage ~0 in normal operation. The 6.0 V part costs only ~1 V more clamp (10.3 V vs 9.2 V), still well under downstream limits.

@@ -135,7 +135,7 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 ## SCHEMATIC FRONT-END DRAWN 2026-07-03 (`PDU.kicad_sch`, Rev 1.0)
 
 Blocks drawn (PDU-specific; standard STM32 block imported separately):
-- **Input/fuse/TVS** (refs **per fabricated board**) — **J1** J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (**D1 SMBJ12A on 12V, D2 SMBJ6.0A on 5V**, cathode→rail/anode→GND, pre-fuse) → fuse (**F1 5A on 12V, F2 2A on 5V**) → `+12V_FUSED`/`+5V_FUSED`. (Matches BOM table above: D1=C42368008 12V clamp, D2=C140903 5V clamp.) **D2 schematic symbol still shows SMBJ5.0A → swap to SMBJ6.0A on the next KiCad touch (GUI: same DO-214AA footprint, change value/MPN/LCSC only — no layout change).**
+- **Input/fuse/TVS** (refs **per fabricated board**) — **J1** J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (**D1 SMBJ12A on 12V, D2 SMBJ6.0A on 5V**, cathode→rail/anode→GND, pre-fuse) → fuse (**F1 5A on 12V, F2 2A on 5V**) → `+12V_FUSED`/`+5V_FUSED`. (Matches BOM table above: D1=C42368008 12V clamp, D2=C5331096 5V clamp.) **D2 schematic symbol still shows SMBJ5.0A → swap to SMBJ6.0A on the next KiCad touch (GUI: same DO-214AA footprint, change value/MPN/LCSC only — no layout change).**
 - **Voltage sense** (load-side only): `+12V`→33k/10k→1k→`12V_READ_ADC`+100nF; `+5V`→10k/13k→1k→`5V_READ_ADC`+100nF.
 - **Current sense**: R1/R2 shunt (10mΩ) in rail `+xV_FUSED`→`+xV`; U1/U2 INA180A2 (IN+=fused/high, IN−=delivered/low), VS=+3V3+100nF, OUT→1k→`I_12V_ADC`/`I_5V_ADC`+100nF.
 - **Temp**: +3V3→10k→[NTC TH1→GND]→1k→`NTC_ADC`+100nF.
@@ -169,7 +169,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 | TH1 | NTC 10k B3450 ±1% | ANTC3216-103F3450FB | 1206 | **C52155460** | 1 |
 | F1,F2 | MINI-blade fuse holder | XF-508P-B-B | DIP-4 THT | **C19727305** | 2 |
 | D1 | TVS 12V rail clamp | SMBJ12A | SMB/DO-214AA | **C42368008** | 1 |
-| D2 | TVS 5V rail clamp | SMBJ6.0A | SMB/DO-214AA | **C140903** | 1 |
+| D2 | TVS 5V rail clamp | SMBJ6.0A | SMB/DO-214AA | **C5331096** | 1 |
 | FB1 | VDDA ferrite bead 600Ω@100MHz | TDK MPZ2012S601AT000 | 0805 | **C21519** | 1 |
 | R4 | 12V divider top 0.1% 25ppm | Viking ARG05BTC3302 | 0805 | **C2828767** | 1 |
 | R7 | 5V divider bottom 0.1% 25ppm | YAGEO RT0805BRD0713KL | 0805 | **C865184** | 1 |
