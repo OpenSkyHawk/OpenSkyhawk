@@ -3976,6 +3976,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Power Supply">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-rail-transient-protection-tvs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input-Rail Transient Protection (TVS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4483,6 +4500,51 @@
 </tbody>
 </table>
 <p>Local decoupling required on every board: 100 nF + 10 µF per rail, placed close to each IC. Never use a linear regulator for 12 V → 5 V conversion.</p>
+<h3 id="input-rail-transient-protection-tvs">Input-Rail Transient Protection (TVS)</h3>
+<p><strong>Fleet standard: every CAN-node board carries a unidirectional TVS from each input power rail to GND, at the input connector.</strong> Cheap (~$0.10 ea) insurance against PSU power-on overshoot and hot-plug transients on the distributed 12 V / 5 V bus. Not strictly required indoors on a clean ATX PSU, but adopted fleet-wide because the transceiver's bus ESD does nothing for the power rails.</p>
+<table>
+<thead>
+<tr>
+<th>Rail</th>
+<th>Part</th>
+<th>Package</th>
+<th>LCSC</th>
+<th>Symbol</th>
+<th>Standoff</th>
+<th>Clamp @ Ipp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+12 V input</td>
+<td><strong>SMBJ12A</strong> (unidir.)</td>
+<td>SMB / DO-214AA</td>
+<td>C42368008</td>
+<td><code>OpenSkyhawk:SMBJ12A</code></td>
+<td>12 V</td>
+<td>19.9 V @ 30.2 A</td>
+</tr>
+<tr>
+<td>+5 V input</td>
+<td><strong>SMBJ6.0A</strong> (unidir.)</td>
+<td>SMB / DO-214AA</td>
+<td>C5331096</td>
+<td><code>OpenSkyhawk:SMBJ6.0A</code></td>
+<td>6.0 V</td>
+<td>10.3 V @ 58.3 A</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Placement:</strong> at the input / injection connector, <strong>cathode → rail, anode → GND</strong>, before the fuse and bulk caps. Short, wide anode→GND path (low-inductance clamp reference). Reference designators are per-board (e.g. PDU: D1 = 12 V, D2 = 5 V).</li>
+<li><strong>Standoff sits above the rail (no knee operation):</strong> the standoff (max continuous) voltage must exceed the rail's +5 % worst case — 12.6 V on the 12 V rail, 5.25 V on the 5 V rail. SMBJ12A (12 V standoff) leaks only 5 µA at the knee → fine as-is. On the 5 V rail, <strong>SMBJ6.0A (6.0 V standoff) is chosen over SMBJ5.0A</strong>: 5.0 V standoff sits <em>at</em> nominal and leaks up to 800 µA near the +5 % corner, whereas 6.0 V clears 5.25 V cleanly → leakage ~0 in normal operation. The 6.0 V part costs only ~1 V more clamp (10.3 V vs 9.2 V), still well under downstream limits.</li>
+<li><strong>Clamp headroom:</strong> 12 V clamp 19.9 V &lt; AP63205 abs-max 40 V and 25 V bulk caps; 5 V clamp 10.3 V &lt; AMS1117 abs-max 15 V and DRV8833 VM abs-max 11.8 V.</li>
+<li><strong>12 V rail bulk cap ≥ 25 V.</strong> The clamp voltage passes through the fuse onto the downstream bulk cap during a transient, so the cap must be rated above the clamp — a 16 V part would be over-stressed by the 19.9 V clamp on a hot-plug. (This is also why the 12 V rail stays on <strong>SMBJ12A</strong>, not SMBJ13A: 13A's 21.5 V clamp squeezes the margin to a 25 V cap for no leakage benefit.)</li>
+</ul>
+<p><strong>CAN-bus TVS is deliberately excluded.</strong> The SN65HVD230 transceiver already carries ±16 kV HBM built-in bus ESD, which covers the realistic indoor threat (handling ESD). An external CAN TVS (e.g. PESD1CAN) only buys industrial surge / EFT margin that an indoor cockpit with short CAN runs will never see. Do not populate CAN-bus TVS — optionally leave a DNP footprint on the CAN pair only.</p>
+<blockquote>
+<p><strong>Status: adopted.</strong> Part selection is a paper decision (catalog TVS, spec-guaranteed clamp) — the SMBJ6.0A choice designs out the 5 V leakage concern, so no dedicated bench campaign is required. First fabricated on the PDU board (#202); confirm at the PDU's normal power-on (rails read normal, TVS parts cool). Roll-in to <code>PanelGroup_Base</code> / <code>Gateway_Bridge</code> (drop-in — identical DO-214AA footprint) and extraction into the #201 <code>Power</code> design block ride the boards' next revision.</p>
+</blockquote>
 <h2 id="stepper-driver">Stepper Driver</h2>
 <p><strong>Selected: DRV8833PWPR (TI)</strong> — dual H-bridge, TSSOP-16-EP. <strong>LCSC: C50506</strong></p>
 <p>DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated, not inspectable after reflow). DRV8833PW is the same electrical capability in an inspectable HTSSOP-16 package.</p>
