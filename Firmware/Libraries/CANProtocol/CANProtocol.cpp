@@ -377,6 +377,22 @@ HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount) {
     return p;
 }
 
+NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC) {
+    NodeHealthPayload p;
+    p.nodeId   = nodeId;
+    p.dieTempC = dieTempC;
+    p.flags    = 0;
+#ifdef NODE_OVERHEAT_C
+    // Overheat trip is opt-in: the internal sensor is uncalibrated, so a sane threshold
+    // needs field data first. Only compute the flag when a build defines NODE_OVERHEAT_C.
+    if (dieTempC != INT8_MIN && dieTempC >= (int)(NODE_OVERHEAT_C)) p.flags |= 0x01;  // bit0=overheat
+#endif
+    p.faultMask = 0;  // reserved for #163 (degraded/fault rollup)
+    p.faultId   = 0;  // reserved for #163
+    p.rsvd[0] = p.rsvd[1] = p.rsvd[2] = 0;
+    return p;
+}
+
 uint32_t txDropCount() { return _txDrops; }
 
 } // namespace CANProtocol

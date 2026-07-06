@@ -73,8 +73,10 @@ Firmware/Tests/CANProtocol/
     │                             frames preserve full payload bytes
     ├── status_callbacks.cpp    — onStatusChange fires STARTING before start(); NORMAL immediately
     │                             after start(); callback not called again without a status change
-    └── heartbeat_payload.cpp   — makeHeartbeatPayload() fills nodeId, uptime, flags, rxCount,
-                                  and ESR-derived TEC/REC without callers touching HAL registers
+    ├── heartbeat_payload.cpp   — makeHeartbeatPayload() fills nodeId, uptime, flags, rxCount,
+    │                             and ESR-derived TEC/REC without callers touching HAL registers
+    └── health_payload.cpp      — makeNodeHealthPayload() packs nodeId/dieTempC, zeroes flags +
+                                  fault + reserved; on-target readDieTempC()/readVddMv() range check (#213)
 ```
 
 All runtime scenarios use `startLoopback()` — single board, no second node or physical bus
@@ -495,6 +497,19 @@ namespace CANProtocol {
      * @return        Fully populated HeartbeatPayload ready to send as HB_n.
      */
     HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount);
+
+    /**
+     * @brief Build the 8-byte node-health payload (internal die temp) for HEALTH_n (#213/#221).
+     *
+     * Packs the caller-supplied die temperature (via STM32Board::readDieTempC()). Sets the
+     * overheat flag (bit0) only when NODE_OVERHEAT_C is defined at build time and dieTempC meets
+     * it; otherwise flags is 0 (pure telemetry). Fault + reserved bytes zeroed (owned by #163).
+     *
+     * @param nodeId   Node ID to place in the payload; 1-63 PanelGroup, 0 PanelBridge.
+     * @param dieTempC Internal die temp in whole °C (INT8_MIN = unavailable).
+     * @return         Fully populated NodeHealthPayload ready to send as HEALTH_n.
+     */
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC);
 
     /**
      * @brief Return the cumulative TX queue drop count since last reset.

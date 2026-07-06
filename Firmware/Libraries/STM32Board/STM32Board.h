@@ -11,7 +11,7 @@
  *   - UART : USART1 PA9 TX / PA10 RX @ 115200 (diagnostic tap)
  *   - CAN  : SN65HVD230 on PA11 (RX) / PA12 (TX)
  *
- * @version 0.3.0
+ * @version 0.4.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -139,6 +139,30 @@ namespace STM32Board {
      * @returns Pointer to the internal CAN_HandleTypeDef.
      */
     CAN_HandleTypeDef* canHandle();
+
+    /**
+     * @brief Read the MCU's built-in internal temperature sensor (ADC ch16).
+     *
+     * Free per-node thermal telemetry — no external parts, no PCB change. Reads ATEMP
+     * and AVREF (Vrefint) and converts with STM32F103 datasheet typicals
+     * (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.
+     *
+     * @note UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature
+     *       (not ambient) with a self-heat offset. Use for relative trend / overheat
+     *       flagging, not precise ambient measurement.
+     * @return Die temperature in whole °C, or INT8_MIN if the internal channels are
+     *         unavailable on this variant.
+     */
+    int8_t readDieTempC();
+
+    /**
+     * @brief Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17).
+     *
+     * @note Uses the STM32F103 typical Vrefint of 1.20 V (the F103 has no VREFINT_CAL
+     *       factory value), so absolute accuracy is limited; good for relative trend.
+     * @return Vdd in millivolts, or 0 if the internal reference is unavailable.
+     */
+    uint16_t readVddMv();
 
 #ifdef STM32BOARD_TEST
     /**

@@ -210,6 +210,25 @@ namespace STM32Board {
      */
     HardwareSerial& diagSerial();
 
+    /**
+     * @brief Read the MCU internal die temperature (ADC ch16) as whole °C (#213).
+     *
+     * Reads ATEMP + AVREF (Vrefint) and converts with F103 datasheet typicals
+     * (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.
+     * UNCALIBRATED — ~±few °C absolute, die (not ambient), self-heat offset.
+     *
+     * @returns Die temperature in whole °C, or INT8_MIN if internal channels are unavailable.
+     */
+    int8_t readDieTempC();
+
+    /**
+     * @brief Estimate MCU Vdd from Vrefint (ADC ch17), in millivolts (#213).
+     *
+     * @note Uses the F103 typical Vrefint of 1.20 V (no VREFINT_CAL on F103).
+     * @returns Vdd in millivolts, or 0 if the internal reference is unavailable.
+     */
+    uint16_t readVddMv();
+
     static constexpr uint8_t PIN_LED_RED   = PB14;  ///< Red LED pin — same on all STM32 boards
     static constexpr uint8_t PIN_LED_GREEN = PB15;  ///< Green LED pin — same on all STM32 boards
 
