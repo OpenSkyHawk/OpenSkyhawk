@@ -26,8 +26,7 @@
 #pragma once
 #ifdef ARDUINO_ARCH_STM32
 
-#include <PanelGroup.h>      // OutputBase
-#include <CANProtocol.h>     // NodeFaultId (#163)
+#include <PanelGroup.h>      // OutputBase (+ NodeFaultId via CANProtocol.h, #163)
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
 #include <Helpers/I2cHealth/I2cHealth.h>
