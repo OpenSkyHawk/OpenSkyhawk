@@ -204,3 +204,33 @@ is diagnosed through its own DiagSerial output and through the presence or absen
 CAN/DCS traffic.
 
 **Affects:** `02-can-protocol.md`, `06-panelbridge-api.md`.
+
+---
+
+## D13 — Internal die-temp telemetry on a new HEALTH_n frame, uncalibrated, no default trip (#213)
+
+**Decision:** every STM32 node reads its MCU internal temperature sensor (ADC ch16, using Vrefint
+ch17 internally to reference the reading to Vdd) and reports `dieTempC` on a **new dedicated
+`HEALTH_n` frame** (`0x140+n`, 1000 ms, default-on). It is **not** folded into `HB_n`. Vdd is
+measured but **not transmitted** — per-node rail voltage is weak signal on a regulated bus and is
+covered properly by the PDU's INA226 power telemetry (#202). The overheat flag / status-LED
+WARNING is computed only when a build defines `NODE_OVERHEAT_C`; the default build ships pure
+telemetry with no trip point. The frame is the shared node-health contract (#221): temperature
+(#213) and degraded-state (#163) each own their own fields within the fixed 8 bytes.
+
+**Rationale:**
+- *New frame, not repack.* The 8-byte `HeartbeatPayload` is already full, and its consumers
+  (PanelBridge tracking, the client's `_NODE_STATUS` parser) depend on its exact layout.
+  A separate frame leaves that contract untouched and gives room for future health fields
+  (3 reserved bytes). The `0x140–0x17F` range was free.
+- *Free telemetry.* The sensor is on-die — no external parts, no schematic/BOM change — so the
+  convention applies to every existing and future STM32 board unchanged.
+- *No default trip.* The F103 sensor is uncalibrated (no factory trim) and reads die (not
+  ambient) temperature with a self-heat offset, so a meaningful overheat threshold needs field
+  data first. Shipping telemetry-only lets the fleet collect trend data before a trip point is
+  chosen; enabling it is a one-line `-DNODE_OVERHEAT_C=N` opt-in.
+- *STM32 only.* The RP2040 SimGateway is not on CAN and shares a PCB with PanelBridge, whose
+  `HEALTH_0` already represents that board's thermal zone — a second sensor there is redundant.
+
+**Affects:** `02-can-protocol.md`, `08-hardware-firmware-contracts.md`, `docs/_source/hardware-standards.md`,
+`HIDControls.h` (`_NODE_STATUS` proto v2), SkyHawkClient (host surfacing).

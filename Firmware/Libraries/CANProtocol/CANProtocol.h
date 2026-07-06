@@ -13,7 +13,7 @@
  * Dependency: STM32Board::begin() must be called before CANProtocol::start().
  * CANProtocol owns CAN bus operation; STM32Board owns peripheral hardware init.
  *
- * @version 0.2.0
+ * @version 0.3.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -53,6 +53,32 @@ struct __attribute__((packed)) HeartbeatPayload {
     uint16_t esr;      ///< (CAN1->ESR >> 16): low byte=TEC, high byte=REC
 };
 
+/**
+ * @brief 8-byte payload carried by HEALTH_n frames — per-node health telemetry.
+ *
+ * Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract;
+ * separate features populate their own fields, all within the fixed 8 bytes:
+ *   - Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal
+ *     temperature sensor (ADC ch16); no external parts, no PCB change.
+ *   - Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a
+ *     tripped peripheral (e.g. an I2cHealth circuit breaker). Transmit 0 until that lands.
+ * PanelBridge caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.
+ *
+ * @note The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute,
+ *       measures DIE temperature (not ambient) with a self-heat offset. Use for relative
+ *       trend and per-node overheat flagging, not precise ambient measurement.
+ * @note Rail voltage/current is intentionally NOT here — that is the PDU's dedicated power
+ *       telemetry (#202, real INA226 sensors), not generic per-node health.
+ */
+struct __attribute__((packed)) NodeHealthPayload {
+    uint8_t  nodeId;     ///< 0: node ID — redundant with CAN ID, aids logging
+    int8_t   dieTempC;   ///< 1: internal die temp, whole °C (INT8_MIN = unavailable) — #213
+    uint8_t  flags;      ///< 2: bit0=overheat (opt-in, NODE_OVERHEAT_C); bit1=degraded (#163)
+    uint8_t  faultMask;  ///< 3: tripped-peripheral bitmap — reserved for #163 (0 until populated)
+    uint8_t  faultId;    ///< 4: fault detail / device id — reserved for #163 (0 until populated)
+    uint8_t  rsvd[3];    ///< 5-7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
+};
+
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
     STARTING,   ///< CAN peripheral configured, not yet started
@@ -71,6 +97,10 @@ static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request all nodes to 
 
 /** @brief Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is PanelBridge. */
 constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
+
+/** @brief Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is PanelBridge.
+ *         Carries NodeHealthPayload (internal die temp + Vdd). */
+constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
 
 /** @brief Input event frame ID for node n. Range 0x201-0x23F. */
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
@@ -276,6 +306,20 @@ namespace CANProtocol {
      * @return        Fully populated HeartbeatPayload ready to send as HB_n.
      */
     HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount);
+
+    /**
+     * @brief Build the 8-byte node-health payload for the current node.
+     *
+     * Packs the internal die temperature (read via STM32Board::readDieTempC()) into a
+     * NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is
+     * defined at build time and dieTempC meets it; otherwise flags is 0 (pure telemetry).
+     * Fault + reserved fields are zeroed.
+     *
+     * @param nodeId   Node ID (1-63 PanelGroup; 0 PanelBridge).
+     * @param dieTempC Internal die temp in whole °C (INT8_MIN = unavailable).
+     * @return         Fully populated NodeHealthPayload ready to send as HEALTH_n.
+     */
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC);
 
     /** @brief Return the cumulative TX queue drop count since startup. */
     uint32_t txDropCount();

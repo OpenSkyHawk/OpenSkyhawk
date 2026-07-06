@@ -24,6 +24,27 @@ HTSSOP (exposed thermal pad on underside) is acceptable — side leads are the c
 - CAN bus is the primary inter-board protocol; USB used only for initial flashing/debug
 - Use the bare die (not Blue Pill module) on MCU boards — fewer passive conflicts, smaller footprint
 
+### Internal die-temperature telemetry (firmware-only)
+
+Every STM32 CAN node reports its own MCU **internal die temperature** (ADC ch16) as cheap
+health telemetry. This is a **firmware convention with no schematic or BOM impact** — the sensor
+is on-die, needs no external parts, and applies to every existing and future STM32 board
+unchanged. (Vrefint, ch17, is read on-node to reference the reading to Vdd, but Vdd itself is
+not transmitted — per-node rail voltage is the PDU's job, not generic node health.)
+
+- Sent on a dedicated **HEALTH_n CAN frame** (`0x140+n`), 1 s cadence, default-on. PanelBridge
+  caches each node's value and forwards it to the host client. Firmware detail lives in the
+  `firmware` skill / FirmwarePlan `02-can-protocol.md`.
+- **The reading is UNCALIBRATED.** The STM32F103 temperature sensor has no factory trim, so
+  absolute accuracy is only ~±few °C. It measures **die** temperature (not ambient) and carries
+  a self-heat offset. Use it for **relative trend and a per-node overheat flag**, never as a
+  precise ambient or hot-spot measurement.
+- **Boards that need accurate hot-spot temperatures still use external NTCs** — e.g. the PDU's
+  shunt/fuse zones. The internal sensor complements, does not replace, dedicated sensing.
+- One reading per STM32 node. On a board that carries both an STM32 and an RP2040 (the shared
+  Bridge/Gateway PCB), the STM32's HEALTH frame represents that board's thermal zone; the RP2040
+  is not separately instrumented.
+
 ## RP2040 HID Controllers
 
 **Role:** USB HID devices connecting directly to the PC — flight stick, throttle, rudder pedals, button boxes. No custom PCB; use off-the-shelf modules.

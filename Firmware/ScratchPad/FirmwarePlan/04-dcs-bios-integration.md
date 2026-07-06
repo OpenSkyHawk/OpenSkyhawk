@@ -36,12 +36,20 @@ forwards host→device; the response is ASCII it forwards device→host). PanelB
 **Request** — client writes a DCS-BIOS export frame to `0x86FE`. PanelBridge's
 `NodeStatusReqListener` (an `ExportStreamListener`) fires → emits the full roster.
 
-**Response** — `_NODE_STATUS <hex>` where `<hex>` is 18 chars, **each field its numeric value as
-fixed-width uppercase hex (most-significant nibble first)**:
-`nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4)` (the 8-byte `HeartbeatPayload` plus
-`present`). `present`: `01` alive, `00` removed. `flags`: bit0 BOFF, bit1 EPVF. `esr`: low byte
-TEC, high byte REC. `nodeId` 1–63. `uptime`/`rxCount` are uint16 — wrap at 65535 (~18 h /
-65 k frames); treat as health indicators, not monotonic counters.
+**Response** — `_NODE_STATUS <hex>` where `<hex>` is **26 chars** (proto **v2**, #221), **each field its
+numeric value as fixed-width uppercase hex (most-significant nibble first)**:
+`nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2) faultMask(2) faultId(2)`
+(the 8-byte `HeartbeatPayload` plus `present`, then the node's cached `HEALTH_n` fields). `present`:
+`01` alive, `00` removed. `flags`: bit0 BOFF, bit1 EPVF. `esr`: low byte TEC, high byte REC.
+`nodeId` 1–63. `uptime`/`rxCount` are uint16 — wrap at 65535 (~18 h / 65 k frames); treat as
+health indicators, not monotonic counters.
+
+The last four fields come from the node's `HEALTH_n` frame (see `02-can-protocol.md`):
+- `dieTempC`: int8 two's-complement whole °C (internal MCU sensor — UNCALIBRATED, die not ambient).
+  `80` = `INT8_MIN` = not-yet-seen → render unknown.
+- `hFlags`: node health bits — bit0 overheat, bit1 degraded.
+- `faultMask` / `faultId`: tripped-peripheral bitmap + detail id — `00` until the degraded feature
+  (#163) populates them; `faultId` is an index into a client-side lookup table (no strings on the wire).
 
 **Emission semantics:**
 - A single bare `_NODE_STATUS` is a **live delta** — emitted on each node alive/dead transition

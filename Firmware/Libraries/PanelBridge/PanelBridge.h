@@ -125,6 +125,9 @@ namespace PanelBridge {
     void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
                            uint16_t rxCount, uint16_t esr);
 
+    /** @brief Cache a node's HEALTH_n telemetry (die temp) without changing liveness (#213). */
+    void testFeedHealth(uint8_t nodeId, int8_t dieTempC);
+
     /** @brief Emit the current roster (one `_NODE_STATUS` per alive node) — the request/boot path. */
     void testRequestNodeStatus();
 

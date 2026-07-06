@@ -68,7 +68,8 @@ All CAN IDs are computed from `NODE_ID`. Fixed symbolic constants (`CAN_ID_HB_1`
 replaced by inline functions:
 
 ```cpp
-constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }  // 0x100–0x13F (0 = PanelBridge)
+constexpr uint32_t canIdHb(uint8_t n)     { return 0x100 + n; }  // 0x100–0x13F (0 = PanelBridge)
+constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }  // 0x140–0x17F (node health/thermal)
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }  // 0x201–0x23F
 constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }  // 0x301–0x33F
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
@@ -85,6 +86,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `SYNC_REQ` | `0x012` | PanelBridge → All | 0 | Request all nodes to re-poll inputs and emit EVTs. Sent on cold boot, on `model_time` backward, in response to `READY`, and when a node transitions from dead/unseen to alive. |
 | Reserved | `0x100` | — | — | `canIdHb(0)` / PanelBridge slot. Reserved by formula, not transmitted in normal firmware. |
 | `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | PanelGroup heartbeat every 500 ms for n=1-63 — see HB payload below |
+| `HEALTH_n` | `0x140+n` | Node_n → PanelBridge | 8 | Internal die-temp + node-health telemetry every 1000 ms (n=0-63, incl. PanelBridge itself) — see HEALTH payload below (#213/#221) |
 | `EVT_n` | `0x200+n` | Node_n → PanelBridge | 8 | Absolute input events (switches, selectors, pots) — `ControlPacketPair`, value `%u` → `set_state` |
 | `ECHO_n` | `0x300+n` | Node_n → PanelBridge | 8 | TEST_SEQ echo — 8-byte payload mirrored unchanged |
 | `READY_n` | `0x400+n` | Node_n → PanelBridge | 0 | One-time boot signal after initial input poll and EVT burst are complete |
@@ -127,7 +129,57 @@ REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC.
 **Host node-status reporting (#86):** this same `HeartbeatPayload` is the source for the roster +
 health that PanelBridge reports to the host. No new CAN frame is added — PanelBridge caches the
 last `HB_n` per node and re-serializes it into a DCS-BIOS `_NODE_STATUS` message
-(see `04-dcs-bios-integration.md` and `06-panelbridge-api.md`).
+(see `04-dcs-bios-integration.md` and `06-panelbridge-api.md`). As of `_NODE_STATUS` proto **v2**
+the message also carries the node's cached `dieTempC` + health/fault fields from `HEALTH_n` (below).
+
+---
+
+## Node Health Payload (#213)
+
+`HEALTH_n` frames carry **free per-node thermal telemetry** read from the MCU's built-in
+internal temperature sensor (ADC ch16) and Vrefint (ch17) — no external parts, no PCB change.
+Every STM32 node sends one every 1000 ms (half the heartbeat rate — this is trend data);
+PanelBridge sends its own as `HEALTH_0`. `STM32Board::readDieTempC()` owns the ADC read (it reads
+Vrefint internally to reference Vsense to Vdd — Vdd itself is not transmitted);
+`CANProtocol::makeNodeHealthPayload()` packs the frame.
+
+```cpp
+struct __attribute__((packed)) NodeHealthPayload {
+    uint8_t  nodeId;     // 0:   node ID (redundant with CAN ID, aids logging)
+    int8_t   dieTempC;   // 1:   internal die temp, whole °C (INT8_MIN = unavailable)  — #213
+    uint8_t  flags;      // 2:   bit0=overheat (opt-in); bit1=degraded                  — #213/#163
+    uint8_t  faultMask;  // 3:   tripped-peripheral bitmap — reserved for #163 (0 until populated)
+    uint8_t  faultId;    // 4:   fault detail / device id  — reserved for #163 (0 until populated)
+    uint8_t  rsvd[3];    // 5–7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
+};
+```
+
+This is the **shared node-health wire contract**. Distinct features populate their own fields
+within the fixed 8 bytes and never collide: temperature (#213) owns `dieTempC` / `flags` bit0;
+the degraded-state feature (#163) owns `flags` bit1 / `faultMask` / `faultId`, which transmit 0
+until that lands. `faultId` is an index into a client-side lookup table — no fault strings on
+the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
+telemetry (#202, real INA226 sensors per console), not generic per-node health; the reserved
+bytes are for future *generic* health fields (reset cause, free RAM, I2C error count).
+
+**Default-on**, compile out with `-DNODE_HEALTH_TELEM=0`. PanelBridge caches each node's fields
+(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v2, so the
+degraded feature needs no further wire/proto change). A `HEALTH_n` frame is cache-only — it never
+changes node liveness (`HB_n` owns that).
+
+**flags bitmask:**
+- bit 0 (`0x01`): overheat — `dieTempC >= NODE_OVERHEAT_C`. **Opt-in:** the flag is computed
+  only when a build defines `NODE_OVERHEAT_C`; the default build ships no threshold (pure
+  telemetry) because the uncalibrated sensor needs field data before a sane trip point is set.
+  When enabled, a node also raises its status-LED WARNING on its own overheat.
+- bit 1 (`0x02`): degraded — node is alive but a peripheral has tripped (#163). Reserved here;
+  populated by the degraded-state feature.
+
+**Calibration caveat:** the STM32F103 sensor is **UNCALIBRATED** (no factory trim / no
+`VREFINT_CAL`). Conversion uses datasheet typicals (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C),
+referencing Vsense to the Vdd derived from Vrefint (typ 1.20 V). Absolute accuracy ~±few °C;
+it reads **die** temperature (not ambient) with a self-heat offset. Use for relative trend and
+overheat flagging — accurate hot-spot sensing (e.g. PDU shunt/fuse zones) still uses external NTCs.
 
 ---
 
@@ -192,12 +244,13 @@ unpacked C++ struct, because natural alignment can pad this layout beyond 8 byte
 
 The heartbeat address family is `canIdHb(n) = 0x100 + n`, so the full HB range is
 `0x100`-`0x13F` with `HB_0` reserved for PanelBridge but unused. For child-node liveness, PanelBridge
-accepts PanelGroup frames across four inbound ranges: HB_1-HB_63 (`0x101`-`0x13F`),
-EVT_1-EVT_63 (`0x201`-`0x23F`), ECHO_1-ECHO_63 (`0x301`-`0x33F`), and READY_1-READY_63
-(`0x401`-`0x43F`). These cannot be expressed as a single CAN mask filter.
+accepts PanelGroup frames across five inbound ranges: HB_1-HB_63 (`0x101`-`0x13F`),
+HEALTH_1-HEALTH_63 (`0x141`-`0x17F`), EVT_1-EVT_63 (`0x201`-`0x23F`), ECHO_1-ECHO_63
+(`0x301`-`0x33F`), and READY_1-READY_63 (`0x401`-`0x43F`). These cannot be expressed as a
+single CAN mask filter.
 
 **Strategy:** use a **pass-all mask filter** (accepts every ID) with software-side validation
-inside the CAN RX interrupt handler. Frames whose ID does not fall in one of the four ranges
+inside the CAN RX interrupt handler. Frames whose ID does not fall in one of the accepted ranges
 are silently discarded. `HB_0` (`0x100`) is not a PanelGroup liveness frame. This is safe
 because PanelGroup nodes never transmit outside their assigned ranges.
 
