@@ -284,19 +284,9 @@ static constexpr uint16_t CTRL_ID_HID_MAX  = 0x00FF;  ///< HID range end
 static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  ///< DCS-BIOS range start
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  ///< DCS-BIOS range end
 
-// ── Node-status host contract + fault dictionary (#86 / #163) ─────────────────
-// How PanelBridge reports connected nodes + health to the host over DCS-BIOS. Lives here
-// (CAN-membership layer, next to NodeHealthPayload / canIdHealth), NOT in HIDControls.h.
-// **Canonical contract source the client's sync-a4ec.ts parses** — bump the proto version
-// on any _NODE_STATUS wire change. Full field decode: FirmwarePlan/04-dcs-bios-integration.md.
-#define NODE_STATUS_PROTO_VERSION 2
-#define NODE_STATUS_REQ_ADDR      0x86FE
-#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
-#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
-
-// HEALTH_n faultId dictionary (#163) — coarse, one active at a time; exact device logged on
-// DiagSerial, not the wire. Client maps id → label (SkyHawkClient#40). Append to grow.
-enum class NodeFaultId : uint8_t { NONE = 0x00, I2C_PERIPHERAL = 0x01 /* 0x02+ reserved */ };
+// Node-status host contract + fault vocabulary (NODE_STATUS_*, NodeHealthFlag, NodeFaultCode,
+// FaultSource) live in the neutral `NodeStatus` library (see NodeStatus.md), not here.
+// CANProtocol owns only NodeHealthPayload (the CAN HEALTH_n frame struct).
 
 // ── HID axis/button controlIds — from HIDControls.h (included above) ────────
 // CANProtocol.h includes <HIDControls.h>; CTRL_* constants are available to any

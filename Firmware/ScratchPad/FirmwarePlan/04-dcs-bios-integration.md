@@ -62,7 +62,7 @@ The last four fields come from the node's `HEALTH_n` frame (see `02-can-protocol
   delta lost on the wire.
 
 Both directions ride the serial/CDC, so this works in the client's **Bridge mode only** (no
-serial in Monitor/Replay). Reserved constants + the wire format live in `CANProtocol.h` (the
+serial in Monitor/Replay). Reserved constants + the wire format live in `NodeStatus.h` (the
 canonical contract source the client syncs against; `NODE_STATUS_PROTO_VERSION` bumps on any wire
 change). The whole feature is gated behind `-DPANELBRIDGE_NODE_STATUS` (default off).
 

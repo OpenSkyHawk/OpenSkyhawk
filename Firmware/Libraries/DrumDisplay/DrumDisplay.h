@@ -26,7 +26,8 @@
 #pragma once
 #ifdef ARDUINO_ARCH_STM32
 
-#include <PanelGroup.h>      // OutputBase (+ NodeFaultId via CANProtocol.h, #163)
+#include <PanelGroup.h>      // OutputBase
+#include <NodeStatus.h>      // FaultSource + NodeFaultCode (#163)
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
 #include <Helpers/I2cHealth/I2cHealth.h>
@@ -145,7 +146,7 @@ struct DrumReadout {
  * only decodes + flags dirty (cheap); update() does the ~60 fps gate, channel reselect,
  * ease+snap, render, and the single expensive sendBuffer().
  */
-class DrumDisplay : public OutputBase, public I2cHealth {
+class DrumDisplay : public OutputBase, public I2cHealth, public FaultSource {
 public:
     /** @brief Which I2C hop failed the last reachability probe (feeds node health reporting, #163). */
     enum class Fault : uint8_t { None, Mux, Device };
@@ -225,11 +226,11 @@ public:
     void setOffset(float xOffsetMm, float yOffsetMm);
 
     /**
-     * @brief Node-health fault code (#163): I2C_PERIPHERAL when the breaker is tripped, else 0.
-     * @note Reads the cached breaker state only — no I2C transaction. Safe for the health path.
+     * @brief FaultSource: I2C_PERIPHERAL when the I2cHealth breaker is tripped, else NONE (#163).
+     *        Cached breaker state only — no I2C op. The node aggregator maps this into HEALTH_n.faultId.
      */
     uint8_t faultCode() const override {
-        return i2cHealthy() ? 0 : static_cast<uint8_t>(NodeFaultId::I2C_PERIPHERAL);
+        return i2cHealthy() ? 0 : static_cast<uint8_t>(NodeFaultCode::I2C_PERIPHERAL);
     }
 
     /** @brief DiagSerial-only fault detail (#163): which I2C hop failed the last probe. */

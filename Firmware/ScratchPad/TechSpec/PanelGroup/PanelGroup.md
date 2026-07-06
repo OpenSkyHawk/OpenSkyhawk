@@ -256,19 +256,9 @@ public:
      */
     virtual void update() {}
 
-    /**
-     * @brief Node-health fault code for this output (#163). 0 = healthy; a NodeFaultId
-     *        (CANProtocol.h) otherwise. Rolled up into the HEALTH_n frame's faultId.
-     *        Default: never faults. Must be const + cheap (cached state, no I2C op).
-     */
-    virtual uint8_t faultCode() const { return 0; }
-
-    /**
-     * @brief Human fault detail for the local DiagSerial tap only (#163) — never on the
-     *        wire. "" = none. Overridden by I2C-backed outputs (e.g. DrumDisplay) to name
-     *        the failing hop; GPIO outputs inherit the default.
-     */
-    virtual const char* faultDetail() const { return ""; }
+    // Node-health faults are NOT an OutputBase concern (#163). An output that can fault also
+    // inherits OpenSkyhawk::FaultSource (NodeStatus.h) and self-registers there; the node
+    // aggregator walks FaultSource::head() independently of the output list. See DrumDisplay.
 
     static OutputBase* head();  ///< Head of the registered output linked list.
     OutputBase*        next() const;  ///< Next output; nullptr at end.

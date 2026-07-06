@@ -21,7 +21,8 @@ namespace DcsBios {
 #ifdef ARDUINO_ARCH_STM32
 
 #include "PanelBridge.h"
-#include <CANProtocol.h>   // NODE_STATUS_* / NodeFaultId + CAN types (node-status reporting, #86)
+#include <CANProtocol.h>   // CAN types + NodeHealthPayload
+#include <NodeStatus.h>    // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <STM32Board.h>
 #include <A4EC_InputMap.h>
 #include <string.h>

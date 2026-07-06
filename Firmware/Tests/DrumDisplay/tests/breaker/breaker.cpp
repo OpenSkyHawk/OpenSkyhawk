@@ -18,6 +18,7 @@
 #include <string.h>
 #include <STM32Board.h>
 #include <DrumDisplay.h>
+#include <NodeStatus.h>   // NodeFaultCode (asserted directly below)
 #include <Helpers/I2cMux/I2cMux.h>
 #include <A4EC_OutputIds.h>
 
@@ -61,8 +62,8 @@ void setup() {
     disp.onControlPacket(A_4E_C_APN153_SPEED_00X, digitWord(0));
     check("data path decodes while down (target == 250)", disp.debugTarget() == 250);
 
-    // Node-health accessors (#163): healthy at start → no fault reported.
-    check("healthy: faultCode 0",                  disp.faultCode() == 0);
+    // FaultSource accessors (#163): healthy at start → no fault reported.
+    check("healthy: faultCode NONE",               disp.faultCode() == 0);
     check("healthy: faultDetail empty",            strcmp(disp.faultDetail(), "") == 0);
 
     // 1) Dead device → trip + classify + skip the render (no sendBuffer).
@@ -72,8 +73,8 @@ void setup() {
     check("dead: breaker tripped (unhealthy)",     !disp.debugHealthy());
     check("dead: fault classified (Device)",       disp.debugFault() == static_cast<uint8_t>(DrumDisplay::Fault::Device));
     check("dead: render skipped (no sendBuffer)",  disp.debugRenderCount() == r0);
-    // Node-health rollup (#163): tripped → coarse I2C code + device-level detail for DiagSerial.
-    check("dead: faultCode I2C_PERIPHERAL",        disp.faultCode() == static_cast<uint8_t>(NodeFaultId::I2C_PERIPHERAL));
+    // FaultSource (#163): tripped → I2C_PERIPHERAL code + device-level detail for DiagSerial.
+    check("dead: faultCode I2C_PERIPHERAL",        disp.faultCode() == static_cast<uint8_t>(NodeFaultCode::I2C_PERIPHERAL));
     check("dead: faultDetail = OLED not responding", strcmp(disp.faultDetail(), "OLED not responding") == 0);
 
     // 2) Back-off — a retry within RETRY_MS must NOT re-probe.
@@ -89,8 +90,8 @@ void setup() {
     check("recover: probed again",                 disp.debugProbeCount() == p1 + 1);
     check("recover: healthy",                      healed && disp.debugHealthy());
     check("recover: fault cleared (None)",         disp.debugFault() == static_cast<uint8_t>(DrumDisplay::Fault::None));
-    // Node-health accessors (#163) clear on recovery.
-    check("recover: faultCode 0",                  disp.faultCode() == 0);
+    // FaultSource (#163) clears on recovery.
+    check("recover: faultCode NONE",               disp.faultCode() == 0);
     check("recover: faultDetail empty",            strcmp(disp.faultDetail(), "") == 0);
 
     d.println(pass ? F("=== ALL PASS ===") : F("=== FAIL ==="));

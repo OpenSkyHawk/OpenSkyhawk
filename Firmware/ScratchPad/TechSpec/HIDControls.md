@@ -13,9 +13,9 @@ Shared between STM32 (via CANProtocol) and RP2040 (SimGateway sketches).
 
 Contains only `#define` constants — no classes, no functions, no state. Not a compile
 unit; `library.json` marks it as header-only with no platform restriction. The node-status
-host contract + fault dictionary (`NODE_STATUS_*`, `NodeFaultId`) live in `CANProtocol.h`
-(the CAN-membership layer, see `CANProtocol.md`), not here — this header is HID controlId
-constants only.
+host contract + fault vocabulary (`NODE_STATUS_*`, `NodeHealthFlag`, `NodeFaultCode`,
+`FaultSource`) live in the neutral `NodeStatus` library (see `NodeStatus.md`), not here — this
+header is HID controlId constants only.
 
 ---
 
@@ -88,9 +88,9 @@ next unused value in the axis (0x0010–0x001F), hat (0x0020–0x002F), or butto
 (0x0030–0x00AF) range. Update
 `HIDAxis` or `HIDButton` declarations in the relevant sketch.
 
-> The node-status host contract (`NODE_STATUS_*`) and the `NodeFaultId` fault dictionary are
-> **not** here — they live in `CANProtocol.h` (the CAN-membership layer, `CANProtocol.md`).
-> This header is HID controlId constants only.
+> The node-status host contract (`NODE_STATUS_*`) and the `NodeFaultCode` fault vocabulary are
+> **not** here — they live in the neutral `NodeStatus` library (`NodeStatus.md`). This header is
+> HID controlId constants only.
 
 ---
 

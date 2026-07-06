@@ -101,7 +101,7 @@ struct DrumReadout {
     DrumFlag flag; DrumScroll scroll; float snapThreshold;
 };
 
-class DrumDisplay : public OutputBase {
+class DrumDisplay : public OutputBase, public I2cHealth, public FaultSource {  // FaultSource: #163
 public:
     // Direct-bus: one panel on the MCU's I²C bus.
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
@@ -117,8 +117,9 @@ public:
     void setFontSize(DrumFont font);                            // runtime; re-fits next frame
     void setOffset(float xOffsetMm, float yOffsetMm);          // runtime mm; re-registers next frame
 
-    uint8_t     faultCode() const override;    // #163: I2C_PERIPHERAL when breaker tripped, else 0
-    const char* faultDetail() const override;  // #163: DiagSerial-only hop string (Mux/Device)
+    // FaultSource (NodeStatus.h) — DrumDisplay is one node fault source among many (#163):
+    uint8_t     faultCode() const override;    // NodeFaultCode::I2C_PERIPHERAL when breaker tripped, else 0
+    const char* faultDetail() const override;  // DiagSerial-only hop string (Mux/Device)
 };
 
 }  // namespace OpenSkyhawk
