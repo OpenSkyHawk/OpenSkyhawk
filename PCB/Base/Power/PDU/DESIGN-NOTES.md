@@ -153,7 +153,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 - PDU FW to add: **NODE_ID 1-63** (0=PanelBridge), telemetry frames (rail V/I/temp/fault bitmap), setWarning() on fault, setLinkActive() on data.
 
 **SCHEMATIC COMPLETE + ERC-CLEAN 2026-07-03.** *(Historical snapshot — some designators below are pre-final draft refs. **Authoritative refs = the fabricated board / BOM table:** J1=J_PSU_IN, J2=J_BUS_OUT, J3=J_BUS_IN(CAN), J4=J_SWD, J5=J_CAN_TERM, J6=J_DIAG.)* Standard STM32 block imported (VDD decoupling 5×100nF + 8MHz xtal Y1/22pF + BOOT0 10k-pulldown + NRST reset SW1/10k/100nF + SWD J7 + SN65HVD230 U5 [Rs pin8→GND high-speed, pin2→GND, Vref pin5 NC] + AMS1117 U4 [10µF in/22µF out] + status LEDs + diag serial J1 + mounting holes H1-4). CAN connectors: **J3 CAN-in (2×2 CANH/CANL/GND)** + **J9 J_BUS_OUT (8-pin power+CAN)** + J5 J_CAN_TERM (120Ω R13, populate if end-node) = split-source injection. PWR_FLAG on +12V/+5V/+12V_IN/+5V_IN/+3V3/GND; 10µF bulk C21/C22 per rail (injection; downstream panels self-decouple). Decoupling stack: 22µF reg-out + 100nF/VDD-pin + bead-VDDA + 10µF/rail.
-**Remaining:** assign footprints (**verify shunt C53115028 = 2 vs 4 terminal** for R1/R2 symbol) · DRC after layout (B3).
+**Remaining:** *(all resolved at PCB close, PR #217 — board DRC 0/0.)* Shunt = **CSRF2512FT10L0, C346481, 2512, 2-terminal** (2728 C53115028 ±25 ppm reverted — no stock KiCad footprint; see B2).
 
 ---
 
