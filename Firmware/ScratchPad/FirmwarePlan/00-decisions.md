@@ -244,8 +244,9 @@ telemetry with no trip point. The frame is the shared node-health contract (#221
 `NodeFaultCode` (the wire faultId dictionary), and `FaultSource` (the interface a fault-producing
 object implements). A fault-producing object (e.g. `DrumDisplay`, a future PDU rail monitor, a
 PanelBridge host-link watchdog) **inherits `FaultSource`** and self-registers. A node-level
-aggregator (per node type, → PR-3) walks `FaultSource::head()`, decides DEGRADED, picks the primary
-`NodeFaultCode` for `HEALTH_n.faultId`, and logs `faultDetail()` to **DiagSerial only**.
+aggregator (`OpenSkyhawk::aggregateFaults()`, implemented in PR-3) walks `FaultSource::head()`,
+picks the primary `NodeFaultCode` (first non-`NONE` in registry order) for `HEALTH_n.faultId`,
+derives DEGRADED, and logs `faultDetail()` to **DiagSerial only** (edge-logged per node).
 `NodeHealthPayload` (the CAN frame struct) stays in `CANProtocol.h`.
 
 **Rationale:**

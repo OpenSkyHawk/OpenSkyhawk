@@ -20,6 +20,7 @@
 
 #include <Arduino.h>
 #include <stm32f1xx_hal_can.h>
+#include <NodeStatus.h>  // NodeFaultCode for logNodeFaultEdge (#163)
 
 // CanStatus is owned by CANProtocol; forward-declared here so onCanStatus()
 // can accept it without pulling the full CANProtocol header into every user.
@@ -163,6 +164,23 @@ namespace STM32Board {
      * @return Vdd in millivolts, or 0 if the internal reference is unavailable.
      */
     uint16_t readVddMv();
+
+    /**
+     * @brief Edge-log a node's fault transition to DiagSerial (#163).
+     *
+     * Prints `[<tag>] degraded: <detail> (fault N)` on entering or changing a fault, and
+     * `[<tag>] recovered` on clearing — only on a change, and only when isDebug() (no formatting
+     * cost otherwise). Shared by every node's health-TX loop (PanelGroup, PanelBridge, future PDU).
+     *
+     * Holds its own static prev-fault state. A firmware binary has exactly ONE node identity (a
+     * build is either a PanelGroup node or the bridge), so a single static is correct — the node's
+     * aggregated fault, not per-source. Detail strings stay local — never on the CAN wire.
+     *
+     * @param tag    Short node tag for the log line, e.g. "NODE" or "BRIDGE".
+     * @param fault  The node's current aggregated NodeFaultCode (from OpenSkyhawk::aggregateFaults()).
+     * @param detail That fault's faultDetail() (non-null; ignored when fault == NONE).
+     */
+    void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail);
 
 #ifdef STM32BOARD_TEST
     /**

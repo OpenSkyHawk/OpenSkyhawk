@@ -19,20 +19,20 @@
 //
 // Also at boot: _NODE_STATUS_END 0 (empty roster seed).
 //
-// Expected on USB-UART (250000), repeating each cycle. Node 1 is also fed a HEALTH
-// frame (42 °C → dieTempC 2A); node 2 gets none, so its temp stays at the not-yet-seen
-// sentinel 80. The three health fields hFlags/faultMask/faultId are 0 here — the degraded
-// feature (#163) isn't populating them yet:
+// Expected on USB-UART (250000), repeating each cycle. Node 1 is fed a DEGRADED HEALTH frame
+// (42 °C → dieTempC 2A; hFlags 02 DEGRADED; faultId 01 I2C_PERIPHERAL; faultMask 00 reserved) —
+// this proves the #163 degraded fields forward through the cache into _NODE_STATUS. Node 2 gets no
+// HEALTH, so its temp stays at the not-yet-seen sentinel 80 with all-zero health fields:
 //   Phase A — two nodes go alive (bare delta emits, no terminator):
-//     _NODE_STATUS 010100000A001200002A000000
+//     _NODE_STATUS 010100000A001200002A020001
 //     _NODE_STATUS 02010200140034000280000000
 //   Phase B — host request (full roster, terminated):
-//     _NODE_STATUS 010100000A001200002A000000
+//     _NODE_STATUS 010100000A001200002A020001
 //     _NODE_STATUS 02010200140034000280000000
 //     _NODE_STATUS_END 2
 //   Phase C — heartbeat timeout (~3 s after Phase A) removes both (present=00 deltas,
-//   cached health retained):
-//     _NODE_STATUS 010000000A001200002A000000
+//   cached health retained, incl. node 1's degraded fields):
+//     _NODE_STATUS 010000000A001200002A020001
 //     _NODE_STATUS 02000200140034000280000000
 //
 // hex = nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2)
@@ -43,6 +43,7 @@
 #include <DcsBios.h>
 #include <PanelBridge.h>
 #include <STM32Board.h>
+#include <NodeStatus.h>  // NodeHealthFlag / NodeFaultCode for the degraded HEALTH injection (#163)
 
 static uint8_t  _phase  = 0;
 static uint32_t _lastMs = 0;
@@ -67,8 +68,11 @@ void loop() {
 
     switch (_phase) {
     case 0:  // Phase A — inject heartbeats; both nodes transition to alive
-        d.println(F("[TEST] A: feed HB node 1 & 2 + HEALTH node 1 -> expect 2x _NODE_STATUS ...01..."));
-        PanelBridge::testFeedHealth(1, 42);  // dieTempC 2A — cache before the alive edge emits
+        d.println(F("[TEST] A: feed HB node 1 & 2 + DEGRADED HEALTH node 1 -> expect 2x _NODE_STATUS ...01..."));
+        // dieTempC 2A + DEGRADED/I2C_PERIPHERAL — cache before the alive edge emits (#163 forwarding)
+        PanelBridge::testFeedHealth(1, 42,
+                                    (uint8_t)NodeHealthFlag::DEGRADED, 0,
+                                    (uint8_t)NodeFaultCode::I2C_PERIPHERAL);
         PanelBridge::testFeedHeartbeat(1, 0x00, 10, 18, 0x0000);
         PanelBridge::testFeedHeartbeat(2, 0x02, 20, 52, 0x0002);  // node 2: no HEALTH → temp 80
         _phase = 1;

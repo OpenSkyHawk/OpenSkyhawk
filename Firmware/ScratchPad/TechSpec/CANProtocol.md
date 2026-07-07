@@ -75,8 +75,10 @@ Firmware/Tests/CANProtocol/
     │                             after start(); callback not called again without a status change
     ├── heartbeat_payload.cpp   — makeHeartbeatPayload() fills nodeId, uptime, flags, rxCount,
     │                             and ESR-derived TEC/REC without callers touching HAL registers
-    └── health_payload.cpp      — makeNodeHealthPayload() packs nodeId/dieTempC, zeroes flags +
-                                  fault + reserved; on-target readDieTempC()/readVddMv() range check (#213)
+    ├── health_payload.cpp      — makeNodeHealthPayload() packs nodeId/dieTempC + faultId/DEGRADED,
+    │                             faultMask/reserved stay 0; on-target readDieTempC()/readVddMv() range (#213)
+    └── health_flags.cpp        — overheat+degraded coexistence: -DNODE_OVERHEAT_C=0, asserts a faulted
+                                  hot payload sets BOTH flag bits (|= never clobbers overheat) (#163)
 ```
 
 All runtime scenarios use `startLoopback()` — single board, no second node or physical bus
@@ -507,13 +509,17 @@ namespace CANProtocol {
      *
      * Packs the caller-supplied die temperature (via STM32Board::readDieTempC()). Sets the
      * overheat flag (bit0) only when NODE_OVERHEAT_C is defined at build time and dieTempC meets
-     * it; otherwise flags is 0 (pure telemetry). Fault + reserved bytes zeroed (owned by #163).
+     * it; otherwise the overheat bit is 0 (pure telemetry). This is the packing boundary that owns
+     * the NodeFaultCode->byte cast: it writes faultId and OR-derives the DEGRADED flag (bit1) when
+     * fault != NONE (never clobbering the overheat bit). faultMask + reserved bytes stay 0 (#163).
      *
      * @param nodeId   Node ID to place in the payload; 1-63 PanelGroup, 0 PanelBridge.
      * @param dieTempC Internal die temp in whole °C (INT8_MIN = unavailable).
+     * @param fault    Primary NodeFaultCode from aggregateFaults(); NONE (default) = healthy node.
      * @return         Fully populated NodeHealthPayload ready to send as HEALTH_n.
      */
-    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC);
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC,
+                                            NodeFaultCode fault = NodeFaultCode::NONE);
 
     /**
      * @brief Return the cumulative TX queue drop count since last reset.

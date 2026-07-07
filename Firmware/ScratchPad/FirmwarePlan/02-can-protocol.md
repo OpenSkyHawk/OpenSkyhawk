@@ -148,17 +148,19 @@ struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  nodeId;     // 0:   node ID (redundant with CAN ID, aids logging)
     int8_t   dieTempC;   // 1:   internal die temp, whole °C (INT8_MIN = unavailable)  — #213
     uint8_t  flags;      // 2:   NodeHealthFlag bits (NodeStatus.h): OVERHEAT, DEGRADED           — #213/#163
-    uint8_t  faultMask;  // 3:   fault source/domain bitmap — reserved for #163 (0 until populated)
-    uint8_t  faultId;    // 4:   NodeFaultCode (NodeStatus.h) — reserved for #163 (0 until populated)
+    uint8_t  faultMask;  // 3:   fault source/domain bitmap — reserved for future domain bits (0)
+    uint8_t  faultId;    // 4:   NodeFaultCode (NodeStatus.h): 0 = no fault, else primary fault  — #163
     uint8_t  rsvd[3];    // 5–7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
 };
 ```
 
 This is the **shared node-health wire contract**. Distinct features populate their own fields
 within the fixed 8 bytes and never collide: temperature (#213) owns `dieTempC` / `flags` bit0;
-the degraded-state feature (#163) owns `flags` bit1 / `faultMask` / `faultId`, which transmit 0
-until that lands. `faultId` is a `NodeFaultCode` (NodeStatus.h) the client maps to a label — no
-fault strings on the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
+the degraded-state feature (#163) owns `flags` bit1 / `faultId`, populated per node by
+`OpenSkyhawk::aggregateFaults()` (the primary fault, first non-`NONE` in `FaultSource` registry
+order). A healthy node ships all-zero; a faulted node ships `flags` DEGRADED + a nonzero `faultId`,
+but `faultMask` **stays 0** — it is reserved for future fault-domain bits. `faultId` is a
+`NodeFaultCode` (NodeStatus.h) the client maps to a label — no fault strings on the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
 telemetry (#202, real INA226 sensors per console), not generic per-node health; the reserved
 bytes are for future *generic* health fields (reset cause, free RAM, I2C error count).
 
@@ -172,8 +174,10 @@ changes node liveness (`HB_n` owns that).
   only when a build defines `NODE_OVERHEAT_C`; the default build ships no threshold (pure
   telemetry) because the uncalibrated sensor needs field data before a sane trip point is set.
   When enabled, a node also raises its status-LED WARNING on its own overheat.
-- bit 1 (`0x02`): degraded — node is alive but a peripheral has tripped (#163). Reserved here;
-  populated by the degraded-state feature.
+- bit 1 (`0x02`): degraded — node is alive but a registered `FaultSource` reports non-`NONE` (#163)
+  — a DrumDisplay I2C fault, a PDU rail over/under-voltage, a bridge host-link loss, etc. Derived:
+  set whenever `faultId != NONE`. **No status-LED change** — degraded surfaces via the frame + a
+  DiagSerial edge log only (multi-source WARNING-latch arbitration is deferred).
 
 **Calibration caveat:** the STM32F103 sensor is **UNCALIBRATED** (no factory trim / no
 `VREFINT_CAL`). Conversion uses datasheet typicals (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C),

@@ -377,7 +377,7 @@ HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount) {
     return p;
 }
 
-NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC) {
+NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC, NodeFaultCode fault) {
     NodeHealthPayload p;
     p.nodeId   = nodeId;
     p.dieTempC = dieTempC;
@@ -385,10 +385,14 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC) {
 #ifdef NODE_OVERHEAT_C
     // Overheat trip is opt-in: the internal sensor is uncalibrated, so a sane threshold
     // needs field data first. Only compute the flag when a build defines NODE_OVERHEAT_C.
-    if (dieTempC != INT8_MIN && dieTempC >= (int)(NODE_OVERHEAT_C)) p.flags |= 0x01;  // bit0=overheat
+    if (dieTempC != INT8_MIN && dieTempC >= (int)(NODE_OVERHEAT_C))
+        p.flags |= static_cast<uint8_t>(NodeHealthFlag::OVERHEAT);  // bit0 — OR in, never overwrite
 #endif
-    p.faultMask = 0;  // reserved for #163 (degraded/fault rollup)
-    p.faultId   = 0;  // reserved for #163
+    // Degraded fault (#163): faultId carries the code, DEGRADED bit is derived. faultMask stays 0
+    // (reserved for future fault-domain bits — not populated in PR-3).
+    p.faultMask = 0;
+    p.faultId   = static_cast<uint8_t>(fault);
+    if (fault != NodeFaultCode::NONE) p.flags |= static_cast<uint8_t>(NodeHealthFlag::DEGRADED);  // bit1
     p.rsvd[0] = p.rsvd[1] = p.rsvd[2] = 0;
     return p;
 }
