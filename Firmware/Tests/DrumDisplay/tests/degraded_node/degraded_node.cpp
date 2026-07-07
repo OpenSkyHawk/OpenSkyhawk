@@ -7,8 +7,9 @@
 // hardware — the node "thinks" it drives a drum, but there's nothing on the bus.
 //
 // Pair with a PanelBridge node on the same CAN bus (NODE_ID=0):
-//   - THIS board's DiagSerial (USART1 PA9, 115200): "[NODE] degraded: OLED not responding (fault 1)"
-//     once at boot (the edge). Hot-plug an OLED+mux later -> "[NODE] recovered" within ~2 s.
+//   - THIS board's DiagSerial (USART1 PA9, 115200): "[NODE] degraded: I2C mux unreachable (fault 1)"
+//     once at boot (the edge — the mux NAKs first with nothing on the bus). Hot-plug an OLED+mux
+//     later -> "[NODE] recovered" within ~2 s. (Bench-verified 2026-07-06.)
 //   - The bridge's _NODE_STATUS (USB-UART, 250000): node 1 present, hFlags DEGRADED (02), faultId 01.
 //   - HB_1 keeps the node alive throughout — the breaker stops the dead device starving the
 //     heartbeat (#166), so DEGRADED (a live-but-faulted node) is distinct from an offline node.
