@@ -34,7 +34,7 @@
 /** @brief HEALTH_n `flags` bits — node-level health conditions (maps to NodeHealthPayload.flags). */
 enum class NodeHealthFlag : uint8_t {
     OVERHEAT = 0x01,  // die temp >= NODE_OVERHEAT_C (opt-in, #213)
-    DEGRADED = 0x02,  // a FaultSource is faulted → faultCode != 0 (#163)
+    DEGRADED = 0x02,  // a FaultSource reports faultCode() != NodeFaultCode::NONE (#163)
 };
 
 /**

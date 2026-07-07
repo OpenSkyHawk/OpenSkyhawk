@@ -61,7 +61,7 @@ struct __attribute__((packed)) HeartbeatPayload {
  *   - Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal
  *     temperature sensor (ADC ch16); no external parts, no PCB change.
  *   - Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a
- *     tripped peripheral (e.g. an I2cHealth circuit breaker). Transmit 0 until that lands.
+ *     faulted FaultSource reporting a NodeFaultCode (NodeStatus.h). Transmit 0 until that lands.
  * PanelBridge caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.
  *
  * @note The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute,
