@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1FaultSource" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::FaultSource</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1DrumDisplay" prot="public" virt="non-virtual">OpenSkyhawk::DrumDisplay</derivedcompoundref>
+    <includes refid="NodeStatus_8h" local="no">NodeStatus.h</includes>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1FaultSource_1ac37c96df64737beb9a6316ff95a018f7" prot="private" static="yes" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref> *</type>
+        <definition>FaultSource * OpenSkyhawk::FaultSource::_head</definition>
+        <argsstring></argsstring>
+        <name>_head</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::_head</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="91" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1FaultSource_1aef10f3ad8269ff82c503afc584ad818c" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref> *</type>
+        <definition>FaultSource* OpenSkyhawk::FaultSource::_next</definition>
+        <argsstring></argsstring>
+        <name>_next</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="92" column="17" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref></type>
+        <definition>virtual NodeFaultCode OpenSkyhawk::FaultSource::faultCode</definition>
+        <argsstring>() const</argsstring>
+        <name>faultCode</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::faultCode</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1ae93dbd7bd712bf155dde58431212f322">faultCode</reimplementedby>
+        <briefdescription>
+<para>Current fault code (<ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref> when healthy). Cheap/const, cached state only. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="76" column="27" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const char *</type>
+        <definition>virtual const char * OpenSkyhawk::FaultSource::faultDetail</definition>
+        <argsstring>() const</argsstring>
+        <name>faultDetail</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::faultDetail</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1a6a5ea894d9fe758e1e1a69b3d0ea1499">faultDetail</reimplementedby>
+        <briefdescription>
+<para>Human-readable fault detail for the local DiagSerial tap only — never on the wire. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="79" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="79" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref> *</type>
+        <definition>FaultSource * OpenSkyhawk::FaultSource::next</definition>
+        <argsstring>() const</argsstring>
+        <name>next</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::next</qualifiedname>
+        <briefdescription>
+<para>Next fault source; nullptr at end. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="84" column="17" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="10" bodyend="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref> *</type>
+        <definition>FaultSource * OpenSkyhawk::FaultSource::head</definition>
+        <argsstring>()</argsstring>
+        <name>head</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::head</qualifiedname>
+        <briefdescription>
+<para>Head of the self-registered fault-source list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="82" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="9" bodyend="9"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::FaultSource::FaultSource</definition>
+        <argsstring>()</argsstring>
+        <name>FaultSource</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::FaultSource</qualifiedname>
+        <briefdescription>
+<para>Registers this instance into the list. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="87" column="5" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="8" bodyend="8"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::FaultSource::~FaultSource</definition>
+        <argsstring>()=default</argsstring>
+        <name>~FaultSource</name>
+        <qualifiedname>OpenSkyhawk::FaultSource::~FaultSource</qualifiedname>
+        <briefdescription>
+<para>Protected, non-virtual: a base/mixin, never deleted through this type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="88" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A source of node faults — implemented by any object that can fault (#163). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Self-registers into a static list at construction; a node-level aggregator walks <computeroutput><ref refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kindref="member">FaultSource::head()</ref></computeroutput> to decide node health, pick the primary <computeroutput><ref refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" kindref="member">faultCode()</ref></computeroutput> for HEALTH_n, and print <computeroutput><ref refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" kindref="member">faultDetail()</ref></computeroutput> to DiagSerial. Implementers report <emphasis>cached</emphasis> state only — cheap, const, no blocking I/O — since the aggregator runs on the periodic health path. Examples: <ref refid="classOpenSkyhawk_1_1DrumDisplay" kindref="compound">DrumDisplay</ref> (I2C), a PDU rail monitor (over/under-voltage/short), a <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> host-link watchdog.</para>
+<para><simplesect kind="note"><para><bold>Lifetime: a <ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref> must have static/global lifetime</bold> (same rule as <ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref> / <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref>). Registration is permanent — there is no unregister — so a stack/local <ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref> would leave a dangling pointer in the registry the aggregator walks. Construct fault sources as globals (or members of a global object), never on the stack. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::DrumDisplay</label>
+        <link refid="classOpenSkyhawk_1_1DrumDisplay"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::FaultSource</label>
+        <link refid="classOpenSkyhawk_1_1FaultSource"/>
+      </node>
+    </inheritancegraph>
+    <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="73" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="73" bodyend="93"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1ac37c96df64737beb9a6316ff95a018f7" prot="private" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>_head</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1aef10f3ad8269ff82c503afc584ad818c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>_next</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" prot="public" virt="virtual"><scope>OpenSkyhawk::FaultSource</scope><name>faultCode</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" prot="public" virt="virtual"><scope>OpenSkyhawk::FaultSource</scope><name>faultDetail</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>FaultSource</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" prot="public" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>~FaultSource</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

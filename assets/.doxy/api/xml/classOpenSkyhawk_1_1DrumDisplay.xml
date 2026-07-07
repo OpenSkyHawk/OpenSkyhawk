@@ -4,6 +4,7 @@
     <compoundname>OpenSkyhawk::DrumDisplay</compoundname>
     <basecompoundref refid="classOpenSkyhawk_1_1OutputBase" prot="public" virt="non-virtual">OpenSkyhawk::OutputBase</basecompoundref>
     <basecompoundref refid="classOpenSkyhawk_1_1I2cHealth" prot="public" virt="non-virtual">OpenSkyhawk::I2cHealth</basecompoundref>
+    <basecompoundref refid="classOpenSkyhawk_1_1FaultSource" prot="public" virt="non-virtual">OpenSkyhawk::FaultSource</basecompoundref>
     <includes refid="DrumDisplay_8h" local="no">DrumDisplay.h</includes>
     <sectiondef kind="public-type">
       <memberdef kind="enum" id="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66" prot="public" static="no" strong="yes">
@@ -38,7 +39,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="151" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="151" bodyend="151"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="152" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="152" bodyend="152"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-static-attrib">
@@ -55,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="246" column="30" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="246" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="265" column="30" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="265" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -72,7 +73,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="249" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="249" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="268" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="268" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a426c7e311441d324874b8843abfade58" prot="private" static="no" mutable="no">
         <type>U8G2 *</type>
@@ -86,7 +87,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="257" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="257" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="276" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="276" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a34fb43a079191d1fd07ef2199163e018" prot="private" static="no" mutable="no">
         <type>const <ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref> *</type>
@@ -100,7 +101,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="258" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="258" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="277" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="277" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1f5b68bc775592185cadf36ac66ffe46" prot="private" static="no" mutable="no">
         <type><ref refid="classOpenSkyhawk_1_1I2cMux" kindref="compound">I2cMux</ref> *</type>
@@ -114,7 +115,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="259" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="259" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="278" column="23" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="278" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a8b7ee0e217e470da54d3a7a9af37dc73" prot="private" static="no" mutable="no">
         <type>uint8_t</type>
@@ -128,7 +129,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="260" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="260" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="279" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="279" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1ae3e4dbefbb9e3063cb45c583da1c39a7" prot="private" static="no" mutable="no">
         <type><ref refid="namespaceOpenSkyhawk_1aba2b1f16c7f7294392b81ae69fff2ec5" kindref="member">DrumFont</ref></type>
@@ -142,7 +143,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="261" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="261" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="280" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="280" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1037f2f2b12b5339bb865e1eb8f2beb1" prot="private" static="no" mutable="no">
         <type>float</type>
@@ -156,7 +157,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="262" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="262" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="281" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="281" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a12641c13f4c179166008859184e25732" prot="private" static="no" mutable="no">
         <type>float</type>
@@ -170,7 +171,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="262" column="32" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="262" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="281" column="32" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="281" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1af617c26c44e7ec68fe003c5b84849cc4" prot="private" static="no" mutable="no">
         <type>long</type>
@@ -184,7 +185,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="265" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="265" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="284" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="284" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a02e0b6a989128829a4458ed08800b140" prot="private" static="no" mutable="no">
         <type>long</type>
@@ -198,7 +199,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="266" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="266" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="285" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="285" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a7ece4248bb8e410f190d1f767d27aa60" prot="private" static="no" mutable="no">
         <type>volatile bool</type>
@@ -212,7 +213,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="267" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="267" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="286" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="286" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a5886181a5c5ee4566a83b79a2c12553f" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -226,7 +227,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="268" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="268" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="287" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="287" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a899112c7564a3d7c2217a822d5c2d325" prot="private" static="no" mutable="no">
         <type>float</type>
@@ -240,7 +241,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="271" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="271" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="290" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="290" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a27fa0419e4a563911aa49c6b3b2928a6" prot="private" static="no" mutable="no">
         <type>float</type>
@@ -254,7 +255,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="272" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="272" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="291" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="291" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a744f91060ee964afcd1d681b762f02dd" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -268,7 +269,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="275" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="275" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="294" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="294" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1d106a02bb053bf5c769e0a03ebc9d40" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -282,7 +283,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="276" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="276" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="295" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="295" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1eee622df7d3de622baa10c5e78ebb3e" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -296,7 +297,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="277" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="277" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="296" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="296" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a1bd8ba6621473a8f0828b3b557817bf1" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -310,7 +311,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="278" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="278" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="297" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="297" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a0eddf14a9aa600fd0d2581e319715893" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -324,7 +325,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="279" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="279" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="298" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="298" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a297ebe8a7424a2b0b0a2efc5c42ae6d6" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -338,7 +339,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="280" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="280" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="299" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="299" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a36f5ca2a129e78d9886c3156742d9af2" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -352,7 +353,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="281" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="281" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="300" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="300" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a08a08c5d21983f0bcc562ce728527be8" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -366,7 +367,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="282" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="282" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="301" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="301" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1ab6176e929ccccdce1fe54d2d4b19ddef" prot="private" static="no" mutable="no">
         <type>uint8_t</type>
@@ -380,7 +381,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="283" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="283" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="302" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="302" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a50e31aa169e3ff98ebc2e5e6a73711c8" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -394,7 +395,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="284" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="284" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="303" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="303" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1a4dd2a6b7625f40e6657c91f70add2ddc" prot="private" static="no" mutable="no">
         <type>uint8_t</type>
@@ -408,7 +409,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="285" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="285" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="304" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="304" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1DrumDisplay_1acfa9ff0068cd95b0e980543dcb3fd7c6" prot="private" static="no" mutable="no">
         <type>uint32_t</type>
@@ -422,7 +423,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="286" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="286" bodyend="-1"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="305" column="24" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="305" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -506,7 +507,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="162" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="40" bodyend="49"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="163" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="40" bodyend="49"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a25dd5f4f79300bd9e4d6c766de2e37ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -612,7 +613,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="178" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="51" bodyend="57"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="179" column="5" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="51" bodyend="57"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -631,7 +632,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="189" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="137" bodyend="148"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="190" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="137" bodyend="148"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -675,7 +676,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="199" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="73" bodyend="108"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="200" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="73" bodyend="108"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -694,7 +695,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="207" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="274" bodyend="338"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="208" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="274" bodyend="338"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ab15d2fb278c66698cac2217425362c64" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -723,7 +724,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="213" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="342" bodyend="345"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="214" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="342" bodyend="345"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ab69abf397e28b6c10101a8d3b0127ede" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -768,7 +769,39 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="225" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="347" bodyend="351"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="226" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="347" bodyend="351"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ae93dbd7bd712bf155dde58431212f322" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref></type>
+        <definition>NodeFaultCode OpenSkyhawk::DrumDisplay::faultCode</definition>
+        <argsstring>() const override</argsstring>
+        <name>faultCode</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::faultCode</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034">faultCode</reimplements>
+        <briefdescription>
+<para><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>: I2C_PERIPHERAL when the <ref refid="classOpenSkyhawk_1_1I2cHealth" kindref="compound">I2cHealth</ref> breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH_n.faultId. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="232" column="19" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="232" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a6a5ea894d9fe758e1e1a69b3d0ea1499" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const char *</type>
+        <definition>const char * OpenSkyhawk::DrumDisplay::faultDetail</definition>
+        <argsstring>() const override</argsstring>
+        <name>faultDetail</name>
+        <qualifiedname>OpenSkyhawk::DrumDisplay::faultDetail</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e">faultDetail</reimplements>
+        <briefdescription>
+<para>DiagSerial-only fault detail (#163): which I2C hop failed the last probe. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="237" column="16" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="237" bodyend="244"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -791,7 +824,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="243" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="112" bodyend="129"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="262" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="112" bodyend="129"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-func">
@@ -807,7 +840,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="248" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="131" bodyend="133"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="267" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="131" bodyend="133"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a4b7ab58b82ec352abd2d91d5a87b4746" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -821,7 +854,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="289" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="152" bodyend="244"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="308" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="152" bodyend="244"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ae646eecafa86229cd454e58119a1900b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -847,7 +880,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="290" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="248" bodyend="257"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="309" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="248" bodyend="257"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a686d20d40dc2c8c162da5acd2f46502d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -873,7 +906,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="291" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="259" bodyend="270"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="310" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="259" bodyend="270"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1aaadb3a8dc92f57f5857b3f12754700ee" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -887,7 +920,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="292" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="355" bodyend="363"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="311" column="10" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="355" bodyend="363"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1a0ff486b1aadd8e48ead0284c6b2c739c" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>uint8_t</type>
@@ -901,7 +934,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="293" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="368" bodyend="374"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="312" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="368" bodyend="374"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1DrumDisplay_1ab4eaa2748c51bffad63e511da23c9cbf" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>const uint8_t *</type>
@@ -915,7 +948,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="294" column="19" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="376" bodyend="378"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="313" column="19" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="376" bodyend="378"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-static-func">
@@ -943,7 +976,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="295" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="61" bodyend="69"/>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="314" column="17" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="61" bodyend="69"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -960,6 +993,12 @@
         </childnode>
         <childnode refid="3" relation="public-inheritance">
         </childnode>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OpenSkyhawk::FaultSource</label>
+        <link refid="classOpenSkyhawk_1_1FaultSource"/>
       </node>
       <node id="3">
         <label>OpenSkyhawk::I2cHealth</label>
@@ -978,6 +1017,12 @@
         </childnode>
         <childnode refid="3" relation="public-inheritance">
         </childnode>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OpenSkyhawk::FaultSource</label>
+        <link refid="classOpenSkyhawk_1_1FaultSource"/>
       </node>
       <node id="3">
         <label>OpenSkyhawk::I2cHealth</label>
@@ -988,7 +1033,7 @@
         <link refid="classOpenSkyhawk_1_1OutputBase"/>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="148" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="148" bodyend="296"/>
+    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="149" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="149" bodyend="315"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a50e31aa169e3ff98ebc2e5e6a73711c8" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cellData</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1eee622df7d3de622baa10c5e78ebb3e" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>_cellH</name></member>
@@ -1023,15 +1068,20 @@
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a8305411fbd20b0f8349523b3f987f934" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>DrumDisplay</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a25dd5f4f79300bd9e4d6c766de2e37ba" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>DrumDisplay</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>Fault</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1ae93dbd7bd712bf155dde58431212f322" prot="public" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>faultCode</name></member>
+      <member refid="classOpenSkyhawk_1_1DrumDisplay_1a6a5ea894d9fe758e1e1a69b3d0ea1499" prot="public" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>faultDetail</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>FaultSource</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a4b7ab58b82ec352abd2d91d5a87b4746" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>fitGeometry</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab4eaa2748c51bffad63e511da23c9cbf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>fontPtr</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual" ambiguityscope="OpenSkyhawk::"><scope>OpenSkyhawk::DrumDisplay</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" prot="public" virt="non-virtual" ambiguityscope="OpenSkyhawk::FaultSource::"><scope>OpenSkyhawk::DrumDisplay</scope><name>head</name></member>
       <member refid="classOpenSkyhawk_1_1I2cHealth_1aca5f995b939a9a3d3ed3669171835a13" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>I2C_RETRY_MS</name></member>
       <member refid="classOpenSkyhawk_1_1I2cHealth_1af6987340b270c40fa568672d6034238c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>i2cHealthy</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1acbdd7533aba2b23c5f2a20e43f315ec2" prot="protected" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>i2cProbe</name></member>
       <member refid="classOpenSkyhawk_1_1I2cHealth_1a5fcb10799ffe0355107c2b3e01b7a138" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>i2cReachable</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a8bb1b71baaa98e331bbc670ee5e43732" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>MAX_CELLS</name></member>
-      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual" ambiguityscope="OpenSkyhawk::"><scope>OpenSkyhawk::DrumDisplay</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" prot="public" virt="non-virtual" ambiguityscope="OpenSkyhawk::FaultSource::"><scope>OpenSkyhawk::DrumDisplay</scope><name>next</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab2d9540e2aee62338fab97b1b794fe96" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>oledAddr</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb" prot="public" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>onControlPacket</name></member>
       <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>OutputBase</name></member>
@@ -1040,6 +1090,7 @@
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1aaadb3a8dc92f57f5857b3f12754700ee" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>settled</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" prot="public" virt="virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>update</name></member>
       <member refid="classOpenSkyhawk_1_1DrumDisplay_1a0ff486b1aadd8e48ead0284c6b2c739c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>visibleDigits</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>~FaultSource</name></member>
       <member refid="classOpenSkyhawk_1_1I2cHealth_1abaddf32d89819c4d82433871b64bcaf2" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::DrumDisplay</scope><name>~I2cHealth</name></member>
     </listofallmembers>
   </compounddef>

@@ -498,7 +498,7 @@
 <para>Sent every 500 ms by <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> nodes. <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> reads HB_1–HB_63 to track <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> health and populate diagnostics. HB_0 is reserved but not transmitted.</para>
 <para>Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:<itemizedlist>
 <listitem><para>Temperature (#213): dieTempC, flags bit0 — read from the MCU&apos;s built-in internal temperature sensor (ADC ch16); no external parts, no PCB change.</para>
-</listitem><listitem><para>Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a tripped peripheral (e.g. an I2cHealth circuit breaker). Transmit 0 until that lands. <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.</para>
+</listitem><listitem><para>Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>). Transmit 0 until that lands. <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.</para>
 </listitem></itemizedlist>
 </para>
 <para><simplesect kind="note"><para>The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute, measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend and per-node overheat flagging, not precise ambient measurement. </para>
@@ -518,9 +518,9 @@
 <para>&lt; (CAN1-&gt;ESR &gt;&gt; 16): low byte=TEC, high byte=REC</para>
 <para>&lt; 0: node ID — redundant with CAN ID, aids logging</para>
 <para>&lt; 1: internal die temp, whole °C (INT8_MIN = unavailable) — #213</para>
-<para>&lt; 2: bit0=overheat (opt-in, NODE_OVERHEAT_C); bit1=degraded (#163)</para>
-<para>&lt; 3: tripped-peripheral bitmap — reserved for #163 (0 until populated)</para>
-<para>&lt; 4: fault detail / device id — reserved for #163 (0 until populated)</para>
+<para>&lt; 2: NodeHealthFlag bits (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>): OVERHEAT (#213), DEGRADED (#163)</para>
+<para>&lt; 3: fault source/domain bitmap — reserved for #163 (0 until populated)</para>
+<para>&lt; 4: NodeFaultCode (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>) — reserved for #163 (0 until populated)</para>
 <para>&lt; 5-7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)</para>
         </inbodydescription>
         <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="1" column="0" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="27" bodyend="30"/>
@@ -553,7 +553,7 @@
           <declname>n</declname>
         </param>
         <briefdescription>
-<para>Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. Carries NodeHealthPayload (internal die temp + Vdd). </para>
+<para>Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

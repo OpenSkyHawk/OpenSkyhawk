@@ -398,7 +398,7 @@ void loop() {
                           reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
     }
 
-    // 6b. Node-health telemetry every 1000 ms — free internal die temp + Vdd (default-on;
+    // 6b. Node-health telemetry every 1000 ms — free internal die temp (default-on;
     // build with -DNODE_HEALTH_TELEM=0 to disable). Half the heartbeat rate: trend data.
 #if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
     if (now - _lastHealthMs >= 1000) {

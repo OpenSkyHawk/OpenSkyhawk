@@ -3918,10 +3918,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#public-functions-inherited-from-openskyhawkfaultsource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions inherited from OpenSkyhawk::FaultSource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-static-functions-inherited-from-openskyhawkoutputbase" class="md-nav__link">
     <span class="md-ellipsis">
       
         Public Static Functions inherited from OpenSkyhawk::OutputBase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-functions-inherited-from-openskyhawkfaultsource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions inherited from OpenSkyhawk::FaultSource
       
     </span>
   </a>
@@ -3966,6 +3988,17 @@
     <span class="md-ellipsis">
       
         Protected Functions inherited from OpenSkyhawk::I2cHealth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions-inherited-from-openskyhawkfaultsource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions inherited from OpenSkyhawk::FaultSource
       
     </span>
   </a>
@@ -4050,6 +4083,28 @@
     <span class="md-ellipsis">
       
         function configure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-faultcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function faultCode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-faultdetail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function faultDetail
       
     </span>
   </a>
@@ -4159,7 +4214,7 @@
 <ul>
 <li><code>#include &lt;DrumDisplay.h&gt;</code></li>
 </ul>
-<p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a>,  <a href="../classOpenSkyhawk_1_1I2cHealth/">OpenSkyhawk::I2cHealth</a></p>
+<p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a>,  <a href="../classOpenSkyhawk_1_1I2cHealth/">OpenSkyhawk::I2cHealth</a>,  <a href="../classOpenSkyhawk_1_1FaultSource/">OpenSkyhawk::FaultSource</a></p>
 <h2 id="public-types">Public Types</h2>
 <table>
 <thead>
@@ -4195,6 +4250,14 @@
 <tr>
 <td style="text-align: right;">virtual void</td>
 <td style="text-align: left;"><a href="#function-configure"><strong>configure</strong></a> () override<br><em>Compute pixel geometry from the panel + descriptor, set the font, blank the panel.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual <a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a></td>
+<td style="text-align: left;"><a href="#function-faultcode"><strong>faultCode</strong></a> () override const<br><a href="../classOpenSkyhawk_1_1FaultSource/"><em><strong>FaultSource</strong></em></a> <em>: I2C_PERIPHERAL when the</em><a href="../classOpenSkyhawk_1_1I2cHealth/"><em><strong>I2cHealth</strong></em></a> <em>breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH_n.faultId.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual const char *</td>
+<td style="text-align: left;"><a href="#function-faultdetail"><strong>faultDetail</strong></a> () override const<br><em>DiagSerial-only fault detail (#163): which I2C hop failed the last probe.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -4258,6 +4321,30 @@
 </tr>
 </tbody>
 </table>
+<h2 id="public-functions-inherited-from-openskyhawkfaultsource">Public Functions inherited from OpenSkyhawk::FaultSource</h2>
+<p>See <a href="../classOpenSkyhawk_1_1FaultSource/">OpenSkyhawk::FaultSource</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">virtual <a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1FaultSource/#function-faultcode"><strong>faultCode</strong></a> () const<br><em>Current fault code (</em> NodeFaultCode::NONE <em>when healthy). Cheap/const, cached state only.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">virtual const char *</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1FaultSource/#function-faultdetail"><strong>faultDetail</strong></a> () const<br><em>Human-readable fault detail for the local DiagSerial tap only — never on the wire.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1FaultSource/"><strong>FaultSource</strong></a> *</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1FaultSource/#function-next"><strong>next</strong></a> () const<br><em>Next fault source; nullptr at end.</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-static-functions-inherited-from-openskyhawkoutputbase">Public Static Functions inherited from OpenSkyhawk::OutputBase</h2>
 <p>See <a href="../classOpenSkyhawk_1_1OutputBase/">OpenSkyhawk::OutputBase</a></p>
 <table>
@@ -4271,6 +4358,22 @@
 <tr>
 <td style="text-align: right;"><a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> *</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1OutputBase/#function-head"><strong>head</strong></a> () <br><em>Head of the self-registered linked list.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-functions-inherited-from-openskyhawkfaultsource">Public Static Functions inherited from OpenSkyhawk::FaultSource</h2>
+<p>See <a href="../classOpenSkyhawk_1_1FaultSource/">OpenSkyhawk::FaultSource</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><a href="../classOpenSkyhawk_1_1FaultSource/"><strong>FaultSource</strong></a> *</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1FaultSource/#function-head"><strong>head</strong></a> () <br><em>Head of the self-registered fault-source list.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4345,6 +4448,26 @@
 </tr>
 </tbody>
 </table>
+<h2 id="protected-functions-inherited-from-openskyhawkfaultsource">Protected Functions inherited from OpenSkyhawk::FaultSource</h2>
+<p>See <a href="../classOpenSkyhawk_1_1FaultSource/">OpenSkyhawk::FaultSource</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1FaultSource/#function-faultsource"><strong>FaultSource</strong></a> () <br><em>Registers this instance into the list.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1FaultSource/#function-faultsource"><strong>~FaultSource</strong></a> () = default<br><em>Protected, non-virtual: a base/mixin, never deleted through this type.</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Construct at global scope so <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> self-registers it. <a href="./#function-oncontrolpacket"><strong>onControlPacket()</strong></a> only decodes + flags dirty (cheap); <a href="./#function-update"><strong>update()</strong></a> does the ~60 fps gate, channel reselect, ease+snap, render, and the single expensive sendBuffer(). </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
@@ -4413,6 +4536,20 @@
 <p><strong>Note:</strong></p>
 <p>Called once by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip init. Selects the mux channel (if any) first, reads getDisplayWidth()/Height(), runs the geometry fit, and clears the OLED. The sketch owns oled.begin(); this does NOT call begin(). </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><em>OpenSkyhawk::OutputBase::configure</em></a></p>
+<hr>
+
+<h3 id="function-faultcode">function faultCode</h3>
+<p><a href="../classOpenSkyhawk_1_1FaultSource/"><em><strong>FaultSource</strong></em></a> <em>: I2C_PERIPHERAL when the</em><a href="../classOpenSkyhawk_1_1I2cHealth/"><em><strong>I2cHealth</strong></em></a> <em>breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH_n.faultId.</em></p>
+<pre><code class="language-C++">inline virtual NodeFaultCode OpenSkyhawk::DrumDisplay::faultCode () override const
+</code></pre>
+<p>Implements <a href="../classOpenSkyhawk_1_1FaultSource/#function-faultcode"><em>OpenSkyhawk::FaultSource::faultCode</em></a></p>
+<hr>
+
+<h3 id="function-faultdetail">function faultDetail</h3>
+<p><em>DiagSerial-only fault detail (#163): which I2C hop failed the last probe.</em> </p>
+<pre><code class="language-C++">inline virtual const char * OpenSkyhawk::DrumDisplay::faultDetail () override const
+</code></pre>
+<p>Implements <a href="../classOpenSkyhawk_1_1FaultSource/#function-faultdetail"><em>OpenSkyhawk::FaultSource::faultDetail</em></a></p>
 <hr>
 
 <h3 id="function-oncontrolpacket">function onControlPacket</h3>

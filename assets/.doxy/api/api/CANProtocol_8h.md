@@ -86,7 +86,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 |  constexpr uint32\_t | [**canIdEvtDir**](#function-canidevtdir) (uint8\_t n) <br>_Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it_ `INC` _/_`DEC` _for a DCS-BIOS fixed\_step control. Range 0x601-0x63F._ |
 |  constexpr uint32\_t | [**canIdEvtRel**](#function-canidevtrel) (uint8\_t n) <br>_Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a signed ±step (int16); the bridge formats it_ `%+d` _for a DCS-BIOS variable\_step control. Range 0x501-0x53F._ |
 |  constexpr uint32\_t | [**canIdHb**](#function-canidhb) (uint8\_t n) <br>_Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
-|  constexpr uint32\_t | [**canIdHealth**](#function-canidhealth) (uint8\_t n) <br>_Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _. Carries NodeHealthPayload (internal die temp + Vdd)._ |
+|  constexpr uint32\_t | [**canIdHealth**](#function-canidhealth) (uint8\_t n) <br>_Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _. Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands)._ |
 |  constexpr uint32\_t | [**canIdReady**](#function-canidready) (uint8\_t n) <br>_Boot-complete READY frame ID for node n. Range 0x401-0x43F._  |
 
 
@@ -381,7 +381,7 @@ Sent every 500 ms by [**PanelGroup**](namespacePanelGroup.md) nodes. [**PanelBri
 
 Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:
 * Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal temperature sensor (ADC ch16); no external parts, no PCB change.
-* Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a tripped peripheral (e.g. an I2cHealth circuit breaker). Transmit 0 until that lands. [**PanelBridge**](namespacePanelBridge.md) caches HEALTH\_1–HEALTH\_63 per node and forwards them in \_NODE\_STATUS.
+* Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode ([**NodeStatus.h**](NodeStatus_8h.md)). Transmit 0 until that lands. [**PanelBridge**](namespacePanelBridge.md) caches HEALTH\_1–HEALTH\_63 per node and forwards them in \_NODE\_STATUS.
 
 
 
@@ -491,7 +491,7 @@ constexpr uint32_t canIdHb (
 
 ### function canIdHealth 
 
-_Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _. Carries NodeHealthPayload (internal die temp + Vdd)._
+_Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _. Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands)._
 ```C++
 constexpr uint32_t canIdHealth (
     uint8_t n

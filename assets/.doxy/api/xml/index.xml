@@ -99,6 +99,8 @@
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1adf988c5536cea28a4c15d384341706da" kind="function"><name>update</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab15d2fb278c66698cac2217425362c64" kind="function"><name>setFontSize</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab69abf397e28b6c10101a8d3b0127ede" kind="function"><name>setOffset</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1ae93dbd7bd712bf155dde58431212f322" kind="function"><name>faultCode</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a6a5ea894d9fe758e1e1a69b3d0ea1499" kind="function"><name>faultDetail</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1acbdd7533aba2b23c5f2a20e43f315ec2" kind="function"><name>i2cProbe</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab2d9540e2aee62338fab97b1b794fe96" kind="function"><name>oledAddr</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a4b7ab58b82ec352abd2d91d5a87b4746" kind="function"><name>fitGeometry</name></member>
@@ -143,6 +145,16 @@
     <member refid="structOpenSkyhawk_1_1DrumSource_1ae511fd77851f9e27ecd243c442eccf6e" kind="variable"><name>mask</name></member>
     <member refid="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" kind="variable"><name>nDigits</name></member>
     <member refid="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" kind="variable"><name>place</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1FaultSource" kind="class"><name>OpenSkyhawk::FaultSource</name>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1ac37c96df64737beb9a6316ff95a018f7" kind="variable"><name>_head</name></member>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1aef10f3ad8269ff82c503afc584ad818c" kind="variable"><name>_next</name></member>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" kind="function"><name>faultCode</name></member>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" kind="function"><name>faultDetail</name></member>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" kind="function"><name>next</name></member>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kind="function"><name>head</name></member>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" kind="function"><name>FaultSource</name></member>
+    <member refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" kind="function"><name>~FaultSource</name></member>
   </compound>
   <compound refid="structOpenSkyhawk_1_1GaugeCal" kind="struct"><name>OpenSkyhawk::GaugeCal</name>
     <member refid="structOpenSkyhawk_1_1GaugeCal_1a8274ca7f32bbfef17c7d95c408c9d6ec" kind="variable"><name>minTravel</name></member>
@@ -476,19 +488,19 @@
     <member refid="structTxQueueEntry_1a85c61cad9829e3e433b507c7f2b8e6db" kind="variable"><name>data</name></member>
     <member refid="structTxQueueEntry_1ae277cd9de810f9e68be409bad6ae3627" kind="variable"><name>attempts</name></member>
   </compound>
-  <compound refid="namespace_0d38" kind="namespace"><name>@38</name>
+  <compound refid="namespace_0d10" kind="namespace"><name>@10</name>
   </compound>
-  <compound refid="namespace_0d42" kind="namespace"><name>@42</name>
-    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dc" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dcaa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dca1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d42_1a51df9efe7fad40b98492770f7de0d8dca03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d42_1a9f5ae5920b7d96e89f913ba3d7743646a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d40" kind="namespace"><name>@40</name>
   </compound>
-  <compound refid="namespace_0d8" kind="namespace"><name>@8</name>
+  <compound refid="namespace_0d44" kind="namespace"><name>@44</name>
+    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecb" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecbaa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecba1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecba03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4f" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4fab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4faa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4fa9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
@@ -550,7 +562,7 @@
     <member refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kind="function"><name>pow10l</name></member>
     <member refid="namespaceOpenSkyhawk_1a46ddcd8bc34cc500234d4513a5952df5" kind="function"><name>makeX27Config</name></member>
   </compound>
-  <compound refid="namespaceOpenSkyhawk_1_1_0d12" kind="namespace"><name>OpenSkyhawk::@12</name>
+  <compound refid="namespaceOpenSkyhawk_1_1_0d14" kind="namespace"><name>OpenSkyhawk::@14</name>
   </compound>
   <compound refid="namespacePanelBridge" kind="namespace"><name>PanelBridge</name>
     <member refid="namespacePanelBridge_1aa4d303af811bcf25628d8086b6087a4e" kind="typedef"><name>NodeCallback</name></member>
@@ -1469,10 +1481,24 @@
     <member refid="HIDControls_8h_1a616cb8a0ce25c41fc1e2530915ad8457" kind="define"><name>CTRL_TRIGGER</name></member>
     <member refid="HIDControls_8h_1a1918b08973d4d331645e1521305e02f8" kind="define"><name>CTRL_ID_HID_MIN</name></member>
     <member refid="HIDControls_8h_1a5a20c0cd33a3159a2e5f5f2e3f73da21" kind="define"><name>CTRL_ID_HID_MAX</name></member>
-    <member refid="HIDControls_8h_1a82b54ce9fac2a1c2716554b3294d7afd" kind="define"><name>NODE_STATUS_PROTO_VERSION</name></member>
-    <member refid="HIDControls_8h_1a0cad7c81046100af2cc52603e4c4b548" kind="define"><name>NODE_STATUS_REQ_ADDR</name></member>
-    <member refid="HIDControls_8h_1ae899313135cc6e871ad3602f82e290bb" kind="define"><name>NODE_STATUS_MSG_NAME</name></member>
-    <member refid="HIDControls_8h_1ab959bf73571c86cfb6f0221fe6247e96" kind="define"><name>NODE_STATUS_END_MSG_NAME</name></member>
+  </compound>
+  <compound refid="NodeStatus_8cpp" kind="file"><name>NodeStatus.cpp</name>
+  </compound>
+  <compound refid="NodeStatus_8h" kind="file"><name>NodeStatus.h</name>
+    <member refid="NodeStatus_8h_1a82b54ce9fac2a1c2716554b3294d7afd" kind="define"><name>NODE_STATUS_PROTO_VERSION</name></member>
+    <member refid="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" kind="define"><name>NODE_STATUS_REQ_ADDR</name></member>
+    <member refid="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" kind="define"><name>NODE_STATUS_MSG_NAME</name></member>
+    <member refid="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" kind="define"><name>NODE_STATUS_END_MSG_NAME</name></member>
+    <member refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" kind="enum"><name>NodeHealthFlag</name></member>
+    <member refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" kind="enumvalue"><name>OVERHEAT</name></member>
+    <member refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" kind="enumvalue"><name>DEGRADED</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kind="enum"><name>NodeFaultCode</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1ff9b4b08e327a30d2cfd75c03c1c437" kind="enumvalue"><name>I2C_PERIPHERAL</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" kind="enumvalue"><name>OVER_VOLTAGE</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kind="enumvalue"><name>UNDER_VOLTAGE</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kind="enumvalue"><name>SHORT_CIRCUIT</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" kind="enumvalue"><name>HOST_LINK_LOST</name></member>
   </compound>
   <compound refid="PanelBridge_8cpp" kind="file"><name>PanelBridge.cpp</name>
   </compound>
@@ -1619,6 +1645,8 @@
   <compound refid="dir_7bc1eaced50854697a5557e9b0a7cd3c" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput</name>
   </compound>
   <compound refid="dir_61ced45d99aac20e353c7cae873553bb" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge</name>
+  </compound>
+  <compound refid="dir_9111f7d39b5fc785aa55dffe02a55e74" kind="dir"><name>Firmware/Libraries/NodeStatus</name>
   </compound>
   <compound refid="dir_529c528362a647a34d31d0b3b420ca72" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs</name>
   </compound>

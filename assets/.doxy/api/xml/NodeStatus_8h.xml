@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="NodeStatus_8h" kind="file" language="C++">
+    <compoundname>NodeStatus.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="DrumDisplay_8h" local="no">Firmware/Libraries/DrumDisplay/DrumDisplay.h</includedby>
+    <includedby refid="NodeStatus_8cpp" local="yes">Firmware/Libraries/NodeStatus/NodeStatus.cpp</includedby>
+    <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/NodeStatus/NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
+        <link refid="DrumDisplay_8cpp"/>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/DrumDisplay/DrumDisplay.h</label>
+        <link refid="DrumDisplay_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/NodeStatus/NodeStatus.cpp</label>
+        <link refid="NodeStatus_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/NodeStatus/NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1FaultSource" prot="public">OpenSkyhawk::FaultSource</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="NodeStatus_8h_1a82b54ce9fac2a1c2716554b3294d7afd" prot="public" static="no">
+        <name>NODE_STATUS_PROTO_VERSION</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="29" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" prot="public" static="no">
+        <name>NODE_STATUS_REQ_ADDR</name>
+        <initializer>0x86FE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="30" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" prot="public" static="no">
+        <name>NODE_STATUS_MSG_NAME</name>
+        <initializer>&quot;_NODE_STATUS&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="31" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" prot="public" static="no">
+        <name>NODE_STATUS_END_MSG_NAME</name>
+        <initializer>&quot;_NODE_STATUS_END&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="32" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>NodeHealthFlag</name>
+        <enumvalue id="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" prot="public">
+          <name>OVERHEAT</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" prot="public">
+          <name>DEGRADED</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>HEALTH_n <computeroutput>flags</computeroutput> bits — node-level health conditions (maps to NodeHealthPayload.flags). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="35" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="35" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>NodeFaultCode</name>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" prot="public">
+          <name>NONE</name>
+          <initializer>= 0x00</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1ff9b4b08e327a30d2cfd75c03c1c437" prot="public">
+          <name>I2C_PERIPHERAL</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" prot="public">
+          <name>OVER_VOLTAGE</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" prot="public">
+          <name>UNDER_VOLTAGE</name>
+          <initializer>= 0x03</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" prot="public">
+          <name>SHORT_CIRCUIT</name>
+          <initializer>= 0x04</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" prot="public">
+          <name>HOST_LINK_LOST</name>
+          <initializer>= 0x05</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>HEALTH_n <computeroutput>faultId</computeroutput> dictionary (#163) — cross-node fault codes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Coarse, one active at a time on the wire; the exact device is logged locally on DiagSerial, not the frame. The client maps id → human label (SkyHawkClient#40). Each node type contributes the codes relevant to its fault sources; append as new sources appear. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="47" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="47" bodyend="55"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Neutral node-status contract for every <ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref> node (<ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>, <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>, PDU). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Owns the cross-node <bold>status API</bold> — not just health:<itemizedlist>
+<listitem><para>the <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS host-reporting contract (proto version, request address, message names) — <bold>the canonical source the client&apos;s <computeroutput>sync-a4ec.ts</computeroutput> parses</bold>;</para>
+</listitem><listitem><para><computeroutput>NodeHealthFlag</computeroutput> (HEALTH_n flag bits) and <computeroutput>NodeFaultCode</computeroutput> (the compact wire faultId dictionary the client maps to labels);</para>
+</listitem><listitem><para><computeroutput>FaultSource</computeroutput> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <computeroutput>FaultSource</computeroutput> is <emphasis>one piece</emphasis> of node status, not the whole story.</para>
+</listitem></itemizedlist>
+</para>
+<para>This is the neutral home for node-status vocabulary so it isn&apos;t shaped around any one node flavour (PanelGroup/OutputBase) or the HID namespace. <computeroutput>NodeHealthPayload</computeroutput> (the CAN HEALTH_n frame struct) stays in <computeroutput><ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref></computeroutput>; the fault <emphasis>detail</emphasis> strings stay local (DiagSerial), never on the wire. Header-only contract + a tiny <computeroutput>FaultSource</computeroutput> registry (<computeroutput><ref refid="NodeStatus_8cpp" kindref="compound">NodeStatus.cpp</ref></computeroutput>).</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_STATUS<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#86)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>reports<sp/>connected<sp/>nodes<sp/>+<sp/>health<sp/>to<sp/>the<sp/>host<sp/>over<sp/>DCS-BIOS.<sp/>Bump</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>NODE_STATUS_PROTO_VERSION<sp/>on<sp/>any<sp/>_NODE_STATUS<sp/>wire<sp/>change<sp/>so<sp/>the<sp/>client&apos;s<sp/>sync<sp/>fails<sp/>loudly.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Full<sp/>26-hex<sp/>field<sp/>decode:<sp/>FirmwarePlan/04-dcs-bios-integration.md.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="NodeStatus_8h_1a82b54ce9fac2a1c2716554b3294d7afd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_PROTO_VERSION<sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_REQ_ADDR<sp/><sp/><sp/><sp/><sp/><sp/>0x86FE<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>host→device<sp/>roster-request<sp/>export<sp/>address</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_STATUS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_END_MSG_NAME<sp/><sp/>&quot;_NODE_STATUS_END&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" kindref="member">NodeHealthFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" kindref="member">OVERHEAT</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>die<sp/>temp<sp/>&gt;=<sp/>NODE_OVERHEAT_C<sp/>(opt-in,<sp/>#213)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" kindref="member">DEGRADED</ref><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>FaultSource<sp/>reports<sp/>faultCode()<sp/>!=<sp/>NodeFaultCode::NONE<sp/>(#163)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NONE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1ff9b4b08e327a30d2cfd75c03c1c437" kindref="member">I2C_PERIPHERAL</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>an<sp/>I2C<sp/>device<sp/>(OLED/mux/expander)<sp/>tripped<sp/>its<sp/>I2cHealth<sp/>breaker</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" kindref="member">OVER_VOLTAGE</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>over-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kindref="member">UNDER_VOLTAGE</ref><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>under-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kindref="member">SHORT_CIRCUIT</ref><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>short<sp/>/<sp/>over-current<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" kindref="member">HOST_LINK_LOST</ref><sp/>=<sp/>0x05,<sp/><sp/></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>lost<sp/>the<sp/>host<sp/>serial<sp/>link</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x06–0xFF<sp/>reserved<sp/>for<sp/>future<sp/>fault<sp/>sources</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="classOpenSkyhawk_1_1FaultSource" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref><sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="76" refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" kindref="member">faultCode</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" kindref="member">faultDetail</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" kindref="member">FaultSource</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="88" refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" kindref="member">~FaultSource</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_next;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/NodeStatus/NodeStatus.h"/>
+  </compounddef>
+</doxygen>

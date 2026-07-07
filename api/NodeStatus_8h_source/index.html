@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d42/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/NodeStatus_8h_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>File NodeStatus.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#file-nodestatush" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              File NodeStatus.h
             
           </span>
         </div>
@@ -3867,64 +3867,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Types Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enum-ledcolor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum LedColor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum ParserState
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -3943,48 +3885,59 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-ledcolor"><strong>LedColor</strong></a>  <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-ledcolor">enum LedColor</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::LedColor {
-    NONE,
-    RED,
-    GREEN
-};
-</code></pre>
-<hr>
+<h1 id="file-nodestatush">File NodeStatus.h</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_9111f7d39b5fc785aa55dffe02a55e74/"><strong>NodeStatus</strong></a> <strong>&gt;</strong> <a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a></p>
+<p><a href="../NodeStatus_8h/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#pragma once
+#include &lt;stdint.h&gt;
 
-<h3 id="enum-parserstate">enum ParserState</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserState {
-    IDLE,
-    GOT_AA,
-    IN_FRAME
-};
-</code></pre>
-<hr>
+// ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────
+// PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump
+// NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.
+// Full 26-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
+#define NODE_STATUS_PROTO_VERSION 2
+#define NODE_STATUS_REQ_ADDR      0x86FE     // host→device roster-request export address
+#define NODE_STATUS_MSG_NAME      &quot;_NODE_STATUS&quot;
+#define NODE_STATUS_END_MSG_NAME  &quot;_NODE_STATUS_END&quot;
 
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+enum class NodeHealthFlag : uint8_t {
+    OVERHEAT = 0x01,  // die temp &gt;= NODE_OVERHEAT_C (opt-in, #213)
+    DEGRADED = 0x02,  // a FaultSource reports faultCode() != NodeFaultCode::NONE (#163)
+};
+
+enum class NodeFaultCode : uint8_t {
+    NONE           = 0x00,
+    I2C_PERIPHERAL = 0x01,  // an I2C device (OLED/mux/expander) tripped its I2cHealth breaker
+    OVER_VOLTAGE   = 0x02,  // rail over-voltage (PDU)
+    UNDER_VOLTAGE  = 0x03,  // rail under-voltage (PDU)
+    SHORT_CIRCUIT  = 0x04,  // rail short / over-current (PDU)
+    HOST_LINK_LOST = 0x05,  // PanelBridge lost the host serial link
+    // 0x06–0xFF reserved for future fault sources
+};
+
+namespace OpenSkyhawk {
+
+class FaultSource {
+public:
+    virtual NodeFaultCode faultCode() const { return NodeFaultCode::NONE; }
+
+    virtual const char* faultDetail() const { return &quot;&quot;; }
+
+    static FaultSource* head();
+    FaultSource* next() const;
+
+protected:
+    FaultSource();          
+    ~FaultSource() = default;  
+
+private:
+    static FaultSource* _head;
+    FaultSource* _next;
+};
+
+} // namespace OpenSkyhawk
+</code></pre>
 
 
 

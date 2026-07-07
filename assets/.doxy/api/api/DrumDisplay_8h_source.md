@@ -13,6 +13,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <PanelGroup.h>      // OutputBase
+#include <NodeStatus.h>      // FaultSource + NodeFaultCode (#163)
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
 #include <Helpers/I2cHealth/I2cHealth.h>
@@ -81,7 +82,7 @@ struct DrumReadout {
 
 // ── The output class ──────────────────────────────────────────────────────────
 
-class DrumDisplay : public OutputBase, public I2cHealth {
+class DrumDisplay : public OutputBase, public I2cHealth, public FaultSource {
 public:
     enum class Fault : uint8_t { None, Mux, Device };
 
@@ -103,6 +104,19 @@ public:
     void setFontSize(DrumFont font);
 
     void setOffset(float xOffsetMm, float yOffsetMm);
+
+    NodeFaultCode faultCode() const override {
+        return i2cHealthy() ? NodeFaultCode::NONE : NodeFaultCode::I2C_PERIPHERAL;
+    }
+
+    const char* faultDetail() const override {
+        if (i2cHealthy()) return "";
+        switch (_fault) {
+            case Fault::Mux:    return "I2C mux unreachable";
+            case Fault::Device: return "OLED not responding";
+            default:            return "I2C peripheral fault";
+        }
+    }
 
 #ifdef DRUMDISPLAY_TEST
     long    debugTarget() const     { return _target; }      

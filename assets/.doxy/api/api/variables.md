@@ -43,6 +43,12 @@
 * **MAX\_TX\_ATTEMPTS** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 
 
+## n
+
+* **NodeFaultCode** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NodeHealthFlag** ([**NodeStatus.h**](NodeStatus_8h.md))
+
+
 ## p
 
 * **PIN\_NC** ([**PinRef.cpp**](PinRef_8cpp.md), [**PinRef.h**](PinRef_8h.md))

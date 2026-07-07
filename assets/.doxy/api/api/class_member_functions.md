@@ -49,8 +49,11 @@
 ## f
 
 * **forceReport** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md))
+* **faultCode** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md))
+* **faultDetail** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md))
 * **fitGeometry** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **fontPtr** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
+* **FaultSource** ([**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md))
 * **flushNow** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 
 
@@ -61,8 +64,8 @@
 
 ## h
 
+* **head** ([**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md), [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
 * **HIDAxis** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md))
-* **head** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
 * **HIDButton** ([**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md))
 * **HIDHatSwitch** ([**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md))
 * **home** ([**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
@@ -97,7 +100,7 @@
 
 ## n
 
-* **next** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
+* **next** ([**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md), [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md), [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md), [**OpenSkyhawk::HIDHatSwitch**](classOpenSkyhawk_1_1HIDHatSwitch.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md))
 * **NeedleGauge** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **noteInput** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **noteOutput** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
@@ -181,6 +184,7 @@
 
 ## ~
 
+* **~FaultSource** ([**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md))
 * **~I2cHealth** ([**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md))
 * **~MotorDriver** ([**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md))
 

@@ -14,7 +14,7 @@ _Rolling-drum OLED readout. One instance == one OLED panel._ [More...](#detailed
 
 
 
-Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md),  [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
+Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md),  [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md),  [OpenSkyhawk::FaultSource](classOpenSkyhawk_1_1FaultSource.md)
 
 
 
@@ -94,6 +94,26 @@ Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1Ou
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Public Functions
 
 | Type | Name |
@@ -101,6 +121,8 @@ Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1Ou
 |   | [**DrumDisplay**](#function-drumdisplay-12) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a direct-bus drum display._  |
 |   | [**DrumDisplay**](#function-drumdisplay-22) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md) & mux, uint8\_t channel, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a muxed drum display (one TCA9548A branch)._  |
 | virtual void | [**configure**](#function-configure) () override<br>_Compute pixel geometry from the panel + descriptor, set the font, blank the panel._  |
+| virtual [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) | [**faultCode**](#function-faultcode) () override const<br>[_**FaultSource**_](classOpenSkyhawk_1_1FaultSource.md) _: I2C\_PERIPHERAL when the_[_**I2cHealth**_](classOpenSkyhawk_1_1I2cHealth.md) _breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH\_n.faultId._ |
+| virtual const char \* | [**faultDetail**](#function-faultdetail) () override const<br>_DiagSerial-only fault detail (#163): which I2C hop failed the last probe._  |
 | virtual void | [**onControlPacket**](#function-oncontrolpacket) (uint16\_t controlId, uint16\_t value) override<br>_Decode one CTRL\_BCAST packet into this readout's digits/flag. Never draws._  |
 |  void | [**setFontSize**](#function-setfontsize) ([**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font) <br>_Change glyph size at runtime (e.g. swap a cramped 6-digit readout to SMALL)._  |
 |  void | [**setOffset**](#function-setoffset) (float xOffsetMm, float yOffsetMm) <br>_Re-register the digit block to the faceplate window at runtime._  |
@@ -128,6 +150,17 @@ See [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
 |  bool | [**i2cHealthy**](classOpenSkyhawk_1_1I2cHealth.md#function-i2chealthy) () const<br>_Breaker state — true while the device last probed reachable._  |
 
 
+## Public Functions inherited from OpenSkyhawk::FaultSource
+
+See [OpenSkyhawk::FaultSource](classOpenSkyhawk_1_1FaultSource.md)
+
+| Type | Name |
+| ---: | :--- |
+| virtual [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) | [**faultCode**](classOpenSkyhawk_1_1FaultSource.md#function-faultcode) () const<br>_Current fault code (_ NodeFaultCode::NONE _when healthy). Cheap/const, cached state only._ |
+| virtual const char \* | [**faultDetail**](classOpenSkyhawk_1_1FaultSource.md#function-faultdetail) () const<br>_Human-readable fault detail for the local DiagSerial tap only — never on the wire._  |
+|  [**FaultSource**](classOpenSkyhawk_1_1FaultSource.md) \* | [**next**](classOpenSkyhawk_1_1FaultSource.md#function-next) () const<br>_Next fault source; nullptr at end._  |
+
+
 
 
 ## Public Static Functions inherited from OpenSkyhawk::OutputBase
@@ -137,6 +170,21 @@ See [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1OutputBase.md)
 | Type | Name |
 | ---: | :--- |
 |  [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) \* | [**head**](classOpenSkyhawk_1_1OutputBase.md#function-head) () <br>_Head of the self-registered linked list._  |
+
+
+
+
+## Public Static Functions inherited from OpenSkyhawk::FaultSource
+
+See [OpenSkyhawk::FaultSource](classOpenSkyhawk_1_1FaultSource.md)
+
+| Type | Name |
+| ---: | :--- |
+|  [**FaultSource**](classOpenSkyhawk_1_1FaultSource.md) \* | [**head**](classOpenSkyhawk_1_1FaultSource.md#function-head) () <br>_Head of the self-registered fault-source list._  |
+
+
+
+
 
 
 
@@ -208,6 +256,20 @@ See [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Protected Functions
 
 | Type | Name |
@@ -233,6 +295,18 @@ See [OpenSkyhawk::I2cHealth](classOpenSkyhawk_1_1I2cHealth.md)
 | virtual bool | [**i2cProbe**](classOpenSkyhawk_1_1I2cHealth.md#function-i2cprobe) () = 0<br>_Contract: probe this device's reachability (e.g. the mux ACKs_ _and_ _the device ACKs)._ |
 |  bool | [**i2cReachable**](classOpenSkyhawk_1_1I2cHealth.md#function-i2creachable) () <br>_Gate for every I2C op. Rate-limits the probe while tripped; trips/heals on the result._  |
 |   | [**~I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md#function-i2chealth) () = default<br> |
+
+
+## Protected Functions inherited from OpenSkyhawk::FaultSource
+
+See [OpenSkyhawk::FaultSource](classOpenSkyhawk_1_1FaultSource.md)
+
+| Type | Name |
+| ---: | :--- |
+|   | [**FaultSource**](classOpenSkyhawk_1_1FaultSource.md#function-faultsource) () <br>_Registers this instance into the list._  |
+|   | [**~FaultSource**](classOpenSkyhawk_1_1FaultSource.md#function-faultsource) () = default<br>_Protected, non-virtual: a base/mixin, never deleted through this type._  |
+
+
 
 
 
@@ -382,6 +456,38 @@ Called once by [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) 
 
         
 Implements [*OpenSkyhawk::OutputBase::configure*](classOpenSkyhawk_1_1OutputBase.md#function-configure)
+
+
+<hr>
+
+
+
+### function faultCode 
+
+[_**FaultSource**_](classOpenSkyhawk_1_1FaultSource.md) _: I2C\_PERIPHERAL when the_[_**I2cHealth**_](classOpenSkyhawk_1_1I2cHealth.md) _breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH\_n.faultId._
+```C++
+inline virtual NodeFaultCode OpenSkyhawk::DrumDisplay::faultCode () override const
+```
+
+
+
+Implements [*OpenSkyhawk::FaultSource::faultCode*](classOpenSkyhawk_1_1FaultSource.md#function-faultcode)
+
+
+<hr>
+
+
+
+### function faultDetail 
+
+_DiagSerial-only fault detail (#163): which I2C hop failed the last probe._ 
+```C++
+inline virtual const char * OpenSkyhawk::DrumDisplay::faultDetail () override const
+```
+
+
+
+Implements [*OpenSkyhawk::FaultSource::faultDetail*](classOpenSkyhawk_1_1FaultSource.md#function-faultdetail)
 
 
 <hr>

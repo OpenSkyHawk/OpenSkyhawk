@@ -18,6 +18,9 @@ Here is a list of all files with brief descriptions:
             * **file** [**DrumDisplay.h**](DrumDisplay_8h.md) _Rolling mechanical-drum OLED readout output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
         * **dir** [**HIDControls**](dir_8de7ffd664ed88ad14416481a318893f.md)     
             * **file** [**HIDControls.h**](HIDControls_8h.md) _CAN controlId constants for HID axes and buttons._     
+        * **dir** [**NodeStatus**](dir_9111f7d39b5fc785aa55dffe02a55e74.md)     
+            * **file** [**NodeStatus.cpp**](NodeStatus_8cpp.md)     
+            * **file** [**NodeStatus.h**](NodeStatus_8h.md) _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _node (_[_**PanelGroup**_](namespacePanelGroup.md) _,_[_**PanelBridge**_](namespacePanelBridge.md) _, PDU)._    
         * **dir** [**PanelBridge**](dir_f592a3c441b32532ba8eb6b28add2a90.md)     
             * **file** [**PanelBridge.cpp**](PanelBridge_8cpp.md)     
             * **file** [**PanelBridge.h**](PanelBridge_8h.md) _STM32 CAN master and DCS-BIOS processing node for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _._    

@@ -13,9 +13,9 @@
 * `#include <DcsBios.h>`
 * `#include "PanelBridge.h"`
 * `#include <CANProtocol.h>`
+* `#include <NodeStatus.h>`
 * `#include <STM32Board.h>`
 * `#include <A4EC_InputMap.h>`
-* `#include <HIDControls.h>`
 * `#include <string.h>`
 
 
