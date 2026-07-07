@@ -229,6 +229,16 @@ namespace STM32Board {
      */
     uint16_t readVddMv();
 
+    /**
+     * @brief Edge-log a node's aggregated fault transition to DiagSerial (#163).
+     *
+     * Prints `[<tag>] degraded: <detail> (fault N)` / `[<tag>] recovered` on a change only,
+     * isDebug()-gated. Shared by every node's health-TX loop (PanelGroup "NODE", PanelBridge
+     * "BRIDGE", future PDU) — one static prev-fault, correct because a binary has ONE node
+     * identity. Detail strings stay local (never on the CAN wire).
+     */
+    void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail);
+
     static constexpr uint8_t PIN_LED_RED   = PB14;  ///< Red LED pin — same on all STM32 boards
     static constexpr uint8_t PIN_LED_GREEN = PB15;  ///< Green LED pin — same on all STM32 boards
 
@@ -439,4 +449,5 @@ No `#ifdef DEBUG` guards — zero runtime cost when disabled.
 | STM32duino Arduino core | PlatformIO `framework = arduino` | `millis()`, `pinMode()`, `digitalWrite()`, `Serial1` |
 | STM32duino HAL CAN | STM32duino Arduino core | Direct `CAN_HandleTypeDef` / `HAL_CAN_Init` — no wrapper library needed |
 | `CanStatus` enum | `CANProtocol.h` | Owned by CANProtocol; forward-declared in `STM32Board.h`, included by `STM32Board.cpp` for value mapping |
+| `NodeFaultCode` enum | `NodeStatus.h` | Included by `STM32Board.h` for the `logNodeFaultEdge()` signature (#163); NodeStatus is a leaf lib |
 | `NODE_ID` define | `platformio.ini` `build_flags` | Must be present; compile fails otherwise |

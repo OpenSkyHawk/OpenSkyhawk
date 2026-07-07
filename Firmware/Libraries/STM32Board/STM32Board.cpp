@@ -244,6 +244,20 @@ int8_t readDieTempC() {
 #endif
 }
 
+void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail) {
+    static NodeFaultCode _prevFault = NodeFaultCode::NONE;
+    if (fault != _prevFault && _debugOn) {
+        auto& d = diagSerial();
+        if (fault != NodeFaultCode::NONE) {
+            d.print('['); d.print(tag); d.print(F("] degraded: ")); d.print(detail);
+            d.print(F(" (fault ")); d.print((int)(uint8_t)fault); d.println(')');
+        } else {
+            d.print('['); d.print(tag); d.println(F("] recovered"));
+        }
+    }
+    _prevFault = fault;
+}
+
 #ifdef STM32BOARD_TEST
 LedState currentState() { return _state; }
 #endif

@@ -400,20 +400,7 @@ void loop() {
             NODE_ID, STM32Board::readDieTempC(), fault);
         CANProtocol::send(canIdHealth(NODE_ID),
                           reinterpret_cast<const uint8_t*>(&h), sizeof(h));
-
-        // Edge-log the node's fault transition to DiagSerial (detail strings stay local, never
-        // on the wire). Per-node state — one _prevFault, not per source.
-        static NodeFaultCode _prevFault = NodeFaultCode::NONE;
-        if (fault != _prevFault && STM32Board::isDebug()) {
-            auto& d = STM32Board::diagSerial();
-            if (fault != NodeFaultCode::NONE) {
-                d.print(F("[NODE] degraded: ")); d.print(faultDetail);
-                d.print(F(" (fault ")); d.print((int)(uint8_t)fault); d.println(F(")"));
-            } else {
-                d.println(F("[NODE] recovered"));
-            }
-        }
-        _prevFault = fault;
+        STM32Board::logNodeFaultEdge("NODE", fault, faultDetail);  // edge-log, DiagSerial only (#163)
 #ifdef NODE_OVERHEAT_C
         // Raise-only: don't clear here or we'd stomp the master-loss WARNING latch.
         if (h.flags & (uint8_t)NodeHealthFlag::OVERHEAT) STM32Board::setWarning(true);  // overheat → WARNING

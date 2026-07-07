@@ -464,18 +464,7 @@ void loop() {
         NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
             0, STM32Board::readDieTempC(), fault);
         CANProtocol::send(canIdHealth(0), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
-
-        static NodeFaultCode _prevFault = NodeFaultCode::NONE;
-        if (fault != _prevFault && STM32Board::isDebug()) {
-            auto& d = STM32Board::diagSerial();
-            if (fault != NodeFaultCode::NONE) {
-                d.print(F("[BRIDGE] degraded: ")); d.print(faultDetail);
-                d.print(F(" (fault ")); d.print((int)(uint8_t)fault); d.println(F(")"));
-            } else {
-                d.println(F("[BRIDGE] recovered"));
-            }
-        }
-        _prevFault = fault;
+        STM32Board::logNodeFaultEdge("BRIDGE", fault, faultDetail);  // edge-log, DiagSerial only (#163)
     }
 #endif
 

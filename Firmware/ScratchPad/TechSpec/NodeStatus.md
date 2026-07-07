@@ -83,9 +83,10 @@ typed `NodeFaultCode`; the cast to `uint8_t` happens only at the CAN/DCS-BIOS pa
 **registry iteration order, which is REVERSE construction order** — the intrusive list pushes new
 sources at `head()`, so the *last-constructed* source is visited first. One fault is on the wire at
 a time; multi-fault priority is a later concern. Each node's health-TX calls it, packs the result
-into `HEALTH_n` (via `makeNodeHealthPayload`, which derives DEGRADED), and **edge-logs**
-`faultDetail()` to its own DiagSerial on fault change. **Degraded drives no status-LED** — frame +
-DiagSerial only (WARNING-latch arbitration deferred).
+into `HEALTH_n` (via `makeNodeHealthPayload`, which derives DEGRADED), and edge-logs `faultDetail()`
+via the shared `STM32Board::logNodeFaultEdge(tag, fault, detail)` helper (one prev-fault static;
+DiagSerial only, on change). **Degraded drives no status-LED** — frame + DiagSerial only
+(WARNING-latch arbitration deferred).
 
 **Model (D14):** fault sources feed a node-level aggregator; no producer "owns" node health.
 `DrumDisplay` is *one* `FaultSource` (I2C); a PDU rail monitor and a PanelBridge host-link watchdog
