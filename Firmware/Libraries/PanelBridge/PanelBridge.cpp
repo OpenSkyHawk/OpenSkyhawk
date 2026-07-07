@@ -350,7 +350,11 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
 static void checkNodeTimeouts(uint32_t now) {
     for (uint8_t i = 0; i < MAX_NODE_ID; i++) {
         if (!_nodes[i].alive) continue;
-        if (now - _nodes[i].lastSeenMs > HB_TIMEOUT_MS) {
+        // Signed elapsed: if `now` is (slightly) behind lastSeenMs — e.g. a millisecond ticked
+        // between sampling `now` and onCanRx stamping lastSeenMs during the same loop — the unsigned
+        // difference would wrap to ~4.29e9 and trip a false timeout. Cast to signed so a small
+        // negative reads as "not yet elapsed", not "long overdue" (#225).
+        if ((int32_t)(now - _nodes[i].lastSeenMs) > (int32_t)HB_TIMEOUT_MS) {
             _nodes[i].alive = false;
             uint8_t nodeId  = i + 1;
             if (STM32Board::isDebug()) {
@@ -439,9 +443,14 @@ void setup() {
 }
 
 void loop() {
-    uint32_t now = millis();
     STM32Board::tick();
     CANProtocol::drain();
+    // Sample `now` AFTER draining CAN RX. onCanRx (called from drain) stamps each node's
+    // lastSeenMs with its own millis(); if `now` were sampled before drain, a millisecond ticking
+    // over during drain leaves now < lastSeenMs, and the unsigned `now - lastSeenMs` in
+    // checkNodeTimeouts underflows to ~4.29e9 > HB_TIMEOUT_MS — a false one-loop "dead" flap on a
+    // node that is transmitting normally (#225).
+    uint32_t now = millis();
     checkNodeTimeouts(now);
 
     // Master heartbeat (HB_0) every 500 ms. Unlike CTRL_BCAST (which only moves when a
