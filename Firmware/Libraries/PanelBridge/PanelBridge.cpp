@@ -21,10 +21,10 @@ namespace DcsBios {
 #ifdef ARDUINO_ARCH_STM32
 
 #include "PanelBridge.h"
-#include <CANProtocol.h>
+#include <CANProtocol.h>   // CAN types + NodeHealthPayload
+#include <NodeStatus.h>    // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <STM32Board.h>
 #include <A4EC_InputMap.h>
-#include <HIDControls.h>   // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <string.h>
 
 namespace {
@@ -44,8 +44,8 @@ struct NodeState {
     // Cached NodeHealthPayload fields from the node's last HEALTH_n frame (#221 contract):
     int8_t   dieTempC    = INT8_MIN; // internal die temp °C (INT8_MIN = unseen) — #213
     uint8_t  healthFlags = 0;        // overheat (#213) / degraded (#163) bits
-    uint8_t  faultMask   = 0;        // tripped-peripheral bitmap — #163
-    uint8_t  faultId     = 0;        // fault detail / device id — #163
+    uint8_t  faultMask   = 0;        // fault source/domain bitmap — reserved #163
+    uint8_t  faultId     = 0;        // NodeFaultCode (NodeStatus.h) — #163
 #endif
 };
 
@@ -60,7 +60,7 @@ static uint32_t       _lastHealthMs       = 0;    // millis() of last HEALTH_0 t
 // ── Node-status reporting (#86) ──────────────────────────────────────────────
 // Surface node presence + health to the host (OpenSkyhawk Client) as DCS-BIOS
 // command messages on a reserved control name. Owned entirely by PanelBridge;
-// SimGateway relays the ASCII verbatim. See HIDControls.h for the wire format.
+// SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.
 
 // Emit one node's status (proto v2, 26 hex chars):
 //   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId>
@@ -267,7 +267,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         return;
     }
 
-    // HEALTH_1 – HEALTH_63: cache internal die temp + Vdd for host reporting (#213).
+    // HEALTH_1 – HEALTH_63: cache internal die temp + health/fault fields for host reporting (#213).
     // Cache only — HB owns liveness/SYNC, so a health frame never triggers markNodeAlive.
     if (canId >= canIdHealth(1) && canId <= canIdHealth(MAX_NODE_ID)) {
 #ifdef PANELBRIDGE_NODE_STATUS
@@ -453,7 +453,7 @@ void loop() {
     }
 
     // Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal
-    // die temp + Vdd alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0 disables).
+    // die temp alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0 disables).
 #if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
     if (now - _lastHealthMs >= 1000) {
         _lastHealthMs = now;

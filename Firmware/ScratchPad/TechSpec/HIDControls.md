@@ -12,7 +12,10 @@ Header-only library defining CTRL_* controlId constants for all HID axes and but
 Shared between STM32 (via CANProtocol) and RP2040 (SimGateway sketches).
 
 Contains only `#define` constants — no classes, no functions, no state. Not a compile
-unit; `library.json` marks it as header-only with no platform restriction.
+unit; `library.json` marks it as header-only with no platform restriction. The node-status
+host contract + fault vocabulary (`NODE_STATUS_*`, `NodeHealthFlag`, `NodeFaultCode`,
+`FaultSource`) live in the neutral `NodeStatus` library (see `NodeStatus.md`), not here — this
+header is HID controlId constants only.
 
 ---
 
@@ -84,6 +87,10 @@ HIDControls contains only compile-time constants. Correctness is verified indire
 next unused value in the axis (0x0010–0x001F), hat (0x0020–0x002F), or button
 (0x0030–0x00AF) range. Update
 `HIDAxis` or `HIDButton` declarations in the relevant sketch.
+
+> The node-status host contract (`NODE_STATUS_*`) and the `NodeFaultCode` fault vocabulary are
+> **not** here — they live in the neutral `NodeStatus` library (`NodeStatus.md`). This header is
+> HID controlId constants only.
 
 ---
 

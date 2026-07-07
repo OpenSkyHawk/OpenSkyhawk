@@ -27,6 +27,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <PanelGroup.h>      // OutputBase
+#include <NodeStatus.h>      // FaultSource + NodeFaultCode (#163)
 #include <U8g2lib.h>
 #include <Helpers/I2cMux/I2cMux.h>
 #include <Helpers/I2cHealth/I2cHealth.h>
@@ -145,7 +146,7 @@ struct DrumReadout {
  * only decodes + flags dirty (cheap); update() does the ~60 fps gate, channel reselect,
  * ease+snap, render, and the single expensive sendBuffer().
  */
-class DrumDisplay : public OutputBase, public I2cHealth {
+class DrumDisplay : public OutputBase, public I2cHealth, public FaultSource {
 public:
     /** @brief Which I2C hop failed the last reachability probe (feeds node health reporting, #163). */
     enum class Fault : uint8_t { None, Mux, Device };
@@ -223,6 +224,24 @@ public:
      *       nudge is sub-pixel and may not move. The 1.3" 128x64 (~0.23 mm/px) is the coarser panel.
      */
     void setOffset(float xOffsetMm, float yOffsetMm);
+
+    /**
+     * @brief FaultSource: I2C_PERIPHERAL when the I2cHealth breaker is tripped, else NONE (#163).
+     *        Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH_n.faultId.
+     */
+    NodeFaultCode faultCode() const override {
+        return i2cHealthy() ? NodeFaultCode::NONE : NodeFaultCode::I2C_PERIPHERAL;
+    }
+
+    /** @brief DiagSerial-only fault detail (#163): which I2C hop failed the last probe. */
+    const char* faultDetail() const override {
+        if (i2cHealthy()) return "";
+        switch (_fault) {
+            case Fault::Mux:    return "I2C mux unreachable";
+            case Fault::Device: return "OLED not responding";
+            default:            return "I2C peripheral fault";
+        }
+    }
 
 #ifdef DRUMDISPLAY_TEST
     long    debugTarget() const     { return _target; }      ///< test-only: decoded combined number

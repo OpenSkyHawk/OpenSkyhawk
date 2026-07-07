@@ -256,6 +256,10 @@ public:
      */
     virtual void update() {}
 
+    // Node-health faults are NOT an OutputBase concern (#163). An output that can fault also
+    // inherits OpenSkyhawk::FaultSource (NodeStatus.h) and self-registers there; the node
+    // aggregator walks FaultSource::head() independently of the output list. See DrumDisplay.
+
     static OutputBase* head();  ///< Head of the registered output linked list.
     OutputBase*        next() const;  ///< Next output; nullptr at end.
 

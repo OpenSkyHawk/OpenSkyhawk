@@ -233,4 +233,35 @@ telemetry with no trip point. The frame is the shared node-health contract (#221
   `HEALTH_0` already represents that board's thermal zone — a second sensor there is redundant.
 
 **Affects:** `02-can-protocol.md`, `08-hardware-firmware-contracts.md`, `docs/_source/hardware-standards.md`,
-`HIDControls.h` (`_NODE_STATUS` proto v2), SkyHawkClient (host surfacing).
+`NodeStatus.h` (`_NODE_STATUS` proto v2 + `NodeFaultCode`), SkyHawkClient (host surfacing).
+
+---
+
+## D14 — Node status/fault: a neutral NodeStatus library + FaultSource registry (#163)
+
+**Decision:** the cross-node **status** contract lives in a neutral `NodeStatus` library —
+`NODE_STATUS_*` (the DCS-BIOS host-reporting contract), `NodeHealthFlag` (HEALTH_n flag bits),
+`NodeFaultCode` (the wire faultId dictionary), and `FaultSource` (the interface a fault-producing
+object implements). A fault-producing object (e.g. `DrumDisplay`, a future PDU rail monitor, a
+PanelBridge host-link watchdog) **inherits `FaultSource`** and self-registers. A node-level
+aggregator (per node type, → PR-3) walks `FaultSource::head()`, decides DEGRADED, picks the primary
+`NodeFaultCode` for `HEALTH_n.faultId`, and logs `faultDetail()` to **DiagSerial only**.
+`NodeHealthPayload` (the CAN frame struct) stays in `CANProtocol.h`.
+
+**Rationale:**
+- *It's node **status**, not just health, and every node type has it* — PanelGroup, PanelBridge,
+  and the PDU (#202) are all nodes. The vocabulary can't be shaped around one flavor (`PanelGroup`/
+  `OutputBase`) or the HID namespace, and it's broader than "health" (it owns the `_NODE_STATUS`
+  reporting layer). A neutral `NodeStatus` library every node depends on is the right home; the
+  client syncs the whole contract from one place.
+- *Fault sources feed a node aggregator; no producer "owns" node health.* `DrumDisplay` is **one**
+  fault source ("I2C peripheral fault"), not special. A PDU reports over/under-voltage/short; a
+  bridge reports host-link-lost. Modeling each as a `FaultSource` (self-registering, reporting
+  cached `faultCode()` + local `faultDetail()`) keeps output/monitor classes decoupled and lets the
+  fault vocabulary grow per node type. `OutputBase` gains **no** fault API.
+- *Coarse, one-at-a-time faultId on the wire; device-detail strings stay local (DiagSerial), never
+  over CAN and never in a shared/HID header.*
+
+**Affects:** `NodeStatus.md` (new lib), `02-can-protocol.md`, `04-dcs-bios-integration.md`,
+`05-panelgroup-api.md` (`OutputBase` has no fault API), `CANProtocol.h` (keeps `NodeHealthPayload`),
+`DrumDisplay` (a `FaultSource`), SkyHawkClient#40 (fault-label table).

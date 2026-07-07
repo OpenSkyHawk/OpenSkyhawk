@@ -147,9 +147,9 @@ Vrefint internally to reference Vsense to Vdd — Vdd itself is not transmitted)
 struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  nodeId;     // 0:   node ID (redundant with CAN ID, aids logging)
     int8_t   dieTempC;   // 1:   internal die temp, whole °C (INT8_MIN = unavailable)  — #213
-    uint8_t  flags;      // 2:   bit0=overheat (opt-in); bit1=degraded                  — #213/#163
-    uint8_t  faultMask;  // 3:   tripped-peripheral bitmap — reserved for #163 (0 until populated)
-    uint8_t  faultId;    // 4:   fault detail / device id  — reserved for #163 (0 until populated)
+    uint8_t  flags;      // 2:   NodeHealthFlag bits (NodeStatus.h): OVERHEAT, DEGRADED           — #213/#163
+    uint8_t  faultMask;  // 3:   fault source/domain bitmap — reserved for #163 (0 until populated)
+    uint8_t  faultId;    // 4:   NodeFaultCode (NodeStatus.h) — reserved for #163 (0 until populated)
     uint8_t  rsvd[3];    // 5–7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
 };
 ```
@@ -157,8 +157,8 @@ struct __attribute__((packed)) NodeHealthPayload {
 This is the **shared node-health wire contract**. Distinct features populate their own fields
 within the fixed 8 bytes and never collide: temperature (#213) owns `dieTempC` / `flags` bit0;
 the degraded-state feature (#163) owns `flags` bit1 / `faultMask` / `faultId`, which transmit 0
-until that lands. `faultId` is an index into a client-side lookup table — no fault strings on
-the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
+until that lands. `faultId` is a `NodeFaultCode` (NodeStatus.h) the client maps to a label — no
+fault strings on the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
 telemetry (#202, real INA226 sensors per console), not generic per-node health; the reserved
 bytes are for future *generic* health fields (reset cause, free RAM, I2C error count).
 

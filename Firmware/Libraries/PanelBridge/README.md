@@ -95,7 +95,7 @@ health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway u
 - **Request:** the client writes a DCS-BIOS export to the reserved address `0x86FE`
   (`NODE_STATUS_REQ_ADDR`); a dedicated `ExportStreamListener` replies with the full roster.
 
-Reserved IDs live in `HIDControls.h`. See `FirmwarePlan/04-dcs-bios-integration.md`.
+Reserved IDs live in `NodeStatus.h`. See `FirmwarePlan/04-dcs-bios-integration.md`.
 
 ## DiagSerial test sequence
 

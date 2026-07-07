@@ -284,6 +284,10 @@ static constexpr uint16_t CTRL_ID_HID_MAX  = 0x00FF;  ///< HID range end
 static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  ///< DCS-BIOS range start
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  ///< DCS-BIOS range end
 
+// Node-status host contract + fault vocabulary (NODE_STATUS_*, NodeHealthFlag, NodeFaultCode,
+// FaultSource) live in the neutral `NodeStatus` library (see NodeStatus.md), not here.
+// CANProtocol owns only NodeHealthPayload (the CAN HEALTH_n frame struct).
+
 // ── HID axis/button controlIds — from HIDControls.h (included above) ────────
 // CANProtocol.h includes <HIDControls.h>; CTRL_* constants are available to any
 // STM32 sketch that includes <CANProtocol.h> without a separate include.

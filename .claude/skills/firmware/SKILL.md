@@ -65,6 +65,28 @@ committed code under `Firmware/Libraries/`.
   `[env_base]` section, and one `build_src_filter` per scenario. See `TechSpec/README.md`.
 - **Implementation order (dependencies flow down):** HIDControls → A4EC → CANProtocol →
   STM32Board → PanelBridge / SimGateway → PanelGroup (PinRef → PanelGroup → Inputs/Outputs).
+- **Header ownership — keep shared headers single-purpose.** `HIDControls.h` is **HID controlId
+  constants only**; `CANProtocol.h` owns CAN frame transport (incl. `NodeHealthPayload`). The
+  cross-node **status** contract — `NODE_STATUS_*` (DCS-BIOS reporting), `NodeHealthFlag`,
+  `NodeFaultCode`, and `FaultSource` — lives in the neutral **`NodeStatus`** library, because every
+  node type shares it (PanelGroup, PanelBridge, PDU) and it's broader than "health." Never shape a
+  cross-node contract around one flavor (`PanelGroup.h`/`OutputBase`) or the HID namespace (D14).
+- **Fault sources feed a node aggregator; no producer owns node health.** A fault-producing object
+  (`DrumDisplay`, a PDU rail monitor, a PanelBridge host-link watchdog) **inherits
+  `OpenSkyhawk::FaultSource`** (`NodeStatus.h`), self-registers, and reports *cached* `faultCode()`
+  (a `NodeFaultCode`) + local `faultDetail()` (DiagSerial-only string, never on the wire). The
+  node-level aggregator walks `FaultSource::head()` → sets `HEALTH_n.faultId` + DEGRADED. `OutputBase`
+  gets **no** fault API — an output is just one possible fault source, not special.
+- **Includes: direct for what you use, but don't couple upward.** Prefer a direct `#include` of a
+  symbol's defining header over relying on a fragile transitive path — **but** if adding that
+  include would drag a low-level/UI class into a heavier or conceptually-wrong layer, that's a
+  signal the symbol is placed wrong (see the two rules above), not that you should hide it behind a
+  transitive include. Don't add an include already reliably provided by a header the file *must*
+  include anyway.
+- **Spec-sync in the same PR.** Any change to a public firmware API — struct/enum, class method,
+  wire format, `#define` contract — updates the authoritative `FirmwarePlan/` + `TechSpec/` doc in
+  the **same PR**, listed as a deliverable and self-checked before push. The spec is source of
+  truth; drift defeats it. Grep the old value/claim before pushing.
 - **Toolchain:** PlatformIO. STM32 = `platform = ststm32`, `framework = arduino`. RP2040 =
   `earlephilhower` core with `-DUSE_TINYUSB`.
 - **C++ standard:** any project using `DrumDisplay` needs `-std=gnu++20` +

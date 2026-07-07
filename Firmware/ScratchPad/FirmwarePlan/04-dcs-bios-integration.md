@@ -48,8 +48,9 @@ The last four fields come from the node's `HEALTH_n` frame (see `02-can-protocol
 - `dieTempC`: int8 two's-complement whole °C (internal MCU sensor — UNCALIBRATED, die not ambient).
   `80` = `INT8_MIN` = not-yet-seen → render unknown.
 - `hFlags`: node health bits — bit0 overheat, bit1 degraded.
-- `faultMask` / `faultId`: tripped-peripheral bitmap + detail id — `00` until the degraded feature
-  (#163) populates them; `faultId` is an index into a client-side lookup table (no strings on the wire).
+- `faultMask` / `faultId`: fault source/domain bitmap + `NodeFaultCode` — `00` until the degraded
+  feature (#163) populates them; `faultId` is a `NodeFaultCode` the client maps to a label (no strings
+  on the wire).
 
 **Emission semantics:**
 - A single bare `_NODE_STATUS` is a **live delta** — emitted on each node alive/dead transition
@@ -62,7 +63,7 @@ The last four fields come from the node's `HEALTH_n` frame (see `02-can-protocol
   delta lost on the wire.
 
 Both directions ride the serial/CDC, so this works in the client's **Bridge mode only** (no
-serial in Monitor/Replay). Reserved constants + the wire format live in `HIDControls.h` (the
+serial in Monitor/Replay). Reserved constants + the wire format live in `NodeStatus.h` (the
 canonical contract source the client syncs against; `NODE_STATUS_PROTO_VERSION` bumps on any wire
 change). The whole feature is gated behind `-DPANELBRIDGE_NODE_STATUS` (default off).
 
