@@ -65,7 +65,8 @@ static uint32_t       _lastHealthMs       = 0;    // millis() of last HEALTH_0 t
 // Emit one node's status (proto v2, 26 hex chars):
 //   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId>
 // The last four come from the node's HEALTH_n frame (#221 contract). dieTempC 80 = not-yet-seen;
-// hFlags/faultMask/faultId are 0 until the degraded feature (#163) populates them.
+// hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163); faultMask stays 0
+// (reserved for future fault-domain bits).
 static void emitNode(uint8_t nodeId, bool present) {
     const NodeState& ns = _nodes[nodeId - 1];
     const HeartbeatPayload& hb = ns.last;
@@ -452,14 +453,29 @@ void loop() {
         CANProtocol::send(canIdHb(0), reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
     }
 
-    // Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal
-    // die temp alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0 disables).
+    // Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal die temp
+    // + aggregated node fault alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0).
+    // The bridge is a node too; its own FaultSources (e.g. a future host-link watchdog) roll up here.
 #if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
     if (now - _lastHealthMs >= 1000) {
         _lastHealthMs = now;
+        const char* faultDetail = nullptr;   // never null after aggregateFaults()
+        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
         NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
-            0, STM32Board::readDieTempC());
+            0, STM32Board::readDieTempC(), fault);
         CANProtocol::send(canIdHealth(0), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
+
+        static NodeFaultCode _prevFault = NodeFaultCode::NONE;
+        if (fault != _prevFault && STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            if (fault != NodeFaultCode::NONE) {
+                d.print(F("[BRIDGE] degraded: ")); d.print(faultDetail);
+                d.print(F(" (fault ")); d.print((int)(uint8_t)fault); d.println(F(")"));
+            } else {
+                d.println(F("[BRIDGE] recovered"));
+            }
+        }
+        _prevFault = fault;
     }
 #endif
 

@@ -92,4 +92,22 @@ private:
     FaultSource* _next;
 };
 
+/**
+ * @brief Roll up the registered fault sources into a single node fault code (#163).
+ *
+ * Walks `FaultSource::head()` and returns the **first** source reporting a non-`NONE`
+ * `faultCode()`; if `detailOut` is non-null it is set to that source's `faultDetail()`. Returns
+ * `NodeFaultCode::NONE` when every source is healthy. `*detailOut` is **always** a non-null string
+ * (`""` when healthy or a source returns null) — callers never null-check.
+ *
+ * @note Iteration is **registry order = reverse construction order** (the intrusive list pushes at
+ *       head), so the last-constructed fault source has priority. With one active fault at a time
+ *       on the wire this rarely matters; a node with concurrent faults reports the head-most.
+ * @note Cheap/const — sources report cached state only. Called on the periodic health path.
+ *
+ * @param detailOut  Optional out-param for the local DiagSerial detail string (never null on return).
+ * @return           The primary NodeFaultCode, or NONE if no source is faulted.
+ */
+NodeFaultCode aggregateFaults(const char** detailOut = nullptr);
+
 } // namespace OpenSkyhawk

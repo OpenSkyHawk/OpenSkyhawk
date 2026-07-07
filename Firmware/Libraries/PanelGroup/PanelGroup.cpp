@@ -388,18 +388,35 @@ void loop() {
                           reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
     }
 
-    // 6b. Node-health telemetry every 1000 ms — free internal die temp (default-on;
+    // 6b. Node-health telemetry every 1000 ms — internal die temp + aggregated node fault (default-on;
     // build with -DNODE_HEALTH_TELEM=0 to disable). Half the heartbeat rate: trend data.
+    // NodeFaultCode / aggregateFaults come via CANProtocol.h -> NodeStatus.h (#163).
 #if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
     if (now - _lastHealthMs >= 1000) {
         _lastHealthMs = now;
+        const char* faultDetail = nullptr;   // never null after aggregateFaults()
+        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
         NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
-            NODE_ID, STM32Board::readDieTempC());
+            NODE_ID, STM32Board::readDieTempC(), fault);
         CANProtocol::send(canIdHealth(NODE_ID),
                           reinterpret_cast<const uint8_t*>(&h), sizeof(h));
+
+        // Edge-log the node's fault transition to DiagSerial (detail strings stay local, never
+        // on the wire). Per-node state — one _prevFault, not per source.
+        static NodeFaultCode _prevFault = NodeFaultCode::NONE;
+        if (fault != _prevFault && STM32Board::isDebug()) {
+            auto& d = STM32Board::diagSerial();
+            if (fault != NodeFaultCode::NONE) {
+                d.print(F("[NODE] degraded: ")); d.print(faultDetail);
+                d.print(F(" (fault ")); d.print((int)(uint8_t)fault); d.println(F(")"));
+            } else {
+                d.println(F("[NODE] recovered"));
+            }
+        }
+        _prevFault = fault;
 #ifdef NODE_OVERHEAT_C
         // Raise-only: don't clear here or we'd stomp the master-loss WARNING latch.
-        if (h.flags & 0x01) STM32Board::setWarning(true);  // local overheat → status-LED WARNING
+        if (h.flags & (uint8_t)NodeHealthFlag::OVERHEAT) STM32Board::setWarning(true);  // overheat → WARNING
 #endif
     }
 #endif

@@ -20,6 +20,7 @@
 #pragma once
 #include <stdint.h>
 #include <HIDControls.h>
+#include <NodeStatus.h>   // NodeFaultCode / NodeHealthFlag — packed into HEALTH_n by makeNodeHealthPayload
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -310,16 +311,19 @@ namespace CANProtocol {
     /**
      * @brief Build the 8-byte node-health payload for the current node.
      *
-     * Packs the internal die temperature (read via STM32Board::readDieTempC()) into a
-     * NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is
-     * defined at build time and dieTempC meets it; otherwise flags is 0 (pure telemetry).
-     * Fault + reserved fields are zeroed.
+     * The CAN/DCS packing boundary: takes the internal die temperature (via
+     * STM32Board::readDieTempC()) and the node's aggregated fault (via NodeStatus::aggregateFaults())
+     * and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C
+     * is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when `fault` is not
+     * NONE (the enum→byte cast happens here). faultMask + reserved bytes stay 0.
      *
      * @param nodeId   Node ID (1-63 PanelGroup; 0 PanelBridge).
      * @param dieTempC Internal die temp in whole °C (INT8_MIN = unavailable).
+     * @param fault    Aggregated node fault (NodeFaultCode::NONE = healthy). Default NONE.
      * @return         Fully populated NodeHealthPayload ready to send as HEALTH_n.
      */
-    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC);
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC,
+                                            NodeFaultCode fault = NodeFaultCode::NONE);
 
     /** @brief Return the cumulative TX queue drop count since startup. */
     uint32_t txDropCount();

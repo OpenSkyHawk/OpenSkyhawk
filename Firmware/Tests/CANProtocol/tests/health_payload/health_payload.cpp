@@ -25,7 +25,10 @@ void setup() {
     STM32Board::log("=== health_payload ===");
 
     const int8_t kTemp = 37;
-    NodeHealthPayload p = CANProtocol::makeNodeHealthPayload(NODE_ID, kTemp);
+    NodeHealthPayload p = CANProtocol::makeNodeHealthPayload(NODE_ID, kTemp);  // healthy (fault defaults NONE)
+
+    // Faulted payload: faultId carries the code, DEGRADED flag derived, faultMask stays 0 (#163).
+    NodeHealthPayload pf = CANProtocol::makeNodeHealthPayload(NODE_ID, kTemp, NodeFaultCode::I2C_PERIPHERAL);
 
     int8_t   liveTemp = STM32Board::readDieTempC();
     uint16_t liveVdd  = STM32Board::readVddMv();
@@ -40,6 +43,11 @@ void setup() {
     d.print(F("flags == 0 (no trip):    ")); d.println(p.flags    == 0       ? F("PASS") : F("FAIL"));
     d.print(F("fault/reserved zeroed:   "));
     d.println((p.faultMask | p.faultId | p.rsvd[0] | p.rsvd[1] | p.rsvd[2]) == 0 ? F("PASS") : F("FAIL"));
+    d.print(F("fault: faultId set:      "));
+    d.println(pf.faultId == (uint8_t)NodeFaultCode::I2C_PERIPHERAL ? F("PASS") : F("FAIL"));
+    d.print(F("fault: DEGRADED flag:    "));
+    d.println((pf.flags & (uint8_t)NodeHealthFlag::DEGRADED) ? F("PASS") : F("FAIL"));
+    d.print(F("fault: faultMask stays 0:")); d.println(pf.faultMask == 0 ? F("PASS") : F("FAIL"));
     d.print(F("live temp in range:      ")); d.println(tempOk ? F("PASS") : F("FAIL"));
     d.print(F("live Vdd in range:       ")); d.println(vddOk  ? F("PASS") : F("FAIL"));
 

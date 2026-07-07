@@ -60,11 +60,16 @@ public:
     virtual NodeFaultCode faultCode() const { return NodeFaultCode::NONE; }  // cached state; NONE = healthy
     virtual const char*   faultDetail() const { return ""; } // DiagSerial only — never on the wire
     static FaultSource*   head();                            // self-registered list, walked by the
-    FaultSource*          next() const;                      //   node aggregator (PR-3)
+    FaultSource*          next() const;                      //   node aggregator (aggregateFaults)
 protected:
     FaultSource();                                          // registers into the list (permanent)
     ~FaultSource() = default;                               // protected, non-virtual: a base/mixin
 };
+
+// Node fault aggregator: primary NodeFaultCode = first non-NONE FaultSource in registry order.
+// detailOut (if given) receives that source's faultDetail(), NEVER null — normalized to "" when a
+// source returns null or when none faulted. NONE when the node is healthy.
+NodeFaultCode aggregateFaults(const char** detailOut = nullptr);
 } // namespace OpenSkyhawk
 ```
 
@@ -73,6 +78,14 @@ protected:
 would leave a dangling pointer in the registry the aggregator walks. `faultCode()` returns the
 typed `NodeFaultCode`; the cast to `uint8_t` happens only at the CAN/DCS-BIOS packing boundary
 (HEALTH_n / `_NODE_STATUS`).
+
+**Aggregation & priority:** `aggregateFaults()` returns the **first non-`NONE`** `faultCode()` in
+**registry iteration order, which is REVERSE construction order** — the intrusive list pushes new
+sources at `head()`, so the *last-constructed* source is visited first. One fault is on the wire at
+a time; multi-fault priority is a later concern. Each node's health-TX calls it, packs the result
+into `HEALTH_n` (via `makeNodeHealthPayload`, which derives DEGRADED), and **edge-logs**
+`faultDetail()` to its own DiagSerial on fault change. **Degraded drives no status-LED** — frame +
+DiagSerial only (WARNING-latch arbitration deferred).
 
 **Model (D14):** fault sources feed a node-level aggregator; no producer "owns" node health.
 `DrumDisplay` is *one* `FaultSource` (I2C); a PDU rail monitor and a PanelBridge host-link watchdog
@@ -84,9 +97,13 @@ the client label. **Changing the `_NODE_STATUS` wire shape:** bump `NODE_STATUS_
 
 ## Test
 
-No standalone project. Verified indirectly: `DrumDisplay` breaker test asserts `faultCode()`/
-`faultDetail()` via the `FaultSource` override; `PanelBridge` node_status test exercises the
-`_NODE_STATUS` emission; the client `reference.test.ts` asserts the proto-version contract.
+`Firmware/Tests/NodeStatus/` (`test_aggregate`) covers `aggregateFaults()` over static mock
+`FaultSource`s: healthy → `NONE` + `""`, one/two faults → primary in reverse-construction order +
+its detail, null `faultDetail()` normalized to `""`, `nullptr` detailOut accepted. Also verified
+indirectly: `DrumDisplay` breaker test asserts `faultCode()`/`faultDetail()` via the `FaultSource`
+override; `CANProtocol` `health_payload`/`health_flags` tests assert the faultId/DEGRADED packing
+(incl. overheat+degraded coexistence); `PanelBridge` node_status test exercises the `_NODE_STATUS`
+emission; the client `reference.test.ts` asserts the proto-version contract.
 
 ---
 

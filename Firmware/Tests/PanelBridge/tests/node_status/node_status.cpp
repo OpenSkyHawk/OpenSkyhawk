@@ -21,8 +21,9 @@
 //
 // Expected on USB-UART (250000), repeating each cycle. Node 1 is also fed a HEALTH
 // frame (42 °C → dieTempC 2A); node 2 gets none, so its temp stays at the not-yet-seen
-// sentinel 80. The three health fields hFlags/faultMask/faultId are 0 here — the degraded
-// feature (#163) isn't populating them yet:
+// sentinel 80. The three health fields hFlags/faultMask/faultId are 0 here — the injected HEALTH
+// frame carries no fault, so aggregateFaults (#163) leaves them clear (this test exercises the
+// cache/forward path, not a degraded node):
 //   Phase A — two nodes go alive (bare delta emits, no terminator):
 //     _NODE_STATUS 010100000A001200002A000000
 //     _NODE_STATUS 02010200140034000280000000
