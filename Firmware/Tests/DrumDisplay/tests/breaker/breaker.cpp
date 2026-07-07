@@ -63,7 +63,7 @@ void setup() {
     check("data path decodes while down (target == 250)", disp.debugTarget() == 250);
 
     // FaultSource accessors (#163): healthy at start → no fault reported.
-    check("healthy: faultCode NONE",               disp.faultCode() == 0);
+    check("healthy: faultCode NONE",               disp.faultCode() == NodeFaultCode::NONE);
     check("healthy: faultDetail empty",            strcmp(disp.faultDetail(), "") == 0);
 
     // 1) Dead device → trip + classify + skip the render (no sendBuffer).
@@ -74,7 +74,7 @@ void setup() {
     check("dead: fault classified (Device)",       disp.debugFault() == static_cast<uint8_t>(DrumDisplay::Fault::Device));
     check("dead: render skipped (no sendBuffer)",  disp.debugRenderCount() == r0);
     // FaultSource (#163): tripped → I2C_PERIPHERAL code + device-level detail for DiagSerial.
-    check("dead: faultCode I2C_PERIPHERAL",        disp.faultCode() == static_cast<uint8_t>(NodeFaultCode::I2C_PERIPHERAL));
+    check("dead: faultCode I2C_PERIPHERAL",        disp.faultCode() == NodeFaultCode::I2C_PERIPHERAL);
     check("dead: faultDetail = OLED not responding", strcmp(disp.faultDetail(), "OLED not responding") == 0);
 
     // 2) Back-off — a retry within RETRY_MS must NOT re-probe.
@@ -91,7 +91,7 @@ void setup() {
     check("recover: healthy",                      healed && disp.debugHealthy());
     check("recover: fault cleared (None)",         disp.debugFault() == static_cast<uint8_t>(DrumDisplay::Fault::None));
     // FaultSource (#163) clears on recovery.
-    check("recover: faultCode NONE",               disp.faultCode() == 0);
+    check("recover: faultCode NONE",               disp.faultCode() == NodeFaultCode::NONE);
     check("recover: faultDetail empty",            strcmp(disp.faultDetail(), "") == 0);
 
     d.println(pass ? F("=== ALL PASS ===") : F("=== FAIL ==="));

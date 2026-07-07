@@ -118,7 +118,7 @@ public:
     void setOffset(float xOffsetMm, float yOffsetMm);          // runtime mm; re-registers next frame
 
     // FaultSource (NodeStatus.h) — DrumDisplay is one node fault source among many (#163):
-    uint8_t     faultCode() const override;    // NodeFaultCode::I2C_PERIPHERAL when breaker tripped, else 0
+    NodeFaultCode faultCode() const override;  // I2C_PERIPHERAL when breaker tripped, else NONE
     const char* faultDetail() const override;  // DiagSerial-only hop string (Mux/Device)
 };
 

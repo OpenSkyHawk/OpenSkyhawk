@@ -64,11 +64,16 @@ namespace OpenSkyhawk {
  * print `faultDetail()` to DiagSerial. Implementers report *cached* state only — cheap, const, no
  * blocking I/O — since the aggregator runs on the periodic health path. Examples: DrumDisplay
  * (I2C), a PDU rail monitor (over/under-voltage/short), a PanelBridge host-link watchdog.
+ *
+ * @note **Lifetime: a FaultSource must have static/global lifetime** (same rule as OutputBase /
+ *       InputBase). Registration is permanent — there is no unregister — so a stack/local
+ *       FaultSource would leave a dangling pointer in the registry the aggregator walks. Construct
+ *       fault sources as globals (or members of a global object), never on the stack.
  */
 class FaultSource {
 public:
-    /** @brief Current fault code, or 0 (NodeFaultCode::NONE) when healthy. Cheap/const, cached state. */
-    virtual uint8_t faultCode() const { return 0; }
+    /** @brief Current fault code (NodeFaultCode::NONE when healthy). Cheap/const, cached state only. */
+    virtual NodeFaultCode faultCode() const { return NodeFaultCode::NONE; }
 
     /** @brief Human-readable fault detail for the local DiagSerial tap only — never on the wire. */
     virtual const char* faultDetail() const { return ""; }
@@ -79,7 +84,8 @@ public:
     FaultSource* next() const;
 
 protected:
-    FaultSource();  ///< Registers this instance into the list.
+    FaultSource();          ///< Registers this instance into the list.
+    ~FaultSource() = default;  ///< Protected, non-virtual: a base/mixin, never deleted through this type.
 
 private:
     static FaultSource* _head;

@@ -227,10 +227,10 @@ public:
 
     /**
      * @brief FaultSource: I2C_PERIPHERAL when the I2cHealth breaker is tripped, else NONE (#163).
-     *        Cached breaker state only — no I2C op. The node aggregator maps this into HEALTH_n.faultId.
+     *        Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH_n.faultId.
      */
-    uint8_t faultCode() const override {
-        return i2cHealthy() ? 0 : static_cast<uint8_t>(NodeFaultCode::I2C_PERIPHERAL);
+    NodeFaultCode faultCode() const override {
+        return i2cHealthy() ? NodeFaultCode::NONE : NodeFaultCode::I2C_PERIPHERAL;
     }
 
     /** @brief DiagSerial-only fault detail (#163): which I2C hop failed the last probe. */

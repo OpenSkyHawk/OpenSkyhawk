@@ -55,17 +55,24 @@ enum class NodeFaultCode : uint8_t {
 };
 
 namespace OpenSkyhawk {
-class FaultSource {                                // a fault-producing object implements this
+class FaultSource {                                      // a fault-producing object implements this
 public:
-    virtual uint8_t     faultCode() const { return 0; }    // 0 = healthy; a NodeFaultCode otherwise
-    virtual const char* faultDetail() const { return ""; } // DiagSerial only — never on the wire
-    static FaultSource* head();                            // self-registered list, walked by the
-    FaultSource*        next() const;                      //   node aggregator (PR-3)
+    virtual NodeFaultCode faultCode() const { return NodeFaultCode::NONE; }  // cached state; NONE = healthy
+    virtual const char*   faultDetail() const { return ""; } // DiagSerial only — never on the wire
+    static FaultSource*   head();                            // self-registered list, walked by the
+    FaultSource*          next() const;                      //   node aggregator (PR-3)
 protected:
-    FaultSource();                                         // registers into the list
+    FaultSource();                                          // registers into the list (permanent)
+    ~FaultSource() = default;                               // protected, non-virtual: a base/mixin
 };
 } // namespace OpenSkyhawk
 ```
+
+**Lifetime:** a `FaultSource` must have **static/global lifetime** (same rule as `OutputBase`/
+`InputBase`). Registration is permanent — there is no unregister — so a stack/local `FaultSource`
+would leave a dangling pointer in the registry the aggregator walks. `faultCode()` returns the
+typed `NodeFaultCode`; the cast to `uint8_t` happens only at the CAN/DCS-BIOS packing boundary
+(HEALTH_n / `_NODE_STATUS`).
 
 **Model (D14):** fault sources feed a node-level aggregator; no producer "owns" node health.
 `DrumDisplay` is *one* `FaultSource` (I2C); a PDU rail monitor and a PanelBridge host-link watchdog

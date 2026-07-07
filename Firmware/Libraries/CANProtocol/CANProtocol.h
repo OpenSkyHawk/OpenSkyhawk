@@ -74,7 +74,7 @@ struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  nodeId;     ///< 0: node ID — redundant with CAN ID, aids logging
     int8_t   dieTempC;   ///< 1: internal die temp, whole °C (INT8_MIN = unavailable) — #213
     uint8_t  flags;      ///< 2: NodeHealthFlag bits (NodeStatus.h): OVERHEAT (#213), DEGRADED (#163)
-    uint8_t  faultMask;  ///< 3: tripped-peripheral bitmap — reserved for #163 (0 until populated)
+    uint8_t  faultMask;  ///< 3: fault source/domain bitmap — reserved for #163 (0 until populated)
     uint8_t  faultId;    ///< 4: NodeFaultCode (NodeStatus.h) — reserved for #163 (0 until populated)
     uint8_t  rsvd[3];    ///< 5-7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
 };
@@ -99,7 +99,7 @@ static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request all nodes to 
 constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 
 /** @brief Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is PanelBridge.
- *         Carries NodeHealthPayload (internal die temp + Vdd). */
+ *         Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands). */
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
 
 /** @brief Input event frame ID for node n. Range 0x201-0x23F. */
