@@ -3,6 +3,11 @@
 
 
 
+## a
+
+* **aggregateFaults** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## b
 
 * **busOff** ([**CANProtocol**](namespaceCANProtocol.md))
@@ -37,6 +42,7 @@
 
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
+* **logNodeFaultEdge** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## m

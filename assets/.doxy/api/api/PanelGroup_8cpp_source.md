@@ -398,18 +398,22 @@ void loop() {
                           reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
     }
 
-    // 6b. Node-health telemetry every 1000 ms — free internal die temp (default-on;
+    // 6b. Node-health telemetry every 1000 ms — internal die temp + aggregated node fault (default-on;
     // build with -DNODE_HEALTH_TELEM=0 to disable). Half the heartbeat rate: trend data.
+    // NodeFaultCode / aggregateFaults come via CANProtocol.h -> NodeStatus.h (#163).
 #if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
     if (now - _lastHealthMs >= 1000) {
         _lastHealthMs = now;
+        const char* faultDetail = nullptr;   // never null after aggregateFaults()
+        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
         NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
-            NODE_ID, STM32Board::readDieTempC());
+            NODE_ID, STM32Board::readDieTempC(), fault);
         CANProtocol::send(canIdHealth(NODE_ID),
                           reinterpret_cast<const uint8_t*>(&h), sizeof(h));
+        STM32Board::logNodeFaultEdge("NODE", fault, faultDetail);  // edge-log, DiagSerial only (#163)
 #ifdef NODE_OVERHEAT_C
         // Raise-only: don't clear here or we'd stomp the master-loss WARNING latch.
-        if (h.flags & 0x01) STM32Board::setWarning(true);  // local overheat → status-LED WARNING
+        if (h.flags & (uint8_t)NodeHealthFlag::OVERHEAT) STM32Board::setWarning(true);  // overheat → WARNING
 #endif
     }
 #endif

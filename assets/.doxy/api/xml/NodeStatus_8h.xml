@@ -3,9 +3,11 @@
   <compounddef id="NodeStatus_8h" kind="file" language="C++">
     <compoundname>NodeStatus.h</compoundname>
     <includes local="no">stdint.h</includes>
+    <includedby refid="CANProtocol_8h" local="no">Firmware/Libraries/CANProtocol/CANProtocol.h</includedby>
     <includedby refid="DrumDisplay_8h" local="no">Firmware/Libraries/DrumDisplay/DrumDisplay.h</includedby>
     <includedby refid="NodeStatus_8cpp" local="yes">Firmware/Libraries/NodeStatus/NodeStatus.cpp</includedby>
     <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <includedby refid="STM32Board_8h" local="no">Firmware/Libraries/STM32Board/STM32Board.h</includedby>
     <incdepgraph>
       <node id="1">
         <label>Firmware/Libraries/NodeStatus/NodeStatus.h</label>
@@ -19,16 +21,40 @@
     </incdepgraph>
     <invincdepgraph>
       <node id="3">
+        <label>Firmware/Libraries/CANProtocol/CANProtocol.cpp</label>
+        <link refid="CANProtocol_8cpp"/>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/CANProtocol/CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
         <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
         <link refid="DrumDisplay_8cpp"/>
       </node>
-      <node id="2">
+      <node id="10">
         <label>Firmware/Libraries/DrumDisplay/DrumDisplay.h</label>
         <link refid="DrumDisplay_8h"/>
-        <childnode refid="3" relation="include">
+        <childnode refid="11" relation="include">
         </childnode>
       </node>
-      <node id="4">
+      <node id="31">
         <label>Firmware/Libraries/NodeStatus/NodeStatus.cpp</label>
         <link refid="NodeStatus_8cpp"/>
       </node>
@@ -37,14 +63,216 @@
         <link refid="NodeStatus_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
         <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
+        <link refid="PanelBridge_8cpp"/>
+      </node>
+      <node id="13">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp</label>
+        <link refid="StepperMotor_8cpp"/>
+      </node>
+      <node id="12">
+        <label>Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h</label>
+        <link refid="StepperMotor_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp</label>
+        <link refid="ShiftBus_8cpp"/>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.cpp</label>
+        <link refid="AnalogInput_8cpp"/>
+      </node>
+      <node id="15">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogInput/AnalogInput.h</label>
+        <link refid="AnalogInput_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.cpp</label>
+        <link refid="AnalogMultiPos_8cpp"/>
+      </node>
+      <node id="16">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h</label>
+        <link refid="AnalogMultiPos_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.cpp</label>
+        <link refid="MultiPosInput_8cpp"/>
+      </node>
+      <node id="18">
+        <label>Firmware/Libraries/PanelGroup/Inputs/MultiPosInput/MultiPosInput.h</label>
+        <link refid="MultiPosInput_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp</label>
+        <link refid="RotaryEncoder_8cpp"/>
+      </node>
+      <node id="23">
+        <label>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h</label>
+        <link refid="RotaryEncoder_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</label>
+        <link refid="Switch2Pos_8cpp"/>
+      </node>
+      <node id="24">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h</label>
+        <link refid="Switch2Pos_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.cpp</label>
+        <link refid="Switch3Pos_8cpp"/>
+      </node>
+      <node id="19">
+        <label>Firmware/Libraries/PanelGroup/Inputs/Switch3Pos/Switch3Pos.h</label>
+        <link refid="Switch3Pos_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.cpp</label>
+        <link refid="SwitchMultiPos_8cpp"/>
+      </node>
+      <node id="21">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos/SwitchMultiPos.h</label>
+        <link refid="SwitchMultiPos_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
+        <link refid="OpenSkyhawk_8h"/>
+      </node>
+      <node id="26">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.cpp</label>
+        <link refid="LED_8cpp"/>
+      </node>
+      <node id="25">
+        <label>Firmware/Libraries/PanelGroup/Outputs/LED/LED.h</label>
+        <link refid="LED_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.cpp</label>
+        <link refid="NeedleGauge_8cpp"/>
+      </node>
+      <node id="27">
+        <label>Firmware/Libraries/PanelGroup/Outputs/NeedleGauge/NeedleGauge.h</label>
+        <link refid="NeedleGauge_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.cpp</label>
+        <link refid="PanelGroup_8cpp"/>
+      </node>
+      <node id="9">
+        <label>Firmware/Libraries/PanelGroup/PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
+        <link refid="STM32Board_8cpp"/>
+      </node>
+      <node id="32">
+        <label>Firmware/Libraries/STM32Board/STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
-      </node>
-      <node id="5">
-        <label>Firmware/Libraries/PanelBridge/PanelBridge.cpp</label>
-        <link refid="PanelBridge_8cpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
       </node>
     </invincdepgraph>
     <innerclass refid="classOpenSkyhawk_1_1FaultSource" prot="public">OpenSkyhawk::FaultSource</innerclass>
@@ -252,7 +480,9 @@
 <codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_next;</highlight></codeline>
 <codeline lineno="93"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="94"><highlight class="normal"></highlight></codeline>
-<codeline lineno="95"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" kindref="member">aggregateFaults</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">**<sp/>detailOut<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/NodeStatus/NodeStatus.h"/>
   </compounddef>

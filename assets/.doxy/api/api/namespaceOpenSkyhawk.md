@@ -114,6 +114,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 | Type | Name |
 | ---: | :--- |
+|  [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) | [**aggregateFaults**](#function-aggregatefaults) (const char \*\* detailOut=nullptr) <br>_Roll up the registered fault sources into a single node fault code (#163)._  |
 |  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=1080, uint16\_t rangeSteps=945, uint16\_t homeStepUs=0) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
 
 
@@ -460,6 +461,57 @@ const float OpenSkyhawk::SNAP_LANDING;
 <hr>
 ## Public Functions Documentation
 
+
+
+
+### function aggregateFaults 
+
+_Roll up the registered fault sources into a single node fault code (#163)._ 
+```C++
+NodeFaultCode OpenSkyhawk::aggregateFaults (
+    const char ** detailOut=nullptr
+) 
+```
+
+
+
+Walks `FaultSource::head()` and returns the **first** source reporting a non-`NONE` `faultCode()`; if `detailOut` is non-null it is set to that source's `faultDetail()`. Returns `NodeFaultCode::NONE` when every source is healthy. `*detailOut` is **always** a non-null string (`""` when healthy or a source returns null) — callers never null-check.
+
+
+
+
+**Note:**
+
+Iteration is **registry order = reverse construction order** (the intrusive list pushes at head), so the last-constructed fault source has priority. With one active fault at a time on the wire this rarely matters; a node with concurrent faults reports the head-most. 
+
+
+
+
+**Note:**
+
+Cheap/const — sources report cached state only. Called on the periodic health path.
+
+
+
+
+**Parameters:**
+
+
+* `detailOut` Optional out-param for the local DiagSerial detail string (never null on return). 
+
+
+
+**Returns:**
+
+The primary NodeFaultCode, or NONE if no source is faulted. 
+
+
+
+
+
+        
+
+<hr>
 
 
 

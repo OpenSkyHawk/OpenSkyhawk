@@ -14,6 +14,7 @@
 
 #include <Arduino.h>
 #include <stm32f1xx_hal_can.h>
+#include <NodeStatus.h>  // NodeFaultCode for logNodeFaultEdge (#163)
 
 // CanStatus is owned by CANProtocol; forward-declared here so onCanStatus()
 // can accept it without pulling the full CANProtocol header into every user.
@@ -65,6 +66,8 @@ namespace STM32Board {
     int8_t readDieTempC();
 
     uint16_t readVddMv();
+
+    void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail);
 
 #ifdef STM32BOARD_TEST
     LedState currentState();

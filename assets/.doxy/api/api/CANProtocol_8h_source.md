@@ -12,6 +12,7 @@
 #pragma once
 #include <stdint.h>
 #include <HIDControls.h>
+#include <NodeStatus.h>   // NodeFaultCode / NodeHealthFlag — packed into HEALTH_n by makeNodeHealthPayload
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -143,7 +144,8 @@ namespace CANProtocol {
 
     HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount);
 
-    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC);
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC,
+                                            NodeFaultCode fault = NodeFaultCode::NONE);
 
     uint32_t txDropCount();
 

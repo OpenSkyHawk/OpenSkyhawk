@@ -12,6 +12,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 
 * `#include <stdint.h>`
 * `#include <HIDControls.h>`
+* `#include <NodeStatus.h>`
 
 
 
@@ -381,7 +382,7 @@ Sent every 500 ms by [**PanelGroup**](namespacePanelGroup.md) nodes. [**PanelBri
 
 Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:
 * Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal temperature sensor (ADC ch16); no external parts, no PCB change.
-* Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode ([**NodeStatus.h**](NodeStatus_8h.md)). Transmit 0 until that lands. [**PanelBridge**](namespacePanelBridge.md) caches HEALTH\_1–HEALTH\_63 per node and forwards them in \_NODE\_STATUS.
+* Degraded state (#163): flags bit1 + faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode ([**NodeStatus.h**](NodeStatus_8h.md)). aggregateFaults() picks the primary faultId, makeNodeHealthPayload derives DEGRADED. faultMask stays 0 (reserved, see below). [**PanelBridge**](namespacePanelBridge.md) caches HEALTH\_1–HEALTH\_63 per node and forwards them in \_NODE\_STATUS.
 
 
 

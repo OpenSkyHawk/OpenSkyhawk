@@ -463,6 +463,43 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </inbodydescription>
         <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" line="32" column="13" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.cpp" bodystart="32" bodyend="36"/>
       </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref></type>
+        <definition>NodeFaultCode OpenSkyhawk::aggregateFaults</definition>
+        <argsstring>(const char **detailOut=nullptr)</argsstring>
+        <name>aggregateFaults</name>
+        <qualifiedname>OpenSkyhawk::aggregateFaults</qualifiedname>
+        <param>
+          <type>const char **</type>
+          <declname>detailOut</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+<para>Roll up the registered fault sources into a single node fault code (#163). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Walks <computeroutput><ref refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kindref="member">FaultSource::head()</ref></computeroutput> and returns the <bold>first</bold> source reporting a non-<computeroutput>NONE</computeroutput> <computeroutput>faultCode()</computeroutput>; if <computeroutput>detailOut</computeroutput> is non-null it is set to that source&apos;s <computeroutput>faultDetail()</computeroutput>. Returns <computeroutput><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref></computeroutput> when every source is healthy. <computeroutput>*detailOut</computeroutput> is <bold>always</bold> a non-null string (<computeroutput>&quot;&quot;</computeroutput> when healthy or a source returns null) — callers never null-check.</para>
+<para><simplesect kind="note"><para>Iteration is <bold>registry order = reverse construction order</bold> (the intrusive list pushes at head), so the last-constructed fault source has priority. With one active fault at a time on the wire this rarely matters; a node with concurrent faults reports the head-most. </para>
+</simplesect>
+<simplesect kind="note"><para>Cheap/const — sources report cached state only. Called on the periodic health path.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>detailOut</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional out-param for the local DiagSerial detail string (never null on return). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The primary NodeFaultCode, or NONE if no source is faulted. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.cpp" line="12" column="15" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="12" bodyend="25" declfile="Firmware/Libraries/NodeStatus/NodeStatus.h" declline="111" declcolumn="15"/>
+      </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a46ddcd8bc34cc500234d4513a5952df5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref></type>
         <definition>StepperConfig OpenSkyhawk::makeX27Config</definition>

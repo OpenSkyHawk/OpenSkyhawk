@@ -4145,7 +4145,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">NodeHealthPayload</td>
-<td style="text-align: left;"><a href="#function-makenodehealthpayload"><strong>makeNodeHealthPayload</strong></a> (uint8_t nodeId, int8_t dieTempC) <br><em>Build the 8-byte node-health payload for the current node.</em></td>
+<td style="text-align: left;"><a href="#function-makenodehealthpayload"><strong>makeNodeHealthPayload</strong></a> (uint8_t nodeId, int8_t dieTempC, <a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a> fault=NodeFaultCode::NONE) <br><em>Build the 8-byte node-health payload for the current node.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -4261,14 +4261,16 @@
 <p><em>Build the 8-byte node-health payload for the current node.</em> </p>
 <pre><code class="language-C++">NodeHealthPayload CANProtocol::makeNodeHealthPayload (
     uint8_t nodeId,
-    int8_t dieTempC
+    int8_t dieTempC,
+    NodeFaultCode fault=NodeFaultCode::NONE
 ) 
 </code></pre>
-<p>Packs the internal die temperature (read via <a href="../namespaceSTM32Board/#function-readdietempc"><strong>STM32Board::readDieTempC()</strong></a>) into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined at build time and dieTempC meets it; otherwise flags is 0 (pure telemetry). Fault + reserved fields are zeroed.</p>
+<p>The CAN/DCS packing boundary: takes the internal die temperature (via <a href="../namespaceSTM32Board/#function-readdietempc"><strong>STM32Board::readDieTempC()</strong></a>) and the node's aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when <code>fault</code> is not NONE (the enum→byte cast happens here). faultMask + reserved bytes stay 0.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>nodeId</code> Node ID (1-63 <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>; 0 <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>). </li>
 <li><code>dieTempC</code> Internal die temp in whole °C (INT8_MIN = unavailable). </li>
+<li><code>fault</code> Aggregated node fault (NodeFaultCode::NONE = healthy). Default NONE. </li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Fully populated NodeHealthPayload ready to send as HEALTH_n. </p>

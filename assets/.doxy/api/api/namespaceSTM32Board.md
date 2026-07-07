@@ -62,6 +62,7 @@
 |  HardwareSerial & | [**diagSerial**](#function-diagserial) () <br>_Access DiagSerial directly for multi-field formatted output._  |
 |  bool | [**isDebug**](#function-isdebug) () <br>_Returns true when debug output is enabled._  |
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
+|  void | [**logNodeFaultEdge**](#function-lognodefaultedge) (const char \* tag, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault, const char \* detail) <br>_Edge-log a node's fault transition to DiagSerial (#163)._  |
 |  void | [**onCanStatus**](#function-oncanstatus) ([**CanStatus**](CANProtocol_8h.md#enum-canstatus) status) <br>_CAN bus status event handler — maps CanStatus to LED state._  |
 |  int8\_t | [**readDieTempC**](#function-readdietempc) () <br>_Read the MCU's built-in internal temperature sensor (ADC ch16)._  |
 |  uint16\_t | [**readVddMv**](#function-readvddmv) () <br>_Estimate MCU Vdd from the internal reference (Vrefint, ADC ch17)._  |
@@ -245,6 +246,43 @@ void STM32Board::log (
 
 
 * `msg` Null-terminated string to print. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function logNodeFaultEdge 
+
+_Edge-log a node's fault transition to DiagSerial (#163)._ 
+```C++
+void STM32Board::logNodeFaultEdge (
+    const char * tag,
+    NodeFaultCode fault,
+    const char * detail
+) 
+```
+
+
+
+Prints `[<tag>] degraded: <detail> (fault N)` on entering or changing a fault, and `[<tag>] recovered` on clearing — only on a change, and only when [**isDebug()**](namespaceSTM32Board.md#function-isdebug) (no formatting cost otherwise). Shared by every node's health-TX loop ([**PanelGroup**](namespacePanelGroup.md), [**PanelBridge**](namespacePanelBridge.md), future PDU).
+
+
+Holds its own static prev-fault state. A firmware binary has exactly ONE node identity (a build is either a [**PanelGroup**](namespacePanelGroup.md) node or the bridge), so a single static is correct — the node's aggregated fault, not per-source. Detail strings stay local — never on the CAN wire.
+
+
+
+
+**Parameters:**
+
+
+* `tag` Short node tag for the log line, e.g. "NODE" or "BRIDGE". 
+* `fault` The node's current aggregated NodeFaultCode (from [**OpenSkyhawk::aggregateFaults()**](namespaceOpenSkyhawk.md#function-aggregatefaults)). 
+* `detail` That fault's faultDetail() (non-null; ignored when fault == NONE). 
 
 
 

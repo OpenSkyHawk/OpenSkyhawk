@@ -56,6 +56,8 @@ private:
     FaultSource* _next;
 };
 
+NodeFaultCode aggregateFaults(const char** detailOut = nullptr);
+
 } // namespace OpenSkyhawk
 ```
 

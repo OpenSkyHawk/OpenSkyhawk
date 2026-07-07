@@ -4201,6 +4201,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#function-aggregatefaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function aggregateFaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-makex27config" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4509,6 +4520,10 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: right;"><a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a></td>
+<td style="text-align: left;"><a href="#function-aggregatefaults"><strong>aggregateFaults</strong></a> (const char ** detailOut=nullptr) <br><em>Roll up the registered fault sources into a single node fault code (#163).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;"><a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a></td>
 <td style="text-align: left;"><a href="#function-makex27config"><strong>makeX27Config</strong></a> (int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos, <a href="./#enum-homemode"><strong>HomeMode</strong></a> home=HomeMode::STALL, bool homeSeekClockwise=false, <a href="../structOpenSkyhawk_1_1HomeSensor/"><strong>HomeSensor</strong></a> sensor={ true, 5, 2000 }, bool wrap=false, uint8_t deadband=1, bool autoRecal=false, uint32_t recalDebounceMs=0, uint16_t stepsPerRev=1080, uint16_t rangeSteps=945, uint16_t homeStepUs=0) <br><em>Build a</em> <a href="../structOpenSkyhawk_1_1StepperConfig/"><em><strong>StepperConfig</strong></em></a> <em>with the X27 air-core motor defaults filled in.</em></td>
 </tr>
@@ -4660,6 +4675,25 @@ input" role, but a different sentinel because an analog ladder is an array of AD
 </code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
+<h3 id="function-aggregatefaults">function aggregateFaults</h3>
+<p><em>Roll up the registered fault sources into a single node fault code (#163).</em> </p>
+<pre><code class="language-C++">NodeFaultCode OpenSkyhawk::aggregateFaults (
+    const char ** detailOut=nullptr
+) 
+</code></pre>
+<p>Walks <code>FaultSource::head()</code> and returns the <strong>first</strong> source reporting a non-<code>NONE</code> <code>faultCode()</code>; if <code>detailOut</code> is non-null it is set to that source's <code>faultDetail()</code>. Returns <code>NodeFaultCode::NONE</code> when every source is healthy. <code>*detailOut</code> is <strong>always</strong> a non-null string (<code>""</code> when healthy or a source returns null) — callers never null-check.</p>
+<p><strong>Note:</strong></p>
+<p>Iteration is <strong>registry order = reverse construction order</strong> (the intrusive list pushes at head), so the last-constructed fault source has priority. With one active fault at a time on the wire this rarely matters; a node with concurrent faults reports the head-most. </p>
+<p><strong>Note:</strong></p>
+<p>Cheap/const — sources report cached state only. Called on the periodic health path.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>detailOut</code> Optional out-param for the local DiagSerial detail string (never null on return). </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>The primary NodeFaultCode, or NONE if no source is faulted. </p>
+<hr>
+
 <h3 id="function-makex27config">function makeX27Config</h3>
 <p><em>Build a</em> <a href="../structOpenSkyhawk_1_1StepperConfig/"><em><strong>StepperConfig</strong></em></a> <em>with the X27 air-core motor defaults filled in.</em></p>
 <pre><code class="language-C++">StepperConfig OpenSkyhawk::makeX27Config (

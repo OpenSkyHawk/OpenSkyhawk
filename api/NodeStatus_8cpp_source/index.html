@@ -3899,6 +3899,21 @@ FaultSource::FaultSource() : _next(_head) { _head = this; }
 FaultSource* FaultSource::head()       { return _head; }
 FaultSource* FaultSource::next() const { return _next; }
 
+NodeFaultCode aggregateFaults(const char** detailOut) {
+    for (const FaultSource* s = FaultSource::head(); s; s = s-&gt;next()) {
+        const NodeFaultCode code = s-&gt;faultCode();
+        if (code != NodeFaultCode::NONE) {
+            if (detailOut) {
+                const char* d = s-&gt;faultDetail();
+                *detailOut = d ? d : &quot;&quot;;  // never hand back a null detail
+            }
+            return code;
+        }
+    }
+    if (detailOut) *detailOut = &quot;&quot;;
+    return NodeFaultCode::NONE;
+}
+
 } // namespace OpenSkyhawk
 </code></pre>
 

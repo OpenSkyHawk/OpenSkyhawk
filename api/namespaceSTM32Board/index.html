@@ -4002,6 +4002,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-lognodefaultedge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function logNodeFaultEdge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-oncanstatus" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4155,6 +4166,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-lognodefaultedge"><strong>logNodeFaultEdge</strong></a> (const char * tag, <a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a> fault, const char * detail) <br><em>Edge-log a node's fault transition to DiagSerial (#163).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-oncanstatus"><strong>onCanStatus</strong></a> (<a href="../CANProtocol_8h/#enum-canstatus"><strong>CanStatus</strong></a> status) <br><em>CAN bus status event handler — maps CanStatus to LED state.</em></td>
 </tr>
 <tr>
@@ -4238,6 +4253,24 @@
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>msg</code> Null-terminated string to print. </li>
+</ul>
+<hr>
+
+<h3 id="function-lognodefaultedge">function logNodeFaultEdge</h3>
+<p><em>Edge-log a node's fault transition to DiagSerial (#163).</em> </p>
+<pre><code class="language-C++">void STM32Board::logNodeFaultEdge (
+    const char * tag,
+    NodeFaultCode fault,
+    const char * detail
+) 
+</code></pre>
+<p>Prints <code>[&lt;tag&gt;] degraded: &lt;detail&gt; (fault N)</code> on entering or changing a fault, and <code>[&lt;tag&gt;] recovered</code> on clearing — only on a change, and only when <a href="./#function-isdebug"><strong>isDebug()</strong></a> (no formatting cost otherwise). Shared by every node's health-TX loop (<a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>, <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>, future PDU).</p>
+<p>Holds its own static prev-fault state. A firmware binary has exactly ONE node identity (a build is either a <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> node or the bridge), so a single static is correct — the node's aggregated fault, not per-source. Detail strings stay local — never on the CAN wire.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tag</code> Short node tag for the log line, e.g. "NODE" or "BRIDGE". </li>
+<li><code>fault</code> The node's current aggregated NodeFaultCode (from <a href="../namespaceOpenSkyhawk/#function-aggregatefaults"><strong>OpenSkyhawk::aggregateFaults()</strong></a>). </li>
+<li><code>detail</code> That fault's faultDetail() (non-null; ignored when fault == NONE). </li>
 </ul>
 <hr>
 

@@ -12,6 +12,7 @@ _Shared STM32F103 hardware initialisation for_ [_**OpenSkyhawk**_](namespaceOpen
 
 * `#include <Arduino.h>`
 * `#include <stm32f1xx_hal_can.h>`
+* `#include <NodeStatus.h>`
 
 
 

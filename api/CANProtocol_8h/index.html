@@ -4248,6 +4248,7 @@
 <ul>
 <li><code>#include &lt;stdint.h&gt;</code></li>
 <li><code>#include &lt;HIDControls.h&gt;</code></li>
+<li><code>#include &lt;NodeStatus.h&gt;</code></li>
 </ul>
 <h2 id="namespaces">Namespaces</h2>
 <table>
@@ -4495,7 +4496,7 @@
 <p>Sent every 500 ms by <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> nodes. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reads HB_1–HB_63 to track <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> health and populate diagnostics. HB_0 is reserved but not transmitted.</p>
 <p>Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:
 * Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal temperature sensor (ADC ch16); no external parts, no PCB change.
-* Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode (<a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a>). Transmit 0 until that lands. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.</p>
+* Degraded state (#163): flags bit1 + faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode (<a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a>). aggregateFaults() picks the primary faultId, makeNodeHealthPayload derives DEGRADED. faultMask stays 0 (reserved, see below). <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.</p>
 <p><strong>Note:</strong></p>
 <p>The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute, measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend and per-node overheat flagging, not precise ambient measurement. </p>
 <p><strong>Note:</strong></p>
