@@ -48,9 +48,9 @@ The last four fields come from the node's `HEALTH_n` frame (see `02-can-protocol
 - `dieTempC`: int8 two's-complement whole °C (internal MCU sensor — UNCALIBRATED, die not ambient).
   `80` = `INT8_MIN` = not-yet-seen → render unknown.
 - `hFlags`: node health bits — bit0 overheat, bit1 degraded.
-- `faultMask` / `faultId`: fault source/domain bitmap + `NodeFaultCode` — `00` until the degraded
-  feature (#163) populates them; `faultId` is a `NodeFaultCode` the client maps to a label (no strings
-  on the wire).
+- `faultId`: `NodeFaultCode` — `00` = no fault, else the node's primary fault, populated per node by
+  `aggregateFaults()` (#163); the client maps it to a label (no strings on the wire).
+- `faultMask`: fault source/domain bitmap — stays `00`, reserved for future fault-domain bits.
 
 **Emission semantics:**
 - A single bare `_NODE_STATUS` is a **live delta** — emitted on each node alive/dead transition

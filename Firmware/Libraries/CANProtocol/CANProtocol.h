@@ -61,8 +61,9 @@ struct __attribute__((packed)) HeartbeatPayload {
  * separate features populate their own fields, all within the fixed 8 bytes:
  *   - Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal
  *     temperature sensor (ADC ch16); no external parts, no PCB change.
- *   - Degraded state (#163): flags bit1, faultMask, faultId — a node that is alive but has a
- *     faulted FaultSource reporting a NodeFaultCode (NodeStatus.h). Transmit 0 until that lands.
+ *   - Degraded state (#163): flags bit1 + faultId — a node that is alive but has a faulted
+ *     FaultSource reporting a NodeFaultCode (NodeStatus.h). aggregateFaults() picks the primary
+ *     faultId, makeNodeHealthPayload derives DEGRADED. faultMask stays 0 (reserved, see below).
  * PanelBridge caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.
  *
  * @note The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute,
@@ -75,8 +76,8 @@ struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  nodeId;     ///< 0: node ID — redundant with CAN ID, aids logging
     int8_t   dieTempC;   ///< 1: internal die temp, whole °C (INT8_MIN = unavailable) — #213
     uint8_t  flags;      ///< 2: NodeHealthFlag bits (NodeStatus.h): OVERHEAT (#213), DEGRADED (#163)
-    uint8_t  faultMask;  ///< 3: fault source/domain bitmap — reserved for #163 (0 until populated)
-    uint8_t  faultId;    ///< 4: NodeFaultCode (NodeStatus.h) — reserved for #163 (0 until populated)
+    uint8_t  faultMask;  ///< 3: fault source/domain bitmap — reserved for future domain bits (0)
+    uint8_t  faultId;    ///< 4: NodeFaultCode (NodeStatus.h): 0 = no fault, else primary fault — #163
     uint8_t  rsvd[3];    ///< 5-7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
 };
 

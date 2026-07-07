@@ -529,9 +529,14 @@ void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
     markNodeAlive(nodeId, millis());
 }
 
-void testFeedHealth(uint8_t nodeId, int8_t dieTempC) {
+void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
+                    uint8_t hFlags, uint8_t faultMask, uint8_t faultId) {
     // Mirrors the HEALTH_n branch of onCanRx: cache only, no liveness change.
-    _nodes[nodeId - 1].dieTempC = dieTempC;
+    NodeState& ns = _nodes[nodeId - 1];
+    ns.dieTempC    = dieTempC;
+    ns.healthFlags = hFlags;
+    ns.faultMask   = faultMask;
+    ns.faultId     = faultId;
 }
 
 void testRequestNodeStatus() { emitAllNodes(); }

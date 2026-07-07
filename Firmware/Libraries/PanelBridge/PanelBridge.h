@@ -125,8 +125,14 @@ namespace PanelBridge {
     void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
                            uint16_t rxCount, uint16_t esr);
 
-    /** @brief Cache a node's HEALTH_n telemetry (die temp) without changing liveness (#213). */
-    void testFeedHealth(uint8_t nodeId, int8_t dieTempC);
+    /**
+     * @brief Cache a node's HEALTH_n telemetry without changing liveness (#213/#163).
+     *
+     * Mirrors the HEALTH_n branch of onCanRx across all cached fields. hFlags/faultMask/faultId
+     * default to 0 (healthy); pass non-zero to exercise degraded forwarding into `_NODE_STATUS`.
+     */
+    void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
+                        uint8_t hFlags = 0, uint8_t faultMask = 0, uint8_t faultId = 0);
 
     /** @brief Emit the current roster (one `_NODE_STATUS` per alive node) — the request/boot path. */
     void testRequestNodeStatus();

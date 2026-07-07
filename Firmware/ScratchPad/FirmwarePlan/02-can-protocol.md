@@ -174,8 +174,9 @@ changes node liveness (`HB_n` owns that).
   only when a build defines `NODE_OVERHEAT_C`; the default build ships no threshold (pure
   telemetry) because the uncalibrated sensor needs field data before a sane trip point is set.
   When enabled, a node also raises its status-LED WARNING on its own overheat.
-- bit 1 (`0x02`): degraded — node is alive but a peripheral has tripped (#163). Derived: set
-  whenever `faultId != NONE`. **No status-LED change** — degraded surfaces via the frame + a
+- bit 1 (`0x02`): degraded — node is alive but a registered `FaultSource` reports non-`NONE` (#163)
+  — a DrumDisplay I2C fault, a PDU rail over/under-voltage, a bridge host-link loss, etc. Derived:
+  set whenever `faultId != NONE`. **No status-LED change** — degraded surfaces via the frame + a
   DiagSerial edge log only (multi-source WARNING-latch arbitration is deferred).
 
 **Calibration caveat:** the STM32F103 sensor is **UNCALIBRATED** (no factory trim / no
