@@ -36,6 +36,8 @@ PanelBridge::onNodeDead(onNodeDead);
 
 Node alive/dead callbacks are optional; PanelBridge continues to function without them.
 
+**Timeout clock (elapsed is signed):** `checkNodeTimeouts` samples `now` **after** `CANProtocol::drain()` (which stamps each node's `lastSeenMs` from `onCanRx`) and compares `(int32_t)(now - lastSeenMs) > HB_TIMEOUT_MS`. Both guard the same hazard — a millisecond ticking between the loop's `now` and the in-drain `lastSeenMs` would make the *unsigned* difference wrap to ~4.29e9 and declare a live node dead for one loop (a split-second false `present=00`→`present=01` flicker). Signed elapsed reads a small negative as "not yet elapsed" (#225).
+
 **Heartbeat recovery handling:** When PanelBridge receives `HB_n` from a node that was
 previously unseen or marked dead, it marks the node alive, fires `onNodeAlive(nodeId)`, and
 broadcasts `SYNC_REQ`. That asks the newly available node to re-poll its inputs and send its
