@@ -55,7 +55,7 @@ or fast gauges → SPI-class (74HC ShiftBus); otherwise I²C-class:
 - digital switch/button (I²C-class) → MCP23017 GPIO (14 inputs/chip; 3-pos = 2 GPIO;
   n-pos rotary = n GPIO; **INT lines on PB12/PB13 when the node also carries a ShiftBus**)
 - continuous pot / analog axis → ADS1115 channel (or STM32 ADC) with a 1 kΩ + 100 nF RC filter
-- LED zone → IRLML2502 low-side MOSFET, gate from STM32 3.3 V PWM; 5-LED series strings, one
+- LED zone → AO3400A low-side MOSFET (30V — required for the 12V rail's SMBJ12A 19.9V clamp; not IRLML2502's 20V), gate from STM32 3.3 V PWM; 5-LED series strings, one
   current-limiting resistor per string (120 Ω default)
 
 I²C addressing: MCP23017 0x20–0x27 (up to 8/bus), ADS1115 0x48–0x4B (up to 4/bus); STM32 has
