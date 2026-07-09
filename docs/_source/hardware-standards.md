@@ -114,7 +114,7 @@ Local decoupling required on every board: 100 nF + 10 µF per rail, placed close
 - **Placement:** at the input / injection connector, **cathode → rail, anode → GND**, before the fuse and bulk caps. Short, wide anode→GND path (low-inductance clamp reference). Reference designators are per-board (e.g. PDU: D1 = 12 V, D2 = 5 V).
 - **Standoff sits above the rail (no knee operation):** the standoff (max continuous) voltage must exceed the rail's +5 % worst case — 12.6 V on the 12 V rail, 5.25 V on the 5 V rail. SMBJ12A (12 V standoff) leaks only 5 µA at the knee → fine as-is. On the 5 V rail, **SMBJ6.0A (6.0 V standoff) is chosen over SMBJ5.0A**: 5.0 V standoff sits *at* nominal and leaks up to 800 µA near the +5 % corner, whereas 6.0 V clears 5.25 V cleanly → leakage ~0 in normal operation. The 6.0 V part costs only ~1 V more clamp (10.3 V vs 9.2 V), still well under downstream limits.
 - **Clamp headroom:** 12 V clamp 19.9 V < AP63205 abs-max 40 V and 25 V bulk caps; 5 V clamp 10.3 V < AMS1117 abs-max 15 V and DRV8833 VM abs-max 11.8 V.
-- **12 V rail bulk cap ≥ 25 V.** The clamp voltage passes through the fuse onto the downstream bulk cap during a transient, so the cap must be rated above the clamp — a 16 V part would be over-stressed by the 19.9 V clamp on a hot-plug. (This is also why the 12 V rail stays on **SMBJ12A**, not SMBJ13A: 13A's 21.5 V clamp squeezes the margin to a 25 V cap for no leakage benefit.)
+- **12 V rail bulk cap ≥ 25 V.** The clamp voltage passes through the fuse onto the downstream bulk cap during a transient, so the cap must be rated above the clamp — a 16 V part would be over-stressed by the 19.9 V clamp on a hot-plug. (This is also why the 12 V rail stays on **SMBJ12A**, not SMBJ13A: 13A's 21.5 V clamp squeezes the margin for no leakage benefit.) **Fleet standard: use a 35 V part** (10 µF 0805 35V, LCSC `C49010152`) — 25 V is the hard minimum; 35 V gives comfortable derating over the 19.9 V clamp at negligible cost.
 
 **CAN-bus TVS is deliberately excluded.** The SN65HVD230 transceiver already carries ±16 kV HBM built-in bus ESD, which covers the realistic indoor threat (handling ESD). An external CAN TVS (e.g. PESD1CAN) only buys industrial surge / EFT margin that an indoor cockpit with short CAN runs will never see. Do not populate CAN-bus TVS — optionally leave a DNP footprint on the CAN pair only.
 
@@ -247,11 +247,12 @@ Pinouts below are the fabbed Rev 1 truth (J_BUS / J_BL / J_I2C) or the adopted p
 | Class | Pins | Pinout | Family |
 |---|---|---|---|
 | CAN trunk + power (`J_BUS_IN/OUT`, hosts only, daisy) | 8 (2×4) | 1,2=+12V · 3=+5V · 4,7,8=GND · 5=CANH · 6=CANL | Mini-Fit Jr |
-| Backlight single-zone (`J_BL`) | 2 (1×2) | 1=SW_RETURN · 2=+12V | Mini-Fit Jr |
+| Backlight single-zone (`J_BL`) | 2 (1×2) | 1=+12V · 2=SW_RETURN | Mini-Fit Jr |
 | Backlight dual-zone + utility 5 V (gauge panels) | 4 (2×2) | 1=BL1_RET · 2=+12V · 3=BL2_RET · 4=+5V | Mini-Fit Jr |
-| I²C leg (`J_I2C1/2`) | 8 | 1=SDA · 2=SCL · 3,4=GND · 5=+3V3 · 6=INT_A · 7=INT_B · 8=spare — **no +5V** | JST-XH |
+| I²C leg (`J_I2C1/2`) | 8 | 1=SDA · 2=SCL · 3,4=GND · 5=+3V3 · 6=INT_A · 7=INT_B · **8=flex** (+5V / analog / spare) — **1–5 fixed, 6–8 repurposable per panel** (swap-in-place) | JST-XH |
 | SPI leg (`J_SR`, end-of-chain, one per host chain) | 7 | 1=SCK · 2=MOSI · 3=MISO · 4=GND · 5=+3V3 · 6=LOAD · 7=LATCH | JST-XH |
 
+- **Backlight pin-1 convention differs by connector type** (matches the fabbed boards): single-zone `J_BL` = **+12V on pin 1** (per PanelGroup_Base `J_BL1/2`); the 2×2 dual-zone = **RET on pin 1**. Not interchangeable — keep the two keyed/labeled distinct so a cable can't cross-plug.
 - **Layer scope:** trunk terminates at host boards only; a sub-panel's full interface =
   one signal leg + a backlight cable. Hosts may carry multiple parallel connectors of a
   class (several `J_BL` on a zone, several `J_I2C` on a bus) — sized at B2. Exception:
@@ -299,6 +300,7 @@ Pins 1/2 both connect to +12V net. Pins 4/7/8 all connect to GND plane. CANH/CAN
   8-pin are reserved for the interface-class legs** (J_SR = 7, J_I2C = 8) so a generic
   harness can never mate an interface socket. Choose by pin count, leave no pins empty.
 - Rated 3A per pin — sufficient for 12V LED lines and all signal/power within a controller group
+- **J_I2C pin order is fixed fleet-wide (swap-in-place):** `1 SDA · 2 SCL · 3 GND · 4 GND · 5 +3V3 · 6 INT_A · 7 INT_B · 8 [+5V or analog]`. Per panel, **swap only the unused pin in place, never reorder** — every J_I2C crimp map stays identical. **Pin 8 is the flex slot:** `+5V` for a board that needs it (e.g. a stepper's DRV8833 VM), `analog` (pot/ladder wiper) for one that doesn't. A single-MCP panel can **wire-OR INTA/INTB** (IOCON MIRROR + open-drain) → one INT on pin 6, freeing pin 7 for a 2nd analog. Series R on the leg: 33Ω on SDA/SCL, 100Ω on INT.
 - Polarized housing — one insertion orientation only
 - Switches share a common GND within each connector group; one GND pin per connector
 
@@ -319,8 +321,8 @@ LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the sign
 
 | Pin | Signal |
 |---|---|
-| 1 | BACKLIGHT_SW_RETURN (MOSFET drain — near GND when LEDs on) |
-| 2 | +12V_BACKLIGHT (always-on 12V supply to LED string tops) |
+| 1 | +12V_BACKLIGHT (always-on 12V supply to LED string tops) |
+| 2 | BACKLIGHT_SW_RETURN (MOSFET drain — near GND when LEDs on) |
 
 ## Switches & Controls
 
@@ -408,10 +410,10 @@ Confirmed from bench testing. Estimated ~500 LEDs total across full cockpit (~10
 
 ### Zone dimming (MOSFET)
 
-- One **IRLML2502** N-channel MOSFET per panel/lighting zone (SOT-23, 20V, 4A, Vgs(th) 0.3–0.7V) — **low-side switch**
+- One **AO3400A** N-channel MOSFET per panel/lighting zone (SOT-23, **30V**, 5.7A, Vgs(th) 0.65–1.45V) — **low-side switch**. **AO3400A (30V) is required over IRLML2502 (20V):** the LED strings run on the **12V rail**, whose **SMBJ12A TVS clamps at 19.9V** on a hot-plug transient — the FET drain sees that clamp, and 19.9V is far too close to IRLML2502's 20V V(DS)max. The 30V AO3400A gives proper margin; 3.3V PWM still fully drives it for the sub-amp backlight load.
 - Gate driven directly by STM32 3.3V PWM — no gate driver required (Vgs = 3.3V, well within ±12V Vgs(max))
-- Drain → BACKLIGHT_SW_RETURN (Mini-Fit Jr pin 1); source → GND
-- LED strings: +12V_BACKLIGHT (Mini-Fit Jr pin 2) → resistor → 5× LEDs → BACKLIGHT_SW_RETURN
+- Drain → BACKLIGHT_SW_RETURN (Mini-Fit Jr pin 2); source → GND
+- LED strings: +12V_BACKLIGHT (Mini-Fit Jr pin 1) → resistor → 5× LEDs → BACKLIGHT_SW_RETURN
 - Resistors set per-string current at full on; PWM duty cycle controls average brightness across the zone
 
 ### Other
@@ -468,15 +470,15 @@ These subcircuits repeat on every MCU board and are candidates for KiCad hierarc
                                    ...
                                LED_n K → BACKLIGHT_SW_RETURN
                                               │
-                                        IRLML2502 drain
-                                        IRLML2502 source → GND
-                                        IRLML2502 gate ← STM32 PWM (3.3V direct)
+                                        AO3400A drain
+                                        AO3400A source → GND
+                                        AO3400A gate ← STM32 PWM (3.3V direct)
 ```
 
 - Default off (gate at 0V, Vgs = 0V → MOSFET off)
 - STM32 HIGH (3.3V) → Vgs = 3.3V → N-ch fully enhanced → BACKLIGHT_SW_RETURN pulled to GND → LED strings conduct
 - STM32 LOW → Vgs = 0V → MOSFET off → no current path → LEDs off
-- No gate pull-up or driver required: IRLML2502 Vgs(th) = 0.3–0.7V; 3.3V is well within Vgs(max) = ±12V
+- No gate pull-up or driver required: AO3400A Vgs(th) = 0.65–1.45V (on by ~2.5V); 3.3V is well within Vgs(max) = ±12V
 - LED power arrives on a **separate 2-pin Mini-Fit Jr connector** — not the signal harness
 
 ### MCP23017 Instance
