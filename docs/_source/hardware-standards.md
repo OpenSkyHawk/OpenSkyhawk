@@ -247,11 +247,12 @@ Pinouts below are the fabbed Rev 1 truth (J_BUS / J_BL / J_I2C) or the adopted p
 | Class | Pins | Pinout | Family |
 |---|---|---|---|
 | CAN trunk + power (`J_BUS_IN/OUT`, hosts only, daisy) | 8 (2×4) | 1,2=+12V · 3=+5V · 4,7,8=GND · 5=CANH · 6=CANL | Mini-Fit Jr |
-| Backlight single-zone (`J_BL`) | 2 (1×2) | 1=SW_RETURN · 2=+12V | Mini-Fit Jr |
+| Backlight single-zone (`J_BL`) | 2 (1×2) | 1=+12V · 2=SW_RETURN | Mini-Fit Jr |
 | Backlight dual-zone + utility 5 V (gauge panels) | 4 (2×2) | 1=BL1_RET · 2=+12V · 3=BL2_RET · 4=+5V | Mini-Fit Jr |
-| I²C leg (`J_I2C1/2`) | 8 | 1=SDA · 2=SCL · 3,4=GND · 5=+3V3 · 6=INT_A · 7=INT_B · 8=spare — **no +5V** | JST-XH |
+| I²C leg (`J_I2C1/2`) | 8 | 1=SDA · 2=SCL · 3,4=GND · 5=+3V3 · 6=INT_A · 7=INT_B · **8=flex** (+5V / analog / spare) — **1–5 fixed, 6–8 repurposable per panel** (swap-in-place) | JST-XH |
 | SPI leg (`J_SR`, end-of-chain, one per host chain) | 7 | 1=SCK · 2=MOSI · 3=MISO · 4=GND · 5=+3V3 · 6=LOAD · 7=LATCH | JST-XH |
 
+- **Backlight pin-1 convention differs by connector type** (matches the fabbed boards): single-zone `J_BL` = **+12V on pin 1** (per PanelGroup_Base `J_BL1/2`); the 2×2 dual-zone = **RET on pin 1**. Not interchangeable — keep the two keyed/labeled distinct so a cable can't cross-plug.
 - **Layer scope:** trunk terminates at host boards only; a sub-panel's full interface =
   one signal leg + a backlight cable. Hosts may carry multiple parallel connectors of a
   class (several `J_BL` on a zone, several `J_I2C` on a bus) — sized at B2. Exception:
@@ -320,8 +321,8 @@ LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the sign
 
 | Pin | Signal |
 |---|---|
-| 1 | BACKLIGHT_SW_RETURN (MOSFET drain — near GND when LEDs on) |
-| 2 | +12V_BACKLIGHT (always-on 12V supply to LED string tops) |
+| 1 | +12V_BACKLIGHT (always-on 12V supply to LED string tops) |
+| 2 | BACKLIGHT_SW_RETURN (MOSFET drain — near GND when LEDs on) |
 
 ## Switches & Controls
 
@@ -411,8 +412,8 @@ Confirmed from bench testing. Estimated ~500 LEDs total across full cockpit (~10
 
 - One **AO3400A** N-channel MOSFET per panel/lighting zone (SOT-23, **30V**, 5.7A, Vgs(th) 0.65–1.45V) — **low-side switch**. **AO3400A (30V) is required over IRLML2502 (20V):** the LED strings run on the **12V rail**, whose **SMBJ12A TVS clamps at 19.9V** on a hot-plug transient — the FET drain sees that clamp, and 19.9V is far too close to IRLML2502's 20V V(DS)max. The 30V AO3400A gives proper margin; 3.3V PWM still fully drives it for the sub-amp backlight load.
 - Gate driven directly by STM32 3.3V PWM — no gate driver required (Vgs = 3.3V, well within ±12V Vgs(max))
-- Drain → BACKLIGHT_SW_RETURN (Mini-Fit Jr pin 1); source → GND
-- LED strings: +12V_BACKLIGHT (Mini-Fit Jr pin 2) → resistor → 5× LEDs → BACKLIGHT_SW_RETURN
+- Drain → BACKLIGHT_SW_RETURN (Mini-Fit Jr pin 2); source → GND
+- LED strings: +12V_BACKLIGHT (Mini-Fit Jr pin 1) → resistor → 5× LEDs → BACKLIGHT_SW_RETURN
 - Resistors set per-string current at full on; PWM duty cycle controls average brightness across the zone
 
 ### Other
