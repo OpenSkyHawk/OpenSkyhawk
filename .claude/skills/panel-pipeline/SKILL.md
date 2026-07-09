@@ -292,10 +292,10 @@ repo is public — no live link to the private instance).
 - **A panel = an InvenTree Assembly** whose BOM = the PanelGroup base assembly + panel-specific
   HMI / fabricated / fastener parts + its bare PCB. Multi-level → per-panel cost rolls up.
 - **Touchpoints:**
-  - **B5 (post-BOM)** — push the *finalized* KiCad BOM → InvenTree (Ki-nTree or CSV import) →
-    creates the parts (HMI → `Controls`, etc.) + the panel **Assembly**'s BOM. **Decoupled push,
-    not a live KiCad link.** Per-panel part list also derivable from the control inventory
-    (`docs/_source/a4ec-control-inventory.csv`) via FW-class → physical-part map.
+  - **B5 (post-BOM)** — push the *finalized* KiCad BOM → InvenTree (CSV import, or `inventree-part-import`
+    for LCSC parts — see **LCSC import** below) → creates the parts (HMI → `Controls`, etc.) + the panel
+    **Assembly**'s BOM. **Decoupled push, not a live KiCad link.** Per-panel part list also derivable from
+    the control inventory (`docs/_source/a4ec-control-inventory.csv`) via FW-class → physical-part map.
   - **B7** — each LCSC / JLC order → a **Purchase Order** (part lines + shipping/tax as *extra
     lines*); **receive** on arrival → stock at landed cost.
   - **Cost → price** — BOM rollup = material; add **`Assembly Labor (hr)` + `Machine time` virtual
@@ -304,6 +304,23 @@ repo is public — no live link to the private instance).
     stock, outputs the assembly at build cost).
 - **Access:** API token at `~/.config/inventree/token` (read it, never commit/echo). Small LXC →
   **retry + backoff on HTTP 500** (DB-lock) for bulk writes.
+- **LCSC import — `inventree-part-import`** (invoke `~/ipi-venv/bin/python -m inventree_part_import`; v1.10.0
+  with LCSC API v3 — no console script, so use `-m`). Pulls a part's full data (description, parameters,
+  **image**, price breaks) straight from an LCSC part number. Use at **B5** (seed new BOM parts) / **B7**
+  (order-time price refresh):
+  - **First-time setup = the tool's OWN `--configure lcsc` wizard.** Never hand-write its
+    `inventree.yaml` / `suppliers.yaml` internals.
+  - **Import NEW parts by C-number:** `~/ipi-venv/bin/python -m inventree_part_import -i false -o lcsc C1234 C5678 …`
+    (`-i false` = non-interactive/safe; `-d` = dry-run, *not* allowed with `--update`). Run once with `-i true`
+    when a new LCSC category needs mapping to your tree — the answer is saved to `categories.yaml`. Declare new
+    subcategories there with `_aliases` (LCSC category strings) → the tool auto-creates them on the next run.
+  - ⚠️ **NEW parts ONLY.** It matches an existing InvenTree part by **`name == MPN`** — OpenSkyhawk parts use
+    *descriptive* names (e.g. `R 1k 0.1% 0805`), so a re-import creates an **MPN-named duplicate** instead of
+    updating (`--update CAT` searches by name too → same trap). To refresh an existing descriptively-named part
+    (image/description), attach the data **directly via the API**, not through import.
+  - Config dir `~/Library/Application Support/inventree_part_import/`. Full workflow + the duplicate
+    merge-repair pattern (reassign SupplierPart/ManufacturerPart → original, deactivate-then-delete the dup)
+    live in memory `project_inventree`.
 
 ---
 
