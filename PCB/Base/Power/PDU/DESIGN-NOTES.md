@@ -174,7 +174,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 | R4 | 12V divider top 0.1% 25ppm | Viking ARG05BTC3302 | 0805 | **C2828767** | 1 |
 | R7 | 5V divider bottom 0.1% 25ppm | YAGEO RT0805BRD0713KL | 0805 | **C865184** | 1 |
 | R6,R20 | divider 10k 0.1% 25ppm | Viking ARG05BTC1002 | 0805 | **C406725** | 2 |
-| R8-12,R15-17 | 1k series/anti-alias (0.1% 25ppm) | YAGEO RT0805BRD071KL | 0805 | **C110774** | 8 |
+| R8-12,R15-17 | 1k series/anti-alias **1%** | Vishay CRCW08051K00FKEA | 0805 | **C844939** | 8 |
 | R14 | 1.5k 5V-status LED limit 1% | CHANGLONG CL0805FN1K5PS | 0805 | **C49254235** | 1 |
 | J1,J3 | Mini-Fit-Jr 5566 4-pin (chxunda clone OK) | XD-5566-2×2A | 2×2 4.2mm | **C20608114** | 2 |
 | J2 | Mini-Fit-Jr 5566 8-pin (chxunda clone OK) | XD-5566-2×4A | 2×4 4.2mm | **C20608116** | 1 |
@@ -195,7 +195,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 | R18 | 33 1% | C2090807 |
 | R19 | 120 1% CAN term | C844816 |
 | C1-7,C12-18,C20 | 100nF | C1711 |
-| C8,C9 | 10µF 0805 | C669099 |
+| C8,C9 | 10µF 0805 35V | C49010152 |
 | C10 | 10µF elec 4×5.4 | C3343 |
 | C11 | 22µF elec 4×5.4 | C72502 |
 | C19 | 1µF | C28323 |
@@ -206,6 +206,10 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 **On hand (user-supplied, no order):** J4 1×05 + J5 1×02 pin headers.
 
 **Divider grades matched:** 33K/13K/10K all thin-film 0.1% 25ppm (C2828767 / C865184 / C406725) — 5V + 12V divider ratios temp-honest; FW cal handles offset, tempco within <100mV target. (Earlier 13K C2991327 = 100ppm rejected; 1K C54921104 was mislabeled 13k, rejected.)
+
+**1k series/anti-alias downgraded to 1% (2026-07-10):** the 8× 1k (R8-12, R15-17) were originally spec'd 0.1% (C110774) for grade-consistency, but they sit **in series into the high-Z ADC pins** (fault-limit + anti-alias RC with Cf) — the value doesn't set any ratio, so 0.1% is wasted there. Precision belongs **only on the divider ratio resistors** (33k/13k/10k). Downgraded to generic **1% C844939** (Vishay CRCW08051K00, the fleet 1k) — drops the precision C110774 from the board entirely and consolidates all generic 1k under one SKU.
+
+**Shunt UPGRADED at order time (2026-07-10):** `C346481` (Stackpole CSRF2512, ±100ppm) went **backordered** at LCSC → swapped to **`C500740`** (Milliohm LR2512DS-3W-10mR-1%, **±25ppm**, 2512, in-stock). This is a strict improvement — it restores the ±25ppm precision that the original 2728 pick (HoRCG27284) was dropped for, now in a stock 2512 footprint (same land). Adopt as the shunt of record for the next PDU rev; update InvenTree pk47 SupplierPart accordingly. (Same order pass also brand-swapped 7 backordered fleet passives — 100nF/10nF/10µF×2/4.7k/AO3400A/2N7002 — to in-stock equivalents; those are procurement-only, no design change. Full list: order summary 2026-07-10.)
 
 ---
 
