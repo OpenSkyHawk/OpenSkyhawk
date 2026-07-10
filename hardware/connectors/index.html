@@ -4207,10 +4207,10 @@ proposed standard — verify against the Molex 5557 drawing before first crimp.<
 panel-local mux when several share an address), ADS1115 analog — internals are the panel's
 business.</p>
 <p><img alt="I2C leg connector pinout" src="../../assets/images/diagrams/connectors/connector-j-i2c.svg" /></p>
-<p><em>SDA/SCL run through 33 Ω series resistors at the host; INT pins serve MCP interrupts and
-are spares on MCP-less panels. </em><em>This leg carries no +5 V</em><em> — a panel that needs it takes
-the dual-zone backlight cable's utility line. View: into the cable-housing mating face,
-pin 1 marked.</em></p>
+<p><em>SDA/SCL run through 33 Ω series resistors at the host. </em><em>Pins 6–8 are a flex block:</em><em> pins
+1–5 are fixed (SDA · SCL · GND · GND · +3V3); the last three default to INT_A / INT_B / spare
+but carry whatever a module needs — +5 V (e.g. a stepper driver's motor supply), an analog
+line, or an extra signal. View: into the cable-housing mating face, pin 1 marked.</em></p>
 <h2 id="spi-leg-j_sr">SPI leg — <code>J_SR</code></h2>
 <p>JST-XH 7-pin. The SPI-class sub-panel interface: 74HC165/74HC595 shift-register chains
 for encoder-bearing and fast-gauge panels. One per host chain, at the chain's end.</p>

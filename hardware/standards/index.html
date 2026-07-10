@@ -4168,8 +4168,9 @@ current-limiting resistor per string.</p>
 <li>5 × 5050 red LEDs in series per string (~10 V at 12 V supply, ~2 V resistor headroom)</li>
 <li>One resistor per string — <strong>120 Ω default</strong> (≈18 mA); 100 Ω for bright panels, 180 Ω for
   dim/night zones. (47 Ω was rejected — the resistor overheated.)</li>
-<li>One <strong>IRLML2502</strong> N-channel MOSFET per zone, low-side, gate driven directly by STM32 3.3 V PWM
-  (no gate driver). PWM duty sets average brightness.</li>
+<li>One <strong>AO3400A</strong> N-channel MOSFET per zone (SOT-23, 30 V — needed for margin over the 19.9 V
+  SMBJ12A clamp on the 12 V rail; IRLML2502's 20 V sits too close), low-side, gate driven directly
+  by STM32 3.3 V PWM (no gate driver). PWM duty sets average brightness.</li>
 <li><strong>LEDs on the front face; resistors, MOSFETs, and everything else on the back.</strong></li>
 </ul>
 <h2 id="shift-register-io-74hc165-74hc595-shiftbus">Shift-register I/O — 74HC165 / 74HC595 (ShiftBus)</h2>
