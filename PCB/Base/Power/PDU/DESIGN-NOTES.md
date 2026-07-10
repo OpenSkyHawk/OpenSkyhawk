@@ -195,7 +195,7 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 | R18 | 33 1% | C2090807 |
 | R19 | 120 1% CAN term | C844816 |
 | C1-7,C12-18,C20 | 100nF | C1711 |
-| C8,C9 | 10µF 0805 | C669099 |
+| C8,C9 | 10µF 0805 35V | C49010152 |
 | C10 | 10µF elec 4×5.4 | C3343 |
 | C11 | 22µF elec 4×5.4 | C72502 |
 | C19 | 1µF | C28323 |
