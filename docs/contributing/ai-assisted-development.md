@@ -45,8 +45,9 @@ it'll hand you off to the right specialist skill.
 ## Working in the repo
 
 - The always-on context is `CLAUDE.md` — it stays deliberately small: project orientation, the
-  skill map above, and the source-of-truth/tracking rules (GitHub Projects for panels, Notion for non-panel tasks, + the `docs-drift` GitHub
-  issue). Everything discipline-specific is in a skill.
+  skill map above, and the source-of-truth/tracking rules (GitHub Projects for panel/controller
+  builds, GitHub Issues for other actionable work, Notion for not-yet-actionable research, + the
+  `docs-drift` GitHub issue). Everything discipline-specific is in a skill.
 - Other AI tools should read `AGENTS.md`, which points at the same sources.
 - See [Design Conventions](conventions.md) for the rules every change follows, and
   [Adding a Controller](adding-controller.md) for the end-to-end panel walkthrough.

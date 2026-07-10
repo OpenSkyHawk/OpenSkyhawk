@@ -87,10 +87,10 @@ business.
 
 ![I2C leg connector pinout](../assets/images/diagrams/connectors/connector-j-i2c.svg)
 
-*SDA/SCL run through 33 Ω series resistors at the host; INT pins serve MCP interrupts and
-are spares on MCP-less panels. **This leg carries no +5 V** — a panel that needs it takes
-the dual-zone backlight cable's utility line. View: into the cable-housing mating face,
-pin 1 marked.*
+*SDA/SCL run through 33 Ω series resistors at the host. **Pins 6–8 are a flex block:** pins
+1–5 are fixed (SDA · SCL · GND · GND · +3V3); the last three default to INT_A / INT_B / spare
+but carry whatever a module needs — +5 V (e.g. a stepper driver's motor supply), an analog
+line, or an extra signal. View: into the cable-housing mating face, pin 1 marked.*
 
 ## SPI leg — `J_SR`
 

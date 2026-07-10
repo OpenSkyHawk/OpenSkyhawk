@@ -13,7 +13,7 @@ see [KiCad Workflow](kicad-workflow.md).
 | MCP23017 | SOIC-28 | I²C digital I/O expander (16-bit) | `Interface_Expansion:MCP23017x-x-SO` |
 | ADS1115 | — | I²C 16-bit ADC, 4 channels | `Analog_ADC:ADS1115` |
 | AMS1117-3.3 | SOT-223 | 5 V → 3.3 V LDO (every board) | `Regulator_Linear:AMS1117-3.3_SOT223` |
-| IRLML2502 | SOT-23 | LED zone MOSFET (low-side, logic-level) | `OpenSkyhawk:IRLML2502` |
+| AO3400A | SOT-23 | LED zone MOSFET (low-side, logic-level, 30 V) | `OpenSkyhawk:Q_NMOS_GSD` |
 | 8 MHz crystal | — | HSE for CAN timing | `Device:Crystal` |
 | LED 5050 (red) | 6-pad 5050 | Panel backlight (5-in-series strings) | `OpenSkyhawk:LED_5050_Red` |
 
@@ -39,7 +39,7 @@ for future high-5V-current boards. See [Power Architecture](../architecture/powe
 
 ## Notes
 
-- The custom `OpenSkyhawk` symbols (LED 5050, IRLML2502, the steppers) live in
+- The custom `OpenSkyhawk` symbols (LED 5050, the `Q_NMOS_GSD` N-FET, the steppers) live in
   `PCB/Libraries/OpenSkyhawk.kicad_sym` + `OpenSkyhawk.pretty/`. Everything else is a KiCad
   built-in — no custom entry needed.
 - SN65HVD230 3.3 V clones (e.g. VP230) are acceptable for JLCPCB assembly.
