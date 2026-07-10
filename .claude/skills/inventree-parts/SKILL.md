@@ -71,7 +71,16 @@ alternate procedure is a **stub + tool run** (don't hand-copy fields):
      tool create a duplicate instead of matching).
 2. `~/ipi-venv/bin/python -m inventree_part_import -o lcsc <alt C#>` → matches the stub by SKU →
    **updates in place**, filling price/packaging/link/description/params/datasheet.
+3. **Reset the part name** — the tool sets `name = the imported MPN`, so an alternate run
+   **renames the part to the alternate's MPN + overwrites description** (IPN + supplier links are
+   safe, but the name now reflects the alternate, not the primary). `PATCH /api/part/<pk>/`
+   `{name:<primary MPN>, description:<primary desc>}` afterward.
 Do this **just-in-time** when a backorder/mismatch appears — not a bulk upfront pass.
+
+**Multi-supplier naming caveat:** a part has one `name` but many suppliers/MPNs, and the tool
+forces `name=MPN` on every run. So the name = whichever MPN was imported last. Keep it on the
+**primary** MPN (reset after alternate imports). The **IPN is the stable identity** — never
+changes; BOMs/designs reference it, not the name.
 
 **Flag an out-of-stock supplier part** (keep the IPN, steer ordering to the alternate):
 `PATCH /api/company/part/<sp>/` `{active:false, note:"OUT OF STOCK (date) — use <C#>"}`.
