@@ -35,7 +35,7 @@ the GitHub Project (Panel Research & Assignment).
 ## The shared library
 
 `PCB/Libraries/OpenSkyhawk.kicad_sym` + `OpenSkyhawk.pretty/` hold the custom symbols and
-footprints (the 5050 LED, IRLML2502, the X27 steppers). Everything else is a KiCad built-in. The
+footprints (the 5050 LED, the `Q_NMOS_GSD` N-FET, the X27 steppers). Everything else is a KiCad built-in. The
 full parts list with symbol references is on the [Component Library](components.md) page.
 
 To add a new custom part: add the symbol in `OpenSkyhawk.kicad_sym`, create the matching

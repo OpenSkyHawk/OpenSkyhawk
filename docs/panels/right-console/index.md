@@ -14,9 +14,10 @@ and the ECM panel.
 - **Flight Controls** — AFCS / Autopilot Control (and its Test panel), Flap Handle
 - **Engine & Systems** — Engine Control Panel, ECM Panel
 
-!!! note "First board in progress"
-    The **Navigation** group is the first to be started: the **APN-153 Doppler** sub-panel has a
-    schematic (ERC-clean) — CAD and PCB layout are still to come. The Flight Controls and
+!!! note "Navigation group — schematics under way"
+    The **Navigation** group is the first under construction: all three sub-panels — the
+    **APN-153 Doppler**, **ASN-41 Nav Computer**, and **ARC-51 UHF Radio** — now have ERC-clean
+    schematics. CAD, backlighting, and PCB layout are still to come. The Flight Controls and
     Engine & Systems groups are scoped but not yet designed.
 
 ## Want to help?
