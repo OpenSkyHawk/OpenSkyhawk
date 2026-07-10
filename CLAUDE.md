@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus. Panel/controller build tracking lives in **GitHub Projects** (org `OpenSkyHawk`); non-panel tasks and project notes are in **Notion** under the "A-4E Home Cockpit" workspace.
+OpenSkyhawk is a physical DCS A-4E Skyhawk home cockpit build. It produces 3D-printed panels, custom PCBs, and STM32 firmware to replicate the full A-4E cockpit for use with the DCS A-4E Community Mod. Controllers communicate over CAN bus. **Actionability decides where a ticket lives:** panel/controller build tracking is in **GitHub Projects**, any other *actionable* work — you know what it is and roughly how, ready to do — is a **GitHub Issue**, and *directional* items you want but can't yet scope (how/when unknown) go to **Notion** (the "A-4E Home Cockpit" workspace). All under org `OpenSkyHawk`.
 
 ## Repository structure
 
@@ -31,7 +31,13 @@ Contributor-facing version: [AI-Assisted Development](docs/contributing/ai-assis
 
 ## Source of truth & tracking
 
-Two systems hold living project state: **GitHub Projects** for panel/controller build tracking, and **Notion** for non-panel tasks + project notes. Keep them in sync as work lands.
+**Actionability decides the home.** Do you know *what* it is and roughly *how* to do it, and it's ready to act on? → **actionable → GitHub**. Do you *want* it but don't yet know *how* or *when* (directional, needs scoping/research)? → **Notion** — e.g. "Node fault vocabulary — expand NodeFaultCode + reset paths" (wanted, but how/when TBD) belongs in Notion, not a GitHub issue. Merely wanting to do something is NOT enough for GitHub.
+
+- **GitHub Projects** — panel/controller build tracking (#1/#2 below).
+- **GitHub Issues** — every *other* actionable work item (firmware, hardware/PCB, CAD, CI, docs, tooling). Tag with the matching repo label (`firmware`, `hardware`, `docs`, `ci`, `repo-hygiene`, …) + a `priority:` label. Running notes for such a ticket go in the **issue body** (edited in place), not scattered across comments.
+- **Notion Tasks** — *not-yet-actionable* research, ideas, and project notes only. When a Notion item becomes actionable, open a GitHub issue for it and mark the Notion page Done / tombstone it.
+
+Keep them in sync as work lands.
 
 ### GitHub Projects — panel/controller tracking (org `OpenSkyHawk`)
 
@@ -43,7 +49,7 @@ Two systems hold living project state: **GitHub Projects** for panel/controller 
 
 ### Notion — "A-4E Home Cockpit" workspace (Notion ID: `301575ac53b180b6a1b7cce9ba40ac79`)
 
-Notion holds the **Tasks** database (non-panel work items) + general project notes. *(The legacy Notion Panels database is superseded by the GitHub Projects above — research-reference only; do not treat it as the tracker.)*
+Notion holds the **Tasks** database (**not-yet-actionable** research, ideas, and undecided directions) + general project notes. Actionable build work belongs in **GitHub Issues**, not here — see the actionability rule above. *(The legacy Notion Panels database is superseded by the GitHub Projects above — research-reference only; do not treat it as the tracker.)*
 
 **Always search before creating.** Before calling `notion-create-pages`, search the Tasks database for an existing page with the same or similar name. Update it instead of creating a duplicate.
 
@@ -53,7 +59,7 @@ Notion holds the **Tasks** database (non-panel work items) + general project not
 
 #### Tasks Database
 
-Tracks non-panel work items — firmware milestones, architecture decisions, library updates, CAN integration, and other build tasks. Use this instead of the Panels database for anything that isn't tied to a specific panel.
+Tracks **directional** items only — things you *want* to do but can't yet scope (how or when unknown), research threads, and ideas not ready to build (e.g. "Node fault vocabulary — expand NodeFaultCode + reset paths"). The moment you know what + roughly how and it's ready to act, open a **GitHub Issue** (repo label + `priority:`) and mark the Notion page Done / tombstone it. Do NOT put ready-to-do build work (firmware, hardware/PCB, CAD, CI, docs) here — that goes to GitHub Issues.
 
 - **Collection URL:** `collection://188fa7e5-b170-498b-9c3b-ed7fc0c71138`
 - **Database page:** `https://www.notion.so/6d9b009c17d447599431d373484f510d`
@@ -61,7 +67,7 @@ Tracks non-panel work items — firmware milestones, architecture decisions, lib
 - **Status options:** Backlog → In Progress → Done
 - **Category options:** Firmware, Hardware, Architecture, Library, PCB, Documentation, Other
 - **Notes go in the page body**, not in any property field.
-- **When starting a new non-panel work item:** search Tasks first, then create a new page if none exists. Set Category and Priority at creation time.
+- **When capturing a new not-yet-actionable item:** search Tasks first, then create a new page if none exists. Set Category and Priority at creation time.
 
 ### GitHub issues — docs drift
 
