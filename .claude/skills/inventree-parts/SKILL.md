@@ -105,6 +105,21 @@ MPN — ignore). Run **on demand** (before an order / ~monthly) via
 `tools/inventree-part-import/refresh-costs.sh`. **No OS automation (no cron/launchd)** — it's a
 manual routine; run it, or ask Claude to.
 
+## Assembly tiers (BOM lives on the assembled PCB)
+- **Bare PCB** = `<BOARD>-PCB` (fabricated, no parts).
+- **Assembled PCB (PCBA)** = `<BOARD>-PCBA` — populated board; **the component BOM (from KiCad,
+  joined by IPN) lives here**. Panel boards use this suffix (ASN-41-PCBA, ARC-51A-PCBA,
+  APN-153-PCBA). Infrastructure boards (PDU / Gateway / PanelGroup) keep the plain IPN as their
+  top level (no cockpit panel above them).
+- **Panel assembly** = plain `<BOARD>` (e.g. `ASN-41`) — reserved for the future panel level
+  (PCBA + off-board controls/toggles + faceplate + hardware). Off-board controls belong here,
+  not on the PCBA BOM.
+- **Revisions:** fabbed board → lock rev 0.1.0 (as-fabbed) + open rev 0.2.0 for changes; unfabbed
+  → single open 0.1.0, edit in place until fab. **Value change on same footprint = same rev;
+  footprint/routing change = new rev.** Base-board 0.1.0 parts may be pre-**locked** → unlock
+  (`PATCH {locked:false}`) → add BOM items → relock. Build BOM from `kicad-cli sch export bom
+  --fields '${IPN},Reference' --group-by '${IPN}'` (qty = ref count), `sub_part` by IPN.
+
 ## Config options available (not all used — reference)
 The tool's config supports more than we use, if a need arises:
 - **`auto_detect_columns`** (config.yaml) — import from a **BOM/CSV file** (add our `LCSC` column
