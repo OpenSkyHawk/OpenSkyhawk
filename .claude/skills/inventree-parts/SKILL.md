@@ -59,14 +59,18 @@ NOT reliably predict match-vs-create** — don't trust it; check the part's mfr-
 Side effect: a successful sync **normalizes the part `name` to the MPN** (IPN stays the identity).
 
 ## Alternates = churn-proofing (one IPN, many SupplierParts)
-The tool only enriches the **name-matched primary** supplier. To add a backorder/brand
-alternate (different MPN) under the **same** IPN, add it manually — and set the **same fields
-the tool would**, or they'll be blank (packaging/link/description are easy to miss):
-1. Company (manufacturer) — find or `POST /api/company/` `{name, is_manufacturer:true}`.
-2. `POST /api/company/part/manufacturer/` `{part, manufacturer, MPN}`.
-3. `POST /api/company/part/` `{part, supplier:1, SKU:<C#>, manufacturer_part:<mfr_pk>,`
-   **`packaging, link, description}`** ← don't skip these (tool sets them from LCSC).
-4. `POST /api/company/price-break/` per break `{part:<sp_pk>, quantity, price, price_currency}`.
+The tool auto-enriches only the **name-matched primary**, BUT it will also enrich an
+**alternate in place** if the alternate's SupplierPart already exists **with a manufacturer_part
+linked** — the tool matches by SKU → its manufacturer_part → the part, and updates. So the clean
+alternate procedure is a **stub + tool run** (don't hand-copy fields):
+1. Create the stub on the **target IPN'd part** (only the identity bits — MPN + SKU):
+   - company (mfr): find or `POST /api/company/` `{name, is_manufacturer:true}`
+   - `POST /api/company/part/manufacturer/` `{part, manufacturer, MPN}`
+   - `POST /api/company/part/` `{part, supplier:1, SKU:<C#>, manufacturer_part:<mfr_pk>}`
+     — the **manufacturer_part link is REQUIRED** (a bare SupplierPart with no mfr link makes the
+     tool create a duplicate instead of matching).
+2. `~/ipi-venv/bin/python -m inventree_part_import -o lcsc <alt C#>` → matches the stub by SKU →
+   **updates in place**, filling price/packaging/link/description/params/datasheet.
 Do this **just-in-time** when a backorder/mismatch appears — not a bulk upfront pass.
 
 **Flag an out-of-stock supplier part** (keep the IPN, steer ordering to the alternate):
