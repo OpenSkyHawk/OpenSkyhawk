@@ -22,9 +22,19 @@ The tool reads its config from a machine-local dir
 - **`inventree.yaml.template`** — host + token placeholder. **The real `inventree.yaml`
   (with the token) is NOT committed** — copy the template, fill the token locally.
 
-## Run
+## Run (import / add a part)
 ```
 ~/ipi-venv/bin/python -m inventree_part_import -o lcsc <C#…>
 ```
 Reminder: the tool sets everything **except IPN**. Create a placeholder (name=MPN, IPN, category)
 first, or set/verify the IPN after — see the `inventree-parts` skill.
+
+## Weekly refresh (price / stock / data)
+`--update-recursive <CATEGORY>` re-pulls current LCSC price/stock/datasheet/params for every part
+in a category (IPN-safe). Run it weekly to keep per-panel cost fresh:
+```
+./weekly-update.sh          # runs --update-recursive Electronics, logs to ~/.local/state/
+```
+Schedule via **launchd** (`com.openskyhawk.inventree-weekly.plist` — edit the path, copy to
+`~/Library/LaunchAgents/`, `launchctl load`) or **cron** (`0 3 * * 1 …/weekly-update.sh`).
+Controls (Alibaba toggles) have no LCSC supplier → nothing to refresh, skipped.
