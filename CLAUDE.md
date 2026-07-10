@@ -24,6 +24,7 @@ which load automatically when you work on that aspect (don't paste their content
 | CAD panel & bezel modeling, STL/STEP export, mechanical fit | `cad` |
 | Researching a new panel — DCS Model Viewer, control inventory & types, panel sizing | `panel-mapping` |
 | Driving a panel/controller through the full build pipeline (research → schematic → CAD → PCB → firmware → order → test), grouping panels into controllers, or resuming a partly-built one | `panel-pipeline` |
+| InvenTree parts — assigning IPNs, importing LCSC/Alibaba parts (inventree-part-import), supplier/cost data, backorder alternates, per-panel cost | `inventree-parts` |
 
 Contributor-facing version: [AI-Assisted Development](docs/contributing/ai-assisted-development.md).
 

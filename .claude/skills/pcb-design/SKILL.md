@@ -62,6 +62,11 @@ I²C addressing: MCP23017 0x20–0x27 (up to 8/bus), ADS1115 0x48–0x4B (up to 
 two I²C buses. The *firmware* side of these parts (driver classes) belongs to the `firmware`
 skill — this skill owns the wiring and verification.
 
+Symbols carry **IPN + LCSC co-equal** (IPN = stable descriptive identity, LCSC = the buyable
+that can churn). To sync a part's IPN + supplier/cost data into InvenTree (the
+`inventree-part-import` tool, the placeholder workflow, alternates, non-LCSC Alibaba parts),
+use the **`inventree-parts`** skill.
+
 ## Verify
 
 `kicad-cli sch erc` (clean) and `kicad-cli pcb drc` (clean against the JLCPCB rules) before
