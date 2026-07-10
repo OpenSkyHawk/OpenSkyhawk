@@ -60,11 +60,17 @@ Side effect: a successful sync **normalizes the part `name` to the MPN** (IPN st
 
 ## Alternates = churn-proofing (one IPN, many SupplierParts)
 The tool only enriches the **name-matched primary** supplier. To add a backorder/brand
-alternate (different MPN) under the **same** IPN: add it manually —
-`POST /api/company/part/manufacturer/` (part, manufacturer_pk, MPN) →
-`PATCH /api/company/part/<sp>/` `manufacturer_part=<mfr>` → `POST /api/company/price-break/`
-(part=<sp>, quantity, price). Do this **just-in-time** when a mismatch/backorder appears — not
-a bulk upfront pass. A bare SupplierPart (C# only, no mfr/price) is orderable but has no cost.
+alternate (different MPN) under the **same** IPN, add it manually — and set the **same fields
+the tool would**, or they'll be blank (packaging/link/description are easy to miss):
+1. Company (manufacturer) — find or `POST /api/company/` `{name, is_manufacturer:true}`.
+2. `POST /api/company/part/manufacturer/` `{part, manufacturer, MPN}`.
+3. `POST /api/company/part/` `{part, supplier:1, SKU:<C#>, manufacturer_part:<mfr_pk>,`
+   **`packaging, link, description}`** ← don't skip these (tool sets them from LCSC).
+4. `POST /api/company/price-break/` per break `{part:<sp_pk>, quantity, price, price_currency}`.
+Do this **just-in-time** when a backorder/mismatch appears — not a bulk upfront pass.
+
+**Flag an out-of-stock supplier part** (keep the IPN, steer ordering to the alternate):
+`PATCH /api/company/part/<sp>/` `{active:false, note:"OUT OF STOCK (date) — use <C#>"}`.
 
 ## Non-LCSC suppliers (Alibaba/AliExpress)
 Toggles/rotaries/EC11/buttons come from **Alibaba** (e.g. Wenzhou Wintai), never LCSC. Model:
