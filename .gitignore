@@ -45,9 +45,17 @@ build/
 # never show as untracked/modified.
 Firmware/**/.gitignore
 
+# KiCad ERC/DRC reports (generated)
+*-erc.rpt
+*-drc.rpt
+
 # KiCad Fabrication Toolkit
 fabrication-toolkit-options.json
 production/
+
+# FreeCAD (source is .FCStd; backups/transients are generated)
+*.FCBak
+*.FCStd1
 
 # Exports (generated — commit sources, not outputs)
 **/*.stl
