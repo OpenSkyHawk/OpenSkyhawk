@@ -104,6 +104,19 @@ price/stock/datasheet/params for all electronic parts (IPN-safe; names flip to l
 MPN — ignore). Wrapper + launchd/cron template at `tools/inventree-part-import/`
 (`weekly-update.sh`, `com.openskyhawk.inventree-weekly.plist`). Keeps per-panel cost current.
 
+## Config options available (not all used — reference)
+The tool's config supports more than we use, if a need arises:
+- **`auto_detect_columns`** (config.yaml) — import from a **BOM/CSV file** (add our `LCSC` column
+  header): `inventree_part_import <bom.csv>` instead of listing C#s. Nicer for new-board bulk.
+- **`parameters.yaml` + category `_parameters`** — import structured specs (Capacitance, Tolerance,
+  Voltage…). We skip these — the **IPN already encodes value/tol/voltage**, so params are optional.
+- **`_ignore: true`** on own-product categories (Assemblies/Bare PCB/Products) — hygiene.
+- **`hooks.py`** — pre-creation fixups of `category_path`/`parameters` (CANNOT set IPN — no IPN
+  field on ApiPart).
+- Reference config (comprehensive deep tree + 106 params + hooks):
+  https://github.com/30350n/inventree_part_import_config — we deliberately keep a **flat** tree
+  instead (curated, no bloat).
+
 ## Rules
 - **Never source new LCSC SKUs** — use only parts already selected (in a schematic/InvenTree);
   gap-list the rest for the user. **Report every InvenTree write for review.**
