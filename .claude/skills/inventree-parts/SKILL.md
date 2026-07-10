@@ -98,11 +98,12 @@ added to each $/ea → landed price break). LCSC field stays empty for these.
 - Set IPN on existing: `PATCH /api/part/<pk>/` `{IPN}`
 - Categories: Passives=7, Semiconductors=8, Connectors=9, Crystals=11, Modules=10, Controls=2.
 
-## Weekly cost refresh
+## Cost-refresh routine (manual, not scheduled)
 `inventree_part_import --update-recursive Electronics -i false` re-pulls current LCSC
 price/stock/datasheet/params for all electronic parts (IPN-safe; names flip to last-imported
-MPN — ignore). Wrapper + launchd/cron template at `tools/inventree-part-import/`
-(`weekly-update.sh`, `com.openskyhawk.inventree-weekly.plist`). Keeps per-panel cost current.
+MPN — ignore). Run **on demand** (before an order / ~monthly) via
+`tools/inventree-part-import/refresh-costs.sh`. **No OS automation (no cron/launchd)** — it's a
+manual routine; run it, or ask Claude to.
 
 ## Config options available (not all used — reference)
 The tool's config supports more than we use, if a need arises:

@@ -29,12 +29,12 @@ The tool reads its config from a machine-local dir
 Reminder: the tool sets everything **except IPN**. Create a placeholder (name=MPN, IPN, category)
 first, or set/verify the IPN after — see the `inventree-parts` skill.
 
-## Weekly refresh (price / stock / data)
+## Cost-refresh routine (manual — not OS-scheduled)
 `--update-recursive <CATEGORY>` re-pulls current LCSC price/stock/datasheet/params for every part
-in a category (IPN-safe). Run it weekly to keep per-panel cost fresh:
+in a category (IPN-safe). Run the routine **manually on demand** (e.g. before placing an order, or
+~monthly) to keep per-panel cost current:
 ```
-./weekly-update.sh          # runs --update-recursive Electronics, logs to ~/.local/state/
+./refresh-costs.sh          # runs --update-recursive Electronics, logs to ~/.local/state/
 ```
-Schedule via **launchd** (`com.openskyhawk.inventree-weekly.plist` — edit the path, copy to
-`~/Library/LaunchAgents/`, `launchctl load`) or **cron** (`0 3 * * 1 …/weekly-update.sh`).
-Controls (Alibaba toggles) have no LCSC supplier → nothing to refresh, skipped.
+No cron/launchd — deliberately a manual routine. Controls (Alibaba toggles) have no LCSC
+supplier → nothing to refresh, skipped.
