@@ -30,7 +30,11 @@ when an LCSC SKU backorders. Full history/spec: GitHub issue **#238**.
 `inventree-part-import` (https://github.com/30350n/inventree-part-import), run as
 `~/ipi-venv/bin/python -m inventree_part_import -o lcsc <C#…>`. Config dir:
 `~/Library/Application Support/inventree_part_import/` (`inventree.yaml` host/token,
-`categories.yaml` LCSC→our-category aliases, `config.yaml`, `suppliers.yaml` LCSC=pk1).
+`categories.yaml` LCSC→our-category aliases, `config.yaml`, `suppliers.yaml` LCSC=pk1). **The
+config is version-controlled at `tools/inventree-part-import/`** (minus the token) — copy those
+into the config dir on a new machine. When the tool errors "failed to match category", add the
+LCSC leaf category to `categories.yaml` `_aliases` (we alias into our flat tree, not
+create-on-the-fly).
 It imports supplier/MPN/datasheet/parameters/**price**. **It has NO IPN capability**
 (`ApiPart` has no IPN field; `get_part_data()` emits only name(=MPN)/description/link/
 active/component/purchaseable; `hooks.py` can't inject IPN). So **IPN is our job**, set on a
