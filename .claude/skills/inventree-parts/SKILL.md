@@ -98,6 +98,20 @@ added to each $/ea → landed price break). LCSC field stays empty for these.
 - Set IPN on existing: `PATCH /api/part/<pk>/` `{IPN}`
 - Categories: Passives=7, Semiconductors=8, Connectors=9, Crystals=11, Modules=10, Controls=2.
 
+## Pricing gotcha — add a qty=1 price break (REQUIRED for cost rollup)
+LCSC price breaks start at **qty≥20** (no qty=1), and `inventree-part-import` imports them
+verbatim. But InvenTree computes **single-unit** part pricing from a break at/below qty=1 — with
+none, `supplier_price`/`overall` = **None** for any part without stock/purchase history, so it
+**drops out of the BOM cost rollup** (assembly total reads ~10× low). **Fix: after import, add a
+qty=1 break (= the lowest existing break price) to each supplier part** that lacks one:
+`POST /api/company/price-break/` `{part:<sp_pk>, quantity:1, price:<lowest>, price_currency}`.
+Then the rollup sums correctly. (Parts purchased via a PO get stock pricing and mask this — it
+bites the non-purchased ones: TVS, dividers, etc.)
+
+Note: assembly BOM rollups recompute via InvenTree's **scheduled** pricing task
+(`scheduled_for_update=True`); the REST `PUT /api/part/<pk>/pricing/` only *flags* it — a full
+recalc needs the server-side scheduled task / admin "Recalculate pricing" to run.
+
 ## Cost-refresh routine (manual, not scheduled)
 `inventree_part_import --update-recursive Electronics -i false` re-pulls current LCSC
 price/stock/datasheet/params for all electronic parts (IPN-safe; names flip to last-imported
