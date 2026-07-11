@@ -7,7 +7,7 @@
 	(title_block
 		(title "PDU")
 		(date "2026-07-03")
-		(rev "0.1.0")
+		(rev "0.2.0")
 		(company "OpenSkyhawk")
 	)
 	(lib_symbols
@@ -1873,6 +1873,184 @@
 				(pin passive line
 					(at 0 -3.81 90)
 					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:C_Polarized_Small"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.254 1.778 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized_Small"
+				(at 0.254 -2.032 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Polarized capacitor, small symbol"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_Polarized_Small_0_1"
+				(rectangle
+					(start -1.524 0.6858)
+					(end 1.524 0.3048)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.524 -0.3048)
+					(end 1.524 -0.6858)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 1.524) (xy -0.762 1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 1.27) (xy -1.016 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_Polarized_Small_1_1"
+				(pin passive line
+					(at 0 2.54 270)
+					(length 1.8542)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 1.8542)
 					(name ""
 						(effects
 							(font
@@ -7509,6 +7687,16 @@
 	)
 	(wire
 		(pts
+			(xy 132.08 35.56) (xy 132.08 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "435ec519-2595-48f9-aa5f-5ea47a6d329d")
+	)
+	(wire
+		(pts
 			(xy 45.72 73.66) (xy 48.26 73.66)
 		)
 		(stroke
@@ -8039,6 +8227,16 @@
 	)
 	(wire
 		(pts
+			(xy 132.08 43.18) (xy 132.08 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "99d205ab-69f4-4fe2-bc89-fa2d01168fdc")
+	)
+	(wire
+		(pts
 			(xy 67.31 46.99) (xy 76.2 46.99)
 		)
 		(stroke
@@ -8446,16 +8644,6 @@
 			(type default)
 		)
 		(uuid "cb3a0093-cd92-4486-8176-2d7b804ab3b2")
-	)
-	(wire
-		(pts
-			(xy 132.08 36.83) (xy 132.08 35.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ced7182d-00d3-490d-9be6-17c09f9bba3e")
 	)
 	(wire
 		(pts
@@ -9410,6 +9598,17 @@
 				)
 			)
 		)
+		(property "Description" "Generic connector, double row, 02x04, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 190.5 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CONN-MF-8P"
 			(at 190.5 46.99 0)
 			(hide yes)
@@ -9422,17 +9621,6 @@
 			)
 		)
 		(property "LCSC" "C20608116"
-			(at 190.5 46.99 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, double row, 02x04, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 190.5 46.99 0)
 			(hide yes)
 			(show_name no)
@@ -9999,6 +10187,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 246.38 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 246.38 157.48 0)
 			(hide yes)
@@ -10033,17 +10232,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 246.38 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 246.38 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -10202,6 +10390,17 @@
 				)
 			)
 		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 274.32 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CONN-XH-3P"
 			(at 274.32 147.32 0)
 			(hide yes)
@@ -10214,17 +10413,6 @@
 			)
 		)
 		(property "LCSC" "C51940188"
-			(at 274.32 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 274.32 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -10309,6 +10497,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 111.76 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 111.76 40.64 0)
 			(hide yes)
@@ -10343,17 +10542,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 111.76 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 111.76 40.64 0)
 			(hide yes)
 			(show_name no)
@@ -10435,6 +10623,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 48.26 102.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-13K-0P1PCT-0805"
 			(at 48.26 102.87 0)
 			(hide yes)
@@ -10469,17 +10668,6 @@
 			)
 		)
 		(property "LCSC" "C865184"
-			(at 48.26 102.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 48.26 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -10559,6 +10747,17 @@
 				)
 			)
 		)
+		(property "Description" "Current Sense Amplifier, 1 Circuit, Rail-to-Rail, 26V, Gain 50 V/V, SOT-23-5"
+			(at 53.34 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "IC-INA180A2-SOT23"
 			(at 57.15 152.4 0)
 			(hide yes)
@@ -10572,17 +10771,6 @@
 		)
 		(property "LCSC" "C192764"
 			(at 57.15 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Current Sense Amplifier, 1 Circuit, Rail-to-Rail, 26V, Gain 50 V/V, SOT-23-5"
-			(at 53.34 156.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10748,6 +10936,17 @@
 				)
 			)
 		)
+		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 59.69 36.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CONN-MF-4P"
 			(at 59.69 36.83 0)
 			(hide yes)
@@ -10760,17 +10959,6 @@
 			)
 		)
 		(property "LCSC" "C20608114"
-			(at 59.69 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 59.69 36.83 0)
 			(hide yes)
 			(show_name no)
@@ -11012,6 +11200,17 @@
 				)
 			)
 		)
+		(property "Description" "12V status LED"
+			(at 180.34 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "LED-GREEN-0805"
 			(at 180.34 147.32 0)
 			(hide yes)
@@ -11024,17 +11223,6 @@
 			)
 		)
 		(property "LCSC" "C19171393"
-			(at 180.34 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "12V status LED"
 			(at 180.34 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -11126,6 +11314,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 313.69 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 313.69 44.45 0)
 			(hide yes)
@@ -11160,17 +11359,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 313.69 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 313.69 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -11253,6 +11441,17 @@
 				)
 			)
 		)
+		(property "Description" "STMicroelectronics Arm Cortex-M3 MCU, 64KB flash, 20KB RAM, 72 MHz, 2.0-3.6V, 37 GPIO, LQFP48"
+			(at 356.87 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "IC-STM32F103C8-LQFP"
 			(at 356.87 101.6 0)
 			(hide yes)
@@ -11265,17 +11464,6 @@
 			)
 		)
 		(property "LCSC" "C8734"
-			(at 356.87 101.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "STMicroelectronics Arm Cortex-M3 MCU, 64KB flash, 20KB RAM, 72 MHz, 2.0-3.6V, 37 GPIO, LQFP48"
 			(at 356.87 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -11492,6 +11680,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 381 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-C0G-22PF-50V-0805"
 			(at 381 156.21 0)
 			(hide yes)
@@ -11526,17 +11725,6 @@
 			)
 		)
 		(property "LCSC" "C1804"
-			(at 381 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 381 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -11617,6 +11805,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 180.34 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-4K7-1PCT-0805"
 			(at 180.34 156.21 0)
 			(hide yes)
@@ -11651,17 +11850,6 @@
 			)
 		)
 		(property "LCSC" "C844941"
-			(at 180.34 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 180.34 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -11820,6 +12008,17 @@
 				)
 			)
 		)
+		(property "Description" "Light emitting diode"
+			(at 246.38 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "LED-GREEN-0805"
 			(at 246.38 147.32 0)
 			(hide yes)
@@ -11832,17 +12031,6 @@
 			)
 		)
 		(property "LCSC" "C19171393"
-			(at 246.38 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
 			(at 246.38 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -12400,6 +12588,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 246.38 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 246.38 88.9 0)
 			(hide yes)
@@ -12434,17 +12633,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 246.38 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 246.38 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -12604,6 +12792,17 @@
 				)
 			)
 		)
+		(property "Description" "Ferrite bead, small symbol"
+			(at 361.95 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "FB-600R-0805"
 			(at 361.95 40.64 0)
 			(hide yes)
@@ -12616,17 +12815,6 @@
 			)
 		)
 		(property "LCSC" "C21519"
-			(at 361.95 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Ferrite bead, small symbol"
 			(at 361.95 40.64 0)
 			(hide yes)
 			(show_name no)
@@ -12864,6 +13052,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 34.29 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-0R010-1PCT-2512"
 			(at 34.29 156.21 0)
 			(hide yes)
@@ -12898,17 +13097,6 @@
 			)
 		)
 		(property "LCSC" "C346481"
-			(at 34.29 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 34.29 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -13223,6 +13411,17 @@
 				)
 			)
 		)
+		(property "Description" "Polarized capacitor"
+			(at 180.34 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-ELEC-10UF-25V-D4"
 			(at 180.34 99.06 0)
 			(hide yes)
@@ -13257,17 +13456,6 @@
 			)
 		)
 		(property "LCSC" "C3343"
-			(at 180.34 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Polarized capacitor"
 			(at 180.34 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -13347,6 +13535,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 57.15 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 57.15 96.52 0)
 			(hide yes)
@@ -13381,17 +13580,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 57.15 96.52 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 57.15 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -13783,6 +13971,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 60.96 262.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 60.96 262.89 0)
 			(hide yes)
@@ -13817,17 +14016,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 60.96 262.89 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 60.96 262.89 0)
 			(hide yes)
 			(show_name no)
@@ -13909,6 +14097,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 64.77 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 64.77 78.74 0)
 			(hide yes)
@@ -13943,17 +14142,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 64.77 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 64.77 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -14034,6 +14222,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 323.85 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 323.85 44.45 0)
 			(hide yes)
@@ -14068,17 +14267,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 323.85 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 323.85 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -14160,6 +14348,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 48.26 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-10K-0P1PCT-0805"
 			(at 48.26 78.74 0)
 			(hide yes)
@@ -14194,17 +14393,6 @@
 			)
 		)
 		(property "LCSC" "C406725"
-			(at 48.26 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 48.26 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -14363,6 +14551,17 @@
 				)
 			)
 		)
+		(property "Description" "CAN Bus Transceivers, 3.3V, 1Mbps, Low-Power capabilities, SOIC-8"
+			(at 250.19 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "IC-SN65HVD230-SOIC"
 			(at 247.65 88.9 0)
 			(hide yes)
@@ -14376,17 +14575,6 @@
 		)
 		(property "LCSC" "C12084"
 			(at 247.65 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "CAN Bus Transceivers, 3.3V, 1Mbps, Low-Power capabilities, SOIC-8"
-			(at 250.19 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14482,6 +14670,17 @@
 				)
 			)
 		)
+		(property "Description" "Push button switch, generic, two pins"
+			(at 326.39 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "SW-TACT-6MM"
 			(at 326.39 161.29 0)
 			(hide yes)
@@ -14504,17 +14703,6 @@
 				)
 			)
 		)
-		(property "Description" "Push button switch, generic, two pins"
-			(at 326.39 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(pin "1"
 			(uuid "1a063a76-a522-4675-bcdf-c123879400cc")
 		)
@@ -14525,6 +14713,132 @@
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
 					(reference "SW1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized_Small")
+		(at 132.08 40.64 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "643b1c8c-67e1-4125-85ea-87e6c607c49d")
+		(property "Reference" "C9"
+			(at 134.62 38.8238 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22uF"
+			(at 134.62 41.3638 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:CP_Elec_5x5.4"
+			(at 132.08 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 132.08 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor, small symbol"
+			(at 132.08 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+			(property "IPN" "CAP-ELEC-22UF-35V-D5"
+				(at 132.08 40.64 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Rating" "35V"
+				(at 132.08 40.64 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Tolerance" "20%"
+				(at 132.08 40.64 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C48971029"
+				(at 132.08 40.64 0)
+				(hide yes)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+		(pin "1"
+			(uuid "c8f401af-9e50-4483-a206-ae0b20d40a1a")
+		)
+		(pin "2"
+			(uuid "c2ab3918-4469-4fdd-b843-ed58027531e1")
+		)
+		(instances
+			(project "PDU"
+				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
+					(reference "C9")
 					(unit 1)
 				)
 			)
@@ -14661,6 +14975,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 43.18 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-10K-1PCT-0805"
 			(at 43.18 96.52 0)
 			(hide yes)
@@ -14695,17 +15020,6 @@
 			)
 		)
 		(property "LCSC" "C844937"
-			(at 43.18 96.52 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 43.18 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -14787,6 +15101,17 @@
 				)
 			)
 		)
+		(property "Description" "Polarized capacitor"
+			(at 212.09 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-ELEC-22UF-16V-D4"
 			(at 212.09 99.06 0)
 			(hide yes)
@@ -14821,17 +15146,6 @@
 			)
 		)
 		(property "LCSC" "C72502"
-			(at 212.09 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Polarized capacitor"
 			(at 212.09 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -14913,6 +15227,18 @@
 				)
 			)
 		)
+		(property "Description" "600W, 12V, Unidirectional, TVS"
+			(at 45.72 41.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
 		(property "IPN" "TVS-SMBJ12A-SMB"
 			(at 45.72 41.91 0)
 			(hide yes)
@@ -14933,18 +15259,6 @@
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Description" "600W, 12V, Unidirectional, TVS"
-			(at 45.72 41.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
 			)
 		)
 		(property "MF" "Taiwan Semiconductor Corporation"
@@ -15161,6 +15475,17 @@
 				)
 			)
 		)
+		(property "Description" "5V status LED"
+			(at 194.31 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "LED-GREEN-0805"
 			(at 194.31 147.32 0)
 			(hide yes)
@@ -15173,17 +15498,6 @@
 			)
 		)
 		(property "LCSC" "C19171393"
-			(at 194.31 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "5V status LED"
 			(at 194.31 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -15292,132 +15606,6 @@
 			(project "PDU"
 				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
 					(reference "#PWR034")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 132.08 40.64 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "7334a9d4-4169-47aa-80c0-c28598678399")
-		(property "Reference" "C9"
-			(at 135.89 39.3699 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uF"
-			(at 135.89 41.9099 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 133.0452 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 132.08 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "IPN" "CAP-CER-10UF-35V-0805"
-			(at 132.08 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Rating" "35V"
-			(at 132.08 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "20%"
-			(at 132.08 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C49010152"
-			(at 132.08 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 132.08 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "a64a6ae3-ec24-4b90-b4d3-488c9ac8a429")
-		)
-		(pin "1"
-			(uuid "c0b5a026-6033-41a6-8184-31b139d36a4b")
-		)
-		(instances
-			(project "PDU"
-				(path "/fb008fba-1646-454b-b7aa-cdbce59e6515"
-					(reference "C9")
 					(unit 1)
 				)
 			)
@@ -15635,6 +15823,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 55.88 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 55.88 140.97 0)
 			(hide yes)
@@ -15669,17 +15868,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 55.88 140.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 55.88 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -15915,6 +16103,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 340.36 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 340.36 44.45 0)
 			(hide yes)
@@ -15949,17 +16148,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 340.36 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 340.36 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -16038,6 +16226,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 370.84 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-1UF-50V-0805"
 			(at 370.84 52.07 0)
 			(hide yes)
@@ -16072,17 +16271,6 @@
 			)
 		)
 		(property "LCSC" "C28323"
-			(at 370.84 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 370.84 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -16164,6 +16352,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 67.31 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 67.31 204.47 0)
 			(hide yes)
@@ -16198,17 +16397,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 67.31 204.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 67.31 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -16289,6 +16477,17 @@
 				)
 			)
 		)
+		(property "Description" "Light emitting diode"
+			(at 226.06 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "LED-RED-0805"
 			(at 226.06 147.32 0)
 			(hide yes)
@@ -16301,17 +16500,6 @@
 			)
 		)
 		(property "LCSC" "C19171391"
-			(at 226.06 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
 			(at 226.06 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -16634,6 +16822,17 @@
 				)
 			)
 		)
+		(property "Description" "Generic connector, double row, 02x02, counter clockwise pin numbering scheme (similar to DIP package numbering), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 223.52 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CONN-MF-4P"
 			(at 223.52 45.72 0)
 			(hide yes)
@@ -16646,17 +16845,6 @@
 			)
 		)
 		(property "LCSC" "C20608114"
-			(at 223.52 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, double row, 02x02, counter clockwise pin numbering scheme (similar to DIP package numbering), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 223.52 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -16820,6 +17008,17 @@
 				)
 			)
 		)
+		(property "Description" "Current Sense Amplifier, 1 Circuit, Rail-to-Rail, 26V, Gain 50 V/V, SOT-23-5"
+			(at 54.61 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "IC-INA180A2-SOT23"
 			(at 58.42 200.66 0)
 			(hide yes)
@@ -16833,17 +17032,6 @@
 		)
 		(property "LCSC" "C192764"
 			(at 58.42 200.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Current Sense Amplifier, 1 Circuit, Rail-to-Rail, 26V, Gain 50 V/V, SOT-23-5"
-			(at 54.61 204.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17009,6 +17197,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 41.91 255.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-10K-1PCT-0805"
 			(at 41.91 255.27 0)
 			(hide yes)
@@ -17043,17 +17242,6 @@
 			)
 		)
 		(property "LCSC" "C844937"
-			(at 41.91 255.27 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 41.91 255.27 0)
 			(hide yes)
 			(show_name no)
@@ -17132,7 +17320,7 @@
 				)
 			)
 		)
-		(property "IPN" "CONN-HDR-5P"
+		(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 257.81 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -17143,7 +17331,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "IPN" "CONN-HDR-5P"
 			(at 257.81 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -17310,6 +17498,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 53.34 255.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 53.34 255.27 0)
 			(hide yes)
@@ -17344,17 +17543,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 53.34 255.27 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 53.34 255.27 0)
 			(hide yes)
 			(show_name no)
@@ -17589,6 +17777,17 @@
 				)
 			)
 		)
+		(property "Description" "Fuse"
+			(at 87.63 36.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "FUSE-HOLDER-BLADE-DIP4"
 			(at 87.63 36.83 0)
 			(hide yes)
@@ -17601,17 +17800,6 @@
 			)
 		)
 		(property "LCSC" "C19727305"
-			(at 87.63 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Fuse"
 			(at 87.63 36.83 0)
 			(hide yes)
 			(show_name no)
@@ -17692,6 +17880,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 325.12 77.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-10K-1PCT-0805"
 			(at 325.12 77.47 0)
 			(hide yes)
@@ -17726,17 +17925,6 @@
 			)
 		)
 		(property "LCSC" "C844937"
-			(at 325.12 77.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 325.12 77.47 0)
 			(hide yes)
 			(show_name no)
@@ -17892,6 +18080,17 @@
 				)
 			)
 		)
+		(property "Description" "Fuse"
+			(at 33.02 36.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "FUSE-HOLDER-BLADE-DIP4"
 			(at 33.02 36.83 0)
 			(hide yes)
@@ -17904,17 +18103,6 @@
 			)
 		)
 		(property "LCSC" "C19727305"
-			(at 33.02 36.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Fuse"
 			(at 33.02 36.83 0)
 			(hide yes)
 			(show_name no)
@@ -18149,6 +18337,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 349.25 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 349.25 44.45 0)
 			(hide yes)
@@ -18183,17 +18382,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 349.25 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 349.25 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -18429,6 +18617,17 @@
 				)
 			)
 		)
+		(property "Description" "Two pin crystal"
+			(at 391.16 161.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "XTAL-8MHZ-SMD5032"
 			(at 391.16 161.29 0)
 			(hide yes)
@@ -18441,17 +18640,6 @@
 			)
 		)
 		(property "LCSC" "C20617997"
-			(at 391.16 161.29 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Two pin crystal"
 			(at 391.16 161.29 0)
 			(hide yes)
 			(show_name no)
@@ -18532,6 +18720,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 194.31 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K5-1PCT-0805"
 			(at 194.31 156.21 0)
 			(hide yes)
@@ -18566,17 +18765,6 @@
 			)
 		)
 		(property "LCSC" "C49254235"
-			(at 194.31 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 194.31 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -18655,6 +18843,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 379.73 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 379.73 52.07 0)
 			(hide yes)
@@ -18689,17 +18888,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 379.73 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 379.73 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -19014,6 +19202,17 @@
 				)
 			)
 		)
+		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+			(at 46.99 262.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "NTC-10K-1206"
 			(at 46.99 261.62 0)
 			(hide yes)
@@ -19038,17 +19237,6 @@
 		)
 		(property "LCSC" "C52155460"
 			(at 46.99 261.62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
-			(at 46.99 262.89 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19439,6 +19627,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 64.77 102.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 64.77 102.87 0)
 			(hide yes)
@@ -19473,17 +19672,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 64.77 102.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 64.77 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -19719,6 +19907,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 326.39 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 326.39 165.1 0)
 			(hide yes)
@@ -19753,17 +19952,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 326.39 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 326.39 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -20080,6 +20268,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 35.56 204.47 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-0R010-1PCT-2512"
 			(at 35.56 204.47 0)
 			(hide yes)
@@ -20114,17 +20313,6 @@
 			)
 		)
 		(property "LCSC" "C346481"
-			(at 35.56 204.47 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 35.56 204.47 0)
 			(hide yes)
 			(show_name no)
@@ -20205,6 +20393,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 332.74 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 332.74 44.45 0)
 			(hide yes)
@@ -20239,17 +20438,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 332.74 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 332.74 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -20328,6 +20516,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 273.05 97.79 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-120R-1PCT-0805"
 			(at 273.05 97.79 0)
 			(hide yes)
@@ -20362,17 +20561,6 @@
 			)
 		)
 		(property "LCSC" "C844816"
-			(at 273.05 97.79 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 273.05 97.79 0)
 			(hide yes)
 			(show_name no)
@@ -20453,6 +20641,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 208.28 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 208.28 156.21 0)
 			(hide yes)
@@ -20487,17 +20686,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 208.28 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 208.28 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -20577,6 +20765,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 57.15 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 57.15 73.66 0)
 			(hide yes)
@@ -20611,17 +20810,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 57.15 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 57.15 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -20700,6 +20888,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 313.69 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-10K-0P1PCT-0805"
 			(at 313.69 165.1 0)
 			(hide yes)
@@ -20734,17 +20933,6 @@
 			)
 		)
 		(property "LCSC" "C406725"
-			(at 313.69 165.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 313.69 165.1 0)
 			(hide yes)
 			(show_name no)
@@ -20825,6 +21013,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor"
+			(at 381 166.37 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-C0G-22PF-50V-0805"
 			(at 381 166.37 0)
 			(hide yes)
@@ -20859,17 +21058,6 @@
 			)
 		)
 		(property "LCSC" "C1804"
-			(at 381 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
 			(at 381 166.37 0)
 			(hide yes)
 			(show_name no)
@@ -20948,6 +21136,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 77.47 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 77.47 163.83 0)
 			(hide yes)
@@ -20982,17 +21181,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 77.47 163.83 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 77.47 163.83 0)
 			(hide yes)
 			(show_name no)
@@ -21151,7 +21339,7 @@
 				)
 			)
 		)
-		(property "IPN" "CONN-HDR-2P"
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 273.05 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -21162,7 +21350,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "IPN" "CONN-HDR-2P"
 			(at 273.05 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -21242,6 +21430,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 43.18 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-33K-0P1PCT-0805"
 			(at 43.18 73.66 0)
 			(hide yes)
@@ -21276,17 +21475,6 @@
 			)
 		)
 		(property "LCSC" "C2828767"
-			(at 43.18 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 43.18 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -21368,6 +21556,18 @@
 				)
 			)
 		)
+		(property "Description" "600W, 6V, Unidirectional, TVS"
+			(at 76.2 41.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+			)
+		)
 		(property "IPN" "TVS-SMBJ6V0A-SMB"
 			(at 76.2 41.91 0)
 			(hide yes)
@@ -21388,18 +21588,6 @@
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Description" "600W, 6V, Unidirectional, TVS"
-			(at 76.2 41.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
 			)
 		)
 		(property "MF" "MSKSEMI"
@@ -21615,6 +21803,17 @@
 				)
 			)
 		)
+		(property "Description" "1A Low Dropout regulator, positive, 3.3V fixed output, SOT-223"
+			(at 195.58 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "IC-AMS1117-3V3-SOT223"
 			(at 198.12 99.06 0)
 			(hide yes)
@@ -21628,17 +21827,6 @@
 		)
 		(property "LCSC" "C347222"
 			(at 198.12 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "1A Low Dropout regulator, positive, 3.3V fixed output, SOT-223"
-			(at 195.58 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21719,6 +21907,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 73.66 212.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 73.66 212.09 0)
 			(hide yes)
@@ -21753,17 +21952,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 73.66 212.09 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 73.66 212.09 0)
 			(hide yes)
 			(show_name no)
@@ -22000,6 +22188,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 226.06 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 226.06 157.48 0)
 			(hide yes)
@@ -22034,17 +22233,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 226.06 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 226.06 157.48 0)
 			(hide yes)
 			(show_name no)
@@ -22201,6 +22389,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor"
+			(at 269.24 52.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-33R-1PCT-0805"
 			(at 269.24 52.07 0)
 			(hide yes)
@@ -22235,17 +22434,6 @@
 			)
 		)
 		(property "LCSC" "C2090807"
-			(at 269.24 52.07 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
 			(at 269.24 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -22326,6 +22514,17 @@
 				)
 			)
 		)
+		(property "Description" "Light emitting diode"
+			(at 208.28 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "LED-GREEN-0805"
 			(at 208.28 147.32 0)
 			(hide yes)
@@ -22338,17 +22537,6 @@
 			)
 		)
 		(property "LCSC" "C19171393"
-			(at 208.28 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
 			(at 208.28 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -22441,6 +22629,17 @@
 				)
 			)
 		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 57.15 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "CAP-CER-100NF-50V-0805"
 			(at 57.15 190.5 0)
 			(hide yes)
@@ -22475,17 +22674,6 @@
 			)
 		)
 		(property "LCSC" "C1711"
-			(at 57.15 190.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 57.15 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -22880,6 +23068,17 @@
 				)
 			)
 		)
+		(property "Description" "Resistor, small symbol"
+			(at 71.12 156.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "IPN" "RES-1K-1PCT-0805"
 			(at 71.12 156.21 0)
 			(hide yes)
@@ -22914,17 +23113,6 @@
 			)
 		)
 		(property "LCSC" "C844939"
-			(at 71.12 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
 			(at 71.12 156.21 0)
 			(hide yes)
 			(show_name no)
