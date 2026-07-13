@@ -417,8 +417,12 @@ the crystal frequency; it does *not* select HSE. `STM32Board` therefore provides
 the whole fleet inherits it in one place (PanelBridge included).
 
 After configuring, it **reads back** `HAL_RCC_GetSysClockFreq()`/`GetPCLK1Freq()` and requires
-exactly 72/36 MHz — catching HSE-start failure, a wrong-value crystal (e.g. 12 MHz → 108 MHz), or
-prescaler drift. On any deviation it latches `_clockFault` and falls back to internal RC; `begin()`
+exactly 72/36 MHz. This catches **HSE-start failure** (dead crystal / cold joint → HSERDY timeout →
+`HAL_RCC_OscConfig` errors) and a self-inconsistent config, but **not a wrong-value crystal**: those
+freqs are computed from the RCC config × the compile-time `HSE_VALUE`, not measured, so a 12 MHz part
+computes (and passes) as 72 MHz while really running 108 MHz. Correct crystal value is a BOM/build
+guarantee, not runtime-detectable without an independent reference (LSE/LSI cross-count), which we do
+not implement. On a detected deviation it latches `_clockFault` and falls back to internal RC; `begin()`
 then drives the **WARNING** LED (alternating), which is given **top precedence in `_recompute`**
 so a clock fault is not masked by the CAN TX errors it induces (which would misread as a bus fault).
 `begin()` also logs `CLOCK OK/FAULT: SYSCLK=.. PCLK1=.. CAN=..bps` on the diag UART. The fault path

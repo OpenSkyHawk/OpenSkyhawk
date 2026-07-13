@@ -36,10 +36,13 @@ default runs SYSCLK on internal HSI-PLL at 64 MHz, which drops APB1 to 32 MHz an
 444 kbps — even though the crystal is fitted and `-DHSE_VALUE=8000000` is set (that flag only
 declares the frequency to HAL, it does not select HSE). `STM32Board` supplies a strong
 `SystemClock_Config` that selects HSE → PLL ×9 → **72 MHz** (APB1 36 MHz → CAN 500 kbps) and
-verifies the result. A clock fault (dead crystal, wrong value, misconfig) latches and shows the
-**WARNING** status-LED pattern (top precedence) plus a `CLOCK FAULT` diag line, rather than a
-misleading CAN error. All STM32 nodes inherit this by linking `STM32Board`. **Every board must
-use an 8 MHz crystal** — a different value would mis-multiply (e.g. 12 MHz → 108 MHz, faulted).
+verifies the configured tree. A **detectable** clock fault — dead crystal / cold joint (HSERDY
+timeout) or a self-inconsistent config — latches and shows the **WARNING** status-LED pattern (top
+precedence) plus a `CLOCK FAULT` diag line, rather than a misleading CAN error. All STM32 nodes
+inherit this by linking `STM32Board`. **Every board must use an 8 MHz crystal** — a wrong value
+still oscillates, so it is **NOT** runtime-detected (the readback uses the compile-time `HSE_VALUE`,
+not a measurement): a 12 MHz part would run 108 MHz / CAN 750 kbps while logging `CLOCK OK`. Enforce
+8 MHz at the BOM/build level.
 
 **Why UART2 (PA2/PA3) on PanelBridge:** Remapping `Serial` to `Serial1` (PA9/PA10) causes
 "multiple definition of Serial2" compile errors or runtime failures with STM32duino. With no

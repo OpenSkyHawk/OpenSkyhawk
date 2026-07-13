@@ -138,8 +138,12 @@ extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
 // -DHSE_VALUE only tells HAL the crystal frequency; nothing selects HSE. Every
 // OpenSkyhawk STM32 node links STM32Board, so selecting HSE here fixes the fleet in
 // one place: HSE 8 MHz × 9 = 72 MHz → APB1 36 MHz → CAN 500 kbps, matching begin()'s
-// bit timing. On any deviation (fallback, wrong crystal, misconfig) _clockFault latches
-// and begin() raises a visible WARNING rather than silently running the wrong rate.
+// bit timing. If HSE fails to start (dead crystal / cold joint → HSERDY timeout) or the
+// configured tree is self-inconsistent, _clockFault latches and begin() raises a visible
+// WARNING rather than silently running the wrong rate. NOTE: this does NOT detect a
+// wrong-VALUE crystal — HAL_RCC_Get*Freq() derive from the compile-time HSE_VALUE, not a
+// measurement, so a 12 MHz part would compute (and pass) as 72 MHz while really running
+// 108 MHz. Correct crystal value is a BOM/build guarantee, not runtime-detectable here.
 // See issue #245. -DFORCE_CLOCK_FALLBACK exercises the fault path without a dead crystal.
 extern "C" void SystemClock_Config(void) {
 #ifndef FORCE_CLOCK_FALLBACK
@@ -159,8 +163,10 @@ extern "C" void SystemClock_Config(void) {
         clk.APB1CLKDivider = RCC_HCLK_DIV2;          // 36 MHz — CAN, USART2/3
         clk.APB2CLKDivider = RCC_HCLK_DIV1;          // 72 MHz — USART1 diag
         if (HAL_RCC_ClockConfig(&clk, FLASH_LATENCY_2) == HAL_OK) {
-            // Verify the RESULT, not just that the calls returned OK. Catches a 12 MHz
-            // crystal (→108 MHz), any prescaler drift, etc. — anything that would skew CAN.
+            // Verify the configured tree is self-consistent (guards a bad edit to the
+            // dividers/mult above). These freqs are computed from the RCC config × the
+            // compile-time HSE_VALUE, NOT measured — so this cannot catch a wrong-value
+            // crystal (see header note); it only confirms the config we just applied.
             if (HAL_RCC_GetSysClockFreq() == 72000000UL &&
                 HAL_RCC_GetPCLK1Freq()   == 36000000UL)
                 return;                              // 72 MHz locked and verified
@@ -230,6 +236,7 @@ void begin() {
 
 void setDebug(bool on) { _debugOn = on; }
 bool isDebug()         { return _debugOn; }
+bool clockFault()      { return _clockFault; }
 
 void tick() {
     uint32_t now = millis();

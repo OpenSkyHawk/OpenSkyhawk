@@ -119,6 +119,17 @@ namespace STM32Board {
     bool isDebug();
 
     /**
+     * @brief True if SystemClock_Config could not lock the intended 72 MHz HSE tree
+     *        and fell back to internal RC (issue #245).
+     *
+     * When set, the CAN bit timing (tuned for 36 MHz APB1) is wrong for the actual
+     * clock, so callers MUST NOT drive the bus — a faulted node transmitting at the
+     * wrong rate corrupts every other frame. CANProtocol::start() consults this and
+     * comes up in listen-only (silent) mode instead. Latched once at boot; read-only.
+     */
+    bool clockFault();
+
+    /**
      * @brief Print a line to DiagSerial if debug is enabled; no-op otherwise.
      * @param msg Null-terminated string to print.
      */
