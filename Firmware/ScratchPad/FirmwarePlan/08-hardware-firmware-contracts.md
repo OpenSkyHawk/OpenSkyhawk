@@ -31,6 +31,19 @@ inputs. Do not assign to digital functions — each board's schematic allocates 
 **PA11/PA12 shared between CAN and USB:** USB is disabled at firmware init and CAN takes the
 pins — they do not conflict at runtime. USB may be enabled for firmware flashing/debug only.
 
+**Clock — the 8 MHz crystal must be actively selected (issue #245):** the STM32duino core
+default runs SYSCLK on internal HSI-PLL at 64 MHz, which drops APB1 to 32 MHz and skews CAN to
+444 kbps — even though the crystal is fitted and `-DHSE_VALUE=8000000` is set (that flag only
+declares the frequency to HAL, it does not select HSE). `STM32Board` supplies a strong
+`SystemClock_Config` that selects HSE → PLL ×9 → **72 MHz** (APB1 36 MHz → CAN 500 kbps) and
+verifies the configured tree. A **detectable** clock fault — dead crystal / cold joint (HSERDY
+timeout) or a self-inconsistent config — latches and shows the **WARNING** status-LED pattern (top
+precedence) plus a `CLOCK FAULT` diag line, rather than a misleading CAN error. All STM32 nodes
+inherit this by linking `STM32Board`. **Every board must use an 8 MHz crystal** — a wrong value
+still oscillates, so it is **NOT** runtime-detected (the readback uses the compile-time `HSE_VALUE`,
+not a measurement): a 12 MHz part would run 108 MHz / CAN 750 kbps while logging `CLOCK OK`. Enforce
+8 MHz at the BOM/build level.
+
 **Why UART2 (PA2/PA3) on PanelBridge:** Remapping `Serial` to `Serial1` (PA9/PA10) causes
 "multiple definition of Serial2" compile errors or runtime failures with STM32duino. With no
 CDC flag, `Serial` maps natively to UART2 on PA2/PA3 — use that.

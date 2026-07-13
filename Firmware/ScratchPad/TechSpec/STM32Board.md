@@ -409,6 +409,25 @@ wrapper library. Confirmed by the prototype CAN stress test (Experiment B).
 **Clock tree:** 8 MHz crystal × PLL ×9 = 72 MHz SYSCLK; APB1 prescaler /2 = **36 MHz APB1**
 (STM32F103 APB1 max is 36 MHz; CAN1 is on APB1).
 
+**Clock selection is not automatic (issue #245).** The `genericSTM32F103C8/CB` core ships a
+`__weak SystemClock_Config` that defaults SYSCLK to **HSI-PLL 64 MHz** — APB1 would be 32 MHz and
+the CAN init struct below would produce **444 kbps, not 500**. `-DHSE_VALUE=8000000` only tells HAL
+the crystal frequency; it does *not* select HSE. `STM32Board` therefore provides a **strong**
+`SystemClock_Config` that selects HSE → PLL ×9 → 72 MHz. Every STM32 node links `STM32Board`, so
+the whole fleet inherits it in one place (PanelBridge included).
+
+After configuring, it **reads back** `HAL_RCC_GetSysClockFreq()`/`GetPCLK1Freq()` and requires
+exactly 72/36 MHz. This catches **HSE-start failure** (dead crystal / cold joint → HSERDY timeout →
+`HAL_RCC_OscConfig` errors) and a self-inconsistent config, but **not a wrong-value crystal**: those
+freqs are computed from the RCC config × the compile-time `HSE_VALUE`, not measured, so a 12 MHz part
+computes (and passes) as 72 MHz while really running 108 MHz. Correct crystal value is a BOM/build
+guarantee, not runtime-detectable without an independent reference (LSE/LSI cross-count), which we do
+not implement. On a detected deviation it latches `_clockFault` and falls back to internal RC; `begin()`
+then drives the **WARNING** LED (alternating), which is given **top precedence in `_recompute`**
+so a clock fault is not masked by the CAN TX errors it induces (which would misread as a bus fault).
+`begin()` also logs `CLOCK OK/FAULT: SYSCLK=.. PCLK1=.. CAN=..bps` on the diag UART. The fault path
+is bench-testable via `-DFORCE_CLOCK_FALLBACK` without disturbing the crystal.
+
 **Confirmed HAL init struct** — validated in Experiment B (21-min soak, 1,257 frames, 0 lost, TEC=0):
 
 ```cpp
@@ -427,8 +446,9 @@ _hcan.Init.TransmitFifoPriority = DISABLE;     // TX priority by message ID (sta
 ```
 
 > **Note:** the comment `72 MHz / 4 / (1+13+4) = 500 kbps` in the source is a simplification.
-> The actual CAN clock is APB1 = 36 MHz. The HAL uses the real APB1 clock at init time, so
-> the parameters produce 500 kbps correctly regardless of the comment.
+> The actual CAN clock is APB1 = 36 MHz. The HAL uses the real APB1 clock at init time, so the
+> parameters produce 500 kbps — **but only because `SystemClock_Config` guarantees 72 MHz SYSCLK.**
+> Without that (core default HSI 64 MHz → APB1 32 MHz) the same struct yields 444 kbps. See #245.
 
 **Scope boundary:** STM32Board's responsibility ends at configuring the peripheral.
 Verifying that the bus comes up at 500 kbps and that frames flow correctly is out of scope
