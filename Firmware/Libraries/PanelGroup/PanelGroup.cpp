@@ -377,6 +377,11 @@ void loop() {
     // 4. CAN drain: CTRL_BCAST → onControlPacket; SYNC_REQ → onSyncReq; TEST_SEQ → echo
     CANProtocol::drain();
 
+    // 4b. Advance status-LED blink state machine (BOOTING/NORMAL/CAN_ERROR/WARNING).
+    // Without this, blink states sit at their low phase and read as dark; only the
+    // solid states (CONNECTED, BUS_OFF) are visible. PanelBridge already ticks here.
+    STM32Board::tick();
+
     // 5. Update all outputs (steppers, PWM)
     for (auto* p = OpenSkyhawk::OutputBase::head(); p; p = p->next()) p->update();
 
