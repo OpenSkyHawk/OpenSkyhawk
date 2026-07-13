@@ -59,6 +59,7 @@
 | ---: | :--- |
 |  void | [**begin**](#function-begin) () <br>_Initialise all shared hardware. Call once at the top of setup()._  |
 |  CAN\_HandleTypeDef \* | [**canHandle**](#function-canhandle) () <br>_Access the HAL CAN handle._  |
+|  bool | [**clockFault**](#function-clockfault) () <br>_True if SystemClock\_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245)._  |
 |  HardwareSerial & | [**diagSerial**](#function-diagserial) () <br>_Access DiagSerial directly for multi-field formatted output._  |
 |  bool | [**isDebug**](#function-isdebug) () <br>_Returns true when debug output is enabled._  |
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
@@ -175,6 +176,24 @@ Pointer to the internal CAN\_HandleTypeDef.
 
 
 
+
+
+        
+
+<hr>
+
+
+
+### function clockFault 
+
+_True if SystemClock\_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245)._ 
+```C++
+bool STM32Board::clockFault () 
+```
+
+
+
+When set, the CAN bit timing (tuned for 36 MHz APB1) is wrong for the actual clock, so callers MUST NOT drive the bus — a faulted node transmitting at the wrong rate corrupts every other frame. [**CANProtocol::start()**](namespaceCANProtocol.md#function-start) consults this and comes up in listen-only (silent) mode instead. Latched once at boot; read-only. 
 
 
         

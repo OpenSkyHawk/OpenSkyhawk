@@ -238,7 +238,18 @@ void filterAcceptId(uint32_t canId) {
     }
 }
 
-void start()         { _startInternal(CAN_MODE_NORMAL); }
+void start() {
+    // A clock fault means the CAN bit timing (tuned for 36 MHz APB1) is wrong for the
+    // fallback clock, so transmitting would corrupt the live bus. Come up listen-only
+    // (silent: RX + error monitoring, TX pin held recessive, no ACK) so a faulted node
+    // stays harmless while still signalling via the WARNING LED / diag. See issue #245.
+    if (STM32Board::clockFault()) {
+        STM32Board::log("[CAN] clock fault -> listen-only (silent) mode, not transmitting");
+        _startInternal(CAN_MODE_SILENT);
+        return;
+    }
+    _startInternal(CAN_MODE_NORMAL);
+}
 void startLoopback() { _startInternal(CAN_MODE_SILENT_LOOPBACK); }
 
 void drain() {

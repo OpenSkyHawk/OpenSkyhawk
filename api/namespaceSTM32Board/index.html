@@ -3969,6 +3969,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-clockfault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function clockFault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-diagserial" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4153,6 +4164,10 @@
 <td style="text-align: left;"><a href="#function-canhandle"><strong>canHandle</strong></a> () <br><em>Access the HAL CAN handle.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-clockfault"><strong>clockFault</strong></a> () <br><em>True if SystemClock_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">HardwareSerial &amp;</td>
 <td style="text-align: left;"><a href="#function-diagserial"><strong>diagSerial</strong></a> () <br><em>Access DiagSerial directly for multi-field formatted output.</em></td>
 </tr>
@@ -4226,6 +4241,13 @@
 <p>Internal — used by <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> only. Do not call from sketches. </p>
 <p><strong>Returns:</strong></p>
 <p>Pointer to the internal CAN_HandleTypeDef. </p>
+<hr>
+
+<h3 id="function-clockfault">function clockFault</h3>
+<p><em>True if SystemClock_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245).</em> </p>
+<pre><code class="language-C++">bool STM32Board::clockFault () 
+</code></pre>
+<p>When set, the CAN bit timing (tuned for 36 MHz APB1) is wrong for the actual clock, so callers MUST NOT drive the bus — a faulted node transmitting at the wrong rate corrupts every other frame. <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a> consults this and comes up in listen-only (silent) mode instead. Latched once at boot; read-only. </p>
 <hr>
 
 <h3 id="function-diagserial">function diagSerial</h3>

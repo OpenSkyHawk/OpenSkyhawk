@@ -17,6 +17,7 @@
 ## c
 
 * **canHandle** ([**STM32Board**](namespaceSTM32Board.md))
+* **clockFault** ([**STM32Board**](namespaceSTM32Board.md))
 
 
 ## d

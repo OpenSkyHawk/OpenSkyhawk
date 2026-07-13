@@ -53,6 +53,7 @@
 |  bool | [**\_begun**](#variable-_begun)   = `false`<br>_false → OFF (pre-begin)_  |
 |  bool | [**\_blinkPhase**](#variable-_blinkphase)   = `false`<br> |
 |  [**CanStatus**](CANProtocol_8h.md#enum-canstatus) | [**\_canStatus**](#variable-_canstatus)   = `CanStatus::STARTING`<br>_Last value from onCanStatus()_  |
+|  bool | [**\_clockFault**](#variable-_clockfault)   = `false`<br>_SystemClock\_Config off HSE / wrong freq (issue #245)_  |
 |  bool | [**\_debugOn**](#variable-_debugon)   = `false`<br> |
 |  CAN\_HandleTypeDef | [**\_hcan**](#variable-_hcan)  <br> |
 |  uint32\_t | [**\_ledLastMs**](#variable-_ledlastms)   = `0`<br> |
@@ -79,6 +80,7 @@
 | Type | Name |
 | ---: | :--- |
 |  void | [**HAL\_CAN\_MspInit**](#function-hal_can_mspinit) (CAN\_HandleTypeDef \* hcan\_p) <br> |
+|  void | [**SystemClock\_Config**](#function-systemclock_config) (void) <br> |
 
 
 ## Public Static Functions
@@ -198,6 +200,20 @@ CanStatus _canStatus;
 
 
 
+### variable \_clockFault 
+
+_SystemClock\_Config off HSE / wrong freq (issue #245)_ 
+```C++
+bool _clockFault;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_debugOn 
 
 ```C++
@@ -299,6 +315,21 @@ bool _warning;
 ```C++
 void HAL_CAN_MspInit (
     CAN_HandleTypeDef * hcan_p
+) 
+```
+
+
+
+
+<hr>
+
+
+
+### function SystemClock\_Config 
+
+```C++
+void SystemClock_Config (
+    void
 ) 
 ```
 

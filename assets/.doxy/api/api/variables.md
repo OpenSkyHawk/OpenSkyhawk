@@ -91,6 +91,7 @@
 * **\_begun** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_blinkPhase** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_canStatus** ([**STM32Board.cpp**](STM32Board_8cpp.md))
+* **\_clockFault** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_debugOn** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_hcan** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_ledLastMs** ([**STM32Board.cpp**](STM32Board_8cpp.md))

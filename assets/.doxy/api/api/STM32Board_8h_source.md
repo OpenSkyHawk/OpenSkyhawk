@@ -57,6 +57,8 @@ namespace STM32Board {
 
     bool isDebug();
 
+    bool clockFault();
+
     void log(const char* msg);
 
     HardwareSerial& diagSerial();
