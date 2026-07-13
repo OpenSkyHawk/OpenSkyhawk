@@ -36,6 +36,7 @@ static bool      _linkActive = false;               ///< Data flowing (set by se
 static uint32_t  _linkLastMs = 0;                   ///< millis() of last setLinkActive(true)
 static bool      _warning    = false;               ///< App-layer warning latch
 static bool      _begun      = false;               ///< false → OFF (pre-begin)
+static bool      _clockFault = false;               ///< SystemClock_Config off HSE / wrong freq (issue #245)
 
 static constexpr uint32_t LINK_DECAY_MS = 500;      ///< CONNECTED → NORMAL after this idle gap
 
@@ -86,15 +87,19 @@ static void _applyLed() {
 // preserving the invariant that the phase resets only when the state genuinely changes.
 //
 //   not begun            → OFF
-//   CAN BUS_OFF          → BUS_OFF    (solid red)      } CAN faults outrank everything —
-//   CAN TX_ERROR         → CAN_ERROR  (fast red)       } a dead/erroring bus must not be
-//   CAN STARTING         → BOOTING    (slow red)       } masked by an app-layer warning.
+//   clock fault          → WARNING    (amber alt)      ← root HW fault: outranks the CAN
+//                                                        errors it causes, so a bad clock is
+//                                                        not misdiagnosed as a bus problem (#245)
+//   CAN BUS_OFF          → BUS_OFF    (solid red)      } CAN faults outrank an app-layer
+//   CAN TX_ERROR         → CAN_ERROR  (fast red)       } warning — a dead/erroring bus must
+//   CAN STARTING         → BOOTING    (slow red)       } not be masked by setWarning().
 //   warning              → WARNING    (amber alt)
 //   NORMAL + linkActive  → CONNECTED  (solid green)    ← only reachable when CAN is NORMAL
 //   NORMAL               → NORMAL     (slow green)
 static void _recompute() {
     LedState next;
     if      (!_begun)                            next = LedState::OFF;
+    else if (_clockFault)                        next = LedState::WARNING;
     else if (_canStatus == CanStatus::BUS_OFF)   next = LedState::BUS_OFF;
     else if (_canStatus == CanStatus::TX_ERROR)  next = LedState::CAN_ERROR;
     else if (_canStatus == CanStatus::STARTING)  next = LedState::BOOTING;
@@ -128,6 +133,59 @@ extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
     HAL_GPIO_Init(GPIOA, &gpio);
 }
 
+// Strong override of the core's __weak SystemClock_Config. The genericSTM32F103C8/CB
+// variant defaults SYSCLK to HSI-PLL 64 MHz → APB1 32 MHz → CAN 444 kbps (spec 500).
+// -DHSE_VALUE only tells HAL the crystal frequency; nothing selects HSE. Every
+// OpenSkyhawk STM32 node links STM32Board, so selecting HSE here fixes the fleet in
+// one place: HSE 8 MHz × 9 = 72 MHz → APB1 36 MHz → CAN 500 kbps, matching begin()'s
+// bit timing. On any deviation (fallback, wrong crystal, misconfig) _clockFault latches
+// and begin() raises a visible WARNING rather than silently running the wrong rate.
+// See issue #245. -DFORCE_CLOCK_FALLBACK exercises the fault path without a dead crystal.
+extern "C" void SystemClock_Config(void) {
+#ifndef FORCE_CLOCK_FALLBACK
+    RCC_OscInitTypeDef osc = {};
+    osc.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    osc.HSEState       = RCC_HSE_ON;
+    osc.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+    osc.PLL.PLLState   = RCC_PLL_ON;
+    osc.PLL.PLLSource  = RCC_PLLSOURCE_HSE;
+    osc.PLL.PLLMUL     = RCC_PLL_MUL9;               // 8 MHz × 9 = 72 MHz
+    if (HAL_RCC_OscConfig(&osc) == HAL_OK) {
+        RCC_ClkInitTypeDef clk = {};
+        clk.ClockType      = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK |
+                             RCC_CLOCKTYPE_PCLK1  | RCC_CLOCKTYPE_PCLK2;
+        clk.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
+        clk.AHBCLKDivider  = RCC_SYSCLK_DIV1;        // 72 MHz
+        clk.APB1CLKDivider = RCC_HCLK_DIV2;          // 36 MHz — CAN, USART2/3
+        clk.APB2CLKDivider = RCC_HCLK_DIV1;          // 72 MHz — USART1 diag
+        if (HAL_RCC_ClockConfig(&clk, FLASH_LATENCY_2) == HAL_OK) {
+            // Verify the RESULT, not just that the calls returned OK. Catches a 12 MHz
+            // crystal (→108 MHz), any prescaler drift, etc. — anything that would skew CAN.
+            if (HAL_RCC_GetSysClockFreq() == 72000000UL &&
+                HAL_RCC_GetPCLK1Freq()   == 36000000UL)
+                return;                              // 72 MHz locked and verified
+        }
+    }
+#endif
+    // HSE failed / forced / wrong frequency → do NOT silently run at the wrong CAN rate.
+    // Latch the fault (begin() → WARNING) and limp on internal RC just enough to signal.
+    _clockFault = true;
+    RCC_OscInitTypeDef h = {};
+    h.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+    h.HSIState = RCC_HSI_ON;
+    h.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+    h.PLL.PLLState = RCC_PLL_NONE;
+    HAL_RCC_OscConfig(&h);
+    RCC_ClkInitTypeDef c = {};
+    c.ClockType = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK |
+                  RCC_CLOCKTYPE_PCLK1  | RCC_CLOCKTYPE_PCLK2;
+    c.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;           // 8 MHz — visibly wrong, safe boot
+    c.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    c.APB1CLKDivider = RCC_HCLK_DIV1;
+    c.APB2CLKDivider = RCC_HCLK_DIV1;
+    HAL_RCC_ClockConfig(&c, FLASH_LATENCY_0);
+}
+
 // ── Public API ────────────────────────────────────────────────────────────────
 
 namespace STM32Board {
@@ -137,10 +195,20 @@ void begin() {
     pinMode(PIN_LED_GREEN, OUTPUT);
     _begun     = true;
     _canStatus = CanStatus::STARTING;
-    _recompute();  // → BOOTING
+    _recompute();  // → BOOTING, or WARNING if _clockFault latched in SystemClock_Config (#245)
 
     _diag.begin(115200);
     analogReadResolution(16);  // STM32duino defaults to 10-bit; 16-bit fills uint16_t directly for PinRef
+
+    // Report the resulting clock + derived CAN bitrate so a wrong-speed board is
+    // self-evident on the diag console, not just via the WARNING LED (issue #245).
+    if (_debugOn) {
+        uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
+        _diag.print(_clockFault ? F("CLOCK FAULT: ") : F("CLOCK OK: "));
+        _diag.print(F("SYSCLK=")); _diag.print(HAL_RCC_GetSysClockFreq() / 1000000UL); _diag.print(F("MHz "));
+        _diag.print(F("PCLK1=")); _diag.print(pclk1 / 1000000UL); _diag.print(F("MHz "));
+        _diag.print(F("CAN=")); _diag.print(pclk1 / (4UL * 18UL)); _diag.println(F("bps"));
+    }
 
     // 500 kbps on APB1 @ 36 MHz: prescaler=4, BS1=13TQ, BS2=4TQ → 18TQ total.
     // SJW=4TQ required for Blue Pill clone crystal tolerance (validated Experiment B).
