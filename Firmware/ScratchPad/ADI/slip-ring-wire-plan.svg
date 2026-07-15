@@ -1,0 +1,109 @@
+<svg viewBox="0 0 940 470" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .t  { font-size: 15px; font-weight: bold; fill: #222; }
+    .h  { font-size: 12.5px; font-weight: bold; fill: #222; }
+    .l  { font-size: 11.5px; fill: #333; }
+    .s  { font-size: 10px; fill: #666; }
+    .box { fill: #f7f7f5; stroke: #444; stroke-width: 1.5; }
+    .wire-p { stroke: #3a6ea8; stroke-width: 3; fill: none; }
+    .wire-y { stroke: #4a7a4a; stroke-width: 3; fill: none; }
+    .wire-s { stroke: #c8842a; stroke-width: 2; fill: none; stroke-dasharray: 6 3; }
+    .wire-pw { stroke: #999; stroke-width: 5; fill: none; }
+  </style>
+  <rect x="0" y="0" width="940" height="470" fill="#ffffff"/>
+  <text x="20" y="28" class="t">A-4E 3-axis ADI — what crosses each rotating joint</text>
+  <text x="20" y="46" class="s">ShiftBus board on BALL CHASSIS (3.3 V fed through rings, decoupled on board) — bus daisy-chains through both joints; coils never cross a ring. Both rings identical 8-wire Ø6.5–8.5 micro. Details: adi-3axis-design.md</text>
+
+  <!-- ===== stage boxes ===== -->
+  <rect class="box" x="30"  y="80" width="180" height="130" rx="8"/>
+  <text x="120" y="102" class="h" text-anchor="middle">FRAME / CASE</text>
+  <text x="120" y="116" class="s" text-anchor="middle">stationary</text>
+  <text x="44" y="138" class="l">• node PCB, roll ULN2003</text>
+  <text x="44" y="156" class="l">• roll motor + gear</text>
+  <text x="44" y="174" class="l">• roll Hall sensor</text>
+  <text x="44" y="192" class="l">• +12 V / 3.3 V / GND</text>
+
+  <rect class="box" x="300" y="80" width="170" height="130" rx="8"/>
+  <text x="385" y="102" class="h" text-anchor="middle">ROLL GIMBAL</text>
+  <text x="385" y="116" class="s" text-anchor="middle">rotates in roll</text>
+  <text x="314" y="138" class="l">• bare printed ring —</text>
+  <text x="314" y="156" class="l">  pass-through wires only</text>
+  <text x="314" y="174" class="l">• grounded trunnion gear</text>
+  <text x="314" y="192" class="l">• pitch + roll Hall magnets</text>
+
+  <rect class="box" x="560" y="80" width="170" height="130" rx="8"/>
+  <text x="645" y="102" class="h" text-anchor="middle">BALL CHASSIS</text>
+  <text x="645" y="116" class="s" text-anchor="middle">rotates in pitch</text>
+  <text x="574" y="138" class="l">• '595/ULN2803/'165 board</text>
+  <text x="574" y="156" class="l">• pitch + yaw motors —</text>
+  <text x="574" y="174" class="l">  self-balancing pair</text>
+  <text x="574" y="192" class="l">• pitch/yaw Halls, yaw shaft</text>
+
+  <rect class="box" x="790" y="80" width="130" height="130" rx="8"/>
+  <text x="855" y="102" class="h" text-anchor="middle">SHELLS</text>
+  <text x="855" y="116" class="s" text-anchor="middle">rotate in yaw</text>
+  <text x="802" y="138" class="l">• no electronics</text>
+  <text x="802" y="156" class="l">• Hall magnet only</text>
+  <text x="802" y="174" class="l">• horizon artwork</text>
+
+  <!-- ===== joints ===== -->
+  <!-- SR1 -->
+  <rect x="236" y="106" width="42" height="78" rx="5" fill="#f0b0b0" stroke="#b04040" stroke-width="2"/>
+  <g stroke="#b04040" stroke-width="1"><line x1="243" y1="112" x2="243" y2="178"/><line x1="250" y1="112" x2="250" y2="178"/><line x1="257" y1="112" x2="257" y2="178"/><line x1="264" y1="112" x2="264" y2="178"/><line x1="271" y1="112" x2="271" y2="178"/></g>
+  <text x="257" y="230" class="h" text-anchor="middle" fill="#b04040">SR1 — roll joint</text>
+  <text x="257" y="245" class="s" text-anchor="middle">8-wire Ø6.5–8.5 mm micro capsule</text>
+  <text x="257" y="258" class="s" text-anchor="middle">8 of 8 used (in shaft bore)</text>
+
+  <!-- SR2 -->
+  <rect x="500" y="106" width="36" height="78" rx="5" fill="#f0b0b0" stroke="#b04040" stroke-width="2"/>
+  <g stroke="#b04040" stroke-width="1"><line x1="507" y1="112" x2="507" y2="178"/><line x1="514" y1="112" x2="514" y2="178"/><line x1="521" y1="112" x2="521" y2="178"/><line x1="528" y1="112" x2="528" y2="178"/></g>
+  <text x="518" y="230" class="h" text-anchor="middle" fill="#b04040">SR2 — pitch joint</text>
+  <text x="518" y="245" class="s" text-anchor="middle">8-wire Ø6.5–8.5 mm micro capsule</text>
+  <text x="518" y="258" class="s" text-anchor="middle">8 of 8 used (bus pass-through)</text>
+
+  <!-- yaw joint: no ring -->
+  <circle cx="757" cy="145" r="20" fill="#e7f2e7" stroke="#4a7a4a" stroke-width="2"/>
+  <text x="757" y="150" class="h" text-anchor="middle" fill="#4a7a4a">0</text>
+  <text x="757" y="230" class="h" text-anchor="middle" fill="#4a7a4a">yaw joint</text>
+  <text x="757" y="245" class="s" text-anchor="middle">NO slip ring — motor rides</text>
+  <text x="757" y="258" class="s" text-anchor="middle">chassis, only shells rotate</text>
+
+  <!-- ===== wire flows ===== -->
+  <!-- power bundle frame->gimbal and onward -->
+  <path class="wire-pw" d="M210,122 H300"/>
+  <path class="wire-pw" d="M470,122 H560"/>
+  <!-- pitch coil bundle: frame -> roll gimbal (terminates) -->
+  <path class="wire-p" d="M210,140 H300 M470,140 H560"/>
+  <!-- yaw coil bundle: frame -> through SR1 -> through SR2 -> chassis -->
+  
+  <!-- hall returns -->
+  
+
+  <!-- ===== per-joint wire tables ===== -->
+  <g transform="translate(150,290)">
+    <rect x="0" y="0" width="270" height="128" rx="6" fill="#fafafa" stroke="#ccc"/>
+    <text x="12" y="20" class="h">SR1 carries (8 of 8):</text>
+    <text x="12" y="40"  class="l" fill="#777">+12 V (motors+Halls) · GND · 3.3 V</text>
+    <text x="12" y="58"  class="l" fill="#3a6ea8">MOSI · SCK · RCLK ('595 latch)</text>
+    <text x="12" y="76"  class="l" fill="#3a6ea8">SH/LD ('165 load) · MISO</text>
+    <text x="12" y="94"  class="l" fill="#777">3.3 V decoupled on board (10 µF) vs dropouts</text>
+    <text x="12" y="112" class="l" fill="#777">SCK slow + series R; worst +12 V ≈ 0.5 A — measure</text>
+  </g>
+  <g transform="translate(450,290)">
+    <rect x="0" y="0" width="250" height="128" rx="6" fill="#fafafa" stroke="#ccc"/>
+    <text x="12" y="20" class="h">SR2 carries (8 of 8) — same as SR1:</text>
+    <text x="12" y="40"  class="l" fill="#777">+12 V · GND · 3.3 V</text>
+    <text x="12" y="58"  class="l" fill="#3a6ea8">MOSI · SCK · RCLK · SH/LD · MISO</text>
+    <text x="12" y="76"  class="l" fill="#777">bus crosses 2 rings in series:</text>
+    <text x="12" y="94"  class="s">slow SCK + series R both ends; glitched</text>
+    <text x="12" y="112" class="s">latch = 1 step — autoRecal absorbs</text>
+  </g>
+
+  <!-- legend -->
+  <g transform="translate(30,436)">
+    <line x1="0" y1="0" x2="30" y2="0" class="wire-p"/><text x="38" y="4" class="s">ShiftBus (5 signals)</text>
+    <text x="158" y="4" class="s">coils + Halls: internal to ball — never on a ring</text>
+    <line x1="390" y1="0" x2="420" y2="0" class="wire-pw"/><text x="428" y="4" class="s">+12 V / 3.3 V / GND</text>
+    <text x="598" y="4" class="s">debounce Halls in firmware; idle coil-off for in-ball thermal</text>
+  </g>
+</svg>
