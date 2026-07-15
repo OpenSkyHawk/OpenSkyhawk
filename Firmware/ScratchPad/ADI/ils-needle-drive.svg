@@ -1,0 +1,109 @@
+<svg viewBox="0 0 940 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .t  { font-size: 15px; font-weight: bold; fill: #222; }
+    .st { font-size: 13px; font-weight: bold; fill: #222; }
+    .l  { font-size: 11.5px; fill: #333; }
+    .s  { font-size: 10px; fill: #666; }
+    .lead { stroke: #999; stroke-width: 1; fill: none; }
+    .dim  { stroke: #555; stroke-width: 1; fill: none; }
+    .needle { stroke: #d8b62a; stroke-width: 3; }
+    .ghost  { stroke: #d8b62a; stroke-width: 2; stroke-dasharray: 5 4; opacity: 0.65; }
+  </style>
+  <rect x="0" y="0" width="940" height="560" fill="#ffffff"/>
+  <text x="20" y="28" class="t">ILS needle drive — parallel-axis rotation → translation (one servo per needle)</text>
+  <text x="20" y="46" class="s">Needle mounted parallel to the servo shaft axis: it cannot tilt, by construction. Lateral throw = r·sinθ; only artifacts are ~1 mm depth change and needle yaw — both invisible.</text>
+
+  <!-- ================= PANEL A : FRONT VIEW ================= -->
+  <text x="40" y="84" class="st">A — front view (pilot's side)</text>
+
+  <!-- bezel face -->
+  <rect x="70" y="100" width="280" height="290" rx="10" fill="#3a3a3a"/>
+  <!-- aperture + ball -->
+  <clipPath id="ap"><circle cx="210" cy="240" r="99"/></clipPath>
+  <circle cx="210" cy="240" r="99" fill="#cfe3f5" stroke="#111" stroke-width="3"/>
+  <rect x="111" y="240" width="198" height="99" clip-path="url(#ap)" fill="#b5875a"/>
+  <line x1="111" y1="240" x2="309" y2="240" stroke="#fff" stroke-width="2"/>
+
+  <!-- GS needle (horizontal) : center + ghosts -->
+  <line x1="118" y1="240" x2="302" y2="240" class="needle" clip-path="url(#ap)" transform="translate(0,26)"/>
+  <line x1="118" y1="192" x2="302" y2="192" class="ghost" clip-path="url(#ap)"/>
+  <line x1="118" y1="288" x2="302" y2="288" class="ghost" clip-path="url(#ap)" opacity="0.35"/>
+
+  <!-- LOC needle (vertical) : center + ghosts, stays vertical -->
+  <line x1="210" y1="145" x2="210" y2="335" class="needle"/>
+  <line x1="188" y1="145" x2="188" y2="335" class="ghost"/>
+  <line x1="232" y1="145" x2="232" y2="335" class="ghost" opacity="0.35"/>
+
+  <!-- LOC servo hidden behind bezel below aperture -->
+  <rect x="185" y="345" width="50" height="38" rx="4" fill="none" stroke="#4a7a4a" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <circle cx="210" cy="352" r="4" fill="#4a7a4a"/>
+  <!-- GS servo hidden at right -->
+  <rect x="318" y="216" width="38" height="48" rx="4" fill="none" stroke="#4a7a4a" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <circle cx="325" cy="240" r="4" fill="#4a7a4a"/>
+
+  <!-- deflection dimension (above bezel, white bg) -->
+  <line x1="188" y1="94" x2="232" y2="94" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <path class="lead" d="M188,96 L188,144 M232,96 L232,144"/>
+  <text x="240" y="97" class="s">±10 mm full scale (verify in ModelViewer)</text>
+
+  <!-- labels -->
+  <text x="40" y="420" class="l">LOC needle — always vertical at any deflection</text>
+  <path class="lead" d="M150,410 L192,340"/>
+  <text x="40" y="440" class="s">ghosts = full-scale left/right positions</text>
+  <text x="40" y="470" class="l">LOC servo behind bezel, shaft vertical (∥ needle)</text>
+  <path class="lead" d="M180,460 L205,385"/>
+  <text x="40" y="490" class="l">GS servo at side, shaft horizontal — same trick rotated 90°</text>
+  <path class="lead" d="M290,483 L330,262"/>
+  <text x="40" y="516" class="s">needles cross with ~1–2 mm depth offset (real unit does the same) — sweep planes never touch</text>
+
+  <!-- ================= PANEL B : TOP VIEW ================= -->
+  <text x="500" y="84" class="st">B — top view of the LOC drive (looking down)</text>
+
+  <!-- ball equator (dashed - above servo height) -->
+  <circle cx="660" cy="230" r="110" fill="none" stroke="#345" stroke-width="1.2" stroke-dasharray="6 4"/>
+  <text x="660" y="215" class="s" text-anchor="middle">ball equator Ø100</text>
+  <text x="660" y="229" class="s" text-anchor="middle">(needle clears its widest point)</text>
+
+  <!-- glass / bezel plane -->
+  <line x1="500" y1="415" x2="880" y2="415" stroke="#7ab" stroke-width="3"/>
+  <text x="884" y="418" class="s">glass</text>
+
+  <!-- horn arc + positions -->
+  <path d="M637,349.6 A110,110 0 0 1 683,349.6" fill="none" stroke="#bbb" stroke-width="1" stroke-dasharray="3 3"/>
+  <!-- shaft -->
+  <circle cx="660" cy="242" r="5" fill="#4a7a4a"/>
+  <circle cx="660" cy="242" r="1.8" fill="#fff"/>
+  <!-- horn at center -->
+  <line x1="660" y1="242" x2="660" y2="352" stroke="#4a7a4a" stroke-width="3.5"/>
+  <circle cx="660" cy="352" r="5" fill="#d8b62a" stroke="#8a7420"/>
+  <!-- horn at +12 / -12 -->
+  <line x1="660" y1="242" x2="683" y2="349.6" stroke="#4a7a4a" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <circle cx="683" cy="349.6" r="4" fill="none" stroke="#8a7420" stroke-width="1.5" stroke-dasharray="2 2"/>
+  <line x1="660" y1="242" x2="637" y2="349.6" stroke="#4a7a4a" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <circle cx="637" cy="349.6" r="4" fill="none" stroke="#8a7420" stroke-width="1.5" stroke-dasharray="2 2"/>
+
+  <!-- dims -->
+  <line x1="712" y1="242" x2="712" y2="352" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <text x="718" y="300" class="s">horn r = 50 mm</text>
+  <line x1="637" y1="372" x2="683" y2="372" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <text x="660" y="388" class="s" text-anchor="middle">±10 mm = r·sin(±12°)</text>
+  <text x="500" y="368" class="s">depth change r(1−cos12°) ≈ 1.1 mm — invisible</text>
+  <path class="lead" d="M600,363 L634,352"/>
+
+  <!-- needle cross-section label -->
+  <text x="770" y="446" class="l">needle = dot in this view (⊥ page):</text>
+  <text x="770" y="462" class="l">parallel to shaft ⇒ vertical at</text>
+  <text x="770" y="478" class="l">every horn angle — cannot tilt</text>
+  <path class="lead" d="M775,440 L666,356"/>
+
+  <text x="500" y="446" class="l">servo body sits below the ball —</text>
+  <text x="500" y="462" class="l">horn plane has no interference</text>
+  <text x="500" y="478" class="s">watch-item: cantilever stiffness — stiff wire,</text>
+  <text x="500" y="491" class="s">short overhang; fallback = single-pivot arm</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7" fill="none" stroke="#555"/>
+    </marker>
+  </defs>
+</svg>
