@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -4075,8 +4075,10 @@ upload_protocol = stlink
 monitor_speed = 115200
 </code></pre>
 <p>The two build flags people forget: <strong><code>-DNODE_ID</code></strong> (every board needs a unique value — see
-<a href="../node-id/">NODE_ID &amp; CAN Addressing</a>) and <strong><code>-DHSE_VALUE=8000000</code></strong> (selects the external
-crystal; the internal RC oscillator is not accurate enough for 500 kbps CAN).</p>
+<a href="../node-id/">NODE_ID &amp; CAN Addressing</a>) and <strong><code>-DHSE_VALUE=8000000</code></strong> (declares the 8 MHz
+crystal frequency to HAL — needed for correct CAN timing, since the internal RC oscillator
+isn't accurate enough for 500 kbps CAN). Note <code>-DHSE_VALUE</code> does <em>not</em> by itself select HSE;
+<code>STM32Board</code>'s <code>SystemClock_Config</code> does that (see <a href="../../architecture/design-decisions/">Design Decisions</a>).</p>
 <div class="admonition note">
 <p class="admonition-title">Which STM32 variant</p>
 <p>Per the <a href="../../getting-started/prerequisites/">variant policy</a>, <strong>all</strong> STM32 boards default to
@@ -4184,7 +4186,7 @@ USB-to-TTL adapter to the board's 3-pin debug header and <code>pio device monito
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

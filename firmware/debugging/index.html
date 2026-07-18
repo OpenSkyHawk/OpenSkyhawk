@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -4098,11 +4098,20 @@ a glance:</p>
 </table>
 <p>The state machine is shared (<code>STM32Board</code>); only the triggers differ per role. <strong>Green solid
 (connected)</strong> appears while data is actively flowing and decays back to green-blinking after
-~½ s of quiet. <strong>Amber (warning)</strong> means a tracked PanelGroup node died (PanelBridge) or the
-master heartbeat was lost (PanelGroup).</p>
+~½ s of quiet. <strong>Amber (warning)</strong> means a tracked PanelGroup node died (PanelBridge), the
+master heartbeat was lost (PanelGroup), or the board's <strong>clock failed to lock</strong> (any STM32
+node — see below).</p>
 <p>CAN faults are driven from the <code>CanStatus</code> callback. For non-CAN faults (dead node, lost
 master, SYNC timeout, I²C hang), the firmware calls <code>STM32Board::setWarning(true)</code> and clears
 it with <code>setWarning(false)</code> on recovery.</p>
+<p>One warning source outranks all others: a <strong>clock fault</strong>. If <code>SystemClock_Config</code> can't lock
+the 72 MHz HSE tree (dead crystal, cold joint, or an inconsistent config), <code>STM32Board</code> latches
+it, falls back to internal RC, and drives amber at <strong>top precedence</strong> — above CAN faults — so a
+bad clock isn't misdiagnosed as a bus problem. A clock-faulted node also comes up <strong>CAN
+listen-only</strong> (never transmits at the wrong rate). Latched once at boot (query
+<code>STM32Board::clockFault()</code>); <code>begin()</code> logs <code>CLOCK OK/FAULT: SYSCLK=.. PCLK1=.. CAN=..bps</code> on
+DiagSerial. This detects a missing/dead crystal, not a wrong-value one. See issue #245 /
+<a href="../../architecture/design-decisions/">Design Decisions</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">PB14/PB15 are reserved</p>
 <p>The status-LED pins are owned by <code>STM32Board</code> — don't use PB14/PB15 for panel I/O or
@@ -4213,7 +4222,7 @@ the RP2040 handle USB. (Also: USB and CAN share PA11/PA12 and can't both be acti
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -4328,9 +4328,12 @@ PCBs with specified crystals.</p>
 <div class="admonition note">
 <p class="admonition-title">External crystal is mandatory</p>
 <p>The STM32F103's internal RC oscillator (HSI, ±1%) is <strong>not</strong> accurate enough for 500 kbps
-CAN. Every MCU board must use an external <strong>8 MHz crystal</strong>, and firmware must select the
-HSE clock source (<code>-DHSE_VALUE=8000000</code> in <code>build_flags</code>). The crystal tolerance is the
-very skew SJW = 4TQ absorbs.</p>
+CAN. Every MCU board must use an external <strong>8 MHz crystal</strong>, and firmware must actively
+select it: <code>STM32Board</code>'s strong <code>SystemClock_Config</code> selects HSE → PLL ×9 → 72 MHz
+(APB1 36 MHz → CAN 500 kbps). <code>-DHSE_VALUE=8000000</code> in <code>build_flags</code> only <em>declares</em> the
+crystal frequency to HAL — it does <strong>not</strong> select HSE; without the <code>SystemClock_Config</code>
+override a node boots on the core-default HSI-PLL 64 MHz → APB1 32 MHz → CAN 444 kbps
+(issue #245). The crystal tolerance is the very skew SJW = 4TQ absorbs.</p>
 </div>
 <hr />
 <h2 id="d6-controlid-routing-one-format-split-at-the-gateway">D6 — controlId routing: one format, split at the gateway</h2>
@@ -4531,7 +4534,7 @@ that already sit on an I²C leg — no encoders, no speed pressure, fewer wires.
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
