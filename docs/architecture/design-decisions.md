@@ -141,9 +141,12 @@ PCBs with specified crystals.
 
 !!! note "External crystal is mandatory"
     The STM32F103's internal RC oscillator (HSI, ±1%) is **not** accurate enough for 500 kbps
-    CAN. Every MCU board must use an external **8 MHz crystal**, and firmware must select the
-    HSE clock source (`-DHSE_VALUE=8000000` in `build_flags`). The crystal tolerance is the
-    very skew SJW = 4TQ absorbs.
+    CAN. Every MCU board must use an external **8 MHz crystal**, and firmware must actively
+    select it: `STM32Board`'s strong `SystemClock_Config` selects HSE → PLL ×9 → 72 MHz
+    (APB1 36 MHz → CAN 500 kbps). `-DHSE_VALUE=8000000` in `build_flags` only *declares* the
+    crystal frequency to HAL — it does **not** select HSE; without the `SystemClock_Config`
+    override a node boots on the core-default HSI-PLL 64 MHz → APB1 32 MHz → CAN 444 kbps
+    (issue #245). The crystal tolerance is the very skew SJW = 4TQ absorbs.
 
 ---
 

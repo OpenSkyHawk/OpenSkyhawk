@@ -41,8 +41,10 @@ monitor_speed = 115200
 ```
 
 The two build flags people forget: **`-DNODE_ID`** (every board needs a unique value — see
-[NODE_ID & CAN Addressing](node-id.md)) and **`-DHSE_VALUE=8000000`** (selects the external
-crystal; the internal RC oscillator is not accurate enough for 500 kbps CAN).
+[NODE_ID & CAN Addressing](node-id.md)) and **`-DHSE_VALUE=8000000`** (declares the 8 MHz
+crystal frequency to HAL — needed for correct CAN timing, since the internal RC oscillator
+isn't accurate enough for 500 kbps CAN). Note `-DHSE_VALUE` does *not* by itself select HSE;
+`STM32Board`'s `SystemClock_Config` does that (see [Design Decisions](../architecture/design-decisions.md)).
 
 !!! note "Which STM32 variant"
     Per the [variant policy](../getting-started/prerequisites.md), **all** STM32 boards default to
