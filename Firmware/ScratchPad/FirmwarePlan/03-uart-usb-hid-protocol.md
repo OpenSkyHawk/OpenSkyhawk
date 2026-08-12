@@ -172,8 +172,8 @@ Identical envelope in both directions.
 |---|---|---|
 | 0 | 4 | `MAGIC` — `AA 53 4B 43` (`\xAA` `S` `K` `C`) |
 | 4 | 1 | `TYPE` |
-| 5 | 1 | `SEQ` — echoed in the response |
-| 6 | 2 | `LEN` — payload length, uint16 little-endian |
+| 5 | 1 | `SEQ` — echoed in the response; on unsolicited `RAW`, a free-running counter (see below) |
+| 6 | 2 | `LEN` — payload length, uint16 little-endian. Must match the type exactly (see below) |
 | 8 | `LEN` | `PAYLOAD` |
 | 8+`LEN` | 2 | `CRC16` — CRC-16/CCITT-FALSE over `TYPE`‖`SEQ`‖`LEN`‖`PAYLOAD` |
 
@@ -186,6 +186,48 @@ bare `0xAA` — so the **CRC is mandatory, and a client must re-emit CRC-failed 
 into its line assembler rather than dropping them.** Otherwise a corrupted DCS-BIOS line would be
 silently swallowed. A false frame requires `AA 53 4B 43` to appear consecutively *and* the CRC to
 pass.
+
+### `LEN` must match the type exactly
+
+**`LEN` is read before the CRC can be checked, so on a false frame it is noise.** A stray
+`AA 53 4B 43` in DCS-BIOS text can decode a `LEN` of nearly 65535; a receiver that waits for
+that many bytes before validating stalls its line assembly and makes its memory use depend on
+whatever the noise said. That is not hypothetical here — the whole reason this section admits
+`0xAA` can appear outbound is the parser resync path above.
+
+So `LEN` is not merely bounded, it is **fixed by `TYPE`**:
+
+- For the thirteen fixed-length types, `LEN` **must equal** the value in the payload table.
+  Anything else is not a frame.
+- `COMMIT` is the only variable-length type: `LEN` must equal `1 + 9 × count` with
+  `1 ≤ count ≤ 8`, so it cannot exceed 73.
+- The largest legal payload of any type is **82** (`CAL_DATA`).
+
+A receiver checks `LEN` against the type **before buffering the payload**. A mismatch means the
+candidate was never a frame: emit the consumed bytes into the line assembler and resume scanning
+from the byte after the magic, exactly as for a CRC failure.
+
+This is strictly stronger than a bare upper bound. A bare `LEN ≤ 82` rule would still let a
+false frame consume 82 bytes before dying at the CRC; an exact-match rule usually rejects it on
+the first comparison.
+
+Note this is the same cross-check the `COMMIT` validation order performs later, moved up to the
+framing layer where it also protects the client.
+
+### `SEQ`
+
+On a request, the client picks `SEQ` and the device echoes it in the response, which is what lets
+a client match replies to requests.
+
+`RAW` has no request to echo. It carries a **free-running per-session counter**, starting at 0 on
+`SESSION_ACK` and wrapping at 256. This is deliberately not the selecting `SESSION_OPEN` /
+`STREAM_SELECT` sequence, which would only duplicate the `idx` field `RAW` already carries.
+
+A counter adds something neither of those does: `RAW` is explicitly droppable — the device
+discards a whole frame rather than stall the relay when the CDC buffer is short — so a gap in the
+counter is the only way a client can tell that samples were lost rather than that the axis stopped
+moving. A client **may** use it to surface link saturation; it **must not** require contiguity, or
+it will treat normal back-pressure as an error.
 
 **CRC-16/CCITT-FALSE**: poly `0x1021`, init `0xFFFF`, no input or output reflection, no final
 XOR. Canonical check: `"123456789"` → `0x29B1`. The magic is excluded from coverage — checksumming
@@ -263,11 +305,22 @@ A session ends on `SESSION_CLOSE` or after **30 s** with no inbound frame. `KEEP
 because a user dragging a slider sends nothing inbound for long stretches while `RAW` flows
 outbound; send it roughly every 10 s.
 
-Commands arriving outside a session are **relayed to the UART verbatim, not rejected.** There is
-deliberately no `NOT_IN_SESSION` response: a second always-on watcher would give DCS traffic a
-path to trigger outbound frames. A client that missed a session close and keeps sending will put
-frame bytes into PanelBridge's DCS-BIOS input, which self-heals at the next sync. Avoiding that is
-the client's responsibility.
+**The frame parser runs at all times, not only during a session.** It has to: `HELLO` and
+`GET_CAL` are answered outside a session, so there is no point at which the gateway can stop
+looking. One parser, always on.
+
+That fixes what happens to a session-requiring command that arrives without one. It has already
+been consumed by the time the session check runs, so relaying it is not an option:
+
+- A candidate with valid magic, a `LEN` matching its type, and a passing CRC is a **frame**. It is
+  consumed and never reaches the UART.
+- `COMMIT`, `RESET` and `STREAM_SELECT` without an open session are consumed and answered
+  `NACK NO_SESSION`. `HELLO`, `GET_CAL` and `KEEPALIVE` are always accepted.
+- Anything failing magic, `LEN` or CRC is **not** a frame. Its bytes are re-emitted into the relay
+  untouched, exactly as today.
+
+The last rule is what keeps the always-on parser honest: DCS-BIOS traffic can never be silently
+eaten, because being eaten requires passing all three checks.
 
 ### Validation and failure
 
@@ -294,6 +347,11 @@ connection. A **NACK** means the device answered and refused, naming the axis an
 "Nothing was written" is literally true on a failed commit, not a simplification — the write is a
 single sector erase and program.
 
+**`RESET` persists immediately** — it clears the named axis (or all of them) and writes flash by
+the same path as `COMMIT`, returning `ACK` or `NACK`. It does **not** need a following `COMMIT`,
+and there is no pending state for a later `SESSION_CLOSE` to discard. "Reset and save" is one
+message, not two.
+
 **Read back after committing.** `ACK` means "received and applied"; a subsequent `GET_CAL` is what
 proves "stored, and here is what I hold". Badges should be driven from that re-read rather than
 from client optimism.
@@ -319,9 +377,19 @@ Client dies   30 s timeout → streaming stops, session closes
 ```
 
 There is **no calibration loop and no pending state on the device.** Capture, dwell timing, spike
-rejection and centre selection are entirely client-side; the device streams and stores. An earlier
-design had a RAM-only write for live preview, which was dropped once the preview moved into the
-`RAW` frame itself.
+rejection and centre selection are entirely client-side; the device streams and stores.
+
+**There is therefore no preview of pending endpoints, and this needs stating plainly because it
+is easy to assume otherwise.** `RAW`'s `cal` field is the sample through the calibration the
+device *currently holds* — the old one, or none — for the whole of a capture. It shows what DCS
+is receiving right now, not what the endpoints being captured would produce. The effect of new
+endpoints becomes visible only after `COMMIT` and the read-back that follows it.
+
+A client that wants to draw the pending curve must compute it, which is a deliberate
+non-requirement of this design: the client is not asked to reimplement the transform, and doing so
+reintroduces the integer-truncation divergence the split avoids. If a device-computed pending
+preview is ever wanted, it needs a RAM-only write reinstated — a protocol change, not a client
+change.
 
 ### Notes for the client implementer
 
