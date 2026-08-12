@@ -26,9 +26,12 @@ SimGateway has no knowledge of DCS-BIOS control names, addresses, or input map e
 Declared in the SimGateway sketch. Receives 16-bit value (0–65535) from PanelGroup via
 CAN → PanelBridge → HID frame → UART.
 
-The constructor takes a `controlId` and a joystick **axis index** (0–7). The library maps the
-incoming 0–65535 value to ±32767 (`value − 32768`) and writes it to the TinyUSB HID report
-internally. The sketch has no knowledge of the HID backend or the scaling.
+The constructor takes a `controlId` and a joystick **axis index** (0–7). The library applies the
+stored calibration, maps the result to ±32767 (`value − 32768`), and writes it to the TinyUSB
+HID report internally. The sketch has no knowledge of the HID backend, the calibration, or the
+scaling.
+
+`axisIndex()` exposes the index, which is also the axis's slot in the calibration blob.
 
 ```cpp
 // SimGateway sketch only:
@@ -40,6 +43,45 @@ OpenSkyhawk::HIDAxis brakeL  (CTRL_BRAKE_L,  4);
 OpenSkyhawk::HIDAxis brakeR  (CTRL_BRAKE_R,  5);
 OpenSkyhawk::HIDAxis zoom    (CTRL_ZOOM,     6);
 ```
+
+### Axis Calibration
+
+**Calibration is never a constructor argument.** Endpoints are per-unit — hall sensor spread,
+magnet geometry, print tolerance — so baking them in would mean a reflash per build, which
+rules out kit builders. They live in flash, are loaded once by `SimGateway::setup()`, and are
+looked up by `axisIndex`. Sketch declarations are therefore identical calibrated or not.
+
+This is the difference from `AnalogInput`, whose `minRaw`/`maxRaw` *are* constructor arguments
+and therefore compile-time only. Nodes stay at their defaults so there is one transform in the
+chain and the gateway can see raw values.
+
+Storage is `OpenSkyhawk::CalBlob` — magic, version, eight `AxisCal` records, CRC — held in RAM
+and applied by `HIDAxis::dispatch()`. Each `AxisCal` is three captured points:
+
+| Field | Meaning |
+|---|---|
+| `min` | raw value at the low mechanical stop |
+| `centre` | raw value at rest — **captured, never derived** |
+| `max` | raw value at the high mechanical stop |
+| `deadzone` | reserved, always 0 in version 1; nothing reads it |
+
+**Two linear segments, not one.** A single `min..max` stretch fixes an axis's range but leaves
+it resting off-centre whenever travel is asymmetric, which for a rotating-magnet hall axis is
+the normal case — the normal field component goes as sin θ, so raw midpoint is not physical
+midpoint. Measured on the bench rig, Roll's centre sits 7.1% above its midpoint and a single
+linear map left the stick resting at +4669. Two segments put `centre` on 32768 exactly.
+
+`centre` is **always provided data**. Neither the device nor the client substitutes
+`(min + max) / 2`.
+
+An axis is "calibrated" iff `min < centre < max`. There is no stored validity flag: a zeroed
+blob (`.bss`, before load) and an erased one (all `0xFF`) both fail that predicate, so both
+fail closed to identity passthrough. An uncalibrated gateway is byte-identical in behaviour to
+a build without this feature.
+
+Out of scope, deliberately: response curves and axis inversion (both belong in the sim, and a
+firmware curve would stack with DCS's per-aircraft curves), and boot-time centre auto-zero (the
+stick may not be at rest at power-on, and not every axis has a rest position).
 
 ---
 
@@ -147,12 +189,23 @@ Production descriptor is a full match for DIJOYSTATE2 — no limits are exceeded
 ## Dispatch Logic
 
 After draining all HID frames from UART in one `SimGateway::loop()` iteration:
-1. Walk the `HIDAxis` linked list; for each matching `controlId` write `value − 32768` to the TinyUSB HID axis report field.
+1. Walk the `HIDAxis` linked list; for each matching `controlId` apply that axis's calibration, then write `value − 32768` to the TinyUSB HID axis report field.
 2. Walk the `HIDButton` linked list; for each matching `controlId` set/clear the corresponding button bit.
 3. Walk the `HIDHatSwitch` linked list; for each matching `controlId` write the direction nibble.
 4. If any setter fired, call `OsJoystick.send()` **once** to flush the HID report.
 
 Calling `Send()` once per drain cycle (not once per frame) keeps HID report rate predictable.
+
+**Order within step 1 matters: calibrate, then offset.** The pipeline stays unsigned until the
+final step, so the two-segment map never divides on signed values. The `− 32768` offset is
+invariant, not calibration-dependent — two different centres are in play and must not be
+conflated. `AxisCal::centre` is the axis's *physical* rest point, which the map absorbs;
+`− 32768` is the re-centring of a 16-bit range, a property of the representation. Since the map
+always returns 0–65535, making the offset variable would apply the centring twice.
+
+```
+raw 0..65535 ──calibration──▶ 0..65535 ──(v − 32768)──▶ int16_t ──▶ HID report
+```
 
 ---
 
@@ -257,6 +310,18 @@ The default loopback jumper is RP2040 `GP0 -> GP1`, matching the production UART
 The values under test are already-normalised `uint16_t` payloads carried in HID frames, exactly
 as PanelBridge would send after receiving CAN EVTs from PanelGroup nodes. ADC and sensor
 normalisation belongs to PanelGroup/AnalogInput tests, not SimGateway tests.
+
+**The calibration transform is tested by direct call, never through `dispatch()`.** In
+`SIMGATEWAY_TEST` builds the HID setters are no-op stubs, so nothing written to the report is
+observable and the capture globals record the *pre-transform* value read off the wire. The
+transform is therefore a free function taking its inputs as arguments — the same shape as the
+status-LED state machine, and for the same reason.
+
+**`SIMGATEWAY_TEST` builds must never write flash.** The EEPROM path is stubbed out to a RAM
+clear, so tests start from a known uncalibrated state and no test run erases a sector.
+Persistence consequently cannot be covered by a `SIMGATEWAY_TEST` scenario; it needs a
+production-mode environment (`test_axis_cal_persist`), which runs in two phases separated by a
+power cycle and restores the sector when it finishes.
 
 ---
 

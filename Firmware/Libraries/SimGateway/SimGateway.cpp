@@ -10,6 +10,7 @@
 
 #ifndef SIMGATEWAY_TEST
 #include <Adafruit_TinyUSB.h>
+#include <EEPROM.h>
 
 namespace {
 
@@ -133,6 +134,49 @@ uint16_t _sgtest_lastValue     = 0;
 uint8_t  _sgtest_dispatchCount = 0;
 #endif
 
+// ── Axis calibration state ────────────────────────────────────────────────────
+
+namespace {
+
+// The live calibration, indexed by HID axis index. Deliberately a file-static POD rather
+// than per-object members: the C runtime zeroes .bss before any dynamic initialiser runs,
+// so every HIDAxis constructed at static init already sees an all-zero blob, which fails
+// axisCalValid() and yields identity. That removes the static-init ordering hazard instead
+// of managing it — there is no window in which an axis could divide by zero.
+//
+// Loaded from flash by SimGateway::setup(). Never a constructor argument; see SimGateway.h.
+OpenSkyhawk::CalBlob _calBlob;
+
+#ifndef SIMGATEWAY_TEST
+// Read the stored blob into RAM, falling back to "uncalibrated" on anything unexpected.
+//
+// A rejected blob is cleared in RAM only — flash is left exactly as found, so a version the
+// firmware does not recognise survives a downgrade instead of being overwritten by it. The
+// user's next commit is what replaces it.
+//
+// EEPROM here is the RP2040 core's flash-backed emulation: begin() allocates a RAM mirror and
+// memcpys the sector into it, costing microseconds and no erase, so its position in setup() is
+// a matter of tidiness rather than timing.
+//
+// Only get()/put() are used. getDataPtr() sets the dirty flag unconditionally — even for a
+// pure read — which would force a real sector erase on every subsequent commit().
+void _calLoad() {
+    EEPROM.begin(256); // rounded up to a 256-byte multiple by the library; blob is 72
+    EEPROM.get(0, _calBlob);
+    if (!OpenSkyhawk::calBlobValid(_calBlob)) {
+        OpenSkyhawk::calBlobClear(_calBlob);
+    }
+}
+#else
+// Test builds must never write flash, and must not depend on whatever a previous run left
+// behind. Start every test from a known uncalibrated state.
+void _calLoad() {
+    OpenSkyhawk::calBlobClear(_calBlob);
+}
+#endif
+
+} // namespace
+
 // ── HIDAxis ───────────────────────────────────────────────────────────────────
 
 namespace OpenSkyhawk {
@@ -148,9 +192,14 @@ HIDAxis::HIDAxis(uint16_t controlId, uint8_t axisIndex)
 
 HIDAxis* HIDAxis::head()                   { return _head; }
 uint16_t HIDAxis::controlId() const        { return _controlId; }
+uint8_t  HIDAxis::axisIndex() const        { return _axisIndex; }
 HIDAxis* HIDAxis::next() const             { return _next; }
 void     HIDAxis::dispatch(uint16_t value) {
-    _hidSetAxis(_axisIndex, (int16_t)(value - 32768));
+    // Calibration first, offset last — the pipeline stays unsigned until the final step.
+    const uint16_t v = (_axisIndex < AXIS_CAL_SLOTS)
+                     ? axisCalApply(_calBlob.axes[_axisIndex], value)
+                     : value;
+    _hidSetAxis(_axisIndex, (int16_t)(v - 32768));
 }
 
 // ── HIDButton ─────────────────────────────────────────────────────────────────
@@ -453,6 +502,8 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
     _uart->setRX(rxPin);
     _uart->begin(250000);
 
+    _calLoad(); // RAM-only in SIMGATEWAY_TEST builds — tests never touch flash
+
     _hidBegin(); // no-op in SIMGATEWAY_TEST builds
 
     statusLedBegin(); // configure GP2/GP3 status LEDs (both off)
@@ -463,6 +514,8 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
     Serial.println(F("=============================="));
 #endif
 }
+
+const OpenSkyhawk::CalBlob& calibration() { return _calBlob; }
 
 void loop() {
     // 1. Forward CDC → UART (PC DCS-BIOS stream to PanelBridge).

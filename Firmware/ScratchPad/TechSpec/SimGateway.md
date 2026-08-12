@@ -29,7 +29,9 @@ Platform: **RP2040 only.** Not used on STM32 boards.
 Firmware/Libraries/SimGateway/
 ├── SimGateway.h     ← SimGateway namespace; HIDAxis, HIDButton, HIDHatSwitch declarations
 ├── SimGateway.cpp   ← relay loop, parser state machine, linked list dispatch,
-│                    TinyUSB HID descriptor + report struct (production only)
+│                    calibration load, TinyUSB HID descriptor + report struct (production only)
+├── AxisCal.h        ← AxisCal/CalBlob structs, two-segment transform, CRC-16 — pure
+├── AxisCal.cpp      ← implementation; no EEPROM, no Serial, no millis(), no globals
 └── library.json     ← platform: raspberrypi; dep: adafruit/Adafruit TinyUSB Library
 
 Firmware/SimGateway/
@@ -216,7 +218,8 @@ public:
     // ── Linked list traversal — used internally by SimGateway ────────────────
     static HIDAxis* head();       ///< First element of the registered axis list.
     uint16_t controlId() const;   ///< controlId this handler is registered for.
-    void dispatch(uint16_t value);///< Calls _hidSetAxis(axisIndex, value - 32768) internally.
+    uint8_t  axisIndex() const;   ///< Axis index (0–7); also the calibration blob slot.
+    void dispatch(uint16_t value);///< Applies calibration, then _hidSetAxis(axisIndex, v - 32768).
     HIDAxis* next() const;        ///< Next axis in the linked list; nullptr at end.
 
 private:
@@ -302,7 +305,41 @@ namespace SimGateway {
     void statusLedBegin(); ///< Configure GP2/GP3 outputs (both off); called by setup().
     void statusTick();     ///< Advance the state machine + animation; called by loop().
 
+    /// The calibration currently applied to dispatched axis values; loaded by setup().
+    const OpenSkyhawk::CalBlob& calibration();
+
 } // namespace SimGateway
+```
+
+### AxisCal — `AxisCal.h`
+
+Pure; no hardware, no globals, no `#ifdef ARDUINO_ARCH_RP2040` guard.
+
+```cpp
+namespace OpenSkyhawk {
+
+struct AxisCal { uint16_t min, centre, max, deadzone; };
+
+constexpr uint8_t  AXIS_CAL_SLOTS = 8;
+constexpr uint32_t CAL_MAGIC      = 'O' | ('S'<<8) | ('K'<<16) | ('C'<<24);
+constexpr uint16_t CAL_VERSION    = 1;
+
+struct CalBlob {
+    uint32_t magic;
+    uint16_t version;
+    AxisCal  axes[AXIS_CAL_SLOTS];
+    uint16_t crc;
+};
+
+uint16_t calCrc16(const uint8_t* data, size_t len);  ///< CRC-16/CCITT-FALSE.
+bool     axisCalValid(const AxisCal& cal);           ///< min < centre < max, allowing deadzone.
+uint16_t axisCalApply(const AxisCal& cal, uint16_t raw);  ///< Two-segment map; identity if invalid.
+uint16_t calBlobCrc(const CalBlob& blob);            ///< CRC over bytes [0, offsetof(crc)).
+bool     calBlobValid(const CalBlob& blob);          ///< Magic + version + CRC.
+void     calBlobClear(CalBlob& blob);                ///< Zero — every axis uncalibrated.
+void     calBlobSeal(CalBlob& blob);                 ///< Stamp magic, version, fresh CRC.
+
+} // namespace OpenSkyhawk
 ```
 
 ---
@@ -325,6 +362,41 @@ enum class ParserState : uint8_t { IDLE, GOT_AA, IN_FRAME };
 | `IN_FRAME` | 4th byte stored | Parse controlId + value; dispatch; clear buffer | `IDLE` |
 
 The state machine is a private member of the SimGateway implementation, persisted between `loop()` calls.
+
+### Calibration Blob Layout
+
+Offsets are natural alignment under ARM EABI. There is no padding and no tail padding.
+
+| Offset | Size | Field |
+|---|---|---|
+| 0 | 4 | `magic` — `CAL_MAGIC`, little-endian in flash so a hexdump reads `OSKC` |
+| 4 | 2 | `version` — `CAL_VERSION` |
+| 6 | 64 | `axes[8]` — eight 8-byte `AxisCal` records |
+| 70 | 2 | `crc` — CRC-16/CCITT-FALSE over bytes `[0, 70)` |
+| | **72** | total |
+
+```cpp
+static_assert(sizeof(AxisCal) == 8,         "AxisCal layout changed — bump CAL_VERSION");
+static_assert(sizeof(CalBlob) == 72,        "CalBlob layout changed — bump CAL_VERSION");
+static_assert(offsetof(CalBlob, crc) == 70, "CRC coverage is offsetof(crc); layout changed");
+```
+
+The asserts are load-bearing, not decoration: the CRC covers `offsetof(CalBlob, crc)` bytes, so
+a layout change silently invalidates every stored blob unless `CAL_VERSION` moves with it.
+
+**Not `__attribute__((packed))`.** There is no padding to remove, and packing would make every
+field access unaligned on a Cortex-M0+, which has no unaligned load/store.
+
+**CRC coverage excludes the `crc` field itself** — the single most likely point of disagreement
+for any reimplementation.
+
+**No stored validity flag.** An axis is calibrated iff `axisCalValid()` passes. A zeroed blob
+and an erased one (all `0xFF`) both fail it, so both fail closed to identity. A stored flag
+could only duplicate or contradict the divisor guard.
+
+**Version mismatch means absent**, not "migrate": every axis falls back to identity and flash is
+left untouched until the user commits. A downgrade-then-upgrade cycle would otherwise silently
+destroy data.
 
 ### HID Frame Wire Format
 
@@ -365,6 +437,68 @@ TinyUSB on RP2040 silently drops HID reports if USB is not yet enumerated — no
 ### HIDAxis / HIDButton linked list construction order
 
 Both classes self-register in their constructors into static linked lists. Declare all `HIDAxis` and `HIDButton` objects at file scope in the sketch (not inside functions) to ensure they are constructed before `SimGateway::loop()` is first called. C++ guarantees construction order within a single translation unit is top-to-bottom.
+
+### Calibration has no static-init ordering hazard
+
+`HIDAxis` objects are constructed at static init, long before `setup()` loads calibration from
+flash — so a naive design would have a window in which an axis dispatches against uninitialised
+endpoints and divides by zero.
+
+The index-into-`.bss` design removes that window rather than managing it. The live `CalBlob` is
+a file-static POD, which the C runtime zeroes **before any dynamic initialiser runs**. Every
+`HIDAxis` therefore sees an all-zero blob at construction, `axisCalValid()` fails, and the
+transform is identity. There is no ordering dependency in either direction.
+
+Do not "improve" this into per-object calibration members: that would reintroduce the
+dependency, cost 10 bytes × 8, and create a second source of truth that can disagree with the
+blob.
+
+### Calibration storage — EEPROM emulation
+
+The RP2040 core's `EEPROM` is flash-sector-backed. `begin()` allocates a RAM mirror and memcpys
+the sector into it — microseconds, no erase — so its position within `setup()` is a matter of
+tidiness, not timing.
+
+**This feature owns the entire 4 KB EEPROM sector.** `commit()` erases all 4096 bytes and
+programs `begin()`'s size; the remainder stays `0xFF`. Nothing else may assume spare space there.
+
+**Use only `get()`/`put()`. Never `getDataPtr()`** — it sets the dirty flag unconditionally,
+even for a pure read, which would force a real sector erase on every subsequent `commit()`.
+
+Conversely `put()` marks dirty only on a real byte difference and `commit()` early-returns on a
+clean buffer, so a save-with-no-changes performs **zero** flash work and causes zero stall.
+That idempotency is free and worth relying on.
+
+**Measured commit cost** (`test_axis_cal_persist`, Pico, 4 KB sector): **~28 ms** when the
+sector holds programmed data, **~580 µs** when it is already erased, and **~4 µs** for a
+no-change re-commit that never reaches flash. The 48× spread between the two real cases is why
+the test asserts a same-boot ratio rather than an absolute threshold.
+
+The 28 ms figure is the one to plan against, because `commit()` runs with interrupts disabled.
+At 250000 baud the PL011's 32-entry RX FIFO fills in **1.28 ms**, so a commit during live relay
+traffic *will* overrun it and set `UART_UARTRSR_OE_BITS`. Anything that commits while the relay
+is running must therefore drain the UART, clear the RSR, and reset the HID frame parser
+immediately afterwards — otherwise the status LED latches FAULT for its 2 s minimum hold on
+every successful save, and a parser stranded mid-frame consumes the next four bytes as a
+`controlId`/`value` pair.
+
+**Test builds never write flash.** The whole EEPROM path is behind `#ifndef SIMGATEWAY_TEST`,
+with a RAM-clear stub in its place, mirroring how the HID setters are stubbed. Otherwise every
+`SIMGATEWAY_TEST` run would erase a sector.
+
+### Why AxisCal is a separate translation unit
+
+Split by purity, not by feature: anything that is a function of its arguments lives in
+`AxisCal.*`; anything touching hardware or file-static state stays in `SimGateway.cpp`.
+
+The reason is testability. `_hidSetAxis` is a no-op stub in `SIMGATEWAY_TEST` builds, so a
+transform reachable only through `HIDAxis::dispatch()` would be unobservable — the capture
+globals record the *pre-transform* value read off the wire. A free function taking `AxisCal` by
+const reference is callable directly from a test sketch with no hooks, stubs, or globals. This
+is the same shape as the status-LED state machine, for the same reason.
+
+Not a separate library: the only consumer is SimGateway, and a `lib_deps` entry would have to be
+added to every test environment and every gateway sketch for ~180 lines.
 
 ### TinyUSB HID backend (Adafruit_TinyUSB_Arduino)
 
@@ -487,3 +621,4 @@ SimGateway has no boot handshake with the CAN cluster. It is stateless with resp
 | earlephilhower/arduino-pico | PlatformIO platform | TinyUSB CDC (`Serial`), `HardwareSerial`, RP2040 Arduino core |
 | Adafruit TinyUSB Library | `adafruit/Adafruit TinyUSB Library` | Custom HID descriptor; 8 axes, 128 buttons, 4 hats; embedded in SimGateway.cpp |
 | HIDControls | `Firmware/Libraries/HIDControls` | Standalone platform-agnostic library; CTRL_* constants for sketch declarations |
+| EEPROM | framework-arduinopico (bundled) | Flash-sector-backed emulation for the calibration blob. Resolved by PlatformIO's LDF from a plain `#include <EEPROM.h>` — no `lib_deps` entry needed, unlike Adafruit TinyUSB. Production builds only. |
