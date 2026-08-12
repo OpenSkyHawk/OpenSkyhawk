@@ -147,6 +147,10 @@ uint8_t lastAxisIndex();
 
 void resetAxisCapture();
 
+uint8_t hidSendCount();
+
+void resetHidSendCount();
+
 // ── Calibration transport test hooks (test builds only) ───────────────────────
 // The transport's safety property is that a rejected candidate is handed back to the relay
 // byte-for-byte. Asserting that needs a capture on the UART side, which had no test seam.

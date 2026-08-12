@@ -243,51 +243,55 @@
 <codeline lineno="302"><highlight class="normal"></highlight></codeline>
 <codeline lineno="304"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetAxisCapture();</highlight></codeline>
 <codeline lineno="305"><highlight class="normal"></highlight></codeline>
-<codeline lineno="306"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Calibration<sp/>transport<sp/>test<sp/>hooks<sp/>(test<sp/>builds<sp/>only)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="307"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>transport&apos;s<sp/>safety<sp/>property<sp/>is<sp/>that<sp/>a<sp/>rejected<sp/>candidate<sp/>is<sp/>handed<sp/>back<sp/>to<sp/>the<sp/>relay</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="308"><highlight class="normal"></highlight><highlight class="comment">//<sp/>byte-for-byte.<sp/>Asserting<sp/>that<sp/>needs<sp/>a<sp/>capture<sp/>on<sp/>the<sp/>UART<sp/>side,<sp/>which<sp/>had<sp/>no<sp/>test<sp/>seam.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="309"><highlight class="normal"></highlight></codeline>
-<codeline lineno="317"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>feedCdcByte(uint8_t<sp/>b);</highlight></codeline>
-<codeline lineno="318"><highlight class="normal"></highlight></codeline>
-<codeline lineno="320"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetUartCapture();</highlight></codeline>
-<codeline lineno="321"><highlight class="normal"></highlight></codeline>
-<codeline lineno="323"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>uartCaptureCount();</highlight></codeline>
-<codeline lineno="324"><highlight class="normal"></highlight></codeline>
-<codeline lineno="326"><highlight class="normal">uint8_t<sp/>uartCaptureByte(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>index);</highlight></codeline>
-<codeline lineno="327"><highlight class="normal"></highlight></codeline>
-<codeline lineno="329"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>uartCaptureOverflow();</highlight></codeline>
-<codeline lineno="330"><highlight class="normal"></highlight></codeline>
-<codeline lineno="332"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>calResetForTest();</highlight></codeline>
-<codeline lineno="333"><highlight class="normal"></highlight></codeline>
-<codeline lineno="335"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>calSessionOpen();</highlight></codeline>
-<codeline lineno="336"><highlight class="normal"></highlight></codeline>
-<codeline lineno="338"><highlight class="normal">uint8_t<sp/>calStreamAxis();</highlight></codeline>
-<codeline lineno="339"><highlight class="normal"></highlight></codeline>
-<codeline lineno="340"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Status-LED<sp/>test<sp/>hooks<sp/>(test<sp/>builds<sp/>only)<sp/>──────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="341"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>pure<sp/>state-selection<sp/>+<sp/>animation<sp/>logic<sp/>is<sp/>exercised<sp/>without<sp/>GPIO,<sp/>TinyUSB,</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="342"><highlight class="normal"></highlight><highlight class="comment">//<sp/>or<sp/>PL011<sp/>register<sp/>reads<sp/>by<sp/>injecting<sp/>inputs<sp/>and<sp/>reading<sp/>back<sp/>the<sp/>resolved<sp/>state<sp/>/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="343"><highlight class="normal"></highlight><highlight class="comment">//<sp/>captured<sp/>pin<sp/>levels.<sp/>Mirrors<sp/>the<sp/>feedByte/cdcCapture<sp/>pattern<sp/>above.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="312"><highlight class="normal">uint8_t<sp/>hidSendCount();</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetHidSendCount();</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight></codeline>
+<codeline lineno="317"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Calibration<sp/>transport<sp/>test<sp/>hooks<sp/>(test<sp/>builds<sp/>only)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>transport&apos;s<sp/>safety<sp/>property<sp/>is<sp/>that<sp/>a<sp/>rejected<sp/>candidate<sp/>is<sp/>handed<sp/>back<sp/>to<sp/>the<sp/>relay</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"></highlight><highlight class="comment">//<sp/>byte-for-byte.<sp/>Asserting<sp/>that<sp/>needs<sp/>a<sp/>capture<sp/>on<sp/>the<sp/>UART<sp/>side,<sp/>which<sp/>had<sp/>no<sp/>test<sp/>seam.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>feedCdcByte(uint8_t<sp/>b);</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetUartCapture();</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>uartCaptureCount();</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal">uint8_t<sp/>uartCaptureByte(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>index);</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>uartCaptureOverflow();</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>calResetForTest();</highlight></codeline>
 <codeline lineno="344"><highlight class="normal"></highlight></codeline>
-<codeline lineno="352"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusInject(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>mounted,<sp/>uint32_t<sp/>lastCdcRxMs,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>faultActive);</highlight></codeline>
-<codeline lineno="353"><highlight class="normal"></highlight></codeline>
-<codeline lineno="355"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResolve();</highlight></codeline>
-<codeline lineno="356"><highlight class="normal"></highlight></codeline>
-<codeline lineno="363"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusFaultStep(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>rsrError,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>uartRxMoved);</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>calSessionOpen();</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal">uint8_t<sp/>calStreamAxis();</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Status-LED<sp/>test<sp/>hooks<sp/>(test<sp/>builds<sp/>only)<sp/>──────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>pure<sp/>state-selection<sp/>+<sp/>animation<sp/>logic<sp/>is<sp/>exercised<sp/>without<sp/>GPIO,<sp/>TinyUSB,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="353"><highlight class="normal"></highlight><highlight class="comment">//<sp/>or<sp/>PL011<sp/>register<sp/>reads<sp/>by<sp/>injecting<sp/>inputs<sp/>and<sp/>reading<sp/>back<sp/>the<sp/>resolved<sp/>state<sp/>/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="354"><highlight class="normal"></highlight><highlight class="comment">//<sp/>captured<sp/>pin<sp/>levels.<sp/>Mirrors<sp/>the<sp/>feedByte/cdcCapture<sp/>pattern<sp/>above.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="355"><highlight class="normal"></highlight></codeline>
+<codeline lineno="363"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusInject(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>mounted,<sp/>uint32_t<sp/>lastCdcRxMs,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>faultActive);</highlight></codeline>
 <codeline lineno="364"><highlight class="normal"></highlight></codeline>
-<codeline lineno="366"><highlight class="normal"><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>statusState();</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResolve();</highlight></codeline>
 <codeline lineno="367"><highlight class="normal"></highlight></codeline>
-<codeline lineno="369"><highlight class="normal">Anim<sp/>statusAnim();</highlight></codeline>
-<codeline lineno="370"><highlight class="normal"></highlight></codeline>
-<codeline lineno="372"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusRedLevel();</highlight></codeline>
-<codeline lineno="373"><highlight class="normal"></highlight></codeline>
-<codeline lineno="375"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusGreenLevel();</highlight></codeline>
-<codeline lineno="376"><highlight class="normal"></highlight></codeline>
-<codeline lineno="378"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResetForTest();</highlight></codeline>
-<codeline lineno="379"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="380"><highlight class="normal"></highlight></codeline>
-<codeline lineno="381"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SimGateway</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="382"><highlight class="normal"></highlight></codeline>
-<codeline lineno="383"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="374"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusFaultStep(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>rsrError,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>uartRxMoved);</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>statusState();</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"></highlight></codeline>
+<codeline lineno="380"><highlight class="normal">Anim<sp/>statusAnim();</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight></codeline>
+<codeline lineno="383"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusRedLevel();</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight></codeline>
+<codeline lineno="386"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusGreenLevel();</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"></highlight></codeline>
+<codeline lineno="389"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResetForTest();</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"></highlight></codeline>
+<codeline lineno="392"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SimGateway</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"></highlight></codeline>
+<codeline lineno="394"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/SimGateway/SimGateway.h"/>
   </compounddef>
