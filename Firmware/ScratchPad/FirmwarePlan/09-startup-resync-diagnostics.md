@@ -24,7 +24,7 @@ assignments (→ 08), HID frame format (→ 03).
    batch no later than two `PanelGroup::loop()` iterations after slot A is queued.
    PanelBridge routes each non-null packet normally:
    `0x8000 <= controlId <= 0x86FF` → `sendDcsBiosMessage()` → ASCII on UART → SimGateway → USB CDC;
-   `controlId < 0x8000` → HID frame → SimGateway → Joystick. If no process is reading the
+   `controlId < 0x8000` → HID frame → SimGateway → USB HID report. If no process is reading the
    USB ports, the host silently discards the data — no special handling needed.
 7. Send `READY` frame (`canIdReady(NODE_ID)` = `0x400 + NODE_ID`) — signals PanelBridge
    that the initial input poll and EVT burst are complete, and that this node is ready to
@@ -104,7 +104,7 @@ In all timelines, PanelBridge eventually receives all current input states.
 ## SimGateway Boot Sequence
 
 1. Set USB identity (VID/PID, product strings) — see `03-uart-usb-hid-protocol.md`.
-2. Init Joystick (`use16bit(true)`, `useManualSend(true)`).
+2. Initialise the TinyUSB HID descriptor and enumerate; load axis calibration from flash.
 3. Init UART @ 250000 to PanelBridge.
 4. `SimGateway::setup(Serial1)` — enters relay mode: raw DCS-BIOS bytes forwarded
    USB CDC ↔ UART; HID frame demultiplexer armed on UART RX.
@@ -113,7 +113,7 @@ SimGateway has no boot handshake — it is stateless with respect to the CAN clu
 
 **USB enumeration race:** TinyUSB on RP2040 silently drops HID reports if USB is not yet
 enumerated — no crash risk. Any HID frames that arrive on UART before enumeration completes
-are parsed and dispatched normally; the resulting `Joystick.send()` calls are no-ops until
+are parsed and dispatched normally; the resulting report sends are no-ops until
 the host is ready. Boot-time HID frame loss is acceptable: axes update on the next physical
 movement; buttons are transient and not held at power-on.
 

@@ -102,7 +102,7 @@
       bytes to USB CDC.
 - [x] Implement `HIDAxis` and `HIDButton` self-registering classes.
 - [x] Replace raw `_cbEvt` callback with HID linked-list dispatch: `controlId < 0x8000` →
-      walk `HIDAxis`/`HIDButton` list → Joystick setters; call `Joystick.send()` once after
+      walk `HIDAxis`/`HIDButton` list → HID report setters; send one report once after
       draining if any setter fired.
 - [x] Add SimGateway on-device harness tests that inject synthetic HID-frame bytes through
       `SIMGATEWAY_TEST` parser hooks and, optionally, `Serial1` TX→RX loopback. These tests

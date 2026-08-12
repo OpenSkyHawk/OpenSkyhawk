@@ -5,7 +5,7 @@
 // Intercepts HID frames (0xAA 0x55 magic) from UART and dispatches to HIDAxis/HIDButton list.
 //
 // Does NOT run the DCS-BIOS library — PanelBridge owns all DCS-BIOS parsing.
-// SimGateway::setup() owns: Serial1.begin(250000), USB identity, and Joystick init.
+// SimGateway::setup() owns: Serial1.begin(250000), USB identity, calibration load, HID init.
 // Only declarations needed here are HIDAxis and HIDButton objects.
 
 #include <SimGateway.h>

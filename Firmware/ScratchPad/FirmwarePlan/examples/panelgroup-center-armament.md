@@ -6,7 +6,7 @@
 > against the generated headers — do not hard-code values from this example.
 
 Runs on the STM32 node for the Center Armament panel. Emits and receives `{controlId, value}`
-packets over CAN. No DCS-BIOS or Joystick knowledge — routing is determined entirely by the
+packets over CAN. No DCS-BIOS or HID knowledge — routing is determined entirely by the
 `controlId` range: generated `DCSIN_*` IDs (`0x8000`-`0x86FF`) → DCS-BIOS path;
 `< 0x8000` → HID path.
 
@@ -68,7 +68,7 @@ OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PIN_MASTER_ARM);
 OpenSkyhawk::Switch3Pos fuelSel  (DCSIN_FUEL_SEL,   PIN_FUEL_SEL_0, PIN_FUEL_SEL_1);
 
 // --- Inputs (hardware → HID, controlId < 0x8000) ---
-// PanelBridge receives CAN EVT → HID frame → SimGateway → Joystick setter
+// PanelBridge receives CAN EVT → HID frame → SimGateway → HID report
 // Same input classes as DCS-BIOS controls — routing determined by controlId only.
 
 // Axis input via hall-effect sensor:
@@ -76,7 +76,7 @@ OpenSkyhawk::Switch3Pos fuelSel  (DCSIN_FUEL_SEL,   PIN_FUEL_SEL_0, PIN_FUEL_SEL
 OpenSkyhawk::AngleSensorInput rollAxis(CTRL_ROLL, rollSensor, 180.0f, 90.0f);
 
 // Button inputs — same Switch2Pos class, CTRL_* controlId routes to HID instead of DCS-BIOS:
-OpenSkyhawk::Switch2Pos trigger  (CTRL_TRIGGER,  PIN_TRIGGER);   // trigger → Joystick.button(0)
+OpenSkyhawk::Switch2Pos trigger  (CTRL_TRIGGER,  PIN_TRIGGER);   // trigger → HID button 0
 OpenSkyhawk::Switch2Pos nwsBtn   (CTRL_NWS,      PIN_NWS);       // nose wheel steering button
 
 void setup() {
@@ -116,6 +116,6 @@ Roll axis  (this node → HID)
   → emits CAN EVT {CTRL_ROLL, 0–65535}
   → PanelBridge receives → controlId 0x0010 < 0x8000 → HID frame → UART
   → SimGateway sees 0xAA 0x55 → parse → walk HIDAxis list
-  → roll.dispatch(value) → Joystick.X(value) → Joystick.send()
+  → roll.dispatch(value) → calibration + offset → HID axis 0 → report sent once
   → USB HID report → DCS receives roll axis input
 ```

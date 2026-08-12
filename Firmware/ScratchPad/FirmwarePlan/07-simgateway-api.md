@@ -1,7 +1,7 @@
 # 07 — SimGateway API
 
 **Owns:** `HIDAxis`, `HIDButton`, and `HIDHatSwitch` class specs, SimGateway relay contract, HID
-dispatch logic, `OsJoystick.send()` batching rule, USB identity, UART initialisation, TinyUSB HID
+dispatch logic, HID report batching rule, USB identity, UART initialisation, TinyUSB HID
 descriptor and report layout.
 **Does not own:** HID frame wire format (→ 03), CAN protocol (→ 02), boot sequence (→ 09).
 
@@ -192,7 +192,7 @@ After draining all HID frames from UART in one `SimGateway::loop()` iteration:
 1. Walk the `HIDAxis` linked list; for each matching `controlId` apply that axis's calibration, then write `value − 32768` to the TinyUSB HID axis report field.
 2. Walk the `HIDButton` linked list; for each matching `controlId` set/clear the corresponding button bit.
 3. Walk the `HIDHatSwitch` linked list; for each matching `controlId` write the direction nibble.
-4. If any setter fired, call `OsJoystick.send()` **once** to flush the HID report.
+4. If any setter fired, send the HID report **once** to flush it.
 
 Calling `Send()` once per drain cycle (not once per frame) keeps HID report rate predictable.
 
@@ -347,7 +347,7 @@ void setup() {
 }
 
 void loop() {
-    SimGateway::loop();   // relay USB CDC ↔ UART; intercept HID frames; OsJoystick.send() once
+    SimGateway::loop();   // relay USB CDC ↔ UART; intercept HID frames; send one HID report
 }
 ```
 

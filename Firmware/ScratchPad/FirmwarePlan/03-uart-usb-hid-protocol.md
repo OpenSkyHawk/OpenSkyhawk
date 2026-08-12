@@ -1,7 +1,7 @@
 # 03 — UART / USB-HID Protocol
 
 **Owns:** UART multiplexing scheme, HID frame wire format, parser resync algorithm,
-USB identity and Joystick configuration, the USB CDC calibration protocol.
+USB identity and HID device configuration, the USB CDC calibration protocol.
 **Does not own:** HID axis/button class declarations (→ 07), calibration storage and the
 transform itself (→ 07), CAN frame formats (→ 02), DCS-BIOS routing logic (→ 04),
 boot sequencing (→ 09).
@@ -115,7 +115,7 @@ The HID descriptor and report struct are private to `SimGateway.cpp`. In product
 live inside an anonymous namespace. In test builds the same internal helpers are no-ops,
 keeping all 5 test environments free of USB enumeration side effects.
 
-`OsJoystick.send()` is called once after draining all HID frames each loop iteration to keep
+The HID report is sent once after draining all HID frames each loop iteration to keep
 the HID report rate predictable and avoid redundant USB packets.
 
 > **Validated 2026-06-11** via `hid_stress` test sketch (VID 0x2E8A / PID 0x4135) on macOS

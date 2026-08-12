@@ -14,7 +14,7 @@ points: **PanelBridge** (DCS-BIOS inputs) and **SimGateway** (HID inputs).
 
 | Range | Type | Routed by | Destination |
 |-------|------|-----------|-------------|
-| `0x0010`–`0x00FF` | HID axes and buttons | SimGateway | `HIDAxis` / `HIDButton` → `Joystick.*()` |
+| `0x0010`–`0x00FF` | HID axes and buttons | SimGateway | `HIDAxis` / `HIDButton` → USB HID report |
 | `0x8000`–`0x86FF` | DCS-BIOS compact command IDs (`DCSIN_*`) | PanelBridge | Input map lookup → `sendDcsBiosMessage()` |
 | `0xFFFF` | Reserved: TEST_SEQ trigger | — | See `02-can-protocol.md` |
 

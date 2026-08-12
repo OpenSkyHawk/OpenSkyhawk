@@ -70,7 +70,7 @@ SimGateway (byte relay) → USB CDC → DCS.
 
 Physical change → PanelGroup (input class fires CAN EVT with `controlId < 0x8000`) →
 PanelBridge (wraps in HID frame → UART) → SimGateway (intercepts HID frame →
-HIDAxis/HIDButton → Joystick setters → `Joystick.send()`) → USB HID → DCS.
+HIDAxis/HIDButton → HID report setters → one report sent per drain) → USB HID → DCS.
 
 ---
 

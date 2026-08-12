@@ -58,6 +58,6 @@ report:
 - **`HIDButton`** — `value != 0` → pressed
 - **`HIDHatSwitch`** — direction nibble (0 = centered, 1–8 = N…NW)
 
-After draining all HID frames in a loop, SimGateway calls `OsJoystick.send()` once. The USB HID
+After draining all HID frames in a loop, SimGateway sends the HID report once. The USB HID
 profile is 8 axes / 128 buttons / 4 hats — see [SimGateway](../architecture/sim-gateway.md) for
 the descriptor and platform limits.
