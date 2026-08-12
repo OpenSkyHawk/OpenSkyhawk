@@ -4036,16 +4036,28 @@ refuses to connect. Uncomment the override in <code>platformio.ini</code>:</p>
 <p><code>ini
 upload_flags =
     -c
-    set CPUTAPID 0x2ba01477</code></p>
+    set CPUTAPID 0</code></p>
+<p>Use <code>0</code>, not the clone's actual ID. <code>0</code> disables the ID check outright. Setting it to
+<code>0x2ba01477</code> gets past the initial check but has been observed to fail part-way through
+the write — the projects under <code>Firmware/Tests/</code> all use <code>0</code> for this reason.</p>
 </div>
 <h2 id="rp2040-simgateway-usb">RP2040 (SimGateway) — USB</h2>
-<p>No ST-Link needed. Either:</p>
+<p>No ST-Link needed, but <strong>put the board into BOOTSEL by hand first</strong>: hold BOOTSEL while plugging
+it in (or while tapping RESET), and wait for the <code>RPI-RP2</code> drive to appear. Then either:</p>
 <ul>
-<li><strong>From PlatformIO:</strong> <code>pio run -t upload</code> — it resets the board into the bootloader and copies
-  the firmware over USB, or</li>
-<li><strong>By hand:</strong> hold BOOTSEL while plugging in, then drag the built <code>.uf2</code> onto the
-  <code>RPI-RP2</code> drive that appears.</li>
+<li><strong>From PlatformIO:</strong> <code>pio run -t upload</code>, or</li>
+<li><strong>By hand:</strong> drag the built <code>.uf2</code> onto the <code>RPI-RP2</code> drive.</li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title"><code>pio run -t upload</code> cannot reset the board for you</p>
+<p>Every SimGateway project builds with <code>-DUSE_TINYUSB</code>, which replaces the Pico core's USB
+stack — and the 1200-baud-touch auto-reset goes with it. Without a manual BOOTSEL,
+<code>picotool</code> finds no device in bootloader mode and the upload fails.</p>
+<p>Anything holding the CDC port open also blocks the upload — close SkyHawkClient, serial
+monitors, and any browser HID/serial page before flashing. An orphaned Electron process
+is enough to keep the port claimed; check with <code>lsof /dev/cu.usbmodem*</code> if BOOTSEL alone
+doesn't fix it.</p>
+</div>
 <h2 id="after-flashing">After flashing</h2>
 <p>Watch the board come up on DiagSerial (115200) and check the status LED. See
 <a href="../bring-up/">Bring-Up &amp; Testing</a> and <a href="../../firmware/debugging/">Debugging on STM32</a>.</p>
