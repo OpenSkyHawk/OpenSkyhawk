@@ -124,6 +124,9 @@ namespace {
 // the frame-parser capture globals below record the *pre*-transform value read off the wire.
 int16_t _sgtest_axisValue = 0;
 uint8_t _sgtest_axisIndex = 0xFF;
+// One report per drain is the batching contract. Nothing else counts report sends, so without
+// this a fork that called _hidSend() itself would be invisible to every test.
+uint8_t _sgtest_sendCount = 0;
 
 static void _hidBegin()                              {}
 static void _hidSetAxis(uint8_t axisIndex, int16_t value) {
@@ -132,7 +135,7 @@ static void _hidSetAxis(uint8_t axisIndex, int16_t value) {
 }
 static void _hidSetButton(uint8_t, bool)             {}
 static void _hidSetHat(uint8_t, uint8_t)             {}
-static void _hidSend()                               {}
+static void _hidSend()                               { _sgtest_sendCount++; }
 } // anonymous namespace
 
 #endif // SIMGATEWAY_TEST
@@ -443,6 +446,49 @@ bool _calPersist(const OpenSkyhawk::CalBlob& candidate) {
     return ok;
 }
 
+// Stream one sample of the axis under calibration.
+//
+// Only the selected axis streams. The dialog calibrates one axis at a time — which is why
+// SESSION_OPEN names one and STREAM_SELECT switches it — so streaming the other seven would be
+// bytes nobody is looking at. Every other axis still dispatches to HID exactly as normal; it
+// simply emits no RAW.
+//
+// Carries both values from the same sample: `raw` as read off the wire, and `cal` after the
+// stored calibration. That is what lets the dialog show the sensor reading beside what DCS is
+// receiving without the client reimplementing the transform. Note `cal` reflects the calibration
+// the device currently *holds* — there is no pending state, so it does not preview the endpoints
+// being captured.
+//
+// **Droppable by design.** _writeCdc() blocks when the host stops reading, and a stalled write
+// here would stall the UART drain and overrun the RX FIFO — corrupting the DCS-BIOS stream to
+// protect a preview sample. So the whole frame is skipped when the CDC buffer is short. Checked
+// once, before the first byte: a per-byte check would emit truncated frames, which is worse than
+// emitting nothing.
+//
+// The sequence counter advances for every sample that *would* have been sent, including dropped
+// ones. That gap is the only way a client can distinguish lost samples from an axis that stopped
+// moving — the stream is genuinely silent at rest.
+void _calEmitRaw(uint8_t axisIndex, uint16_t raw) {
+    if (!_calSession || axisIndex != _calStreamAxis) return;
+
+    const uint8_t seq = _calRawSeq++;
+
+    constexpr uint16_t RAW_FRAME_BYTES = CAL_ENVELOPE_BYTES + 5;
+#ifndef SIMGATEWAY_TEST
+    if ((uint16_t)Serial.availableForWrite() < RAW_FRAME_BYTES) return;   // drop, never truncate
+#endif
+
+    const uint16_t cal = (axisIndex < OpenSkyhawk::AXIS_CAL_SLOTS)
+                       ? axisCalApply(_calBlob.axes[axisIndex], raw)
+                       : raw;
+
+    uint8_t p[5];
+    p[0] = axisIndex;
+    _put16(p + 1, raw);
+    _put16(p + 3, cal);
+    _calSend(OpenSkyhawk::CAL_T_RAW, seq, p, sizeof(p));
+}
+
 void _calEndSession() {
     _calSession    = false;
     _calStreamAxis = CAL_AXIS_NONE;
@@ -667,7 +713,16 @@ bool _processByte(uint8_t b) {
             bool fired = false;
 
             for (auto* a = OpenSkyhawk::HIDAxis::head(); a; a = a->next()) {
-                if (a->controlId() == controlId) { a->dispatch(value); fired = true; }
+                if (a->controlId() == controlId) {
+                    // Forking here rather than beside the controlId decode gives the axis
+                    // index for free and emits nothing for button or hat frames. It must not
+                    // touch `fired` or send a HID report: one report per drain is the
+                    // contract, and breaking it only while calibrating would change what DCS
+                    // sees mid-session.
+                    _calEmitRaw(a->axisIndex(), value);
+                    a->dispatch(value);
+                    fired = true;
+                }
             }
             for (auto* btn = OpenSkyhawk::HIDButton::head(); btn; btn = btn->next()) {
                 if (btn->controlId() == controlId) { btn->dispatch(value); fired = true; }
@@ -989,6 +1044,8 @@ void calSetForTest(const OpenSkyhawk::CalBlob& blob) { _calBlob = blob; }
 int16_t lastAxisValue()    { return _sgtest_axisValue; }
 uint8_t lastAxisIndex()    { return _sgtest_axisIndex; }
 void resetAxisCapture()    { _sgtest_axisValue = 0; _sgtest_axisIndex = 0xFF; }
+uint8_t hidSendCount()     { return _sgtest_sendCount; }
+void resetHidSendCount()   { _sgtest_sendCount = 0; }
 
 // ── Status-LED test hooks ─────────────────────────────────────────────────────
 void statusInject(uint32_t now, bool mounted, uint32_t lastCdcRxMs, bool faultActive) {

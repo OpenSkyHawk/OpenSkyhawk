@@ -303,6 +303,17 @@ uint8_t lastAxisIndex();
 /** @brief Clear the captured axis write. Call between test cases. */
 void resetAxisCapture();
 
+/**
+ * @brief Number of HID report sends since resetHidSendCount().
+ * @note The batching contract is one report per loop() drain. Nothing else observes report
+ *       sends, so this is the only way to assert that a dispatch-path change did not add
+ *       sends of its own.
+ */
+uint8_t hidSendCount();
+
+/** @brief Clear the report-send counter. Call between test cases. */
+void resetHidSendCount();
+
 // ── Calibration transport test hooks (test builds only) ───────────────────────
 // The transport's safety property is that a rejected candidate is handed back to the relay
 // byte-for-byte. Asserting that needs a capture on the UART side, which had no test seam.
