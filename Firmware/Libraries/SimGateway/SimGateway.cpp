@@ -449,43 +449,37 @@ void _calEndSession() {
     _calRawSeq     = 0;
 }
 
+// One axis per COMMIT, never a batch. The framing gate has already fixed len at 9.
+//
+// An earlier draft carried a count and up to eight records. Dropping it removes the only
+// variable-length type — so "one legal length per type" holds with no exception — and closes
+// a hazard the batch form had: nothing stopped a batch naming the same axis twice with
+// different values, and the handler would silently apply the last one. Committing the axis
+// the user just finished also matches the capture flow, where only one axis streams at a time,
+// and keeps a bad axis from discarding good ones alongside it.
 void _calHandleCommit(uint8_t seq, const uint8_t* pay, uint16_t len) {
-    const uint8_t count = pay[0];
-    if (len != (uint16_t)(1 + 9 * count) || count < 1 || count > OpenSkyhawk::AXIS_CAL_SLOTS) {
-        _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_LENGTH, CAL_AXIS_NONE);
+    (void)len;
+    const uint8_t idx = pay[0];
+
+    if (idx >= OpenSkyhawk::AXIS_CAL_SLOTS) {
+        _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, idx);
         return;
     }
-
-    // Validate every record before applying any of them. A three-axis commit with one bad
-    // axis must write none, or the client's dirty-state bookkeeping desynchronises.
-    for (uint8_t r = 0; r < count; ++r) {
-        const uint8_t* rec = pay + 1 + (size_t)r * 9;
-        const uint8_t  idx = rec[0];
-        if (idx >= OpenSkyhawk::AXIS_CAL_SLOTS) {
-            _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, idx);
-            return;
-        }
-        if (_get16(rec + 7) != 0) {
-            _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_DEADZONE, idx);
-            return;
-        }
-        const OpenSkyhawk::AxisCal cand = {
-            _get16(rec + 1), _get16(rec + 3), _get16(rec + 5), _get16(rec + 7)
-        };
-        if (!axisCalValid(cand)) {
-            _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_ORDER, idx);
-            return;
-        }
+    if (_get16(pay + 7) != 0) {
+        _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_DEADZONE, idx);
+        return;
+    }
+    const OpenSkyhawk::AxisCal axis = {
+        _get16(pay + 1), _get16(pay + 3), _get16(pay + 5), _get16(pay + 7)
+    };
+    if (!axisCalValid(axis)) {
+        _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_ORDER, idx);
+        return;
     }
 
     // Applied to a copy — the live blob changes only once the write has succeeded.
     OpenSkyhawk::CalBlob cand = _calBlob;
-    for (uint8_t r = 0; r < count; ++r) {
-        const uint8_t* rec = pay + 1 + (size_t)r * 9;
-        cand.axes[rec[0]] = OpenSkyhawk::AxisCal{
-            _get16(rec + 1), _get16(rec + 3), _get16(rec + 5), _get16(rec + 7)
-        };
-    }
+    cand.axes[idx] = axis;
 
     if (_calPersist(cand)) _calAck(OpenSkyhawk::CAL_T_COMMIT, seq);
     else _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_NO_STORAGE, CAL_AXIS_NONE);

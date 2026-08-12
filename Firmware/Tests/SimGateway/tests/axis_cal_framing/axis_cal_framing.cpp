@@ -111,13 +111,14 @@ static void testLenGate() {
     checkEq(F("[B5] unknown TYPE rejected at the length gate"),
             SimGateway::uartCaptureCount(), 8);
 
-    // COMMIT is variable-length: only 1 + 9n for n in 1..8 is legal.
-    uint8_t commitOk[8]  = { 0xAA, 0x53, 0x4B, 0x43, OpenSkyhawk::CAL_T_COMMIT, 0, 19, 0 };
-    uint8_t commitBad[8] = { 0xAA, 0x53, 0x4B, 0x43, OpenSkyhawk::CAL_T_COMMIT, 0, 20, 0 };
+    // COMMIT carries exactly one axis, so it is fixed-length like everything else — there
+    // are no variable-length types left, and no exception in the rule.
+    uint8_t commitOk[8]  = { 0xAA, 0x53, 0x4B, 0x43, OpenSkyhawk::CAL_T_COMMIT, 0,  9, 0 };
+    uint8_t commitBad[8] = { 0xAA, 0x53, 0x4B, 0x43, OpenSkyhawk::CAL_T_COMMIT, 0, 19, 0 };
     begin(); feed(commitOk, 8);
-    checkEq(F("[B6] COMMIT LEN 19 accepted (count 2)"), SimGateway::uartCaptureCount(), 0);
+    checkEq(F("[B6] COMMIT LEN 9 accepted"), SimGateway::uartCaptureCount(), 0);
     begin(); feed(commitBad, 8);
-    checkEq(F("[B7] COMMIT LEN 20 rejected"), SimGateway::uartCaptureCount(), 8);
+    checkEq(F("[B7] old batch LEN 19 now rejected"), SimGateway::uartCaptureCount(), 8);
 }
 
 // ── Bad CRC hands every byte back ─────────────────────────────────────────────

@@ -76,12 +76,8 @@ bool calLenValidForType(uint8_t type, uint16_t len) {
         case CAL_T_RAW:              return len == 5;
         case CAL_T_SESSION_ACK:      return len == 5;
         case CAL_T_HELLO_ACK:        return len == 6;
+        case CAL_T_COMMIT:           return len == 9;   // exactly one axis, never a batch
         case CAL_T_CAL_DATA:         return len == 82;
-
-        // The only variable-length type. len == 1 + 9*count for count in 1..8 is exactly
-        // {10, 19, 28, 37, 46, 55, 64, 73} — decidable without reading count, which is what
-        // keeps this check ahead of buffering the payload.
-        case CAL_T_COMMIT:           return len >= 10 && len <= 73 && ((len - 1) % 9) == 0;
 
         default:                     return false;   // unknown type is an error, not a skip
     }

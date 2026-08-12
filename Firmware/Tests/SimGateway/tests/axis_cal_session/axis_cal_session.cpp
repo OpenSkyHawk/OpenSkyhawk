@@ -13,7 +13,7 @@
 //   - SESSION_OPEN / SESSION_ACK, STREAM_SELECT, SESSION_CLOSE
 //   - CAL_DATA present and calibrated masks, before and after a commit
 //   - COMMIT validation: index, deadzone, ordering — each with its own NACK reason and axis
-//   - COMMIT is all-or-nothing across records
+//   - COMMIT carries exactly one axis; a rejected axis leaves the others alone
 //   - RESET clears an axis and needs no following COMMIT
 //
 // Flash:
@@ -65,14 +65,14 @@ static uint16_t rxPay16(uint8_t i) {
     return (uint16_t)(rxPay(i) | ((uint16_t)rxPay(i + 1) << 8));
 }
 
-// Build one COMMIT record into buf at offset o.
-static void putRec(uint8_t* buf, uint16_t o, uint8_t idx,
+// A COMMIT payload is exactly one axis: 9 bytes, no count.
+static void putRec(uint8_t* buf, uint8_t idx,
                    uint16_t mn, uint16_t ctr, uint16_t mx, uint16_t dz) {
-    buf[o] = idx;
-    buf[o+1] = (uint8_t)mn;  buf[o+2] = (uint8_t)(mn >> 8);
-    buf[o+3] = (uint8_t)ctr; buf[o+4] = (uint8_t)(ctr >> 8);
-    buf[o+5] = (uint8_t)mx;  buf[o+6] = (uint8_t)(mx >> 8);
-    buf[o+7] = (uint8_t)dz;  buf[o+8] = (uint8_t)(dz >> 8);
+    buf[0] = idx;
+    buf[1] = (uint8_t)mn;  buf[2] = (uint8_t)(mn >> 8);
+    buf[3] = (uint8_t)ctr; buf[4] = (uint8_t)(ctr >> 8);
+    buf[5] = (uint8_t)mx;  buf[6] = (uint8_t)(mx >> 8);
+    buf[7] = (uint8_t)dz;  buf[8] = (uint8_t)(dz >> 8);
 }
 
 static void openSession(uint8_t axis) {
@@ -101,7 +101,7 @@ static void testOutsideSession() {
     checkEq(F("[A11] axis 1 controlId is CTRL_PITCH"), rxPay16(12), CTRL_PITCH);
 
     // Session-required commands are consumed and refused, never relayed onward.
-    uint8_t c[10]; c[0] = 1; putRec(c, 1, 0, 100, 200, 300, 0);
+    uint8_t c[9]; putRec(c, 0, 100, 200, 300, 0);
     req(OS::CAL_T_COMMIT, 0x23, c, sizeof(c));
     checkEq(F("[A12] COMMIT outside a session is NACKed"), rxType(), OS::CAL_T_NACK);
     checkEq(F("[A13] reason NO_SESSION"),  rxPay(1), OS::CAL_NACK_NO_SESSION);
@@ -151,35 +151,38 @@ static void testCommitValidation() {
     SimGateway::calResetForTest();
     openSession(0);
 
-    uint8_t c[19];
+    uint8_t c[9];
 
     // Bad axis index.
-    c[0] = 1; putRec(c, 1, 8, 100, 200, 300, 0);
-    req(OS::CAL_T_COMMIT, 0x41, c, 10);
+    putRec(c, 8, 100, 200, 300, 0);
+    req(OS::CAL_T_COMMIT, 0x41, c, 9);
     checkEq(F("[C1] index 8 NACKed BAD_INDEX"), rxPay(1), OS::CAL_NACK_BAD_INDEX);
     checkEq(F("[C2] detail is the index"),      rxPay(2), 8);
 
     // Non-zero deadzone: reserved in this protocol version.
-    c[0] = 1; putRec(c, 1, 0, 100, 200, 300, 5);
-    req(OS::CAL_T_COMMIT, 0x42, c, 10);
+    putRec(c, 0, 100, 200, 300, 5);
+    req(OS::CAL_T_COMMIT, 0x42, c, 9);
     checkEq(F("[C3] deadzone 5 NACKed BAD_DEADZONE"), rxPay(1), OS::CAL_NACK_BAD_DEADZONE);
 
     // Endpoints out of order.
-    c[0] = 1; putRec(c, 1, 0, 300, 200, 100, 0);
-    req(OS::CAL_T_COMMIT, 0x43, c, 10);
+    putRec(c, 0, 300, 200, 100, 0);
+    req(OS::CAL_T_COMMIT, 0x43, c, 9);
     checkEq(F("[C4] inverted endpoints NACKed BAD_ORDER"), rxPay(1), OS::CAL_NACK_BAD_ORDER);
     checkEq(F("[C5] detail names the axis"),               rxPay(2), 0);
 
-    // All-or-nothing: a good record followed by a bad one applies neither.
-    c[0] = 2;
-    putRec(c, 1,  0, 13443, 34728, 50704, 0);   // valid
-    putRec(c, 10, 1,   500,   400,   300, 0);   // inverted
-    req(OS::CAL_T_COMMIT, 0x44, c, 19);
-    checkEq(F("[C6] mixed batch NACKed"), rxType(), OS::CAL_T_NACK);
-    checkEq(F("[C7] blamed axis is the bad one"), rxPay(2), 1);
+    // A rejected axis leaves the others alone — the reason batching was dropped. Commit a
+    // good axis, then a bad one, and the good one must survive.
+    putRec(c, 0, 13443, 34728, 50704, 0);
+    req(OS::CAL_T_COMMIT, 0x44, c, 9);
+    checkEq(F("[C6] good axis committed"), rxType(), OS::CAL_T_ACK);
 
-    req(OS::CAL_T_GET_CAL, 0x45, nullptr, 0);
-    checkEq(F("[C8] neither axis was applied"), rxPay(1), 0x00);
+    putRec(c, 1, 500, 400, 300, 0);             // inverted
+    req(OS::CAL_T_COMMIT, 0x45, c, 9);
+    checkEq(F("[C7] bad axis rejected"), rxType(), OS::CAL_T_NACK);
+    checkEq(F("[C8] blamed axis is the bad one"), rxPay(2), 1);
+
+    req(OS::CAL_T_GET_CAL, 0x46, nullptr, 0);
+    checkEq(F("[C9] the good axis survived the rejection"), rxPay(1), 0x01);
 }
 
 // ── COMMIT and RESET happy paths ──────────────────────────────────────────────
@@ -187,14 +190,15 @@ static void testCommitAndReset() {
     SimGateway::calResetForTest();
     openSession(0);
 
-    uint8_t c[19];
-    c[0] = 2;
-    putRec(c, 1,  0, 13443, 34728, 50704, 0);
-    putRec(c, 10, 1, 13058, 33112, 53741, 0);
-    req(OS::CAL_T_COMMIT, 0x51, c, 19);
+    uint8_t c[9];
+    putRec(c, 0, 13443, 34728, 50704, 0);
+    req(OS::CAL_T_COMMIT, 0x51, c, 9);
     checkEq(F("[D1] valid COMMIT ACKed"),  rxType(), OS::CAL_T_ACK);
     checkEq(F("[D2] ACK names COMMIT"),    rxPay(0), OS::CAL_T_COMMIT);
     checkEq(F("[D3] SEQ echoed"),          rxSeq(),  0x51);
+
+    putRec(c, 1, 13058, 33112, 53741, 0);   // second axis, its own commit
+    req(OS::CAL_T_COMMIT, 0x51, c, 9);
 
     req(OS::CAL_T_GET_CAL, 0x52, nullptr, 0);
     checkEq(F("[D4] both axes now calibrated"), rxPay(1), 0x03);

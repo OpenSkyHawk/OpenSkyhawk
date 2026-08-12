@@ -232,10 +232,10 @@ constexpr uint8_t CAL_AXIS_NONE = 0xFF;
  * magic in DCS-BIOS text can decode a length near 65535, and a receiver that waits for that
  * many bytes stalls. Every type therefore has an exact length rather than a shared bound.
  *
- * @note `COMMIT` is the only variable-length type, and its rule is still decidable here:
- *       `len == 1 + 9 * count` for `count` in 1..8 is exactly the set {10, 19, ... 73},
- *       which is checkable without reading `count` itself. The payload's own `count` byte is
- *       cross-checked against `len` after buffering.
+ * @note There are no variable-length types. `COMMIT` carries exactly one axis, so the rule is
+ *       uniform: one legal length per type, no exception to state or to get wrong. An earlier
+ *       draft let `COMMIT` batch up to eight axes, which allowed a batch to name the same axis
+ *       twice with different values and silently apply the last.
  * @note An unknown type is rejected. Protocol versions must match — `HELLO_ACK` carries
  *       `proto` for exactly that — so an unrecognised type is an error, not something to skip.
  */
