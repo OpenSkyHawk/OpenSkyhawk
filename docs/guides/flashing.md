@@ -24,17 +24,30 @@ PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
     ```ini
     upload_flags =
         -c
-        set CPUTAPID 0x2ba01477
+        set CPUTAPID 0
     ```
+
+    Use `0`, not the clone's actual ID. `0` disables the ID check outright. Setting it to
+    `0x2ba01477` gets past the initial check but has been observed to fail part-way through
+    the write — the projects under `Firmware/Tests/` all use `0` for this reason.
 
 ## RP2040 (SimGateway) — USB
 
-No ST-Link needed. Either:
+No ST-Link needed, but **put the board into BOOTSEL by hand first**: hold BOOTSEL while plugging
+it in (or while tapping RESET), and wait for the `RPI-RP2` drive to appear. Then either:
 
-- **From PlatformIO:** `pio run -t upload` — it resets the board into the bootloader and copies
-  the firmware over USB, or
-- **By hand:** hold BOOTSEL while plugging in, then drag the built `.uf2` onto the
-  `RPI-RP2` drive that appears.
+- **From PlatformIO:** `pio run -t upload`, or
+- **By hand:** drag the built `.uf2` onto the `RPI-RP2` drive.
+
+!!! warning "`pio run -t upload` cannot reset the board for you"
+    Every SimGateway project builds with `-DUSE_TINYUSB`, which replaces the Pico core's USB
+    stack — and the 1200-baud-touch auto-reset goes with it. Without a manual BOOTSEL,
+    `picotool` finds no device in bootloader mode and the upload fails.
+
+    Anything holding the CDC port open also blocks the upload — close SkyHawkClient, serial
+    monitors, and any browser HID/serial page before flashing. An orphaned Electron process
+    is enough to keep the port claimed; check with `lsof /dev/cu.usbmodem*` if BOOTSEL alone
+    doesn't fix it.
 
 ## After flashing
 
