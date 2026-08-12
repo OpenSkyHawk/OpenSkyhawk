@@ -53,7 +53,7 @@
 | ---: | :--- |
 |  const [**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & | [**calibration**](#function-calibration) () <br>_The calibration currently applied to dispatched axis values._  |
 |  void | [**loop**](#function-loop) () <br>_Relay bytes and dispatch HID frames. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _iteration._ |
-|  void | [**setup**](#function-setup) (SerialUART & uart, uint8\_t txPin=DEFAULT\_UART\_TX\_PIN, uint8\_t rxPin=DEFAULT\_UART\_RX\_PIN) <br>_Initialise USB identity, OpenSkyhawkJoystick, and UART link to_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
+|  void | [**setup**](#function-setup) (SerialUART & uart, uint8\_t txPin=DEFAULT\_UART\_TX\_PIN, uint8\_t rxPin=DEFAULT\_UART\_RX\_PIN) <br>_Initialise USB identity, the HID device, and the UART link to_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
 |  void | [**statusLedBegin**](#function-statusledbegin) () <br>_Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from_ [_**setup()**_](namespaceSimGateway.md#function-setup) _._ |
 |  void | [**statusTick**](#function-statustick) () <br>_Advance the status-LED state machine and animation. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _._ |
 
@@ -126,7 +126,7 @@ void SimGateway::loop ()
 Per call:
 * Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to [**PanelBridge**](namespacePanelBridge.md).
 * Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from [**PanelBridge**](namespacePanelBridge.md)) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE
-* If any HID setter fired, call OsJoystick.send() exactly once.
+* If any HID setter fired, send the HID report exactly once.
 
 
 
@@ -156,7 +156,7 @@ Parser state persists across calls — frames split across iterations assemble c
 
 ### function setup 
 
-_Initialise USB identity, OpenSkyhawkJoystick, and UART link to_ [_**PanelBridge**_](namespacePanelBridge.md) _._
+_Initialise USB identity, the HID device, and the UART link to_ [_**PanelBridge**_](namespacePanelBridge.md) _._
 ```C++
 void SimGateway::setup (
     SerialUART & uart,
@@ -171,7 +171,7 @@ Must be the first call in the sketch's [**setup()**](namespaceSimGateway.md#func
 * Manufacturer: "OpenSkyhawk"
 * Product: "A-4E Skyhawk"
 * VID/PID: 0x2E8A / 0x4134
-* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and calls OsJoystick.begin() to initialise the HID descriptor and enumerate.
+* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates.
 
 
 

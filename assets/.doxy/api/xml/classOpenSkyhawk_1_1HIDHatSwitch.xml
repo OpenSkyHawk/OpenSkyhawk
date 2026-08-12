@@ -96,7 +96,7 @@
 <parametername>hatIndex</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>OpenSkyhawkJoystick hat index (0–3). </para>
+<para>HID report hat index (0–3). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -184,7 +184,7 @@
 <para>HID hat switch handler. Declared at sketch scope for each hat switch. </para>
     </briefdescription>
     <detaileddescription>
-<para>Self-registers into a static linked list at construction. Dispatches to OsJoystick.setHat() with direction clamped to 0–8. </para>
+<para>Self-registers into a static linked list at construction. Writes the HID hat nibble with direction clamped to 0–8. </para>
     </detaileddescription>
     <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="118" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="118" bodyend="142"/>
     <listofallmembers>

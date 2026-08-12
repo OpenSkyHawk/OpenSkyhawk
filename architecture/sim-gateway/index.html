@@ -4254,7 +4254,7 @@ transit SimGateway transparently; PanelBridge owns the feature.</p>
 <code>value != 0</code> as pressed; <code>HIDHatSwitch</code> reads a direction nibble (0 = centered, 1–8 = N…NW).</p>
 <h2 id="dispatch-and-startup-behaviour">Dispatch and startup behaviour</h2>
 <p>Each <code>SimGateway::loop()</code> iteration drains all pending HID frames, applies them to the axis /
-button / hat objects, and then calls <code>OsJoystick.send()</code> <strong>once</strong> to flush the HID report.
+button / hat objects, and then sends the HID report <strong>once</strong>.
 Sending once per drain cycle — not once per frame — keeps the HID report rate predictable and
 avoids redundant USB packets.</p>
 <p>At startup, <code>SimGateway::setup()</code> owns all of it: USB identity, GP0/GP1 pin configuration,

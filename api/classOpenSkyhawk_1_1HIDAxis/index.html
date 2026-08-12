@@ -4079,7 +4079,7 @@
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>Self-registers into a static linked list at construction. <a href="../namespaceSimGateway/#function-loop"><strong>SimGateway::loop()</strong></a> walks the list and calls OsJoystick.setAxis() when a HID frame with a matching controlId arrives. The 0–65535 unsigned value from <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> is mapped to signed ±32767 internally (value − 32768).</p>
+<p>Self-registers into a static linked list at construction. <a href="../namespaceSimGateway/#function-loop"><strong>SimGateway::loop()</strong></a> walks the list and writes the calibrated value into the HID axis report when a frame with a matching controlId arrives. The 0–65535 unsigned value from <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> is mapped to signed ±32767 internally (value − 32768).</p>
 <p>Declare at file scope, not inside functions — C++ constructs file-scope objects before setup() runs, which is required for the linked list to be populated.</p>
 <p><strong>Calibration is never a constructor argument.</strong> Endpoints are per-unit — sensor spread, magnet geometry, print tolerance — so baking them in would mean a reflash per build, which is exactly the limitation this design removes. They live in flash, are loaded once by <a href="../namespaceSimGateway/#function-setup"><strong>SimGateway::setup()</strong></a>, and are looked up by <code>axisIndex</code>. Sketch declarations are therefore identical calibrated or not. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
@@ -4093,7 +4093,7 @@
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> CTRL_* constant from <a href="../HIDControls_8h/"><strong>HIDControls.h</strong></a> (0x0010–0x001F range). </li>
-<li><code>axisIndex</code> OpenSkyhawkJoystick axis index (0–7). </li>
+<li><code>axisIndex</code> HID report axis index (0–7). </li>
 </ul>
 <hr>
 

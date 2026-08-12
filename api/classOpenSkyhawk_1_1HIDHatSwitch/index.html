@@ -4064,7 +4064,7 @@
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>Self-registers into a static linked list at construction. Dispatches to OsJoystick.setHat() with direction clamped to 0–8. </p>
+<p>Self-registers into a static linked list at construction. Writes the HID hat nibble with direction clamped to 0–8. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-hidhatswitch">function HIDHatSwitch</h3>
 <p><em>Register a HID hat switch handler.</em> </p>
@@ -4076,7 +4076,7 @@
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> CTRL_* constant from <a href="../HIDControls_8h/"><strong>HIDControls.h</strong></a> (0x0020–0x002F range). </li>
-<li><code>hatIndex</code> OpenSkyhawkJoystick hat index (0–3). </li>
+<li><code>hatIndex</code> HID report hat index (0–3). </li>
 </ul>
 <hr>
 

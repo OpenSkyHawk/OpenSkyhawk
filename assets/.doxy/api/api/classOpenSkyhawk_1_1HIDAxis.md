@@ -93,7 +93,7 @@ _HID axis handler. Declared at sketch scope for each joystick axis._ [More...](#
 ## Detailed Description
 
 
-Self-registers into a static linked list at construction. [**SimGateway::loop()**](namespaceSimGateway.md#function-loop) walks the list and calls OsJoystick.setAxis() when a HID frame with a matching controlId arrives. The 0–65535 unsigned value from [**PanelGroup**](namespacePanelGroup.md) is mapped to signed ±32767 internally (value − 32768).
+Self-registers into a static linked list at construction. [**SimGateway::loop()**](namespaceSimGateway.md#function-loop) walks the list and writes the calibrated value into the HID axis report when a frame with a matching controlId arrives. The 0–65535 unsigned value from [**PanelGroup**](namespacePanelGroup.md) is mapped to signed ±32767 internally (value − 32768).
 
 
 Declare at file scope, not inside functions — C++ constructs file-scope objects before setup() runs, which is required for the linked list to be populated.
@@ -126,7 +126,7 @@ OpenSkyhawk::HIDAxis::HIDAxis (
 
 
 * `controlId` CTRL\_\* constant from [**HIDControls.h**](HIDControls_8h.md) (0x0010–0x001F range). 
-* `axisIndex` OpenSkyhawkJoystick axis index (0–7). 
+* `axisIndex` HID report axis index (0–7). 
 
 
 

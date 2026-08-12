@@ -96,7 +96,7 @@
 <parametername>axisIndex</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>OpenSkyhawkJoystick axis index (0–7). </para>
+<para>HID report axis index (0–7). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -205,7 +205,7 @@ Applies the stored calibration first, then the fixed unsigned→signed offset. O
 <para>HID axis handler. Declared at sketch scope for each joystick axis. </para>
     </briefdescription>
     <detaileddescription>
-<para>Self-registers into a static linked list at construction. <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">SimGateway::loop()</ref> walks the list and calls OsJoystick.setAxis() when a HID frame with a matching controlId arrives. The 0–65535 unsigned value from <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> is mapped to signed ±32767 internally (value − 32768).</para>
+<para>Self-registers into a static linked list at construction. <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">SimGateway::loop()</ref> walks the list and writes the calibrated value into the HID axis report when a frame with a matching controlId arrives. The 0–65535 unsigned value from <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> is mapped to signed ±32767 internally (value − 32768).</para>
 <para>Declare at file scope, not inside functions — C++ constructs file-scope objects before setup() runs, which is required for the linked list to be populated.</para>
 <para><bold>Calibration is never a constructor argument.</bold> Endpoints are per-unit — sensor spread, magnet geometry, print tolerance — so baking them in would mean a reflash per build, which is exactly the limitation this design removes. They live in flash, are loaded once by <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">SimGateway::setup()</ref>, and are looked up by <computeroutput>axisIndex</computeroutput>. Sketch declarations are therefore identical calibrated or not. </para>
     </detaileddescription>

@@ -175,14 +175,14 @@
           <defval>DEFAULT_UART_RX_PIN</defval>
         </param>
         <briefdescription>
-<para>Initialise USB identity, OpenSkyhawkJoystick, and UART link to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
+<para>Initialise USB identity, the HID device, and the UART link to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
         </briefdescription>
         <detaileddescription>
 <para>Must be the first call in the sketch&apos;s <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup()</ref>. Sets USB identity before the TinyUSB stack enumerates:<itemizedlist>
 <listitem><para>Manufacturer: &quot;OpenSkyhawk&quot;</para>
 </listitem><listitem><para>Product: &quot;A-4E Skyhawk&quot;</para>
 </listitem><listitem><para>VID/PID: 0x2E8A / 0x4134</para>
-</listitem><listitem><para>CDC port: &quot;A-4E Skyhawk DCS-BIOS&quot; (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and calls OsJoystick.begin() to initialise the HID descriptor and enumerate.</para>
+</listitem><listitem><para>CDC port: &quot;A-4E Skyhawk DCS-BIOS&quot; (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates.</para>
 </listitem></itemizedlist>
 </para>
 <para><parameterlist kind="param"><parameteritem>
@@ -249,7 +249,7 @@ Every axis reads as uncalibrated until <ref refid="namespaceSimGateway_1aa708bae
 <para>Per call:<orderedlist>
 <listitem><para>Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>.</para>
 </listitem><listitem><para>Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE</para>
-</listitem><listitem><para>If any HID setter fired, call OsJoystick.send() exactly once.</para>
+</listitem><listitem><para>If any HID setter fired, send the HID report exactly once.</para>
 </listitem></orderedlist>
 </para>
 <para><simplesect kind="note"><para>Node-status reporting (#86) needs no handling here: <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>&apos;s <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host&apos;s roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.</para>

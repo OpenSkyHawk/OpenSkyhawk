@@ -94,7 +94,7 @@ _RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md
 ## Detailed Description
 
 
-Owns the USB CDC ↔ UART relay, 0xAA 0x55 HID frame demultiplexer, and OsJoystick.send() batching. HIDAxis, HIDButton, and HIDHatSwitch objects are declared in the sketch at file scope and self-register into linked lists at construction. [**SimGateway::loop()**](namespaceSimGateway.md#function-loop) walks those lists and dispatches matching HID frames to the OpenSkyhawkJoystick abstraction layer.
+Owns the USB CDC ↔ UART relay, 0xAA 0x55 HID frame demultiplexer, and HID report batching. HIDAxis, HIDButton, and HIDHatSwitch objects are declared in the sketch at file scope and self-register into linked lists at construction. [**SimGateway::loop()**](namespaceSimGateway.md#function-loop) walks those lists and dispatches matching HID frames into the USB HID report.
 
 
 Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN. Platform: RP2040 only.

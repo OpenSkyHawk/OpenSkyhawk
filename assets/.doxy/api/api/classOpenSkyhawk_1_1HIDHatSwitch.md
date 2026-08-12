@@ -92,7 +92,7 @@ _HID hat switch handler. Declared at sketch scope for each hat switch._ [More...
 ## Detailed Description
 
 
-Self-registers into a static linked list at construction. Dispatches to OsJoystick.setHat() with direction clamped to 0–8. 
+Self-registers into a static linked list at construction. Writes the HID hat nibble with direction clamped to 0–8. 
 
 
     
@@ -119,7 +119,7 @@ OpenSkyhawk::HIDHatSwitch::HIDHatSwitch (
 
 
 * `controlId` CTRL\_\* constant from [**HIDControls.h**](HIDControls_8h.md) (0x0020–0x002F range). 
-* `hatIndex` OpenSkyhawkJoystick hat index (0–3). 
+* `hatIndex` HID report hat index (0–3). 
 
 
 
