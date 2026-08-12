@@ -166,8 +166,12 @@ already-normalised `uint16_t` HID payloads.
 Verifies the CDC `iInterface` string descriptor ([#85](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/85)).
 No special test sketch — flash the base production template and inspect the host.
 
-1. **Build & flash** the base template:
+1. **Build & flash** the base template. Put the board into BOOTSEL first — `-DUSE_TINYUSB`
+   replaces the core USB stack, so the 1200-baud-touch auto-reset does not work and `picotool`
+   will not find the board on its own. Close anything holding the CDC port (client, serial
+   monitor) as well.
    ```
+   # hold BOOTSEL while plugging in; wait for the RPI-RP2 drive
    cd Firmware/Templates/SimGateway
    pio run -t upload        # board = rpipico by default; set `board` to match your module
    ```
