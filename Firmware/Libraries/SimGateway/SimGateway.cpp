@@ -117,8 +117,17 @@ static void _hidSend() {
 #else // SIMGATEWAY_TEST — no-op HID stubs
 
 namespace {
+// Post-calibration capture. The production _hidSetAxis writes into a private HID report with
+// no read path, so without this the transform HIDAxis::dispatch() applies is unobservable —
+// the frame-parser capture globals below record the *pre*-transform value read off the wire.
+int16_t _sgtest_axisValue = 0;
+uint8_t _sgtest_axisIndex = 0xFF;
+
 static void _hidBegin()                              {}
-static void _hidSetAxis(uint8_t, int16_t)            {}
+static void _hidSetAxis(uint8_t axisIndex, int16_t value) {
+    _sgtest_axisIndex = axisIndex;
+    _sgtest_axisValue = value;
+}
 static void _hidSetButton(uint8_t, bool)             {}
 static void _hidSetHat(uint8_t, uint8_t)             {}
 static void _hidSend()                               {}
@@ -589,6 +598,11 @@ uint8_t cdcCaptureByte(size_t index) {
     return (index < _sgtest_cdcCount) ? _sgtest_cdcBytes[index] : 0;
 }
 bool cdcCaptureOverflow()  { return _sgtest_cdcOverflow; }
+
+void calSetForTest(const OpenSkyhawk::CalBlob& blob) { _calBlob = blob; }
+int16_t lastAxisValue()    { return _sgtest_axisValue; }
+uint8_t lastAxisIndex()    { return _sgtest_axisIndex; }
+void resetAxisCapture()    { _sgtest_axisValue = 0; _sgtest_axisIndex = 0xFF; }
 
 // ── Status-LED test hooks ─────────────────────────────────────────────────────
 void statusInject(uint32_t now, bool mounted, uint32_t lastCdcRxMs, bool faultActive) {

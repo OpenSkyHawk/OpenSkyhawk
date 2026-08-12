@@ -274,6 +274,29 @@ uint8_t cdcCaptureByte(size_t index);
 /** @brief True if more CDC bytes were forwarded than the test capture buffer can hold. */
 bool cdcCaptureOverflow();
 
+// ── Axis calibration test hooks (test builds only) ────────────────────────────
+// The transform itself is tested by calling OpenSkyhawk::axisCalApply() directly. These
+// hooks exist to cover something that function-level test cannot: that HIDAxis::dispatch()
+// actually *applies* it. That path is doubly hidden in test builds — the HID setters are
+// no-op stubs, and the flash load is stubbed to a RAM clear so no calibration can be
+// installed. Without both a writer and a reader, deleting the transform from dispatch()
+// would leave every assertion passing.
+
+/**
+ * @brief Install a calibration blob directly, bypassing flash (test builds only).
+ * @param blob  Blob to make live. Not validated — tests may install deliberately bad values.
+ */
+void calSetForTest(const OpenSkyhawk::CalBlob& blob);
+
+/** @brief Value last written to the HID axis report — post-calibration, post-offset. */
+int16_t lastAxisValue();
+
+/** @brief Axis index last written to the HID axis report; 0xFF if none since reset. */
+uint8_t lastAxisIndex();
+
+/** @brief Clear the captured axis write. Call between test cases. */
+void resetAxisCapture();
+
 // ── Status-LED test hooks (test builds only) ──────────────────────────────────
 // The pure state-selection + animation logic is exercised without GPIO, TinyUSB,
 // or PL011 register reads by injecting inputs and reading back the resolved state /

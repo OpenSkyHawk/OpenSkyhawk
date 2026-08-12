@@ -18,6 +18,8 @@
 //   - integer truncation at the boundaries either side of centre
 //   - validity rejects every fail-closed case, including the deadzone underflow
 //   - CRC-16/CCITT-FALSE canonical vector, and that the CRC excludes its own field
+//   - HIDAxis::dispatch() actually applies the calibration, per axis index, driven by real
+//     0xAA 0x55 frames through the parser
 //
 // Flash:
 //   pio run -e test_axis_cal_transform -t upload
@@ -226,6 +228,73 @@ static void testBlob() {
     check(F("[F12] wrong version rejected (CRC still good)"), !OpenSkyhawk::calBlobValid(blob));
 }
 
+// ── dispatch() actually applies the calibration ───────────────────────────────
+//
+// Everything above tests axisCalApply() directly. None of it would fail if the transform
+// were deleted from HIDAxis::dispatch(), because the frame-parser capture globals record
+// the pre-transform value read off the wire and the HID setters are no-op stubs. This
+// group closes that gap: it drives real 0xAA 0x55 frames through the parser and reads back
+// what reached the axis report.
+
+OpenSkyhawk::HIDAxis   dispatchRoll (CTRL_ROLL,    0);
+OpenSkyhawk::HIDAxis   dispatchPitch(CTRL_PITCH,   1);
+OpenSkyhawk::HIDButton dispatchBtn  (CTRL_TRIGGER, 0);
+
+static void feedFrame(uint16_t controlId, uint16_t value) {
+    const uint8_t frame[] = {
+        0xAA, 0x55,
+        (uint8_t)(controlId & 0xFF), (uint8_t)(controlId >> 8),
+        (uint8_t)(value     & 0xFF), (uint8_t)(value     >> 8)
+    };
+    SimGateway::resetAxisCapture();
+    for (uint8_t i = 0; i < sizeof(frame); ++i) SimGateway::feedByte(frame[i]);
+}
+
+static void testDispatchAppliesCal() {
+    OpenSkyhawk::CalBlob blob;
+
+    // Uncalibrated: the wire value passes through and only the fixed offset is applied.
+    // 34728 − 32768 = 1960, i.e. nowhere near centre — which is the bug being fixed.
+    OpenSkyhawk::calBlobClear(blob);
+    SimGateway::calSetForTest(blob);
+    feedFrame(CTRL_ROLL, ROLL.centre);
+    checkEq(F("[G1] uncalibrated dispatch is offset-only"),
+            (uint32_t)(int32_t)SimGateway::lastAxisValue(), (uint32_t)(int32_t)1960);
+    checkEq(F("[G2] dispatch wrote axis 0"), SimGateway::lastAxisIndex(), 0);
+
+    // Calibrated on slot 0 only.
+    blob.axes[0] = ROLL;
+    SimGateway::calSetForTest(blob);
+
+    feedFrame(CTRL_ROLL, ROLL.centre);
+    checkEq(F("[G3] calibrated centre dispatches 0"),
+            (uint32_t)(int32_t)SimGateway::lastAxisValue(), 0);
+
+    feedFrame(CTRL_ROLL, ROLL.max);
+    checkEq(F("[G4] calibrated max dispatches +32767"),
+            (uint32_t)(int32_t)SimGateway::lastAxisValue(), 32767);
+
+    feedFrame(CTRL_ROLL, ROLL.min);
+    checkEq(F("[G5] calibrated min dispatches -32768"),
+            (uint32_t)(int32_t)SimGateway::lastAxisValue(), (uint32_t)(int32_t)(-32768));
+
+    // Slot 1 was left uncalibrated, so Pitch must still pass through. Proves the lookup is
+    // per-axis and not "any calibration applies to every axis".
+    feedFrame(CTRL_PITCH, PITCH.centre);
+    checkEq(F("[G6] uncalibrated axis 1 unaffected by axis 0's calibration"),
+            (uint32_t)(int32_t)SimGateway::lastAxisValue(),
+            (uint32_t)(int32_t)((int16_t)(PITCH.centre - 32768)));
+    checkEq(F("[G7] dispatch wrote axis 1"), SimGateway::lastAxisIndex(), 1);
+
+    // A button frame must not touch the axis report at all.
+    feedFrame(CTRL_TRIGGER, 1);
+    checkEq(F("[G8] button frame writes no axis"), SimGateway::lastAxisIndex(), 0xFF);
+
+    // Leave the library uncalibrated for anything that runs after this.
+    OpenSkyhawk::calBlobClear(blob);
+    SimGateway::calSetForTest(blob);
+}
+
 void setup() {
     Serial.begin(115200);
     delay(2000);
@@ -237,6 +306,7 @@ void setup() {
     testDegenerate();
     testValidity();
     testBlob();
+    testDispatchAppliesCal();
     Serial.println(g_allPass ? F("=== ALL PASS ===") : F("=== FAILURES PRESENT ==="));
 }
 
