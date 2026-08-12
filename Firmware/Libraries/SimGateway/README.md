@@ -82,7 +82,29 @@ controlId ranges (from `HIDControls.h`):
 - `0x0030–0x00AF` — HID buttons → `HIDButton` dispatch → `Joystick.SetButton()`
 - `0x00B0–0x00FF` — reserved HID expansion slots
 
-Axis value mapping: 0–65535 (from PanelGroup) → ±32767 (`value − 32768` internally).
+Axis value mapping: 0–65535 (from PanelGroup) → calibration → ±32767 (`value − 32768`), both
+applied internally by `HIDAxis::dispatch()`.
+
+## Axis calibration
+
+A hall stick spans only part of the ADC range — 57–62% on the bench rig — so an uncalibrated
+axis reaches roughly ±20k instead of ±32767, and its neutral rarely sits at the midpoint of that
+span. `AxisCal.h` holds the fix: three captured points per axis (`min`, `centre`, `max`) and two
+linear segments, so centre lands on 32768 exactly however asymmetric the travel is. A single
+`min..max` stretch fixes the range but leaves the stick resting off-centre; on the bench rig
+that was +4669.
+
+Calibration is stored in flash (`CalBlob`, one 4 KB EEPROM sector) and loaded once by
+`SimGateway::setup()`. It is **never a constructor argument** — endpoints are per-unit, so
+baking them in would mean a reflash per build. Sketch declarations are identical calibrated or
+not, and an axis with no stored calibration passes values through unchanged.
+
+`AxisCal.h`/`.cpp` are pure — no EEPROM, no `Serial`, no `millis()`, no globals — so the
+transform is callable directly from a test sketch. That matters because the HID setters are
+no-op stubs in `SIMGATEWAY_TEST` builds, which makes anything reachable only through
+`dispatch()` unobservable.
+
+Writing calibration at runtime is a separate concern; see `FirmwarePlan/07-simgateway-api.md`.
 
 ## Status LEDs
 

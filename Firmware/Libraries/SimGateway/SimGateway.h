@@ -21,6 +21,8 @@
 #include <Arduino.h>
 #include <HIDControls.h>
 
+#include "AxisCal.h"
+
 namespace OpenSkyhawk {
 
 /**
@@ -33,6 +35,12 @@ namespace OpenSkyhawk {
  *
  * Declare at file scope, not inside functions — C++ constructs file-scope objects
  * before setup() runs, which is required for the linked list to be populated.
+ *
+ * **Calibration is never a constructor argument.** Endpoints are per-unit — sensor
+ * spread, magnet geometry, print tolerance — so baking them in would mean a reflash
+ * per build, which is exactly the limitation this design removes. They live in flash,
+ * are loaded once by SimGateway::setup(), and are looked up by `axisIndex`. Sketch
+ * declarations are therefore identical calibrated or not.
  */
 class HIDAxis {
 public:
@@ -45,9 +53,20 @@ public:
 
     static HIDAxis* head();       ///< First registered axis; nullptr if none.
     uint16_t controlId() const;   ///< controlId this handler is registered for.
+    uint8_t  axisIndex() const;   ///< Joystick axis index (0–7) this handler drives.
     /**
      * @brief Dispatch a value to the joystick axis.
-     * @param value  Unsigned 0–65535; mapped to int16_t (value − 32768) internally.
+     * @param value  Unsigned 0–65535 as emitted by the node, pre-calibration.
+     *
+     * Applies the stored calibration first, then the fixed unsigned→signed offset.
+     * Order matters: the pipeline stays unsigned until the final step, so the map
+     * never divides on signed values.
+     *
+     * @note The −32768 offset is invariant, not calibration-dependent. Two different
+     *       centres are in play: `AxisCal::centre` is the axis's *physical* rest point,
+     *       which the map absorbs; −32768 is the re-centring of a 16-bit range, a
+     *       property of the representation. axisCalApply() always returns 0–65535, so
+     *       making the offset variable would apply the centring twice.
      */
     void     dispatch(uint16_t value);
     HIDAxis* next() const;        ///< Next axis in list; nullptr at end.
@@ -138,12 +157,19 @@ static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from Pane
  *   - Product:      "A-4E Skyhawk"
  *   - VID/PID:      0x2E8A / 0x4134
  *   - CDC port:     "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port)
- * Configures the UART pins and calls uart.begin(250000), then calls
- * OsJoystick.begin() to initialise the HID descriptor and enumerate.
+ * Configures the UART pins and calls uart.begin(250000), then loads the stored axis
+ * calibration and calls OsJoystick.begin() to initialise the HID descriptor and enumerate.
  *
  * @param uart   Hardware UART connected to PanelBridge (Serial1 / UART0 on standard board).
  * @param txPin  RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3.
  * @param rxPin  RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2.
+ *
+ * @note Calibration is loaded before the HID stack comes up, which matters only for
+ *       tidiness — the load itself has no ordering requirement. Axis objects are
+ *       constructed at static init, long before this runs, and they index a `.bss` blob
+ *       that the C runtime has already zeroed. A zeroed blob fails axisCalValid(), so an
+ *       axis dispatched before setup() would pass through unchanged rather than divide
+ *       by zero.
  */
 void setup(SerialUART& uart,
            uint8_t txPin = DEFAULT_UART_TX_PIN,
@@ -167,6 +193,16 @@ void setup(SerialUART& uart,
  * @note Parser state persists across calls — frames split across iterations assemble correctly.
  */
 void loop();
+
+/**
+ * @brief The calibration currently applied to dispatched axis values.
+ * @return The in-RAM blob, loaded by setup() from flash.
+ *
+ * Every axis reads as uncalibrated until setup() loads a valid blob, so this is safe to
+ * call at any time. Use OpenSkyhawk::axisCalValid() on an element to ask whether that
+ * particular axis is calibrated.
+ */
+const OpenSkyhawk::CalBlob& calibration();
 
 // ── Status LEDs (Gateway_Bridge board) ────────────────────────────────────────
 //
@@ -237,6 +273,29 @@ uint8_t cdcCaptureByte(size_t index);
 
 /** @brief True if more CDC bytes were forwarded than the test capture buffer can hold. */
 bool cdcCaptureOverflow();
+
+// ── Axis calibration test hooks (test builds only) ────────────────────────────
+// The transform itself is tested by calling OpenSkyhawk::axisCalApply() directly. These
+// hooks exist to cover something that function-level test cannot: that HIDAxis::dispatch()
+// actually *applies* it. That path is doubly hidden in test builds — the HID setters are
+// no-op stubs, and the flash load is stubbed to a RAM clear so no calibration can be
+// installed. Without both a writer and a reader, deleting the transform from dispatch()
+// would leave every assertion passing.
+
+/**
+ * @brief Install a calibration blob directly, bypassing flash (test builds only).
+ * @param blob  Blob to make live. Not validated — tests may install deliberately bad values.
+ */
+void calSetForTest(const OpenSkyhawk::CalBlob& blob);
+
+/** @brief Value last written to the HID axis report — post-calibration, post-offset. */
+int16_t lastAxisValue();
+
+/** @brief Axis index last written to the HID axis report; 0xFF if none since reset. */
+uint8_t lastAxisIndex();
+
+/** @brief Clear the captured axis write. Call between test cases. */
+void resetAxisCapture();
 
 // ── Status-LED test hooks (test builds only) ──────────────────────────────────
 // The pure state-selection + animation logic is exercised without GPIO, TinyUSB,
