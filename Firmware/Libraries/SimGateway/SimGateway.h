@@ -148,6 +148,12 @@ namespace SimGateway {
 static constexpr uint8_t DEFAULT_UART_TX_PIN = 0; ///< RP2040 UART0 TX to PanelBridge RX.
 static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from PanelBridge TX.
 
+// Firmware version reported in the calibration protocol's HELLO_ACK, so the client can show
+// which build a device is running. Keep in step with library.json.
+#define SIMGATEWAY_FW_MAJOR 0
+#define SIMGATEWAY_FW_MINOR 1
+#define SIMGATEWAY_FW_PATCH 0
+
 /**
  * @brief Initialise USB identity, the HID device, and the UART link to PanelBridge.
  *
@@ -296,6 +302,40 @@ uint8_t lastAxisIndex();
 
 /** @brief Clear the captured axis write. Call between test cases. */
 void resetAxisCapture();
+
+// ── Calibration transport test hooks (test builds only) ───────────────────────
+// The transport's safety property is that a rejected candidate is handed back to the relay
+// byte-for-byte. Asserting that needs a capture on the UART side, which had no test seam.
+
+/**
+ * @brief Feed one inbound (host→device) byte, exactly as loop() step 1 would.
+ * @return true if the calibration transport absorbed it; false if it was relayed onward.
+ * @note Relaying is included, so the UART capture reflects what PanelBridge would actually
+ *       receive. A hook that only ran the parser would let a test pass while the bytes it
+ *       declined went nowhere.
+ */
+bool feedCdcByte(uint8_t b);
+
+/** @brief Clear the captured UART-bound bytes. Call between test cases. */
+void resetUartCapture();
+
+/** @brief Number of bytes relayed toward PanelBridge since resetUartCapture(). */
+size_t uartCaptureCount();
+
+/** @brief Captured UART-bound byte at index, or 0 if out of range. */
+uint8_t uartCaptureByte(size_t index);
+
+/** @brief True if more bytes were relayed than the capture buffer can hold. */
+bool uartCaptureOverflow();
+
+/** @brief Clear session state and the partially-received frame. Call between test cases. */
+void calResetForTest();
+
+/** @brief True while a calibration session is open. */
+bool calSessionOpen();
+
+/** @brief Axis currently selected for RAW streaming, or 0xFF for none. */
+uint8_t calStreamAxis();
 
 // ── Status-LED test hooks (test builds only) ──────────────────────────────────
 // The pure state-selection + animation logic is exercised without GPIO, TinyUSB,

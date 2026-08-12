@@ -218,6 +218,20 @@ frame is forwarded to USB CDC immediately.
 This means `DcsBios::loop()` on PanelBridge receives the byte stream with USB CDC latency
 only — no additional SimGateway processing latency.
 
+**One exception, inbound only: calibration frames are consumed** (see
+`03-uart-usb-hid-protocol.md#calibration-protocol-usb-cdc`). The parser runs on every inbound
+byte because `HELLO` and `GET_CAL` are answered outside a session, but it consumes a candidate
+only once it has passed **all three** of magic, `LEN`-matches-`TYPE`, and CRC. A candidate
+failing any of them is handed back to the relay byte-for-byte, in order — so DCS-BIOS traffic
+can never be silently eaten, and the guarantee above still holds for everything that is not a
+valid calibration frame.
+
+The cost is one comparison per byte against a UART that is roughly three orders of magnitude
+slower per byte, so the relay contract's latency claim is unaffected.
+
+The outbound direction is **not** touched: `_NODE_STATUS` and DCS-BIOS text keep flowing during
+a calibration session, with calibration frames injected alongside them.
+
 ---
 
 ## Status LEDs
@@ -237,7 +251,7 @@ States, highest priority first (the topmost active state wins):
 |---|---|---|---|
 | 1 | `FAULT` | uart0 RX hardware error — RSR overrun/framing/parity/break | RED fast (4 Hz) |
 | 2 | `NO_HOST` | USB not enumerated (`TinyUSBDevice.mounted()` false), or unplugged after a mount | RED solid |
-| 3 | `STREAMING` | DCS-BIOS bytes forwarded CDC→UART within the last 500 ms | GREEN solid |
+| 3 | `STREAMING` | inbound host bytes seen within the last 500 ms — forwarded **or consumed** | GREEN solid |
 | 4 | `USB_IDLE` | USB mounted, no recent DCS data | GREEN slow (1 Hz) |
 | 5 | `INIT` | booted, never mounted, within the 2 s init window | RED slow (brief) |
 
@@ -247,8 +261,10 @@ Non-blocking — `millis()`, never `delay()`.
 
 ### Signal sources
 
-- **STREAMING vs USB_IDLE** — the CDC→UART forward (relay step 1) timestamps the last PC→cockpit
-  byte; STREAMING while `now − lastCdcRx ≤ 500 ms`.
+- **STREAMING vs USB_IDLE** — relay step 1 timestamps the last inbound byte from the host,
+  whether it was forwarded to the cockpit or consumed as a calibration frame; STREAMING while
+  `now − lastCdcRx ≤ 500 ms`. A calibration session counts as the host talking, which is why
+  the light stays green with DCS closed.
 - **NO_HOST / INIT** — `TinyUSBDevice.mounted()` polled each tick. A sticky "ever-mounted" flag
   distinguishes INIT (never mounted, `now < 2000 ms`) from NO_HOST (unplugged after a mount, or
   init window expired with no mount).

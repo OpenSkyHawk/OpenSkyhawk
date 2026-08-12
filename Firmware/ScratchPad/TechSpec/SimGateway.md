@@ -423,6 +423,21 @@ uint16_t value     = (uint16_t)buf[2] | ((uint16_t)buf[3] << 8);
 
 ## Implementation Notes
 
+### Calibration frames are the one inbound exception
+
+The relay is non-buffering for DCS-BIOS traffic, but the calibration parser holds a partial
+candidate — at most 92 bytes, the size of the largest legal frame. Bounded, and not
+session-scoped: the parser is always on because `HELLO` and `GET_CAL` are answered outside a
+session.
+
+What keeps that safe is the reject path. A candidate is consumed only after passing magic,
+`LEN`-matches-`TYPE` **and** CRC; failing any of them hands every held byte back to the relay in
+order. `LEN` is checked before the payload is buffered, so a stray magic in DCS-BIOS text
+cannot make the parser wait for the ~65535 bytes a noise length would claim.
+
+`test_axis_cal_framing` asserts this against the UART capture rather than against parser state,
+because the failure mode being guarded is DCS-BIOS bytes silently disappearing.
+
 ### Relay is non-buffering
 
 Every byte from USB CDC (`Serial`) is written to UART immediately — no local buffer, no coalescing. Every UART byte that is not part of a HID frame is forwarded to USB CDC immediately. DCS-BIOS stream latency is USB CDC round-trip only — no additional SimGateway delay.

@@ -195,13 +195,10 @@ that many bytes before validating stalls its line assembly and makes its memory 
 whatever the noise said. That is not hypothetical here — the whole reason this section admits
 `0xAA` can appear outbound is the parser resync path above.
 
-So `LEN` is not merely bounded, it is **fixed by `TYPE`**:
-
-- For the thirteen fixed-length types, `LEN` **must equal** the value in the payload table.
-  Anything else is not a frame.
-- `COMMIT` is the only variable-length type: `LEN` must equal `1 + 9 × count` with
-  `1 ≤ count ≤ 8`, so it cannot exceed 73.
-- The largest legal payload of any type is **82** (`CAL_DATA`).
+So `LEN` is not merely bounded, it is **fixed by `TYPE`**: every type has exactly one legal
+length, listed in the payload table. Anything else is not a frame. There are no
+variable-length types and therefore no exception to this rule. The largest legal payload of
+any type is **82** (`CAL_DATA`).
 
 A receiver checks `LEN` against the type **before buffering the payload**. A mismatch means the
 candidate was never a frame: emit the consumed bytes into the line assembler and resume scanning
@@ -210,9 +207,6 @@ from the byte after the magic, exactly as for a CRC failure.
 This is strictly stronger than a bare upper bound. A bare `LEN ≤ 82` rule would still let a
 false frame consume 82 bytes before dying at the CRC; an exact-match rule usually rejects it on
 the first comparison.
-
-Note this is the same cross-check the `COMMIT` validation order performs later, moved up to the
-framing layer where it also protects the client.
 
 ### `SEQ`
 
@@ -269,7 +263,7 @@ the mapping — but that is data in the message, not the message's identity.
 | `SESSION_ACK` | 5 | `timeoutMs`:u32 (30000), `axisIdx`:u8 — echoed selection |
 | `SESSION_CLOSE` | 0 | — |
 | `STREAM_SELECT` | 1 | `axisIdx`:u8 — change the streamed axis mid-session |
-| `COMMIT` | 1 + 9n | `count`:u8 (1–8), then n × { `idx`:u8, `min`:u16, `centre`:u16, `max`:u16, `deadzone`:u16 } — **dirty axes only** |
+| `COMMIT` | 9 | `idx`:u8, `min`:u16, `centre`:u16, `max`:u16, `deadzone`:u16 — **exactly one axis** |
 | `RESET` | 1 | `idx`:u8, or `0xFF` for all |
 | `KEEPALIVE` | 0 | — |
 | `ACK` | 1 | `type`:u8 being acknowledged |
@@ -324,15 +318,16 @@ eaten, because being eaten requires passing all three checks.
 
 ### Validation and failure
 
-`COMMIT` is validated in order, and is **all-or-nothing per frame**: frame CRC → `LEN == 1 + 9 ×
-count` and `1 ≤ count ≤ 8` → every `idx < 8` → every `deadzone == 0` → every record satisfies
-`min < centre < max`. Only then is anything applied. A three-axis commit with one bad axis writes
-none, otherwise the client's dirty-state bookkeeping desynchronises from the device.
+`COMMIT` is validated in order: frame CRC → `LEN == 9` → `idx < 8` → `deadzone == 0` →
+`min < centre < max`. Only then is the axis applied and persisted.
+
+Because a `COMMIT` carries exactly one axis, a rejection is unambiguous — `detail` names the
+axis, and no other axis is affected by it.
 
 | `reason` | Name | Meaning | Client remedy |
 |---|---|---|---|
 | `0x01` | `BAD_CRC` | frame checksum mismatch | retransmit |
-| `0x02` | `BAD_LENGTH` | `LEN` inconsistent with type or `count` | client bug — log it |
+| `0x02` | `BAD_LENGTH` | `LEN` inconsistent with its type | client bug — log it |
 | `0x03` | `BAD_TYPE` | unknown type code | protocol version mismatch |
 | `0x04` | `BAD_INDEX` | `idx` out of range | client bug |
 | `0x05` | `BAD_ORDER` | endpoints not ordered; `detail` names the axis | "Axis N: endpoints out of order" |
@@ -352,6 +347,12 @@ the same path as `COMMIT`, returning `ACK` or `NACK`. It does **not** need a fol
 and there is no pending state for a later `SESSION_CLOSE` to discard. "Reset and save" is one
 message, not two.
 
+**The live calibration only ever holds committed values.** On a failed write the device answers
+`NACK NO_STORAGE` and its in-RAM calibration is unchanged, so the read-back the client is told
+to perform agrees with the refusal. This matters most for `RESET 0xFF`, where the alternative
+would be every axis silently dropping to uncalibrated while the device reported that nothing
+happened.
+
 **Read back after committing.** `ACK` means "received and applied"; a subsequent `GET_CAL` is what
 proves "stored, and here is what I hold". Badges should be driven from that re-read rather than
 from client optimism.
@@ -368,7 +369,8 @@ Calibrate     client stops relaying FIRST
               → KEEPALIVE                            ~every 10 s
 next axis     → STREAM_SELECT {axis} / ← ACK         edits accumulate client-side
 
-Save          → COMMIT [dirty axes] / ← ACK          one sector erase, ~28 ms
+Save          → COMMIT {axis} / ← ACK                one sector erase, ~28 ms
+              repeat per edited axis — each is independent
               → GET_CAL        / ← CAL_DATA          read-back drives the badges
               → SESSION_CLOSE  / ← ACK               client resumes relaying
 
