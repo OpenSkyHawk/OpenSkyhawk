@@ -6,7 +6,7 @@
  * HID report batching. HIDAxis, HIDButton, and HIDHatSwitch objects are
  * declared in the sketch at file scope and self-register into linked lists at
  * construction. SimGateway::loop() walks those lists and dispatches matching HID
- * frames to the OpenSkyhawkJoystick abstraction layer.
+ * frames into the USB HID report.
  *
  * Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN.
  * Platform: RP2040 only.
@@ -47,7 +47,7 @@ public:
     /**
      * @brief Register a HID axis handler.
      * @param controlId  CTRL_* constant from HIDControls.h (0x0010–0x001F range).
-     * @param axisIndex  OpenSkyhawkJoystick axis index (0–7).
+     * @param axisIndex  HID report axis index (0–7).
      */
     HIDAxis(uint16_t controlId, uint8_t axisIndex);
 
@@ -89,7 +89,7 @@ public:
     /**
      * @brief Register a HID button handler.
      * @param controlId   CTRL_* button constant from HIDControls.h (0x0030–0x00AF range).
-     * @param buttonIndex OpenSkyhawkJoystick button index (0–127).
+     * @param buttonIndex HID report button index (0–127).
      */
     HIDButton(uint16_t controlId, uint8_t buttonIndex);
 
@@ -120,7 +120,7 @@ public:
     /**
      * @brief Register a HID hat switch handler.
      * @param controlId  CTRL_* constant from HIDControls.h (0x0020–0x002F range).
-     * @param hatIndex   OpenSkyhawkJoystick hat index (0–3).
+     * @param hatIndex   HID report hat index (0–3).
      */
     HIDHatSwitch(uint16_t controlId, uint8_t hatIndex);
 
@@ -149,7 +149,7 @@ static constexpr uint8_t DEFAULT_UART_TX_PIN = 0; ///< RP2040 UART0 TX to PanelB
 static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from PanelBridge TX.
 
 /**
- * @brief Initialise USB identity, OpenSkyhawkJoystick, and UART link to PanelBridge.
+ * @brief Initialise USB identity, the HID device, and the UART link to PanelBridge.
  *
  * Must be the first call in the sketch's setup(). Sets USB identity before the
  * TinyUSB stack enumerates:

@@ -6,7 +6,7 @@
 > against the generated headers — do not hard-code values from this example.
 
 Runs on the STM32 node for the Center Armament panel. Emits and receives `{controlId, value}`
-packets over CAN. No DCS-BIOS or Joystick knowledge — routing is determined entirely by the
+packets over CAN. No DCS-BIOS or HID knowledge — routing is determined entirely by the
 `controlId` range: generated `DCSIN_*` IDs (`0x8000`-`0x86FF`) → DCS-BIOS path;
 `< 0x8000` → HID path.
 

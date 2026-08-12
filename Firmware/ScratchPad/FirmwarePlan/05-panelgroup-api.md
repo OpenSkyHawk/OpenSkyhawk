@@ -127,7 +127,7 @@ The same input classes are used for both DCS-BIOS controls and HID buttons:
 | `controlId` | Routed by | Destination |
 |-------------|-----------|-------------|
 | `DCSIN_*` (`0x8000`-`0x86FF`) | PanelBridge | `sendDcsBiosMessage()` → DCS |
-| `CTRL_*` (< 0x8000) | SimGateway | `HIDButton` / `HIDAxis` → Joystick |
+| `CTRL_*` (< 0x8000) | SimGateway | `HIDButton` / `HIDAxis` → USB HID report |
 
 Example — same class, different routing:
 

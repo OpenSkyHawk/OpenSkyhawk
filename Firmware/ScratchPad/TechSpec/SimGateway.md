@@ -266,12 +266,12 @@ namespace SimGateway {
     static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from PanelBridge TX.
 
     /**
-     * @brief Initialise USB identity, Joystick, and UART link to PanelBridge. Call from setup().
+     * @brief Initialise USB identity, the HID device, and the UART link. Call from setup().
      *
      * Owns all hardware initialisation — the sketch calls nothing else before this:
      *   - Sets USB identity: Manufacturer "OpenSkyhawk", Product "A-4E Skyhawk", VID/PID 0x2E8A/0x4134
      *   - Configures UART pins and calls uart.begin(250000)
-     *   - Configures MGS-Pico-Joystick for manual send mode
+     *   - Loads axis calibration from flash, then initialises the TinyUSB HID descriptor
      *
      * USB identity must be set before the USB stack enumerates, so this must be the
      * first call in the sketch's setup().

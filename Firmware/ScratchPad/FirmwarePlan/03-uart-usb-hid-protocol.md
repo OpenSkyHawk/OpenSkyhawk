@@ -1,7 +1,7 @@
 # 03 — UART / USB-HID Protocol
 
 **Owns:** UART multiplexing scheme, HID frame wire format, parser resync algorithm,
-USB identity and Joystick configuration, the USB CDC calibration protocol.
+USB identity and HID device configuration, the USB CDC calibration protocol.
 **Does not own:** HID axis/button class declarations (→ 07), calibration storage and the
 transform itself (→ 07), CAN frame formats (→ 02), DCS-BIOS routing logic (→ 04),
 boot sequencing (→ 09).
