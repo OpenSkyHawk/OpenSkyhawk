@@ -115,7 +115,7 @@ The HID descriptor and report struct are private to `SimGateway.cpp`. In product
 live inside an anonymous namespace. In test builds the same internal helpers are no-ops,
 keeping all 5 test environments free of USB enumeration side effects.
 
-`OsJoystick.send()` is called once after draining all HID frames each loop iteration to keep
+The HID report is sent once after draining all HID frames each loop iteration to keep
 the HID report rate predictable and avoid redundant USB packets.
 
 > **Validated 2026-06-11** via `hid_stress` test sketch (VID 0x2E8A / PID 0x4135) on macOS

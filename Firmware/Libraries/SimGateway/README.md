@@ -77,9 +77,9 @@ Byte 5:   value[15:8]
 ```
 
 controlId ranges (from `HIDControls.h`):
-- `0x0010–0x001F` — HID axes → `HIDAxis` dispatch → `Joystick.SetAxis()`
-- `0x0020–0x002F` — HID hat switches → `HIDHatSwitch` dispatch → `Joystick.SetHat()`
-- `0x0030–0x00AF` — HID buttons → `HIDButton` dispatch → `Joystick.SetButton()`
+- `0x0010–0x001F` — HID axes → `HIDAxis` dispatch → calibration + offset → HID axis report
+- `0x0020–0x002F` — HID hat switches → `HIDHatSwitch` dispatch → HID hat nibble
+- `0x0030–0x00AF` — HID buttons → `HIDButton` dispatch → HID button bit
 - `0x00B0–0x00FF` — reserved HID expansion slots
 
 Axis value mapping: 0–65535 (from PanelGroup) → calibration → ±32767 (`value − 32768`), both

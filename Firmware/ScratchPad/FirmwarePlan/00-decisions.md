@@ -63,9 +63,18 @@ from the DCS command it triggers and avoids the 8-byte CAN frame limitation.
 16-bit before sending over CAN. The 16-bit value is used as-is at the destination — no
 rescaling in PanelBridge or SimGateway.
 
-**Rationale:** `Joystick.use16bit()` expects 0–65535. DCS-BIOS `set_state` controls with
-`max_value > 1` also expect 0–65535 (or integer strings thereof). Using one resolution
-throughout eliminates per-destination scaling code and makes CAN traffic predictable.
+**Rationale:** DCS-BIOS `set_state` controls with `max_value > 1` expect 0–65535 (or integer
+strings thereof). Using one resolution throughout eliminates per-destination scaling code and
+makes CAN traffic predictable.
+
+The original rationale also cited `Joystick.use16bit()`, from a HID library evaluated before
+TinyUSB was selected (D-HID / `03-uart-usb-hid-protocol.md#hid-backend`). That API no longer
+exists in the codebase; the decision is unaffected, because 16-bit unsigned remained the right
+choice for the reasons above. The backend change moved the conversion rather than the
+convention: `HIDAxis::dispatch()` now applies calibration and then `value − 32768`.
+
+The convention has since spread further — axis calibration stores and transmits unsigned
+0–65535 for the same reason, converting to signed only at the client's display edge.
 
 **Affects:** `05-panelgroup-api.md`, `07-simgateway-api.md`.
 

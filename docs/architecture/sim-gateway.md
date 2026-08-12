@@ -110,7 +110,7 @@ HID controls are owned entirely here — PanelBridge wraps them but never interp
 ## Dispatch and startup behaviour
 
 Each `SimGateway::loop()` iteration drains all pending HID frames, applies them to the axis /
-button / hat objects, and then calls `OsJoystick.send()` **once** to flush the HID report.
+button / hat objects, and then sends the HID report **once**.
 Sending once per drain cycle — not once per frame — keeps the HID report rate predictable and
 avoids redundant USB packets.
 

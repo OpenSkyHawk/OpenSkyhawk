@@ -3,7 +3,7 @@
  * @brief RP2040 USB HID gateway library for OpenSkyhawk SimGateway board.
  *
  * Owns the USB CDC ↔ UART relay, 0xAA 0x55 HID frame demultiplexer, and
- * OsJoystick.send() batching. HIDAxis, HIDButton, and HIDHatSwitch objects are
+ * HID report batching. HIDAxis, HIDButton, and HIDHatSwitch objects are
  * declared in the sketch at file scope and self-register into linked lists at
  * construction. SimGateway::loop() walks those lists and dispatches matching HID
  * frames to the OpenSkyhawkJoystick abstraction layer.
@@ -29,7 +29,7 @@ namespace OpenSkyhawk {
  * @brief HID axis handler. Declared at sketch scope for each joystick axis.
  *
  * Self-registers into a static linked list at construction. SimGateway::loop()
- * walks the list and calls OsJoystick.setAxis() when a HID frame with a matching
+ * walks the list and writes the calibrated value into the HID axis report when a frame with a matching
  * controlId arrives. The 0–65535 unsigned value from PanelGroup is mapped to
  * signed ±32767 internally (value − 32768).
  *
@@ -113,7 +113,7 @@ private:
  * @brief HID hat switch handler. Declared at sketch scope for each hat switch.
  *
  * Self-registers into a static linked list at construction.
- * Dispatches to OsJoystick.setHat() with direction clamped to 0–8.
+ * Writes the HID hat nibble with direction clamped to 0–8.
  */
 class HIDHatSwitch {
 public:
@@ -158,7 +158,7 @@ static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from Pane
  *   - VID/PID:      0x2E8A / 0x4134
  *   - CDC port:     "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port)
  * Configures the UART pins and calls uart.begin(250000), then loads the stored axis
- * calibration and calls OsJoystick.begin() to initialise the HID descriptor and enumerate.
+ * calibration and initialises the HID descriptor, then enumerates.
  *
  * @param uart   Hardware UART connected to PanelBridge (Serial1 / UART0 on standard board).
  * @param txPin  RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3.
@@ -184,7 +184,7 @@ void setup(SerialUART& uart,
  *        byte ≤ 0x7F             → forward to USB CDC (DCS-BIOS from PanelBridge)
  *        0xAA 0x55 + 4 bytes     → parse controlId + value LE; dispatch to HID lists
  *        0xAA + non-0x55         → forward 0xAA + byte to USB CDC; resume IDLE
- *   3. If any HID setter fired, call OsJoystick.send() exactly once.
+ *   3. If any HID setter fired, send the HID report exactly once.
  *
  * @note Node-status reporting (#86) needs no handling here: PanelBridge's `_NODE_STATUS` DCS-BIOS
  *       messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a

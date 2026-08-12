@@ -13,7 +13,7 @@ RP2040 firmware library. Owns:
 - **USB CDC ↔ UART relay** — forwards the DCS-BIOS byte stream transparently in both directions; never parses or interprets DCS-BIOS content
 - **HID frame demultiplexer** — intercepts binary HID frames (identified by `0xAA 0x55` magic) on the UART RX path; routes controlIds to `HIDAxis`, `HIDButton`, and `HIDHatSwitch` registered objects
 - **`HIDAxis`, `HIDButton`, `HIDHatSwitch` classes** — declared in the sketch; self-register into linked lists at construction
-- **`OsJoystick.send()` batching** — called once per `loop()` iteration after draining all UART bytes, only if any HID setter fired
+- **HID report batching** — the report is sent once per `loop()` iteration after draining all UART bytes, only if any HID setter fired
 - **TinyUSB HID descriptor** — 8 axes, 128 buttons, 4 hat switches; embedded in `SimGateway.cpp` under `#ifndef SIMGATEWAY_TEST`
 - **Status-LED state machine** — drives the two board-mounted `Gateway_Bridge` LEDs (GREEN = GP2, RED = GP3, active-high) with a non-blocking `millis()` animator ticked from `loop()`; reports USB / data / fault state (issue #94)
 
@@ -71,13 +71,13 @@ Firmware/Tests/SimGateway/
     │       (no shim files — test builds use #ifdef SIMGATEWAY_TEST stubs in SimGateway.cpp)
     ├── hid_parser.cpp       — valid 6-byte HID frame (0xAA 0x55 + controlId + value) parsed
     │                          and dispatched; DCS-BIOS bytes (≤ 0x7F) do not trigger setters;
-    │                          Joystick.Send() called exactly once after drain if any setter fired
+    │                          HID report sent exactly once after drain if any setter fired
     ├── parser_resync.cpp    — 0xAA followed by non-0x55: both bytes forwarded to CDC;
     │                          valid frame immediately following is parsed correctly; state
     │                          machine self-heals at next byte boundary
     ├── hid_dispatch.cpp     — HIDAxis dispatch called with correct value on controlId match;
     │                          HIDButton index correct on match; non-matching controlId not
-    │                          dispatched; Joystick.Send() not called when no setter fires
+    │                          dispatched; no report sent when no setter fires
     ├── cdc_forwarding.cpp   — every non-HID UART byte is forwarded to USB CDC in order;
     │                          valid HID frames are consumed and not forwarded; 0xAA followed
     │                          by non-0x55 forwards both bytes before resuming scan
@@ -100,7 +100,7 @@ Two test styles are valid:
   mapping, and setter/send counters without requiring a physical UART connection.
 - **UART loopback harnesses** may jumper `Serial1` TX to `Serial1` RX on the RP2040 and write the
   same synthetic HID frames into `Serial1`, then call `SimGateway::loop()`. This verifies the
-  public drain path and `Joystick.Send()` batching with real UART hardware, but still does not
+  public drain path and report batching with real UART hardware, but still does not
   require PanelBridge hardware.
 
 The default SimGateway UART pins are RP2040 `GP0` TX and `GP1` RX (`Serial1` / UART0), crossed to
@@ -111,7 +111,7 @@ configured RX pin; the default jumper is `GP0 -> GP1`.
 
 Test builds may expose small `SIMGATEWAY_TEST` instrumentation counters or accessors for
 assertions, such as last dispatched controlId/value, last axis/button index, mapped axis value,
-button pressed state, `Joystick.Send()` count, and a bounded capture of bytes written to USB CDC
+button pressed state, report-send count, and a bounded capture of bytes written to USB CDC
 by the parser forwarding path. The CDC capture is used only to assert pass-through behavior; the
 production path still writes through `Serial.write()` directly via the same helper. These hooks are
 compiled out of production builds.
@@ -202,7 +202,8 @@ namespace OpenSkyhawk {
  * @brief HID axis handler. Declared at sketch scope for each joystick axis.
  *
  * Self-registers into a static linked list at construction. SimGateway::loop() walks
- * the list and calls Joystick.SetAxis() when a HID frame with a matching controlId arrives.
+ * the list and writes the calibrated value into the HID axis report when a HID frame with a
+ * matching controlId arrives.
  * The 0–65535 value from PanelGroup is mapped to ±32767 internally (value - 32768).
  * The sketch has no knowledge of the Joystick API or value scaling.
  */
@@ -291,7 +292,7 @@ namespace SimGateway {
      *        byte == 0xAA, next == 0x55 → HID frame: read 4 more bytes, parse controlId + value,
      *                                     walk HIDAxis, HIDButton, HIDHatSwitch linked lists, dispatch matches.
      *        byte == 0xAA, next != 0x55 → forward 0xAA + mismatched byte to USB CDC; resume.
-     *   3. If any HID setter fired this iteration, call Joystick.Send() exactly once.
+     *   3. If any HID setter fired this iteration, send the HID report exactly once.
      *
      * @note The parser state machine is persistent across calls — a HID frame split
      *       across loop() iterations is assembled correctly.
@@ -426,13 +427,13 @@ uint16_t value     = (uint16_t)buf[2] | ((uint16_t)buf[3] << 8);
 
 Every byte from USB CDC (`Serial`) is written to UART immediately — no local buffer, no coalescing. Every UART byte that is not part of a HID frame is forwarded to USB CDC immediately. DCS-BIOS stream latency is USB CDC round-trip only — no additional SimGateway delay.
 
-### OsJoystick.send() batching
+### HID report batching
 
 A local `bool _anyFired = false` flag is reset at the top of `loop()`. Any matching HIDAxis, HIDButton, or HIDHatSwitch dispatch sets it `true`. After UART is fully drained, `_hidSend()` is called once if `_anyFired`. This prevents redundant USB HID reports when multiple HID frames arrive in the same iteration.
 
 ### USB enumeration race
 
-TinyUSB on RP2040 silently drops HID reports if USB is not yet enumerated — no crash. HID frames arriving on UART before enumeration is complete are parsed and dispatched normally; the resulting `Joystick.Send()` calls are no-ops until the host is ready. Boot-time HID frame loss is safe: axes update on the next physical movement; buttons are not held at power-on.
+TinyUSB on RP2040 silently drops HID reports if USB is not yet enumerated — no crash. HID frames arriving on UART before enumeration is complete are parsed and dispatched normally; the resulting report sends are no-ops until the host is ready. Boot-time HID frame loss is safe: axes update on the next physical movement; buttons are not held at power-on.
 
 ### HIDAxis / HIDButton linked list construction order
 

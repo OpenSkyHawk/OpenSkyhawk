@@ -2,7 +2,7 @@
 //
 // Verifies that a valid 6-byte HID frame (0xAA 0x55 + controlId LE + value LE) is
 // parsed and dispatched, DCS-BIOS bytes (≤ 0x7F) pass through without triggering
-// a setter, and Joystick.Send() is called exactly once after a complete frame.
+// a setter, and the HID report is sent exactly once after a complete frame.
 //
 // Uses SIMGATEWAY_TEST build flag — feedByte() and resetParser() are available.
 // The _sgtest_* globals capture dispatch details from inside SimGateway.cpp.

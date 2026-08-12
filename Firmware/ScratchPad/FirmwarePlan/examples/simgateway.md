@@ -12,28 +12,30 @@ sketch are `HIDAxis` and `HIDButton` objects.
 
 ```cpp
 #include <SimGateway.h>
+#include <HIDControls.h>
 
 // --- DCS ↔ Cockpit ---
 // No declarations needed. SimGateway relays the raw DCS-BIOS stream between USB CDC
 // and UART transparently. PanelBridge handles all DCS-BIOS parsing and dispatch.
 
 // --- HID (controlId < 0x8000, arrives as HID frame from PanelBridge) ---
-// PanelGroup sends 16-bit (0–65535); Joystick.use16bit() expects exactly that — no scaling.
-OpenSkyhawk::HIDAxis roll    (CTRL_ROLL,     [](uint16_t v){ Joystick.X(v); });
-OpenSkyhawk::HIDAxis pitch   (CTRL_PITCH,    [](uint16_t v){ Joystick.Y(v); });
-OpenSkyhawk::HIDAxis throttle(CTRL_THROTTLE, [](uint16_t v){ Joystick.sliderLeft(v); });
-OpenSkyhawk::HIDAxis rudder  (CTRL_RUDDER,   [](uint16_t v){ Joystick.Zrotate(v); });
-OpenSkyhawk::HIDAxis brakeL  (CTRL_BRAKE_L,  [](uint16_t v){ Joystick.sliderRight(v); });
-// OpenSkyhawk::HIDAxis   <name>(controlId, [](uint16_t v){ Joystick.<axis>(v); });
-// OpenSkyhawk::HIDButton <name>(controlId, buttonNumber);
+// Constructor takes (controlId, axisIndex 0–7). The sketch names no HID backend and does
+// no scaling: the library applies the stored calibration and the 0–65535 → ±32767 mapping
+// inside HIDAxis::dispatch(). Declare at file scope so the objects self-register before
+// setup() runs.
+OpenSkyhawk::HIDAxis roll    (CTRL_ROLL,     0);
+OpenSkyhawk::HIDAxis pitch   (CTRL_PITCH,    1);
+OpenSkyhawk::HIDAxis throttle(CTRL_THROTTLE, 2);
+OpenSkyhawk::HIDAxis rudder  (CTRL_RUDDER,   3);
+OpenSkyhawk::HIDAxis brakeL  (CTRL_BRAKE_L,  4);
+// OpenSkyhawk::HIDAxis   <name>(controlId, axisIndex);    // 0–7
+// OpenSkyhawk::HIDButton <name>(controlId, buttonIndex);  // 0–127
 
 void setup() {
-    // USB identity is owned entirely by SimGateway::setup() — VID/PID, manufacturer, product,
-    // and the CDC interface name "A-4E Skyhawk DCS-BIOS" (iInterface). The sketch sets none of it.
-    Joystick.use16bit(true);        // 0–65535 range
-    Joystick.useManualSend(true);   // batch setters; call send() once per drain cycle
-
-    SimGateway::setup(Serial1);     // UART1 link to PanelBridge @ 250000 baud
+    // SimGateway::setup() owns everything: USB identity (VID/PID, manufacturer, product, and
+    // the CDC interface name "A-4E Skyhawk DCS-BIOS"), the HID descriptor, the UART, and
+    // loading axis calibration from flash. The sketch configures none of it.
+    SimGateway::setup(Serial1);     // UART link to PanelBridge @ 250000 baud
 }
 
 void loop() {
@@ -45,9 +47,12 @@ void loop() {
     //        byte == 0xAA, next == 0x55 → HID frame: read 4 more bytes, parse controlId+value,
     //                                      dispatch to HIDAxis/HIDButton linked list
     //        byte == 0xAA, next != 0x55 → forward both bytes to USB CDC, resume scanning
-    //   3. If any HID setter fired this iteration → Joystick.send() once
+    //   3. If any HID setter fired this iteration → send one HID report
 }
 ```
+
+> The canonical, compiling version of this sketch is `Firmware/Templates/SimGateway/src/main.cpp`.
+> Prefer copying that; this page exists to show the sketch alongside the data flow below.
 
 ## Full Data Flow
 
@@ -74,7 +79,8 @@ Roll axis  (cockpit → HID)
   → PanelBridge receives CAN → controlId 0x0010 < 0x8000
   → wrap in HID frame: 0xAA 0x55 0x10 0x00 <value_lo> <value_hi> → UART
   → SimGateway: 0xAA detected, next byte 0x55 confirmed → parse frame
-  → walk HIDAxis list → CTRL_ROLL match → lambda(value) → Joystick.X(value)
-  → after draining UART: Joystick.send()
+  → walk HIDAxis list → CTRL_ROLL match → roll.dispatch(value)
+  → apply stored calibration, then value − 32768 → write axis 0 of the HID report
+  → after draining UART: send the report once
   → USB HID report → DCS receives roll axis input
 ```

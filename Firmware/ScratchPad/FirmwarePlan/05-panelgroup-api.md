@@ -135,7 +135,7 @@ Example — same class, different routing:
 // DCS-BIOS route: master arm switch → sendDcsBiosMessage("ARM_MASTER", "0"/"1")
 OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PIN_MASTER_ARM);
 
-// HID route: trigger button → Joystick.button(0, ...)
+// HID route: trigger button → HID button 0
 OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PIN_TRIGGER);
 ```
 
@@ -310,8 +310,8 @@ OpenSkyhawk::AnalogInput rudder(CTRL_RUDDER, PinRef(adc, 0));
 ```
 
 The 16-bit value is used as-is by both routing paths: PanelBridge passes it to
-`sendDcsBiosMessage()` for DCS-BIOS controls (`MULTIPOS` type); SimGateway passes it to the
-`HIDAxis` lambda for joystick axes — no rescaling at either destination.
+`sendDcsBiosMessage()` for DCS-BIOS controls (`MULTIPOS` type); SimGateway passes it to
+`HIDAxis::dispatch()` for joystick axes — no rescaling at either destination.
 
 ### AngleSensorInput *(new)*
 
@@ -351,7 +351,8 @@ wrap boundary. If neutral is near 0° or 360°, rotate the magnet mount.
 
 **Routing:** `AngleSensorInput` for flight control axes always uses `controlId < 0x8000`
 (e.g. `CTRL_ROLL`, `CTRL_PITCH`) — these route via HID, never via `sendDcsBiosMessage()`.
-The 0–65535 value is converted to ±32767 in the `HIDAxis` lambda on SimGateway (`v - 32768`).
+On SimGateway, `HIDAxis::dispatch()` applies that axis's stored calibration and then the
+fixed `v - 32768` offset, yielding ±32767. See `07-simgateway-api.md#axis-calibration`.
 See `07-simgateway-api.md` for the axis declarations.
 
 **I²C init ordering:** `AngleSensor` constructors store the `TwoWire` reference but do not

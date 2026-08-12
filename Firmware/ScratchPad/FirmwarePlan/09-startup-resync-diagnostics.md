@@ -113,7 +113,7 @@ SimGateway has no boot handshake — it is stateless with respect to the CAN clu
 
 **USB enumeration race:** TinyUSB on RP2040 silently drops HID reports if USB is not yet
 enumerated — no crash risk. Any HID frames that arrive on UART before enumeration completes
-are parsed and dispatched normally; the resulting `Joystick.send()` calls are no-ops until
+are parsed and dispatched normally; the resulting report sends are no-ops until
 the host is ready. Boot-time HID frame loss is acceptable: axes update on the next physical
 movement; buttons are transient and not held at power-on.
 
