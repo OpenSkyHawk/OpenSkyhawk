@@ -5,6 +5,8 @@
     <innerclass refid="structOpenSkyhawk_1_1AccelPoint" prot="public">OpenSkyhawk::AccelPoint</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1AnalogInput" prot="public">OpenSkyhawk::AnalogInput</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1AnalogMultiPos" prot="public">OpenSkyhawk::AnalogMultiPos</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1AxisCal" prot="public">OpenSkyhawk::AxisCal</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1CalBlob" prot="public">OpenSkyhawk::CalBlob</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1DrumDisplay" prot="public">OpenSkyhawk::DrumDisplay</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumFlag" prot="public">OpenSkyhawk::DrumFlag</innerclass>
     <innerclass refid="structOpenSkyhawk_1_1DrumGlyph" prot="public">OpenSkyhawk::DrumGlyph</innerclass>
@@ -443,6 +445,60 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" line="25" column="27" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos/AnalogMultiPos.h" bodystart="25" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1aa6d79d3b9800575515cbded105a7c142" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::AXIS_CAL_SLOTS</definition>
+        <argsstring></argsstring>
+        <name>AXIS_CAL_SLOTS</name>
+        <qualifiedname>OpenSkyhawk::AXIS_CAL_SLOTS</qualifiedname>
+        <initializer>= 8</initializer>
+        <briefdescription>
+<para>HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="56" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a260ad49ec8580e562167deb6b9188972" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::CAL_MAGIC</definition>
+        <argsstring></argsstring>
+        <name>CAL_MAGIC</name>
+        <qualifiedname>OpenSkyhawk::CAL_MAGIC</qualifiedname>
+        <initializer>= ((uint32_t)&apos;O&apos;)
+                             | ((uint32_t)&apos;S&apos; &lt;&lt;  8)
+                             | ((uint32_t)&apos;K&apos; &lt;&lt; 16)
+                             | ((uint32_t)&apos;C&apos; &lt;&lt; 24)</initializer>
+        <briefdescription>
+<para>Blob signature. Little-endian in flash, so a hexdump reads &quot;OSKC&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="59" column="20" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a719d99b86b55cb79c7f2be375aab4052" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::CAL_VERSION</definition>
+        <argsstring></argsstring>
+        <name>CAL_VERSION</name>
+        <qualifiedname>OpenSkyhawk::CAL_VERSION</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+<para>Blob layout version. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>A mismatch means &quot;absent&quot; — every axis falls back to identity and flash is left untouched until the user commits. No migration and no auto-rewrite: a downgrade-then-upgrade cycle would silently destroy data. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="70" column="20" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="func">
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -697,6 +753,258 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         <inbodydescription>
         </inbodydescription>
         <location file="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" line="214" column="15" bodyfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.cpp" bodystart="214" bodyend="226" declfile="Firmware/Libraries/PanelGroup/Drivers/StepperMotor/StepperMotor.h" declline="124" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a9e180e8443fdf337a00db9bb86314114" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::calCrc16</definition>
+        <argsstring>(const uint8_t *data, size_t len)</argsstring>
+        <name>calCrc16</name>
+        <qualifiedname>OpenSkyhawk::calCrc16</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <briefdescription>
+<para>CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bytes to cover. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>len</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Byte count. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The CRC. </para>
+</simplesect>
+<simplesect kind="note"><para>Canonical check: &quot;123456789&quot; → 0x29B1. Init is 0xFFFF rather than 0x0000 so that leading zero bytes change the result — an all-zero blob is a realistic corruption mode, and a 0x0000 init would not distinguish it from a shorter all-zero one. Bitwise and table-free: ~70 bytes of input costs a few microseconds, irrelevant beside the ~45 ms sector erase it protects. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="7" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="7" bodyend="17" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="105" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a7c35dca075618dc50bf80ed5c4a760e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::axisCalValid</definition>
+        <argsstring>(const AxisCal &amp;cal)</argsstring>
+        <name>axisCalValid</name>
+        <qualifiedname>OpenSkyhawk::axisCalValid</qualifiedname>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref> &amp;</type>
+          <declname>cal</declname>
+        </param>
+        <briefdescription>
+<para>True when both segments have a non-zero divisor, i.e. the axis is calibrated. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Endpoints to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if <computeroutput>min &lt; centre &lt; max</computeroutput> allowing for the deadzone. </para>
+</simplesect>
+<simplesect kind="note"><para>This doubles as the calibrated/uncalibrated predicate — there is no stored validity flag, because a flag could only duplicate or contradict this. An all-zero blob (.bss, never loaded) and an all-0xFF blob (erased flash) both fail it, so both fail closed to identity. </para>
+</simplesect>
+<simplesect kind="note"><para>Widened to uint32_t deliberately. The obvious <computeroutput>min &lt; centre - deadzone</computeroutput> underflows on uint16_t when deadzone &gt; centre. The wire protocol rejects a non-zero deadzone, but this guard&apos;s whole job is preventing a divide-by-zero in <ref refid="namespaceOpenSkyhawk_1acaeadfc692ead68c4da2f128ef3e996e" kindref="member">axisCalApply()</ref>, so it must not depend on a check one layer up. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="19" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="19" bodyend="22" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="120" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1acaeadfc692ead68c4da2f128ef3e996e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::axisCalApply</definition>
+        <argsstring>(const AxisCal &amp;cal, uint16_t raw)</argsstring>
+        <name>axisCalApply</name>
+        <qualifiedname>OpenSkyhawk::axisCalApply</qualifiedname>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref> &amp;</type>
+          <declname>cal</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>raw</declname>
+        </param>
+        <briefdescription>
+<para>Map a raw axis reading through the two-segment calibration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Endpoints for this axis. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>raw</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unsigned 0–65535 as emitted by the node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Unsigned 0–65535, with <computeroutput>cal.centre</computeroutput> landing exactly on 32768.</para>
+</simplesect>
+Returns <computeroutput>raw</computeroutput> unchanged when the axis is uncalibrated, so an unwritten blob behaves identically to a build without this feature.</para>
+<para><simplesect kind="note"><para>Integer only, by design — the arithmetic must be reproducible exactly, and a curve would stack with the per-aircraft curves DCS already applies. </para>
+</simplesect>
+<simplesect kind="note"><para>The uint32_t cast must sit on the multiply <emphasis>operand</emphasis>. Worst case is 65534 × 32768 = 2 147 418 112, inside uint32_t with 2× headroom. <computeroutput>int</computeroutput> is 32-bit on RP2040 so the wrong form would work here by accident; the explicit cast is the portable contract. </para>
+</simplesect>
+<simplesect kind="note"><para>65535 is reachable only via the upper clamp — the upper segment&apos;s arithmetic tops out at 65534. Both map to +32767 after the caller&apos;s −32768, so this is correct, but it is the kind of asymmetry someone will otherwise &quot;fix&quot;. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="24" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="24" bodyend="39" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="141" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a802f31f0af0b2cf03abc354467ddf800" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::calBlobCrc</definition>
+        <argsstring>(const CalBlob &amp;blob)</argsstring>
+        <name>calBlobCrc</name>
+        <qualifiedname>OpenSkyhawk::calBlobCrc</qualifiedname>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref> &amp;</type>
+          <declname>blob</declname>
+        </param>
+        <briefdescription>
+<para>CRC of a blob&apos;s covered region, i.e. everything before the <computeroutput>crc</computeroutput> field itself. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>blob</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blob to checksum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The CRC to store in, or compare against, <computeroutput>blob.crc</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="41" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="41" bodyend="43" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="148" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a047c4df87539d7a0306ff7512c66e4c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::calBlobValid</definition>
+        <argsstring>(const CalBlob &amp;blob)</argsstring>
+        <name>calBlobValid</name>
+        <qualifiedname>OpenSkyhawk::calBlobValid</qualifiedname>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref> &amp;</type>
+          <declname>blob</declname>
+        </param>
+        <briefdescription>
+<para>True when a blob carries the right signature, version, and checksum. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>blob</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blob as read from storage. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the blob should be trusted. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="45" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="45" bodyend="49" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="155" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a116c3c762f9fe2a073a81b255884023b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::calBlobClear</definition>
+        <argsstring>(CalBlob &amp;blob)</argsstring>
+        <name>calBlobClear</name>
+        <qualifiedname>OpenSkyhawk::calBlobClear</qualifiedname>
+        <param>
+          <type><ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref> &amp;</type>
+          <declname>blob</declname>
+        </param>
+        <briefdescription>
+<para>Zero a blob so every axis reads as uncalibrated. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>blob</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blob to clear. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Clears RAM only. Nothing here writes flash. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="51" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="51" bodyend="53" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="162" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a1251c3f4a6a20bc3373990d9c82cd5d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::calBlobSeal</definition>
+        <argsstring>(CalBlob &amp;blob)</argsstring>
+        <name>calBlobSeal</name>
+        <qualifiedname>OpenSkyhawk::calBlobSeal</qualifiedname>
+        <param>
+          <type><ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref> &amp;</type>
+          <declname>blob</declname>
+        </param>
+        <briefdescription>
+<para>Stamp magic, version, and a fresh CRC onto a blob ahead of persisting it. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>blob</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blob whose <computeroutput>axes</computeroutput> are already populated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="55" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="55" bodyend="59" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="168" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

@@ -15,6 +15,8 @@
 #include <Arduino.h>
 #include <HIDControls.h>
 
+#include "AxisCal.h"
+
 namespace OpenSkyhawk {
 
 class HIDAxis {
@@ -23,6 +25,7 @@ public:
 
     static HIDAxis* head();       
     uint16_t controlId() const;   
+    uint8_t  axisIndex() const;   
     void     dispatch(uint16_t value);
     HIDAxis* next() const;        
 
@@ -78,6 +81,8 @@ void setup(SerialUART& uart,
 
 void loop();
 
+const OpenSkyhawk::CalBlob& calibration();
+
 // ── Status LEDs (Gateway_Bridge board) ────────────────────────────────────────
 //
 // Two board-mounted status LEDs report the gateway's USB / data / fault state at a
@@ -119,6 +124,22 @@ size_t cdcCaptureCount();
 uint8_t cdcCaptureByte(size_t index);
 
 bool cdcCaptureOverflow();
+
+// ── Axis calibration test hooks (test builds only) ────────────────────────────
+// The transform itself is tested by calling OpenSkyhawk::axisCalApply() directly. These
+// hooks exist to cover something that function-level test cannot: that HIDAxis::dispatch()
+// actually *applies* it. That path is doubly hidden in test builds — the HID setters are
+// no-op stubs, and the flash load is stubbed to a RAM clear so no calibration can be
+// installed. Without both a writer and a reader, deleting the transform from dispatch()
+// would leave every assertion passing.
+
+void calSetForTest(const OpenSkyhawk::CalBlob& blob);
+
+int16_t lastAxisValue();
+
+uint8_t lastAxisIndex();
+
+void resetAxisCapture();
 
 // ── Status-LED test hooks (test builds only) ──────────────────────────────────
 // The pure state-selection + animation logic is exercised without GPIO, TinyUSB,

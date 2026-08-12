@@ -31,6 +31,8 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **struct** [**BatchState**](structBatchState.md) 
 * **struct** [**DcsBiosInputEntry**](structDcsBiosInputEntry.md) 
 * **struct** [**OpenSkyhawk::AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) _One point on the acceleration curve (SwitecX25 form)._ 
+* **struct** [**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md) _Captured endpoints for one axis, unsigned 0–65535 throughout._ 
+* **struct** [**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md) _The whole persisted calibration set, written and erased as one unit._ 
 * **struct** [**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) _Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter._ 
 * **struct** [**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) _A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc._ 
 * **struct** [**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) _Complete description of one rolling readout: its sources, geometry, glyphs, flag._ 

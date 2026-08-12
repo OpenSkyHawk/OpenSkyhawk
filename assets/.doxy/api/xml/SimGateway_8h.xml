@@ -4,11 +4,20 @@
     <compoundname>SimGateway.h</compoundname>
     <includes local="no">Arduino.h</includes>
     <includes refid="HIDControls_8h" local="no">HIDControls.h</includes>
+    <includes refid="AxisCal_8h" local="yes">AxisCal.h</includes>
     <includedby refid="SimGateway_8cpp" local="yes">Firmware/Libraries/SimGateway/SimGateway.cpp</includedby>
     <incdepgraph>
       <node id="3">
         <label>HIDControls.h</label>
         <link refid="HIDControls_8h"/>
+      </node>
+      <node id="4">
+        <label>AxisCal.h</label>
+        <link refid="AxisCal_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
       </node>
       <node id="1">
         <label>Firmware/Libraries/SimGateway/SimGateway.h</label>
@@ -17,9 +26,17 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
       </node>
       <node id="2">
         <label>Arduino.h</label>
+      </node>
+      <node id="5">
+        <label>stddef.h</label>
+      </node>
+      <node id="6">
+        <label>stdint.h</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
@@ -59,136 +76,157 @@
 <codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="HIDControls_8h" kindref="compound">HIDControls.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="23"><highlight class="normal"></highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="AxisCal_8h" kindref="compound">AxisCal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="25"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37" refid="classOpenSkyhawk_1_1HIDAxis" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref><sp/>{</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>axisIndex);</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1ade8a2b676e12be8183d6e19a9879d17f" kindref="member">head</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a319dc333c8692e54719e371ebd3478ca" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a47f4604ec2a4073a94bd81fe4bc13a09" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/>_head;</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_axisIndex;</highlight></codeline>
-<codeline lineno="60"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="61"><highlight class="normal"></highlight></codeline>
-<codeline lineno="68" refid="classOpenSkyhawk_1_1HIDButton" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref><sp/>{</highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>buttonIndex);</highlight></codeline>
-<codeline lineno="76"><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1aa90309452ab963924aed872a17805669" kindref="member">head</ref>();</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1a687de4afa5a755de7c1c2608f2bbcd9f" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afecca874fab5385a17f868947478516f" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/>_head;</highlight></codeline>
-<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_buttonIndex;</highlight></codeline>
-<codeline lineno="91"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="99" refid="classOpenSkyhawk_1_1HIDHatSwitch" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref><sp/>{</highlight></codeline>
-<codeline lineno="100"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>hatIndex);</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"></highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a385f8888cec0ed4b0b133be41310b5cd" kindref="member">head</ref>();</highlight></codeline>
-<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a763cd0251dbc89304e041eaad7366644" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
-<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a0f7b6694376ec757652728ac00755962" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="117"><highlight class="normal"></highlight></codeline>
-<codeline lineno="118"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/>_head;</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
-<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hatIndex;</highlight></codeline>
-<codeline lineno="123"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"></highlight></codeline>
-<codeline lineno="125"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="classOpenSkyhawk_1_1HIDAxis" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref><sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" kindref="member">controlId</ref>,<sp/>uint8_t<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a810281ecb31a86d756259c83b90030e2" kindref="member">axisIndex</ref>);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1ade8a2b676e12be8183d6e19a9879d17f" kindref="member">head</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a810281ecb31a86d756259c83b90030e2" kindref="member">axisIndex</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a319dc333c8692e54719e371ebd3478ca" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDAxis_1a47f4604ec2a4073a94bd81fe4bc13a09" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDAxis" kindref="compound">HIDAxis</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_axisIndex;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="classOpenSkyhawk_1_1HIDButton" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref><sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>buttonIndex);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1aa90309452ab963924aed872a17805669" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afda6369ffc2cedf866c963e71c9801e0" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1a687de4afa5a755de7c1c2608f2bbcd9f" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDButton_1afecca874fab5385a17f868947478516f" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDButton" kindref="compound">HIDButton</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_buttonIndex;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="classOpenSkyhawk_1_1HIDHatSwitch" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref><sp/>{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>(uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" kindref="member">controlId</ref>,<sp/>uint8_t<sp/>hatIndex);</highlight></codeline>
 <codeline lineno="126"><highlight class="normal"></highlight></codeline>
-<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref><sp/>{</highlight></codeline>
-<codeline lineno="128"><highlight class="normal"></highlight></codeline>
-<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>DEFAULT_UART_TX_PIN<sp/>=<sp/>0;<sp/></highlight></codeline>
-<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>DEFAULT_UART_RX_PIN<sp/>=<sp/>1;<sp/></highlight></codeline>
-<codeline lineno="131"><highlight class="normal"></highlight></codeline>
-<codeline lineno="148"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup</ref>(SerialUART&amp;<sp/>uart,</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>txPin<sp/>=<sp/>DEFAULT_UART_TX_PIN,</highlight></codeline>
-<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>rxPin<sp/>=<sp/>DEFAULT_UART_RX_PIN);</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"></highlight></codeline>
-<codeline lineno="169"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop</ref>();</highlight></codeline>
-<codeline lineno="170"><highlight class="normal"></highlight></codeline>
-<codeline lineno="171"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Status<sp/>LEDs<sp/>(Gateway_Bridge<sp/>board)<sp/>────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="172"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="173"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Two<sp/>board-mounted<sp/>status<sp/>LEDs<sp/>report<sp/>the<sp/>gateway&apos;s<sp/>USB<sp/>/<sp/>data<sp/>/<sp/>fault<sp/>state<sp/>at<sp/>a</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="174"><highlight class="normal"></highlight><highlight class="comment">//<sp/>glance:<sp/>RED<sp/>=<sp/>GP3,<sp/>GREEN<sp/>=<sp/>GP2,<sp/>board-mounted<sp/>0805,<sp/>active-high<sp/>(HIGH<sp/>=<sp/>on).<sp/>The</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="175"><highlight class="normal"></highlight><highlight class="comment">//<sp/>animator<sp/>is<sp/>non-blocking<sp/>(millis(),<sp/>never<sp/>delay())<sp/>and<sp/>is<sp/>ticked<sp/>from<sp/>loop(),<sp/>so</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="176"><highlight class="normal"></highlight><highlight class="comment">//<sp/>sketches<sp/>need<sp/>no<sp/>LED<sp/>code.<sp/>The<sp/>RP2040<sp/>module&apos;s<sp/>onboard<sp/>WS2812<sp/>is<sp/>not<sp/>used.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="177"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>docs/architecture/sim-gateway.md<sp/>for<sp/>the<sp/>user-facing<sp/>table.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="178"><highlight class="normal"></highlight></codeline>
-<codeline lineno="184"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>FAULT,<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>NO_HOST,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>STREAMING,<sp/></highlight></codeline>
-<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/>USB_IDLE,<sp/><sp/></highlight></codeline>
-<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>INIT,<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="190"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="191"><highlight class="normal"></highlight></codeline>
-<codeline lineno="193"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/>Anim<sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>OFF,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>SOLID,<sp/></highlight></codeline>
-<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>SLOW,<sp/><sp/></highlight></codeline>
-<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>FAST,<sp/><sp/></highlight></codeline>
-<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>ALT,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>PULSE,<sp/></highlight></codeline>
-<codeline lineno="200"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="201"><highlight class="normal"></highlight></codeline>
-<codeline lineno="207"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1ae18de25981235d01df1935695a286476" kindref="member">statusLedBegin</ref>();</highlight></codeline>
-<codeline lineno="208"><highlight class="normal"></highlight></codeline>
-<codeline lineno="216"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a1a82d4907b44c0e0cf33238fc34c8ae7" kindref="member">statusTick</ref>();</highlight></codeline>
-<codeline lineno="217"><highlight class="normal"></highlight></codeline>
-<codeline lineno="218"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SIMGATEWAY_TEST</highlight></codeline>
-<codeline lineno="224"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>feedByte(uint8_t<sp/>b);</highlight></codeline>
-<codeline lineno="225"><highlight class="normal"></highlight></codeline>
-<codeline lineno="227"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetParser();</highlight></codeline>
-<codeline lineno="228"><highlight class="normal"></highlight></codeline>
-<codeline lineno="230"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetCdcCapture();</highlight></codeline>
-<codeline lineno="231"><highlight class="normal"></highlight></codeline>
-<codeline lineno="233"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cdcCaptureCount();</highlight></codeline>
-<codeline lineno="234"><highlight class="normal"></highlight></codeline>
-<codeline lineno="236"><highlight class="normal">uint8_t<sp/>cdcCaptureByte(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>index);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a385f8888cec0ed4b0b133be41310b5cd" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1aaed800d1e3e72bb51b2cc0f369a19b0a" kindref="member">controlId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a763cd0251dbc89304e041eaad7366644" kindref="member">dispatch</ref>(uint16_t<sp/>value);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch_1a0f7b6694376ec757652728ac00755962" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1HIDHatSwitch" kindref="compound">HIDHatSwitch</ref>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_next;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_controlId;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hatIndex;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref><sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>DEFAULT_UART_TX_PIN<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>DEFAULT_UART_RX_PIN<sp/>=<sp/>1;<sp/></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup</ref>(SerialUART&amp;<sp/>uart,</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>txPin<sp/>=<sp/>DEFAULT_UART_TX_PIN,</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>rxPin<sp/>=<sp/>DEFAULT_UART_RX_PIN);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">OpenSkyhawk::CalBlob</ref>&amp;<sp/><ref refid="namespaceSimGateway_1afa7f75ce54b436f48617b235a1ff2304" kindref="member">calibration</ref>();</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Status<sp/>LEDs<sp/>(Gateway_Bridge<sp/>board)<sp/>────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Two<sp/>board-mounted<sp/>status<sp/>LEDs<sp/>report<sp/>the<sp/>gateway&apos;s<sp/>USB<sp/>/<sp/>data<sp/>/<sp/>fault<sp/>state<sp/>at<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight><highlight class="comment">//<sp/>glance:<sp/>RED<sp/>=<sp/>GP3,<sp/>GREEN<sp/>=<sp/>GP2,<sp/>board-mounted<sp/>0805,<sp/>active-high<sp/>(HIGH<sp/>=<sp/>on).<sp/>The</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight><highlight class="comment">//<sp/>animator<sp/>is<sp/>non-blocking<sp/>(millis(),<sp/>never<sp/>delay())<sp/>and<sp/>is<sp/>ticked<sp/>from<sp/>loop(),<sp/>so</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight><highlight class="comment">//<sp/>sketches<sp/>need<sp/>no<sp/>LED<sp/>code.<sp/>The<sp/>RP2040<sp/>module&apos;s<sp/>onboard<sp/>WS2812<sp/>is<sp/>not<sp/>used.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight><highlight class="comment">//<sp/>See<sp/>docs/architecture/sim-gateway.md<sp/>for<sp/>the<sp/>user-facing<sp/>table.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>FAULT,<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/>NO_HOST,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>STREAMING,<sp/></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/>USB_IDLE,<sp/><sp/></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>INIT,<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="226"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/>Anim<sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/>OFF,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/>SOLID,<sp/></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>SLOW,<sp/><sp/></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/>FAST,<sp/><sp/></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/>ALT,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/>PULSE,<sp/></highlight></codeline>
+<codeline lineno="236"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="237"><highlight class="normal"></highlight></codeline>
-<codeline lineno="239"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>cdcCaptureOverflow();</highlight></codeline>
-<codeline lineno="240"><highlight class="normal"></highlight></codeline>
-<codeline lineno="241"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Status-LED<sp/>test<sp/>hooks<sp/>(test<sp/>builds<sp/>only)<sp/>──────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="242"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>pure<sp/>state-selection<sp/>+<sp/>animation<sp/>logic<sp/>is<sp/>exercised<sp/>without<sp/>GPIO,<sp/>TinyUSB,</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="243"><highlight class="normal"></highlight><highlight class="comment">//<sp/>or<sp/>PL011<sp/>register<sp/>reads<sp/>by<sp/>injecting<sp/>inputs<sp/>and<sp/>reading<sp/>back<sp/>the<sp/>resolved<sp/>state<sp/>/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="244"><highlight class="normal"></highlight><highlight class="comment">//<sp/>captured<sp/>pin<sp/>levels.<sp/>Mirrors<sp/>the<sp/>feedByte/cdcCapture<sp/>pattern<sp/>above.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="245"><highlight class="normal"></highlight></codeline>
-<codeline lineno="253"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusInject(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>mounted,<sp/>uint32_t<sp/>lastCdcRxMs,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>faultActive);</highlight></codeline>
-<codeline lineno="254"><highlight class="normal"></highlight></codeline>
-<codeline lineno="256"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResolve();</highlight></codeline>
-<codeline lineno="257"><highlight class="normal"></highlight></codeline>
-<codeline lineno="264"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusFaultStep(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>rsrError,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>uartRxMoved);</highlight></codeline>
-<codeline lineno="265"><highlight class="normal"></highlight></codeline>
-<codeline lineno="267"><highlight class="normal"><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>statusState();</highlight></codeline>
-<codeline lineno="268"><highlight class="normal"></highlight></codeline>
-<codeline lineno="270"><highlight class="normal">Anim<sp/>statusAnim();</highlight></codeline>
-<codeline lineno="271"><highlight class="normal"></highlight></codeline>
-<codeline lineno="273"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusRedLevel();</highlight></codeline>
-<codeline lineno="274"><highlight class="normal"></highlight></codeline>
-<codeline lineno="276"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusGreenLevel();</highlight></codeline>
-<codeline lineno="277"><highlight class="normal"></highlight></codeline>
-<codeline lineno="279"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResetForTest();</highlight></codeline>
-<codeline lineno="280"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="281"><highlight class="normal"></highlight></codeline>
-<codeline lineno="282"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SimGateway</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="283"><highlight class="normal"></highlight></codeline>
-<codeline lineno="284"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1ae18de25981235d01df1935695a286476" kindref="member">statusLedBegin</ref>();</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceSimGateway_1a1a82d4907b44c0e0cf33238fc34c8ae7" kindref="member">statusTick</ref>();</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SIMGATEWAY_TEST</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>feedByte(uint8_t<sp/>b);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetParser();</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetCdcCapture();</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>cdcCaptureCount();</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal">uint8_t<sp/>cdcCaptureByte(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>index);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>cdcCaptureOverflow();</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Axis<sp/>calibration<sp/>test<sp/>hooks<sp/>(test<sp/>builds<sp/>only)<sp/>────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>transform<sp/>itself<sp/>is<sp/>tested<sp/>by<sp/>calling<sp/>OpenSkyhawk::axisCalApply()<sp/>directly.<sp/>These</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight><highlight class="comment">//<sp/>hooks<sp/>exist<sp/>to<sp/>cover<sp/>something<sp/>that<sp/>function-level<sp/>test<sp/>cannot:<sp/>that<sp/>HIDAxis::dispatch()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight><highlight class="comment">//<sp/>actually<sp/>*applies*<sp/>it.<sp/>That<sp/>path<sp/>is<sp/>doubly<sp/>hidden<sp/>in<sp/>test<sp/>builds<sp/>—<sp/>the<sp/>HID<sp/>setters<sp/>are</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight><highlight class="comment">//<sp/>no-op<sp/>stubs,<sp/>and<sp/>the<sp/>flash<sp/>load<sp/>is<sp/>stubbed<sp/>to<sp/>a<sp/>RAM<sp/>clear<sp/>so<sp/>no<sp/>calibration<sp/>can<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight><highlight class="comment">//<sp/>installed.<sp/>Without<sp/>both<sp/>a<sp/>writer<sp/>and<sp/>a<sp/>reader,<sp/>deleting<sp/>the<sp/>transform<sp/>from<sp/>dispatch()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight><highlight class="comment">//<sp/>would<sp/>leave<sp/>every<sp/>assertion<sp/>passing.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>calSetForTest(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">OpenSkyhawk::CalBlob</ref>&amp;<sp/>blob);</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal">int16_t<sp/>lastAxisValue();</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="295"><highlight class="normal">uint8_t<sp/>lastAxisIndex();</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>resetAxisCapture();</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Status-LED<sp/>test<sp/>hooks<sp/>(test<sp/>builds<sp/>only)<sp/>──────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>pure<sp/>state-selection<sp/>+<sp/>animation<sp/>logic<sp/>is<sp/>exercised<sp/>without<sp/>GPIO,<sp/>TinyUSB,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"></highlight><highlight class="comment">//<sp/>or<sp/>PL011<sp/>register<sp/>reads<sp/>by<sp/>injecting<sp/>inputs<sp/>and<sp/>reading<sp/>back<sp/>the<sp/>resolved<sp/>state<sp/>/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight><highlight class="comment">//<sp/>captured<sp/>pin<sp/>levels.<sp/>Mirrors<sp/>the<sp/>feedByte/cdcCapture<sp/>pattern<sp/>above.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="312"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusInject(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>mounted,<sp/>uint32_t<sp/>lastCdcRxMs,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>faultActive);</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResolve();</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight></codeline>
+<codeline lineno="323"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusFaultStep(uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>rsrError,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>uartRxMoved);</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><ref refid="STM32Board_8cpp_1a406de9d429029db9e502b1c78c73d46e" kindref="member">LedState</ref><sp/>statusState();</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal">Anim<sp/>statusAnim();</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusRedLevel();</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"></highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>statusGreenLevel();</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"></highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>statusResetForTest();</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight></codeline>
+<codeline lineno="341"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SimGateway</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="342"><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_RP2040</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/SimGateway/SimGateway.h"/>
   </compounddef>

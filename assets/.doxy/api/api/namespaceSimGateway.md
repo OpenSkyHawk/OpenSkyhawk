@@ -51,6 +51,7 @@
 
 | Type | Name |
 | ---: | :--- |
+|  const [**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & | [**calibration**](#function-calibration) () <br>_The calibration currently applied to dispatched axis values._  |
 |  void | [**loop**](#function-loop) () <br>_Relay bytes and dispatch HID frames. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _iteration._ |
 |  void | [**setup**](#function-setup) (SerialUART & uart, uint8\_t txPin=DEFAULT\_UART\_TX\_PIN, uint8\_t rxPin=DEFAULT\_UART\_RX\_PIN) <br>_Initialise USB identity, OpenSkyhawkJoystick, and UART link to_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
 |  void | [**statusLedBegin**](#function-statusledbegin) () <br>_Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from_ [_**setup()**_](namespaceSimGateway.md#function-setup) _._ |
@@ -85,6 +86,31 @@
 
 ## Public Functions Documentation
 
+
+
+
+### function calibration 
+
+_The calibration currently applied to dispatched axis values._ 
+```C++
+const OpenSkyhawk::CalBlob & SimGateway::calibration () 
+```
+
+
+
+
+
+**Returns:**
+
+The in-RAM blob, loaded by [**setup()**](namespaceSimGateway.md#function-setup) from flash.
+
+
+Every axis reads as uncalibrated until [**setup()**](namespaceSimGateway.md#function-setup) loads a valid blob, so this is safe to call at any time. Use [**OpenSkyhawk::axisCalValid()**](namespaceOpenSkyhawk.md#function-axiscalvalid) on an element to ask whether that particular axis is calibrated. 
+
+
+        
+
+<hr>
 
 
 
@@ -145,7 +171,7 @@ Must be the first call in the sketch's [**setup()**](namespaceSimGateway.md#func
 * Manufacturer: "OpenSkyhawk"
 * Product: "A-4E Skyhawk"
 * VID/PID: 0x2E8A / 0x4134
-* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then calls OsJoystick.begin() to initialise the HID descriptor and enumerate.
+* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and calls OsJoystick.begin() to initialise the HID descriptor and enumerate.
 
 
 
@@ -157,7 +183,14 @@ Must be the first call in the sketch's [**setup()**](namespaceSimGateway.md#func
 
 * `uart` Hardware UART connected to [**PanelBridge**](namespacePanelBridge.md) (Serial1 / UART0 on standard board). 
 * `txPin` RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3. 
-* `rxPin` RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2. 
+* `rxPin` RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2.
+
+
+
+**Note:**
+
+Calibration is loaded before the HID stack comes up, which matters only for tidiness — the load itself has no ordering requirement. Axis objects are constructed at static init, long before this runs, and they index a `.bss` blob that the C runtime has already zeroed. A zeroed blob fails axisCalValid(), so an axis dispatched before [**setup()**](namespaceSimGateway.md#function-setup) would pass through unchanged rather than divide by zero. 
+
 
 
 

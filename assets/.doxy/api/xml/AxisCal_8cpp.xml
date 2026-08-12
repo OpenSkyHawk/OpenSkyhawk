@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="AxisCal_8cpp" kind="file" language="C++">
+    <compoundname>AxisCal.cpp</compoundname>
+    <includes refid="AxisCal_8h" local="yes">AxisCal.h</includes>
+    <includes local="no">string.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/SimGateway/AxisCal.cpp</label>
+        <link refid="AxisCal_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>AxisCal.h</label>
+        <link refid="AxisCal_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>stddef.h</label>
+      </node>
+      <node id="4">
+        <label>stdint.h</label>
+      </node>
+      <node id="5">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="AxisCal_8h" kindref="compound">AxisCal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1a9e180e8443fdf337a00db9bb86314114" kindref="member">calCrc16</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len)<sp/>{</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>crc<sp/>=<sp/>0xFFFF;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>len;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>crc<sp/>^=<sp/>(uint16_t)((uint16_t)data[i]<sp/>&lt;&lt;<sp/>8);</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>bit<sp/>=<sp/>0;<sp/>bit<sp/>&lt;<sp/>8;<sp/>++bit)<sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>crc<sp/>=<sp/>(crc<sp/>&amp;<sp/>0x8000u)<sp/>?<sp/>(uint16_t)((uint16_t)(crc<sp/>&lt;&lt;<sp/>1)<sp/>^<sp/>0x1021u)</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>(uint16_t)(crc<sp/>&lt;&lt;<sp/>1);</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>crc;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a7c35dca075618dc50bf80ed5c4a760e2" kindref="member">axisCalValid</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AxisCal&amp;<sp/>cal)<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint32_t)cal.min<sp/><sp/><sp/><sp/>+<sp/>cal.deadzone<sp/>&lt;<sp/>cal.centre</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&amp;&amp;<sp/>(uint32_t)cal.centre<sp/>+<sp/>cal.deadzone<sp/>&lt;<sp/>cal.max;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1acaeadfc692ead68c4da2f128ef3e996e" kindref="member">axisCalApply</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>AxisCal&amp;<sp/>cal,<sp/>uint16_t<sp/>raw)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespaceOpenSkyhawk_1a7c35dca075618dc50bf80ed5c4a760e2" kindref="member">axisCalValid</ref>(cal))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>raw;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>uncalibrated<sp/>—<sp/>identity<sp/>passthrough</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>&lt;=<sp/>cal.min)<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>&gt;=<sp/>cal.max)<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>65535;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lower<sp/>segment<sp/>maps<sp/>[min,<sp/>centre)<sp/>onto<sp/>[0,<sp/>32768);<sp/>upper<sp/>maps<sp/>[centre,<sp/>max)<sp/>onto</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>[32768,<sp/>65535).<sp/>Both<sp/>divisors<sp/>are<sp/>&gt;=<sp/>1<sp/>because<sp/>axisCalValid<sp/>passed.<sp/>Note<sp/>that<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>degenerate<sp/>cases<sp/>(centre<sp/>==<sp/>min<sp/>+<sp/>1,<sp/>centre<sp/>==<sp/>max<sp/>-<sp/>1)<sp/>leave<sp/>their<sp/>segment<sp/>with<sp/>no</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>interior<sp/>value<sp/>at<sp/>all,<sp/>so<sp/>neither<sp/>branch<sp/>can<sp/>be<sp/>entered<sp/>with<sp/>a<sp/>zero<sp/>numerator<sp/>range.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(raw<sp/>&lt;<sp/>cal.centre)<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)(((uint32_t)(raw<sp/>-<sp/>cal.min)<sp/>*<sp/>32768u)</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>/<sp/>(uint32_t)(cal.centre<sp/>-<sp/>cal.min));</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)(32768u<sp/>+<sp/>((uint32_t)(raw<sp/>-<sp/>cal.centre)<sp/>*<sp/>32767u)</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>/<sp/>(uint32_t)(cal.max<sp/>-<sp/>cal.centre));</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1a802f31f0af0b2cf03abc354467ddf800" kindref="member">calBlobCrc</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalBlob&amp;<sp/>blob)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a9e180e8443fdf337a00db9bb86314114" kindref="member">calCrc16</ref>(</highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keyword">const<sp/></highlight><highlight class="normal">uint8_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(&amp;blob),<sp/>offsetof(CalBlob,<sp/>crc));</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a047c4df87539d7a0306ff7512c66e4c8" kindref="member">calBlobValid</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalBlob&amp;<sp/>blob)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>blob.magic<sp/><sp/><sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1a260ad49ec8580e562167deb6b9188972" kindref="member">CAL_MAGIC</ref></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&amp;&amp;<sp/>blob.version<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1a719d99b86b55cb79c7f2be375aab4052" kindref="member">CAL_VERSION</ref></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&amp;&amp;<sp/>blob.crc<sp/><sp/><sp/><sp/><sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1a802f31f0af0b2cf03abc354467ddf800" kindref="member">calBlobCrc</ref>(blob);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a116c3c762f9fe2a073a81b255884023b" kindref="member">calBlobClear</ref>(CalBlob&amp;<sp/>blob)<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>memset(&amp;blob,<sp/>0,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(blob));</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a1251c3f4a6a20bc3373990d9c82cd5d1" kindref="member">calBlobSeal</ref>(CalBlob&amp;<sp/>blob)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>blob.magic<sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a260ad49ec8580e562167deb6b9188972" kindref="member">CAL_MAGIC</ref>;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>blob.version<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a719d99b86b55cb79c7f2be375aab4052" kindref="member">CAL_VERSION</ref>;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>blob.crc<sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1a802f31f0af0b2cf03abc354467ddf800" kindref="member">calBlobCrc</ref>(blob);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/SimGateway/AxisCal.cpp"/>
+  </compounddef>
+</doxygen>

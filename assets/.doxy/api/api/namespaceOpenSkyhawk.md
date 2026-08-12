@@ -32,6 +32,8 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | struct | [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) <br>_One point on the acceleration curve (SwitecX25 form)._  |
 | class | [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) <br>_Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) <br>_Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._ |
+| struct | [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) <br>_Captured endpoints for one axis, unsigned 0–65535 throughout._  |
+| struct | [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) <br>_The whole persisted calibration set, written and erased as one unit._  |
 | class | [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) <br>_Rolling-drum OLED readout. One instance == one OLED panel._  |
 | struct | [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md) <br>_Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter._  |
 | struct | [**DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md) <br>_A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc._  |
@@ -79,6 +81,9 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 | Type | Name |
 | ---: | :--- |
+|  constexpr uint8\_t | [**AXIS\_CAL\_SLOTS**](#variable-axis_cal_slots)   = `8`<br>_HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates._  |
+|  constexpr uint32\_t | [**CAL\_MAGIC**](#variable-cal_magic)   = `/* multi line expression */`<br>_Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._  |
+|  constexpr uint16\_t | [**CAL\_VERSION**](#variable-cal_version)   = `1`<br>_Blob layout version._  |
 |  const [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) | [**kSwitecDefaultAccel**](#variable-kswitecdefaultaccel)   = `/* multi line expression */`<br>_Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family._  |
 |  constexpr uint8\_t | [**kSwitecDefaultAccelN**](#variable-kswitecdefaultacceln)   = `5`<br> |
 
@@ -115,6 +120,13 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | Type | Name |
 | ---: | :--- |
 |  [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) | [**aggregateFaults**](#function-aggregatefaults) (const char \*\* detailOut=nullptr) <br>_Roll up the registered fault sources into a single node fault code (#163)._  |
+|  uint16\_t | [**axisCalApply**](#function-axiscalapply) (const [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) & cal, uint16\_t raw) <br>_Map a raw axis reading through the two-segment calibration._  |
+|  bool | [**axisCalValid**](#function-axiscalvalid) (const [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) & cal) <br>_True when both segments have a non-zero divisor, i.e. the axis is calibrated._  |
+|  void | [**calBlobClear**](#function-calblobclear) ([**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & blob) <br>_Zero a blob so every axis reads as uncalibrated._  |
+|  uint16\_t | [**calBlobCrc**](#function-calblobcrc) (const [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & blob) <br>_CRC of a blob's covered region, i.e. everything before the_ `crc` _field itself._ |
+|  void | [**calBlobSeal**](#function-calblobseal) ([**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & blob) <br>_Stamp magic, version, and a fresh CRC onto a blob ahead of persisting it._  |
+|  bool | [**calBlobValid**](#function-calblobvalid) (const [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & blob) <br>_True when a blob carries the right signature, version, and checksum._  |
+|  uint16\_t | [**calCrc16**](#function-calcrc16) (const uint8\_t \* data, size\_t len) <br>_CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR._  |
 |  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=1080, uint16\_t rangeSteps=945, uint16\_t homeStepUs=0) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
 
 
@@ -307,6 +319,59 @@ enum OpenSkyhawk::StepPattern {
 <hr>
 ## Public Attributes Documentation
 
+
+
+
+### variable AXIS\_CAL\_SLOTS 
+
+_HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates._ 
+```C++
+constexpr uint8_t OpenSkyhawk::AXIS_CAL_SLOTS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_MAGIC 
+
+_Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._ 
+```C++
+constexpr uint32_t OpenSkyhawk::CAL_MAGIC;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_VERSION 
+
+_Blob layout version._ 
+```C++
+constexpr uint16_t OpenSkyhawk::CAL_VERSION;
+```
+
+
+
+
+
+**Note:**
+
+A mismatch means "absent" — every axis falls back to identity and flash is left untouched until the user commits. No migration and no auto-rewrite: a downgrade-then-upgrade cycle would silently destroy data. 
+
+
+
+
+
+        
+
+<hr>
 
 
 
@@ -504,6 +569,286 @@ Cheap/const — sources report cached state only. Called on the periodic health 
 **Returns:**
 
 The primary NodeFaultCode, or NONE if no source is faulted. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function axisCalApply 
+
+_Map a raw axis reading through the two-segment calibration._ 
+```C++
+uint16_t OpenSkyhawk::axisCalApply (
+    const AxisCal & cal,
+    uint16_t raw
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `cal` Endpoints for this axis. 
+* `raw` Unsigned 0–65535 as emitted by the node. 
+
+
+
+**Returns:**
+
+Unsigned 0–65535, with `cal.centre` landing exactly on 32768.
+
+
+Returns `raw` unchanged when the axis is uncalibrated, so an unwritten blob behaves identically to a build without this feature.
+
+
+
+
+**Note:**
+
+Integer only, by design — the arithmetic must be reproducible exactly, and a curve would stack with the per-aircraft curves DCS already applies. 
+
+
+
+
+**Note:**
+
+The uint32\_t cast must sit on the multiply _operand_. Worst case is 65534 × 32768 = 2 147 418 112, inside uint32\_t with 2× headroom. `int` is 32-bit on RP2040 so the wrong form would work here by accident; the explicit cast is the portable contract. 
+
+
+
+
+**Note:**
+
+65535 is reachable only via the upper clamp — the upper segment's arithmetic tops out at 65534. Both map to +32767 after the caller's −32768, so this is correct, but it is the kind of asymmetry someone will otherwise "fix". 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function axisCalValid 
+
+_True when both segments have a non-zero divisor, i.e. the axis is calibrated._ 
+```C++
+bool OpenSkyhawk::axisCalValid (
+    const AxisCal & cal
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `cal` Endpoints to check. 
+
+
+
+**Returns:**
+
+true if `min < centre < max` allowing for the deadzone. 
+
+
+
+
+**Note:**
+
+This doubles as the calibrated/uncalibrated predicate — there is no stored validity flag, because a flag could only duplicate or contradict this. An all-zero blob (.bss, never loaded) and an all-0xFF blob (erased flash) both fail it, so both fail closed to identity. 
+
+
+
+
+**Note:**
+
+Widened to uint32\_t deliberately. The obvious `min < centre - deadzone` underflows on uint16\_t when deadzone &gt; centre. The wire protocol rejects a non-zero deadzone, but this guard's whole job is preventing a divide-by-zero in [**axisCalApply()**](namespaceOpenSkyhawk.md#function-axiscalapply), so it must not depend on a check one layer up. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function calBlobClear 
+
+_Zero a blob so every axis reads as uncalibrated._ 
+```C++
+void OpenSkyhawk::calBlobClear (
+    CalBlob & blob
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `blob` Blob to clear. 
+
+
+
+**Note:**
+
+Clears RAM only. Nothing here writes flash. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function calBlobCrc 
+
+_CRC of a blob's covered region, i.e. everything before the_ `crc` _field itself._
+```C++
+uint16_t OpenSkyhawk::calBlobCrc (
+    const CalBlob & blob
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `blob` Blob to checksum. 
+
+
+
+**Returns:**
+
+The CRC to store in, or compare against, `blob.crc`. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function calBlobSeal 
+
+_Stamp magic, version, and a fresh CRC onto a blob ahead of persisting it._ 
+```C++
+void OpenSkyhawk::calBlobSeal (
+    CalBlob & blob
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `blob` Blob whose `axes` are already populated. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function calBlobValid 
+
+_True when a blob carries the right signature, version, and checksum._ 
+```C++
+bool OpenSkyhawk::calBlobValid (
+    const CalBlob & blob
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `blob` Blob as read from storage. 
+
+
+
+**Returns:**
+
+true if the blob should be trusted. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function calCrc16 
+
+_CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR._ 
+```C++
+uint16_t OpenSkyhawk::calCrc16 (
+    const uint8_t * data,
+    size_t len
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `data` Bytes to cover. 
+* `len` Byte count. 
+
+
+
+**Returns:**
+
+The CRC. 
+
+
+
+
+**Note:**
+
+Canonical check: "123456789" → 0x29B1. Init is 0xFFFF rather than 0x0000 so that leading zero bytes change the result — an all-zero blob is a realistic corruption mode, and a 0x0000 init would not distinguish it from a shorter all-zero one. Bitwise and table-free: ~70 bytes of input costs a few microseconds, irrelevant beside the ~45 ms sector erase it protects. 
 
 
 

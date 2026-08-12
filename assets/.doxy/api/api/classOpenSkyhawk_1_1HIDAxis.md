@@ -53,6 +53,7 @@ _HID axis handler. Declared at sketch scope for each joystick axis._ [More...](#
 | Type | Name |
 | ---: | :--- |
 |   | [**HIDAxis**](#function-hidaxis) (uint16\_t controlId, uint8\_t axisIndex) <br>_Register a HID axis handler._  |
+|  uint8\_t | [**axisIndex**](#function-axisindex) () const<br>_Joystick axis index (0–7) this handler drives._  |
 |  uint16\_t | [**controlId**](#function-controlid) () const<br>_controlId this handler is registered for._  |
 |  void | [**dispatch**](#function-dispatch) (uint16\_t value) <br>_Dispatch a value to the joystick axis._  |
 |  [**HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) \* | [**next**](#function-next) () const<br>_Next axis in list; nullptr at end._  |
@@ -95,7 +96,10 @@ _HID axis handler. Declared at sketch scope for each joystick axis._ [More...](#
 Self-registers into a static linked list at construction. [**SimGateway::loop()**](namespaceSimGateway.md#function-loop) walks the list and calls OsJoystick.setAxis() when a HID frame with a matching controlId arrives. The 0–65535 unsigned value from [**PanelGroup**](namespacePanelGroup.md) is mapped to signed ±32767 internally (value − 32768).
 
 
-Declare at file scope, not inside functions — C++ constructs file-scope objects before setup() runs, which is required for the linked list to be populated. 
+Declare at file scope, not inside functions — C++ constructs file-scope objects before setup() runs, which is required for the linked list to be populated.
+
+
+**Calibration is never a constructor argument.** Endpoints are per-unit — sensor spread, magnet geometry, print tolerance — so baking them in would mean a reflash per build, which is exactly the limitation this design removes. They live in flash, are loaded once by [**SimGateway::setup()**](namespaceSimGateway.md#function-setup), and are looked up by `axisIndex`. Sketch declarations are therefore identical calibrated or not. 
 
 
     
@@ -133,6 +137,20 @@ OpenSkyhawk::HIDAxis::HIDAxis (
 
 
 
+### function axisIndex 
+
+_Joystick axis index (0–7) this handler drives._ 
+```C++
+uint8_t OpenSkyhawk::HIDAxis::axisIndex () const
+```
+
+
+
+
+<hr>
+
+
+
 ### function controlId 
 
 _controlId this handler is registered for._ 
@@ -163,7 +181,17 @@ void OpenSkyhawk::HIDAxis::dispatch (
 **Parameters:**
 
 
-* `value` Unsigned 0–65535; mapped to int16\_t (value − 32768) internally. 
+* `value` Unsigned 0–65535 as emitted by the node, pre-calibration.
+
+Applies the stored calibration first, then the fixed unsigned→signed offset. Order matters: the pipeline stays unsigned until the final step, so the map never divides on signed values.
+
+
+
+
+**Note:**
+
+The −32768 offset is invariant, not calibration-dependent. Two different centres are in play: `AxisCal::centre` is the axis's _physical_ rest point, which the map absorbs; −32768 is the re-centring of a 16-bit range, a property of the representation. [**axisCalApply()**](namespaceOpenSkyhawk.md#function-axiscalapply) always returns 0–65535, so making the offset variable would apply the centring twice. 
+
 
 
 

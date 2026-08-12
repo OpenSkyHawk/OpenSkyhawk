@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structOpenSkyhawk_1_1CalBlob" kind="struct" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::CalBlob</compoundname>
+    <includes refid="AxisCal_8h" local="no">AxisCal.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::CalBlob::magic</definition>
+        <argsstring></argsstring>
+        <name>magic</name>
+        <qualifiedname>OpenSkyhawk::CalBlob::magic</qualifiedname>
+        <briefdescription>
+<para>offset 0 — CAL_MAGIC </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="84" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1CalBlob_1af40adb0e124469ab452c4cf9aa11ac2f" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::CalBlob::version</definition>
+        <argsstring></argsstring>
+        <name>version</name>
+        <qualifiedname>OpenSkyhawk::CalBlob::version</qualifiedname>
+        <briefdescription>
+<para>offset 4 — CAL_VERSION </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="85" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1CalBlob_1ae4bdf2604334395b811a4b7e83780e2a" prot="public" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref></type>
+        <definition>AxisCal OpenSkyhawk::CalBlob::axes[AXIS_CAL_SLOTS]</definition>
+        <argsstring>[AXIS_CAL_SLOTS]</argsstring>
+        <name>axes</name>
+        <qualifiedname>OpenSkyhawk::CalBlob::axes</qualifiedname>
+        <briefdescription>
+<para>offset 6 — 64 bytes </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="86" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1CalBlob_1aaf0f67cdc6ab8f35d08b9560f9ddad7c" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::CalBlob::crc</definition>
+        <argsstring></argsstring>
+        <name>crc</name>
+        <qualifiedname>OpenSkyhawk::CalBlob::crc</qualifiedname>
+        <briefdescription>
+<para>offset 70 — CRC-16/CCITT-FALSE over bytes [0, 70) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="87" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The whole persisted calibration set, written and erased as one unit. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Offsets are natural-alignment under ARM EABI and happen to pack tight with no padding. That is luck rather than design, which is why the static_asserts below are load-bearing — <computeroutput>crc</computeroutput> is computed over <computeroutput>offsetof(CalBlob, crc)</computeroutput> bytes, so a layout change silently invalidates every stored blob unless CAL_VERSION moves with it.</para>
+<para><simplesect kind="note"><para>Not <computeroutput><ref refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kindref="member">__attribute__((packed))</ref></computeroutput>. There is no padding to remove, and packing would make every field access unaligned on a Cortex-M0+, which has no unaligned load/store. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::AxisCal</label>
+        <link refid="structOpenSkyhawk_1_1AxisCal"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::CalBlob</label>
+        <link refid="structOpenSkyhawk_1_1CalBlob"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>axes</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="83" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="83" bodyend="88"/>
+    <listofallmembers>
+      <member refid="structOpenSkyhawk_1_1CalBlob_1ae4bdf2604334395b811a4b7e83780e2a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::CalBlob</scope><name>axes</name></member>
+      <member refid="structOpenSkyhawk_1_1CalBlob_1aaf0f67cdc6ab8f35d08b9560f9ddad7c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::CalBlob</scope><name>crc</name></member>
+      <member refid="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" prot="public" virt="non-virtual"><scope>OpenSkyhawk::CalBlob</scope><name>magic</name></member>
+      <member refid="structOpenSkyhawk_1_1CalBlob_1af40adb0e124469ab452c4cf9aa11ac2f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::CalBlob</scope><name>version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -50,11 +50,23 @@
     <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1ad3e9d3eb2039288db52fcde9bb08df1f" kind="function"><name>posValAt</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a6ac4fc6fd08fa209d889b93bc2387df4" kind="function"><name>isValid</name></member>
   </compound>
+  <compound refid="structOpenSkyhawk_1_1AxisCal" kind="struct"><name>OpenSkyhawk::AxisCal</name>
+    <member refid="structOpenSkyhawk_1_1AxisCal_1af8574fdd76f8f9e946bcc1ddcff81108" kind="variable"><name>min</name></member>
+    <member refid="structOpenSkyhawk_1_1AxisCal_1ab8bd41a0d47472f683bf9f8a929677da" kind="variable"><name>centre</name></member>
+    <member refid="structOpenSkyhawk_1_1AxisCal_1a7c92a68778555a1a1acb0d5e9067c8fe" kind="variable"><name>max</name></member>
+    <member refid="structOpenSkyhawk_1_1AxisCal_1a485babc1ad6e56f30b0edce0658304f9" kind="variable"><name>deadzone</name></member>
+  </compound>
   <compound refid="structBatchState" kind="struct"><name>BatchState</name>
     <member refid="structBatchState_1a1fd47b3b9d392ce63d48cb71d4a7602d" kind="variable"><name>canId</name></member>
     <member refid="structBatchState_1aafb11af30d0ec7282687fbad89be0c36" kind="variable"><name>hasA</name></member>
     <member refid="structBatchState_1a0a13960dfe76dd7a9d9acb0d08de3759" kind="variable"><name>a</name></member>
     <member refid="structBatchState_1a00971116092e610b778f923f94de1fd7" kind="variable"><name>loopsWaited</name></member>
+  </compound>
+  <compound refid="structOpenSkyhawk_1_1CalBlob" kind="struct"><name>OpenSkyhawk::CalBlob</name>
+    <member refid="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" kind="variable"><name>magic</name></member>
+    <member refid="structOpenSkyhawk_1_1CalBlob_1af40adb0e124469ab452c4cf9aa11ac2f" kind="variable"><name>version</name></member>
+    <member refid="structOpenSkyhawk_1_1CalBlob_1ae4bdf2604334395b811a4b7e83780e2a" kind="variable"><name>axes</name></member>
+    <member refid="structOpenSkyhawk_1_1CalBlob_1aaf0f67cdc6ab8f35d08b9560f9ddad7c" kind="variable"><name>crc</name></member>
   </compound>
   <compound refid="structDcsBiosInputEntry" kind="struct"><name>DcsBiosInputEntry</name>
     <member refid="structDcsBiosInputEntry_1ab076abc3d8f2c904d45a44dac3a79044" kind="variable"><name>cmdId</name></member>
@@ -171,6 +183,7 @@
     <member refid="classOpenSkyhawk_1_1HIDAxis_1ab96aae013936620d8b496ec665160a6d" kind="variable"><name>_axisIndex</name></member>
     <member refid="classOpenSkyhawk_1_1HIDAxis_1ac7bfd3a4927cac3c9b629947f9bb33e6" kind="function"><name>HIDAxis</name></member>
     <member refid="classOpenSkyhawk_1_1HIDAxis_1a1ad876bc48f3cfae97f72ea7adabcb20" kind="function"><name>controlId</name></member>
+    <member refid="classOpenSkyhawk_1_1HIDAxis_1a810281ecb31a86d756259c83b90030e2" kind="function"><name>axisIndex</name></member>
     <member refid="classOpenSkyhawk_1_1HIDAxis_1a319dc333c8692e54719e371ebd3478ca" kind="function"><name>dispatch</name></member>
     <member refid="classOpenSkyhawk_1_1HIDAxis_1a47f4604ec2a4073a94bd81fe4bc13a09" kind="function"><name>next</name></member>
     <member refid="classOpenSkyhawk_1_1HIDAxis_1ade8a2b676e12be8183d6e19a9879d17f" kind="function"><name>head</name></member>
@@ -492,15 +505,15 @@
   </compound>
   <compound refid="namespace_0d40" kind="namespace"><name>@40</name>
   </compound>
-  <compound refid="namespace_0d44" kind="namespace"><name>@44</name>
-    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecb" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecbaa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecba1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d44_1a7f847d57c27da776e8cf4e2df4a65ecba03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4f" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4fab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4faa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d44_1ac840fcb28cee4ca15a4b43bb13461c4fa9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d46" kind="namespace"><name>@46</name>
+    <member refid="namespace_0d46_1a11576a61cd5b7a792806ab810274a835" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d46_1a11576a61cd5b7a792806ab810274a835aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d46_1a11576a61cd5b7a792806ab810274a835a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d46_1a11576a61cd5b7a792806ab810274a835a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d46_1a005ad8684cf29f174a70da7cba812f82" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d46_1a005ad8684cf29f174a70da7cba812f82ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d46_1a005ad8684cf29f174a70da7cba812f82aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d46_1a005ad8684cf29f174a70da7cba812f82a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
@@ -559,9 +572,19 @@
     <member refid="namespaceOpenSkyhawk_1a20c16e74fd780323eed06d5e5db3157f" kind="variable"><name>kSwitecDefaultAccel</name></member>
     <member refid="namespaceOpenSkyhawk_1a61eec0a1748c8164af515b6caaf934a7" kind="variable"><name>kSwitecDefaultAccelN</name></member>
     <member refid="namespaceOpenSkyhawk_1a3f7a386c767655207cbbc1ba71ef5c34" kind="variable"><name>ANALOG_NC</name></member>
+    <member refid="namespaceOpenSkyhawk_1aa6d79d3b9800575515cbded105a7c142" kind="variable"><name>AXIS_CAL_SLOTS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a260ad49ec8580e562167deb6b9188972" kind="variable"><name>CAL_MAGIC</name></member>
+    <member refid="namespaceOpenSkyhawk_1a719d99b86b55cb79c7f2be375aab4052" kind="variable"><name>CAL_VERSION</name></member>
     <member refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kind="function"><name>pow10l</name></member>
     <member refid="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" kind="function"><name>aggregateFaults</name></member>
     <member refid="namespaceOpenSkyhawk_1a46ddcd8bc34cc500234d4513a5952df5" kind="function"><name>makeX27Config</name></member>
+    <member refid="namespaceOpenSkyhawk_1a9e180e8443fdf337a00db9bb86314114" kind="function"><name>calCrc16</name></member>
+    <member refid="namespaceOpenSkyhawk_1a7c35dca075618dc50bf80ed5c4a760e2" kind="function"><name>axisCalValid</name></member>
+    <member refid="namespaceOpenSkyhawk_1acaeadfc692ead68c4da2f128ef3e996e" kind="function"><name>axisCalApply</name></member>
+    <member refid="namespaceOpenSkyhawk_1a802f31f0af0b2cf03abc354467ddf800" kind="function"><name>calBlobCrc</name></member>
+    <member refid="namespaceOpenSkyhawk_1a047c4df87539d7a0306ff7512c66e4c8" kind="function"><name>calBlobValid</name></member>
+    <member refid="namespaceOpenSkyhawk_1a116c3c762f9fe2a073a81b255884023b" kind="function"><name>calBlobClear</name></member>
+    <member refid="namespaceOpenSkyhawk_1a1251c3f4a6a20bc3373990d9c82cd5d1" kind="function"><name>calBlobSeal</name></member>
   </compound>
   <compound refid="namespaceOpenSkyhawk_1_1_0d14" kind="namespace"><name>OpenSkyhawk::@14</name>
   </compound>
@@ -602,6 +625,7 @@
     <member refid="namespaceSimGateway_1a5130d15328037ded5720f8c9dd28b908" kind="variable"><name>DEFAULT_UART_TX_PIN</name></member>
     <member refid="namespaceSimGateway_1ad3fdd14db89769c45bb818c966922d9e" kind="variable"><name>DEFAULT_UART_RX_PIN</name></member>
     <member refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kind="function"><name>setup</name></member>
+    <member refid="namespaceSimGateway_1afa7f75ce54b436f48617b235a1ff2304" kind="function"><name>calibration</name></member>
     <member refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kind="function"><name>loop</name></member>
     <member refid="namespaceSimGateway_1ae18de25981235d01df1935695a286476" kind="function"><name>statusLedBegin</name></member>
     <member refid="namespaceSimGateway_1a1a82d4907b44c0e0cf33238fc34c8ae7" kind="function"><name>statusTick</name></member>
@@ -1582,6 +1606,10 @@
     <member refid="PinRef_8h_1adcf1287504559377c3122c1d3ca92a03" kind="variable"><name>PORT_A</name></member>
     <member refid="PinRef_8h_1a05881a688581f29cb7e03b33f7617342" kind="variable"><name>PORT_B</name></member>
     <member refid="PinRef_8h_1a2fe7a10b1d2145cd6d6b70153dc266be" kind="variable"><name>PIN_NC</name></member>
+  </compound>
+  <compound refid="AxisCal_8cpp" kind="file"><name>AxisCal.cpp</name>
+  </compound>
+  <compound refid="AxisCal_8h" kind="file"><name>AxisCal.h</name>
   </compound>
   <compound refid="SimGateway_8cpp" kind="file"><name>SimGateway.cpp</name>
   </compound>

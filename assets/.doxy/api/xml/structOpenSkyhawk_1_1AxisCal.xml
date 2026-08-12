@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structOpenSkyhawk_1_1AxisCal" kind="struct" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::AxisCal</compoundname>
+    <includes refid="AxisCal_8h" local="no">AxisCal.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1AxisCal_1af8574fdd76f8f9e946bcc1ddcff81108" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AxisCal::min</definition>
+        <argsstring></argsstring>
+        <name>min</name>
+        <qualifiedname>OpenSkyhawk::AxisCal::min</qualifiedname>
+        <briefdescription>
+<para>Raw value at the axis&apos;s low mechanical stop. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="42" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1AxisCal_1ab8bd41a0d47472f683bf9f8a929677da" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AxisCal::centre</definition>
+        <argsstring></argsstring>
+        <name>centre</name>
+        <qualifiedname>OpenSkyhawk::AxisCal::centre</qualifiedname>
+        <briefdescription>
+<para>Raw value at rest. Captured, never computed. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="43" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1AxisCal_1a7c92a68778555a1a1acb0d5e9067c8fe" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AxisCal::max</definition>
+        <argsstring></argsstring>
+        <name>max</name>
+        <qualifiedname>OpenSkyhawk::AxisCal::max</qualifiedname>
+        <briefdescription>
+<para>Raw value at the axis&apos;s high mechanical stop. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="44" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1AxisCal_1a485babc1ad6e56f30b0edce0658304f9" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AxisCal::deadzone</definition>
+        <argsstring></argsstring>
+        <name>deadzone</name>
+        <qualifiedname>OpenSkyhawk::AxisCal::deadzone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reserved, always 0 in blob version 1. The field exists only so that adding a deadzone later needs no CAL_VERSION bump; nothing reads it, and the wire protocol rejects a non-zero value. <ref refid="classOpenSkyhawk_1_1AnalogInput" kindref="compound">AnalogInput</ref>&apos;s 128-count output hysteresis already hides return scatter, and if scatter ever exceeds that the fix is that axis&apos;s <computeroutput>hysteresis</computeroutput> argument, not a user-facing control. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="52" column="14" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Captured endpoints for one axis, unsigned 0–65535 throughout. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><computeroutput>centre</computeroutput> is always <emphasis>provided</emphasis> data, never derived — the client captures it, and neither the device nor the client substitutes <computeroutput>(min + max) / 2</computeroutput>. Raw midpoint is not physical midpoint whenever the transfer is nonlinear, and for a rotating-magnet hall axis it is nonlinear by construction (the normal field component goes as sin θ). An offset centre is the normal case and is exactly what the second segment exists to absorb. </para>
+    </detaileddescription>
+    <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="41" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="41" bodyend="53"/>
+    <listofallmembers>
+      <member refid="structOpenSkyhawk_1_1AxisCal_1ab8bd41a0d47472f683bf9f8a929677da" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AxisCal</scope><name>centre</name></member>
+      <member refid="structOpenSkyhawk_1_1AxisCal_1a485babc1ad6e56f30b0edce0658304f9" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AxisCal</scope><name>deadzone</name></member>
+      <member refid="structOpenSkyhawk_1_1AxisCal_1a7c92a68778555a1a1acb0d5e9067c8fe" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AxisCal</scope><name>max</name></member>
+      <member refid="structOpenSkyhawk_1_1AxisCal_1af8574fdd76f8f9e946bcc1ddcff81108" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AxisCal</scope><name>min</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

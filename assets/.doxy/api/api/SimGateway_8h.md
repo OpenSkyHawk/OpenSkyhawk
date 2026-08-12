@@ -12,6 +12,7 @@ _RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md
 
 * `#include <Arduino.h>`
 * `#include <HIDControls.h>`
+* `#include "AxisCal.h"`
 
 
 

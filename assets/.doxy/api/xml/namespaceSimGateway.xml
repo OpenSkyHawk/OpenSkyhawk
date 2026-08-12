@@ -55,7 +55,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="184" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="184" bodyend="190"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="220" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="220" bodyend="226"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783" prot="private" static="no" strong="yes">
         <type>uint8_t</type>
@@ -116,7 +116,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="193" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="193" bodyend="200"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="229" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="229" bodyend="236"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -134,7 +134,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="129" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="129" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="148" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="148" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceSimGateway_1ad3fdd14db89769c45bb818c966922d9e" prot="private" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -150,7 +150,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="130" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="130" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="149" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="149" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -182,7 +182,7 @@
 <listitem><para>Manufacturer: &quot;OpenSkyhawk&quot;</para>
 </listitem><listitem><para>Product: &quot;A-4E Skyhawk&quot;</para>
 </listitem><listitem><para>VID/PID: 0x2E8A / 0x4134</para>
-</listitem><listitem><para>CDC port: &quot;A-4E Skyhawk DCS-BIOS&quot; (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then calls OsJoystick.begin() to initialise the HID descriptor and enumerate.</para>
+</listitem><listitem><para>CDC port: &quot;A-4E Skyhawk DCS-BIOS&quot; (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and calls OsJoystick.begin() to initialise the HID descriptor and enumerate.</para>
 </listitem></itemizedlist>
 </para>
 <para><parameterlist kind="param"><parameteritem>
@@ -206,15 +206,35 @@
 <parametername>rxPin</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2. </para>
+<para>RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2.</para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
+<simplesect kind="note"><para>Calibration is loaded before the HID stack comes up, which matters only for tidiness — the load itself has no ordering requirement. Axis objects are constructed at static init, long before this runs, and they index a <computeroutput>.bss</computeroutput> blob that the C runtime has already zeroed. A zeroed blob fails axisCalValid(), so an axis dispatched before <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup()</ref> would pass through unchanged rather than divide by zero. </para>
+</simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="436" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="436" bodyend="465" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="148" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="494" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="494" bodyend="525" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="174" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSimGateway_1afa7f75ce54b436f48617b235a1ff2304" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">OpenSkyhawk::CalBlob</ref> &amp;</type>
+        <definition>const OpenSkyhawk::CalBlob &amp; SimGateway::calibration</definition>
+        <argsstring>()</argsstring>
+        <name>calibration</name>
+        <qualifiedname>SimGateway::calibration</qualifiedname>
+        <briefdescription>
+<para>The calibration currently applied to dispatched axis values. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The in-RAM blob, loaded by <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup()</ref> from flash.</para>
+</simplesect>
+Every axis reads as uncalibrated until <ref refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kindref="member">setup()</ref> loads a valid blob, so this is safe to call at any time. Use <ref refid="namespaceOpenSkyhawk_1a7c35dca075618dc50bf80ed5c4a760e2" kindref="member">OpenSkyhawk::axisCalValid()</ref> on an element to ask whether that particular axis is calibrated. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="527" column="28" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="527" bodyend="527" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="205" declcolumn="28"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -240,7 +260,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="467" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="467" bodyend="491" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="169" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="529" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="529" bodyend="553" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="195" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1ae18de25981235d01df1935695a286476" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -256,7 +276,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="493" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="493" bodyend="500" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="207" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="555" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="555" bodyend="562" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="243" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1a1a82d4907b44c0e0cf33238fc34c8ae7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -272,13 +292,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="502" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="502" bodyend="528" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="216" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="564" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="564" bodyend="590" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="252" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="434" column="1"/>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="492" column="1"/>
   </compounddef>
 </doxygen>

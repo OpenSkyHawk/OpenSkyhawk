@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="AxisCal_8h" kind="file" language="C++">
+    <compoundname>AxisCal.h</compoundname>
+    <includes local="no">stddef.h</includes>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="AxisCal_8cpp" local="yes">Firmware/Libraries/SimGateway/AxisCal.cpp</includedby>
+    <includedby refid="SimGateway_8h" local="yes">Firmware/Libraries/SimGateway/SimGateway.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/SimGateway/AxisCal.h</label>
+        <link refid="AxisCal_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/SimGateway/AxisCal.cpp</label>
+        <link refid="AxisCal_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/SimGateway/AxisCal.h</label>
+        <link refid="AxisCal_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/SimGateway/SimGateway.cpp</label>
+        <link refid="SimGateway_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/SimGateway/SimGateway.h</label>
+        <link refid="SimGateway_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structOpenSkyhawk_1_1AxisCal" prot="public">OpenSkyhawk::AxisCal</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1CalBlob" prot="public">OpenSkyhawk::CalBlob</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>Per-axis HID calibration — storage layout, the two-segment transform, and CRC. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A hall-effect stick spans only part of the ADC range (57–62% on the bench rig), so an uncalibrated axis reaches roughly ±20k instead of ±32767. Its neutral position is also rarely at the midpoint of that span, which a single linear map cannot correct: stretching min..max fixes the range but leaves the stick resting off-centre.</para>
+<para>This is the fix — three captured points (min, centre, max) and two linear segments, so centre lands exactly on 32768 regardless of how asymmetric the mechanical travel is.</para>
+<para>Everything here is <bold>pure</bold>: no EEPROM, no Serial, no millis(), no globals, no hardware. That is deliberate. <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref>&apos;s <computeroutput>_hidSetAxis</computeroutput> is a no-op stub in SIMGATEWAY_TEST builds, so a transform reachable only through HIDAxis::dispatch() would be unobservable in tests; a free function taking its inputs as arguments is callable directly from a test sketch.</para>
+<para>Deliberately not wrapped in <computeroutput>#ifdef ARDUINO_ARCH_RP2040</computeroutput> — this is portable C++ and the guard would only obstruct compiling it anywhere else.</para>
+<para><simplesect kind="version"><para>0.1.0 </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="structOpenSkyhawk_1_1AxisCal" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref><sp/>{</highlight></codeline>
+<codeline lineno="42" refid="structOpenSkyhawk_1_1AxisCal_1af8574fdd76f8f9e946bcc1ddcff81108" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1AxisCal_1af8574fdd76f8f9e946bcc1ddcff81108" kindref="member">min</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="43" refid="structOpenSkyhawk_1_1AxisCal_1ab8bd41a0d47472f683bf9f8a929677da" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1AxisCal_1ab8bd41a0d47472f683bf9f8a929677da" kindref="member">centre</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="44" refid="structOpenSkyhawk_1_1AxisCal_1a7c92a68778555a1a1acb0d5e9067c8fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1AxisCal_1a7c92a68778555a1a1acb0d5e9067c8fe" kindref="member">max</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="52" refid="structOpenSkyhawk_1_1AxisCal_1a485babc1ad6e56f30b0edce0658304f9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1AxisCal_1a485babc1ad6e56f30b0edce0658304f9" kindref="member">deadzone</ref>;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="namespaceOpenSkyhawk_1aa6d79d3b9800575515cbded105a7c142" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="namespaceOpenSkyhawk_1aa6d79d3b9800575515cbded105a7c142" kindref="member">AXIS_CAL_SLOTS</ref><sp/>=<sp/>8;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="namespaceOpenSkyhawk_1a260ad49ec8580e562167deb6b9188972" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1a260ad49ec8580e562167deb6b9188972" kindref="member">CAL_MAGIC</ref><sp/>=<sp/>((uint32_t)</highlight><highlight class="charliteral">&apos;O&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>|<sp/>((uint32_t)</highlight><highlight class="charliteral">&apos;S&apos;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><sp/>8)</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>|<sp/>((uint32_t)</highlight><highlight class="charliteral">&apos;K&apos;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>16)</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>|<sp/>((uint32_t)</highlight><highlight class="charliteral">&apos;C&apos;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>24);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="namespaceOpenSkyhawk_1a719d99b86b55cb79c7f2be375aab4052" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1a719d99b86b55cb79c7f2be375aab4052" kindref="member">CAL_VERSION</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="structOpenSkyhawk_1_1CalBlob" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref><sp/>{</highlight></codeline>
+<codeline lineno="84" refid="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" kindref="member">magic</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="85" refid="structOpenSkyhawk_1_1CalBlob_1af40adb0e124469ab452c4cf9aa11ac2f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1CalBlob_1af40adb0e124469ab452c4cf9aa11ac2f" kindref="member">version</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="86" refid="structOpenSkyhawk_1_1CalBlob_1ae4bdf2604334395b811a4b7e83780e2a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref><sp/><sp/><ref refid="structOpenSkyhawk_1_1CalBlob_1ae4bdf2604334395b811a4b7e83780e2a" kindref="member">axes</ref>[<ref refid="namespaceOpenSkyhawk_1aa6d79d3b9800575515cbded105a7c142" kindref="member">AXIS_CAL_SLOTS</ref>];<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="87" refid="structOpenSkyhawk_1_1CalBlob_1aaf0f67cdc6ab8f35d08b9560f9ddad7c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="structOpenSkyhawk_1_1CalBlob_1aaf0f67cdc6ab8f35d08b9560f9ddad7c" kindref="member">crc</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="88"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref>)<sp/>==<sp/>8,<sp/><sp/></highlight><highlight class="stringliteral">&quot;AxisCal<sp/>layout<sp/>changed<sp/>—<sp/>bump<sp/>CAL_VERSION&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref>)<sp/>==<sp/>72,<sp/></highlight><highlight class="stringliteral">&quot;CalBlob<sp/>layout<sp/>changed<sp/>—<sp/>bump<sp/>CAL_VERSION&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(offsetof(<ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref>,<sp/>crc)<sp/>==<sp/>70,<sp/></highlight><highlight class="stringliteral">&quot;CRC<sp/>coverage<sp/>is<sp/>offsetof(crc);<sp/>layout<sp/>changed&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1a9e180e8443fdf337a00db9bb86314114" kindref="member">calCrc16</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a7c35dca075618dc50bf80ed5c4a760e2" kindref="member">axisCalValid</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref>&amp;<sp/>cal);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1acaeadfc692ead68c4da2f128ef3e996e" kindref="member">axisCalApply</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1AxisCal" kindref="compound">AxisCal</ref>&amp;<sp/>cal,<sp/>uint16_t<sp/>raw);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1a802f31f0af0b2cf03abc354467ddf800" kindref="member">calBlobCrc</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref>&amp;<sp/>blob);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a047c4df87539d7a0306ff7512c66e4c8" kindref="member">calBlobValid</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref>&amp;<sp/>blob);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a116c3c762f9fe2a073a81b255884023b" kindref="member">calBlobClear</ref>(<ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref>&amp;<sp/>blob);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a1251c3f4a6a20bc3373990d9c82cd5d1" kindref="member">calBlobSeal</ref>(<ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">CalBlob</ref>&amp;<sp/>blob);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/SimGateway/AxisCal.h"/>
+  </compounddef>
+</doxygen>

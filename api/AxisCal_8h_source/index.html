@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d44/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/AxisCal_8h_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>File AxisCal.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#file-axiscalh" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              File AxisCal.h
             
           </span>
         </div>
@@ -3867,64 +3867,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Types Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enum-ledcolor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum LedColor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum ParserState
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -3943,48 +3885,60 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-ledcolor"><strong>LedColor</strong></a>  <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-ledcolor">enum LedColor</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::LedColor {
-    NONE,
-    RED,
-    GREEN
-};
-</code></pre>
-<hr>
+<h1 id="file-axiscalh">File AxisCal.h</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_a54aa0246e1c520ae49dfef506a428ca/"><strong>SimGateway</strong></a> <strong>&gt;</strong> <a href="../AxisCal_8h/"><strong>AxisCal.h</strong></a></p>
+<p><a href="../AxisCal_8h/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#pragma once
 
-<h3 id="enum-parserstate">enum ParserState</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserState {
-    IDLE,
-    GOT_AA,
-    IN_FRAME
-};
-</code></pre>
-<hr>
+#include &lt;stddef.h&gt;
+#include &lt;stdint.h&gt;
 
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+namespace OpenSkyhawk {
+
+struct AxisCal {
+    uint16_t min;       
+    uint16_t centre;    
+    uint16_t max;       
+    uint16_t deadzone;
+};
+
+constexpr uint8_t AXIS_CAL_SLOTS = 8;
+
+constexpr uint32_t CAL_MAGIC = ((uint32_t)'O')
+                             | ((uint32_t)'S' &lt;&lt;  8)
+                             | ((uint32_t)'K' &lt;&lt; 16)
+                             | ((uint32_t)'C' &lt;&lt; 24);
+
+constexpr uint16_t CAL_VERSION = 1;
+
+struct CalBlob {
+    uint32_t magic;                  
+    uint16_t version;                
+    AxisCal  axes[AXIS_CAL_SLOTS];   
+    uint16_t crc;                    
+};
+
+static_assert(sizeof(AxisCal) == 8,  &quot;AxisCal layout changed — bump CAL_VERSION&quot;);
+static_assert(sizeof(CalBlob) == 72, &quot;CalBlob layout changed — bump CAL_VERSION&quot;);
+static_assert(offsetof(CalBlob, crc) == 70, &quot;CRC coverage is offsetof(crc); layout changed&quot;);
+
+uint16_t calCrc16(const uint8_t* data, size_t len);
+
+bool axisCalValid(const AxisCal&amp; cal);
+
+uint16_t axisCalApply(const AxisCal&amp; cal, uint16_t raw);
+
+uint16_t calBlobCrc(const CalBlob&amp; blob);
+
+bool calBlobValid(const CalBlob&amp; blob);
+
+void calBlobClear(CalBlob&amp; blob);
+
+void calBlobSeal(CalBlob&amp; blob);
+
+} // namespace OpenSkyhawk
+</code></pre>
 
 
 

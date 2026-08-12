@@ -6,6 +6,13 @@
 ## a
 
 * **ANALOG\_NC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **AXIS\_CAL\_SLOTS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
+## c
+
+* **CAL\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## d

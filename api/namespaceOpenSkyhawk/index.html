@@ -4046,6 +4046,39 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#variable-axis_cal_slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable AXIS_CAL_SLOTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_magic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_MAGIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_VERSION
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-kswitecdefaultaccel" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4212,6 +4245,83 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-axiscalapply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function axisCalApply
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-axiscalvalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function axisCalValid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calblobclear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calBlobClear
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calblobcrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calBlobCrc
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calblobseal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calBlobSeal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calblobvalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calBlobValid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calcrc16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calCrc16
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-makex27config" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4298,6 +4408,14 @@
 <tr>
 <td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>AnalogMultiPos</strong></a> <br><em>Resistor-ladder multi-position selector — one analog</em> <code>PinRef</code> <em>, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1AxisCal/"><strong>AxisCal</strong></a> <br><em>Captured endpoints for one axis, unsigned 0–65535 throughout.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1CalBlob/"><strong>CalBlob</strong></a> <br><em>The whole persisted calibration set, written and erased as one unit.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
@@ -4454,6 +4572,18 @@
 </thead>
 <tbody>
 <tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-axis_cal_slots"><strong>AXIS_CAL_SLOTS</strong></a>   = <code>8</code><br><em>HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-cal_magic"><strong>CAL_MAGIC</strong></a>   = <code>/* multi line expression */</code><br><em>Blob signature. Little-endian in flash, so a hexdump reads "OSKC".</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-cal_version"><strong>CAL_VERSION</strong></a>   = <code>1</code><br><em>Blob layout version.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">const <a href="../structOpenSkyhawk_1_1AccelPoint/"><strong>AccelPoint</strong></a></td>
 <td style="text-align: left;"><a href="#variable-kswitecdefaultaccel"><strong>kSwitecDefaultAccel</strong></a>   = <code>/* multi line expression */</code><br><em>Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family.</em></td>
 </tr>
@@ -4522,6 +4652,34 @@
 <tr>
 <td style="text-align: right;"><a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a></td>
 <td style="text-align: left;"><a href="#function-aggregatefaults"><strong>aggregateFaults</strong></a> (const char ** detailOut=nullptr) <br><em>Roll up the registered fault sources into a single node fault code (#163).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-axiscalapply"><strong>axisCalApply</strong></a> (const <a href="../structOpenSkyhawk_1_1AxisCal/"><strong>AxisCal</strong></a> &amp; cal, uint16_t raw) <br><em>Map a raw axis reading through the two-segment calibration.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-axiscalvalid"><strong>axisCalValid</strong></a> (const <a href="../structOpenSkyhawk_1_1AxisCal/"><strong>AxisCal</strong></a> &amp; cal) <br><em>True when both segments have a non-zero divisor, i.e. the axis is calibrated.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-calblobclear"><strong>calBlobClear</strong></a> (<a href="../structOpenSkyhawk_1_1CalBlob/"><strong>CalBlob</strong></a> &amp; blob) <br><em>Zero a blob so every axis reads as uncalibrated.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-calblobcrc"><strong>calBlobCrc</strong></a> (const <a href="../structOpenSkyhawk_1_1CalBlob/"><strong>CalBlob</strong></a> &amp; blob) <br><em>CRC of a blob's covered region, i.e. everything before the</em> <code>crc</code> <em>field itself.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-calblobseal"><strong>calBlobSeal</strong></a> (<a href="../structOpenSkyhawk_1_1CalBlob/"><strong>CalBlob</strong></a> &amp; blob) <br><em>Stamp magic, version, and a fresh CRC onto a blob ahead of persisting it.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-calblobvalid"><strong>calBlobValid</strong></a> (const <a href="../structOpenSkyhawk_1_1CalBlob/"><strong>CalBlob</strong></a> &amp; blob) <br><em>True when a blob carries the right signature, version, and checksum.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-calcrc16"><strong>calCrc16</strong></a> (const uint8_t * data, size_t len) <br><em>CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a></td>
@@ -4616,6 +4774,26 @@
 </code></pre>
 <hr>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+<h3 id="variable-axis_cal_slots">variable AXIS_CAL_SLOTS</h3>
+<p><em>HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates.</em> </p>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::AXIS_CAL_SLOTS;
+</code></pre>
+<hr>
+
+<h3 id="variable-cal_magic">variable CAL_MAGIC</h3>
+<p><em>Blob signature. Little-endian in flash, so a hexdump reads "OSKC".</em> </p>
+<pre><code class="language-C++">constexpr uint32_t OpenSkyhawk::CAL_MAGIC;
+</code></pre>
+<hr>
+
+<h3 id="variable-cal_version">variable CAL_VERSION</h3>
+<p><em>Blob layout version.</em> </p>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::CAL_VERSION;
+</code></pre>
+<p><strong>Note:</strong></p>
+<p>A mismatch means "absent" — every axis falls back to identity and flash is left untouched until the user commits. No migration and no auto-rewrite: a downgrade-then-upgrade cycle would silently destroy data. </p>
+<hr>
+
 <h3 id="variable-kswitecdefaultaccel">variable kSwitecDefaultAccel</h3>
 <p><em>Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family.</em> </p>
 <pre><code class="language-C++">const AccelPoint OpenSkyhawk::kSwitecDefaultAccel;
@@ -4692,6 +4870,119 @@ input" role, but a different sentinel because an analog ladder is an array of AD
 </ul>
 <p><strong>Returns:</strong></p>
 <p>The primary NodeFaultCode, or NONE if no source is faulted. </p>
+<hr>
+
+<h3 id="function-axiscalapply">function axisCalApply</h3>
+<p><em>Map a raw axis reading through the two-segment calibration.</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::axisCalApply (
+    const AxisCal &amp; cal,
+    uint16_t raw
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>cal</code> Endpoints for this axis. </li>
+<li><code>raw</code> Unsigned 0–65535 as emitted by the node. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Unsigned 0–65535, with <code>cal.centre</code> landing exactly on 32768.</p>
+<p>Returns <code>raw</code> unchanged when the axis is uncalibrated, so an unwritten blob behaves identically to a build without this feature.</p>
+<p><strong>Note:</strong></p>
+<p>Integer only, by design — the arithmetic must be reproducible exactly, and a curve would stack with the per-aircraft curves DCS already applies. </p>
+<p><strong>Note:</strong></p>
+<p>The uint32_t cast must sit on the multiply <em>operand</em>. Worst case is 65534 × 32768 = 2 147 418 112, inside uint32_t with 2× headroom. <code>int</code> is 32-bit on RP2040 so the wrong form would work here by accident; the explicit cast is the portable contract. </p>
+<p><strong>Note:</strong></p>
+<p>65535 is reachable only via the upper clamp — the upper segment's arithmetic tops out at 65534. Both map to +32767 after the caller's −32768, so this is correct, but it is the kind of asymmetry someone will otherwise "fix". </p>
+<hr>
+
+<h3 id="function-axiscalvalid">function axisCalValid</h3>
+<p><em>True when both segments have a non-zero divisor, i.e. the axis is calibrated.</em> </p>
+<pre><code class="language-C++">bool OpenSkyhawk::axisCalValid (
+    const AxisCal &amp; cal
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>cal</code> Endpoints to check. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>true if <code>min &lt; centre &lt; max</code> allowing for the deadzone. </p>
+<p><strong>Note:</strong></p>
+<p>This doubles as the calibrated/uncalibrated predicate — there is no stored validity flag, because a flag could only duplicate or contradict this. An all-zero blob (.bss, never loaded) and an all-0xFF blob (erased flash) both fail it, so both fail closed to identity. </p>
+<p><strong>Note:</strong></p>
+<p>Widened to uint32_t deliberately. The obvious <code>min &lt; centre - deadzone</code> underflows on uint16_t when deadzone &gt; centre. The wire protocol rejects a non-zero deadzone, but this guard's whole job is preventing a divide-by-zero in <a href="./#function-axiscalapply"><strong>axisCalApply()</strong></a>, so it must not depend on a check one layer up. </p>
+<hr>
+
+<h3 id="function-calblobclear">function calBlobClear</h3>
+<p><em>Zero a blob so every axis reads as uncalibrated.</em> </p>
+<pre><code class="language-C++">void OpenSkyhawk::calBlobClear (
+    CalBlob &amp; blob
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>blob</code> Blob to clear. </li>
+</ul>
+<p><strong>Note:</strong></p>
+<p>Clears RAM only. Nothing here writes flash. </p>
+<hr>
+
+<h3 id="function-calblobcrc">function calBlobCrc</h3>
+<p><em>CRC of a blob's covered region, i.e. everything before the</em> <code>crc</code> <em>field itself.</em></p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::calBlobCrc (
+    const CalBlob &amp; blob
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>blob</code> Blob to checksum. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>The CRC to store in, or compare against, <code>blob.crc</code>. </p>
+<hr>
+
+<h3 id="function-calblobseal">function calBlobSeal</h3>
+<p><em>Stamp magic, version, and a fresh CRC onto a blob ahead of persisting it.</em> </p>
+<pre><code class="language-C++">void OpenSkyhawk::calBlobSeal (
+    CalBlob &amp; blob
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>blob</code> Blob whose <code>axes</code> are already populated. </li>
+</ul>
+<hr>
+
+<h3 id="function-calblobvalid">function calBlobValid</h3>
+<p><em>True when a blob carries the right signature, version, and checksum.</em> </p>
+<pre><code class="language-C++">bool OpenSkyhawk::calBlobValid (
+    const CalBlob &amp; blob
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>blob</code> Blob as read from storage. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>true if the blob should be trusted. </p>
+<hr>
+
+<h3 id="function-calcrc16">function calCrc16</h3>
+<p><em>CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR.</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::calCrc16 (
+    const uint8_t * data,
+    size_t len
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>data</code> Bytes to cover. </li>
+<li><code>len</code> Byte count. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>The CRC. </p>
+<p><strong>Note:</strong></p>
+<p>Canonical check: "123456789" → 0x29B1. Init is 0xFFFF rather than 0x0000 so that leading zero bytes change the result — an all-zero blob is a realistic corruption mode, and a 0x0000 init would not distinguish it from a shorter all-zero one. Bitwise and table-free: ~70 bytes of input costs a few microseconds, irrelevant beside the ~45 ms sector erase it protects. </p>
 <hr>
 
 <h3 id="function-makex27config">function makeX27Config</h3>
