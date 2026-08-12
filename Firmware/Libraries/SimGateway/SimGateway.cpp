@@ -395,30 +395,52 @@ void _calSendCalData(uint8_t seq) {
     _calSend(OpenSkyhawk::CAL_T_CAL_DATA, seq, p, sizeof(p));
 }
 
-// Persist the working blob. Returns false if the storage layer refused.
+// Write a candidate blob to flash and, only if that succeeds, make it the live calibration.
+// Returns false if the storage layer refused.
+//
+// **This is the only place _calBlob is assigned after boot.** Handlers build a candidate from
+// it, mutate the copy, and hand it over — so the live blob can never hold values that failed
+// to persist. Mutating _calBlob first and repairing it afterwards would work too, but it
+// leaves a window where the invariant is false and a repair path that a future handler can
+// forget. Here there is nothing to forget.
+//
+// What that prevents: on a failed write the client is told NO_STORAGE — "nothing was written"
+// — and the read-back it is instructed to perform must agree. If the candidate had already
+// gone live, GET_CAL would report the new values as stored and the verification step would
+// confirm the opposite of the truth. RESET is the sharper case: a failed RESET-all would
+// silently drop every axis to uncalibrated while reporting that nothing happened, then
+// restore them on the next power cycle.
 //
 // The erase runs with interrupts disabled for ~28 ms (measured), while the PL011's 32-entry
 // RX FIFO fills in 1.28 ms at 250000 baud — so inbound UART bytes are lost and the overrun
 // flag is set every single time. Without the recovery below, each successful save latches the
 // FAULT LED red for its 2 s minimum hold, and a HID parser stranded mid-frame consumes the
 // next four arriving bytes as a controlId/value pair.
-bool _calPersist() {
+//
+// The failure branch has no automated coverage: EEPROM.commit() only returns false when
+// begin() never ran or its allocation failed, and it is stubbed to true in test builds. That
+// is why the invariant is structural rather than a repair — it cannot be regression-tested.
+bool _calPersist(const OpenSkyhawk::CalBlob& candidate) {
+    OpenSkyhawk::CalBlob staged = candidate;
+    OpenSkyhawk::calBlobSeal(staged);
+
 #ifndef SIMGATEWAY_TEST
-    OpenSkyhawk::calBlobSeal(_calBlob);
-    EEPROM.put(0, _calBlob);
+    EEPROM.put(0, staged);
     const bool ok = EEPROM.commit();
 
-    // Recovery, in order. The overrun is self-inflicted and expected, not a link fault —
-    // do not "fix" this RSR clear away.
+    // Recovery, in order, and it runs whether or not the write succeeded — the erase may
+    // have started regardless. The overrun is self-inflicted and expected, not a link
+    // fault, so do not "fix" this RSR clear away.
     while (_uart && _uart->available()) (void)_uart->read();
     uart0_hw->rsr = 0;
     _state    = ParserState::IDLE;
     _framePos = 0;
-    return ok;
 #else
-    OpenSkyhawk::calBlobSeal(_calBlob);
-    return true;   // test builds never touch flash
+    const bool ok = true;   // test builds never touch flash
 #endif
+
+    if (ok) _calBlob = staged;
+    return ok;
 }
 
 void _calEndSession() {
@@ -456,14 +478,16 @@ void _calHandleCommit(uint8_t seq, const uint8_t* pay, uint16_t len) {
         }
     }
 
+    // Applied to a copy — the live blob changes only once the write has succeeded.
+    OpenSkyhawk::CalBlob cand = _calBlob;
     for (uint8_t r = 0; r < count; ++r) {
         const uint8_t* rec = pay + 1 + (size_t)r * 9;
-        _calBlob.axes[rec[0]] = OpenSkyhawk::AxisCal{
+        cand.axes[rec[0]] = OpenSkyhawk::AxisCal{
             _get16(rec + 1), _get16(rec + 3), _get16(rec + 5), _get16(rec + 7)
         };
     }
 
-    if (_calPersist()) _calAck(OpenSkyhawk::CAL_T_COMMIT, seq);
+    if (_calPersist(cand)) _calAck(OpenSkyhawk::CAL_T_COMMIT, seq);
     else _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_NO_STORAGE, CAL_AXIS_NONE);
 }
 
@@ -548,13 +572,18 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
             }
             // Deleting calibration, not restoring a default profile: the axis reverts to
             // identity passthrough. Persists immediately — no following COMMIT needed.
+            //
+            // Cleared on a copy for the same reason as COMMIT, and it matters more here: a
+            // failed RESET-all would otherwise drop every axis to uncalibrated in RAM while
+            // telling the client nothing was written.
+            OpenSkyhawk::CalBlob cand = _calBlob;
             if (idx == CAL_AXIS_NONE) {
                 for (uint8_t i = 0; i < OpenSkyhawk::AXIS_CAL_SLOTS; ++i)
-                    _calBlob.axes[i] = OpenSkyhawk::AxisCal{ 0, 0, 0, 0 };
+                    cand.axes[i] = OpenSkyhawk::AxisCal{ 0, 0, 0, 0 };
             } else {
-                _calBlob.axes[idx] = OpenSkyhawk::AxisCal{ 0, 0, 0, 0 };
+                cand.axes[idx] = OpenSkyhawk::AxisCal{ 0, 0, 0, 0 };
             }
-            if (_calPersist()) _calAck(type, seq);
+            if (_calPersist(cand)) _calAck(type, seq);
             else _calNack(type, seq, OpenSkyhawk::CAL_NACK_NO_STORAGE, CAL_AXIS_NONE);
             break;
         }
