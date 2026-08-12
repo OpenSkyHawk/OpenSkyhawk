@@ -90,6 +90,13 @@ _RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md
 
 
 
+## Macros
+
+| Type | Name |
+| ---: | :--- |
+| define  | [**SIMGATEWAY\_FW\_MAJOR**](SimGateway_8h.md#define-simgateway_fw_major)  `0`<br> |
+| define  | [**SIMGATEWAY\_FW\_MINOR**](SimGateway_8h.md#define-simgateway_fw_minor)  `1`<br> |
+| define  | [**SIMGATEWAY\_FW\_PATCH**](SimGateway_8h.md#define-simgateway_fw_patch)  `0`<br> |
 
 ## Detailed Description
 
@@ -118,6 +125,48 @@ GPL-2.0-only — see Firmware/LICENSE
 
 
     
+## Macro Definition Documentation
+
+
+
+
+
+### define SIMGATEWAY\_FW\_MAJOR 
+
+```C++
+#define SIMGATEWAY_FW_MAJOR `0`
+```
+
+
+
+
+<hr>
+
+
+
+### define SIMGATEWAY\_FW\_MINOR 
+
+```C++
+#define SIMGATEWAY_FW_MINOR `1`
+```
+
+
+
+
+<hr>
+
+
+
+### define SIMGATEWAY\_FW\_PATCH 
+
+```C++
+#define SIMGATEWAY_FW_PATCH `0`
+```
+
+
+
+
+<hr>
 
 ------------------------------
 The documentation for this class was generated from the following file `Firmware/Libraries/SimGateway/SimGateway.h`

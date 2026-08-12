@@ -3896,6 +3896,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#detailed-description" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3903,6 +3914,56 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macro-definition-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Definition Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macro Definition Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-simgateway_fw_major" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define SIMGATEWAY_FW_MAJOR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-simgateway_fw_minor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define SIMGATEWAY_FW_MINOR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-simgateway_fw_patch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define SIMGATEWAY_FW_PATCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3977,6 +4038,29 @@
 </tr>
 </tbody>
 </table>
+<h2 id="macros">Macros</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-simgateway_fw_major"><strong>SIMGATEWAY_FW_MAJOR</strong></a>  <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-simgateway_fw_minor"><strong>SIMGATEWAY_FW_MINOR</strong></a>  <code>1</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-simgateway_fw_patch"><strong>SIMGATEWAY_FW_PATCH</strong></a>  <code>0</code><br></td>
+</tr>
+</tbody>
+</table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Owns the USB CDC ↔ UART relay, 0xAA 0x55 HID frame demultiplexer, and HID report batching. HIDAxis, HIDButton, and HIDHatSwitch objects are declared in the sketch at file scope and self-register into linked lists at construction. <a href="../namespaceSimGateway/#function-loop"><strong>SimGateway::loop()</strong></a> walks those lists and dispatches matching HID frames into the USB HID report.</p>
 <p>Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN. Platform: RP2040 only.</p>
@@ -3984,6 +4068,22 @@
 <p>0.1.0 </p>
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
+<h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
+<h3 id="define-simgateway_fw_major">define SIMGATEWAY_FW_MAJOR</h3>
+<pre><code class="language-C++">#define SIMGATEWAY_FW_MAJOR `0`
+</code></pre>
+<hr>
+
+<h3 id="define-simgateway_fw_minor">define SIMGATEWAY_FW_MINOR</h3>
+<pre><code class="language-C++">#define SIMGATEWAY_FW_MINOR `1`
+</code></pre>
+<hr>
+
+<h3 id="define-simgateway_fw_patch">define SIMGATEWAY_FW_PATCH</h3>
+<pre><code class="language-C++">#define SIMGATEWAY_FW_PATCH `0`
+</code></pre>
+<hr>
+
 <hr />
 <p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.h</code></p>
 

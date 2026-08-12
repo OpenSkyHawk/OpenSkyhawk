@@ -3952,6 +3952,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#enum-calnackreason" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalNackReason
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-caltype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-drumfont" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4057,10 +4079,76 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-cal_axis_none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_AXIS_NONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_envelope_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_ENVELOPE_BYTES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_frame_magic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_FRAME_MAGIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-cal_magic" class="md-nav__link">
     <span class="md-ellipsis">
       
         variable CAL_MAGIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_max_frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_MAX_FRAME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_max_payload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_MAX_PAYLOAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_proto_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_PROTO_VERSION
       
     </span>
   </a>
@@ -4311,10 +4399,43 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-calbuildframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calBuildFrame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-calcrc16" class="md-nav__link">
     <span class="md-ellipsis">
       
         function calCrc16
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calframecrcok" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calFrameCrcOk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-callenvalidfortype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calLenValidForType
       
     </span>
   </a>
@@ -4534,6 +4655,14 @@
 <tbody>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calnackreason"><strong>CalNackReason</strong></a>  <br><em>NACK reasons.</em> <code>detail</code> <em>names the offending axis where one applies, else 0xFF.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-caltype"><strong>CalType</strong></a>  <br><em>Message types. High bit set = device→client, so direction is readable in a capture.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-drumfont"><strong>DrumFont</strong></a>  <br><em>Glyph font size. Maps to a fixed monospace ProFont face.</em></td>
 </tr>
 <tr>
@@ -4576,8 +4705,32 @@
 <td style="text-align: left;"><a href="#variable-axis_cal_slots"><strong>AXIS_CAL_SLOTS</strong></a>   = <code>8</code><br><em>HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-cal_axis_none"><strong>CAL_AXIS_NONE</strong></a>   = <code>0xFF</code><br><code>RESET</code> <em>and the axis-selection fields use this to mean "all" / "none".</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-cal_envelope_bytes"><strong>CAL_ENVELOPE_BYTES</strong></a>   = <code>10</code><br><em>magic 4 + type 1 + seq 1 + len 2 + crc 2</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-cal_frame_magic"><strong>CAL_FRAME_MAGIC</strong></a>   = <code>{ 0xAA, 0x53, 0x4B, 0x43 }</code><br></td>
+</tr>
+<tr>
 <td style="text-align: right;">constexpr uint32_t</td>
 <td style="text-align: left;"><a href="#variable-cal_magic"><strong>CAL_MAGIC</strong></a>   = <code>/* multi line expression */</code><br><em>Blob signature. Little-endian in flash, so a hexdump reads "OSKC".</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-cal_max_frame"><strong>CAL_MAX_FRAME</strong></a>   = <code>[**CAL\_ENVELOPE\_BYTES**](namespaceOpenSkyhawk.md#variable-cal_envelope_bytes) + [**CAL\_MAX\_PAYLOAD**](namespaceOpenSkyhawk.md#variable-cal_max_payload)</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-cal_max_payload"><strong>CAL_MAX_PAYLOAD</strong></a>   = <code>82</code><br><em>CAL_DATA, the largest legal payload.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-cal_proto_version"><strong>CAL_PROTO_VERSION</strong></a>   = <code>1</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
@@ -4679,7 +4832,19 @@
 </tr>
 <tr>
 <td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-calbuildframe"><strong>calBuildFrame</strong></a> (uint8_t * out, uint16_t outCap, uint8_t type, uint8_t seq, const uint8_t * payload, uint16_t len) <br><em>Build a complete frame into a caller-supplied buffer.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
 <td style="text-align: left;"><a href="#function-calcrc16"><strong>calCrc16</strong></a> (const uint8_t * data, size_t len) <br><em>CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-calframecrcok"><strong>calFrameCrcOk</strong></a> (const uint8_t * frame, uint16_t n) <br><em>Verify the CRC of a complete, already-assembled frame.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-callenvalidfortype"><strong>calLenValidForType</strong></a> (uint8_t type, uint16_t len) <br><em>Is</em> <code>len</code> <em>the only length this</em><code>type</code> <em>may legally carry?</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../structOpenSkyhawk_1_1StepperConfig/"><strong>StepperConfig</strong></a></td>
@@ -4703,6 +4868,42 @@
 </tbody>
 </table>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
+<h3 id="enum-calnackreason">enum CalNackReason</h3>
+<p><em>NACK reasons.</em> <code>detail</code> <em>names the offending axis where one applies, else 0xFF.</em></p>
+<pre><code class="language-C++">enum OpenSkyhawk::CalNackReason {
+    CAL_NACK_BAD_CRC = 0x01,
+    CAL_NACK_BAD_LENGTH = 0x02,
+    CAL_NACK_BAD_TYPE = 0x03,
+    CAL_NACK_BAD_INDEX = 0x04,
+    CAL_NACK_BAD_ORDER = 0x05,
+    CAL_NACK_NO_SESSION = 0x06,
+    CAL_NACK_NO_STORAGE = 0x07,
+    CAL_NACK_BAD_DEADZONE = 0x08
+};
+</code></pre>
+<hr>
+
+<h3 id="enum-caltype">enum CalType</h3>
+<p><em>Message types. High bit set = device→client, so direction is readable in a capture.</em> </p>
+<pre><code class="language-C++">enum OpenSkyhawk::CalType {
+    CAL_T_HELLO = 0x01,
+    CAL_T_GET_CAL = 0x02,
+    CAL_T_SESSION_OPEN = 0x03,
+    CAL_T_SESSION_CLOSE = 0x04,
+    CAL_T_COMMIT = 0x05,
+    CAL_T_RESET = 0x06,
+    CAL_T_KEEPALIVE = 0x07,
+    CAL_T_STREAM_SELECT = 0x08,
+    CAL_T_HELLO_ACK = 0x81,
+    CAL_T_CAL_DATA = 0x82,
+    CAL_T_SESSION_ACK = 0x83,
+    CAL_T_ACK = 0x84,
+    CAL_T_NACK = 0x85,
+    CAL_T_RAW = 0x86
+};
+</code></pre>
+<hr>
+
 <h3 id="enum-drumfont">enum DrumFont</h3>
 <p><em>Glyph font size. Maps to a fixed monospace ProFont face.</em> </p>
 <pre><code class="language-C++">enum OpenSkyhawk::DrumFont {
@@ -4780,9 +4981,43 @@
 </code></pre>
 <hr>
 
+<h3 id="variable-cal_axis_none">variable CAL_AXIS_NONE</h3>
+<p><code>RESET</code> <em>and the axis-selection fields use this to mean "all" / "none".</em></p>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::CAL_AXIS_NONE;
+</code></pre>
+<hr>
+
+<h3 id="variable-cal_envelope_bytes">variable CAL_ENVELOPE_BYTES</h3>
+<p><em>magic 4 + type 1 + seq 1 + len 2 + crc 2</em> </p>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::CAL_ENVELOPE_BYTES;
+</code></pre>
+<hr>
+
+<h3 id="variable-cal_frame_magic">variable CAL_FRAME_MAGIC</h3>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::CAL_FRAME_MAGIC[4];
+</code></pre>
+<p>Frame lead-in. 0xAA leads all non-DCS data on this link, matching the HID frame magic. Distinct from CAL_MAGIC above, which signs the stored blob rather than a wire frame. </p>
+<hr>
+
 <h3 id="variable-cal_magic">variable CAL_MAGIC</h3>
 <p><em>Blob signature. Little-endian in flash, so a hexdump reads "OSKC".</em> </p>
 <pre><code class="language-C++">constexpr uint32_t OpenSkyhawk::CAL_MAGIC;
+</code></pre>
+<hr>
+
+<h3 id="variable-cal_max_frame">variable CAL_MAX_FRAME</h3>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::CAL_MAX_FRAME;
+</code></pre>
+<hr>
+
+<h3 id="variable-cal_max_payload">variable CAL_MAX_PAYLOAD</h3>
+<p><em>CAL_DATA, the largest legal payload.</em> </p>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::CAL_MAX_PAYLOAD;
+</code></pre>
+<hr>
+
+<h3 id="variable-cal_proto_version">variable CAL_PROTO_VERSION</h3>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::CAL_PROTO_VERSION;
 </code></pre>
 <hr>
 
@@ -4967,6 +5202,30 @@ input" role, but a different sentinel because an analog ladder is an array of AD
 <p>true if the blob should be trusted. </p>
 <hr>
 
+<h3 id="function-calbuildframe">function calBuildFrame</h3>
+<p><em>Build a complete frame into a caller-supplied buffer.</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::calBuildFrame (
+    uint8_t * out,
+    uint16_t outCap,
+    uint8_t type,
+    uint8_t seq,
+    const uint8_t * payload,
+    uint16_t len
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>out</code> Destination, at least <code>CAL_ENVELOPE_BYTES + len</code> bytes. </li>
+<li><code>outCap</code> Capacity of <code>out</code>. </li>
+<li><code>type</code> Message type. </li>
+<li><code>seq</code> Sequence byte — echoed from the request, or a counter for unsolicited RAW. </li>
+<li><code>payload</code> Payload bytes; may be nullptr when <code>len</code> is 0. </li>
+<li><code>len</code> Payload length. Must satisfy <a href="./#function-callenvalidfortype"><strong>calLenValidForType()</strong></a>. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Bytes written, or 0 if the arguments are inconsistent or <code>out</code> is too small. </p>
+<hr>
+
 <h3 id="function-calcrc16">function calCrc16</h3>
 <p><em>CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR.</em> </p>
 <pre><code class="language-C++">uint16_t OpenSkyhawk::calCrc16 (
@@ -4983,6 +5242,45 @@ input" role, but a different sentinel because an analog ladder is an array of AD
 <p>The CRC. </p>
 <p><strong>Note:</strong></p>
 <p>Canonical check: "123456789" → 0x29B1. Init is 0xFFFF rather than 0x0000 so that leading zero bytes change the result — an all-zero blob is a realistic corruption mode, and a 0x0000 init would not distinguish it from a shorter all-zero one. Bitwise and table-free: ~70 bytes of input costs a few microseconds, irrelevant beside the ~45 ms sector erase it protects. </p>
+<hr>
+
+<h3 id="function-calframecrcok">function calFrameCrcOk</h3>
+<p><em>Verify the CRC of a complete, already-assembled frame.</em> </p>
+<pre><code class="language-C++">bool OpenSkyhawk::calFrameCrcOk (
+    const uint8_t * frame,
+    uint16_t n
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>frame</code> Whole frame including magic and trailing CRC. </li>
+<li><code>n</code> Frame length in bytes. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>true if the trailing CRC matches the computed one. </p>
+<p><strong>Note:</strong></p>
+<p>Coverage is <code>TYPE</code>‖<code>SEQ</code>‖<code>LEN</code>‖<code>PAYLOAD</code> — the magic is excluded, and so is the CRC field itself. Checksumming constant bytes adds no detection power. </p>
+<hr>
+
+<h3 id="function-callenvalidfortype">function calLenValidForType</h3>
+<p><em>Is</em> <code>len</code> <em>the only length this</em><code>type</code> <em>may legally carry?</em></p>
+<pre><code class="language-C++">bool OpenSkyhawk::calLenValidForType (
+    uint8_t type,
+    uint16_t len
+) 
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>type</code> Message type byte. </li>
+<li><code>len</code> Candidate payload length, as read off the wire. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>true if the pair is legal.</p>
+<p>This is the framing-layer gate, and it is checked <strong>before the payload is buffered</strong>. <code>len</code> is read before the CRC can be verified, so on a false frame it is noise: a stray magic in DCS-BIOS text can decode a length near 65535, and a receiver that waits for that many bytes stalls. Every type therefore has an exact length rather than a shared bound.</p>
+<p><strong>Note:</strong></p>
+<p>There are no variable-length types. <code>COMMIT</code> carries exactly one axis, so the rule is uniform: one legal length per type, no exception to state or to get wrong. An earlier draft let <code>COMMIT</code> batch up to eight axes, which allowed a batch to name the same axis twice with different values and silently apply the last. </p>
+<p><strong>Note:</strong></p>
+<p>An unknown type is rejected. Protocol versions must match — <code>HELLO_ACK</code> carries <code>proto</code> for exactly that — so an unrecognised type is an error, not something to skip. </p>
 <hr>
 
 <h3 id="function-makex27config">function makeX27Config</h3>

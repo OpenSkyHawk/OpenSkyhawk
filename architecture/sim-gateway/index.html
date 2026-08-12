@@ -4186,6 +4186,13 @@ silently — no error, no crash. The production report is 34 bytes; keep it well
 <p>The two streams share one UART because they can't collide: DCS-BIOS text is pure printable
 ASCII + LF (every byte ≤ <code>0x7F</code>), while HID frames start with the magic bytes <code>0xAA 0x55</code>
 (both have bit 7 set).</p>
+<p>The USB side carries a third stream — the axis calibration protocol, which the OpenSkyhawk
+Client uses to read and write the endpoints stored on the gateway. It is not separated by
+alphabet, because the client stops relaying DCS while it talks and because a frame can be
+mistaken for corrupted traffic in the other direction. Instead every calibration frame carries
+a checksum and a length fixed by its message type, and anything failing either check is passed
+straight through to the cockpit untouched. A calibration session therefore cannot swallow
+DCS-BIOS data, and health reporting keeps flowing while it is open.</p>
 <p>This "dumb relay" is also why <strong>node-status reporting</strong> (<a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86">#86</a>)
 needs no SimGateway change: PanelBridge reports connected PanelGroup nodes to the host over
 DCS-BIOS itself — <code>_NODE_STATUS</code> ASCII command messages downstream, and a roster request as a

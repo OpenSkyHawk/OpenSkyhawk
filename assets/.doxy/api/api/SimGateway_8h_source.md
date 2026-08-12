@@ -75,6 +75,12 @@ namespace SimGateway {
 static constexpr uint8_t DEFAULT_UART_TX_PIN = 0; 
 static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; 
 
+// Firmware version reported in the calibration protocol's HELLO_ACK, so the client can show
+// which build a device is running. Keep in step with library.json.
+#define SIMGATEWAY_FW_MAJOR 0
+#define SIMGATEWAY_FW_MINOR 1
+#define SIMGATEWAY_FW_PATCH 0
+
 void setup(SerialUART& uart,
            uint8_t txPin = DEFAULT_UART_TX_PIN,
            uint8_t rxPin = DEFAULT_UART_RX_PIN);
@@ -140,6 +146,26 @@ int16_t lastAxisValue();
 uint8_t lastAxisIndex();
 
 void resetAxisCapture();
+
+// ── Calibration transport test hooks (test builds only) ───────────────────────
+// The transport's safety property is that a rejected candidate is handed back to the relay
+// byte-for-byte. Asserting that needs a capture on the UART side, which had no test seam.
+
+bool feedCdcByte(uint8_t b);
+
+void resetUartCapture();
+
+size_t uartCaptureCount();
+
+uint8_t uartCaptureByte(size_t index);
+
+bool uartCaptureOverflow();
+
+void calResetForTest();
+
+bool calSessionOpen();
+
+uint8_t calStreamAxis();
 
 // ── Status-LED test hooks (test builds only) ──────────────────────────────────
 // The pure state-selection + animation logic is exercised without GPIO, TinyUSB,

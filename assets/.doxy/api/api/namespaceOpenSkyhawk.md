@@ -66,6 +66,8 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 | Type | Name |
 | ---: | :--- |
+| enum uint8\_t | [**CalNackReason**](#enum-calnackreason)  <br>_NACK reasons._ `detail` _names the offending axis where one applies, else 0xFF._ |
+| enum uint8\_t | [**CalType**](#enum-caltype)  <br>_Message types. High bit set = device→client, so direction is readable in a capture._  |
 | enum uint8\_t | [**DrumFont**](#enum-drumfont)  <br>_Glyph font size. Maps to a fixed monospace ProFont face._  |
 | enum uint8\_t | [**DrumScroll**](#enum-drumscroll)  <br>_Scroll behaviour per readout._  |
 | enum uint8\_t | [**EncoderMode**](#enum-encodermode)  <br>_Relative-dispatch mode — picks the DCS-BIOS interface the bridge drives, hence the CAN frame + payload encoding this encoder uses per detent. Scoped enum._  |
@@ -82,7 +84,13 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | Type | Name |
 | ---: | :--- |
 |  constexpr uint8\_t | [**AXIS\_CAL\_SLOTS**](#variable-axis_cal_slots)   = `8`<br>_HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates._  |
+|  constexpr uint8\_t | [**CAL\_AXIS\_NONE**](#variable-cal_axis_none)   = `0xFF`<br>`RESET` _and the axis-selection fields use this to mean "all" / "none"._ |
+|  constexpr uint16\_t | [**CAL\_ENVELOPE\_BYTES**](#variable-cal_envelope_bytes)   = `10`<br>_magic 4 + type 1 + seq 1 + len 2 + crc 2_  |
+|  constexpr uint8\_t | [**CAL\_FRAME\_MAGIC**](#variable-cal_frame_magic)   = `{ 0xAA, 0x53, 0x4B, 0x43 }`<br> |
 |  constexpr uint32\_t | [**CAL\_MAGIC**](#variable-cal_magic)   = `/* multi line expression */`<br>_Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._  |
+|  constexpr uint16\_t | [**CAL\_MAX\_FRAME**](#variable-cal_max_frame)   = `[**CAL\_ENVELOPE\_BYTES**](namespaceOpenSkyhawk.md#variable-cal_envelope_bytes) + [**CAL\_MAX\_PAYLOAD**](namespaceOpenSkyhawk.md#variable-cal_max_payload)`<br> |
+|  constexpr uint16\_t | [**CAL\_MAX\_PAYLOAD**](#variable-cal_max_payload)   = `82`<br>_CAL\_DATA, the largest legal payload._  |
+|  constexpr uint8\_t | [**CAL\_PROTO\_VERSION**](#variable-cal_proto_version)   = `1`<br> |
 |  constexpr uint16\_t | [**CAL\_VERSION**](#variable-cal_version)   = `1`<br>_Blob layout version._  |
 |  const [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) | [**kSwitecDefaultAccel**](#variable-kswitecdefaultaccel)   = `/* multi line expression */`<br>_Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family._  |
 |  constexpr uint8\_t | [**kSwitecDefaultAccelN**](#variable-kswitecdefaultacceln)   = `5`<br> |
@@ -126,7 +134,10 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 |  uint16\_t | [**calBlobCrc**](#function-calblobcrc) (const [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & blob) <br>_CRC of a blob's covered region, i.e. everything before the_ `crc` _field itself._ |
 |  void | [**calBlobSeal**](#function-calblobseal) ([**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & blob) <br>_Stamp magic, version, and a fresh CRC onto a blob ahead of persisting it._  |
 |  bool | [**calBlobValid**](#function-calblobvalid) (const [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & blob) <br>_True when a blob carries the right signature, version, and checksum._  |
+|  uint16\_t | [**calBuildFrame**](#function-calbuildframe) (uint8\_t \* out, uint16\_t outCap, uint8\_t type, uint8\_t seq, const uint8\_t \* payload, uint16\_t len) <br>_Build a complete frame into a caller-supplied buffer._  |
 |  uint16\_t | [**calCrc16**](#function-calcrc16) (const uint8\_t \* data, size\_t len) <br>_CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR._  |
+|  bool | [**calFrameCrcOk**](#function-calframecrcok) (const uint8\_t \* frame, uint16\_t n) <br>_Verify the CRC of a complete, already-assembled frame._  |
+|  bool | [**calLenValidForType**](#function-callenvalidfortype) (uint8\_t type, uint16\_t len) <br>_Is_ `len` _the only length this_`type` _may legally carry?_ |
 |  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=1080, uint16\_t rangeSteps=945, uint16\_t homeStepUs=0) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
 
 
@@ -163,6 +174,58 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 ## Public Types Documentation
 
+
+
+
+### enum CalNackReason 
+
+_NACK reasons._ `detail` _names the offending axis where one applies, else 0xFF._
+```C++
+enum OpenSkyhawk::CalNackReason {
+    CAL_NACK_BAD_CRC = 0x01,
+    CAL_NACK_BAD_LENGTH = 0x02,
+    CAL_NACK_BAD_TYPE = 0x03,
+    CAL_NACK_BAD_INDEX = 0x04,
+    CAL_NACK_BAD_ORDER = 0x05,
+    CAL_NACK_NO_SESSION = 0x06,
+    CAL_NACK_NO_STORAGE = 0x07,
+    CAL_NACK_BAD_DEADZONE = 0x08
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalType 
+
+_Message types. High bit set = device→client, so direction is readable in a capture._ 
+```C++
+enum OpenSkyhawk::CalType {
+    CAL_T_HELLO = 0x01,
+    CAL_T_GET_CAL = 0x02,
+    CAL_T_SESSION_OPEN = 0x03,
+    CAL_T_SESSION_CLOSE = 0x04,
+    CAL_T_COMMIT = 0x05,
+    CAL_T_RESET = 0x06,
+    CAL_T_KEEPALIVE = 0x07,
+    CAL_T_STREAM_SELECT = 0x08,
+    CAL_T_HELLO_ACK = 0x81,
+    CAL_T_CAL_DATA = 0x82,
+    CAL_T_SESSION_ACK = 0x83,
+    CAL_T_ACK = 0x84,
+    CAL_T_NACK = 0x85,
+    CAL_T_RAW = 0x86
+};
+```
+
+
+
+
+<hr>
 
 
 
@@ -336,11 +399,96 @@ constexpr uint8_t OpenSkyhawk::AXIS_CAL_SLOTS;
 
 
 
+### variable CAL\_AXIS\_NONE 
+
+`RESET` _and the axis-selection fields use this to mean "all" / "none"._
+```C++
+constexpr uint8_t OpenSkyhawk::CAL_AXIS_NONE;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_ENVELOPE\_BYTES 
+
+_magic 4 + type 1 + seq 1 + len 2 + crc 2_ 
+```C++
+constexpr uint16_t OpenSkyhawk::CAL_ENVELOPE_BYTES;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_FRAME\_MAGIC 
+
+```C++
+constexpr uint8_t OpenSkyhawk::CAL_FRAME_MAGIC[4];
+```
+
+
+
+Frame lead-in. 0xAA leads all non-DCS data on this link, matching the HID frame magic. Distinct from CAL\_MAGIC above, which signs the stored blob rather than a wire frame. 
+
+
+        
+
+<hr>
+
+
+
 ### variable CAL\_MAGIC 
 
 _Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._ 
 ```C++
 constexpr uint32_t OpenSkyhawk::CAL_MAGIC;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_MAX\_FRAME 
+
+```C++
+constexpr uint16_t OpenSkyhawk::CAL_MAX_FRAME;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_MAX\_PAYLOAD 
+
+_CAL\_DATA, the largest legal payload._ 
+```C++
+constexpr uint16_t OpenSkyhawk::CAL_MAX_PAYLOAD;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_PROTO\_VERSION 
+
+```C++
+constexpr uint8_t OpenSkyhawk::CAL_PROTO_VERSION;
 ```
 
 
@@ -817,6 +965,50 @@ true if the blob should be trusted.
 
 
 
+### function calBuildFrame 
+
+_Build a complete frame into a caller-supplied buffer._ 
+```C++
+uint16_t OpenSkyhawk::calBuildFrame (
+    uint8_t * out,
+    uint16_t outCap,
+    uint8_t type,
+    uint8_t seq,
+    const uint8_t * payload,
+    uint16_t len
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `out` Destination, at least `CAL_ENVELOPE_BYTES + len` bytes. 
+* `outCap` Capacity of `out`. 
+* `type` Message type. 
+* `seq` Sequence byte — echoed from the request, or a counter for unsolicited RAW. 
+* `payload` Payload bytes; may be nullptr when `len` is 0. 
+* `len` Payload length. Must satisfy [**calLenValidForType()**](namespaceOpenSkyhawk.md#function-callenvalidfortype). 
+
+
+
+**Returns:**
+
+Bytes written, or 0 if the arguments are inconsistent or `out` is too small. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
 ### function calCrc16 
 
 _CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR._ 
@@ -849,6 +1041,102 @@ The CRC.
 **Note:**
 
 Canonical check: "123456789" → 0x29B1. Init is 0xFFFF rather than 0x0000 so that leading zero bytes change the result — an all-zero blob is a realistic corruption mode, and a 0x0000 init would not distinguish it from a shorter all-zero one. Bitwise and table-free: ~70 bytes of input costs a few microseconds, irrelevant beside the ~45 ms sector erase it protects. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function calFrameCrcOk 
+
+_Verify the CRC of a complete, already-assembled frame._ 
+```C++
+bool OpenSkyhawk::calFrameCrcOk (
+    const uint8_t * frame,
+    uint16_t n
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `frame` Whole frame including magic and trailing CRC. 
+* `n` Frame length in bytes. 
+
+
+
+**Returns:**
+
+true if the trailing CRC matches the computed one. 
+
+
+
+
+**Note:**
+
+Coverage is `TYPE`‖`SEQ`‖`LEN`‖`PAYLOAD` — the magic is excluded, and so is the CRC field itself. Checksumming constant bytes adds no detection power. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function calLenValidForType 
+
+_Is_ `len` _the only length this_`type` _may legally carry?_
+```C++
+bool OpenSkyhawk::calLenValidForType (
+    uint8_t type,
+    uint16_t len
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `type` Message type byte. 
+* `len` Candidate payload length, as read off the wire. 
+
+
+
+**Returns:**
+
+true if the pair is legal.
+
+
+This is the framing-layer gate, and it is checked **before the payload is buffered**. `len` is read before the CRC can be verified, so on a false frame it is noise: a stray magic in DCS-BIOS text can decode a length near 65535, and a receiver that waits for that many bytes stalls. Every type therefore has an exact length rather than a shared bound.
+
+
+
+
+**Note:**
+
+There are no variable-length types. `COMMIT` carries exactly one axis, so the rule is uniform: one legal length per type, no exception to state or to get wrong. An earlier draft let `COMMIT` batch up to eight axes, which allowed a batch to name the same axis twice with different values and silently apply the last. 
+
+
+
+
+**Note:**
+
+An unknown type is rejected. Protocol versions must match — `HELLO_ACK` carries `proto` for exactly that — so an unrecognised type is an error, not something to skip. 
 
 
 

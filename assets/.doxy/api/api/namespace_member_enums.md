@@ -8,6 +8,12 @@
 * **Anim** ([**SimGateway**](namespaceSimGateway.md))
 
 
+## c
+
+* **CalNackReason** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CalType** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## d
 
 * **DrumFont** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))

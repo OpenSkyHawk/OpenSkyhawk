@@ -817,6 +817,9 @@
 * **SHIFTBUS\_MISO** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
 * **SHIFTBUS\_MOSI** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
 * **SHIFTBUS\_SCK** ([**ShiftBus.cpp**](ShiftBus_8cpp.md))
+* **SIMGATEWAY\_FW\_MAJOR** ([**SimGateway.h**](SimGateway_8h.md))
+* **SIMGATEWAY\_FW\_MINOR** ([**SimGateway.h**](SimGateway_8h.md))
+* **SIMGATEWAY\_FW\_PATCH** ([**SimGateway.h**](SimGateway_8h.md))
 
 
 

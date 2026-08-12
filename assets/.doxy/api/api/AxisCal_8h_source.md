@@ -57,6 +57,63 @@ void calBlobClear(CalBlob& blob);
 
 void calBlobSeal(CalBlob& blob);
 
+// ── Calibration wire protocol ─────────────────────────────────────────────────
+//
+// The USB CDC protocol between SimGateway and SkyHawkClient. Specified in
+// FirmwarePlan/03-uart-usb-hid-protocol.md § Calibration Protocol (USB CDC), which is
+// authoritative — if this header disagrees with that page, the page wins.
+//
+// Only the pure parts live here: the length table, the frame builder, and whole-frame
+// validation. The byte-at-a-time receive state machine belongs to SimGateway.cpp because
+// it has to re-emit rejected bytes into the relay.
+
+constexpr uint8_t CAL_PROTO_VERSION = 1;
+
+constexpr uint8_t CAL_FRAME_MAGIC[4] = { 0xAA, 0x53, 0x4B, 0x43 };   // "\xAA S K C"
+
+constexpr uint16_t CAL_ENVELOPE_BYTES = 10;   
+constexpr uint16_t CAL_MAX_PAYLOAD    = 82;   
+constexpr uint16_t CAL_MAX_FRAME      = CAL_ENVELOPE_BYTES + CAL_MAX_PAYLOAD;  // 92
+
+enum CalType : uint8_t {
+    CAL_T_HELLO         = 0x01,
+    CAL_T_GET_CAL       = 0x02,
+    CAL_T_SESSION_OPEN  = 0x03,
+    CAL_T_SESSION_CLOSE = 0x04,
+    CAL_T_COMMIT        = 0x05,
+    CAL_T_RESET         = 0x06,
+    CAL_T_KEEPALIVE     = 0x07,
+    CAL_T_STREAM_SELECT = 0x08,
+
+    CAL_T_HELLO_ACK     = 0x81,
+    CAL_T_CAL_DATA      = 0x82,
+    CAL_T_SESSION_ACK   = 0x83,
+    CAL_T_ACK           = 0x84,
+    CAL_T_NACK          = 0x85,
+    CAL_T_RAW           = 0x86,
+};
+
+enum CalNackReason : uint8_t {
+    CAL_NACK_BAD_CRC      = 0x01,
+    CAL_NACK_BAD_LENGTH   = 0x02,
+    CAL_NACK_BAD_TYPE     = 0x03,
+    CAL_NACK_BAD_INDEX    = 0x04,
+    CAL_NACK_BAD_ORDER    = 0x05,
+    CAL_NACK_NO_SESSION   = 0x06,
+    CAL_NACK_NO_STORAGE   = 0x07,
+    CAL_NACK_BAD_DEADZONE = 0x08,
+};
+
+constexpr uint8_t CAL_AXIS_NONE = 0xFF;
+
+bool calLenValidForType(uint8_t type, uint16_t len);
+
+uint16_t calBuildFrame(uint8_t* out, uint16_t outCap,
+                       uint8_t type, uint8_t seq,
+                       const uint8_t* payload, uint16_t len);
+
+bool calFrameCrcOk(const uint8_t* frame, uint16_t n);
+
 } // namespace OpenSkyhawk
 ```
 

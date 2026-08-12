@@ -11,7 +11,13 @@
 
 ## c
 
+* **CAL\_AXIS\_NONE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_ENVELOPE\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_FRAME\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_MAX\_FRAME** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_MAX\_PAYLOAD** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_PROTO\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 

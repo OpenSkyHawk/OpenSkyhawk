@@ -3901,6 +3901,8 @@
 #ifndef SIMGATEWAY_TEST
 #include &lt;Adafruit_TinyUSB.h&gt;
 #include &lt;EEPROM.h&gt;
+#include &quot;hardware/structs/uart.h&quot; // uart0_hw — PL011 registers; also used by the status LED
+#include &quot;hardware/regs/uart.h&quot;    // UART_UARTRSR_*_BITS error-flag masks
 
 namespace {
 
@@ -4151,11 +4153,35 @@ uint8_t         _frameBuf[4];
 uint8_t         _framePos = 0;
 
 #ifdef SIMGATEWAY_TEST
-constexpr size_t SGTEST_CDC_CAPTURE_CAPACITY = 64;
+// 256 rather than 64: a CAL_DATA frame is 92 bytes, so the old capacity silently overflowed
+// and surfaced as a confusing FAIL instead of an obvious error.
+constexpr size_t SGTEST_CDC_CAPTURE_CAPACITY = 256;
 uint8_t _sgtest_cdcBytes[SGTEST_CDC_CAPTURE_CAPACITY];
 size_t  _sgtest_cdcCount    = 0;
 bool    _sgtest_cdcOverflow = false;
+
+// The UART side had no test seam. The calibration parser's whole safety property is that a
+// rejected candidate is handed back to the relay byte-for-byte, and that is only assertable
+// by capturing what reaches the UART.
+constexpr size_t SGTEST_UART_CAPTURE_CAPACITY = 256;
+uint8_t _sgtest_uartBytes[SGTEST_UART_CAPTURE_CAPACITY];
+size_t  _sgtest_uartCount    = 0;
+bool    _sgtest_uartOverflow = false;
 #endif
+
+// Every inbound byte that is not consumed by the calibration parser goes to PanelBridge
+// through here. Mirrors _writeCdc's additive capture pattern: the tap records, the real
+// write still happens.
+void _writeUart(uint8_t b) {
+#ifdef SIMGATEWAY_TEST
+    if (_sgtest_uartCount &lt; SGTEST_UART_CAPTURE_CAPACITY) {
+        _sgtest_uartBytes[_sgtest_uartCount++] = b;
+    } else {
+        _sgtest_uartOverflow = true;
+    }
+#endif
+    if (_uart) _uart-&gt;write(b);
+}
 
 void _writeCdc(uint8_t b) {
 #ifdef SIMGATEWAY_TEST
@@ -4166,6 +4192,335 @@ void _writeCdc(uint8_t b) {
     }
 #endif
     Serial.write(b);
+}
+
+// ── Calibration transport (issue #251) ────────────────────────────────────────
+//
+// Contract: FirmwarePlan/03-uart-usb-hid-protocol.md § Calibration Protocol (USB CDC).
+//
+// The parser runs at ALL times, not only during a session — it has to, because HELLO and
+// GET_CAL are answered outside one. The property that keeps an always-on parser from eating
+// the DCS stream is that a candidate is only consumed once it passes all three of magic,
+// LEN-matches-TYPE, and CRC. Anything failing any of them is handed back to the relay
+// byte-for-byte.
+
+using OpenSkyhawk::CAL_FRAME_MAGIC;
+using OpenSkyhawk::CAL_ENVELOPE_BYTES;
+using OpenSkyhawk::CAL_MAX_FRAME;
+using OpenSkyhawk::CAL_AXIS_NONE;
+
+uint8_t  _calRx[CAL_MAX_FRAME];
+uint16_t _calRxPos      = 0;
+
+bool     _calSession    = false;
+uint32_t _calLastRxMs   = 0;
+uint8_t  _calStreamAxis = CAL_AXIS_NONE;  // axis whose RAW is streamed; emission lands in PR 4
+uint8_t  _calRawSeq     = 0;              // free-running per-session counter for RAW
+
+constexpr uint32_t CAL_SESSION_TIMEOUT_MS = 30000;
+
+inline void _put16(uint8_t* p, uint16_t v) { p[0] = (uint8_t)(v &amp; 0xFF); p[1] = (uint8_t)(v &gt;&gt; 8); }
+inline uint16_t _get16(const uint8_t* p)   { return (uint16_t)(p[0] | ((uint16_t)p[1] &lt;&lt; 8)); }
+
+// Emit one frame to the host. Outbound is shared with DCS-BIOS text and _NODE_STATUS, so the
+// client de-multiplexes on the raw chunk before line assembly.
+void _calSend(uint8_t type, uint8_t seq, const uint8_t* payload, uint16_t len) {
+    uint8_t frame[CAL_MAX_FRAME];
+    const uint16_t n = OpenSkyhawk::calBuildFrame(frame, sizeof(frame), type, seq, payload, len);
+    for (uint16_t i = 0; i &lt; n; ++i) _writeCdc(frame[i]);
+}
+
+void _calNack(uint8_t type, uint8_t seq, uint8_t reason, uint8_t detail) {
+    const uint8_t p[3] = { type, reason, detail };
+    _calSend(OpenSkyhawk::CAL_T_NACK, seq, p, sizeof(p));
+}
+
+void _calAck(uint8_t type, uint8_t seq) {
+    _calSend(OpenSkyhawk::CAL_T_ACK, seq, &amp;type, 1);
+}
+
+void _calSendHelloAck(uint8_t seq) {
+    const uint8_t p[6] = {
+        OpenSkyhawk::CAL_PROTO_VERSION,
+        (uint8_t)OpenSkyhawk::CAL_VERSION,
+        OpenSkyhawk::AXIS_CAL_SLOTS,
+        SIMGATEWAY_FW_MAJOR, SIMGATEWAY_FW_MINOR, SIMGATEWAY_FW_PATCH,
+    };
+    _calSend(OpenSkyhawk::CAL_T_HELLO_ACK, seq, p, sizeof(p));
+}
+
+// Fixed 82 bytes: two bitmasks then eight 10-byte records, so the client reads it with one
+// typed-array view. Absent slots carry controlId 0x0000 and zeroed endpoints.
+//
+// This reflects committed state by construction: COMMIT and RESET both persist immediately,
+// so there is no pending copy that could disagree with flash.
+void _calSendCalData(uint8_t seq) {
+    uint8_t  p[82];
+    for (size_t i = 0; i &lt; sizeof(p); ++i) p[i] = 0;
+
+    uint8_t  presentMask = 0, calibratedMask = 0;
+    uint16_t ctrl[OpenSkyhawk::AXIS_CAL_SLOTS] = { 0 };
+
+    for (auto* a = OpenSkyhawk::HIDAxis::head(); a; a = a-&gt;next()) {
+        const uint8_t i = a-&gt;axisIndex();
+        if (i &lt; OpenSkyhawk::AXIS_CAL_SLOTS) {
+            presentMask = (uint8_t)(presentMask | (1u &lt;&lt; i));
+            ctrl[i]     = a-&gt;controlId();      // last writer wins; the list allows duplicates
+        }
+    }
+    for (uint8_t i = 0; i &lt; OpenSkyhawk::AXIS_CAL_SLOTS; ++i) {
+        if (axisCalValid(_calBlob.axes[i])) calibratedMask = (uint8_t)(calibratedMask | (1u &lt;&lt; i));
+    }
+
+    p[0] = presentMask;
+    p[1] = calibratedMask;
+    uint16_t o = 2;
+    for (uint8_t i = 0; i &lt; OpenSkyhawk::AXIS_CAL_SLOTS; ++i) {
+        _put16(p + o, ctrl[i]);                    o += 2;
+        _put16(p + o, _calBlob.axes[i].min);       o += 2;
+        _put16(p + o, _calBlob.axes[i].centre);    o += 2;
+        _put16(p + o, _calBlob.axes[i].max);       o += 2;
+        _put16(p + o, _calBlob.axes[i].deadzone);  o += 2;
+    }
+    _calSend(OpenSkyhawk::CAL_T_CAL_DATA, seq, p, sizeof(p));
+}
+
+// Write a candidate blob to flash and, only if that succeeds, make it the live calibration.
+// Returns false if the storage layer refused.
+//
+// **This is the only place _calBlob is assigned after boot.** Handlers build a candidate from
+// it, mutate the copy, and hand it over — so the live blob can never hold values that failed
+// to persist. Mutating _calBlob first and repairing it afterwards would work too, but it
+// leaves a window where the invariant is false and a repair path that a future handler can
+// forget. Here there is nothing to forget.
+//
+// What that prevents: on a failed write the client is told NO_STORAGE — &quot;nothing was written&quot;
+// — and the read-back it is instructed to perform must agree. If the candidate had already
+// gone live, GET_CAL would report the new values as stored and the verification step would
+// confirm the opposite of the truth. RESET is the sharper case: a failed RESET-all would
+// silently drop every axis to uncalibrated while reporting that nothing happened, then
+// restore them on the next power cycle.
+//
+// The erase runs with interrupts disabled for ~28 ms (measured), while the PL011's 32-entry
+// RX FIFO fills in 1.28 ms at 250000 baud — so inbound UART bytes are lost and the overrun
+// flag is set every single time. Without the recovery below, each successful save latches the
+// FAULT LED red for its 2 s minimum hold, and a HID parser stranded mid-frame consumes the
+// next four arriving bytes as a controlId/value pair.
+//
+// The failure branch has no automated coverage: EEPROM.commit() only returns false when
+// begin() never ran or its allocation failed, and it is stubbed to true in test builds. That
+// is why the invariant is structural rather than a repair — it cannot be regression-tested.
+bool _calPersist(const OpenSkyhawk::CalBlob&amp; candidate) {
+    OpenSkyhawk::CalBlob staged = candidate;
+    OpenSkyhawk::calBlobSeal(staged);
+
+#ifndef SIMGATEWAY_TEST
+    EEPROM.put(0, staged);
+    const bool ok = EEPROM.commit();
+
+    // Recovery, in order, and it runs whether or not the write succeeded — the erase may
+    // have started regardless. The overrun is self-inflicted and expected, not a link
+    // fault, so do not &quot;fix&quot; this RSR clear away.
+    while (_uart &amp;&amp; _uart-&gt;available()) (void)_uart-&gt;read();
+    uart0_hw-&gt;rsr = 0;
+    _state    = ParserState::IDLE;
+    _framePos = 0;
+#else
+    const bool ok = true;   // test builds never touch flash
+#endif
+
+    if (ok) _calBlob = staged;
+    return ok;
+}
+
+void _calEndSession() {
+    _calSession    = false;
+    _calStreamAxis = CAL_AXIS_NONE;
+    _calRawSeq     = 0;
+}
+
+// One axis per COMMIT, never a batch. The framing gate has already fixed len at 9.
+//
+// An earlier draft carried a count and up to eight records. Dropping it removes the only
+// variable-length type — so &quot;one legal length per type&quot; holds with no exception — and closes
+// a hazard the batch form had: nothing stopped a batch naming the same axis twice with
+// different values, and the handler would silently apply the last one. Committing the axis
+// the user just finished also matches the capture flow, where only one axis streams at a time,
+// and keeps a bad axis from discarding good ones alongside it.
+void _calHandleCommit(uint8_t seq, const uint8_t* pay, uint16_t len) {
+    (void)len;
+    const uint8_t idx = pay[0];
+
+    if (idx &gt;= OpenSkyhawk::AXIS_CAL_SLOTS) {
+        _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, idx);
+        return;
+    }
+    if (_get16(pay + 7) != 0) {
+        _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_DEADZONE, idx);
+        return;
+    }
+    const OpenSkyhawk::AxisCal axis = {
+        _get16(pay + 1), _get16(pay + 3), _get16(pay + 5), _get16(pay + 7)
+    };
+    if (!axisCalValid(axis)) {
+        _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_ORDER, idx);
+        return;
+    }
+
+    // Applied to a copy — the live blob changes only once the write has succeeded.
+    OpenSkyhawk::CalBlob cand = _calBlob;
+    cand.axes[idx] = axis;
+
+    if (_calPersist(cand)) _calAck(OpenSkyhawk::CAL_T_COMMIT, seq);
+    else _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_NO_STORAGE, CAL_AXIS_NONE);
+}
+
+void _calHandleFrame(const uint8_t* f, uint16_t n) {
+    const uint8_t  type = f[4];
+    const uint8_t  seq  = f[5];
+    const uint16_t len  = _get16(f + 6);
+    const uint8_t* pay  = f + 8;
+    (void)n;
+
+    _calLastRxMs = millis();
+
+    // Session gating. HELLO / GET_CAL / KEEPALIVE are answered at any time — that is what
+    // lets the client show badges without opening a dialog.
+    switch (type) {
+        case OpenSkyhawk::CAL_T_COMMIT:
+        case OpenSkyhawk::CAL_T_RESET:
+        case OpenSkyhawk::CAL_T_STREAM_SELECT:
+            if (!_calSession) {
+                _calNack(type, seq, OpenSkyhawk::CAL_NACK_NO_SESSION, CAL_AXIS_NONE);
+                return;
+            }
+            break;
+        default: break;
+    }
+
+    switch (type) {
+        case OpenSkyhawk::CAL_T_HELLO:
+            _calSendHelloAck(seq);
+            break;
+
+        case OpenSkyhawk::CAL_T_GET_CAL:
+            _calSendCalData(seq);
+            break;
+
+        case OpenSkyhawk::CAL_T_SESSION_OPEN: {
+            const uint8_t axis = pay[0];
+            if (axis != CAL_AXIS_NONE &amp;&amp; axis &gt;= OpenSkyhawk::AXIS_CAL_SLOTS) {
+                _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, axis);
+                break;
+            }
+            _calSession    = true;
+            _calStreamAxis = axis;
+            _calRawSeq     = 0;
+            uint8_t p[5];
+            _put16(p + 0, (uint16_t)(CAL_SESSION_TIMEOUT_MS &amp; 0xFFFF));
+            _put16(p + 2, (uint16_t)(CAL_SESSION_TIMEOUT_MS &gt;&gt; 16));
+            p[4] = axis;
+            _calSend(OpenSkyhawk::CAL_T_SESSION_ACK, seq, p, sizeof(p));
+            break;
+        }
+
+        case OpenSkyhawk::CAL_T_STREAM_SELECT: {
+            const uint8_t axis = pay[0];
+            if (axis != CAL_AXIS_NONE &amp;&amp; axis &gt;= OpenSkyhawk::AXIS_CAL_SLOTS) {
+                _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, axis);
+                break;
+            }
+            _calStreamAxis = axis;
+            _calAck(type, seq);
+            break;
+        }
+
+        case OpenSkyhawk::CAL_T_SESSION_CLOSE:
+            _calEndSession();
+            _calAck(type, seq);
+            break;
+
+        case OpenSkyhawk::CAL_T_KEEPALIVE:
+            _calAck(type, seq);
+            break;
+
+        case OpenSkyhawk::CAL_T_COMMIT:
+            _calHandleCommit(seq, pay, len);
+            break;
+
+        case OpenSkyhawk::CAL_T_RESET: {
+            const uint8_t idx = pay[0];
+            if (idx != CAL_AXIS_NONE &amp;&amp; idx &gt;= OpenSkyhawk::AXIS_CAL_SLOTS) {
+                _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, idx);
+                break;
+            }
+            // Deleting calibration, not restoring a default profile: the axis reverts to
+            // identity passthrough. Persists immediately — no following COMMIT needed.
+            //
+            // Cleared on a copy for the same reason as COMMIT, and it matters more here: a
+            // failed RESET-all would otherwise drop every axis to uncalibrated in RAM while
+            // telling the client nothing was written.
+            OpenSkyhawk::CalBlob cand = _calBlob;
+            if (idx == CAL_AXIS_NONE) {
+                for (uint8_t i = 0; i &lt; OpenSkyhawk::AXIS_CAL_SLOTS; ++i)
+                    cand.axes[i] = OpenSkyhawk::AxisCal{ 0, 0, 0, 0 };
+            } else {
+                cand.axes[idx] = OpenSkyhawk::AxisCal{ 0, 0, 0, 0 };
+            }
+            if (_calPersist(cand)) _calAck(type, seq);
+            else _calNack(type, seq, OpenSkyhawk::CAL_NACK_NO_STORAGE, CAL_AXIS_NONE);
+            break;
+        }
+
+        default:
+            // Unreachable: calLenValidForType() rejects unknown types before the payload is
+            // buffered, so this cannot be entered from the wire. Kept as a belt-and-braces
+            // answer rather than a silent drop.
+            _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_TYPE, CAL_AXIS_NONE);
+            break;
+    }
+}
+
+// Give every held byte back to the relay, in order, and start scanning fresh.
+void _calFlushHeld() {
+    for (uint16_t i = 0; i &lt; _calRxPos; ++i) _writeUart(_calRx[i]);
+    _calRxPos = 0;
+}
+
+// One inbound byte. Returns true if this function took responsibility for it — either it is
+// being held as part of a candidate, it belonged to a consumed frame, or it was handed back
+// to the relay here. False means the caller should relay it.
+bool _calInboundByte(uint8_t b) {
+    // Magic phase.
+    if (_calRxPos &lt; 4) {
+        if (b == CAL_FRAME_MAGIC[_calRxPos]) { _calRx[_calRxPos++] = b; return true; }
+        _calFlushHeld();
+        // The mismatching byte may itself begin a new candidate — 0xAA appears only at
+        // index 0 of the magic, so this single re-test is enough to be lossless.
+        if (b == CAL_FRAME_MAGIC[0]) { _calRx[_calRxPos++] = b; return true; }
+        return false;
+    }
+
+    _calRx[_calRxPos++] = b;
+
+    // Header complete: check LEN against TYPE *before* buffering any payload, so a false
+    // magic followed by noise cannot make us wait for up to 65535 bytes.
+    if (_calRxPos == 8) {
+        if (!OpenSkyhawk::calLenValidForType(_calRx[4], _get16(_calRx + 6))) _calFlushHeld();
+        return true;
+    }
+    if (_calRxPos &lt; 8) return true;
+
+    const uint16_t total = (uint16_t)(CAL_ENVELOPE_BYTES + _get16(_calRx + 6));
+    if (_calRxPos &lt; total) return true;
+
+    if (OpenSkyhawk::calFrameCrcOk(_calRx, total)) {
+        _calHandleFrame(_calRx, total);
+        _calRxPos = 0;
+    } else {
+        _calFlushHeld();   // never was a frame — the relay gets its bytes back
+    }
+    return true;
 }
 
 // Process one UART byte through the state machine.
@@ -4419,11 +4774,18 @@ const OpenSkyhawk::CalBlob&amp; calibration() { return _calBlob; }
 void loop() {
     // 1. Forward CDC → UART (PC DCS-BIOS stream to PanelBridge).
     //    Bytes moving here is the &quot;host is talking&quot; signal that drives STREAMING.
+    //    Every byte passes the calibration parser first. It consumes only complete, valid
+    //    frames; anything else reaches PanelBridge untouched, including the bytes of a
+    //    rejected candidate. Cost is a comparison per byte against a UART that is three
+    //    orders of magnitude slower.
     bool cdcMoved = false;
     while (Serial.available()) {
-        _uart-&gt;write(Serial.read());
+        const uint8_t b = (uint8_t)Serial.read();
+        if (!_calInboundByte(b)) _writeUart(b);
         cdcMoved = true;
     }
+    //    Calibration bytes still count as &quot;the host is talking&quot; — a session is host traffic
+    //    even though none of it is forwarded.
     if (cdcMoved) _lastCdcRxMs = millis();
 
     // 2. Drain UART; HID frames dispatched, DCS-BIOS bytes forwarded to CDC.
@@ -4436,6 +4798,13 @@ void loop() {
 
     // 3. Flush one HID report if any setter fired this iteration
     if (anyFired) _hidSend();
+
+    // 3b. Expire an abandoned calibration session. Placed after the HID send so the joystick
+    //     path is never delayed by it. An expired session degrades to exactly normal
+    //     operation — the outbound direction was never taken over.
+    if (_calSession &amp;&amp; (uint32_t)(millis() - _calLastRxMs) &gt; CAL_SESSION_TIMEOUT_MS) {
+        _calEndSession();
+    }
 
     // 4. Advance the status-LED state machine (non-blocking). Reads the uart0 RSR
     //    after the drain so this tick's UART errors are visible.
@@ -4488,6 +4857,23 @@ uint8_t cdcCaptureByte(size_t index) {
     return (index &lt; _sgtest_cdcCount) ? _sgtest_cdcBytes[index] : 0;
 }
 bool cdcCaptureOverflow()  { return _sgtest_cdcOverflow; }
+
+// Mirrors loop() step 1 exactly, relay included — a hook that only ran the parser would let
+// a test pass while the bytes it declined went nowhere.
+bool feedCdcByte(uint8_t b) {
+    const bool absorbed = _calInboundByte(b);
+    if (!absorbed) _writeUart(b);
+    return absorbed;
+}
+void resetUartCapture()       { _sgtest_uartCount = 0; _sgtest_uartOverflow = false; }
+size_t uartCaptureCount()     { return _sgtest_uartCount; }
+uint8_t uartCaptureByte(size_t index) {
+    return (index &lt; _sgtest_uartCount) ? _sgtest_uartBytes[index] : 0;
+}
+bool uartCaptureOverflow()    { return _sgtest_uartOverflow; }
+void calResetForTest()        { _calEndSession(); _calRxPos = 0; _calLastRxMs = 0; }
+bool calSessionOpen()         { return _calSession; }
+uint8_t calStreamAxis()       { return _calStreamAxis; }
 
 void calSetForTest(const OpenSkyhawk::CalBlob&amp; blob) { _calBlob = blob; }
 int16_t lastAxisValue()    { return _sgtest_axisValue; }
