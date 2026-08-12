@@ -26,7 +26,7 @@ STM32F103 — PanelBridge  [one per cockpit — runs DCS-BIOS library]
 | `00-decisions.md` | Architecture decision records — *why* each choice was made |
 | `01-system-overview.md` | Project goal, topology, library roles, data flow narrative |
 | `02-can-protocol.md` | CAN frame IDs, `NODE_ID`, `ControlPacket` struct, TX queue policy |
-| `03-uart-usb-hid-protocol.md` | UART multiplexing, HID frame wire format, parser resync, USB identity |
+| `03-uart-usb-hid-protocol.md` | UART multiplexing, HID frame wire format, parser resync, USB identity, CDC calibration protocol |
 | `04-dcs-bios-integration.md` | `controlId` address space, `DCSIN_*` rationale, `DcsBiosInputEntry` struct, generator rules |
 | `05-panelgroup-api.md` | `PinRef`, MCP23017 management, all input classes, all output classes |
 | `06-panelbridge-api.md` | Node tracking, `ExportStreamListener`, input dispatch, SYNC_REQ triggers |
