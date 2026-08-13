@@ -274,11 +274,16 @@ the mapping — but that is data in the message, not the message's identity.
 `cal`, the `CAL_DATA` endpoints, and what `COMMIT` writes. They are positions in the node's ADC
 space, where zero carries no meaning, so a sign would say nothing extra.
 
-**A client should carry them unsigned end to end rather than converting for display.** The
-unsigned→signed offset belongs to the HID report, not to this channel: it is a fixed 32768 applied
-once by `HIDAxis::dispatch()` on the way into the report, never per-axis. All per-axis variation
-lives in the stored `centre`, which is why an axis resting at raw 34728 still reads exactly 0 to
-DCS. A client that wants the signed view already has it — the HID report carries it directly.
+**A client carries them unsigned everywhere they are used — wire, storage, capture and
+`COMMIT` — and may convert to signed for display only.** The unsigned→signed offset belongs to
+the HID report, not to this channel: it is a fixed 32768 applied once by `HIDAxis::dispatch()` on
+the way into the report, never per-axis. All per-axis variation lives in the stored `centre`,
+which is why an axis resting at raw 34728 still reads exactly 0 to DCS.
+
+Display is the one place a client has a reason to differ, because it is showing the user a number
+they will also see in DCS, and DCS shows ±32767. Converting at the render edge is therefore
+expected. What must not happen is converting anywhere a value is stored, compared, or sent: a
+displayed number is read by a person, while a committed one is read by the device.
 
 Converting only some of these values is the case that hurts, and it fails quietly rather than
 loudly: the offset applied twice, or zero times, still yields plausible in-range values, and
