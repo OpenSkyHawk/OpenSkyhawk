@@ -270,9 +270,19 @@ the mapping — but that is data in the message, not the message's identity.
 | `NACK` | 3 | `type`:u8, `reason`:u8, `detail`:u8 (axis index, or `0xFF`) |
 | `RAW` | 5 | `idx`:u8, `raw`:u16, `cal`:u16 |
 
-**Values on the wire are unsigned 0–65535**, matching storage and the node. The client converts to
-signed ±32767 once, at its display edge. Getting this wrong is quiet rather than loud: the offset
-applied twice, or zero times, still yields plausible in-range values.
+**Values on the wire are unsigned 0–65535**, matching storage and the node — `RAW`'s `raw` and
+`cal`, the `CAL_DATA` endpoints, and what `COMMIT` writes. They are positions in the node's ADC
+space, where zero carries no meaning, so a sign would say nothing extra.
+
+**A client should carry them unsigned end to end rather than converting for display.** The
+unsigned→signed offset belongs to the HID report, not to this channel: it is a fixed 32768 applied
+once by `HIDAxis::dispatch()` on the way into the report, never per-axis. All per-axis variation
+lives in the stored `centre`, which is why an axis resting at raw 34728 still reads exactly 0 to
+DCS. A client that wants the signed view already has it — the HID report carries it directly.
+
+Converting only some of these values is the case that hurts, and it fails quietly rather than
+loudly: the offset applied twice, or zero times, still yields plausible in-range values, and
+endpoints would then be displayed in units other than the ones being committed.
 
 `CAL_DATA` is fixed-size with leading bitmasks rather than variable-length records, so each entry
 is a clean 10 bytes and the whole thing reads with one typed-array view. `controlId` is `0x0000`
