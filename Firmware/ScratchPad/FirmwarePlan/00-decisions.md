@@ -74,7 +74,9 @@ choice for the reasons above. The backend change moved the conversion rather tha
 convention: `HIDAxis::dispatch()` now applies calibration and then `value − 32768`.
 
 The convention has since spread further — axis calibration stores and transmits unsigned
-0–65535 for the same reason, converting to signed only at the client's display edge.
+0–65535 for the same reason, and a client carries it unsigned end to end. The conversion stays
+where it was moved to: `HIDAxis::dispatch()`, once, on the way into the HID report. A client
+wanting the signed view reads the report, which already carries it.
 
 **Affects:** `05-panelgroup-api.md`, `07-simgateway-api.md`.
 
