@@ -51,6 +51,7 @@ Be honest about what's built. Firmware is at the end of **Phase 3**, hardware-ve
 ## In this section
 
 - **[PlatformIO Setup](platformio-setup.md)** — start a firmware project from the templates
+- **[Build Flags](build-flags.md)** — all 32 `-D` flags: ours, the framework's, and the test seams
 - **[NODE_ID & CAN Addressing](node-id.md)** — the NODE_ID scheme, registry, and how to claim one
 - **[DCS-BIOS Integration](dcsbios-integration.md)** — `DCSIN_*` IDs, the A4EC headers, output addresses
 - **[HID Controls](hid-controls.md)** — the `CTRL_*` axis/button/hat allocations
