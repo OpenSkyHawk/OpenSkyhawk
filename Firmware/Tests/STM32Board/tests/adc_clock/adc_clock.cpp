@@ -82,4 +82,12 @@ void setup() {
     summary();
 }
 
-void loop() {}
+// tick() drives the LED animation. It matters here in a way it does not for the other
+// STM32Board tests: the fallback env latches _clockFault, so the board sits in WARNING, and
+// WARNING is an ALTERNATING pattern that only advances when tick() flips _blinkPhase. With an
+// empty loop() the LED freezes on phase 0 -- red off, green on -- which reads as a healthy
+// CONNECTED board while the clock is actually faulted. That is the opposite of what a
+// fault-injection binary should signal, so drive the animation.
+void loop() {
+    STM32Board::tick();
+}
