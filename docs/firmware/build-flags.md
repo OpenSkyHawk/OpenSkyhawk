@@ -16,13 +16,51 @@ per-flag semantics live in the library READMEs under `Firmware/Libraries/` and i
 and the [grep recipe](#re-verifying-this-page) at the bottom will tell you which.
 
 For a working `platformio.ini` with the common flags in context, see
-[PlatformIO Setup](platformio-setup.md).
+[PlatformIO Setup](platformio-setup.md). If you are building a panel right now, start with the
+next section instead — the tables below are reference, not a checklist.
+
+## Starting a new panel
+
+You copied `Firmware/Templates/PanelGroup/` and you're looking at its `build_flags`. Here is what
+to do with each line. The [walkthrough](../guides/new-panel-group.md) covers the surrounding steps;
+this is just the flags.
+
+### Required — set these or the build fails
+
+| Flag | What to set |
+|---|---|
+| `NODE_ID` | Your board's unique CAN address, 1–63, claimed from the registry in `Firmware/NODE_IDS.md` — see [NODE_ID & CAN Addressing](node-id.md). **No default.** Omitting it is a compile error, not a silent fallback. |
+| `HAL_CAN_MODULE_ENABLED` | Nothing — keep it as-is. STM32duino does not enable the bxCAN HAL driver by default, so without this line there is no CAN driver to link against. |
+
+### Already correct in the template — keep, don't tune
+
+| Flag | Why to leave it alone |
+|---|---|
+| `HSE_VALUE=8000000` | Already matches both your board's crystal and the framework's own F1 default. Change it only if your board genuinely carries a different crystal — and if you do, get it right first time: a wrong value is **undetectable at runtime** (see the warning below). |
+| `USB_NONE` | Inert. It documents that CAN owns PA11/PA12; it does not enforce it. Harmless to keep, harmless to drop. |
+
+### Add only if your panel needs them
+
+| Flag | Add when |
+|---|---|
+| `I2C_TIMEOUT_TICK=10` | Your panel has I²C devices (MCP23017, ADS1115, OLEDs) — shortens the stall when one is absent or miswired. |
+| `SHIFTBUS_SCK` / `MISO` / `MOSI` / `LOAD` / `LATCH` | You are relocating the shift-register bus off its default pins. Otherwise leave all five out. |
+| `SHIFTBUS_ISR_HZ` | You want timer-ISR sampling for encoder feel instead of polled sampling. |
+| `SERIAL_RX_BUFFER_SIZE=256` | **PanelBridge only.** A PanelGroup has no use for it. |
+| `NODE_HEALTH_TELEM=0` | You specifically want health telemetry **off**. It is on by default — omitting the line does not disable it. |
+
+### Never in a panel
+
+`FORCE_CLOCK_FALLBACK`, `PINREF_DEBUG`, `NODE_OVERHEAT_C`, and any `*_TEST` seam. These are bench
+and debug instruments. If one appears in a panel's `platformio.ini`, it is a mistake — see
+[Test seams](#test-seams-12) and [Deliberate non-defaults](#deliberate-non-defaults) for what each
+actually does.
 
 ## Ours — behavioural (13)
 
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
-| `NODE_ID` | none | every STM32 env | `CANProtocol.cpp`, `PanelGroup.cpp`, `STM32Board.h:29` |
+| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:197`, `PanelGroup.cpp:391`, `STM32Board.h:29` |
 | `PANELBRIDGE_NODE_STATUS` | off | on in `Templates/PanelBridge` | `PanelBridge.cpp:42` + ~10 more |
 | `NODE_HEALTH_TELEM` | **on** | never set | `PanelBridge.cpp:468`, `PanelGroup.cpp:399` |
 | `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:396`, `PanelGroup.cpp:409` |
@@ -47,9 +85,18 @@ polled to timer-ISR sampling (encoder feel) on the timer named by `SHIFTBUS_ISR_
 
 !!! warning "Set `NODE_ID` in `platformio.ini`, never in `main.cpp`"
     A `#define NODE_ID` in a sketch is invisible to library translation units — `CANProtocol` and
-    `PanelGroup` are compiled separately and would silently see nothing. Undefined, the
-    preprocessor evaluates `NODE_ID` as `0`, which is PanelBridge's reserved address, so the
-    `static_assert` in `STM32Board.h:29` passes and the board quietly claims the wrong identity.
+    `PanelGroup` are compiled separately. That mistake is caught at build time rather than
+    shipped: those TUs include `STM32Board.h`, whose file-scope `static_assert` fails with
+    `error: 'NODE_ID' was not declared in this scope`. There is no default and no silent
+    fallback — the undefined-evaluates-to-zero rule applies inside `#if`, not in a
+    `static_assert` expression.
+
+    Sketches that link none of those libraries are the only exception: the standalone
+    `Examples/E2E_DCS_Test/WiringCheck` env omits `-DNODE_ID` deliberately, because it is a raw
+    GPIO/ADC diagnostic with no OpenSkyhawk libraries at all.
+
+    Note that `0` is a legal value — it is PanelBridge's reserved address. It is just never
+    correct for a PanelGroup node.
 
 ### Deliberate non-defaults
 
@@ -137,20 +184,24 @@ Each of these widens a library's visibility so its on-target tests can assert ag
 state. **A seam never changes shipped behaviour, and no shipped environment defines one** — each
 is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 
-| Flag | Library it opens | Read at |
+| Flag | Library it opens | First read at |
 |---|---|---|
-| `ANALOGINPUT_TEST` | AnalogInput | `PanelGroup/Inputs/AnalogInput/` |
-| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `PanelGroup/Inputs/AnalogMultiPos/` |
-| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/` |
-| `LED_TEST` | LED | `PanelGroup/Outputs/LED/` |
-| `MULTIPOS_TEST` | MultiPosInput | `PanelGroup/Inputs/MultiPosInput/` |
-| `NEEDLEGAUGE_TEST` | NeedleGauge | `PanelGroup/Outputs/NeedleGauge/NeedleGauge.h:78` |
+| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:72` |
+| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:90` |
+| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:246` |
+| `LED_TEST` | LED | `Outputs/LED/LED.h:68` |
+| `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:60` |
+| `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:78` |
 | `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:84` |
-| `ROTARYENCODER_TEST` | RotaryEncoder | `PanelGroup/Inputs/RotaryEncoder/` |
-| `SHIFTBUS_TEST` | ShiftBus | `PanelGroup/Helpers/ShiftBus/` |
+| `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:96` |
+| `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
 | `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:11` (no-op HID stubs) |
-| `STEPPERMOTOR_TEST` | StepperMotor | `PanelGroup/Drivers/StepperMotor/StepperMotor.h:158` |
+| `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:158` |
 | `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:32` |
+
+Paths are relative to `Firmware/Libraries/`, and the PanelGroup ones to
+`Firmware/Libraries/PanelGroup/`. Most seams are read in several places; the column gives the
+first, which is where the guarded block starts.
 
 Two test projects set a second library's seam because they drive it: `Tests/NeedleGauge` also sets
 `STEPPERMOTOR_TEST`, and `Tests/AnalogMultiPos` also sets `MULTIPOS_TEST`. Five test projects have
@@ -164,6 +215,12 @@ for no-op stubs so SimGateway logic can be tested without a USB host.
 
 Rather than trust the tables, re-derive them. Run both blocks from the repo root — **their union
 must be 32**. If it isn't, this page is stale.
+
+Be clear about what that proves. Both lists come from greps of the same shape, so the union
+check catches **drift** — a flag added, removed, or renamed after this page was written. It does
+not prove the inventory is **complete**: a flag consumed in some way neither grep looks for would
+be missed by the check exactly as it was missed by the page. Treat 32 as the current count, not a
+guarantee.
 
 ```bash
 grep -rhE '^[^;#]*-D[A-Za-z_]' --include=platformio.ini Firmware | sed -E 's/[;#].*//' | grep -oE '[[:space:]]-D[A-Za-z_][A-Za-z0-9_]*' | sed 's/.*-D//' | sort -u
