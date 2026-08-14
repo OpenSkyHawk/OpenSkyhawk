@@ -14,7 +14,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../node-id/">
+        <link rel="next" href="../build-flags/">
       
       
         
@@ -1570,6 +1570,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-flags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Flags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -4057,7 +4085,7 @@ board_build.f_cpu = 72000000L
 build_flags =
     -DNODE_ID=1                   ; unique per board, 1–63 — set this!
     -DHAL_CAN_MODULE_ENABLED      ; enable the bxCAN peripheral
-    -DUSB_NONE                    ; USB off — CAN owns PA11/PA12
+    -DUSB_NONE                    ; inert — USB is off because USBCON is never defined
     -DHSE_VALUE=8000000           ; external 8 MHz crystal, required for CAN timing
 
 lib_extra_dirs = ${PROJECT_DIR}/../../Libraries
@@ -4079,6 +4107,11 @@ monitor_speed = 115200
 crystal frequency to HAL — needed for correct CAN timing, since the internal RC oscillator
 isn't accurate enough for 500 kbps CAN). Note <code>-DHSE_VALUE</code> does <em>not</em> by itself select HSE;
 <code>STM32Board</code>'s <code>SystemClock_Config</code> does that (see <a href="../../architecture/design-decisions/">Design Decisions</a>).</p>
+<p><code>-DUSB_NONE</code> is a label, not a switch — nothing in STM32duino or PlatformIO reads it. USB really is
+off, and CAN really does own PA11/PA12 (they're the F103's USB D+/D− pins), but what keeps USB off
+is that <code>USBCON</code> is never defined. Leave the flag in place as documentation of the decision.</p>
+<p>For every flag in this file — plus the ones that aren't, their defaults, and where each is read —
+see <a href="../build-flags/">Build Flags</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Which STM32 variant</p>
 <p>Per the <a href="../../getting-started/prerequisites/">variant policy</a>, <strong>all</strong> STM32 boards default to

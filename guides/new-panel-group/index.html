@@ -1486,6 +1486,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../firmware/build-flags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Flags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../firmware/node-id/" class="md-nav__link">
         
   
@@ -4098,6 +4126,10 @@ NODE_IDs are permanent — never reuse one. See <a href="../../firmware/node-id/
 <li>Set <code>board</code> per the <a href="../../firmware/platformio-setup/">variant policy</a> — <code>genericSTM32F103C8</code>
   is the default for every board.</li>
 </ul>
+<p>Leave the template's other <code>build_flags</code> alone unless you know why you're changing one.
+<a href="../../firmware/build-flags/#starting-a-new-panel">Build Flags → Starting a new panel</a> goes through
+the template line by line: which you must set, which are already right, which to add only if your
+panel needs them, and which must never appear in a panel.</p>
 <p>Don't copy an existing panel's <code>platformio.ini</code> — use the template.</p>
 <h2 id="step-3-write-the-wiring-map-and-controls">Step 3 — Write the wiring map and controls</h2>
 <p>At the top of <code>main.cpp</code>, define a <strong>wiring map</strong> — one named <code>PinRef</code> per physical connection,
