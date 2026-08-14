@@ -281,3 +281,55 @@ derives DEGRADED, and logs `faultDetail()` to **DiagSerial only** (edge-logged p
 **Affects:** `NodeStatus.md` (new lib), `02-can-protocol.md`, `04-dcs-bios-integration.md`,
 `05-panelgroup-api.md` (`OutputBase` has no fault API), `CANProtocol.h` (keeps `NodeHealthPayload`),
 `DrumDisplay` (a `FaultSource`), SkyHawkClient#40 (fault-label table).
+
+---
+
+## D15 — ADC prescaler `/6` on spec grounds, not on a measured symptom (#263)
+
+**Decision:** `STM32Board`'s strong `SystemClock_Config` sets `RCC_ADCPCLK2_DIV6` (APB2 72 MHz →
+**ADCCLK 12 MHz**) on **both** of its exit paths. Previously nothing in the project wrote `ADCPRE`,
+so it sat at its reset `/2` and the ADC ran at **36 MHz against the F103's 14 MHz maximum**. `/4` =
+18 MHz is still out of spec, so `/6` is the fastest legal divider.
+
+We are recording this as a decision **because the obvious justifications turned out to be false**,
+and without this record the next person will re-derive and re-bench them.
+
+**Rationale:**
+- *Nobody owned the setting, and that is a structural fact, not an oversight to re-litigate.* On F1
+  the STM32duino core deliberately delegates the ADC prescaler to `SystemClock_Config` (its
+  `__HAL_RCC_ADC_CONFIG` is guarded `!defined(STM32F1xx)`), and `variant_generic.cpp` — the variant
+  our #245 override displaces — never set it. `variant_PILL_F103Cx.cpp` *does*, via HAL, so this
+  change is restoring a step the override dropped rather than inventing one. Use HAL
+  (`HAL_RCCEx_PeriphCLKConfig`) to match both that variant and the rest of `STM32Board.cpp`.
+- *Both exit paths, not one.* `SystemClock_Config` returns early on the verified 72 MHz path and
+  falls through to an HSI-8 MHz fault path. A single write at the early `return` would leave
+  `ADCPRE` at reset for every faulted board. Covered by `test_adc_clock` / `test_adc_clock_fallback`.
+
+**Three predicted impacts were measured on the assembled PanelGroup Rev 1 and found ABSENT:**
+
+| Predicted | Measured at 12 vs 36 MHz |
+|---|---|
+| Axis noise | 0 vs 1 emission per 100 s; smoothed p-p 24 vs 25 counts. Buffered hall outputs settle fine in the 375 ns that 13.5 cycles gives at 36 MHz. |
+| PA2 under-settling | 4.3 % short of rail (177 LSB) at 36 MHz is real — but PA2 is a button, read digitally in production. |
+| Die temperature | Predicted corrupt (sensor needs ≥17.1 µs; 239.5 cycles = 6.65 µs at 36 MHz). Read **34.0 °C at both clocks**; Vdd 3206 vs 3203 mV. |
+
+An earlier "~3× noise improvement" figure came from a **breadboard**, whose contact resistance was
+acting as a high source impedance. It does not transfer to a properly-wired board.
+
+Rationale, continued:
+- *So the honest justification is narrow:* the part was running 2.6× over its rated maximum, and
+  high-impedance sources are susceptible in general — cockpit potentiometers sit at ~2.5 kΩ at
+  mid-travel and should behave like PA2 by the same arithmetic. **That has never been measured on an
+  actual pot.** No shipping analog input is known to be affected today. Do not let this change be
+  described as fixing anything observable.
+- *If someone wants to settle the pot question,* `Examples/E2E_DCS_Test/PanelGroupInputs` already
+  wires ARC-51 VOL — a real pot — to PA2 as an `AnalogInput`; `Tests/PinRef/test_gpio_analog` on its
+  10 kΩ + 10 kΩ divider is a second rig. Sample two channels, not one: a single channel leaves the
+  sample-and-hold already at the right voltage, so settling is never stressed.
+- *Cost accepted:* conversions take 3× longer (26 cycles: 0.72 µs → 2.17 µs; `analogRead()` ~56.5 µs
+  → ~63 µs end-to-end, since its per-call calibration triples too). Irrelevant against
+  `AnalogInput::POLL_MS` = 8 ms. `ADCPRE` feeds only the ADCs, so #245's CAN timing is untouched.
+
+**Affects:** `08-hardware-firmware-contracts.md`, `STM32Board.md` (TechSpec — new *ADC clock
+configuration* section, `begin()` diag-line format), `AnalogInput.md` (acquisition-time budget),
+`STM32Board.cpp` (`_configAdcClock`), `Firmware/Tests/STM32Board` (two new envs).

@@ -133,6 +133,34 @@ extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
     HAL_GPIO_Init(GPIOA, &gpio);
 }
 
+// PCLK2 / 6 → ADCCLK, called on BOTH exit paths of SystemClock_Config below.
+//
+// ADCPRE resets to /2, which off the 72 MHz PCLK2 is 36 MHz — 2.6x the F103's 14 MHz maximum.
+// /4 = 18 MHz is still over, so /6 = 12 MHz is the fastest legal divider. (On the fault path
+// PCLK2 is 8 MHz, so /6 gives 1.33 MHz — above the 0.6 MHz minimum.)
+//
+// Nobody else was setting it: on F1 the Arduino core defers the prescaler to SystemClock_Config
+// (analog.cpp guards its __HAL_RCC_ADC_CONFIG with !defined(STM32F1xx)) and variant_generic.cpp
+// never set it, so this strong override is the only owner. Running here means it lands before
+// setup(), so the core's own analogRead() ADC init inherits it. Nothing but the ADCs consumes
+// ADCCLK, so the #245 clock work below is untouched.
+//
+// This mirrors variant_PILL_F103Cx.cpp, which does the same via HAL; we omit its
+// RCC_PERIPHCLK_USB branch deliberately — every OpenSkyhawk STM32 env builds -DUSB_NONE.
+//
+// NOTE: nothing observable was fixed by this. Axis noise, PA2 in production, and die-temperature
+// telemetry were each predicted to improve and each measured unchanged on PanelGroup Rev 1. The
+// justification is that the part was running out of spec, plus high-impedance sources in general
+// (cockpit pots are ~2.5 kΩ at mid-travel) — which has NOT been measured on an actual pot. (#263)
+static void _configAdcClock(void) {
+    RCC_PeriphCLKInitTypeDef adc = {};
+    adc.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+    adc.AdcClockSelection    = RCC_ADCPCLK2_DIV6;
+    // On F1 the ADC branch is assert_param + a CFGR field write — it cannot fail. The cast
+    // says ignoring the status is deliberate, not an oversight.
+    (void)HAL_RCCEx_PeriphCLKConfig(&adc);
+}
+
 // Strong override of the core's __weak SystemClock_Config. The genericSTM32F103C8/CB
 // variant defaults SYSCLK to HSI-PLL 64 MHz → APB1 32 MHz → CAN 444 kbps (spec 500).
 // -DHSE_VALUE only tells HAL the crystal frequency; nothing selects HSE. Every
@@ -145,6 +173,8 @@ extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
 // measurement, so a 12 MHz part would compute (and pass) as 72 MHz while really running
 // 108 MHz. Correct crystal value is a BOM/build guarantee, not runtime-detectable here.
 // See issue #245. -DFORCE_CLOCK_FALLBACK exercises the fault path without a dead crystal.
+// Displacing the variant also made this the owner of the ADC prescaler — see _configAdcClock
+// above, called on both exit paths (#263).
 extern "C" void SystemClock_Config(void) {
 #ifndef FORCE_CLOCK_FALLBACK
     RCC_OscInitTypeDef osc = {};
@@ -168,8 +198,10 @@ extern "C" void SystemClock_Config(void) {
             // compile-time HSE_VALUE, NOT measured — so this cannot catch a wrong-value
             // crystal (see header note); it only confirms the config we just applied.
             if (HAL_RCC_GetSysClockFreq() == 72000000UL &&
-                HAL_RCC_GetPCLK1Freq()   == 36000000UL)
+                HAL_RCC_GetPCLK1Freq()   == 36000000UL) {
+                _configAdcClock();                   // PCLK2 72 MHz → ADCCLK 12 MHz (#263)
                 return;                              // 72 MHz locked and verified
+            }
         }
     }
 #endif
@@ -190,6 +222,7 @@ extern "C" void SystemClock_Config(void) {
     c.APB1CLKDivider = RCC_HCLK_DIV1;
     c.APB2CLKDivider = RCC_HCLK_DIV1;
     HAL_RCC_ClockConfig(&c, FLASH_LATENCY_0);
+    _configAdcClock();                               // PCLK2 8 MHz → ADCCLK 1.33 MHz (#263)
 }
 
 // ── Public API ────────────────────────────────────────────────────────────────
@@ -208,12 +241,16 @@ void begin() {
 
     // Report the resulting clock + derived CAN bitrate so a wrong-speed board is
     // self-evident on the diag console, not just via the WARNING LED (issue #245).
+    // ADCCLK is read back the same way, so an unset prescaler is visible without a
+    // bench probe (#263). Nothing parses this line — it is diagnostic, not a contract.
     if (_debugOn) {
         uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
         _diag.print(_clockFault ? F("CLOCK FAULT: ") : F("CLOCK OK: "));
         _diag.print(F("SYSCLK=")); _diag.print(HAL_RCC_GetSysClockFreq() / 1000000UL); _diag.print(F("MHz "));
         _diag.print(F("PCLK1=")); _diag.print(pclk1 / 1000000UL); _diag.print(F("MHz "));
-        _diag.print(F("CAN=")); _diag.print(pclk1 / (4UL * 18UL)); _diag.println(F("bps"));
+        _diag.print(F("CAN=")); _diag.print(pclk1 / (4UL * 18UL)); _diag.print(F("bps "));
+        _diag.print(F("ADC=")); _diag.print(HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_ADC) / 1000UL);
+        _diag.println(F("kHz"));
     }
 
     // 500 kbps on APB1 @ 36 MHz: prescaler=4, BS1=13TQ, BS2=4TQ → 18TQ total.

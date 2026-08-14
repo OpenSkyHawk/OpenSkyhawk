@@ -50,6 +50,7 @@ so a class with instances would be a fiction. Internal state variables are defin
 ```
 Firmware/Tests/STM32Board/
 ├── platformio.ini                 — 3 visual envs + 4 STM32BOARD_TEST assertion envs
+│                                    + 2 ADC-prescaler envs
 └── tests/
     ├── led_state_machine/
     │   └── led_state_machine.cpp   — visual: cycles all 7 LedStates (onCanStatus 4 + setLinkActive
@@ -65,12 +66,23 @@ Firmware/Tests/STM32Board/
     ├── link_decay/                 — [STM32BOARD_TEST] CONNECTED → NORMAL after LINK_DECAY_MS;
     │                                 refresh holds it
     ├── warning_clear/              — [STM32BOARD_TEST] setWarning(true/false) latch; no-arg raises
-    └── animation_timing/           — [STM32BOARD_TEST] CONNECTED solid (no toggle) vs NORMAL blink,
-                                      via direct PB14/PB15 pin reads
+    ├── animation_timing/           — [STM32BOARD_TEST] CONNECTED solid (no toggle) vs NORMAL blink,
+    │                                 via direct PB14/PB15 pin reads
+    └── adc_clock/
+        └── adc_clock.cpp           — asserts ADCPRE == /6 and ADCCLK inside the F103 window (#263).
+                                      Built into TWO envs: test_adc_clock (72 MHz path) and
+                                      test_adc_clock_fallback (-DFORCE_CLOCK_FALLBACK, 8 MHz path)
+                                      — the pair is what proves both SystemClock_Config exit paths
+                                      set it. Also prints liveTemp/liveVdd for before/after.
 ```
 
-The four `STM32BOARD_TEST` envs print `PASS`/`FAIL` per assertion plus an `ALL PASS` summary
-over DiagSerial; the three visual envs are observed against the animation map.
+The four `STM32BOARD_TEST` envs and the two `adc_clock` envs print `PASS`/`FAIL` per assertion plus
+an `ALL PASS` summary over DiagSerial; the three visual envs are observed against the animation map.
+
+`adc_clock` asserts the `ADCPRE` bits in both envs — those are what the change writes, and they are
+exact. The frequency is pinned to a literal only on the 72 MHz path, where `72e6 / 6 = 12000000`
+exactly; the fallback's `8e6 / 6` truncates to 1333333, so there it is printed and range-checked
+against the 0.6–14 MHz window instead of hard-coded.
 
 `can_status_wiring.cpp` verifies the mapping from CANProtocol's `CanStatus` values to
 STM32Board's private LED states, so both libraries must be in `lib_deps`:
@@ -104,6 +116,16 @@ build_src_filter = -<*> +<diag_serial/diag_serial.cpp>
 [env:test_can_status_wiring]
 extends = env_base
 build_src_filter = -<*> +<can_status_wiring/can_status_wiring.cpp>
+
+; Same source, two envs — the second forces the SystemClock_Config fault path (#263)
+[env:test_adc_clock]
+extends = env_base
+build_src_filter = -<*> +<adc_clock/adc_clock.cpp>
+
+[env:test_adc_clock_fallback]
+extends = env_base
+build_flags = ${env_base.build_flags} -DFORCE_CLOCK_FALLBACK
+build_src_filter = -<*> +<adc_clock/adc_clock.cpp>
 ```
 
 CAN bus integration testing is out of scope here — see CANProtocol TechSpec.
@@ -126,6 +148,8 @@ namespace STM32Board {
      * Starts DiagSerial (USART1, PA9/PA10, 115200 baud) — silent until setDebug(true).
      * Calls analogReadResolution(16) — framework scales 12-bit ADC output to 16-bit range
      * (0–65520) for all subsequent analogRead() calls; PinRef::readAnalog() relies on this.
+     * The ADC clock itself is set earlier, in SystemClock_Config (ADCPRE /6 → 12 MHz, #263) —
+     * begin() only reads it back for the diag line.
      * Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it —
      * call CANProtocol::start() after filter setup.
      * NODE_ID range (0–63) is validated at compile time via static_assert.
@@ -407,7 +431,8 @@ The peripheral is left configured-but-stopped — ready for `CANProtocol::start(
 wrapper library. Confirmed by the prototype CAN stress test (Experiment B).
 
 **Clock tree:** 8 MHz crystal × PLL ×9 = 72 MHz SYSCLK; APB1 prescaler /2 = **36 MHz APB1**
-(STM32F103 APB1 max is 36 MHz; CAN1 is on APB1).
+(STM32F103 APB1 max is 36 MHz; CAN1 is on APB1); APB2 prescaler /1 = **72 MHz APB2**, from which
+`ADCPRE` /6 gives **12 MHz ADCCLK** — see *ADC clock configuration* below.
 
 **Clock selection is not automatic (issue #245).** The `genericSTM32F103C8/CB` core ships a
 `__weak SystemClock_Config` that defaults SYSCLK to **HSI-PLL 64 MHz** — APB1 would be 32 MHz and
@@ -425,8 +450,10 @@ guarantee, not runtime-detectable without an independent reference (LSE/LSI cros
 not implement. On a detected deviation it latches `_clockFault` and falls back to internal RC; `begin()`
 then drives the **WARNING** LED (alternating), which is given **top precedence in `_recompute`**
 so a clock fault is not masked by the CAN TX errors it induces (which would misread as a bus fault).
-`begin()` also logs `CLOCK OK/FAULT: SYSCLK=.. PCLK1=.. CAN=..bps` on the diag UART. The fault path
-is bench-testable via `-DFORCE_CLOCK_FALLBACK` without disturbing the crystal.
+`begin()` also logs `CLOCK OK/FAULT: SYSCLK=.. PCLK1=.. CAN=..bps ADC=..kHz` on the diag UART
+(ADCCLK in **kHz**, not MHz, so the fault path's 1.33 MHz does not render as a misleading `1MHz`).
+Nothing parses this line — it is diagnostic output, not a contract. The fault path is bench-testable
+via `-DFORCE_CLOCK_FALLBACK` without disturbing the crystal.
 
 **Confirmed HAL init struct** — validated in Experiment B (21-min soak, 1,257 frames, 0 lost, TEC=0):
 
@@ -453,6 +480,48 @@ _hcan.Init.TransmitFifoPriority = DISABLE;     // TX priority by message ID (sta
 **Scope boundary:** STM32Board's responsibility ends at configuring the peripheral.
 Verifying that the bus comes up at 500 kbps and that frames flow correctly is out of scope
 here — that belongs to the CANProtocol breadboard test.
+
+### ADC clock configuration (#263)
+
+`SystemClock_Config` also owns `ADCPRE`, via a file-static `_configAdcClock()` helper:
+
+```cpp
+static void _configAdcClock(void) {
+    RCC_PeriphCLKInitTypeDef adc = {};
+    adc.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+    adc.AdcClockSelection    = RCC_ADCPCLK2_DIV6;
+    (void)HAL_RCCEx_PeriphCLKConfig(&adc);   // F1 ADC branch cannot fail; cast is deliberate
+}
+```
+
+**Why `STM32Board` owns it.** On F1 the STM32duino core declines to set the ADC prescaler —
+`analog.cpp` guards its `__HAL_RCC_ADC_CONFIG` with `!defined(STM32F1xx)` and defers to
+`SystemClock_Config` — and `variant_generic.cpp`, the variant our strong override displaces, never
+set it either. So `ADCPRE` sat at its reset `/2` and ADCCLK booted at **36 MHz against the F103's
+14 MHz maximum**. `/4` = 18 MHz is still out of spec, so `/6` → **12 MHz** is the fastest legal
+divider. HAL rather than a raw `RCC->CFGR` write, matching `variant_PILL_F103Cx.cpp` (which sets the
+same value) and the rest of this file; its `RCC_PERIPHCLK_USB` branch is omitted deliberately —
+every OpenSkyhawk STM32 env builds `-DUSB_NONE`.
+
+**Both exit paths.** `SystemClock_Config` returns early once the 72 MHz tree verifies, and falls
+through to an HSI-8 MHz fault path otherwise. `_configAdcClock()` is called on **both** — a single
+write at the early `return` would leave `ADCPRE` at reset on every faulted board. On the fault path
+8 MHz / 6 = 1.33 MHz, still above the F103's 0.6 MHz minimum.
+
+**Ordering.** The core calls `SystemClock_Config` from `hw_config_init()` *before* `setup()`, so the
+framework's own lazy ADC init inside the first `analogRead()` inherits the prescaler. No call
+ordering is required of the sketch.
+
+**Cost.** Conversions take 3× longer: 13.5 sample + 12.5 convert = 26 cycles, 0.72 µs → 2.17 µs.
+`analogRead()` measures ~56.5 µs end-to-end at 36 MHz and ~63 µs at 12 MHz (its per-call 83-cycle
+calibration triples too). Irrelevant against `AnalogInput::POLL_MS` = 8 ms. `ADCPRE` divides PCLK2
+to feed only the ADCs, so CAN, the UARTs, SPI/ShiftBus and the timers are unaffected.
+
+> **This fixed nothing observable.** Axis noise, PA2, and die-temperature telemetry were each
+> predicted to improve and each measured *unchanged* on the assembled PanelGroup Rev 1. The
+> justification is that the part was out of spec, plus high-impedance sources in general — which has
+> **not** been measured on an actual potentiometer. See `FirmwarePlan/00-decisions.md` D15 for the
+> measurements and the rigs that could settle the pot question.
 
 ### DiagSerial — always initialised, gated by flag
 

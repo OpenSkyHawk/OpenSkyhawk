@@ -44,6 +44,23 @@ still oscillates, so it is **NOT** runtime-detected (the readback uses the compi
 not a measurement): a 12 MHz part would run 108 MHz / CAN 750 kbps while logging `CLOCK OK`. Enforce
 8 MHz at the BOM/build level.
 
+**ADC clock — the same override owns `ADCPRE` (issue #263):** APB2 runs undivided at **72 MHz**, and
+`ADCPRE` resets to `/2`, so ADCCLK booted at **36 MHz against the F103's 14 MHz maximum**. Nobody was
+setting it: on F1 the STM32duino core deliberately defers the ADC prescaler to `SystemClock_Config`
+(its `__HAL_RCC_ADC_CONFIG` call is guarded `!defined(STM32F1xx)`), and the `variant_generic.cpp`
+that our strong override displaces never set it either. `STM32Board` now configures
+`RCC_ADCPCLK2_DIV6` → **ADCCLK 12 MHz** on **both** exit paths of `SystemClock_Config` (`/4` = 18 MHz
+is still out of spec; the fault path's 8 MHz APB2 gives 1.33 MHz, above the 0.6 MHz minimum). It runs
+before `setup()`, so the framework's own `analogRead()` inherits it. Conversions take 3× longer
+(26 cycles: 0.72 µs → 2.17 µs), which is irrelevant against `AnalogInput::POLL_MS` = 8 ms. Nothing
+but the ADCs consumes ADCCLK, so CAN, the UARTs, SPI/ShiftBus and the timers are untouched.
+
+> **This fixed nothing observable, and the docs should not imply otherwise.** Axis noise, PA2, and
+> die-temperature telemetry were each predicted to improve and each measured *unchanged* on the
+> assembled PanelGroup Rev 1 — the figures and the unresolved potentiometer question are in
+> `00-decisions.md` **D15**. The justification is that the part was out of spec, plus
+> high-impedance sources in general — which has **not** been measured on an actual pot.
+
 **Why UART2 (PA2/PA3) on PanelBridge:** Remapping `Serial` to `Serial1` (PA9/PA10) causes
 "multiple definition of Serial2" compile errors or runtime failures with STM32duino. With no
 CDC flag, `Serial` maps natively to UART2 on PA2/PA3 — use that.
