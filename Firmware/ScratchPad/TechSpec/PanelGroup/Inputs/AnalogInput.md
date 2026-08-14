@@ -1,7 +1,8 @@
 # AnalogInput — Technical Specification
 
-**Status:** Done (hardware-verified — 7/7 envs PASS 2026-06-23; `test_poll_rate` added with `pollMs`
-(#261) and **not yet bench-run** — re-run all 8 and update this line)
+**Status:** Done (hardware-verified — **8/8 envs PASS 2026-08-14** on the assembled PanelGroup Rev 1,
+re-run in full after the `pollMs` constructor change (#261). `test_poll_rate` measured
+`fast(pollMs=2)=500` / `slow(pollMs=8)=125` reads in a 1000 ms window — nominal, ratio exactly 4.00)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#analoginput-new`
 **Depends on:** `PinRef.md`, `PanelGroup.md`
 
