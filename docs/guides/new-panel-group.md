@@ -18,6 +18,11 @@ Copy `Firmware/Templates/PanelGroup/` to `Firmware/Panels/<YourPanel>/`. In `pla
 - Set `board` per the [variant policy](../firmware/platformio-setup.md) — `genericSTM32F103C8`
   is the default for every board.
 
+Leave the template's other `build_flags` alone unless you know why you're changing one.
+[Build Flags → Starting a new panel](../firmware/build-flags.md#starting-a-new-panel) goes through
+the template line by line: which you must set, which are already right, which to add only if your
+panel needs them, and which must never appear in a panel.
+
 Don't copy an existing panel's `platformio.ini` — use the template.
 
 ## Step 3 — Write the wiring map and controls
