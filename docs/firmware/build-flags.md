@@ -122,9 +122,10 @@ them:
 
 !!! note "`PANELBRIDGE_NODE_STATUS` is off in the library but on in every shipped PanelBridge"
     The library defaults it off, so the table above says "off" — but the PanelBridge template
-    enables it, and so does every PanelBridge environment in the tree. In practice it ships on.
-    The client half is already released, which is why the default flipped in the template rather
-    than in the library.
+    enables it, and so does the E2E example. Every build you would actually flash to a cockpit
+    has it on. (Most of the 13 `Tests/PanelBridge` envs leave it off; they are testing other
+    things.) The client half is already released, which is why the default flipped in the
+    template rather than in the library.
 
 ## Third-party, set by us (7)
 
@@ -134,8 +135,8 @@ us. Two of these have already cost real debugging time.
 
 | Flag | Framework default | Set where | Read at |
 |---|---|---|---|
-| `HAL_CAN_MODULE_ENABLED` | **not** enabled | every STM32 env | `stm32f1xx_hal_conf_default.h:321` |
-| `HSE_VALUE` | already `8000000U` on F1 | every STM32 env, `=8000000` | `stm32f1xx_hal_conf_default.h:82` |
+| `HAL_CAN_MODULE_ENABLED` | **not** enabled | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `stm32f1xx_hal_conf_default.h:321` |
+| `HSE_VALUE` | already `8000000U` on F1 | `=8000000` in all templates, panels and examples, plus the CAN/board tests; 13 library-test envs omit it — harmlessly, since it equals the default | `stm32f1xx_hal_conf_default.h:82` |
 | `SERIAL_RX_BUFFER_SIZE` | `64` | PanelBridge envs, `=256` | `HardwareSerial.h:41` |
 | `I2C_TIMEOUT_TICK` | `100` | one E2E PanelGroup env, `=10` | `Wire/src/utility/twi.c:48` |
 | `USB_NONE` | *no such macro* | 10 `platformio.ini` files | **nowhere** — see below |
