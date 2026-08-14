@@ -381,9 +381,18 @@ inputs. If multiple PinRefs share the same ADS1115 instance, each construction c
 `setGain(GAIN_ONE)`, which is idempotent.
 
 `readAnalog()` calls `adc.readADC_SingleEnded(channel)` which initiates a single-ended
-conversion and blocks for one conversion period (~8 ms at default 128 SPS). Polling rate
-for `AnalogInput` and `AnalogMultiPos` is 8 ms — this matches the conversion time. Do not
-call `readAnalog()` on an ADS1115 PinRef from an ISR.
+conversion and **blocks for one conversion period** (~8 ms at default 128 SPS). That 8 ms is a
+property of the ADS1115, not of the caller: `AnalogMultiPos::POLL_MS` (fixed, 8 ms) and
+`AnalogInput::DEFAULT_POLL_MS` (8 ms) are both sized to match it.
+
+`AnalogInput::pollMs` is per instance and may be set below 8 — but only for a **GPIO** PinRef,
+where `analogRead()` costs microseconds. On an **ADS1115** PinRef a smaller `pollMs` cannot make
+the conversion faster; it only makes `poll()` re-enter the blocking read as soon as the previous
+one returns, so the node's loop runs at the ADC's conversion rate and every other input and
+output on that node queues behind it. Keep an ADS1115-backed `AnalogInput` at `DEFAULT_POLL_MS`
+or higher. (That a slow ADS knob already delays a fast axis sharing the node is a known defect,
+tracked separately — see the Out-of-scope note in #261.) Do not call `readAnalog()` on an
+ADS1115 PinRef from an ISR.
 
 Raw single-ended result: 0–32767 (15-bit). Multiplied by 2 → 0–65534. At 3.3V input,
 returns ≈ 52800. Callers (DCS-BIOS output classes, HID layer) normalize to their domain.

@@ -60,14 +60,35 @@
 // AnalogInput's defaults are ported from DCS-BIOS PotentiometerEWMA and are sized for a
 // cockpit pot on a bandwidth-constrained serial link: 128 counts of hysteresis and an 8 ms
 // read throttle (125 Hz/axis). The HID path has far more headroom, and a flight control
-// wants finer steps than a volume knob:
+// wants finer steps and a faster read than a volume knob:
 //
 //   OpenSkyhawk::AnalogInput <name>(CTRL_<ID>, PIN_<NET>, /*reverse=*/false, 0, 65535,
-//                                   /*hysteresis=*/64);
+//                                   /*hysteresis=*/32, /*ewmaShift=*/4, /*pollMs=*/2);
 //
-// 64 halves the motion step size and still calibrates cleanly (measured on the bench rig;
-// 8 does not — rest noise crosses the threshold constantly and the calibration hold never
-// completes). Raise it instead — 1024 — for a control whose dispatch rate should stay calm.
+// That is the measured stick config (assembled PanelGroup Rev 1): both axes emitted zero
+// times in 100 consecutive seconds at rest. 2 ms = 500 Hz/axis, which is exactly SimGateway's
+// USB HID report interval — a faster axis is discarded at the USB boundary, so there is no
+// point going below it. The gain is LATENCY (~6 ms less per movement), not throughput: real
+// flying is 40-200 Hz per axis, already under the stock 125 Hz.
+//
+// Two preconditions, both of which bind:
+//   * A 1k + 100nF RC at the MCU end of the analog input. Without it that channel's raw noise
+//     doubles (48 -> 96), well over a hysteresis of 32, and the axis chatters at rest. The
+//     base board carries this part per variant.
+//   * setDebug(false) — see the note below. With debug on the chain caps near 285 Hz.
+//
+// pollMs and ewmaShift are coupled: the filter time constant is 2^ewmaShift x pollMs. The
+// defaults give 64 ms; the stick config above gives 32 ms. ewmaShift 4 at the default 8 ms
+// poll would give 128 ms, which is unusable. Change one, check the other.
+//
+// For a DCS-BIOS-routed pot (DCSIN_*) leave pollMs at the default — those values cross
+// PanelBridge as ASCII on the shared 250000-baud host link (~1250 lines/s for the whole
+// cockpit), and one pot at 500 Hz would eat ~40% of it.
+//
+// Not fitting the RC? hysteresis 64 is the safe HID value — it halves the motion step size
+// and still calibrates cleanly (measured on the bench rig; 8 does not, at any rate — rest
+// noise crosses the threshold constantly and the calibration hold never completes). Raise it
+// instead — 1024 — for a control whose dispatch rate should stay calm.
 //
 // Hysteresis is a *change* threshold on the smoothed value, so a still axis emits nothing at
 // all. Silence is the resting state, not a fault.
