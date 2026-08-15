@@ -79,15 +79,22 @@ Firmware/Tests/STM32Board/
 The four `STM32BOARD_TEST` envs and the two `adc_clock` envs print `PASS`/`FAIL` per assertion plus
 an `ALL PASS` summary over DiagSerial; the three visual envs are observed against the animation map.
 
-> **Judge these tests by DiagSerial, not by the status LED.** Every sketch in this project exercises
-> `STM32Board` alone and never calls `CANProtocol::start()`, so `_canStatus` stays at its initial
-> `CanStatus::STARTING` and `_recompute()` parks in **`BOOTING` — red 1 s blink — for the whole run**.
-> That is the *passing* appearance here; a healthy **node** blinks green at 1 Hz (`NORMAL`), but only
-> firmware that actually starts CAN (`PanelGroup::setup()`) can reach that state. `test_adc_clock_fallback`
-> additionally fakes a dead crystal, so it shows **WARNING — red/green alternating at 500 ms** — also
-> passing. Separately, halting the core under SWD (`dump_image`, `mdw`, a paused upload) freezes the
-> GPIOs mid-blink; caught on the red-on phase the LED sits **solid red**, which resembles `BUS_OFF`
-> but is only a stopped CPU.
+> **Status-LED convention in this suite.** No sketch here calls `CANProtocol::start()` — they test
+> `STM32Board` in isolation — so `_canStatus` never leaves its initial `CanStatus::STARTING` and
+> `_recompute()` parks in **`BOOTING` (red 1 s blink) for the whole run**. That resting state is
+> indistinguishable from a node that failed to bring CAN up, and it says nothing about whether the
+> assertions passed.
+>
+> `adc_clock` therefore drives the LED from its **result**: pass → `onCanStatus(CanStatus::NORMAL)`
+> → **green 1 Hz**, the healthy-node pattern; fail → `setWarning(true)` → red/green alternating. A
+> **red 1 s blink means `setup()` never reached the end.** `onCanStatus()` is a result indicator
+> here, not a claim about the bus (`led_state_machine` drives it artificially too, and neither
+> sketch starts CAN). In `test_adc_clock_fallback` the faked dead crystal latches `_clockFault`,
+> which outranks both, so that env always shows WARNING — read it by DiagSerial.
+>
+> Separately, halting the core under SWD (`dump_image`, `mdw`, a paused upload) freezes the GPIOs
+> mid-blink; caught on an LED-on phase it sits **solid**, resembling `BUS_OFF` (solid red) or
+> `CONNECTED` (solid green) when the CPU is merely stopped.
 
 `adc_clock` asserts the `ADCPRE` bits in both envs — those are what the change writes, and they are
 exact. The frequency is pinned to a literal only on the 72 MHz path, where `72e6 / 6 = 12000000`

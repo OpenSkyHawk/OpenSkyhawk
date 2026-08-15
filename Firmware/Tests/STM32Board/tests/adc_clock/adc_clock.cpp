@@ -14,21 +14,18 @@
 //
 // Expected output: PASS lines then "=== ALL PASS ===" on DiagSerial (USART1, 115200).
 //
-// EXPECTED STATUS LED -- read this before concluding the board is faulted:
+// STATUS LED -- this sketch drives it from the test result (see the end of setup()):
 //
-//   test_adc_clock           RED, 1 s blink (BOOTING). This is the PASSING appearance.
-//   test_adc_clock_fallback  RED/GREEN alternating, 500 ms (WARNING). Also PASSING -- the env
-//                            fakes a dead crystal on purpose.
+//   test_adc_clock           PASS -> GREEN 1 Hz (NORMAL).  FAIL -> red/green alternating.
+//   test_adc_clock_fallback  Always red/green alternating: the env fakes a dead crystal, and
+//                            _clockFault outranks everything. Read that env by DiagSerial.
 //
-// Neither is a fault. Like every Tests/STM32Board sketch, this exercises STM32Board alone and
-// never calls CANProtocol::start(), so _canStatus stays at its initial CanStatus::STARTING and
-// _recompute() parks in BOOTING forever. A healthy *node* blinks GREEN at 1 Hz (NORMAL), but
-// only firmware that actually starts CAN -- PanelGroup::setup() -- can reach that. Judge this
-// test by DiagSerial, not by the LED.
+// RED 1 s blink means setup() did not reach the end -- it is BOOTING, the state every
+// Tests/STM32Board sketch sits in because none of them call CANProtocol::start().
 //
 // Also note: halting the core under SWD (dump_image, mdw, a paused upload) freezes the GPIOs
-// mid-blink. Catch it on the red-on phase and the LED sits SOLID red, which looks like BUS_OFF
-// but is just a stopped CPU.
+// mid-blink. Catch it on an LED-on phase and it sits SOLID, which resembles BUS_OFF (solid red)
+// or CONNECTED (solid green) but is just a stopped CPU.
 
 #include <STM32Board.h>
 #include <CANProtocol.h>
@@ -96,6 +93,24 @@ void setup() {
     check("Vdd plausible             ", vdd  == 0        || (vdd  >= 2700 && vdd  <= 3600));
 
     summary();
+
+    // Put the RESULT on the status LED. Without this the sketch parks in BOOTING (red 1 s)
+    // forever -- _canStatus never leaves its initial STARTING because nothing here calls
+    // CANProtocol::start() -- so the board looks like a node that failed to bring CAN up, and
+    // the LED says nothing about whether the assertions passed.
+    //
+    // PASS -> NORMAL, green 1 Hz: the "healthy node" pattern, easy to read across a bench.
+    // FAIL -> WARNING, red/green alternating.
+    //
+    // onCanStatus() is being used as a result indicator, not a claim about the bus. That is
+    // established practice in this suite (led_state_machine drives it artificially too), and
+    // this sketch never starts CAN, so there is no real bus state to misreport.
+    //
+    // In test_adc_clock_fallback the crystal is faked dead, so _clockFault outranks both
+    // (precedence row 2) and the LED shows WARNING regardless -- correct, the clock IS faulted.
+    // Read that env by DiagSerial.
+    if (_fails == 0) STM32Board::onCanStatus(CanStatus::NORMAL);
+    else             STM32Board::setWarning(true);
 }
 
 // tick() drives the LED animation. It matters here in a way it does not for the other
