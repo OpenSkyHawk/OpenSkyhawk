@@ -381,9 +381,25 @@ inputs. If multiple PinRefs share the same ADS1115 instance, each construction c
 `setGain(GAIN_ONE)`, which is idempotent.
 
 `readAnalog()` calls `adc.readADC_SingleEnded(channel)` which initiates a single-ended
-conversion and blocks for one conversion period (~8 ms at default 128 SPS). Polling rate
-for `AnalogInput` and `AnalogMultiPos` is 8 ms — this matches the conversion time. Do not
-call `readAnalog()` on an ADS1115 PinRef from an ISR.
+conversion and **blocks for one conversion period** — ~8 ms at 128 SPS, which is the Adafruit
+library's default and one we never override (`PinRef.cpp` sets the gain deliberately, but no
+`setDataRate()` call exists anywhere in the tree; see #269). The part supports 8–860 SPS, so the
+conversion time is a **configuration choice we have not yet made**, not a fixed property of the
+silicon — at 860 SPS it is ~1.2 ms.
+
+`AnalogMultiPos::POLL_MS` (fixed, 8 ms) and `AnalogInput::DEFAULT_POLL_MS` (8 ms) happen to sit at
+the same figure, but they were **not sized for this part**: both are inherited from DCS-BIOS
+`PotentiometerEWMA`, chosen for a cockpit pot on a bandwidth-constrained serial link (see
+`AnalogInput`'s class comment). The match is coincidence, not design. It does still set the floor
+at the data rate we currently run — so at 128 SPS, do not go below it on an ADS-backed input.
+
+`AnalogInput::pollMs` is per instance and may be set below 8 — but only for a **GPIO** PinRef,
+where `analogRead()` costs microseconds. On an **ADS1115** PinRef a smaller `pollMs` cannot make
+the conversion faster; it only makes `poll()` re-enter the blocking read as soon as the previous
+one returns, so the node's loop runs at the ADC's conversion rate and every other input and
+output on that node queues behind it. Keep an ADS1115-backed `AnalogInput` at `DEFAULT_POLL_MS`
+or higher. (That a slow ADS knob already delays a fast axis sharing the node is a known defect —
+#269.) Do not call `readAnalog()` on an ADS1115 PinRef from an ISR.
 
 Raw single-ended result: 0–32767 (15-bit). Multiplied by 2 → 0–65534. At 3.3V input,
 returns ≈ 52800. Callers (DCS-BIOS output classes, HID layer) normalize to their domain.

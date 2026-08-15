@@ -290,17 +290,22 @@ Continuous or stepped analog input. All sources normalised to **16-bit (0–6553
 | STM32 ADC | 12-bit (0–4095) | `analogReadResolution(16)` — framework scales → 0–65520 | Set in `STM32Board::begin()` |
 | ADS1115 | 15-bit single-ended (0–32767) | ×2 → 16-bit (0–65534) | GAIN_ONE (±4.096V FSR); 3.3V → ~52800 |
 
-Configurable `[minRaw, maxRaw]` input range; values outside clamped to 0 or 65535. Polling rate:
-every 8 ms (`forceReport()` bypasses the throttle for the boot / SYNC baseline).
+Configurable `[minRaw, maxRaw]` input range; values outside clamped to 0 or 65535. Read throttle:
+**per instance** — `pollMs`, default `DEFAULT_POLL_MS` = 8 ms, so a HID flight axis and a cockpit
+pot on the same node can sample at different rates (`forceReport()` bypasses the throttle for the
+boot / SYNC baseline).
 
 **Filtering — ports DcsBios `PotentiometerEWMA`:** an integer EWMA low-pass (α = 1/2^`ewmaShift`, a
 shift not a divide — no soft-float on the F103) smooths the ×16-amplified ADC noise; a new value is
 emitted only when the smoothed result moves more than `hysteresis` counts from the last sent value,
 or reaches a rail (0 / 65535) moving toward it — so endpoints are always reached and a settled pot
-is silent. The constructor exposes `reverse`, `[minRaw, maxRaw]`, `hysteresis` (default 128), and
+is silent. The constructor exposes `reverse`, `[minRaw, maxRaw]`, `hysteresis` (default 128),
 `ewmaShift` (default 3; **valid 0–15**, capped so the `int32` accumulator `scaled << ewmaShift`
-cannot overflow at full scale). A *linear* class — it reuses the `MULTIPOS` transport, but the value
-is continuous, not a position index.
+cannot overflow at full scale), and `pollMs` (default 8; **not** capped — 0 means read every loop
+iteration). `pollMs` and `ewmaShift` are **coupled**: the filter time constant is
+τ ≈ 2^`ewmaShift` × `pollMs`, so halving the read interval halves τ unless the shift rises with it.
+A *linear* class — it reuses the `MULTIPOS` transport, but the value is continuous, not a position
+index.
 
 ```cpp
 OpenSkyhawk::AnalogInput throttle(CTRL_THROTTLE, PinRef(PA0));

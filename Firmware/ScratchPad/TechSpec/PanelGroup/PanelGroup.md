@@ -355,8 +355,12 @@ namespace PanelGroup {
      *      fire after 20 ms of stable signal — calling them every loop iteration is
      *      harmless and required for accurate timing.
      *      Analog inputs (AnalogInput, AnalogMultiPos, AngleSensorInput) manage their
-     *      own 8 ms poll timer inside poll() — PanelGroup always calls them; they decide
-     *      whether enough time has passed to take a new reading.
+     *      own poll timer inside poll() — PanelGroup always calls them, every iteration,
+     *      and they decide whether enough time has passed to take a new reading.
+     *      AnalogMultiPos and AngleSensorInput use a fixed 8 ms interval. AnalogInput's is
+     *      a per-instance constructor parameter (pollMs, default 8 ms), so two AnalogInputs
+     *      on one node can read at different rates. PanelGroup imposes no analog cadence
+     *      of its own.
      *   4. Drain CANProtocol RX:
      *        0x010 CTRL_BCAST  → walk OutputBase list; call onControlPacket() for each
      *                            non-null slot (controlId != 0x0000).
@@ -508,12 +512,15 @@ Each ISR is a minimal one-liner: `_intFlags[idx] = true`. No I2C inside an ISR.
 ### Poll Timers
 
 ```cpp
-uint32_t _lastAnalogPollMs;    // last time analog inputs were polled (8 ms interval)
 uint32_t _lastFallbackPollMs;  // last time polling-fallback chips were scanned (~20 ms)
 uint32_t _lastHeartbeatMs;     // last time HB_n was sent (500 ms interval)
 ```
 
 All timers use `millis()` directly. No shared clock.
+
+PanelGroup owns **no analog poll timer**. `loop()` calls `poll()` on every input unconditionally,
+every iteration; each analog input owns its own throttle (`AnalogInput`'s is the per-instance
+`pollMs`). Nothing here may gate them, or two axes could not read at different rates.
 
 ---
 

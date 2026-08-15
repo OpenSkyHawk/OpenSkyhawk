@@ -28,9 +28,16 @@ namespace OpenSkyhawk {
  * moves more than `hysteresis` counts from the last sent value, or when it reaches a rail (0 /
  * 65535) moving toward it — so a settled pot is silent and the endpoints are always reached.
  *
- * The ADC is re-read at most every `POLL_MS` (8 ms); `forceReport()` samples fresh (bypassing the
- * throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide)
- * keeps it cheap on the FPU-less STM32F103.
+ * The ADC is re-read at most every `pollMs` — a constructor parameter, default `DEFAULT_POLL_MS`
+ * (8 ms). It is **per instance, not per node**: two AnalogInputs on one board may read at different
+ * rates, and PanelGroup owns no analog timer of its own (it calls `poll()` every iteration and lets
+ * each input decide). `forceReport()` samples fresh (bypassing the throttle) and emits the current
+ * value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less
+ * STM32F103.
+ *
+ * `pollMs` and `ewmaShift` are **coupled**: the filter time constant is τ ≈ 2^`ewmaShift` ×
+ * `pollMs` — the defaults give 2^3 × 8 = 64 ms. Halving `pollMs` halves τ unless `ewmaShift` rises
+ * to match, so the two are chosen together, never one alone.
  *
  * configure() does not enable internal pull-ups; the wiper drives the pin directly.
  *
@@ -41,7 +48,7 @@ public:
     static constexpr uint16_t DEFAULT_HYSTERESIS = 128;  ///< counts on the 16-bit output.
     static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;    ///< EWMA α = 1/2^3 = 1/8.
     static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;   ///< cap: scaled<<shift must fit int32 at full scale.
-    static constexpr uint16_t POLL_MS            = 8;    ///< min interval between ADC reads (ms).
+    static constexpr uint16_t DEFAULT_POLL_MS    = 8;    ///< default min interval between ADC reads (ms).
 
     /**
      * @brief Construct a continuous analog input.
@@ -55,10 +62,16 @@ public:
      * @param ewmaShift   EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8). Capped to
      *                    MAX_EWMA_SHIFT (15) — beyond that the int32 accumulator (scaled << shift)
      *                    would overflow at full scale.
+     * @param pollMs      min interval between ADC reads, ms (default 8). Per instance, not per
+     *                    node. Not clamped: 0 means read every loop iteration, which is legal but
+     *                    makes τ track the loop rate — not a controlled quantity. An ADS1115 PinRef
+     *                    blocks ~8 ms per conversion whatever this says, so keep those at the
+     *                    default or higher.
      */
     AnalogInput(uint16_t controlId, PinRef pin, bool reverse = false,
                 uint16_t minRaw = 0, uint16_t maxRaw = 65535,
-                uint16_t hysteresis = DEFAULT_HYSTERESIS, uint8_t ewmaShift = DEFAULT_EWMA_SHIFT);
+                uint16_t hysteresis = DEFAULT_HYSTERESIS, uint8_t ewmaShift = DEFAULT_EWMA_SHIFT,
+                uint16_t pollMs = DEFAULT_POLL_MS);
 
     /** @brief Throttled ADC read + EWMA; emit when the value clears the hysteresis or a rail. */
     void poll() override;
@@ -72,7 +85,7 @@ public:
 #ifdef ANALOGINPUT_TEST
     /** @brief Test seam — inject the next raw ADC reading (overrides the hardware read). */
     void debugSetRaw(uint16_t raw) { _testRaw = raw; _testRawSet = true; }
-    /** @brief Test seam — run one read + EWMA step, bypassing the 8 ms throttle. */
+    /** @brief Test seam — run one read + EWMA step, bypassing the pollMs throttle. */
     void debugStep() { sample(); }
     /** @brief Test seam — last emitted 16-bit value. */
     uint16_t value() const { return _lastSent; }
@@ -80,6 +93,12 @@ public:
     uint16_t smoothed() const { return _smoothed; }
     /** @brief Test seam — count of CAN EVTs emitted. */
     uint16_t emitCount() const { return _emitCount; }
+    /**
+     * @brief Test seam — ADC reads taken. Not the same as emitCount(): hysteresis gates emission,
+     *        so a settled input reads at the full rate and emits nothing. This is what observes
+     *        the pollMs throttle, which debugStep() bypasses by design.
+     */
+    uint32_t readCount() const { return _readCount; }
 #endif
 
 private:
@@ -95,6 +114,7 @@ private:
     uint16_t _maxRaw;
     uint16_t _hysteresis;
     uint8_t  _ewmaShift;
+    uint16_t _pollMs;       ///< min ms between ADC reads; 0 = read every loop iteration.
     int32_t  _acc;          ///< EWMA accumulator (smoothed value << ewmaShift).
     uint16_t _smoothed;     ///< current EWMA output.
     uint16_t _lastSent;     ///< last emitted value.
@@ -102,6 +122,7 @@ private:
     bool     _initialized;  ///< false until forceReport(); poll() no-op before this.
 #ifdef ANALOGINPUT_TEST
     uint16_t _emitCount  = 0;
+    uint32_t _readCount  = 0;
     uint16_t _testRaw    = 0;
     bool     _testRawSet = false;
 #endif
