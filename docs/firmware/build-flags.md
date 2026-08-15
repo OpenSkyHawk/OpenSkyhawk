@@ -64,7 +64,7 @@ actually does.
 | `PANELBRIDGE_NODE_STATUS` | off | on in `Templates/PanelBridge` | `PanelBridge.cpp:42` + ~10 more |
 | `NODE_HEALTH_TELEM` | **on** | never set | `PanelBridge.cpp:468`, `PanelGroup.cpp:399` |
 | `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:396`, `PanelGroup.cpp:409` |
-| `FORCE_CLOCK_FALLBACK` | off | never set | `STM32Board.cpp:149` |
+| `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:179` |
 | `PINREF_DEBUG` | off | never set | `PinRef.cpp:8` + ~9 more |
 | `SHIFTBUS_SCK` | `PB3` | never set | `ShiftBus.cpp:13` |
 | `SHIFTBUS_MISO` | `PB4` | never set | `ShiftBus.cpp:16` |
@@ -78,7 +78,9 @@ actually does.
 [NODE_ID & CAN Addressing](node-id.md). `PANELBRIDGE_NODE_STATUS` makes PanelBridge report which
 PanelGroup nodes it can see, up to the host over DCS-BIOS. `NODE_HEALTH_TELEM` is the periodic
 health frame (die temperature, fault bitmap) at half the heartbeat rate.
-`FORCE_CLOCK_FALLBACK` exercises the dead-crystal fault path without a dead crystal.
+`FORCE_CLOCK_FALLBACK` exercises the dead-crystal fault path without a dead crystal; the
+`test_adc_clock_fallback` env uses it to prove `SystemClock_Config` sets the ADC prescaler on its
+fault path as well as its verified-72 MHz path (#263).
 `PINREF_DEBUG` adds assertions to the pin abstraction. The `SHIFTBUS_*` pin flags relocate the
 shift-register bus off its default SPI1-remap pins; `SHIFTBUS_ISR_HZ` switches that bus from
 polled to timer-ISR sampling (encoder feel) on the timer named by `SHIFTBUS_ISR_TIM`.
@@ -155,7 +157,7 @@ HAL module list, so without our `-D` there is no bxCAN driver to link against.
     `-DHSE_VALUE=8000000` tells HAL what the crystal is. It does **not** switch the clock tree to
     it, and `8000000U` is already what STM32duino defaults the F1 to, so the flag changes nothing
     on its own. What actually selects HSE is `STM32Board`'s strong override of
-    `SystemClock_Config` (`STM32Board.cpp:137`), which every OpenSkyhawk STM32 node links.
+    `SystemClock_Config` (`STM32Board.cpp:164`), which every OpenSkyhawk STM32 node links.
     Without it, the variant runs HSI-PLL at 64 MHz → APB1 32 MHz → CAN at 444 kbps against a
     500 kbps bus.
 
@@ -187,7 +189,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 
 | Flag | Library it opens | First read at |
 |---|---|---|
-| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:72` |
+| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:85` |
 | `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:90` |
 | `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:246` |
 | `LED_TEST` | LED | `Outputs/LED/LED.h:68` |
