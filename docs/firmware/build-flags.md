@@ -189,7 +189,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 
 | Flag | Library it opens | First read at |
 |---|---|---|
-| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:72` |
+| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:85` |
 | `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:90` |
 | `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:246` |
 | `LED_TEST` | LED | `Outputs/LED/LED.h:68` |
