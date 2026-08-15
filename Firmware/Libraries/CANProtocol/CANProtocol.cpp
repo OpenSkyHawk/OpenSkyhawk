@@ -42,7 +42,10 @@ static RxQueueEntry      _rxRing[RX_RING_SIZE];
 static volatile uint8_t  _rxHead = 0;
 static volatile uint8_t  _rxTail = 0;
 
-static BatchState         _batches[4];
+// One slot per batched frame ID. Sized to match the registrations in begin() — sendBatched()
+// silently discards a frame with no slot here, so adding a batched frame means growing this
+// array AND registering it below.
+static BatchState         _batches[5];
 
 static CanStatusCallback  _statusCb  = nullptr;
 static CanSyncReqCallback _syncReqCb = nullptr;
@@ -197,6 +200,7 @@ static void _startInternal(uint32_t mode) {
     _batches[1] = { canIdEvt(NODE_ID),    false, {0, 0}, 0 };
     _batches[2] = { canIdEvtRel(NODE_ID), false, {0, 0}, 0 };  // RotaryEncoder REL
     _batches[3] = { canIdEvtDir(NODE_ID), false, {0, 0}, 0 };  // RotaryEncoder DIR
+    _batches[4] = { canIdEvtAction(NODE_ID), false, {0, 0}, 0 };  // ActionButton TOGGLE
 
     _status = CanStatus::NORMAL;
     if (_statusCb) _statusCb(_status);

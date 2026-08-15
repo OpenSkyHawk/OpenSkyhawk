@@ -92,6 +92,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `READY_n` | `0x400+n` | Node_n → PanelBridge | 0 | One-time boot signal after initial input poll and EVT burst are complete |
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
+| `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
 
 > **Migration note (Phase 1):** existing `CAN_ID_HB_1 = 0x100` changes to `canIdHb(1) = 0x101`.
 > Update any diagnostic tools, captured CAN logs, or test fixtures that reference the old value.
@@ -201,7 +202,8 @@ Slot B is empty when `b.controlId == 0x0000`. Receivers must process slot A firs
 only if `b.controlId != 0x0000`.
 
 CANProtocol owns the `ControlPacketPair` batching path for `CTRL_BCAST`, `EVT_n`, and the relative
-event frames `EVT_REL_n` / `EVT_DIR_n` (each with its own pending slot; #147).
+event frames `EVT_REL_n` / `EVT_DIR_n` (#147) / `EVT_ACTION_n` (#116) — each with its own pending
+slot. A frame with no registered slot is silently discarded by `sendBatched()`.
 PanelBridge and PanelGroup submit individual `ControlPacket`s to CANProtocol; they do not
 build or queue pairs themselves.
 
@@ -215,12 +217,12 @@ flush that batched CAN ID.
 The intended public API shape is:
 
 ```cpp
-void CANProtocol::sendBatched(uint32_t canId, const ControlPacket& pkt); // CTRL_BCAST / EVT_n / EVT_REL_n / EVT_DIR_n
+void CANProtocol::sendBatched(uint32_t canId, const ControlPacket& pkt); // CTRL_BCAST / EVT_n / EVT_REL_n / EVT_DIR_n / EVT_ACTION_n
 void CANProtocol::flushBatched(uint32_t canId);                          // force slot-B null
 ```
 
 Calling `sendBatched()` with any CAN ID other than `CAN_ID_CTRL_BCAST`, `canIdEvt(n)`,
-`canIdEvtRel(n)`, or `canIdEvtDir(n)` is a programming error and should be ignored with a
+`canIdEvtRel(n)`, `canIdEvtDir(n)`, or `canIdEvtAction(n)` is a programming error and should be ignored with a
 diagnostic counter/log in debug builds.
 
 ### TEST_SEQ Payload Wire Layout
