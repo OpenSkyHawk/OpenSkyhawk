@@ -38,7 +38,13 @@ import sys
 
 DOCS_DIR = "docs"
 EXCLUDED_PREFIXES = ("docs/api/", "docs/_source/")
-SKIP_DIRS = {".git", "node_modules", "site", ".venv", "__pycache__"}
+# `.pio` matters more than it looks: PlatformIO copies every dependency into
+# `<project>/.pio/libdeps/<env>/`, so a locally-built tree holds dozens of stale snapshots of the
+# same source file. Indexing them lets a citation be "satisfied" by an old copy where the line has
+# not yet shifted — the check then passes locally and fails in CI, which is worse than no check at
+# all. Build output is never what a doc cites.
+SKIP_DIRS = {".git", "node_modules", "site", ".venv", "__pycache__",
+             ".pio", ".pioenvs", ".piolibdeps", "build", "dist"}
 
 SOURCE_EXTS = ("h", "hpp", "c", "cpp", "ini", "py", "yml", "yaml")
 
