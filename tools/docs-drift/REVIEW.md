@@ -8,6 +8,14 @@ decisions that changed in a source file but not on the published page.
 Structured tables (NODE_IDs, etc.) are already kept in sync by transclusion +
 `tools/check_node_ids.py` — **do not** re-check those here.
 
+**Line-number citations are machine-checked too.** `tools/docs-drift/check_doc_refs.py` runs
+in CI on every PR touching `docs/**` or `Firmware/**` and asserts that each `` `File.h:N` ``
+on a published page still resolves *and* — in a table row that names an identifier — still
+lands on a line containing it. Don't spend review time re-verifying those by hand; if the
+check is green, they hold. What it deliberately does **not** cover, and you still should:
+a documented diagnostic string transcribed into prose (field names, units, ordering), which
+has no citation to anchor it.
+
 ## Ground rules
 
 - **Read-only on the repo.** This run opens or updates one GitHub issue. It does **not**

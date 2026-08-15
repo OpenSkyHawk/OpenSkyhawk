@@ -1,0 +1,41 @@
+name: Doc References
+
+# Published pages cite firmware source by line number. Either side can break the
+# pairing: editing the page, or editing the file it cites. #267 was a
+# firmware-only PR that invalidated a citation in docs/ without touching a single
+# markdown file — so triggering on docs/** alone would have missed it.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "Firmware/**"
+      - "tools/docs-drift/**"
+      - ".github/workflows/doc-refs.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  doc-refs:
+    name: Validate doc references
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: python -m pip install --quiet pytest
+
+      - name: Test the checker
+        run: python -m pytest tools/docs-drift/tests/test_check_doc_refs.py -q
+
+      - name: Check doc references
+        run: python3 tools/docs-drift/check_doc_refs.py
