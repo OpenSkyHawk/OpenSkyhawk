@@ -45,6 +45,7 @@
 * **\_\_attribute\_\_** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **\_applyLed** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_blinkPeriodFor** ([**STM32Board.cpp**](STM32Board_8cpp.md))
+* **\_configAdcClock** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_diag** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_recompute** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 
