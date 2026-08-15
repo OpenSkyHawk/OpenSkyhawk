@@ -4376,8 +4376,8 @@ actually does.</p>
 <tr>
 <td><code>FORCE_CLOCK_FALLBACK</code></td>
 <td>off</td>
-<td>never set</td>
-<td><code>STM32Board.cpp:149</code></td>
+<td><code>Tests/STM32Board</code> env <code>test_adc_clock_fallback</code></td>
+<td><code>STM32Board.cpp:179</code></td>
 </tr>
 <tr>
 <td><code>PINREF_DEBUG</code></td>
@@ -4433,7 +4433,9 @@ actually does.</p>
 <a href="../node-id/">NODE_ID &amp; CAN Addressing</a>. <code>PANELBRIDGE_NODE_STATUS</code> makes PanelBridge report which
 PanelGroup nodes it can see, up to the host over DCS-BIOS. <code>NODE_HEALTH_TELEM</code> is the periodic
 health frame (die temperature, fault bitmap) at half the heartbeat rate.
-<code>FORCE_CLOCK_FALLBACK</code> exercises the dead-crystal fault path without a dead crystal.
+<code>FORCE_CLOCK_FALLBACK</code> exercises the dead-crystal fault path without a dead crystal; the
+<code>test_adc_clock_fallback</code> env uses it to prove <code>SystemClock_Config</code> sets the ADC prescaler on its
+fault path as well as its verified-72 MHz path (#263).
 <code>PINREF_DEBUG</code> adds assertions to the pin abstraction. The <code>SHIFTBUS_*</code> pin flags relocate the
 shift-register bus off its default SPI1-remap pins; <code>SHIFTBUS_ISR_HZ</code> switches that bus from
 polled to timer-ISR sampling (encoder feel) on the timer named by <code>SHIFTBUS_ISR_TIM</code>.</p>
@@ -4550,7 +4552,7 @@ HAL module list, so without our <code>-D</code> there is no bxCAN driver to link
 <p><code>-DHSE_VALUE=8000000</code> tells HAL what the crystal is. It does <strong>not</strong> switch the clock tree to
 it, and <code>8000000U</code> is already what STM32duino defaults the F1 to, so the flag changes nothing
 on its own. What actually selects HSE is <code>STM32Board</code>'s strong override of
-<code>SystemClock_Config</code> (<code>STM32Board.cpp:137</code>), which every OpenSkyhawk STM32 node links.
+<code>SystemClock_Config</code> (<code>STM32Board.cpp:164</code>), which every OpenSkyhawk STM32 node links.
 Without it, the variant runs HSI-PLL at 64 MHz → APB1 32 MHz → CAN at 444 kbps against a
 500 kbps bus.</p>
 <p>The corollary: a <strong>wrong-value</strong> crystal is undetectable at runtime. <code>HAL_RCC_Get*Freq()</code>
@@ -4590,7 +4592,7 @@ is set only by its own <code>Firmware/Tests/&lt;Library&gt;/platformio.ini</code
 <tr>
 <td><code>ANALOGINPUT_TEST</code></td>
 <td>AnalogInput</td>
-<td><code>Inputs/AnalogInput/AnalogInput.h:72</code></td>
+<td><code>Inputs/AnalogInput/AnalogInput.h:85</code></td>
 </tr>
 <tr>
 <td><code>ANALOGMULTIPOS_TEST</code></td>

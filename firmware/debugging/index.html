@@ -4137,8 +4137,8 @@ the 72 MHz HSE tree (dead crystal, cold joint, or an inconsistent config), <code
 it, falls back to internal RC, and drives amber at <strong>top precedence</strong> — above CAN faults — so a
 bad clock isn't misdiagnosed as a bus problem. A clock-faulted node also comes up <strong>CAN
 listen-only</strong> (never transmits at the wrong rate). Latched once at boot (query
-<code>STM32Board::clockFault()</code>); <code>begin()</code> logs <code>CLOCK OK/FAULT: SYSCLK=.. PCLK1=.. CAN=..bps</code> on
-DiagSerial. This detects a missing/dead crystal, not a wrong-value one. See issue #245 /
+<code>STM32Board::clockFault()</code>); <code>begin()</code> logs
+<code>CLOCK OK/FAULT: SYSCLK=.. PCLK1=.. CAN=..bps ADC=..kHz</code> on DiagSerial. This detects a missing/dead crystal, not a wrong-value one. See issue #245 /
 <a href="../../architecture/design-decisions/">Design Decisions</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">PB14/PB15 are reserved</p>
