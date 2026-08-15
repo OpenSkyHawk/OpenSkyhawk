@@ -100,6 +100,7 @@ the value arrived on (#147) — the map carries only `controlId → name`:
 ```
 Receive a ControlPacketPair on one of the event frames:
   EVT_n (canIdEvt, ABS) / EVT_REL_n (canIdEvtRel, REL) / EVT_DIR_n (canIdEvtDir, DIR)
+  / EVT_ACTION_n (canIdEvtAction, ACTION)
 │
 ├── for each non-null slot:
 │
@@ -107,6 +108,7 @@ Receive a ControlPacketPair on one of the event frames:
 │   │     ABS → sendDcsBiosMessage(name, "%u")         (set_state)
 │   │     REL → sendDcsBiosMessage(name, "%+d")        (variable_step, signed step)
 │   │     DIR → sendDcsBiosMessage(name, "INC"/"DEC")  (fixed_step, sign of ±1)
+│   │     ACTION → sendDcsBiosMessage(name, "TOGGLE")  (action, selector 0 only)
 │   │     → raw ASCII on UART → SimGateway → USB CDC → DCS
 │   │     (REL/DIR are DCS-routed only; a HID-range controlId on those frames is dropped)
 │

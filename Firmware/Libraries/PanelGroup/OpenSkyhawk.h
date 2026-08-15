@@ -21,5 +21,6 @@
 #include <Inputs/AnalogMultiPos/AnalogMultiPos.h>
 #include <Inputs/AnalogInput/AnalogInput.h>
 #include <Inputs/RotaryEncoder/RotaryEncoder.h>
+#include <Inputs/ActionButton/ActionButton.h>
 #include <A4EC_CmdIds.h>
 #include <A4EC_OutputIds.h>

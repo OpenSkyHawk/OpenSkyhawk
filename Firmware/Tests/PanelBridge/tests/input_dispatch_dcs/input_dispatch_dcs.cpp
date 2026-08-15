@@ -1,7 +1,9 @@
 // PanelBridge — input_dispatch_dcs test
 //
-// Purpose: verify the three dispatch frames produce the correct DCS-BIOS ASCII command on
-// Serial (UART2): ABS (canIdEvt, %u), REL (canIdEvtRel, %+d), DIR (canIdEvtDir, INC/DEC). Also
+// Purpose: verify the four dispatch frames produce the correct DCS-BIOS ASCII command on
+// Serial (UART2): ABS (canIdEvt, %u), REL (canIdEvtRel, %+d), DIR (canIdEvtDir, INC/DEC),
+// ACTION (canIdEvtAction, TOGGLE). Also feeds one real 0x700+n frame through onCanRx() so the
+// CAN range branch itself is exercised, not just the per-slot seam. Also
 // verifies out-of-range IDs (0x8700, 0xFFFF) are dropped (nothing sent on Serial).
 //
 // Hardware: single STM32F103CB board. No second board or CAN bus required.
@@ -31,8 +33,11 @@
 #include <PanelBridge.h>
 #include <STM32Board.h>
 #include <A4EC_CmdIds.h>
+#include <CANProtocol.h>   // canIdEvtAction, ControlPacketPair — for the RAW frame case
 
-enum Kind { ABS, REL, DIR };   // ABS canIdEvt (%u) / REL canIdEvtRel (%+d) / DIR canIdEvtDir (INC/DEC)
+// ABS canIdEvt (%u) / REL canIdEvtRel (%+d) / DIR canIdEvtDir (INC/DEC) /
+// ACTION canIdEvtAction (TOGGLE) / RAW = full frame through onCanRx, exercising the range branch
+enum Kind { ABS, REL, DIR, ACTION, RAW };
 
 struct Case {
     Kind        kind;
@@ -52,6 +57,11 @@ static const Case CASES[] = {
     { DIR, DCSIN_ARC51_FREQ_10MHZ, (uint16_t)1,              "FREQ_10MHZ DIR +1 -> \"INC\"",      true  },
     { DIR, DCSIN_ARC51_FREQ_10MHZ, (uint16_t)(int16_t)-1,    "FREQ_10MHZ DIR -1 -> \"DEC\"",      true  },
     { DIR, DCSIN_ARC51_FREQ_10MHZ, (uint16_t)2,              "FREQ_10MHZ DIR +2 (malformed,drop)",false },
+    { ACTION, DCSIN_ARM_MASTER,    0,                        "ARM_MASTER ACTION 0 -> \"TOGGLE\"",  true  },
+    { ACTION, DCSIN_ARM_MASTER,    1,                        "ARM_MASTER ACTION 1 (malformed,drop)",false },
+    { ACTION, 0x0100,              0,                        "ACTION HID-range 0x0100 (drop)",    false },
+    { ACTION, 0x8700,              0,                        "ACTION out-of-range 0x8700 (drop)", false },
+    { RAW,    DCSIN_ARM_MASTER,    0,                        "ARM_MASTER via real 0x700+n frame", true  },
     { ABS, 0x8700,                 0,                        "0x8700 (drop)",                     false },
     { ABS, 0xFFFF,                 0,                        "0xFFFF (drop)",                     false },
 };
@@ -93,5 +103,16 @@ void loop() {
         case ABS: PanelBridge::testDispatchEvt(c.controlId, c.value); break;
         case REL: PanelBridge::testDispatchRel(c.controlId, c.value); break;
         case DIR: PanelBridge::testDispatchDir(c.controlId, c.value); break;
+        case ACTION: PanelBridge::testDispatchAction(c.controlId, c.value); break;
+        case RAW: {
+            // Enters above the frame-ID range branches, unlike the seams above — the only way to
+            // catch a frame range that was never wired into onCanRx().
+            ControlPacketPair pair;
+            pair.a = { c.controlId, c.value };
+            pair.b = { 0x0000, 0 };
+            PanelBridge::testFeedCanFrame(canIdEvtAction(NODE_ID),
+                                          reinterpret_cast<const uint8_t*>(&pair), 8);
+            break;
+        }
     }
 }

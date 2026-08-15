@@ -268,6 +268,9 @@ static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;  ///< Request all nodes to 
 /** @brief Heartbeat frame ID for node n. Range 0x100–0x13F; n=0 is PanelBridge. */
 constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 
+/** @brief Node-health/thermal telemetry frame ID for node n. Range 0x140–0x17F; n=0 is PanelBridge. */
+constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
+
 /** @brief Input event frame ID for node n. Range 0x201–0x23F. */
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
 
@@ -276,6 +279,15 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 
 /** @brief Boot-complete READY frame ID for node n. Range 0x401–0x43F. */
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
+
+/** @brief Relative-input event frame ID for node n. Range 0x501–0x53F. */
+constexpr uint32_t canIdEvtRel(uint8_t n) { return 0x500 + n; }
+
+/** @brief Directional-input event frame ID for node n. Range 0x601–0x63F. */
+constexpr uint32_t canIdEvtDir(uint8_t n) { return 0x600 + n; }
+
+/** @brief Action-input event frame ID for node n. Range 0x701–0x73F. */
+constexpr uint32_t canIdEvtAction(uint8_t n) { return 0x700 + n; }
 
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally
@@ -410,17 +422,22 @@ namespace CANProtocol {
     /**
      * @brief Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.
      *
-     * Valid only for CAN_ID_CTRL_BCAST and canIdEvt(n). The first packet is held as
+     * Valid only for CAN_ID_CTRL_BCAST, canIdEvt(n), canIdEvtRel(n), canIdEvtDir(n) and
+     * canIdEvtAction(n) — each with its own pending slot. The first packet is held as
      * slot A briefly while CANProtocol waits for a second packet. When slot B arrives,
      * CANProtocol sends one 8-byte ControlPacketPair. If no slot B arrives by the
      * batching deadline serviced from drain(), CANProtocol sends slot A with slot B
      * controlId == 0x0000.
      *
-     * PanelBridge uses this for DCS output broadcasts. PanelGroup uses this for EVT_n
-     * input events. Neither higher-level library builds ControlPacketPair payloads or
-     * manages CAN TX queue state directly.
+     * A canId with no registered slot is silently discarded — see the batch-registration
+     * note in the Batching section.
      *
-     * @param canId  CAN_ID_CTRL_BCAST or canIdEvt(NODE_ID).
+     * PanelBridge uses this for DCS output broadcasts. PanelGroup uses this for EVT_n
+     * input events and the REL / DIR / ACTION dispatch-form frames. Neither higher-level
+     * library builds ControlPacketPair payloads or manages CAN TX queue state directly.
+     *
+     * @param canId  CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID),
+     *               canIdEvtDir(NODE_ID), or canIdEvtAction(NODE_ID).
      * @param pkt    ControlPacket to batch.
      */
     void sendBatched(uint32_t canId, const ControlPacket& pkt);
@@ -550,10 +567,35 @@ struct PacketBatchState {
 };
 ```
 
-Supported batched IDs are `CAN_ID_CTRL_BCAST` and `canIdEvt(n)`. When a second packet arrives,
-CANProtocol sends `{a, b}` as one 8-byte frame. If no second packet arrives by the deadline
-serviced from `drain()`, or if the caller explicitly calls `flushBatched(canId)`,
-CANProtocol sends `{a, null}` where `null.controlId == 0x0000`.
+Supported batched IDs are `CAN_ID_CTRL_BCAST`, `canIdEvt(n)`, `canIdEvtRel(n)`, `canIdEvtDir(n)`
+and `canIdEvtAction(n)` — five slots, one per frame. When a second packet arrives, CANProtocol
+sends `{a, b}` as one 8-byte frame. If no second packet arrives by the deadline serviced from
+`drain()`, or if the caller explicitly calls `flushBatched(canId)`, CANProtocol sends `{a, null}`
+where `null.controlId == 0x0000`.
+
+**A batched frame ID must have a slot registered in `_batches[]` during `begin()`.** `sendBatched()`
+looks the ID up there and returns silently when it is absent — no log, no fault. Adding a batched
+frame therefore means growing the array *and* registering the ID; doing only the latter writes past
+the end of a fixed-size array, and doing only the former drops every packet on that frame while the
+sending class looks correct.
+
+#### Dispatch forms
+
+The frame ID an input event arrives on selects how PanelBridge renders it for DCS-BIOS. The payload
+`controlId` decides *routing* (DCS vs HID); the frame decides *form*. This is why an input class
+that speaks a new form needs a new frame rather than a new value: the `canIdEvt` value space is
+already fully spoken for as literal `set_state` values.
+
+| Frame | Payload value | DCS-BIOS interface | Rendered as | Emitted by |
+|---|---|---|---|---|
+| `canIdEvt(n)` 0x200+n | absolute `uint16` | `set_state` | `%u` | `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`, `AnalogInput`, `AnalogMultiPos` |
+| `canIdEvtRel(n)` 0x500+n | signed ±step | `variable_step` | `%+d` | `RotaryEncoder` (REL) |
+| `canIdEvtDir(n)` 0x600+n | signed ±1 | `fixed_step` | `INC` / `DEC` | `RotaryEncoder` (DIR) |
+| `canIdEvtAction(n)` 0x700+n | selector; `0` only | `action` | `TOGGLE` | `ActionButton` |
+
+On the REL, DIR and ACTION frames the value is not a magnitude, so anything outside the defined set
+is malformed: the bridge drops it and logs, rather than letting a corrupt value become a real
+cockpit action.
 
 ### TX Ring Buffer
 

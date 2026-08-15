@@ -7,7 +7,7 @@ not yet implemented**.
 
 !!! warning "Most control types are not implemented yet"
     Implemented today: **LED**, **DrumDisplay**, and **NeedleGauge** (outputs) and **Switch2Pos** +
-    **SwitchMultiPos** + **AnalogMultiPos** + **Switch3Pos** + **AnalogInput** + **RotaryEncoder** (inputs), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are
+    **SwitchMultiPos** + **AnalogMultiPos** + **Switch3Pos** + **AnalogInput** + **RotaryEncoder** + **ActionButton** (inputs), plus the **PinRef** abstraction. LED / Switch2Pos / PinRef are
     hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
     NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos, AnalogMultiPos, Switch3Pos, AnalogInput, and RotaryEncoder are hardware-verified.
     Everything marked *Phase 4* or *Phase 5* below is specified but **not yet written** — don't expect it
@@ -47,7 +47,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | `Switch3Pos` | **Implemented** (hardware-verified) | 3-position (ON-OFF-ON). value 0/1/2 |
 | `SwitchMultiPos` | **Implemented** (hardware-verified) | N-pin rotary, one active. value = index |
 | `AnalogMultiPos` | **Implemented** (hardware-verified) | Resistor-ladder selector on one analog pin |
-| `ActionButton` | Phase 4 — not started | Momentary; fires on press only |
+| `ActionButton` | **Implemented** (#116) | Momentary button driving a control that latches *in the sim* — one `TOGGLE` per press, nothing on release. See the note below |
 | `RotaryEncoder` | **Implemented** (dual-mode REL/DIR, #147) | Quadrature encoder, relative. REL → ±step (continuous knobs); DIR → ±1 (no-indicator selectors) |
 | `RotaryAcceleratedEncoder` | Phase 4 — not started | Encoder with slow/fast (4-value scheme) |
 | `RotarySwitch` | Phase 4 — not started | Encoder used as an N-position absolute switch |
@@ -57,6 +57,26 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 
 All inputs normalise analog sources to **16-bit (0–65535)** before sending. Inputs self-register
 at global scope; `PanelGroup::loop()` polls them and batches events into `EVT_n` CAN frames.
+
+!!! note "ActionButton lets a momentary button drive a switch that latches in the sim"
+    `Switch2Pos` sends the switch's absolute position, so it needs a physical part that latches.
+    `ActionButton` instead sends one `TOGGLE` per press: DCS-BIOS reads the control's current
+    value, flips it, and writes it back. Each press toggles and the state persists — so a plain
+    momentary button can drive a two-position cockpit switch.
+
+    A second benefit falls out of that. Because the sim supplies the current value, the panel
+    **cannot desync**. A physical latching switch can end up disagreeing with the sim after a cold
+    start, a keyboard binding, or a mission script, and then it physically lies about the state
+    until you cycle it. A momentary button has no position to be wrong about.
+
+    The trade-off is you lose at-a-glance state — the panel can't show you what's on without a
+    separate indicator. OpenSkyhawk's own panels use real latching switches for that reason;
+    `ActionButton` is here for builders who'd rather not source them.
+
+    **Only for controls DCS-BIOS declares with `defineToggleSwitch`** — ones that latch in the sim.
+    Pointing it at a `definePushButton` control is wrong: the sim tracks those by physical
+    position, so a `TOGGLE` latches them *on* until the next press. A lamp-test button wired this
+    way would stay lit. Use `Switch2Pos` for those.
 
 !!! note "AngleSensor base class is a documented gap"
     `AngleSensorInput` wraps an `AngleSensor` abstract base (concrete `AS5600Sensor` /
