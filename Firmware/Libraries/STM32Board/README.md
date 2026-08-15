@@ -44,6 +44,22 @@ If `setDebug(false)` (the default), the USART1 peripheral is still initialised (
 
 SJW=4 is required to tolerate the crystal tolerance variation between Blue Pill boards.
 
+## Clock tree
+
+`SystemClock_Config` is a **strong override** — the library owns the whole tree for every STM32 node:
+
+| Domain | Divider | Frequency | Feeds |
+|---|---|---|---|
+| SYSCLK | HSE 8 MHz × PLL9 | 72 MHz | core |
+| HCLK | /1 | 72 MHz | AHB |
+| PCLK1 (APB1) | /2 | 36 MHz | CAN, USART2/3 |
+| PCLK2 (APB2) | /1 | 72 MHz | USART1 diag, SPI, timers |
+| ADCCLK | ADCPRE /6 | **12 MHz** | ADC1/ADC2 — F103 max is 14 MHz (#263) |
+
+On F1 nothing else sets `ADCPRE`: the Arduino core defers it to `SystemClock_Config` and the generic
+variant never set it, so it sat at its reset `/2` (36 MHz, out of spec) until #263. It is applied on
+both of `SystemClock_Config`'s exit paths, before `setup()`, so `analogRead()` inherits it.
+
 ## Status LED blink patterns
 
 | Red (PB14) | Green (PB15) | Meaning |

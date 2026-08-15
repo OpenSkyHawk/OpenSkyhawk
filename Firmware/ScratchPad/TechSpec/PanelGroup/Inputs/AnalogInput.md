@@ -157,6 +157,15 @@ force-send still reaches the rail (65520 > 65535 − `hysteresis`); for an exact
 `maxRaw = 65520`. 12-bit is ample for the pot inputs this class serves (ARC-51 VOL). (ADS1115 channels
 are a true 15-bit single-ended read ×2 → 0–65534.)
 
+**ADC acquisition time — the source-impedance budget (#263):** the framework samples GPIO channels
+for 13.5 ADCCLK cycles, which at the configured **12 MHz ADCCLK** is **1.125 µs** (it was 375 ns
+while `ADCPRE` sat at its reset `/2` and ADCCLK ran 36 MHz, out of spec — see
+`STM32Board.md` → *ADC clock configuration*). That window is what a pot's output impedance has to
+charge the sample-and-hold through, so it bounds how high a source impedance this class tolerates —
+the constraint bites hardest when consecutive conversions are on **different** channels and the S/H
+has to slew. A cockpit pot sits at ~2.5 kΩ at mid-travel. Note this has **not** been measured on an
+actual pot; no shipping analog input is known to have been affected at 36 MHz either.
+
 **FirmwarePlan reconciliation:** `FirmwarePlan/05` and the earlier stub specified a plain "32-count
 dead-band" with no smoothing. This implementation instead ports the **DcsBios `PotentiometerEWMA`**
 recipe (EWMA + hysteresis + near-rail), because the ×16 STM32 scaling amplifies ADC noise more than
