@@ -13,6 +13,22 @@
 // and range-checked against the F103's rated ADCCLK window instead of pinned to a literal.
 //
 // Expected output: PASS lines then "=== ALL PASS ===" on DiagSerial (USART1, 115200).
+//
+// EXPECTED STATUS LED -- read this before concluding the board is faulted:
+//
+//   test_adc_clock           RED, 1 s blink (BOOTING). This is the PASSING appearance.
+//   test_adc_clock_fallback  RED/GREEN alternating, 500 ms (WARNING). Also PASSING -- the env
+//                            fakes a dead crystal on purpose.
+//
+// Neither is a fault. Like every Tests/STM32Board sketch, this exercises STM32Board alone and
+// never calls CANProtocol::start(), so _canStatus stays at its initial CanStatus::STARTING and
+// _recompute() parks in BOOTING forever. A healthy *node* blinks GREEN at 1 Hz (NORMAL), but
+// only firmware that actually starts CAN -- PanelGroup::setup() -- can reach that. Judge this
+// test by DiagSerial, not by the LED.
+//
+// Also note: halting the core under SWD (dump_image, mdw, a paused upload) freezes the GPIOs
+// mid-blink. Catch it on the red-on phase and the LED sits SOLID red, which looks like BUS_OFF
+// but is just a stopped CPU.
 
 #include <STM32Board.h>
 #include <CANProtocol.h>
