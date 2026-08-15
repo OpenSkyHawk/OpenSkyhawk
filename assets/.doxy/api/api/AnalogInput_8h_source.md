@@ -21,11 +21,12 @@ public:
     static constexpr uint16_t DEFAULT_HYSTERESIS = 128;  
     static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;    
     static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;   
-    static constexpr uint16_t POLL_MS            = 8;    
+    static constexpr uint16_t DEFAULT_POLL_MS    = 8;    
 
     AnalogInput(uint16_t controlId, PinRef pin, bool reverse = false,
                 uint16_t minRaw = 0, uint16_t maxRaw = 65535,
-                uint16_t hysteresis = DEFAULT_HYSTERESIS, uint8_t ewmaShift = DEFAULT_EWMA_SHIFT);
+                uint16_t hysteresis = DEFAULT_HYSTERESIS, uint8_t ewmaShift = DEFAULT_EWMA_SHIFT,
+                uint16_t pollMs = DEFAULT_POLL_MS);
 
     void poll() override;
 
@@ -39,6 +40,7 @@ public:
     uint16_t value() const { return _lastSent; }
     uint16_t smoothed() const { return _smoothed; }
     uint16_t emitCount() const { return _emitCount; }
+    uint32_t readCount() const { return _readCount; }
 #endif
 
 private:
@@ -54,6 +56,7 @@ private:
     uint16_t _maxRaw;
     uint16_t _hysteresis;
     uint8_t  _ewmaShift;
+    uint16_t _pollMs;       
     int32_t  _acc;          
     uint16_t _smoothed;     
     uint16_t _lastSent;     
@@ -61,6 +64,7 @@ private:
     bool     _initialized;  
 #ifdef ANALOGINPUT_TEST
     uint16_t _emitCount  = 0;
+    uint32_t _readCount  = 0;
     uint16_t _testRaw    = 0;
     bool     _testRawSet = false;
 #endif

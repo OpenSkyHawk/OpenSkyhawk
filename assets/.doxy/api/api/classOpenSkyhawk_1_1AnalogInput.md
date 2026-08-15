@@ -47,8 +47,8 @@ Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1Inp
 | ---: | :--- |
 |  constexpr uint8\_t | [**DEFAULT\_EWMA\_SHIFT**](#variable-default_ewma_shift)   = `3`<br>_EWMA α = 1/2^3 = 1/8._  |
 |  constexpr uint16\_t | [**DEFAULT\_HYSTERESIS**](#variable-default_hysteresis)   = `128`<br>_counts on the 16-bit output._  |
+|  constexpr uint16\_t | [**DEFAULT\_POLL\_MS**](#variable-default_poll_ms)   = `8`<br>_default min interval between ADC reads (ms)._  |
 |  constexpr uint8\_t | [**MAX\_EWMA\_SHIFT**](#variable-max_ewma_shift)   = `15`<br>_cap: scaled&lt;&lt;shift must fit int32 at full scale._  |
-|  constexpr uint16\_t | [**POLL\_MS**](#variable-poll_ms)   = `8`<br>_min interval between ADC reads (ms)._  |
 
 
 
@@ -81,7 +81,7 @@ Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1Inp
 
 | Type | Name |
 | ---: | :--- |
-|   | [**AnalogInput**](#function-analoginput) (uint16\_t controlId, [**PinRef**](classPinRef.md) pin, bool reverse=false, uint16\_t minRaw=0, uint16\_t maxRaw=65535, uint16\_t hysteresis=[**DEFAULT\_HYSTERESIS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_hysteresis), uint8\_t ewmaShift=[**DEFAULT\_EWMA\_SHIFT**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_ewma_shift)) <br>_Construct a continuous analog input._  |
+|   | [**AnalogInput**](#function-analoginput) (uint16\_t controlId, [**PinRef**](classPinRef.md) pin, bool reverse=false, uint16\_t minRaw=0, uint16\_t maxRaw=65535, uint16\_t hysteresis=[**DEFAULT\_HYSTERESIS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_hysteresis), uint8\_t ewmaShift=[**DEFAULT\_EWMA\_SHIFT**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_ewma_shift), uint16\_t pollMs=[**DEFAULT\_POLL\_MS**](classOpenSkyhawk_1_1AnalogInput.md#variable-default_poll_ms)) <br>_Construct a continuous analog input._  |
 | virtual void | [**configure**](#function-configure) () override<br>_Configure the pin as an input. Called by_ [_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _._ |
 | virtual void | [**forceReport**](#function-forcereport) () override<br>_Sample fresh (bypassing the throttle) and emit the current value as the baseline._  |
 | virtual void | [**poll**](#function-poll) () override<br>_Throttled ADC read + EWMA; emit when the value clears the hysteresis or a rail._  |
@@ -175,7 +175,10 @@ A **linear** input, not a selector. It shares the MULTIPOS wire transport with t
 Read path (ports [**DcsBios**](namespaceDcsBios.md) `PotentiometerEWMA`): read the ADC (already 16-bit — STM32 ×16 or [**ADS1115**](classADS1115.md) ×2), clamp to `[minRaw, maxRaw]`, map to 0..65535 (reverse-aware), then apply an integer EWMA low-pass filter (α = 1/2^`ewmaShift`). A new value is emitted only when the smoothed value moves more than `hysteresis` counts from the last sent value, or when it reaches a rail (0 / 65535) moving toward it — so a settled pot is silent and the endpoints are always reached.
 
 
-The ADC is re-read at most every `POLL_MS` (8 ms); `forceReport()` samples fresh (bypassing the throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less STM32F103.
+The ADC is re-read at most every `pollMs` — a constructor parameter, default `DEFAULT_POLL_MS` (8 ms). It is **per instance, not per node**: two AnalogInputs on one board may read at different rates, and [**PanelGroup**](namespacePanelGroup.md) owns no analog timer of its own (it calls `poll()` every iteration and lets each input decide). `forceReport()` samples fresh (bypassing the throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less STM32F103.
+
+
+`pollMs` and `ewmaShift` are **coupled**: the filter time constant is τ ≈ 2^`ewmaShift` × `pollMs` — the defaults give 2^3 × 8 = 64 ms. Halving `pollMs` halves τ unless `ewmaShift` rises to match, so the two are chosen together, never one alone.
 
 
 [**configure()**](classOpenSkyhawk_1_1AnalogInput.md#function-configure) does not enable internal pull-ups; the wiper drives the pin directly.
@@ -218,11 +221,11 @@ constexpr uint16_t OpenSkyhawk::AnalogInput::DEFAULT_HYSTERESIS;
 
 
 
-### variable MAX\_EWMA\_SHIFT 
+### variable DEFAULT\_POLL\_MS 
 
-_cap: scaled&lt;&lt;shift must fit int32 at full scale._ 
+_default min interval between ADC reads (ms)._ 
 ```C++
-constexpr uint8_t OpenSkyhawk::AnalogInput::MAX_EWMA_SHIFT;
+constexpr uint16_t OpenSkyhawk::AnalogInput::DEFAULT_POLL_MS;
 ```
 
 
@@ -232,11 +235,11 @@ constexpr uint8_t OpenSkyhawk::AnalogInput::MAX_EWMA_SHIFT;
 
 
 
-### variable POLL\_MS 
+### variable MAX\_EWMA\_SHIFT 
 
-_min interval between ADC reads (ms)._ 
+_cap: scaled&lt;&lt;shift must fit int32 at full scale._ 
 ```C++
-constexpr uint16_t OpenSkyhawk::AnalogInput::POLL_MS;
+constexpr uint8_t OpenSkyhawk::AnalogInput::MAX_EWMA_SHIFT;
 ```
 
 
@@ -259,7 +262,8 @@ OpenSkyhawk::AnalogInput::AnalogInput (
     uint16_t minRaw=0,
     uint16_t maxRaw=65535,
     uint16_t hysteresis=DEFAULT_HYSTERESIS,
-    uint8_t ewmaShift=DEFAULT_EWMA_SHIFT
+    uint8_t ewmaShift=DEFAULT_EWMA_SHIFT,
+    uint16_t pollMs=DEFAULT_POLL_MS
 ) 
 ```
 
@@ -277,6 +281,7 @@ OpenSkyhawk::AnalogInput::AnalogInput (
 * `maxRaw` raw ADC value mapping to 65535 (default 65535). Above are clamped. 
 * `hysteresis` output counts of movement required before a new value is emitted. 
 * `ewmaShift` EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8). Capped to MAX\_EWMA\_SHIFT (15) — beyond that the int32 accumulator (scaled &lt;&lt; shift) would overflow at full scale. 
+* `pollMs` min interval between ADC reads, ms (default 8). Per instance, not per node. Not clamped: 0 means read every loop iteration, which is legal but makes τ track the loop rate — not a controlled quantity. An [**ADS1115**](classADS1115.md) [**PinRef**](classPinRef.md) blocks ~8 ms per conversion whatever this says, so keep those at the default or higher. 
 
 
 

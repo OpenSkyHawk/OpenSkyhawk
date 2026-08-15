@@ -4002,10 +4002,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#variable-max_ewma_shift" class="md-nav__link">
+  <a href="#variable-default_poll_ms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        variable MAX_EWMA_SHIFT
+        variable DEFAULT_POLL_MS
       
     </span>
   </a>
@@ -4013,10 +4013,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#variable-poll_ms" class="md-nav__link">
+  <a href="#variable-max_ewma_shift" class="md-nav__link">
     <span class="md-ellipsis">
       
-        variable POLL_MS
+        variable MAX_EWMA_SHIFT
       
     </span>
   </a>
@@ -4134,12 +4134,12 @@
 <td style="text-align: left;"><a href="#variable-default_hysteresis"><strong>DEFAULT_HYSTERESIS</strong></a>   = <code>128</code><br><em>counts on the 16-bit output.</em></td>
 </tr>
 <tr>
-<td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-max_ewma_shift"><strong>MAX_EWMA_SHIFT</strong></a>   = <code>15</code><br><em>cap: scaled&lt;&lt;shift must fit int32 at full scale.</em></td>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-default_poll_ms"><strong>DEFAULT_POLL_MS</strong></a>   = <code>8</code><br><em>default min interval between ADC reads (ms).</em></td>
 </tr>
 <tr>
-<td style="text-align: right;">constexpr uint16_t</td>
-<td style="text-align: left;"><a href="#variable-poll_ms"><strong>POLL_MS</strong></a>   = <code>8</code><br><em>min interval between ADC reads (ms).</em></td>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-max_ewma_shift"><strong>MAX_EWMA_SHIFT</strong></a>   = <code>15</code><br><em>cap: scaled&lt;&lt;shift must fit int32 at full scale.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4154,7 +4154,7 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-analoginput"><strong>AnalogInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, bool reverse=false, uint16_t minRaw=0, uint16_t maxRaw=65535, uint16_t hysteresis=<a href="./#variable-default_hysteresis"><strong>DEFAULT_HYSTERESIS</strong></a>, uint8_t ewmaShift=<a href="./#variable-default_ewma_shift"><strong>DEFAULT_EWMA_SHIFT</strong></a>) <br><em>Construct a continuous analog input.</em></td>
+<td style="text-align: left;"><a href="#function-analoginput"><strong>AnalogInput</strong></a> (uint16_t controlId, <a href="../classPinRef/"><strong>PinRef</strong></a> pin, bool reverse=false, uint16_t minRaw=0, uint16_t maxRaw=65535, uint16_t hysteresis=<a href="./#variable-default_hysteresis"><strong>DEFAULT_HYSTERESIS</strong></a>, uint8_t ewmaShift=<a href="./#variable-default_ewma_shift"><strong>DEFAULT_EWMA_SHIFT</strong></a>, uint16_t pollMs=<a href="./#variable-default_poll_ms"><strong>DEFAULT_POLL_MS</strong></a>) <br><em>Construct a continuous analog input.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -4237,7 +4237,8 @@
 <h2 id="detailed-description">Detailed Description</h2>
 <p>A <strong>linear</strong> input, not a selector. It shares the MULTIPOS wire transport with the selector family only because DCS-BIOS <code>set_state</code> has no separate "continuous" dispatch — the 16-bit value is the control <em>position</em>, not an index.</p>
 <p>Read path (ports <a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <code>PotentiometerEWMA</code>): read the ADC (already 16-bit — STM32 ×16 or <a href="../classADS1115/"><strong>ADS1115</strong></a> ×2), clamp to <code>[minRaw, maxRaw]</code>, map to 0..65535 (reverse-aware), then apply an integer EWMA low-pass filter (α = 1/2^<code>ewmaShift</code>). A new value is emitted only when the smoothed value moves more than <code>hysteresis</code> counts from the last sent value, or when it reaches a rail (0 / 65535) moving toward it — so a settled pot is silent and the endpoints are always reached.</p>
-<p>The ADC is re-read at most every <code>POLL_MS</code> (8 ms); <code>forceReport()</code> samples fresh (bypassing the throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less STM32F103.</p>
+<p>The ADC is re-read at most every <code>pollMs</code> — a constructor parameter, default <code>DEFAULT_POLL_MS</code> (8 ms). It is <strong>per instance, not per node</strong>: two AnalogInputs on one board may read at different rates, and <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> owns no analog timer of its own (it calls <code>poll()</code> every iteration and lets each input decide). <code>forceReport()</code> samples fresh (bypassing the throttle) and emits the current value as the baseline. Integer EWMA (a shift, not a divide) keeps it cheap on the FPU-less STM32F103.</p>
+<p><code>pollMs</code> and <code>ewmaShift</code> are <strong>coupled</strong>: the filter time constant is τ ≈ 2^<code>ewmaShift</code> × <code>pollMs</code> — the defaults give 2^3 × 8 = 64 ms. Halving <code>pollMs</code> halves τ unless <code>ewmaShift</code> rises to match, so the two are chosen together, never one alone.</p>
 <p><a href="./#function-configure"><strong>configure()</strong></a> does not enable internal pull-ups; the wiper drives the pin directly.</p>
 <p>Used by: AN/ARC-51A VOL (volume potentiometer). </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
@@ -4253,15 +4254,15 @@
 </code></pre>
 <hr>
 
-<h3 id="variable-max_ewma_shift">variable MAX_EWMA_SHIFT</h3>
-<p><em>cap: scaled&lt;&lt;shift must fit int32 at full scale.</em> </p>
-<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::AnalogInput::MAX_EWMA_SHIFT;
+<h3 id="variable-default_poll_ms">variable DEFAULT_POLL_MS</h3>
+<p><em>default min interval between ADC reads (ms).</em> </p>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::AnalogInput::DEFAULT_POLL_MS;
 </code></pre>
 <hr>
 
-<h3 id="variable-poll_ms">variable POLL_MS</h3>
-<p><em>min interval between ADC reads (ms).</em> </p>
-<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::AnalogInput::POLL_MS;
+<h3 id="variable-max_ewma_shift">variable MAX_EWMA_SHIFT</h3>
+<p><em>cap: scaled&lt;&lt;shift must fit int32 at full scale.</em> </p>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::AnalogInput::MAX_EWMA_SHIFT;
 </code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
@@ -4274,7 +4275,8 @@
     uint16_t minRaw=0,
     uint16_t maxRaw=65535,
     uint16_t hysteresis=DEFAULT_HYSTERESIS,
-    uint8_t ewmaShift=DEFAULT_EWMA_SHIFT
+    uint8_t ewmaShift=DEFAULT_EWMA_SHIFT,
+    uint16_t pollMs=DEFAULT_POLL_MS
 ) 
 </code></pre>
 <p><strong>Parameters:</strong></p>
@@ -4286,6 +4288,7 @@
 <li><code>maxRaw</code> raw ADC value mapping to 65535 (default 65535). Above are clamped. </li>
 <li><code>hysteresis</code> output counts of movement required before a new value is emitted. </li>
 <li><code>ewmaShift</code> EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8). Capped to MAX_EWMA_SHIFT (15) — beyond that the int32 accumulator (scaled &lt;&lt; shift) would overflow at full scale. </li>
+<li><code>pollMs</code> min interval between ADC reads, ms (default 8). Per instance, not per node. Not clamped: 0 means read every loop iteration, which is legal but makes τ track the loop rate — not a controlled quantity. An <a href="../classADS1115/"><strong>ADS1115</strong></a> <a href="../classPinRef/"><strong>PinRef</strong></a> blocks ~8 ms per conversion whatever this says, so keep those at the default or higher. </li>
 </ul>
 <hr>
 

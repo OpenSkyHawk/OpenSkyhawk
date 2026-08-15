@@ -19,7 +19,7 @@ namespace OpenSkyhawk {
 
 AnalogInput::AnalogInput(uint16_t controlId, PinRef pin, bool reverse,
                          uint16_t minRaw, uint16_t maxRaw,
-                         uint16_t hysteresis, uint8_t ewmaShift)
+                         uint16_t hysteresis, uint8_t ewmaShift, uint16_t pollMs)
     : _controlId(controlId),
       _pin(pin),
       _reverse(reverse),
@@ -27,6 +27,7 @@ AnalogInput::AnalogInput(uint16_t controlId, PinRef pin, bool reverse,
       _maxRaw(maxRaw),
       _hysteresis(hysteresis),
       _ewmaShift(ewmaShift > MAX_EWMA_SHIFT ? MAX_EWMA_SHIFT : ewmaShift),
+      _pollMs(pollMs),          // not clamped: 0 = read every loop iteration (see header @param)
       _acc(0),
       _smoothed(0),
       _lastSent(0),
@@ -38,6 +39,9 @@ void AnalogInput::configure() {
 }
 
 uint16_t AnalogInput::readScaled() {
+#ifdef ANALOGINPUT_TEST
+    _readCount++;   // one ADC read, on every path: poll(), forceReport(), debugStep()
+#endif
     uint16_t raw =
 #ifdef ANALOGINPUT_TEST
         _testRawSet ? _testRaw :
@@ -96,7 +100,7 @@ void AnalogInput::poll() {
     if (!_initialized) return;
 
     uint32_t now = millis();
-    if (now - _lastReadMs < POLL_MS) return;        // throttle ADC reads
+    if (now - _lastReadMs < _pollMs) return;        // throttle ADC reads (0 = every iteration)
     _lastReadMs = now;
     sample();
 }
