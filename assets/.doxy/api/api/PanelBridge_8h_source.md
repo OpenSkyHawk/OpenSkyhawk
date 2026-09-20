@@ -40,6 +40,12 @@ namespace PanelBridge {
 
     void testDispatchDir(uint16_t controlId, uint16_t value);
 
+    void testDispatchAction(uint16_t controlId, uint16_t value);
+
+    void testFeedCanFrame(uint32_t canId, const uint8_t* data, uint8_t len);
+
+    uint32_t testDcsSendCount();
+
     void testHandleExport(uint16_t address, uint16_t value);
 
 #ifdef PANELBRIDGE_NODE_STATUS

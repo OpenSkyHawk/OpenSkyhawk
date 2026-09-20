@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1ActionButton" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::ActionButton</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
+    <includes refid="ActionButton_8h" local="no">ActionButton.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ActionButton_1a1423f22fd2b284d0326d9ce058b7411f" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::ActionButton::DEBOUNCE_MS</definition>
+        <argsstring></argsstring>
+        <name>DEBOUNCE_MS</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::DEBOUNCE_MS</qualifiedname>
+        <initializer>= 20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="53" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ActionButton_1a0492fa685ebb26a4b4cc39df6093e9e6" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::ActionButton::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="107" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ActionButton_1afdbca4a366416fef65117061882ce29c" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::ActionButton::_pin</definition>
+        <argsstring></argsstring>
+        <name>_pin</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::_pin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="108" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ActionButton_1a9583b2dc5149c60467f9f4b1d8e0f107" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ActionButton::_reverse</definition>
+        <argsstring></argsstring>
+        <name>_reverse</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::_reverse</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="109" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ActionButton_1a983e493415b7ad36d46982dcc3c6c2ad" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ActionButton::_lastPressed</definition>
+        <argsstring></argsstring>
+        <name>_lastPressed</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::_lastPressed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="110" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ActionButton_1aacd9059bfba412e4158b8d86144b3e40" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::ActionButton::_lastFireMs</definition>
+        <argsstring></argsstring>
+        <name>_lastFireMs</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::_lastFireMs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="111" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1ActionButton_1a55d13b2dd5d2964e301ea1b97e9e052c" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ActionButton::_initialized</definition>
+        <argsstring></argsstring>
+        <name>_initialized</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::_initialized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="112" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ActionButton_1a1a31c86f9edac1578028a421b45c6119" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::ActionButton::ActionButton</definition>
+        <argsstring>(uint16_t controlId, PinRef pin, bool reverse=false)</argsstring>
+        <name>ActionButton</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::ActionButton</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pin</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>reverse</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>Construct a momentary action button. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classPinRef" kindref="compound">PinRef</ref> for the button input pin (GPIO, MCP23017, or <ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref> &apos;165). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>false (default): active-LOW — board wiring holds HIGH, button pulls LOW. true: active-HIGH — board wiring holds LOW, button drives HIGH. <ref refid="classOpenSkyhawk_1_1ActionButton_1a3cebaec9658fe2db715f29a20c397714" kindref="member">configure()</ref> does not enable internal pull-ups; the schematic must provide the required pull-up, pull-down, or active drive. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="65" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.cpp" bodystart="17" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ActionButton_1aabb37477e23d2afe35ce097ac477ce16" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ActionButton::poll</definition>
+        <argsstring>() override</argsstring>
+        <name>poll</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::poll</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45">poll</reimplements>
+        <briefdescription>
+<para>Read the pin and emit one EVT_ACTION on a debounced press edge. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> during normal operation. No-op until <ref refid="classOpenSkyhawk_1_1ActionButton_1ab3d9d2f8aeea6361a02570bc69997dd2" kindref="member">forceReport()</ref> has been called at least once. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="73" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.cpp" bodystart="47" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ActionButton_1ab3d9d2f8aeea6361a02570bc69997dd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ActionButton::forceReport</definition>
+        <argsstring>() override</argsstring>
+        <name>forceReport</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::forceReport</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1a9e8a36653bdad44ba8fcf005a2f1cf92">forceReport</reimplements>
+        <briefdescription>
+<para>Establish the current pin state as the baseline. <bold>Emits nothing.</bold> </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> during the boot EVT burst and on every SYNC_REQ. Every other input class emits its current position here, which is idempotent for a switch — re-sending position 1 leaves the sim at 1. An action is not idempotent: emitting a TOGGLE would flip the sim switch on every resync, so this method is silent by design.</para>
+<para>It is not a no-op, though. Seeding the baseline is what stops a button that is <bold>physically held at boot</bold> from reading as a press edge on the first <ref refid="classOpenSkyhawk_1_1ActionButton_1aabb37477e23d2afe35ce097ac477ce16" kindref="member">poll()</ref> and firing an unwanted TOGGLE. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="87" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.cpp" bodystart="33" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ActionButton_1a3cebaec9658fe2db715f29a20c397714" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::ActionButton::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1InputBase_1abffbb409d2f7a53cb075550e5bd35c0c">configure</reimplements>
+        <briefdescription>
+<para>Configure the input pin. Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip.begin(). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Does not enable internal pull-ups; board wiring supplies the input bias.</para>
+<para><simplesect kind="note"><para>Must not be called from the constructor — MCP23017 register writes require the chip to be initialised first. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="97" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.cpp" bodystart="29" bodyend="31"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1ActionButton_1a47705858a0f55653f4cb625f1fcb2239" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::ActionButton::readPressed</definition>
+        <argsstring>() const</argsstring>
+        <name>readPressed</name>
+        <qualifiedname>OpenSkyhawk::ActionButton::readPressed</qualifiedname>
+        <briefdescription>
+<para>The single polarity interpretation — used by both <ref refid="classOpenSkyhawk_1_1ActionButton_1aabb37477e23d2afe35ce097ac477ce16" kindref="member">poll()</ref> and <ref refid="classOpenSkyhawk_1_1ActionButton_1ab3d9d2f8aeea6361a02570bc69997dd2" kindref="member">forceReport()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="105" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.cpp" bodystart="25" bodyend="27"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Momentary push button driving a control that latches in the sim. Self-registers into <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> list. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Emits <bold>one</bold> EVT_ACTION frame on the press edge and nothing on release. The payload value is a selector, not a magnitude: 0 means <computeroutput>TOGGLE</computeroutput>, which <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> renders as the DCS-BIOS action argument. The DCS-BIOS string never appears on this side of the bus.</para>
+<para><bold>What it is for.</bold> <computeroutput><ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref></computeroutput> sends absolute 0/1, so it needs a physical switch that latches. This class lets a <emphasis>momentary</emphasis> part drive a control that latches <emphasis>in the sim</emphasis>: DCS-BIOS reads the control&apos;s current value, flips it, and writes it back, so each press toggles and the state persists. Because the sim supplies the current value, the panel cannot desync from it — unlike a physical latching switch, whose position can disagree with the sim after a cold start, a keyboard binding, or a mission script. The trade-off is that a momentary button shows no state at a glance.</para>
+<para><bold>Only for controls that latch in the sim</bold> — DCS-BIOS <computeroutput>defineToggleSwitch</computeroutput>. Pointing this at a <computeroutput>definePushButton</computeroutput> control is wrong: those are <computeroutput>momentary_last_position</computeroutput>, and a TOGGLE latches them on until the next press. Use <computeroutput><ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref></computeroutput> for those.</para>
+<para>VALUE semantics (reverse = false, default): press (pin LOW — button closed, pulling pin to GND via board pull-up) — emit TOGGLE release (pin HIGH) — emit nothing</para>
+<para>Holding the button emits exactly once: the press edge is consumed and the state does not change again until release, so there is no interval at which it could begin repeating.</para>
+<para>Debounce: 20 ms of post-fire suppression, not a stability window. An action&apos;s first edge <emphasis>is</emphasis> the event, so waiting for the level to settle would only add latency. Suppressing after the send costs nothing and stops contact chatter — which matters here more than for a level-tracking switch, because every TOGGLE flips sim state: an even number of bounces cancels and an odd number flips, so the final position would otherwise depend on bounce parity.</para>
+<para><ref refid="classOpenSkyhawk_1_1ActionButton_1ab3d9d2f8aeea6361a02570bc69997dd2" kindref="member">forceReport()</ref> deliberately emits <bold>nothing</bold> — see its documentation. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::ActionButton</label>
+        <link refid="classOpenSkyhawk_1_1ActionButton"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OpenSkyhawk::ActionButton</label>
+        <link refid="classOpenSkyhawk_1_1ActionButton"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" line="51" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/ActionButton/ActionButton.h" bodystart="51" bodyend="113"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a0492fa685ebb26a4b4cc39df6093e9e6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a55d13b2dd5d2964e301ea1b97e9e052c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>_initialized</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1aacd9059bfba412e4158b8d86144b3e40" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>_lastFireMs</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a983e493415b7ad36d46982dcc3c6c2ad" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>_lastPressed</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1afdbca4a366416fef65117061882ce29c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>_pin</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a9583b2dc5149c60467f9f4b1d8e0f107" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>_reverse</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a1a31c86f9edac1578028a421b45c6119" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>ActionButton</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a3cebaec9658fe2db715f29a20c397714" prot="public" virt="virtual"><scope>OpenSkyhawk::ActionButton</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a1423f22fd2b284d0326d9ce058b7411f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>DEBOUNCE_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1ab3d9d2f8aeea6361a02570bc69997dd2" prot="public" virt="virtual"><scope>OpenSkyhawk::ActionButton</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1aabb37477e23d2afe35ce097ac477ce16" prot="public" virt="virtual"><scope>OpenSkyhawk::ActionButton</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1ActionButton_1a47705858a0f55653f4cb625f1fcb2239" prot="private" virt="non-virtual"><scope>OpenSkyhawk::ActionButton</scope><name>readPressed</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1addb3ef7b8d33fee0bcdd6db53f504040" prot="public" virt="virtual"><scope>OpenSkyhawk::ActionButton</scope><name>sampleTick</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

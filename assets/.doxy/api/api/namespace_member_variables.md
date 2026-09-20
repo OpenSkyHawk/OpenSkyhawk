@@ -5,6 +5,7 @@
 
 ## a
 
+* **ACTION\_TOGGLE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **ANALOG\_NC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **AXIS\_CAL\_SLOTS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 

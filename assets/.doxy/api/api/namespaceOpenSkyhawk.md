@@ -30,6 +30,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | Type | Name |
 | ---: | :--- |
 | struct | [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) <br>_One point on the acceleration curve (SwitecX25 form)._  |
+| class | [**ActionButton**](classOpenSkyhawk_1_1ActionButton.md) <br>_Momentary push button driving a control that latches in the sim. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) <br>_Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) <br>_Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._ |
 | struct | [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) <br>_Captured endpoints for one axis, unsigned 0–65535 throughout._  |
@@ -100,6 +101,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 | Type | Name |
 | ---: | :--- |
+|  constexpr uint16\_t | [**ACTION\_TOGGLE**](#variable-action_toggle)   = `0`<br>_Payload selector for the DCS-BIOS_ `TOGGLE` _action argument._ |
 |  constexpr uint16\_t | [**ANALOG\_NC**](#variable-analog_nc)   = `[**MultiPosInput::NO\_POSITION**](classOpenSkyhawk_1_1MultiPosInput.md#variable-no_position)`<br>`posVals[]` _sentinel: a position with no physical detent (no distinct voltage)._ |
 |  const float | [**EASE**](#variable-ease)   = `0.30f`<br> |
 |  const uint32\_t | [**FRAME\_MS**](#variable-frame_ms)   = `16`<br> |
@@ -549,6 +551,20 @@ constexpr uint8_t OpenSkyhawk::kSwitecDefaultAccelN;
 <hr>
 ## Public Static Attributes Documentation
 
+
+
+
+### variable ACTION\_TOGGLE 
+
+_Payload selector for the DCS-BIOS_ `TOGGLE` _action argument._
+```C++
+constexpr uint16_t OpenSkyhawk::ACTION_TOGGLE;
+```
+
+
+
+
+<hr>
 
 
 

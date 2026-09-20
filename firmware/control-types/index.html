@@ -4075,7 +4075,7 @@ not yet implemented</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Most control types are not implemented yet</p>
 <p>Implemented today: <strong>LED</strong>, <strong>DrumDisplay</strong>, and <strong>NeedleGauge</strong> (outputs) and <strong>Switch2Pos</strong> +
-<strong>SwitchMultiPos</strong> + <strong>AnalogMultiPos</strong> + <strong>Switch3Pos</strong> + <strong>AnalogInput</strong> + <strong>RotaryEncoder</strong> (inputs), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are
+<strong>SwitchMultiPos</strong> + <strong>AnalogMultiPos</strong> + <strong>Switch3Pos</strong> + <strong>AnalogInput</strong> + <strong>RotaryEncoder</strong> + <strong>ActionButton</strong> (inputs), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are
 hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
 NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos, AnalogMultiPos, Switch3Pos, AnalogInput, and RotaryEncoder are hardware-verified.
 Everything marked <em>Phase 4</em> or <em>Phase 5</em> below is specified but <strong>not yet written</strong> — don't expect it
@@ -4152,8 +4152,8 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </tr>
 <tr>
 <td><code>ActionButton</code></td>
-<td>Phase 4 — not started</td>
-<td>Momentary; fires on press only</td>
+<td><strong>Implemented</strong> (#116)</td>
+<td>Momentary button driving a control that latches <em>in the sim</em> — one <code>TOGGLE</code> per press, nothing on release. See the note below</td>
 </tr>
 <tr>
 <td><code>RotaryEncoder</code></td>
@@ -4189,6 +4189,24 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </table>
 <p>All inputs normalise analog sources to <strong>16-bit (0–65535)</strong> before sending. Inputs self-register
 at global scope; <code>PanelGroup::loop()</code> polls them and batches events into <code>EVT_n</code> CAN frames.</p>
+<div class="admonition note">
+<p class="admonition-title">ActionButton lets a momentary button drive a switch that latches in the sim</p>
+<p><code>Switch2Pos</code> sends the switch's absolute position, so it needs a physical part that latches.
+<code>ActionButton</code> instead sends one <code>TOGGLE</code> per press: DCS-BIOS reads the control's current
+value, flips it, and writes it back. Each press toggles and the state persists — so a plain
+momentary button can drive a two-position cockpit switch.</p>
+<p>A second benefit falls out of that. Because the sim supplies the current value, the panel
+<strong>cannot desync</strong>. A physical latching switch can end up disagreeing with the sim after a cold
+start, a keyboard binding, or a mission script, and then it physically lies about the state
+until you cycle it. A momentary button has no position to be wrong about.</p>
+<p>The trade-off is you lose at-a-glance state — the panel can't show you what's on without a
+separate indicator. OpenSkyhawk's own panels use real latching switches for that reason;
+<code>ActionButton</code> is here for builders who'd rather not source them.</p>
+<p><strong>Only for controls DCS-BIOS declares with <code>defineToggleSwitch</code></strong> — ones that latch in the sim.
+Pointing it at a <code>definePushButton</code> control is wrong: the sim tracks those by physical
+position, so a <code>TOGGLE</code> latches them <em>on</em> until the next press. A lamp-test button wired this
+way would stay lit. Use <code>Switch2Pos</code> for those.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">AngleSensor base class is a documented gap</p>
 <p><code>AngleSensorInput</code> wraps an <code>AngleSensor</code> abstract base (concrete <code>AS5600Sensor</code> /

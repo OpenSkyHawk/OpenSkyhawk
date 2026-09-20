@@ -4234,6 +4234,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#variable-action_toggle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable ACTION_TOGGLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-analog_nc" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4552,6 +4563,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1ActionButton/"><strong>ActionButton</strong></a> <br><em>Momentary push button driving a control that latches in the sim. Self-registers into</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>AnalogInput</strong></a> <br><em>Continuous analog input — one analog</em> <code>PinRef</code> <em>, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em></td>
 </tr>
 <tr>
@@ -4783,6 +4798,10 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-action_toggle"><strong>ACTION_TOGGLE</strong></a>   = <code>0</code><br><em>Payload selector for the DCS-BIOS</em> <code>TOGGLE</code> <em>action argument.</em></td>
+</tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
 <td style="text-align: left;"><a href="#variable-analog_nc"><strong>ANALOG_NC</strong></a>   = <code>[**MultiPosInput::NO\_POSITION**](classOpenSkyhawk_1_1MultiPosInput.md#variable-no_position)</code><br><code>posVals[]</code> <em>sentinel: a position with no physical detent (no distinct voltage).</em></td>
@@ -5068,6 +5087,12 @@
 </code></pre>
 <hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-action_toggle">variable ACTION_TOGGLE</h3>
+<p><em>Payload selector for the DCS-BIOS</em> <code>TOGGLE</code> <em>action argument.</em></p>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::ACTION_TOGGLE;
+</code></pre>
+<hr>
+
 <h3 id="variable-analog_nc">variable ANALOG_NC</h3>
 <p><code>posVals[]</code> <em>sentinel: a position with no physical detent (no distinct voltage).</em></p>
 <pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::ANALOG_NC;

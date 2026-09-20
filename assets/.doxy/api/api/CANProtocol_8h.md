@@ -84,6 +84,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 |  struct | [**\_\_attribute\_\_**](#function-__attribute__) ((packed)) <br>_Primary input/output routing packet. 4 bytes; two are batched for CTRL\_BCAST/EVT\_n._  |
 |  constexpr uint32\_t | [**canIdEcho**](#function-canidecho) (uint8\_t n) <br>_TEST\_SEQ echo frame ID for node n. Range 0x301-0x33F._  |
 |  constexpr uint32\_t | [**canIdEvt**](#function-canidevt) (uint8\_t n) <br>_Input event frame ID for node n. Range 0x201-0x23F._  |
+|  constexpr uint32\_t | [**canIdEvtAction**](#function-canidevtaction) (uint8\_t n) <br>_Action-input event frame ID for node n. ActionButton: the payload value is a selector, not a magnitude — 0 means_ `TOGGLE` _, the only argument DCS-BIOS's action interface defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F._ |
 |  constexpr uint32\_t | [**canIdEvtDir**](#function-canidevtdir) (uint8\_t n) <br>_Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it_ `INC` _/_`DEC` _for a DCS-BIOS fixed\_step control. Range 0x601-0x63F._ |
 |  constexpr uint32\_t | [**canIdEvtRel**](#function-canidevtrel) (uint8\_t n) <br>_Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a signed ±step (int16); the bridge formats it_ `%+d` _for a DCS-BIOS variable\_step control. Range 0x501-0x53F._ |
 |  constexpr uint32\_t | [**canIdHb**](#function-canidhb) (uint8\_t n) <br>_Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
@@ -437,6 +438,26 @@ constexpr uint32_t canIdEvt (
 
 
 
+
+<hr>
+
+
+
+### function canIdEvtAction 
+
+_Action-input event frame ID for node n. ActionButton: the payload value is a selector, not a magnitude — 0 means_ `TOGGLE` _, the only argument DCS-BIOS's action interface defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F._
+```C++
+constexpr uint32_t canIdEvtAction (
+    uint8_t n
+) 
+```
+
+
+
+This frame exists because an action is a _keyword_, not a number: the ABS value space is already spoken for as literal set\_state values, so `TOGGLE` has no integer to ride on — the same reason DIR exists for `INC`/`DEC`. 
+
+
+        
 
 <hr>
 

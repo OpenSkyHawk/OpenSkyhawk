@@ -156,6 +156,13 @@ static const DcsBiosInputEntry* lookupDcsEntry(uint16_t controlId) {
     return nullptr;
 }
 
+#ifdef PANELBRIDGE_TEST
+// Counts DCS-BIOS commands actually put on the wire — not drops, not unknown-controlId. A test
+// that only inspects the diag log cannot tell "routed" from "logged and discarded"; this lets one
+// assert the command was emitted.
+static uint32_t _testDcsSends = 0;
+#endif
+
 // Resolve controlId -> DCS-BIOS name and send it with the given arg string. The dispatch FORM
 // (the arg) is decided by the caller from the CAN frame the value arrived on (#147); the map
 // carries only the name.
@@ -169,6 +176,9 @@ static void sendDcs(uint16_t controlId, const char* arg) {
         return;
     }
     DcsBios::sendDcsBiosMessage(entry->name, arg);
+#ifdef PANELBRIDGE_TEST
+    ++_testDcsSends;
+#endif
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[BRIDGE] DCS -> \"")); d.print(entry->name);
@@ -200,6 +210,18 @@ static void dispatchDcsDir(uint16_t controlId, uint16_t value) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[BRIDGE] bad dir ctrl=0x")); d.print(controlId, HEX);
         d.print(F(" val=")); d.println(v);
+    }
+}
+
+// ACTION frame (canIdEvtAction): value is a selector, not a magnitude -> action (TOGGLE).
+// 0 is the only defined selector; anything else is a malformed slot -> drop + log, so a corrupt
+// value never flips a real cockpit switch.
+static void dispatchDcsAction(uint16_t controlId, uint16_t value) {
+    if (value == 0) sendDcs(controlId, "TOGGLE");
+    else if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] bad action ctrl=0x")); d.print(controlId, HEX);
+        d.print(F(" val=")); d.println(value);
     }
 }
 
@@ -236,6 +258,17 @@ static void dispatchDirSlot(uint16_t controlId, uint16_t value) {
     else if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[BRIDGE] drop dir ctrl=0x")); d.println(controlId, HEX);
+    }
+}
+
+// Action (canIdEvtAction) slot — DCS-routed only; value 0 -> TOGGLE (action).
+static void dispatchActionSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId >= CTRL_ID_DCS_MIN && controlId <= CTRL_ID_DCS_MAX)
+        dispatchDcsAction(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[BRIDGE] drop action ctrl=0x")); d.println(controlId, HEX);
     }
 }
 
@@ -326,6 +359,17 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
         dispatchDirSlot(pair.a.controlId, pair.a.value);
         if (pair.b.controlId != 0x0000)
             dispatchDirSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_ACTION_1 – EVT_ACTION_63: 8-byte ControlPacketPair; value 0 -> TOGGLE (action)
+    if (canId >= canIdEvtAction(1) && canId <= canIdEvtAction(MAX_NODE_ID)) {
+        if (len < 8) return;
+        ControlPacketPair pair;
+        memcpy(&pair, data, 8);
+        dispatchActionSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchActionSlot(pair.b.controlId, pair.b.value);
         return;
     }
 
@@ -523,6 +567,18 @@ void testDispatchRel(uint16_t controlId, uint16_t value) {
 
 void testDispatchDir(uint16_t controlId, uint16_t value) {
     dispatchDirSlot(controlId, value);
+}
+
+void testDispatchAction(uint16_t controlId, uint16_t value) {
+    dispatchActionSlot(controlId, value);
+}
+
+void testFeedCanFrame(uint32_t canId, const uint8_t* data, uint8_t len) {
+    onCanRx(canId, data, len);
+}
+
+uint32_t testDcsSendCount() {
+    return _testDcsSends;
 }
 
 void testHandleExport(uint16_t address, uint16_t value) {

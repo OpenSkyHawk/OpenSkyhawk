@@ -208,7 +208,7 @@ If the named CAN ID has a pending slot A, sends it with slot B as the null senti
 **Parameters:**
 
 
-* `canId` CAN\_ID\_CTRL\_BCAST, canIdEvt(NODE\_ID), canIdEvtRel(NODE\_ID), or canIdEvtDir(NODE\_ID). 
+* `canId` CAN\_ID\_CTRL\_BCAST, canIdEvt(NODE\_ID), canIdEvtRel(NODE\_ID), canIdEvtDir(NODE\_ID), or canIdEvtAction(NODE\_ID). 
 
 
 
@@ -449,7 +449,10 @@ void CANProtocol::sendBatched (
 
 
 
-Valid only for CAN\_ID\_CTRL\_BCAST and the batched event frames — canIdEvt(n) (absolute), canIdEvtRel(n) (RotaryEncoder REL), and canIdEvtDir(n) (RotaryEncoder DIR) — each with its own pending slot. Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two [**drain()**](namespaceCANProtocol.md#function-drain) calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).
+Valid only for CAN\_ID\_CTRL\_BCAST and the batched event frames — canIdEvt(n) (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two [**drain()**](namespaceCANProtocol.md#function-drain) calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).
+
+
+A frame ID with no batch slot is **silently discarded** — adding a batched frame means registering it in \_batches[] in begin(), not just defining its canId helper.
 
 
 
@@ -457,7 +460,7 @@ Valid only for CAN\_ID\_CTRL\_BCAST and the batched event frames — canIdEvt(n)
 **Parameters:**
 
 
-* `canId` CAN\_ID\_CTRL\_BCAST, canIdEvt(NODE\_ID), canIdEvtRel(NODE\_ID), or canIdEvtDir(NODE\_ID). 
+* `canId` CAN\_ID\_CTRL\_BCAST, canIdEvt(NODE\_ID), canIdEvtRel(NODE\_ID), canIdEvtDir(NODE\_ID), or canIdEvtAction(NODE\_ID). 
 * `pkt` ControlPacket to batch. 
 
 

@@ -4,7 +4,7 @@
 
 
 
-[**Namespace List**](namespaces.md) **>** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d46.md)
+[**Namespace List**](namespaces.md) **>** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d48.md)
 
 
 

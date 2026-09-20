@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d46/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/ActionButton_8h_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>File ActionButton.h - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#file-actionbuttonh" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              File ActionButton.h
             
           </span>
         </div>
@@ -3895,64 +3895,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Types Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enum-ledcolor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum LedColor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum ParserState
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -3971,48 +3913,48 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-ledcolor"><strong>LedColor</strong></a>  <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-ledcolor">enum LedColor</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::LedColor {
-    NONE,
-    RED,
-    GREEN
-};
-</code></pre>
-<hr>
+<h1 id="file-actionbuttonh">File ActionButton.h</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_480a13d53392c311de80938128d7c5e3/"><strong>ActionButton</strong></a> <strong>&gt;</strong> <a href="../ActionButton_8h/"><strong>ActionButton.h</strong></a></p>
+<p><a href="../ActionButton_8h/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<h3 id="enum-parserstate">enum ParserState</h3>
-<pre><code class="language-C++">enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserState {
-    IDLE,
-    GOT_AA,
-    IN_FRAME
-};
-</code></pre>
-<hr>
+#include &lt;PanelGroup.h&gt;  // InputBase, PinRef
 
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+namespace OpenSkyhawk {
+
+class ActionButton : public InputBase {
+public:
+    static constexpr uint32_t DEBOUNCE_MS = 20;
+
+    ActionButton(uint16_t controlId, PinRef pin, bool reverse = false);
+
+    void poll() override;
+
+    void forceReport() override;
+
+    void configure() override;
+
+    // sampleTick() is deliberately not overridden. RotaryEncoder needs it because quadrature
+    // transitions can be lost between loop iterations; a button press lasts 50–100 ms, far longer
+    // than any loop period, so the cached read is always current enough.
+
+private:
+    bool readPressed() const;
+
+    uint16_t _controlId;
+    PinRef   _pin;
+    bool     _reverse;        // true = active-HIGH (external pull-down required)
+    bool     _lastPressed;    // last observed level, in press-polarity
+    uint32_t _lastFireMs;     // millis() of the last emit — debounce reference
+    bool     _initialized;    // false until forceReport() is called; poll() no-op before this
+};
+
+}  // namespace OpenSkyhawk
+
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

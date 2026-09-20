@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d40/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/ActionButton_8cpp_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp} - OpenSkyhawk</title>
+        <title>File ActionButton.cpp - OpenSkyhawk</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp" class="md-skip">
+        <a href="#file-actionbuttoncpp" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}
+              File ActionButton.cpp
             
           </span>
         </div>
@@ -3913,10 +3913,78 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariespanelgrouppanelgroupcpp">Namespace anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a></p>
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PanelGroup/PanelGroup.cpp</code></p>
+<h1 id="file-actionbuttoncpp">File ActionButton.cpp</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_480a13d53392c311de80938128d7c5e3/"><strong>ActionButton</strong></a> <strong>&gt;</strong> <a href="../ActionButton_8cpp/"><strong>ActionButton.cpp</strong></a></p>
+<p><a href="../ActionButton_8cpp/">Go to the documentation of this file</a></p>
+<pre><code class="language-C++">
+#ifdef ARDUINO_ARCH_STM32
+
+#include &quot;ActionButton.h&quot;
+#include &lt;CANProtocol.h&gt;  // sendBatched, canIdEvtAction, ControlPacket
+#include &lt;STM32Board.h&gt;
+
+namespace OpenSkyhawk {
+
+static constexpr uint16_t ACTION_TOGGLE = 0;
+
+ActionButton::ActionButton(uint16_t controlId, PinRef pin, bool reverse)
+    : _controlId(controlId),
+      _pin(pin),
+      _reverse(reverse),
+      _lastPressed(false),
+      _lastFireMs(0),
+      _initialized(false) {}
+
+bool ActionButton::readPressed() const {
+    return _reverse ? _pin.read() : !_pin.read();
+}
+
+void ActionButton::configure() {
+    _pin.configureAsInput();
+}
+
+void ActionButton::forceReport() {
+    // Deliberately silent — emitting here would flip the sim switch on every SYNC_REQ.
+    // Seeding the baseline is the point: a button held at boot must not read as a press edge.
+    _lastPressed = readPressed();
+    _initialized = true;
+
+    if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[ACT] 0x&quot;)); d.print(_controlId, HEX);
+        d.print(F(&quot;: baseline &quot;)); d.print(_lastPressed ? F(&quot;pressed&quot;) : F(&quot;released&quot;));
+        d.println(F(&quot; (no emit)&quot;));
+    }
+}
+
+void ActionButton::poll() {
+    if (!_initialized) return;
+
+    // Post-fire suppression, not a stability window: the press edge is the event, so waiting for
+    // the level to settle would only add latency. Elapsed-time compare is wrap-correct.
+    if (millis() - _lastFireMs &lt; DEBOUNCE_MS) return;
+
+    const bool pressed = readPressed();
+    if (pressed == _lastPressed) return;   // no edge — covers the whole hold, however long
+
+    if (pressed) {                         // press edge only; release just re-arms
+        CANProtocol::sendBatched(canIdEvtAction(NODE_ID),
+                                 ControlPacket{_controlId, ACTION_TOGGLE});
+        _lastFireMs = millis();
+
+        if (STM32Board::isDebug()) {
+            auto&amp; d = STM32Board::diagSerial();
+            d.print(F(&quot;[ACT] 0x&quot;)); d.print(_controlId, HEX);
+            d.println(F(&quot;: TOGGLE&quot;));
+        }
+    }
+    _lastPressed = pressed;
+}
+
+}  // namespace OpenSkyhawk
+
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

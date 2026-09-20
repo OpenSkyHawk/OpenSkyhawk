@@ -6,6 +6,8 @@
 
 * [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**ActionButton**](classOpenSkyhawk_1_1ActionButton.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**ADS1115**](classADS1115.md)
 * [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))

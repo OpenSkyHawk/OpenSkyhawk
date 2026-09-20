@@ -4190,6 +4190,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-canidevtaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function canIdEvtAction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-canidevtdir" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4394,6 +4405,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#function-canidevtaction"><strong>canIdEvtAction</strong></a> (uint8_t n) <br><em>Action-input event frame ID for node n. ActionButton: the payload value is a selector, not a magnitude — 0 means</em> <code>TOGGLE</code> <em>, the only argument DCS-BIOS's action interface defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
 <td style="text-align: left;"><a href="#function-canidevtdir"><strong>canIdEvtDir</strong></a> (uint8_t n) <br><em>Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it</em> <code>INC</code> <em>/</em><code>DEC</code> <em>for a DCS-BIOS fixed_step control. Range 0x601-0x63F.</em></td>
 </tr>
 <tr>
@@ -4545,6 +4560,15 @@
     uint8_t n
 ) 
 </code></pre>
+<hr>
+
+<h3 id="function-canidevtaction">function canIdEvtAction</h3>
+<p><em>Action-input event frame ID for node n. ActionButton: the payload value is a selector, not a magnitude — 0 means</em> <code>TOGGLE</code> <em>, the only argument DCS-BIOS's action interface defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F.</em></p>
+<pre><code class="language-C++">constexpr uint32_t canIdEvtAction (
+    uint8_t n
+) 
+</code></pre>
+<p>This frame exists because an action is a <em>keyword</em>, not a number: the ABS value space is already spoken for as literal set_state values, so <code>TOGGLE</code> has no integer to ride on — the same reason DIR exists for <code>INC</code>/<code>DEC</code>. </p>
 <hr>
 
 <h3 id="function-canidevtdir">function canIdEvtDir</h3>

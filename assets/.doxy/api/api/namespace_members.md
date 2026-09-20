@@ -5,6 +5,7 @@
 
 ## a
 
+* **ACTION\_TOGGLE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **ANALOG\_NC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **AXIS\_CAL\_SLOTS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **aggregateFaults** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -96,7 +97,7 @@
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **logNodeFaultEdge** ([**STM32Board**](namespaceSTM32Board.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d46.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d48.md))
 
 
 ## m
@@ -128,7 +129,7 @@
 * **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d46.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d48.md))
 
 
 ## r
