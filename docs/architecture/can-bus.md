@@ -31,13 +31,19 @@ helper functions — **never hard-code these values**, always use the helper.
 | `TEST_SEQ` | `0x011` | `CAN_ID_TEST_SEQ` | PanelBridge → All | 8 |
 | `SYNC_REQ` | `0x012` | `CAN_ID_SYNC_REQ` | PanelBridge → All | 0 |
 | `HB_n` | `0x100 + n` | `canIdHb(n)` | Node *n* → PanelBridge | 8 |
+| `HEALTH_n` | `0x140 + n` | `canIdHealth(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_n` | `0x200 + n` | `canIdEvt(n)` | Node *n* → PanelBridge | 8 |
 | `ECHO_n` | `0x300 + n` | `canIdEcho(n)` | Node *n* → PanelBridge | 8 |
 | `READY_n` | `0x400 + n` | `canIdReady(n)` | Node *n* → PanelBridge | 0 |
+| `EVT_REL_n` | `0x500 + n` | `canIdEvtRel(n)` | Node *n* → PanelBridge | 8 |
+| `EVT_DIR_n` | `0x600 + n` | `canIdEvtDir(n)` | Node *n* → PanelBridge | 8 |
+| `EVT_ACTION_n` | `0x700 + n` | `canIdEvtAction(n)` | Node *n* → PanelBridge | 8 |
 
 - `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node.
 - `EVT_n` carries input events from a node back up to PanelBridge.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
+- `HEALTH_n` carries `NodeHealthPayload` — internal die temperature, and node
+  degraded/fault state as that lands.
 - `TEST_SEQ` / `ECHO_n` are a round-trip latency test: PanelBridge sends `TEST_SEQ`, a node
   echoes on `ECHO_n`.
 - `SYNC_REQ` / `READY_n` are the boot/resync handshake (below).
@@ -46,6 +52,23 @@ helper functions — **never hard-code these values**, always use the helper.
     `canIdHb(0)` (`0x100`) is reserved for PanelBridge and **is never transmitted** — the
     master has no consumer for its own heartbeat. Real nodes start at `canIdHb(1) = 0x101`.
     The old `CAN_ID_HB_1 = 0x100` constant is deprecated; use the `canIdHb(n)` helper.
+
+### Why there are four event frames, not one
+
+`EVT_n` carries an **absolute** value: the control's new position, as a number. Three inputs
+cannot say what they mean that way, so each gets its own frame rather than overloading the
+value space:
+
+| Frame | Payload | PanelBridge emits |
+|-------|---------|-------------------|
+| `EVT_REL_n` | signed ±step (`int16`) | `%+d` for a DCS-BIOS `variable_step` control |
+| `EVT_DIR_n` | signed ±1 (`int16`) | `INC` / `DEC` for a `fixed_step` control |
+| `EVT_ACTION_n` | selector, `0` = `TOGGLE` | `TOGGLE` — the only argument the action interface defines |
+
+`EVT_ACTION_n` exists because an action is a *keyword*, not a number: the absolute value space
+is already spoken for by literal `set_state` values, so `TOGGLE` has no integer to ride on —
+the same reason `EVT_DIR_n` exists for `INC`/`DEC`. A payload value other than `0` on
+`EVT_ACTION_n` is malformed and the bridge drops it.
 
 ## ControlPacket wire format
 
@@ -62,10 +85,14 @@ struct ControlPacketPair { ControlPacket a; ControlPacket b; };    // 8 bytes
   `controlId` ranges.
 - **`value`** is the payload — interpretation depends on the `controlId` range.
 
-`CTRL_BCAST` and `EVT_n` frames carry a **`ControlPacketPair`** so two packets share one
-8-byte frame. When only one packet is ready, slot B's `controlId` is set to the null sentinel
-`0x0000`. Batching is owned by `CANProtocol::sendBatched()` / `flushBatched()` — callers
-submit individual `ControlPacket`s and the library packs them.
+`CTRL_BCAST` and all four event frames — `EVT_n`, `EVT_REL_n`, `EVT_DIR_n` and
+`EVT_ACTION_n` — carry a **`ControlPacketPair`** so two packets share one 8-byte frame. Each
+has its own pending slot. When only one packet is ready, slot B's `controlId` is set to the
+null sentinel `0x0000`. Batching is owned by `CANProtocol::sendBatched()` / `flushBatched()` —
+callers submit individual `ControlPacket`s and the library packs them.
+
+A frame ID with no batch slot is **silently discarded**, so adding a batched frame means
+registering it in `_batches[]`, not just defining its `canId` helper.
 
 ## NODE_ID scheme (brief)
 
