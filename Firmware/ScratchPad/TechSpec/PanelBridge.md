@@ -138,7 +138,7 @@ build_src_filter = -<*> +<dual_integration/dual_integration.cpp>
 
 ```ini
 [env_base]
-platform = ststm32
+platform = ststm32@^20.0.0
 board = genericSTM32F103C8
 framework = arduino
 build_flags = -DNODE_ID=0 -DDCSBIOS_DEFAULT_SERIAL

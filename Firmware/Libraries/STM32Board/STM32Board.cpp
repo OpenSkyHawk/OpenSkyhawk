@@ -25,7 +25,7 @@ static LedState          _state      = LedState::OFF;
 static bool              _blinkPhase = false;
 static uint32_t          _ledLastMs  = 0;
 static bool              _debugOn    = false;
-static HardwareSerial    _diag(PA10, PA9);  // USART1: RX=PA10, TX=PA9
+static Uart              _diag(PA10, PA9);  // USART1: RX=PA10, TX=PA9
 static CAN_HandleTypeDef _hcan;
 
 // Derived-state inputs — arbitrated by _recompute() into the effective _state.
@@ -316,7 +316,7 @@ void log(const char* msg) {
     if (_debugOn) _diag.println(msg);
 }
 
-HardwareSerial& diagSerial()     { return _diag; }
+Uart& diagSerial()               { return _diag; }
 CAN_HandleTypeDef* canHandle()   { return &_hcan; }
 
 // ── Internal die-temperature telemetry ──────────────────────────────────────────

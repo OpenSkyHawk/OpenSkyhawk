@@ -89,7 +89,7 @@ production PCB uses Wire.begin() default PB6/PB7).
 src_dir = tests
 
 [env_base]
-platform = ststm32
+platform = ststm32@^20.0.0
 board = genericSTM32F103C8
 framework = arduino
 build_flags =
