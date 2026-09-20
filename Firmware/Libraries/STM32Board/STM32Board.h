@@ -140,9 +140,9 @@ namespace STM32Board {
      *
      * Guard with isDebug() to avoid formatting overhead when debug is off.
      *
-     * @returns Reference to the USART1 HardwareSerial instance.
+     * @returns Reference to the USART1 Uart instance.
      */
-    HardwareSerial& diagSerial();
+    Uart& diagSerial();
 
     /**
      * @brief Access the HAL CAN handle.

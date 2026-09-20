@@ -117,7 +117,7 @@ rather than in a PanelGroup-only test, because it requires two boards on a live 
 src_dir = tests
 
 [env_base]
-platform = ststm32
+platform = ststm32@^20.0.0
 board = genericSTM32F103C8
 framework = arduino
 build_flags =

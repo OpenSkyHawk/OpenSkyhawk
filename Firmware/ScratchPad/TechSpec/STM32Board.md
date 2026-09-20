@@ -109,7 +109,7 @@ STM32Board's private LED states, so both libraries must be in `lib_deps`:
 src_dir = tests
 
 [env_base]
-platform = ststm32
+platform = ststm32@^20.0.0
 board = genericSTM32F103C8
 framework = arduino
 build_flags =
@@ -247,9 +247,9 @@ namespace STM32Board {
      *
      * Guard with isDebug() to avoid formatting overhead when debug is off.
      *
-     * @returns Reference to the USART1 HardwareSerial instance.
+     * @returns Reference to the USART1 Uart instance.
      */
-    HardwareSerial& diagSerial();
+    Uart& diagSerial();
 
     /**
      * @brief Read the MCU internal die temperature (ADC ch16) as whole °C (#213).

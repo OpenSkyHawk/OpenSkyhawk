@@ -138,9 +138,9 @@ us. Two of these have already cost real debugging time.
 | Flag | Framework default | Set where | Read at |
 |---|---|---|---|
 | `HAL_CAN_MODULE_ENABLED` | **not** enabled | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `stm32f1xx_hal_conf_default.h:321` |
-| `HSE_VALUE` | already `8000000U` on F1 | `=8000000` in all templates, panels and examples, plus the CAN/board tests; 13 library-test envs omit it — harmlessly, since it equals the default | `stm32f1xx_hal_conf_default.h:82` |
-| `SERIAL_RX_BUFFER_SIZE` | `64` | PanelBridge envs, `=256` | `HardwareSerial.h:41` |
-| `I2C_TIMEOUT_TICK` | `100` | one E2E PanelGroup env, `=10` | `Wire/src/utility/twi.c:48` |
+| `HSE_VALUE` | already `8000000U` on F1 | `=8000000` in all templates, panels and examples, plus the CAN/board tests; 13 library-test envs omit it — harmlessly, since it equals the default | `stm32f1xx_hal_conf_default.h:86` |
+| `SERIAL_RX_BUFFER_SIZE` | `64` | PanelBridge envs, `=256` | `Serial.h:44` |
+| `I2C_TIMEOUT_TICK` | `100` | one E2E PanelGroup env, `=10` | `Wire/src/utility/twi.c:51` |
 | `USB_NONE` | *no such macro* | 10 `platformio.ini` files | **nowhere** — see below |
 | `USE_TINYUSB` | off | every RP2040 env | arduino-pico `platformio-build.py:242,325` |
 | `DCSBIOS_DEFAULT_SERIAL` | off | `#define` in the sketch, not `-D` | `PanelBridge.cpp:11` |

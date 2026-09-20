@@ -25,7 +25,7 @@ static const uint8_t ENC2_A = PB3, ENC2_B = PB4;   // DIR  ARC51_FREQ_10MHZ  (JT
 static const uint8_t POT1   = PA2;                 // AnalogInput    ARC51_VOL
 static const uint8_t POT2   = PA3;                 // AnalogMultiPos ARC51_MODE
 
-HardwareSerial Diag(PA10, PA9);   // USART1 (RX, TX)
+Uart Diag(PA10, PA9);   // USART1 (RX, TX)
 
 // Gray-code quadrature step for a prev->cur 2-bit state (A<<1|B): +1 / -1 on a valid edge, else 0.
 static int8_t qstep(uint8_t prev, uint8_t cur) {

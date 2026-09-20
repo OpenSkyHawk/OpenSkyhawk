@@ -58,7 +58,7 @@ that records calls. No physical GPIO or CAN bus required.
 
 ```ini
 [env_base]
-platform = ststm32
+platform = ststm32@^20.0.0
 board = genericSTM32F103C8
 framework = arduino
 build_flags = -DNODE_ID=1

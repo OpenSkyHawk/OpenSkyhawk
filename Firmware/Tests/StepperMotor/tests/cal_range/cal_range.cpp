@@ -8,7 +8,7 @@
 
 #include <Arduino.h>
 
-HardwareSerial dbg(PA10, PA9);               // RX=PA10, TX=PA9 — the board's DiagSerial header
+Uart dbg(PA10, PA9);   // RX=PA10, TX=PA9 — the board's DiagSerial header
 
 static const uint8_t PINS[4] = { PA0, PA1, PA4, PA5 };
 static const uint8_t SEQ[6]  = { 0x9, 0x1, 0x7, 0x6, 0xE, 0x8 };

@@ -95,7 +95,7 @@ are **SKIP** in loopback — see **Dual-Board Integration Tests** below.
 
 ```ini
 [env_base]
-platform = ststm32
+platform = ststm32@^20.0.0
 board = genericSTM32F103C8
 framework = arduino
 build_flags = -DNODE_ID=1 -DHAL_CAN_MODULE_ENABLED -DUSB_NONE -DHSE_VALUE=8000000
