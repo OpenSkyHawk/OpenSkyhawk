@@ -87,7 +87,15 @@ committed code under `Firmware/Libraries/`.
   wire format, `#define` contract — updates the authoritative `FirmwarePlan/` + `TechSpec/` doc in
   the **same PR**, listed as a deliverable and self-checked before push. The spec is source of
   truth; drift defeats it. Grep the old value/claim before pushing.
-- **Toolchain:** PlatformIO. STM32 = `platform = ststm32`, `framework = arduino`. RP2040 =
+- **Published docs sync too, when the change is visible from them.** A new control class, a new
+  CAN frame family, or a change to what an existing frame carries also updates `docs/firmware/`
+  and `docs/architecture/` in the **same PR** — at feature/overview altitude, not a second copy
+  of the TechSpec. Three pages go stale fastest: `docs/firmware/index.md` (what is built),
+  `docs/firmware/control-types.md` (per-class status), `docs/architecture/can-bus.md` (the frame
+  table). The weekly docs-drift review is a backstop for what slips through, not the mechanism —
+  in #284 four of five findings had been wrong since #124, #147 and #222 because each feature PR
+  left them behind.
+- **Toolchain:** PlatformIO. STM32 = `platform = ststm32@^20.0.0`, `framework = arduino`. RP2040 =
   `earlephilhower` core with `-DUSE_TINYUSB`.
 - **C++ standard:** any project using `DrumDisplay` needs `-std=gnu++20` +
   `build_unflags = -std=gnu++17` — its `DrumReadout` descriptors are C++20 designated

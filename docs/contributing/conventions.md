@@ -44,7 +44,27 @@ Pages and panels carry a consistent status (front-matter `status:`):
 | `stub` | Placeholder, contributions welcome |
 
 Don't present Phase 4/5 control types, planned panels, or the stepper driver as available — mark
-them honestly.
+them honestly. The reverse is just as wrong: don't leave a class that has shipped sitting in a
+"not yet implemented" list.
+
+## Ship docs with the feature
+
+If a change is visible from the published docs, update them in the **same PR** — a new control
+class, a new CAN frame family, or a change to what an existing frame carries. Three pages go
+stale fastest:
+
+| Page | What it must not lag |
+|------|----------------------|
+| [Firmware Overview](../firmware/index.md) | what is actually built |
+| [Control Types](../firmware/control-types.md) | per-class status |
+| [CAN Bus](../architecture/can-bus.md) | the frame ID table |
+
+Keep it at feature/overview altitude. The deep contracts live in `Firmware/ScratchPad/TechSpec/`;
+a published page points at them rather than copying them.
+
+The weekly docs drift review catches what slips through, but it is a backstop — it runs after the
+fact, and a finding can sit for weeks. Four of the five findings in #284 had been wrong since
+earlier merges, each one left behind by the PR that shipped the feature.
 
 ## CAD files
 
