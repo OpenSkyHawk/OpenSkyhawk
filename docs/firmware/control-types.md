@@ -56,7 +56,10 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | `SwitchWithCover2Pos` | Phase 4 — not started | Guarded switch (cover + switch) |
 
 All inputs normalise analog sources to **16-bit (0–65535)** before sending. Inputs self-register
-at global scope; `PanelGroup::loop()` polls them and batches events into `EVT_n` CAN frames.
+at global scope; `PanelGroup::loop()` polls them and batches events into CAN frames — `EVT_n`
+for an absolute value, `EVT_REL_n` and `EVT_DIR_n` for `RotaryEncoder`'s two modes, and
+`EVT_ACTION_n` for `ActionButton`. See [CAN Bus](../architecture/can-bus.md) for the frame IDs
+and why the event families are split.
 
 !!! note "ActionButton lets a momentary button drive a switch that latches in the sim"
     `Switch2Pos` sends the switch's absolute position, so it needs a physical part that latches.
