@@ -146,6 +146,13 @@ static const DcsBiosInputEntry* lookupDcsEntry(uint16_t controlId) {
     return nullptr;
 }
 
+#ifdef PANELBRIDGE_TEST
+// Counts DCS-BIOS commands actually put on the wire — not drops, not unknown-controlId. A test
+// that only inspects the diag log cannot tell "routed" from "logged and discarded"; this lets one
+// assert the command was emitted.
+static uint32_t _testDcsSends = 0;
+#endif
+
 // Resolve controlId -> DCS-BIOS name and send it with the given arg string. The dispatch FORM
 // (the arg) is decided by the caller from the CAN frame the value arrived on (#147); the map
 // carries only the name.
@@ -159,6 +166,9 @@ static void sendDcs(uint16_t controlId, const char* arg) {
         return;
     }
     DcsBios::sendDcsBiosMessage(entry->name, arg);
+#ifdef PANELBRIDGE_TEST
+    ++_testDcsSends;
+#endif
     if (STM32Board::isDebug()) {
         auto& d = STM32Board::diagSerial();
         d.print(F("[BRIDGE] DCS -> \"")); d.print(entry->name);
@@ -555,6 +565,10 @@ void testDispatchAction(uint16_t controlId, uint16_t value) {
 
 void testFeedCanFrame(uint32_t canId, const uint8_t* data, uint8_t len) {
     onCanRx(canId, data, len);
+}
+
+uint32_t testDcsSendCount() {
+    return _testDcsSends;
 }
 
 void testHandleExport(uint16_t address, uint16_t value) {

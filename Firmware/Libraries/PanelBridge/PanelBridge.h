@@ -121,6 +121,15 @@ namespace PanelBridge {
     void testFeedCanFrame(uint32_t canId, const uint8_t* data, uint8_t len);
 
     /**
+     * @brief Test seam — count of DCS-BIOS commands actually emitted since boot.
+     *
+     * Counts only commands put on the wire: a dropped slot, a malformed value and an unknown
+     * controlId all leave it unchanged. Sample it either side of a dispatch to assert that the
+     * command was routed, rather than reading the diag log by eye.
+     */
+    uint32_t testDcsSendCount();
+
+    /**
      * @brief Submit one DCS-BIOS export update directly, bypassing DcsBios::loop().
      *
      * Equivalent to the BridgeExportListener receiving address/value from DCS-BIOS.

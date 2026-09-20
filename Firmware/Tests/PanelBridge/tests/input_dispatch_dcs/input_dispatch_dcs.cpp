@@ -24,7 +24,13 @@
 //        [BRIDGE] drop ctrl=0x8700
 //        [BRIDGE] drop ctrl=0xFFFF
 //
-// Pass criteria (manual):
+// Pass criteria (automatic):
+//   Each case asserts itself against PanelBridge::testDcsSendCount(), which advances only when a
+//   command is actually emitted. DiagSerial prints [TEST] ok / [TEST] FAIL per case and a tally
+//   per cycle. A silently unrouted frame therefore fails on its own instead of depending on
+//   someone noticing a missing line on the USB-UART terminal.
+//
+// Pass criteria (manual, to confirm the wire format the counter cannot see):
 //   - Expected ASCII commands appear on USB-UART at correct interval
 //   - Out-of-range IDs produce drop log on DiagSerial and no output on USB-UART
 
@@ -61,7 +67,7 @@ static const Case CASES[] = {
     { ACTION, DCSIN_ARM_MASTER,    1,                        "ARM_MASTER ACTION 1 (malformed,drop)",false },
     { ACTION, 0x0100,              0,                        "ACTION HID-range 0x0100 (drop)",    false },
     { ACTION, 0x8700,              0,                        "ACTION out-of-range 0x8700 (drop)", false },
-    { RAW,    DCSIN_ARM_MASTER,    0,                        "ARM_MASTER via real 0x700+n frame", true  },
+    { RAW,    DCSIN_ARM_MASTER,    0,                        "ARM_MASTER via real 0x701 frame",   true  },
     { ABS, 0x8700,                 0,                        "0x8700 (drop)",                     false },
     { ABS, 0xFFFF,                 0,                        "0xFFFF (drop)",                     false },
 };
@@ -69,6 +75,14 @@ static const uint8_t CASE_COUNT = sizeof(CASES) / sizeof(CASES[0]);
 
 static uint8_t  _idx    = 0;
 static uint32_t _lastMs = 0;
+static uint16_t _passed = 0;
+static uint16_t _failed = 0;
+
+// PanelBridge is the bridge itself, so this env builds with NODE_ID=0 and onCanRx() accepts only
+// canIdEvtAction(1)..canIdEvtAction(MAX_NODE_ID) — a panel node, never its own ID. Sourcing the
+// RAW frame from NODE_ID would put it at 0x700, one below the range, and it would be dropped
+// before reaching the branch this case exists to exercise.
+static constexpr uint8_t RAW_SRC_NODE = 1;
 
 void setup() {
     STM32Board::diagSerial().begin(115200);
@@ -90,7 +104,11 @@ void loop() {
 
     if (_idx >= CASE_COUNT) {
         _idx = 0;
-        STM32Board::diagSerial().println(F("[TEST] --- cycle ---"));
+        auto& d = STM32Board::diagSerial();
+        d.print(F("[TEST] --- cycle --- passed=")); d.print(_passed);
+        d.print(F(" failed=")); d.println(_failed);
+        _passed = 0;
+        _failed = 0;
     }
 
     const Case& c = CASES[_idx++];
@@ -98,6 +116,8 @@ void loop() {
     d.print(F("[TEST] dispatch ")); d.println(c.label);
     if (c.expectOutput) d.println(F("[TEST] expect ASCII on USB-UART"));
     else                d.println(F("[TEST] expect drop (no USB-UART output)"));
+
+    const uint32_t sendsBefore = PanelBridge::testDcsSendCount();
 
     switch (c.kind) {
         case ABS: PanelBridge::testDispatchEvt(c.controlId, c.value); break;
@@ -110,9 +130,24 @@ void loop() {
             ControlPacketPair pair;
             pair.a = { c.controlId, c.value };
             pair.b = { 0x0000, 0 };
-            PanelBridge::testFeedCanFrame(canIdEvtAction(NODE_ID),
+            PanelBridge::testFeedCanFrame(canIdEvtAction(RAW_SRC_NODE),
                                           reinterpret_cast<const uint8_t*>(&pair), 8);
             break;
         }
+    }
+
+    // Every expectOutput case in CASES routes to DCS, so the counter is the whole verdict here:
+    // exactly one send when output is expected, none otherwise. (An expected-HID case would need
+    // a different witness — those live in input_dispatch_hid.)
+    const uint32_t sent = PanelBridge::testDcsSendCount() - sendsBefore;
+    const bool     ok   = c.expectOutput ? (sent == 1) : (sent == 0);
+    if (ok) {
+        ++_passed;
+        d.println(F("[TEST] ok"));
+    } else {
+        ++_failed;
+        d.print(F("[TEST] FAIL ")); d.print(c.label);
+        d.print(F(" sent=")); d.print(sent);
+        d.print(F(" expected=")); d.println(c.expectOutput ? 1 : 0);
     }
 }
