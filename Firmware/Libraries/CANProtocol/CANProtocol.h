@@ -117,6 +117,15 @@ constexpr uint32_t canIdEvtRel(uint8_t n) { return 0x500 + n; }
  *         Range 0x601-0x63F. */
 constexpr uint32_t canIdEvtDir(uint8_t n) { return 0x600 + n; }
 
+/** @brief Action-input event frame ID for node n. ActionButton: the payload value is a selector,
+ *         not a magnitude — 0 means `TOGGLE`, the only argument DCS-BIOS's action interface
+ *         defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F.
+ *
+ *         This frame exists because an action is a *keyword*, not a number: the ABS value space is
+ *         already spoken for as literal set_state values, so `TOGGLE` has no integer to ride on —
+ *         the same reason DIR exists for `INC`/`DEC`. */
+constexpr uint32_t canIdEvtAction(uint8_t n) { return 0x700 + n; }
+
 /** @brief TEST_SEQ echo frame ID for node n. Range 0x301-0x33F. */
 constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 
@@ -235,12 +244,16 @@ namespace CANProtocol {
      * @brief Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.
      *
      * Valid only for CAN_ID_CTRL_BCAST and the batched event frames — canIdEvt(n)
-     * (absolute), canIdEvtRel(n) (RotaryEncoder REL), and canIdEvtDir(n) (RotaryEncoder
-     * DIR) — each with its own pending slot. Pairs two consecutive packets into one
-     * 8-byte frame. If slot B does not arrive within two drain() calls, slot A is sent
-     * with slot B set to the null sentinel (controlId == 0x0000).
+     * (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder
+     * DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs
+     * two consecutive packets into one 8-byte frame. If slot B does not arrive within two
+     * drain() calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).
      *
-     * @param canId  CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID), or canIdEvtDir(NODE_ID).
+     * A frame ID with no batch slot is **silently discarded** — adding a batched frame means
+     * registering it in _batches[] in begin(), not just defining its canId helper.
+     *
+     * @param canId  CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID),
+     *               canIdEvtDir(NODE_ID), or canIdEvtAction(NODE_ID).
      * @param pkt    ControlPacket to batch.
      */
     void sendBatched(uint32_t canId, const ControlPacket& pkt);
@@ -251,7 +264,8 @@ namespace CANProtocol {
      * If the named CAN ID has a pending slot A, sends it with slot B as the null
      * sentinel. No-op if no packet is pending.
      *
-     * @param canId CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID), or canIdEvtDir(NODE_ID).
+     * @param canId CAN_ID_CTRL_BCAST, canIdEvt(NODE_ID), canIdEvtRel(NODE_ID),
+     *              canIdEvtDir(NODE_ID), or canIdEvtAction(NODE_ID).
      */
     void flushBatched(uint32_t canId);
 

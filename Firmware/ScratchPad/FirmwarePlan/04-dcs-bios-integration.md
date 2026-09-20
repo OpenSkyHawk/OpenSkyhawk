@@ -145,6 +145,7 @@ node emits on — **not** inferred from the JSON or stored in the map. The map c
 | `EVT_n` (`canIdEvt`, **ABS**) | absolute `uint16` | `sendDcsBiosMessage(name, "%u")` | `set_state` |
 | `EVT_REL_n` (`canIdEvtRel`, **REL**) | signed `±step` (`int16`) | `sendDcsBiosMessage(name, "%+d")` | `variable_step` |
 | `EVT_DIR_n` (`canIdEvtDir`, **DIR**) | signed `±1` (`int16`) | `sendDcsBiosMessage(name, "INC"/"DEC")` | `fixed_step` |
+| `EVT_ACTION_n` (`canIdEvtAction`, **ACTION**) | selector; `0` only | `sendDcsBiosMessage(name, "TOGGLE")` | `action` |
 
 > **Why the form is the frame, not a map field:** the *same* DCS control can be driven by different
 > physical classes — a `fixed_step+set_state` selector is ABS as a switch, DIR as an encoder — so the
@@ -161,6 +162,7 @@ node emits on — **not** inferred from the JSON or stored in the map. The map c
 | `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`, `AnalogMultiPos`, `AnalogInput` | `EVT_n` — ABS (`%u` → set_state) |
 | `RotaryEncoder` (REL mode) | `EVT_REL_n` — `±step` (`%+d` → variable_step) |
 | `RotaryEncoder` (DIR mode) | `EVT_DIR_n` — `±1` (INC/DEC → fixed_step) |
+| `ActionButton` | `EVT_ACTION_n` — selector `0` (TOGGLE → action) |
 | `RotaryAcceleratedEncoder` | `EVT_REL_n` — a larger `±step` at speed (REL subsumes acceleration) |
 
 ---

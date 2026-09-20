@@ -22,6 +22,8 @@ static_assert(canIdEvtRel(1)  == 0x501U, "canIdEvtRel(1) must be 0x501");
 static_assert(canIdEvtRel(63) == 0x53FU, "canIdEvtRel(63) must be 0x53F");
 static_assert(canIdEvtDir(1)  == 0x601U, "canIdEvtDir(1) must be 0x601");
 static_assert(canIdEvtDir(63) == 0x63FU, "canIdEvtDir(63) must be 0x63F");
+static_assert(canIdEvtAction(1)  == 0x701U, "canIdEvtAction(1) must be 0x701");
+static_assert(canIdEvtAction(63) == 0x73FU, "canIdEvtAction(63) must be 0x73F");
 static_assert(canIdEcho(1)  == 0x301U, "canIdEcho(1) must be 0x301");
 static_assert(canIdReady(1) == 0x401U, "canIdReady(1) must be 0x401");
 

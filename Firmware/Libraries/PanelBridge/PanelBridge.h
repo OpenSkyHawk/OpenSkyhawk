@@ -103,6 +103,32 @@ namespace PanelBridge {
     /** @brief Test seam — dispatch one directional (canIdEvtDir) slot: value ±1 → INC/DEC (fixed_step). */
     void testDispatchDir(uint16_t controlId, uint16_t value);
 
+    /** @brief Test seam — dispatch one action (canIdEvtAction) slot: value 0 → TOGGLE (action). */
+    void testDispatchAction(uint16_t controlId, uint16_t value);
+
+    /**
+     * @brief Test seam — feed a raw CAN frame through the full RX path.
+     *
+     * Enters *above* the frame-ID range branches, unlike the per-slot seams above. That is the
+     * point: a testDispatch*() seam calls its dispatcher directly and cannot detect a frame range
+     * that was never wired into onCanRx(). This one exercises length validation, range
+     * recognition, ControlPacketPair decoding, slot-B null-sentinel handling, and dispatch.
+     *
+     * @param canId  11-bit standard CAN ID, as received.
+     * @param data   Frame payload.
+     * @param len    Payload length in bytes.
+     */
+    void testFeedCanFrame(uint32_t canId, const uint8_t* data, uint8_t len);
+
+    /**
+     * @brief Test seam — count of DCS-BIOS commands actually emitted since boot.
+     *
+     * Counts only commands put on the wire: a dropped slot, a malformed value and an unknown
+     * controlId all leave it unchanged. Sample it either side of a dispatch to assert that the
+     * command was routed, rather than reading the diag log by eye.
+     */
+    uint32_t testDcsSendCount();
+
     /**
      * @brief Submit one DCS-BIOS export update directly, bypassing DcsBios::loop().
      *

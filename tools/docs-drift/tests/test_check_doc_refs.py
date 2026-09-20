@@ -182,6 +182,27 @@ def test_a_path_qualified_citation_is_not_satisfied_by_a_different_library(tmp_p
     assert run(root) == 1
 
 
+def test_a_stale_build_copy_cannot_mask_drift(tmp_path, capsys):
+    """Regression: PlatformIO's .pio/libdeps holds stale copies of every dependency.
+
+    Indexing them let a citation be satisfied by an old snapshot where the line had not yet
+    shifted, so the check passed locally and failed in CI — worse than no check at all. Found
+    when this checker's own repo had 107 copies of one source file.
+    """
+    root = build(
+        tmp_path,
+        source="int a;\nuint16_t pollMs = 8,\n#ifdef WIDGET_TEST\n",   # guard has moved to :3
+        page=HEADER + "| `WIDGET_TEST` | Widget | `Widget.h:2` |\n",
+    )
+    # A stale build copy where the guard is still at :2, exactly as PlatformIO would leave it.
+    stale = tmp_path / "Firmware" / "Tests" / "Thing" / ".pio" / "libdeps" / "env" / "Widget.h"
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text("int a;\n#ifdef WIDGET_TEST\n", encoding="utf-8")
+
+    assert run(root) == 1
+    assert "no longer contains WIDGET_TEST" in capsys.readouterr().out
+
+
 def test_no_citations_is_not_an_error(tmp_path):
     root = build(tmp_path, source="int a;\n", page="Prose with no citations.\n")
     assert run(root) == 0

@@ -211,15 +211,36 @@ Detection bands: half the distance to each neighbour (ignoring `ANALOG_NC` entri
 configurable dead-band (default 1000 counts). Polling rate: 8 ms. EVT sent only when resolved
 position changes.
 
-### ActionButton *(new)*
+### ActionButton
 
-Momentary push button. Sends one DCS-BIOS argument on press; nothing on release. VALUE: `1`
-(press only). Debounce: 20 ms fixed.
+Momentary push button driving a control that **latches in the sim**. Emits one `EVT_ACTION_n` frame
+on the press edge and nothing on release. Payload value is a selector, not a magnitude: `0` means
+`TOGGLE`, which PanelBridge renders as the DCS-BIOS action argument. The DCS-BIOS string never
+appears node-side.
 
 ```cpp
-OpenSkyhawk::ActionButton iffInc(DCSIN_IFF_CODE_INC, PinRef(exp1, PORT_A, 5));
-OpenSkyhawk::ActionButton iffDec(DCSIN_IFF_CODE_DEC, PinRef(exp1, PORT_A, 6));
+OpenSkyhawk::ActionButton armMaster(DCSIN_ARM_MASTER, PinRef(exp1, PORT_A, 5));
+OpenSkyhawk::ActionButton apcEnable(DCSIN_APC_ENABLE, PinRef(PB12), /*reverse=*/true);
 ```
+
+**Use it only for controls DCS-BIOS defines with `defineToggleSwitch`.** `TOGGLE` reads the
+control's current sim value, flips it, and writes it back — so each press toggles, the state
+persists, and the panel cannot desync from the sim. Pointing it at a `definePushButton` control is
+wrong: those are `momentary_last_position`, and a TOGGLE latches them on until the next press. Use
+`Switch2Pos` for those.
+
+Compared with `Switch2Pos`, which sends absolute 0/1 and therefore needs a physical latching switch:
+`ActionButton` lets a *momentary* part drive a latching sim control, and cannot fall out of sync the
+way a physical switch can after a cold start, keyboard binding, or mission script. The trade-off is
+no at-a-glance state.
+
+Debounce: 20 ms of post-fire suppression, not a stability window — an action's first edge *is* the
+event, so waiting for the level to settle would only add latency. Holding the button emits exactly
+once; the press edge is consumed and no further state change occurs until release.
+
+`forceReport()` **emits nothing** — an action is not idempotent, so emitting on the boot burst and
+every `SYNC_REQ` would flip the sim switch each time. It still seeds the baseline, which is what
+stops a button held at boot from reading as a press edge on the first `poll()`.
 
 ### RotaryEncoder *(new)*
 
