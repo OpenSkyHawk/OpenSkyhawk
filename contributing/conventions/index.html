@@ -2954,6 +2954,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ship-docs-with-the-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ship docs with the feature
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cad-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4103,6 +4114,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ship-docs-with-the-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ship docs with the feature
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cad-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4210,7 +4232,39 @@ straight back to the schematic.</p>
 </tbody>
 </table>
 <p>Don't present Phase 4/5 control types, planned panels, or the stepper driver as available — mark
-them honestly.</p>
+them honestly. The reverse is just as wrong: don't leave a class that has shipped sitting in a
+"not yet implemented" list.</p>
+<h2 id="ship-docs-with-the-feature">Ship docs with the feature</h2>
+<p>If a change is visible from the published docs, update them in the <strong>same PR</strong> — a new control
+class, a new CAN frame family, or a change to what an existing frame carries. Three pages go
+stale fastest:</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>What it must not lag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../../firmware/">Firmware Overview</a></td>
+<td>what is actually built</td>
+</tr>
+<tr>
+<td><a href="../../firmware/control-types/">Control Types</a></td>
+<td>per-class status</td>
+</tr>
+<tr>
+<td><a href="../../architecture/can-bus/">CAN Bus</a></td>
+<td>the frame ID table</td>
+</tr>
+</tbody>
+</table>
+<p>Keep it at feature/overview altitude. The deep contracts live in <code>Firmware/ScratchPad/TechSpec/</code>;
+a published page points at them rather than copying them.</p>
+<p>The weekly docs drift review catches what slips through, but it is a backstop — it runs after the
+fact, and a finding can sit for weeks. Four of the five findings in #284 had been wrong since
+earlier merges, each one left behind by the PR that shipped the feature.</p>
 <h2 id="cad-files">CAD files</h2>
 <ul>
 <li><strong>Source files</strong> (<code>.f3d</code> or <code>.FCStd</code>) are <strong>committed</strong> to the repo under <code>CAD/</code>.</li>

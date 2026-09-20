@@ -987,6 +987,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Frame ID scheme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-there-are-four-event-frames-not-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why there are four event frames, not one
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4045,6 +4062,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Frame ID scheme">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-there-are-four-event-frames-not-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why there are four event frames, not one
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4194,6 +4228,13 @@ helper functions — <strong>never hard-code these values</strong>, always use t
 <td>8</td>
 </tr>
 <tr>
+<td><code>HEALTH_n</code></td>
+<td><code>0x140 + n</code></td>
+<td><code>canIdHealth(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>8</td>
+</tr>
+<tr>
 <td><code>EVT_n</code></td>
 <td><code>0x200 + n</code></td>
 <td><code>canIdEvt(n)</code></td>
@@ -4214,12 +4255,35 @@ helper functions — <strong>never hard-code these values</strong>, always use t
 <td>Node <em>n</em> → PanelBridge</td>
 <td>0</td>
 </tr>
+<tr>
+<td><code>EVT_REL_n</code></td>
+<td><code>0x500 + n</code></td>
+<td><code>canIdEvtRel(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>EVT_DIR_n</code></td>
+<td><code>0x600 + n</code></td>
+<td><code>canIdEvtDir(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>EVT_ACTION_n</code></td>
+<td><code>0x700 + n</code></td>
+<td><code>canIdEvtAction(n)</code></td>
+<td>Node <em>n</em> → PanelBridge</td>
+<td>8</td>
+</tr>
 </tbody>
 </table>
 <ul>
 <li><code>CTRL_BCAST</code> carries DCS-BIOS output state from PanelBridge to every node.</li>
 <li><code>EVT_n</code> carries input events from a node back up to PanelBridge.</li>
 <li><code>HB_n</code> is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).</li>
+<li><code>HEALTH_n</code> carries <code>NodeHealthPayload</code> — internal die temperature, and node
+  degraded/fault state as that lands.</li>
 <li><code>TEST_SEQ</code> / <code>ECHO_n</code> are a round-trip latency test: PanelBridge sends <code>TEST_SEQ</code>, a node
   echoes on <code>ECHO_n</code>.</li>
 <li><code>SYNC_REQ</code> / <code>READY_n</code> are the boot/resync handshake (below).</li>
@@ -4230,6 +4294,40 @@ helper functions — <strong>never hard-code these values</strong>, always use t
 master has no consumer for its own heartbeat. Real nodes start at <code>canIdHb(1) = 0x101</code>.
 The old <code>CAN_ID_HB_1 = 0x100</code> constant is deprecated; use the <code>canIdHb(n)</code> helper.</p>
 </div>
+<h3 id="why-there-are-four-event-frames-not-one">Why there are four event frames, not one</h3>
+<p><code>EVT_n</code> carries an <strong>absolute</strong> value: the control's new position, as a number. Three inputs
+cannot say what they mean that way, so each gets its own frame rather than overloading the
+value space:</p>
+<table>
+<thead>
+<tr>
+<th>Frame</th>
+<th>Payload</th>
+<th>PanelBridge emits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EVT_REL_n</code></td>
+<td>signed ±step (<code>int16</code>)</td>
+<td><code>%+d</code> for a DCS-BIOS <code>variable_step</code> control</td>
+</tr>
+<tr>
+<td><code>EVT_DIR_n</code></td>
+<td>signed ±1 (<code>int16</code>)</td>
+<td><code>INC</code> / <code>DEC</code> for a <code>fixed_step</code> control</td>
+</tr>
+<tr>
+<td><code>EVT_ACTION_n</code></td>
+<td>selector, <code>0</code> = <code>TOGGLE</code></td>
+<td><code>TOGGLE</code> — the only argument the action interface defines</td>
+</tr>
+</tbody>
+</table>
+<p><code>EVT_ACTION_n</code> exists because an action is a <em>keyword</em>, not a number: the absolute value space
+is already spoken for by literal <code>set_state</code> values, so <code>TOGGLE</code> has no integer to ride on —
+the same reason <code>EVT_DIR_n</code> exists for <code>INC</code>/<code>DEC</code>. A payload value other than <code>0</code> on
+<code>EVT_ACTION_n</code> is malformed and the bridge drops it.</p>
 <h2 id="controlpacket-wire-format">ControlPacket wire format</h2>
 <p>Everything that routes a control is a <code>ControlPacket</code> — a 4-byte <code>{ controlId, value }</code> pair:</p>
 <pre><code class="language-cpp">struct ControlPacket     { uint16_t controlId; uint16_t value; };  // 4 bytes
@@ -4242,10 +4340,13 @@ struct ControlPacketPair { ControlPacket a; ControlPacket b; };    // 8 bytes
   <code>controlId</code> ranges.</li>
 <li><strong><code>value</code></strong> is the payload — interpretation depends on the <code>controlId</code> range.</li>
 </ul>
-<p><code>CTRL_BCAST</code> and <code>EVT_n</code> frames carry a <strong><code>ControlPacketPair</code></strong> so two packets share one
-8-byte frame. When only one packet is ready, slot B's <code>controlId</code> is set to the null sentinel
-<code>0x0000</code>. Batching is owned by <code>CANProtocol::sendBatched()</code> / <code>flushBatched()</code> — callers
-submit individual <code>ControlPacket</code>s and the library packs them.</p>
+<p><code>CTRL_BCAST</code> and all four event frames — <code>EVT_n</code>, <code>EVT_REL_n</code>, <code>EVT_DIR_n</code> and
+<code>EVT_ACTION_n</code> — carry a <strong><code>ControlPacketPair</code></strong> so two packets share one 8-byte frame. Each
+has its own pending slot. When only one packet is ready, slot B's <code>controlId</code> is set to the
+null sentinel <code>0x0000</code>. Batching is owned by <code>CANProtocol::sendBatched()</code> / <code>flushBatched()</code> —
+callers submit individual <code>ControlPacket</code>s and the library packs them.</p>
+<p>A frame ID with no batch slot is <strong>silently discarded</strong>, so adding a batched frame means
+registering it in <code>_batches[]</code>, not just defining its <code>canId</code> helper.</p>
 <h2 id="node_id-scheme-brief">NODE_ID scheme (brief)</h2>
 <p><code>NODE_ID</code> is a compile-time constant (<code>build_flags = -DNODE_ID=N</code> in <code>platformio.ini</code>), range
 0–63. <strong>0</strong> is PanelBridge (reserved); <strong>1–63</strong> are PanelGroup nodes, assigned incrementally

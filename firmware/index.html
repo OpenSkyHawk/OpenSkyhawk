@@ -4104,8 +4104,11 @@ source</strong> for any constant or API. When a doc and a header disagree, the h
 </tbody>
 </table>
 <h2 id="implementation-status">Implementation status</h2>
-<p>Be honest about what's built. Firmware is at the end of <strong>Phase 3</strong>, hardware-verified on
-2026-06-12 (11/11 tests pass).</p>
+<p>Be honest about what's built. Phase 3 is complete, and the phases after it have stopped
+running in order: most of Phase 4's input types have landed, Phase 5's outputs are part
+done, and Phase 6 has not started.</p>
+<p><a href="control-types/">Control Types</a> is the authority on per-class status, including which
+classes are hardware-verified. The summary below is a pointer, not a second source.</p>
 <div class="admonition note">
 <p class="admonition-title">What's implemented</p>
 <ul>
@@ -4114,20 +4117,21 @@ source</strong> for any constant or API. When a doc and a header disagree, the h
 <li>PanelBridge backbone (DCS-BIOS integration, <code>SYNC_REQ</code>, <code>TEST_SEQ</code>)</li>
 <li>SimGateway (HID demux: <code>HIDAxis</code>, <code>HIDButton</code>, <code>HIDHatSwitch</code>)</li>
 <li><code>PinRef</code> abstraction, PanelGroup core, MCP23017 management</li>
-<li><strong>LED</strong> output and <strong>Switch2Pos</strong> input (both confirmed on PinRef)</li>
+<li>Helpers — <code>ShiftBus</code> (shift-register expansion), <code>I2cMux</code>, <code>I2cHealth</code></li>
+<li><strong>Seven input classes</strong> — <code>Switch2Pos</code>, <code>Switch3Pos</code>, <code>SwitchMultiPos</code>,
+  <code>AnalogMultiPos</code>, <code>AnalogInput</code>, <code>RotaryEncoder</code> (REL/DIR), <code>ActionButton</code></li>
+<li><strong>Three output classes</strong> — <code>LED</code>, <code>DrumDisplay</code>, <code>NeedleGauge</code></li>
 </ul>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Not yet implemented</p>
 <ul>
-<li><strong>Phase 4 input types</strong> — Switch3Pos, SwitchMultiPos, ActionButton, AnalogInput,
-  RotaryEncoder, RotaryAcceleratedEncoder, RotarySwitch, AnalogMultiPos, AngleSensorInput,
-  SwitchWithCover2Pos</li>
-<li><strong>Phase 5 output types</strong> — AnalogOutput, IntegerOutput. (<code>NeedleGauge</code> is
+<li><strong>Input types</strong> — <code>RotaryAcceleratedEncoder</code>, <code>RotarySwitch</code>, <code>AngleSensorInput</code>,
+  <code>SwitchWithCover2Pos</code></li>
+<li><strong>Phase 5 output types</strong> — <code>AnalogOutput</code>, <code>IntegerOutput</code>. (<code>NeedleGauge</code> is
   <strong>implemented</strong> and supersedes the former SwitecX25Output / AccelStepperOutput / ServoOutput.)</li>
 <li><strong>Phase 6</strong> — the Center_Armament PanelGroup sketch rewrite and end-to-end integration</li>
 </ul>
-<p>See <a href="control-types/">Control Types</a> for the full list with status.</p>
 </div>
 <h2 id="in-this-section">In this section</h2>
 <ul>

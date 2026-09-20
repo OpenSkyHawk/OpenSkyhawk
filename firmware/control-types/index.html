@@ -4188,7 +4188,10 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </tbody>
 </table>
 <p>All inputs normalise analog sources to <strong>16-bit (0–65535)</strong> before sending. Inputs self-register
-at global scope; <code>PanelGroup::loop()</code> polls them and batches events into <code>EVT_n</code> CAN frames.</p>
+at global scope; <code>PanelGroup::loop()</code> polls them and batches events into CAN frames — <code>EVT_n</code>
+for an absolute value, <code>EVT_REL_n</code> and <code>EVT_DIR_n</code> for <code>RotaryEncoder</code>'s two modes, and
+<code>EVT_ACTION_n</code> for <code>ActionButton</code>. See <a href="../../architecture/can-bus/">CAN Bus</a> for the frame IDs
+and why the event families are split.</p>
 <div class="admonition note">
 <p class="admonition-title">ActionButton lets a momentary button drive a switch that latches in the sim</p>
 <p><code>Switch2Pos</code> sends the switch's absolute position, so it needs a physical part that latches.
