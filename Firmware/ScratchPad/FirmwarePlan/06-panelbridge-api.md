@@ -110,7 +110,7 @@ Receive a ControlPacketPair on one of the event frames:
 │   │     DIR → sendDcsBiosMessage(name, "INC"/"DEC")  (fixed_step, sign of ±1)
 │   │     ACTION → sendDcsBiosMessage(name, "TOGGLE")  (action, selector 0 only)
 │   │     → raw ASCII on UART → SimGateway → USB CDC → DCS
-│   │     (REL/DIR are DCS-routed only; a HID-range controlId on those frames is dropped)
+│   │     (REL/DIR/ACTION are DCS-routed only; a HID-range controlId on those frames is dropped)
 │
 │   └── controlId < 0x8000   →  wrap in HID frame (ABS frame only; see 03-uart-usb-hid-protocol.md)
 │         send over UART to SimGateway
