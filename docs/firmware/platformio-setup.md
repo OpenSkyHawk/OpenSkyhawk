@@ -14,7 +14,7 @@ project. Start from the templates in `Firmware/Templates/` — **not** from an e
 
 ```ini
 [env:PanelGroup]
-platform = ststm32@^20.0.0        ; pinned on purpose — see note below
+platform = ststm32@^20.0.0        ; major held on purpose — see note below
 board = genericSTM32F103C8        ; STM32F103C8 for nodes (see board note below)
 framework = arduino
 board_build.f_cpu = 72000000L
@@ -53,13 +53,16 @@ is that `USBCON` is never defined. Leave the flag in place as documentation of t
 For every flag in this file — plus the ones that aren't, their defaults, and where each is read —
 see [Build Flags](build-flags.md).
 
-!!! warning "Keep the platform version pinned"
-    The `@^20.0.0` is deliberate — don't drop it back to a bare `platform = ststm32`. An unpinned
-    platform is resolved to whatever is newest at build time, so an upstream release lands in your
-    build with no change on our side. That is exactly how the weekly firmware build went red for
-    two weeks: `ststm32` 20.0.0 arrived with STM32 Arduino core **3.0.0**, which renamed the
-    `HardwareSerial` class (see below), and every STM32 project stopped compiling at once.
-    Bump the pin on purpose, in a PR, with a full build behind it.
+!!! warning "Keep the version constraint"
+    The `@^20.0.0` is deliberate — don't drop it back to a bare `platform = ststm32`. An
+    unconstrained platform resolves to whatever is newest at build time, so an upstream release
+    lands in your build with no change on our side. That is exactly how the weekly firmware build
+    went red for two weeks: `ststm32` 20.0.0 arrived with STM32 Arduino core **3.0.0**, which
+    renamed the `HardwareSerial` class (see below), and every STM32 project stopped compiling.
+
+    The caret accepts 20.x — new boards and Cube HAL patches still flow in — but blocks the next
+    major, which is where a break of that kind comes from. Crossing a major is a deliberate change:
+    do it in a PR, with a full build behind it.
 
 !!! note "Declaring your own UART: use `Uart`, not `HardwareSerial`"
     Core 3.0.0 adopted ArduinoCore-API. The concrete STM32 serial class is now **`Uart`**, and the
