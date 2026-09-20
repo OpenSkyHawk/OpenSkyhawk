@@ -4196,7 +4196,7 @@
 <td style="text-align: left;"><a href="#function-clockfault"><strong>clockFault</strong></a> () <br><em>True if SystemClock_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245).</em></td>
 </tr>
 <tr>
-<td style="text-align: right;">HardwareSerial &amp;</td>
+<td style="text-align: right;">Uart &amp;</td>
 <td style="text-align: left;"><a href="#function-diagserial"><strong>diagSerial</strong></a> () <br><em>Access DiagSerial directly for multi-field formatted output.</em></td>
 </tr>
 <tr>
@@ -4280,11 +4280,11 @@
 
 <h3 id="function-diagserial">function diagSerial</h3>
 <p><em>Access DiagSerial directly for multi-field formatted output.</em> </p>
-<pre><code class="language-C++">HardwareSerial &amp; STM32Board::diagSerial () 
+<pre><code class="language-C++">Uart &amp; STM32Board::diagSerial () 
 </code></pre>
 <p>Guard with <a href="./#function-isdebug"><strong>isDebug()</strong></a> to avoid formatting overhead when debug is off.</p>
 <p><strong>Returns:</strong></p>
-<p>Reference to the USART1 HardwareSerial instance. </p>
+<p>Reference to the USART1 Uart instance. </p>
 <hr>
 
 <h3 id="function-isdebug">function isDebug</h3>

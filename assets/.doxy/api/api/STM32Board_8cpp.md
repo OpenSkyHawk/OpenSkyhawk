@@ -90,7 +90,7 @@
 |  void | [**\_applyLed**](#function-_applyled) () <br> |
 |  uint16\_t | [**\_blinkPeriodFor**](#function-_blinkperiodfor) ([**LedState**](STM32Board_8cpp.md#enum-ledstate) s) <br> |
 |  void | [**\_configAdcClock**](#function-_configadcclock) (void) <br> |
-|  HardwareSerial | [**\_diag**](#function-_diag) (PA10, PA9) <br> |
+|  Uart | [**\_diag**](#function-_diag) (PA10, PA9) <br> |
 |  void | [**\_recompute**](#function-_recompute) () <br> |
 
 
@@ -389,7 +389,7 @@ static void _configAdcClock (
 ### function \_diag 
 
 ```C++
-static HardwareSerial _diag (
+static Uart _diag (
     PA10,
     PA9
 ) 

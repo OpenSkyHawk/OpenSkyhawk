@@ -60,7 +60,7 @@
 |  void | [**begin**](#function-begin) () <br>_Initialise all shared hardware. Call once at the top of setup()._  |
 |  CAN\_HandleTypeDef \* | [**canHandle**](#function-canhandle) () <br>_Access the HAL CAN handle._  |
 |  bool | [**clockFault**](#function-clockfault) () <br>_True if SystemClock\_Config could not lock the intended 72 MHz HSE tree and fell back to internal RC (issue #245)._  |
-|  HardwareSerial & | [**diagSerial**](#function-diagserial) () <br>_Access DiagSerial directly for multi-field formatted output._  |
+|  Uart & | [**diagSerial**](#function-diagserial) () <br>_Access DiagSerial directly for multi-field formatted output._  |
 |  bool | [**isDebug**](#function-isdebug) () <br>_Returns true when debug output is enabled._  |
 |  void | [**log**](#function-log) (const char \* msg) <br>_Print a line to DiagSerial if debug is enabled; no-op otherwise._  |
 |  void | [**logNodeFaultEdge**](#function-lognodefaultedge) (const char \* tag, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault, const char \* detail) <br>_Edge-log a node's fault transition to DiagSerial (#163)._  |
@@ -206,7 +206,7 @@ When set, the CAN bit timing (tuned for 36 MHz APB1) is wrong for the actual clo
 
 _Access DiagSerial directly for multi-field formatted output._ 
 ```C++
-HardwareSerial & STM32Board::diagSerial () 
+Uart & STM32Board::diagSerial () 
 ```
 
 
@@ -218,7 +218,7 @@ Guard with [**isDebug()**](namespaceSTM32Board.md#function-isdebug) to avoid for
 
 **Returns:**
 
-Reference to the USART1 HardwareSerial instance. 
+Reference to the USART1 Uart instance. 
 
 
 

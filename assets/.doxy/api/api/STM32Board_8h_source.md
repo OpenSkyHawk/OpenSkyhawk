@@ -61,7 +61,7 @@ namespace STM32Board {
 
     void log(const char* msg);
 
-    HardwareSerial& diagSerial();
+    Uart& diagSerial();
 
     CAN_HandleTypeDef* canHandle();
 
