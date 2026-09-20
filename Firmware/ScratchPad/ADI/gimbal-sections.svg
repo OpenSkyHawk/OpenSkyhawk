@@ -1,0 +1,178 @@
+<svg viewBox="0 0 940 620" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .t  { font-size: 15px; font-weight: bold; fill: #222; }
+    .l  { font-size: 11.5px; fill: #333; }
+    .s  { font-size: 10px; fill: #666; }
+    .lead { stroke: #999; stroke-width: 1; fill: none; }
+    .dim  { stroke: #555; stroke-width: 1; fill: none; }
+  </style>
+  <rect x="0" y="0" width="940" height="620" fill="#ffffff"/>
+  <text x="20" y="28" class="t">A-4E 3-axis ADI ball — gimbal sections (schematic, not to scale)</text>
+  <text x="20" y="46" class="s">Ball Ø100 mm · face 127 mm (ID-1329/A) · nesting: roll → pitch → yaw · design doc: adi-3axis-design.md</text>
+
+  <!-- ================= PANEL A : FRONT SECTION ================= -->
+  <text x="30" y="82" class="t" font-size="13">A — front section (looking aft)</text>
+
+  <!-- case -->
+  <rect x="100" y="170" width="260" height="260" rx="10" fill="#f4f4f2" stroke="#444" stroke-width="1.5"/>
+
+  <!-- roll gimbal ring (annulus) -->
+  <circle cx="230" cy="300" r="112" fill="#e8d9a8" stroke="#a08830" stroke-width="1.5"/>
+  <circle cx="230" cy="300" r="98"  fill="#f4f4f2" stroke="#a08830" stroke-width="1"/>
+
+  <!-- pitch trunnions -->
+  <rect x="120" y="293" width="26" height="14" fill="#b9b9b9" stroke="#555"/>
+  <rect x="314" y="293" width="26" height="14" fill="#b9b9b9" stroke="#555"/>
+  <!-- SR2 capsule on left trunnion -->
+  <rect x="118" y="290" width="14" height="20" fill="#f0b0b0" stroke="#b04040" stroke-width="1.5"/>
+  <!-- pitch drive gear on right trunnion -->
+  <circle cx="322" cy="300" r="11" fill="none" stroke="#555" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+  <!-- ball : sky over ground -->
+  <clipPath id="ballA"><circle cx="230" cy="300" r="88"/></clipPath>
+  <circle cx="230" cy="300" r="88" fill="#cfe3f5" stroke="#345" stroke-width="1.5"/>
+  <rect x="142" y="300" width="176" height="88" clip-path="url(#ballA)" fill="#b5875a"/>
+  <line x1="142" y1="300" x2="318" y2="300" stroke="#fff" stroke-width="2"/>
+  <circle cx="230" cy="300" r="88" fill="none" stroke="#345" stroke-width="1.5"/>
+
+  <!-- yaw shaft + poles -->
+  <rect x="226" y="216" width="8" height="168" fill="#8d8d8d" stroke="#555"/>
+  <rect x="220" y="209" width="20" height="10" fill="#6f6f6f" stroke="#444"/>
+  <rect x="220" y="381" width="20" height="10" fill="#6f6f6f" stroke="#444"/>
+
+  <!-- ball chassis: yaw motor (left) + pitch motor (right) self-balancing pair + board -->
+  <circle cx="230" cy="346" r="16" fill="none" stroke="#444" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <circle cx="206" cy="346" r="8"  fill="none" stroke="#4a7a4a" stroke-width="1.2" stroke-dasharray="2 2"/>
+  <rect x="160" y="332" width="32" height="28" rx="3" fill="#c9d8c9" stroke="#4a7a4a" stroke-width="1.5"/>
+  <rect x="264" y="316" width="32" height="28" rx="3" fill="#c9d8c9" stroke="#4a7a4a" stroke-width="1.5"/>
+  <circle cx="304" cy="304" r="6" fill="none" stroke="#4a7a4a" stroke-width="1.2" stroke-dasharray="2 2"/>
+  <rect x="168" y="238" width="34" height="18" rx="2" fill="#f5e6b8" stroke="#a08830" stroke-width="1.2"/>
+  <!-- yaw hall -->
+  <rect x="238" y="240" width="8" height="8" fill="#e6c34a" stroke="#8a7420"/>
+
+  <!-- roll axis symbol -->
+  <circle cx="230" cy="300" r="5" fill="#fff" stroke="#222" stroke-width="1.2"/>
+  <circle cx="230" cy="300" r="1.6" fill="#222"/>
+
+  <!-- 127 mm dimension -->
+  <line x1="86" y1="170" x2="86" y2="430" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <text x="60" y="304" class="s" transform="rotate(-90 60 304)" text-anchor="middle">127 mm face</text>
+
+  <!-- labels, panel A -->
+  <text x="140" y="140" class="l">roll gimbal ring (full ring, not half-arm)</text>
+  <path class="lead" d="M200,145 L185,222"/>
+  <text x="24" y="238" class="l" text-anchor="start">SR2 8-wire micro</text>
+  <text x="24" y="251" class="l">pitch trunnion</text>
+  <path class="lead" d="M70,256 L120,292"/>
+  <text x="365" y="270" class="l">grounded trunnion gear</text>
+  <path class="lead" d="M363,266 L332,294"/>
+  <text x="365" y="340" class="l">pitch motor (ball</text>
+  <text x="365" y="353" class="l">chassis) walks gear</text>
+  <path class="lead" d="M363,336 L298,330"/>
+  <text x="252" y="163" class="l">shell pole — 4 screws</text>
+  <path class="lead" d="M268,167 L238,207"/>
+  <text x="330" y="405" class="l">yaw motor + gear — pitch/yaw</text>
+  <text x="330" y="418" class="l">pair self-balances on chassis</text>
+  <path class="lead" d="M328,402 L226,348"/>
+  <text x="255" y="235" class="l">yaw Hall</text>
+  <path class="lead" d="M253,238 L247,243"/>
+  <text x="90" y="203" class="l">'595/ULN/'165</text>
+  <text x="90" y="216" class="l">board (in ball)</text>
+  <path class="lead" d="M148,220 L176,240"/>
+  <text x="120" y="455" class="l">roll axis ⊥ page — motor + SR1 behind (view B)</text>
+  <path class="lead" d="M200,443 L228,308"/>
+  <text x="150" y="475" class="s">ball Ø100 — shell caps bolt to shaft poles, split ⊥ yaw shaft; fixed equator ring (chassis) hidden in the seam</text>
+
+  <!-- ================= PANEL B : SIDE SECTION ================= -->
+  <text x="500" y="82" class="t" font-size="13">B — side section (viewed from pilot's left)</text>
+
+  <!-- case + bezel -->
+  <path d="M516,170 H880 V430 H516" fill="none" stroke="#444" stroke-width="1.5"/>
+  <rect x="498" y="176" width="12" height="248" fill="#3a3a3a"/>
+  <line x1="514" y1="182" x2="514" y2="418" stroke="#7ab" stroke-width="2"/>
+
+  <!-- ball -->
+  <clipPath id="ballB"><circle cx="620" cy="300" r="88"/></clipPath>
+  <circle cx="620" cy="300" r="88" fill="#cfe3f5" stroke="#345" stroke-width="1.5"/>
+  <rect x="532" y="300" width="176" height="88" clip-path="url(#ballB)" fill="#b5875a"/>
+  <line x1="532" y1="300" x2="708" y2="300" stroke="#fff" stroke-width="2"/>
+  <circle cx="620" cy="300" r="88" fill="none" stroke="#345" stroke-width="1.5"/>
+
+  <!-- yaw shaft + poles -->
+  <rect x="616" y="216" width="8" height="168" fill="#8d8d8d" stroke="#555"/>
+  <rect x="610" y="209" width="20" height="10" fill="#6f6f6f" stroke="#444"/>
+  <rect x="610" y="381" width="20" height="10" fill="#6f6f6f" stroke="#444"/>
+
+  <!-- roll yoke (edge-on) + arms to trunnions -->
+  <rect x="722" y="212" width="16" height="176" fill="#e8d9a8" stroke="#a08830" stroke-width="1.5"/>
+  <path d="M722,232 Q660,240 634,292" fill="none" stroke="#a08830" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <path d="M722,368 Q660,360 634,308" fill="none" stroke="#a08830" stroke-width="1.5" stroke-dasharray="5 3"/>
+
+  <!-- hollow roll shaft -->
+  <rect x="738" y="291" width="122" height="18" fill="#b9b9b9" stroke="#555" stroke-width="1.2"/>
+  <line x1="742" y1="300" x2="856" y2="300" stroke="#777" stroke-width="1" stroke-dasharray="4 3"/>
+
+  <!-- roll gear + motor -->
+  <circle cx="768" cy="300" r="20" fill="none" stroke="#555" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <circle cx="768" cy="330" r="10" fill="none" stroke="#4a7a4a" stroke-width="1.2" stroke-dasharray="2 2"/>
+  <rect x="742" y="342" width="52" height="38" rx="3" fill="#c9d8c9" stroke="#4a7a4a" stroke-width="1.5"/>
+
+  <!-- rear bulkhead + bearing pair -->
+  <rect x="806" y="240" width="14" height="120" fill="#e0e0e0" stroke="#666"/>
+  <g stroke="#555" stroke-width="1.2">
+    <rect x="800" y="286" width="12" height="28" fill="#fff"/>
+    <line x1="800" y1="286" x2="812" y2="314"/><line x1="812" y1="286" x2="800" y2="314"/>
+    <rect x="820" y="286" width="12" height="28" fill="#fff"/>
+    <line x1="820" y1="286" x2="832" y2="314"/><line x1="832" y1="286" x2="820" y2="314"/>
+  </g>
+
+  <!-- SR1 capsule -->
+  <rect x="838" y="288" width="26" height="24" fill="#f0b0b0" stroke="#b04040" stroke-width="1.5"/>
+  <line x1="864" y1="294" x2="884" y2="290" stroke="#b04040"/>
+  <line x1="864" y1="300" x2="884" y2="300" stroke="#b04040"/>
+  <line x1="864" y1="306" x2="884" y2="310" stroke="#b04040"/>
+
+  <!-- roll hall -->
+  <rect x="806" y="270" width="8" height="8" fill="#e6c34a" stroke="#8a7420"/>
+
+  <!-- depth dimension -->
+  <line x1="516" y1="452" x2="880" y2="452" class="dim" marker-start="url(#arr)" marker-end="url(#arr)"/>
+  <text x="698" y="468" class="s" text-anchor="middle">≈170 mm depth budget</text>
+
+  <!-- labels, panel B -->
+  <text x="470" y="120" class="l">bezel + glass</text>
+  <path class="lead" d="M500,124 L506,172"/>
+  <text x="560" y="140" class="l">hemisphere shells on yaw-shaft poles</text>
+  <path class="lead" d="M620,145 L618,206"/>
+  <text x="688" y="180" class="l">roll yoke → full ring</text>
+  <path class="lead" d="M720,185 L728,210"/>
+  <text x="640" y="198" class="s">dashed: yoke arms to pitch trunnions (into page)</text>
+  <text x="928" y="210" class="l" text-anchor="end">roll Hall (bulkhead)</text>
+  <path class="lead" d="M888,214 L812,268"/>
+  <text x="928" y="234" class="l" text-anchor="end">6804ZZ pair — zero-play shim rule</text>
+  <path class="lead" d="M880,238 L824,284"/>
+  <text x="928" y="490" class="l" text-anchor="end">SR1 8-wire Ø6.5–8.5 mm micro capsule</text>
+  <text x="928" y="504" class="s" text-anchor="end">in hollow shaft bore (≥Ø9); ShiftBus 8 wires cross here</text>
+  <path class="lead" d="M880,480 L852,314"/>
+  <text x="524" y="418" class="l">roll motor 28BYJ-48 + ~1.4:1 gears (frame)</text>
+  <path class="lead" d="M700,410 L742,376"/>
+
+  <!-- legend -->
+  <g transform="translate(30,540)">
+    <rect x="0" y="0" width="880" height="56" rx="6" fill="#fafafa" stroke="#ddd"/>
+    <rect x="14" y="12" width="18" height="12" fill="#e8d9a8" stroke="#a08830"/><text x="38" y="22" class="s">roll gimbal</text>
+    <rect x="110" y="12" width="18" height="12" fill="#c9d8c9" stroke="#4a7a4a"/><text x="134" y="22" class="s">stepper 28BYJ-48</text>
+    <rect x="240" y="12" width="18" height="12" fill="#f0b0b0" stroke="#b04040"/><text x="264" y="22" class="s">slip ring capsule</text>
+    <rect x="370" y="12" width="12" height="12" fill="#e6c34a" stroke="#8a7420"/><text x="388" y="22" class="s">Hall A3144</text>
+    <g stroke="#555"><rect x="470" y="12" width="12" height="12" fill="#fff"/><line x1="470" y1="12" x2="482" y2="24"/><line x1="482" y1="12" x2="470" y2="24"/></g>
+    <text x="488" y="22" class="s">ball bearing</text>
+    <circle cx="580" cy="18" r="9" fill="none" stroke="#555" stroke-dasharray="3 2"/><text x="596" y="22" class="s">gear (pitch circle)</text>
+    <text x="14" y="44" class="s">Every joint = bearing pair + gear mesh + slip ring (if wires cross) + Hall pair. Yaw joint: motor rides ball chassis — no slip ring, only shells rotate.</text>
+  </g>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7" fill="none" stroke="#555"/>
+    </marker>
+  </defs>
+</svg>
