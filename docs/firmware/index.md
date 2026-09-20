@@ -27,8 +27,12 @@ source** for any constant or API. When a doc and a header disagree, the header w
 
 ## Implementation status
 
-Be honest about what's built. Firmware is at the end of **Phase 3**, hardware-verified on
-2026-06-12 (11/11 tests pass).
+Be honest about what's built. Phase 3 is complete, and the phases after it have stopped
+running in order: most of Phase 4's input types have landed, Phase 5's outputs are part
+done, and Phase 6 has not started.
+
+[Control Types](control-types.md) is the authority on per-class status, including which
+classes are hardware-verified. The summary below is a pointer, not a second source.
 
 !!! note "What's implemented"
     - PlatformIO templates for all three tiers
@@ -36,17 +40,17 @@ Be honest about what's built. Firmware is at the end of **Phase 3**, hardware-ve
     - PanelBridge backbone (DCS-BIOS integration, `SYNC_REQ`, `TEST_SEQ`)
     - SimGateway (HID demux: `HIDAxis`, `HIDButton`, `HIDHatSwitch`)
     - `PinRef` abstraction, PanelGroup core, MCP23017 management
-    - **LED** output and **Switch2Pos** input (both confirmed on PinRef)
+    - Helpers — `ShiftBus` (shift-register expansion), `I2cMux`, `I2cHealth`
+    - **Seven input classes** — `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`,
+      `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder` (REL/DIR), `ActionButton`
+    - **Three output classes** — `LED`, `DrumDisplay`, `NeedleGauge`
 
 !!! warning "Not yet implemented"
-    - **Phase 4 input types** — Switch3Pos, SwitchMultiPos, ActionButton, AnalogInput,
-      RotaryEncoder, RotaryAcceleratedEncoder, RotarySwitch, AnalogMultiPos, AngleSensorInput,
-      SwitchWithCover2Pos
-    - **Phase 5 output types** — AnalogOutput, IntegerOutput. (`NeedleGauge` is
+    - **Input types** — `RotaryAcceleratedEncoder`, `RotarySwitch`, `AngleSensorInput`,
+      `SwitchWithCover2Pos`
+    - **Phase 5 output types** — `AnalogOutput`, `IntegerOutput`. (`NeedleGauge` is
       **implemented** and supersedes the former SwitecX25Output / AccelStepperOutput / ServoOutput.)
     - **Phase 6** — the Center_Armament PanelGroup sketch rewrite and end-to-end integration
-
-    See [Control Types](control-types.md) for the full list with status.
 
 ## In this section
 
