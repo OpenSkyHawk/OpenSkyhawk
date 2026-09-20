@@ -203,7 +203,10 @@ only if `b.controlId != 0x0000`.
 
 CANProtocol owns the `ControlPacketPair` batching path for `CTRL_BCAST`, `EVT_n`, and the relative
 event frames `EVT_REL_n` / `EVT_DIR_n` (#147) / `EVT_ACTION_n` (#116) — each with its own pending
-slot. A frame with no registered slot is silently discarded by `sendBatched()`.
+slot. Calling `sendBatched()` with any other CAN ID is a programming error: the frame has no
+registered slot and is silently discarded — no log, no fault. Adding a batched frame therefore
+means registering its ID in `begin()`, not just defining its `canId` helper; the `tx_batching`
+test is what proves the slot exists.
 PanelBridge and PanelGroup submit individual `ControlPacket`s to CANProtocol; they do not
 build or queue pairs themselves.
 
@@ -220,10 +223,6 @@ The intended public API shape is:
 void CANProtocol::sendBatched(uint32_t canId, const ControlPacket& pkt); // CTRL_BCAST / EVT_n / EVT_REL_n / EVT_DIR_n / EVT_ACTION_n
 void CANProtocol::flushBatched(uint32_t canId);                          // force slot-B null
 ```
-
-Calling `sendBatched()` with any CAN ID other than `CAN_ID_CTRL_BCAST`, `canIdEvt(n)`,
-`canIdEvtRel(n)`, `canIdEvtDir(n)`, or `canIdEvtAction(n)` is a programming error and should be ignored with a
-diagnostic counter/log in debug builds.
 
 ### TEST_SEQ Payload Wire Layout
 
