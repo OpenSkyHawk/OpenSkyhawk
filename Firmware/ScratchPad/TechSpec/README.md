@@ -178,8 +178,8 @@ SimGateway          (depends on HIDControls — CTRL_* constants used in sketch 
         │     ├── RotaryEncoder           (depends on PinRef, PanelGroup)
         │     ├── RotaryAcceleratedEncoder (depends on RotaryEncoder — family member, D16)
         │     ├── AnalogInput             (depends on PinRef, PanelGroup)
-        │     ├── AngleSensor             (chip drivers AS5600 / MT6701 — depends on I2cMux)
-        │     └── AngleSensorInput        (depends on AnalogInput, AngleSensor — after v1.0)
+        │     └── AngleSensorInput        (depends on AnalogInput, PinRef — after v1.0)
+        │         (AngleSensor = future PinRef backend for a digital I²C read — see AngleSensor.md)
         │     (RotarySwitch dropped — D16)
         ├── Drivers/
               │     ├── MotorDriver       (abstract base — depends on PanelGroup)

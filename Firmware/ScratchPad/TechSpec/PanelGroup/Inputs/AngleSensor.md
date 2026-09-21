@@ -1,8 +1,24 @@
 # AngleSensor — Technical Specification
 
-**Status:** Ready for implementation — scheduled after v1.0, together with `AngleSensorInput` (D16)
+**Status:** Not started — future `PinRef` backend, **not** part of `AngleSensorInput`'s first cut
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AngleSensorInput)
 **Depends on:** `PinRef.md`
+
+> **Direction change (2026-09-21, PR #292 review).** Every control class takes a `PinRef`, so a
+> digital angle chip is **not** an object handed to `AngleSensorInput`. `AngleSensorInput` reads the
+> sensor's *analog output* through an ordinary analog `PinRef` (STM32 ADC or ADS1115). Reading the
+> angle *register* over I²C, when wanted, becomes a **new `PinRef` backend** — `PinRef(as5600)`,
+> the way `PinRef(adc, ch)` wraps the ADS1115 — so `AngleSensorInput` (and plain `AnalogInput`)
+> accept it unchanged.
+>
+> That backend must carry the I²C fault contract itself: mix in `I2cHealth` (a cheap
+> `i2cProbe()` — the chip ACKs, plus the mux when behind an `I2cMux` — gating every read, one
+> retry every `I2C_RETRY_MS` while tripped) and report through `FaultSource` (`I2C_PERIPHERAL`
+> while tripped, as `DrumDisplay` does), holding the last good reading rather than returning a
+> bogus one.
+>
+> The chip details below (addresses, registers, resolution, conversions) remain valid reference for
+> that backend; the class hierarchy and API sections describe the superseded approach.
 
 ---
 

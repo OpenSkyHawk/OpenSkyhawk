@@ -356,25 +356,25 @@ on `AnalogInput` instead (#278).
 
 Design (D16) — **`AngleSensorInput : AnalogInput`**, not a sibling class:
 
-- `AnalogInput` gains one protected virtual `readRaw()` (default: `_pin.readAnalog()`); its members
-  become protected. Existing sketches are unaffected.
-- `AngleSensorInput` overrides `readRaw()` to return the sensor's angle and maps `centerDeg` /
-  `travelDeg` onto `AnalogInput`'s `[minRaw, maxRaw]`. Everything else is inherited — EWMA,
-  hysteresis, per-instance `pollMs`, and **routing by `controlId`**: `DCSIN_*` → ABS `set_state`
-  through PanelBridge, `CTRL_*` → HID through SimGateway.
-- Wrap-around: `readRaw()` re-centres the reading so `centerDeg` lands at mid-scale; the 0°/360°
-  seam then only matters for travel wider than ±180°.
-- `AngleSensor` is the chip-driver base (`begin()` / `readAngle()`), with `AS5600Sensor` and
-  `MT6701Sensor`. Both chips have fixed I²C addresses, so several share one bus through `I2cMux`.
-- Zero-code fallback: both chips also have an analog output pin — wired to an ADC pin, the sensor is
-  just a plain `AnalogInput`.
+- **Takes a `PinRef`** like every control class: the sensor's analog output pin, read through an
+  STM32 ADC pin or an ADS1115 channel. It calls `AnalogInput`'s existing public constructor, with
+  `centerDeg` / `travelDeg` converted to `[minRaw, maxRaw]`.
+- `AnalogInput` gains one protected virtual `readRaw()` (default: `_pin.readAnalog()`);
+  `AngleSensorInput` overrides it to **re-centre** the reading so `centerDeg` lands at mid-scale —
+  the 0°/360° seam then only matters for travel wider than ±180°. Everything else is inherited —
+  EWMA, hysteresis, per-instance `pollMs`, and **routing by `controlId`**: `DCSIN_*` → ABS
+  `set_state` through PanelBridge, `CTRL_*` → HID through SimGateway.
+- Reading the angle register over I²C (higher resolution, no ADC noise) is a later **`PinRef`
+  backend** (`PinRef(as5600)`, like the ADS1115's), carrying its own `I2cHealth` + `FaultSource`
+  contract — not an object passed to this class.
 - A DCS knob that only accepts relative input (`variable_step` only) would need a syncing mode like
   `DcsBios::RotarySyncingPotentiometer` (read DCS's value back, send `%+d` corrections) — a later
   addition, not part of the first cut.
 
 ```cpp
-AS5600Sensor gunsightSensor(Wire, mux, 2);   // I2C1 through I2cMux channel 2 — same pattern as DrumDisplay
-OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, gunsightSensor,
+ADS1115 adc(0x48, Wire);
+// AS5600 OUT pin → ADS1115 channel 2 (or an STM32 ADC pin: PinRef(PA3))
+OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, PinRef(adc, 2),
                                         /*centerDeg*/ 180.0f, /*travelDeg*/ 150.0f);
 ```
 

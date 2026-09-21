@@ -180,7 +180,7 @@ D16 (families, DCS-BIOS names).
       check happens in the v1.0 soak panel smoke test (#291).
 - [ ] `RotaryAcceleratedEncoder` — thin `RotaryEncoder` subclass, DCS-BIOS parity: momentum filter
       + `fastStep` (#287). **Firmware v0.1.0.**
-- [ ] `AngleSensorInput` : `AnalogInput` + `AngleSensor` chip drivers (AS5600 / MT6701) — kept for
+- [ ] `AngleSensorInput` : `AnalogInput`, on a `PinRef` (the sensor's analog output) — kept for
       absolute knobs such as `GUNSIGHT_KNB`; **after v1.0** (a pot on `AnalogInput` covers the A-4
       today). Spec: `TechSpec/PanelGroup/Inputs/AngleSensorInput.md`.
 - [ ] `SwitchWithCover2Pos` — DCS-BIOS behaviour (one pin; sequences the cover). **After v1.0**:

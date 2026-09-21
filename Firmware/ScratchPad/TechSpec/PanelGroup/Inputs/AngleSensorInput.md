@@ -2,7 +2,7 @@
 
 **Status:** Ready for implementation — scheduled after v1.0 (D16). A pot on `AnalogInput` covers the A-4E-C today.
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AngleSensorInput), `FirmwarePlan/00-decisions.md` (D16)
-**Depends on:** `AnalogInput.md`, `AngleSensor.md`
+**Depends on:** `AnalogInput.md`, `PinRef.md`
 
 ---
 
@@ -13,32 +13,55 @@ knob or axis. No wiper wear and a full 360° mechanical range, where a pot stops
 for absolute DCS-BIOS knobs such as `GUNSIGHT_KNB` (gunsight elevation) and `RADAR_RETICLE`.
 Flight-control axes use linear Hall sensors on plain `AnalogInput` (#278).
 
-It is **not** a sibling class with its own filtering: everything `AnalogInput` already does is
-inherited — integer EWMA, hysteresis, per-instance `pollMs`, and routing by `controlId` (`DCSIN_*`
-→ ABS `set_state` through PanelBridge; `CTRL_*` → HID through SimGateway, where `AxisCal` applies
-per-axis calibration). The subclass changes only the **source**.
+**It takes a `PinRef`, like every control class.** The sensor's **analog output pin** is read
+through any analog-capable `PinRef` — an STM32 ADC pin or an ADS1115 channel over I²C. The class
+never touches a pin or an I²C bus directly; the `PinRef` backend does.
+
+Everything `AnalogInput` already does is inherited — integer EWMA, hysteresis, per-instance
+`pollMs`, and routing by `controlId` (`DCSIN_*` → ABS `set_state` through PanelBridge; `CTRL_*` →
+HID through SimGateway, where `AxisCal` applies per-axis calibration). The subclass adds only the
+**angle meaning**: degrees → raw range, and the 0°/360° wrap.
 
 ---
 
 ## Design
 
-### The `AnalogInput` hook (added in the same PR as this class)
+### Construction
+
+`AngleSensorInput` calls `AnalogInput`'s existing **public** constructor with its `PinRef` — no
+new base constructor. `centerDeg` / `travelDeg` are converted to `[minRaw, maxRaw]` before the
+base call. `configure()` is inherited unchanged (`_pin.configureAsInput()`).
+
+### The one base hook (added in the same PR as this class)
 
 - `AnalogInput` gains `protected: virtual uint16_t readRaw();` whose default returns
-  `_pin.readAnalog()`; `readScaled()` calls it instead of reading the pin directly.
-- `AnalogInput`'s members become `protected`. Its public constructor and behaviour are unchanged,
-  so existing sketches and the eight `Firmware/Tests/AnalogInput` envs are unaffected.
-- Cost: one extra virtual call per read — nothing at 2–8 ms polling.
+  `_pin.readAnalog()`. `readScaled()` calls it instead of reading the pin itself. The members it
+  needs become `protected`.
+- `AngleSensorInput::readRaw()` calls `AnalogInput::readRaw()` and **re-centres** the value so
+  `centerDeg` lands at mid-scale (32768). The 0°/360° seam then only matters for travel wider than
+  ±180°, which removes the old "rotate the magnet mount" constraint.
+- The public `AnalogInput` constructor and behaviour are unchanged, so existing sketches and the
+  eight `Firmware/Tests/AnalogInput` envs are unaffected. Cost: one virtual call per read.
 
-### The subclass
+### Faults
 
-- Holds an `AngleSensor&` and overrides `readRaw()` to return the sensor's 16-bit angle.
-- The constructor converts `centerDeg` / `travelDeg` into `AnalogInput`'s `[minRaw, maxRaw]`.
-- **Wrap-around:** `readRaw()` re-centres the reading so `centerDeg` lands at mid-scale (32768).
-  The 0°/360° seam then only matters for travel wider than ±180°, which removes the old
-  "rotate the magnet mount" constraint.
-- `configure()` calls `sensor.begin()`; if the chip does not answer, the node flags the fault the
-  same way other absent I²C devices do (`I2cHealth`).
+No new fault contract in this class — it has no I²C of its own. An ADS1115 source behaves exactly
+as it does under any `AnalogInput` today (the ADS1115's blocking read is #269's topic).
+
+### Resolution trade-off
+
+The chips' analog output is coarser than their register read and picks up ADC noise. That is fine
+for a gunsight or reticle knob. The AS5600 can also be programmed with a start/stop angle
+(ZPOS/MPOS) so its output spans only the knob's travel, recovering resolution.
+
+### Later: digital I²C read
+
+Reading the angle register over I²C (12-bit AS5600 / 14-bit MT6701, no ADC noise) belongs in a
+**new `PinRef` backend** — the same way the ADS1115 is one (`PinRef(as5600)`) — so
+`AngleSensorInput` keeps taking a `PinRef`. That backend, not this class, would carry the I²C fault
+contract: `I2cHealth` (probe + back-off, as in `DrumDisplay`) and a `FaultSource` reporting
+`I2C_PERIPHERAL` while tripped, holding the last good reading instead of returning a bogus value.
+See `AngleSensor.md`.
 
 ### Relative-only DCS knobs (later)
 
@@ -47,12 +70,6 @@ syncing mode like `DcsBios::RotarySyncingPotentiometer`: read DCS's current valu
 export stream (PanelGroup nodes already receive it over CAN) and send `%+d` corrections until they
 match. Not part of the first cut.
 
-### Zero-code fallback
-
-Both chips also have an analog output pin. Wired to an ADC pin, the sensor is simply a plain
-`AnalogInput` — no new class needed. The AS5600 can be programmed with a start/stop angle
-(ZPOS/MPOS) so its output spans only the knob's travel.
-
 ---
 
 ## Public API (sketch)
@@ -60,21 +77,20 @@ Both chips also have an analog output pin. Wired to an ADC pin, the sensor is si
 ```cpp
 class AngleSensorInput : public AnalogInput {
 public:
-    AngleSensorInput(uint16_t controlId, AngleSensor& sensor,
+    AngleSensorInput(uint16_t controlId, PinRef pin,
                      float centerDeg, float travelDeg,
                      uint16_t pollMs = DEFAULT_POLL_MS);
-    void configure() override;          // sensor.begin() + base configure
 protected:
-    uint16_t readRaw() override;        // sensor.readAngle(), re-centred on centerDeg
+    uint16_t readRaw() override;        // AnalogInput::readRaw(), re-centred on centerDeg
 private:
-    AngleSensor& _sensor;
-    uint16_t     _centerRaw;
+    uint16_t _centerRaw;
 };
 ```
 
 ```cpp
-AS5600Sensor gunsightSensor(Wire, mux, 2);   // I2C1 through I2cMux channel 2 — same pattern as DrumDisplay
-OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, gunsightSensor,
+ADS1115 adc(0x48, Wire);
+// AS5600 OUT pin → ADS1115 channel 2 (or an STM32 ADC pin: PinRef(PA3))
+OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, PinRef(adc, 2),
                                         /*centerDeg*/ 180.0f, /*travelDeg*/ 150.0f);
 ```
 
@@ -85,5 +101,4 @@ OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, gunsightSensor,
 | Dependency | Source | Notes |
 |---|---|---|
 | AnalogInput | `Inputs/AnalogInput` | family base — filtering, emit, routing |
-| AngleSensor | `Inputs/AngleSensor` | AS5600 / MT6701 chip drivers |
-| I2cMux | `Helpers/I2cMux` | several fixed-address chips on one bus |
+| PinRef | `PanelGroup/PinRef` | analog source: STM32 ADC or ADS1115 channel |

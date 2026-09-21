@@ -354,7 +354,7 @@ TechSpec says why.
 | Family base | Members | DCS-BIOS equivalent |
 |---|---|---|
 | `RotaryEncoder` | `RotaryAcceleratedEncoder` — momentum filter + `fastStep`; REL constructor (filter + speed) and DIR constructor (filter only) | `RotaryEncoder` / `RotaryAcceleratedEncoder` |
-| `AnalogInput` | `AngleSensorInput` — a magnetic angle sensor as the source, through a protected virtual `readRaw()` | `Potentiometer` (no angle-sensor class) |
+| `AnalogInput` | `AngleSensorInput` — angle meaning (degrees, 0°/360° wrap) on a `PinRef` source, through a protected virtual `readRaw()` | `Potentiometer` (no angle-sensor class) |
 | `AnalogOutput` (abstract) | `Dimmer` (PWM duty), `IntegerOutput` (user callback); `ServoOutput` optional later | `Dimmer` / `IntegerBuffer` / `ServoOutput` |
 | `Switch2Pos` | `SwitchWithCover2Pos` — one pin; sequences the cover before the switch | `SwitchWithCover2Pos` |
 
