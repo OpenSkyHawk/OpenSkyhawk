@@ -86,17 +86,8 @@ STM32 boards flash over **SWD with an ST-Link** (`upload_protocol = stlink`). Pl
 the probe directly — `pio run -t upload`. SimGateway (RP2040) flashes over USB by UF2 or
 straight from PlatformIO; no ST-Link.
 
-!!! warning "Blue Pill clone won't connect? Override the tap ID"
-    Many clones report a non-standard JTAG ID and ST-Link refuses to connect with "tap not
-    found." Uncomment the override in the template:
-
-    ```ini
-    upload_flags =
-        -c
-        set CPUTAPID 0x2ba01477
-    ```
-
-    The standard ID is `0x1ba01477`; the common clone is `0x2ba01477`.
+If an upload fails — old ST-Link firmware, or a clone's non-standard tap ID — see
+[Flashing → ST-Link troubleshooting](../guides/flashing.md#st-link-troubleshooting).
 
 ## Serial monitor
 

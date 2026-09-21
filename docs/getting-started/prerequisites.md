@@ -37,7 +37,7 @@ Fabricating and wiring a panel adds the hardware toolchain:
 |------|-----|-------|
 | **[KiCad](https://www.kicad.org/)** 8+ | PCB schematic + layout review | Project tooling and CI use **v10.0.1**; open the `.kicad_pro` projects under `PCB/` |
 | **[PlatformIO](https://platformio.org/)** + **[VS Code](https://code.visualstudio.com/)** | Firmware build and upload | The firmware build system — see [PlatformIO Setup](../firmware/platformio-setup.md) |
-| **ST-Link** (or compatible SWD probe) | Flashing STM32 boards over SWD | The hardware probe. STM32 boards expose a 5-pin SWD header (PA13/PA14/NRST/GND/3.3V); PlatformIO flashes through it directly |
+| **ST-Link** (or compatible SWD probe) | Flashing STM32 boards over SWD | The hardware probe. STM32 boards expose a 5-pin SWD header (PA13/PA14/NRST/GND/3.3V); PlatformIO flashes through it directly. Probe firmware must be **V2J24 or newer** — [update it](../guides/flashing.md#st-link-troubleshooting) if uploads fail |
 | **[DCS-BIOS](https://github.com/DCS-Skunkworks/dcs-bios)** | DCS ↔ cockpit export stream | Runs on the PC; the firmware speaks its protocol |
 | **[JLCPCB](https://jlcpcb.com/) account** | PCB fabrication | Design rules are pre-loaded for JLCPCB's standard 2-layer service |
 | **Soldering iron + multimeter** | Assembly and bring-up | Surface-mount rework; continuity and voltage checks |

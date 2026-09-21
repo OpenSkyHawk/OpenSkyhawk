@@ -17,6 +17,16 @@ pio run -e PanelGroup -t upload   # a specific env
 PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 [PlatformIO Setup](../firmware/platformio-setup.md).
 
+### ST-Link troubleshooting
+
+!!! warning "Upload fails with 'only supports deprecated HLA'?"
+    The ST-Link's own firmware is too old — PlatformIO's OpenOCD needs **V2J24 or newer**, and
+    many clones ship older. Update the probe with ST's free
+    [STSW-LINK007](https://www.st.com/en/development-tools/stsw-link007.html) updater: plug the
+    ST-Link in on its own, click **Open in update mode**, then **Upgrade**, and replug.
+    On macOS the updater needs Java (`brew install --cask temurin`); without it the app closes
+    as soon as it opens.
+
 !!! warning "Clone reports 'tap not found'?"
     Many Blue Pill clones use JTAG ID `0x2ba01477` (standard is `0x1ba01477`) and ST-Link
     refuses to connect. Uncomment the override in `platformio.ini`:

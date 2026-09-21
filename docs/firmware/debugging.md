@@ -63,18 +63,9 @@ listen-only** (never transmits at the wrong rate). Latched once at boot (query
 
 ## Bench gotchas
 
-!!! warning "Blue Pill clone — ST-Link 'tap not found'"
-    Many clones report JTAG ID `0x2ba01477` (standard is `0x1ba01477`) and ST-Link refuses to
-    connect. Override it in `platformio.ini`:
-
-    ```ini
-    upload_flags =
-        -c
-        set CPUTAPID 0x2ba01477
-    debug_extra_cmds = set CPUTAPID 0x2ba01477
-    ```
-
-    The `-c set CPUTAPID` pair must come before the OpenOCD target config loads.
+!!! warning "ST-Link won't upload or connect"
+    Old probe firmware ("only supports deprecated HLA") or a clone's non-standard tap ID
+    ("tap not found") — see [Flashing → ST-Link troubleshooting](../guides/flashing.md#st-link-troubleshooting).
 
 !!! warning "Don't use STM32 USB CDC for DCS-BIOS"
     Enabling STM32 native USB CDC (`PIO_FRAMEWORK_ARDUINO_ENABLE_CDC`) and running DCS-BIOS
