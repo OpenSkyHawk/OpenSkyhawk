@@ -15,7 +15,8 @@ implemented; one output family is still to come before the first release.
 
 ## PinRef — the hardware abstraction *(implemented)*
 
-Every input and output takes a `PinRef`, not a raw pin number. One interface over three
+Every input and output takes a `PinRef`, not a raw pin number (one hardware-bound exception, `Dimmer`,
+is noted below). One interface over three
 hardware backends:
 
 | Backend | Constructor | Notes |
