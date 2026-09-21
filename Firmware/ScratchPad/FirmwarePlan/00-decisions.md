@@ -156,7 +156,13 @@ boolean is needed in the position array.
 
 ## D9 — RotaryAcceleratedEncoder 4-value scheme (not delta + direction separately)
 
-**Decision:** `RotaryAcceleratedEncoder` encodes both direction and speed into a single uint16
+> **Superseded by #147.** The encoder rework moved variable-step knobs to REL — a signed `±step` on
+> its own frame (`canIdEvtRel`) — and collapsed the input map to `controlId → name`, removing the
+> `arg0`/`arg1`/`arg0fast`/`arg1fast` fields this scheme dispatched through. Acceleration is now a
+> larger `±step` on the same REL frame, with no wire, bridge or map change; the class is a thin
+> `RotaryEncoder` subclass under D16. Kept below for history.
+
+**Decision (historical):** `RotaryAcceleratedEncoder` encodes both direction and speed into a single uint16
 value: 0=slow CCW, 1=slow CW, 2=fast CCW, 3=fast CW. PanelBridge maps these to four
 `DcsBiosInputEntry` arg fields.
 
@@ -333,3 +339,40 @@ Rationale, continued:
 **Affects:** `08-hardware-firmware-contracts.md`, `STM32Board.md` (TechSpec — new *ADC clock
 configuration* section, `begin()` diag-line format), `AnalogInput.md` (acquisition-time budget),
 `STM32Board.cpp` (`_configAdcClock`), `Firmware/Tests/STM32Board` (two new envs).
+
+---
+
+## D16 — Control classes: two groups, class families, DCS-BIOS names (#286)
+
+**Decision:** control classes sit in two groups — **Inputs** (`InputBase`) and **Outputs**
+(`OutputBase`). Inside a group, related classes form a **family**: one base class holds the shared
+behaviour, and thin subclasses change only the **source** (inputs) or the **sink** (outputs). The
+precedent is `MultiPosInput` → `SwitchMultiPos` / `AnalogMultiPos`. Class names and behaviour follow
+`dcs-bios-arduino-library` wherever an equivalent exists; where a class deliberately differs, its
+TechSpec says why.
+
+| Family base | Members | DCS-BIOS equivalent |
+|---|---|---|
+| `RotaryEncoder` | `RotaryAcceleratedEncoder` — momentum filter + `fastStep`; REL constructor (filter + speed) and DIR constructor (filter only) | `RotaryEncoder` / `RotaryAcceleratedEncoder` |
+| `AnalogInput` | `AngleSensorInput` — angle meaning (degrees, 0°/360° wrap) on a `PinRef` source, through a protected virtual `readRaw()` | `Potentiometer` (no angle-sensor class) |
+| `AnalogOutput` (abstract) | `Dimmer` (PWM duty), `IntegerOutput` (user callback); `ServoOutput` optional later | `Dimmer` / `IntegerBuffer` / `ServoOutput` |
+| `Switch2Pos` | `SwitchWithCover2Pos` — one pin; sequences the cover before the switch | `SwitchWithCover2Pos` |
+
+**Not ported: `DcsBios::RotarySwitch`.** It assumes position 0 at boot and sends absolute
+`set_state` values, so the first click after a cold start can jump the sim away from a mission
+preset. `RotaryEncoder` in DIR mode drives the same bounded selectors statelessly — DCS owns the
+position and clamps at the ends — and DCS-BIOS's own M2000C radio examples use `RotaryEncoder`
+INC/DEC for exactly those knobs.
+
+**Rationale:**
+- One decode / filter / emit path per family means one set of tests. A subclass is a constructor
+  plus at most one override, so it adds nothing to the ISR or the loop hot path.
+- Constructor length: `RotaryEncoder` already takes six positional arguments; putting the
+  acceleration options on it would make eight, easy to pass in the wrong order. A subclass
+  constructor makes the required arguments explicit (`fastStep` is required, `mode` is implied).
+- DCS-BIOS parity lowers the barrier for builders who already know that library — the original
+  plan was to "use dcs-bios-arduino-library as much as possible".
+
+**Affects:** `05-panelgroup-api.md`, `10-implementation-plan.md`, TechSpec
+(`RotaryAcceleratedEncoder`, `AngleSensor`, `AngleSensorInput`, `AnalogOutput`, `Dimmer`,
+`IntegerOutput`, `SwitchWithCover2Pos`; `RotarySwitch` removed), `docs/firmware/control-types.md`.

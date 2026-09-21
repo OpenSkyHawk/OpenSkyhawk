@@ -1,8 +1,24 @@
 # AngleSensor — Technical Specification
 
-**Status:** Not Started (Phase 4)
-**FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#anglesensorinput-new`
+**Status:** Not started — future `PinRef` backend, **not** part of `AngleSensorInput`'s first cut
+**FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AngleSensorInput)
 **Depends on:** `PinRef.md`
+
+> **Direction change (2026-09-21, PR #292 review).** Every control class takes a `PinRef`, so a
+> digital angle chip is **not** an object handed to `AngleSensorInput`. `AngleSensorInput` reads the
+> sensor's *analog output* through an ordinary analog `PinRef` (STM32 ADC or ADS1115). Reading the
+> angle *register* over I²C, when wanted, becomes a **new `PinRef` backend** — `PinRef(as5600)`,
+> the way `PinRef(adc, ch)` wraps the ADS1115 — so `AngleSensorInput` (and plain `AnalogInput`)
+> accept it unchanged.
+>
+> That backend must carry the I²C fault contract itself: mix in `I2cHealth` (a cheap
+> `i2cProbe()` — the chip ACKs, plus the mux when behind an `I2cMux` — gating every read, one
+> retry every `I2C_RETRY_MS` while tripped) and report through `FaultSource` (`I2C_PERIPHERAL`
+> while tripped, as `DrumDisplay` does), holding the last good reading rather than returning a
+> bogus one.
+>
+> The chip details below (addresses, registers, resolution, conversions) remain valid reference for
+> that backend; the class hierarchy and API sections describe the superseded approach.
 
 ---
 
@@ -53,7 +69,7 @@ public:
 | Method | Return | Description |
 |--------|--------|-------------|
 | `begin()` | `bool` | Initialises chip over I²C. Returns `false` if chip not found (address not ACK'd). Called by `PanelGroup::setup()` after `Wire.begin()`. |
-| `readAngle()` | `uint16_t` | Returns current angle as a 16-bit value (0–65535 maps to 0°–360° linearly). Called by `AngleSensorInput::poll()` every 8 ms. |
+| `readAngle()` | `uint16_t` | Returns current angle as a 16-bit value (0–65535 maps to 0°–360° linearly). Called through `AngleSensorInput::readRaw()` at the instance's `pollMs` (inherited from `AnalogInput`). |
 
 ---
 
@@ -105,7 +121,9 @@ must call `Wire.begin()` (and `Wire1.begin()` if used) **before** `PanelGroup::s
 `sensor.begin()`. If `begin()` returns `false`, `PanelGroup::setup()` sets the status
 LED to the warning pattern and the sensor is marked inactive.
 
-Two axes on one sub-node require two I²C buses because both chips have fixed addresses:
+Both chips have fixed addresses, so two sensors on one bus need an `I2cMux` (TCA9548A) — the
+constructors take an optional `I2cMux&` + channel, the same pattern `DrumDisplay` uses. Without a
+mux, two sensors need two I²C buses:
 
 ```cpp
 Wire.begin();   // I2C1

@@ -357,7 +357,7 @@ namespace PanelGroup {
      *      Analog inputs (AnalogInput, AnalogMultiPos, AngleSensorInput) manage their
      *      own poll timer inside poll() — PanelGroup always calls them, every iteration,
      *      and they decide whether enough time has passed to take a new reading.
-     *      AnalogMultiPos and AngleSensorInput use a fixed 8 ms interval. AnalogInput's is
+     *      AnalogMultiPos uses a fixed 8 ms interval. AnalogInput's (and so AngleSensorInput's) is
      *      a per-instance constructor parameter (pollMs, default 8 ms), so two AnalogInputs
      *      on one node can read at different rates. PanelGroup imposes no analog cadence
      *      of its own.

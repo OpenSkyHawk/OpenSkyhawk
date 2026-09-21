@@ -22,8 +22,9 @@ Record findings in the item/issue body, then mirror the condensed version into t
    `nav.lua`, `shrike.lua`). Record each control's DCS point number and panel label.
 2. **Classify the control type** — momentary pushbutton / 2-pos toggle / 3-pos toggle /
    multi-pos rotary / continuous pot / not-in-sim (spare GPIO). The type drives **both**:
-   - firmware class (`firmware`): `Switch2Pos`, `Switch3Pos`, `RotarySwitch`/`SwitchMultiPos`,
-     `AnalogInput`, `ActionButton`, `RotaryEncoder`, …
+   - firmware class (`firmware`): `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos` / `AnalogMultiPos`,
+     `AnalogInput`, `ActionButton`, `RotaryEncoder` (REL for endless knobs, DIR for bounded selectors
+     with no pointer — `RotarySwitch` was dropped, D16), …
    - PCB I/O (`pcb-design`): GPIO count (3-pos = 2 GPIO, n-pos rotary = n GPIO), or an ADC
      channel for a pot.
 3. **Confirm the DCS-BIOS ID** and positions/range and device from `A-4E-C.lua` / the system

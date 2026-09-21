@@ -8,7 +8,10 @@ FirmwarePlan TechSpec.
 !!! note "Read the spec first"
     Each control type has a detailed specification in the project's TechSpec (value encoding,
     debounce, polling rate, edge cases). Implement to the spec — don't improvise behaviour.
-    `AngleSensor`'s base class is a documented gap with no spec yet; don't invent it.
+    Before writing a new class, check whether it only changes an existing class's *source* (inputs)
+    or *sink* (outputs) — then it's a subclass in that class's family, not a new class. Names
+    follow `dcs-bios-arduino-library` where an equivalent exists (the planned `RotaryAcceleratedEncoder` extends
+    `RotaryEncoder`; the planned `Dimmer` and `IntegerOutput` extend `AnalogOutput`).
 
 ## Where it goes
 
@@ -42,5 +45,5 @@ value semantics and edge cases from the spec, on real hardware where the type ne
 
 ## Then document it
 
-Update [Control Types](../firmware/control-types.md): move the type from "not started" to
+Update [Control Types](../firmware/control-types.md): move the type from "Planned" to
 implemented, and add an example. Honesty in the status table matters.

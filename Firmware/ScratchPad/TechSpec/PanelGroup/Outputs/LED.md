@@ -13,7 +13,7 @@ CTRL_BCAST `ControlPacket` arrives. A bitmask is applied to the received value b
 the threshold check — this handles DCS-BIOS outputs that pack multiple flags into one
 16-bit word at a single address. Self-registers into PanelGroup's OutputBase list.
 
-Does **not** apply PWM or dimming — that is `AnalogOutput`'s responsibility. Does **not**
+Does **not** apply PWM or dimming — that is `Dimmer`'s responsibility (the `AnalogOutput` family). Does **not**
 communicate with PanelBridge directly, or interpret what the DCS-BIOS address means. It **does**
 keep the last on/off state (`_lastOn` / `_hasState`) and skips the pin write when the newly decoded
 state is unchanged — a redundant-write dedup, not value buffering.

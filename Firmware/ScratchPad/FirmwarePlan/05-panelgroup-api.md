@@ -157,7 +157,7 @@ OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
 OpenSkyhawk::Switch2Pos ejSafe   (DCSIN_SEAT_EJECT_SAFE, PinRef(expander1, PORT_A, 3));
 ```
 
-### Switch3Pos *(new)*
+### Switch3Pos *(implemented)*
 
 3-position switch (ON-OFF-ON or ON-ON). VALUE: 0 = pin A active, 1 = neither (centre),
 2 = pin B active. Debounce: 20 ms per state.
@@ -173,7 +173,7 @@ OpenSkyhawk::Switch3Pos fuelSelector(DCSIN_FUEL_SEL,
                                       PinRef(expander1, PORT_A, 1));
 ```
 
-### SwitchMultiPos *(new)*
+### SwitchMultiPos *(implemented)*
 
 Multi-position rotary selector switch. N discrete pins — exactly one active (LOW) at a time.
 VALUE: position index 0 to N-1.
@@ -188,11 +188,11 @@ const PinRef weaponPins[] = { PinRef(expander1, PORT_B, 0), PinRef(expander1, PO
 OpenSkyhawk::SwitchMultiPos weaponSel(DCSIN_WEAPON_SEL, weaponPins, 4);
 ```
 
-### AnalogMultiPos *(new)*
+### AnalogMultiPos *(implemented)*
 
 Resistor-ladder multi-position selector. Single analog `PinRef` reads a different voltage per
-position. VALUE: position index 0 to N-1 (same as `SwitchMultiPos`). PanelBridge dispatches
-both via `MULTIPOS` — no SimGateway declarations needed.
+position. VALUE: position index 0 to N-1 (same as `SwitchMultiPos`). Both send an absolute value on
+`EVT_n` (ABS — PanelBridge formats `%u` → `set_state`); no SimGateway declarations needed.
 
 `ANALOG_NC = 0xFFFF` (65535) marks positions with no physical detent. Physically unreachable:
 STM32 ADC tops at 65520 (`analogReadResolution(16)`, framework scales 12-bit → 16-bit);
@@ -242,67 +242,75 @@ once; the press edge is consumed and no further state change occurs until releas
 every `SYNC_REQ` would flip the sim switch each time. It still seeds the baseline, which is what
 stops a button held at boot from reading as a press edge on the first `poll()`.
 
-### RotaryEncoder *(new)*
+### RotaryEncoder *(implemented — #117, REL/DIR #147)*
 
-Quadrature encoder (A/B pins). Mirrors `DcsBios::RotaryEncoder` behaviour: accumulates delta;
-fires CAN EVT when `|delta| >= stepsPerDetent`. VALUE: 1 = clockwise, 0 = counter-clockwise.
+Quadrature encoder (A/B pins) — a **relative** control: it reports motion, never an absolute
+position. Ports `DcsBios::RotaryEncoder`'s transition table: the delta accumulates and one detent
+fires when `|delta| >= stepsPerDetent` (`EncoderStepsPerDetent::One` / `Two` / `Four` / `Eight`).
+Direction travels in the **sign** of the value; the mode picks the DCS-BIOS interface and the CAN
+frame:
 
-`EncoderStepsPerDetent` scoped enum: `EncoderStepsPerDetent::One`, `::Two`, `::Four`, `::Eight`.
+| `EncoderMode` | DCS-BIOS interface | Frame | Value per detent | PanelBridge sends |
+|---|---|---|---|---|
+| `Rel` (default) | `variable_step` — continuous knobs (lat/lon, baro, heading bug) | `canIdEvtRel` `0x500+n` | `±step` (default 3200 = DCS `suggested_step`) | `%+d`, e.g. `+3200` |
+| `Dir` | `fixed_step` — bounded selectors with no pointer (ARC-51 frequency) | `canIdEvtDir` `0x600+n` | `±1` (anything else is dropped) | `INC` / `DEC` |
 
-Read model: PanelGroup polls `poll()` each loop, decoding the cached A/B bits — refreshed on the
-MCP23017 interrupt, **not** a per-encoder ISR. The detent period at human turn speeds (≥ ~10 ms) is
-well within the expander INT-refresh latency. (Verify the 11-encoder throughput on one node at B6.)
+Both modes are preset-safe: `forceReport()` resyncs the Gray state and emits nothing, so boot and
+`SYNC_REQ` never clobber a mission preset — DCS owns the position (and clamps DIR selectors at their
+ends). REL coalesces a burst into one frame (`detents × step`); DIR sends one frame per detent.
 
-```cpp
-OpenSkyhawk::RotaryEncoder altSet(DCSIN_ALT_SET,
-                                   PinRef(expander2, PORT_A, 6),
-                                   PinRef(expander2, PORT_A, 7),
-                                   EncoderStepsPerDetent::One);
-```
-
-### RotaryAcceleratedEncoder *(new)*
-
-Accelerated variant. Tracks time between detents; encodes direction and speed into value.
-
-PanelGroup applies the 175 ms inter-detent threshold:
-
-| VALUE | Meaning |
-|-------|---------|
-| 0 | Slow CCW (≥ 175 ms since last detent) |
-| 1 | Slow CW |
-| 2 | Fast CCW (< 175 ms since last detent) |
-| 3 | Fast CW |
-
-Momentum tracking prevents false direction changes: a reversal while momentum is non-zero
-is ignored (consumed as a braking step), matching DCS-BIOS behaviour.
-
-PanelBridge dispatches: 0 → `arg0`, 1 → `arg1`, 2 → `arg0fast`, 3 → `arg1fast`.
+Read model: `poll()` decodes the cached A/B bits at loop rate (MCP23017 bits are refreshed on the
+expander interrupt, not a per-encoder ISR). On a ShiftBus node built with `SHIFTBUS_ISR_HZ`, a timer
+ISR calls `sampleTick()` to decode at kHz rate and `poll()` only drains pending detents.
 
 ```cpp
-OpenSkyhawk::RotaryAcceleratedEncoder navKnob(DCSIN_PPOS_LAT_KNB,
-                                               PinRef(expander1, PORT_B, 0),
-                                               PinRef(expander1, PORT_B, 1),
-                                               EncoderStepsPerDetent::One);
+OpenSkyhawk::RotaryEncoder destLat(DCSIN_DEST_LAT_KNB,
+                                    PinRef(expander2, PORT_A, 6), PinRef(expander2, PORT_A, 7),
+                                    EncoderStepsPerDetent::Four);                     // REL, ±3200
+OpenSkyhawk::RotaryEncoder freq10(DCSIN_ARC51_FREQ_10MHZ,
+                                   PinRef(expander2, PORT_B, 0), PinRef(expander2, PORT_B, 1),
+                                   EncoderStepsPerDetent::Four, EncoderMode::Dir);  // INC / DEC
 ```
 
-### RotarySwitch *(new)*
+### RotaryAcceleratedEncoder *(planned — #287, Firmware v0.1.0)*
 
-Rotary encoder used as an N-position absolute switch. Tracks current position (0 to N-1) via
-quadrature A/B encoder. Turning past either end stop (0 or N-1) is ignored — no wrap.
+`DcsBios::RotaryAcceleratedEncoder` parity as a **thin subclass of `RotaryEncoder`** (D16). The
+base class's public constructor stays the plain `DcsBios::RotaryEncoder` equivalent; the subclass
+adds, through a protected base constructor:
 
-VALUE: current position index 0–(N-1). Dispatched as `MULTIPOS` by PanelBridge.
+- **Momentum filter** — the DCS-BIOS class's stated purpose ("noisy/faulty rotaries"). Momentum
+  builds to ±(4 × stepsPerDetent) transitions; a transition against it is dropped and only decays
+  it; momentum clears after 500 ms without a detent.
+- **Speed** — a detent less than 175 ms after the previous one adds `fastStep` instead of `step`.
+  Two-tier, not a ramp — same as DCS-BIOS.
+
+Speed is classified **per detent inside `decode()`** (which may run in the ShiftBus ISR), not when
+pending detents are drained — a stalled loop would otherwise erase the timing. REL pending becomes a
+step magnitude. No wire, bridge or map change: a fast detent is just a bigger `±step` on the REL
+frame (supersedes D9's 4-value scheme).
+
+Two constructors:
 
 ```cpp
-OpenSkyhawk::RotarySwitch navMode(DCSIN_NAV_MODE,
-                                   PinRef(exp1, PORT_B, 0),
-                                   PinRef(exp1, PORT_B, 1), 5);
+// REL — filter + speed-up
+OpenSkyhawk::RotaryAcceleratedEncoder pposLat(DCSIN_PPOS_LAT_KNB,
+    PinRef(exp1, PORT_B, 0), PinRef(exp1, PORT_B, 1),
+    EncoderStepsPerDetent::Four, /*step*/ 3200, /*fastStep*/ 12800);
+// DIR — filter only (the DIR wire is strictly ±1, so there is no speed to add)
+OpenSkyhawk::RotaryAcceleratedEncoder freq1(DCSIN_ARC51_FREQ_1MHZ,
+    PinRef(exp1, PORT_B, 2), PinRef(exp1, PORT_B, 3),
+    EncoderStepsPerDetent::Four, EncoderMode::Dir);
 ```
 
-**Known gap — boot position:** Without a fiducial or index pin, `RotarySwitch` cannot determine
-absolute position at power-on and initialises to 0. Physical and software positions
-re-synchronise when the user turns to either end-stop. See `11-open-issues.md`.
+### RotarySwitch *(dropped — D16)*
 
-### AnalogInput *(new)*
+Not ported. `DcsBios::RotarySwitch` assumes position 0 at boot and sends absolute `set_state`
+values, so the first click after a cold start can jump the sim away from a mission preset (it only
+realigns when turned to an end stop). Use `RotaryEncoder` in `EncoderMode::Dir` for bounded
+selectors: it sends INC/DEC, DCS owns the position and clamps at the ends, and the cockpit readout
+(e.g. the ARC-51 drums) shows the result — the pattern DCS-BIOS's own M2000C radio examples use.
+
+### AnalogInput *(implemented)*
 
 Continuous or stepped analog input. All sources normalised to **16-bit (0–65535)**:
 
@@ -325,8 +333,8 @@ is silent. The constructor exposes `reverse`, `[minRaw, maxRaw]`, `hysteresis` (
 cannot overflow at full scale), and `pollMs` (default 8; **not** capped — 0 means read every loop
 iteration). `pollMs` and `ewmaShift` are **coupled**: the filter time constant is
 τ ≈ 2^`ewmaShift` × `pollMs`, so halving the read interval halves τ unless the shift rises with it.
-A *linear* class — it reuses the `MULTIPOS` transport, but the value is continuous, not a position
-index.
+A *linear* class — it sends an absolute value on `EVT_n` (ABS) like the selector classes, but the
+value is continuous, not a position index.
 
 ```cpp
 OpenSkyhawk::AnalogInput throttle(CTRL_THROTTLE, PinRef(PA0));
@@ -336,61 +344,38 @@ OpenSkyhawk::AnalogInput rudder(CTRL_RUDDER, PinRef(adc, 0));
 ```
 
 The 16-bit value is used as-is by both routing paths: PanelBridge passes it to
-`sendDcsBiosMessage()` for DCS-BIOS controls (`MULTIPOS` type); SimGateway passes it to
+`sendDcsBiosMessage()` for DCS-BIOS controls (ABS, `%u` → `set_state`); SimGateway passes it to
 `HIDAxis::dispatch()` for joystick axes — no rescaling at either destination.
 
-### AngleSensorInput *(new)*
+### AngleSensorInput *(planned — #294, Firmware v0.1.0)*
 
-Hall-effect angle sensor for continuous-rotation flight control axes. Used on flight-control
-sub-nodes, not on cockpit panel boards.
+A magnetic angle sensor (AS5600 / MT6701) as an **absolute** knob or axis — no wiper wear and a full
+360° mechanical range, where a pot stops at ~270°. Use case: absolute DCS-BIOS knobs such as
+`GUNSIGHT_KNB` (gunsight elevation) or `RADAR_RETICLE`; flight-control axes use linear Hall sensors
+on `AnalogInput` instead (#278).
 
-Two sensors supported via a common `AngleSensor` abstraction:
+Design (D16) — **`AngleSensorInput : AnalogInput`**, not a sibling class:
 
-| Chip | Raw resolution | I²C address | Conversion |
-|------|---------------|-------------|------------|
-| AS5600 | 12-bit (0–4095) | Fixed 0x36 | ×16 → 16-bit (0–65520) |
-| MT6701 | 14-bit (0–16383) | Fixed 0x06 (I²C mode) | ×4 → 16-bit (0–65532) |
-
-Both have fixed I²C addresses. Two axes on one sub-node require two I²C buses (`Wire` /
-`Wire1`).
-
-```cpp
-class AngleSensor {
-public:
-    virtual bool     begin()     = 0;  // init chip, returns false if not found
-    virtual uint16_t readAngle() = 0;  // 0–65535 (16-bit, full 360° mapped linearly)
-};
-
-class AS5600Sensor : public AngleSensor { AS5600Sensor(TwoWire& wire); ... };
-class MT6701Sensor : public AngleSensor { MT6701Sensor(TwoWire& wire); ... };
-```
-
-Calibration parameters: `centerDeg` (0–360, physical angle at neutral) and `travelDeg`
-(± degrees from center mapped to 0–65535).
-
-Dead-band: 32 counts (configurable). AS5600 increments in steps of 16 after ×16 scaling —
-a 16-count dead-band suppresses nothing; 32 rejects single-step jitter. EWMA filtering applied
-before sending. Polling rate: every 8 ms.
-
-**Calibration constraint:** `[center − travel, center + travel]` must not straddle the 0°/360°
-wrap boundary. If neutral is near 0° or 360°, rotate the magnet mount.
-
-**Routing:** `AngleSensorInput` for flight control axes always uses `controlId < 0x8000`
-(e.g. `CTRL_ROLL`, `CTRL_PITCH`) — these route via HID, never via `sendDcsBiosMessage()`.
-On SimGateway, `HIDAxis::dispatch()` applies that axis's stored calibration and then the
-fixed `v - 32768` offset, yielding ±32767. See `07-simgateway-api.md#axis-calibration`.
-See `07-simgateway-api.md` for the axis declarations.
-
-**I²C init ordering:** `AngleSensor` constructors store the `TwoWire` reference but do not
-touch I²C. The sketch must call `Wire.begin()` before `PanelGroup::setup()`, which calls
-`sensor.begin()` on each registered sensor.
+- **Takes a `PinRef`** like every control class: the sensor's analog output pin, read through an
+  STM32 ADC pin or an ADS1115 channel. It calls `AnalogInput`'s existing public constructor, with
+  `centerDeg` / `travelDeg` converted to `[minRaw, maxRaw]`.
+- `AnalogInput` gains one protected virtual `readRaw()` (default: `_pin.readAnalog()`);
+  `AngleSensorInput` overrides it to **re-centre** the reading so `centerDeg` lands at mid-scale —
+  the 0°/360° seam then only matters for travel wider than ±180°. Everything else is inherited —
+  EWMA, hysteresis, per-instance `pollMs`, and **routing by `controlId`**: `DCSIN_*` → ABS
+  `set_state` through PanelBridge, `CTRL_*` → HID through SimGateway.
+- Reading the angle register over I²C (higher resolution, no ADC noise) is a later **`PinRef`
+  backend** (`PinRef(as5600)`, like the ADS1115's), carrying its own `I2cHealth` + `FaultSource`
+  contract — not an object passed to this class.
+- A DCS knob that only accepts relative input (`variable_step` only) would need a syncing mode like
+  `DcsBios::RotarySyncingPotentiometer` (read DCS's value back, send `%+d` corrections) — a later
+  addition, not part of the first cut.
 
 ```cpp
-AS5600Sensor  rollSensor(Wire);
-MT6701Sensor  pitchSensor(Wire1);
-
-OpenSkyhawk::AngleSensorInput roll (CTRL_ROLL,  rollSensor,  centerDeg, travelDeg);
-OpenSkyhawk::AngleSensorInput pitch(CTRL_PITCH, pitchSensor, centerDeg, travelDeg);
+ADS1115 adc(0x48, Wire);
+// AS5600 OUT pin → ADS1115 channel 2 (or an STM32 ADC pin: PinRef(PA3))
+OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, PinRef(adc, 2),
+                                        /*centerDeg*/ 180.0f, /*travelDeg*/ 150.0f);
 ```
 
 ---
@@ -401,7 +386,7 @@ Output objects are declared at global scope. Constructors self-register. `PanelG
 dispatches each non-null packet in received `CTRL_BCAST` `ControlPacketPair` frames to every
 registered output object.
 
-### LED *(exists)*
+### LED *(implemented)*
 
 GPIO pin driven from a single bit of a DCS-BIOS value. Pin HIGH when `(value & mask) != 0`.
 
@@ -409,33 +394,38 @@ GPIO pin driven from a single bit of a DCS-BIOS value. Pin HIGH when `(value & m
 OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION_A, 0x4000, PinRef(PB0));
 ```
 
-### IntegerOutput *(Not Started — Phase 5)*
+### AnalogOutput family *(planned — #288, Firmware v0.1.0)*
 
-User-supplied callback with the raw 16-bit DCS value. Escape hatch for custom output logic.
+One 16-bit DCS-BIOS value driving something proportional (D16). **`AnalogOutput`** is an abstract
+`OutputBase`: it owns `controlId` + mask/shift matching (like `LED`) and change dedup, and hands
+the value to a protected virtual `apply()`. Subclasses only change the sink:
+
+| Class | Sink | DCS-BIOS equivalent |
+|---|---|---|
+| `Dimmer` | PWM duty on a **direct STM32 GPIO timer pin** — the backlight zone MOSFET gate | `DcsBios::Dimmer` |
+| `IntegerOutput` | a user callback with the value — custom displays, LCDs, anything bespoke | `DcsBios::IntegerBuffer` |
+| `ServoOutput` *(optional, later)* | servo pulse width, for non-gauge uses (a flag, a lever) | `DcsBios::ServoOutput` |
+
+Needles stay on `NeedleGauge` + a `MotorDriver` (`ServoMotor`, #132) — they need `GaugeCal` and
+smooth motion, which a plain `ServoOutput` doesn't give.
+
+**`Dimmer`** — the A-4E-C's five light-intensity outputs (`LIGHTS_CONSOLE`, `LIGHTS_INSTRUMENTS`,
+`LIGHTS_FLOOD_RED`, `LIGHTS_FLOOD_WHITE`, `APG53A_GLOW`). Takes a `PinRef` like every control class
+and **checks it**: PWM comes from a timer channel, so `configure()` requires a direct GPIO on one —
+an expander / ShiftBus pin or a GPIO without a timer is logged and the output stays disabled. It
+writes through `PinRef::writeAnalog()`. Duty is 0 at `configure()` so a zone stays dark until the
+first matching frame. Default map `duty = value >> 8`; an optional scale function
+covers perceptual curves or inversion. On the PanelGroup base the two zones are PA6 / PA7.
 
 ```cpp
-void onCanopyPos(uint16_t v) { /* custom motor drive */ }
-OpenSkyhawk::IntegerOutput canopy(A_4E_C_CANOPY_POS_A, onCanopyPos);
+OpenSkyhawk::Dimmer instrLights(A_4E_C_LIGHTS_INSTRUMENTS, PinRef(PA6));   // TIM3_CH1 → J_BL1
+OpenSkyhawk::Dimmer floodRed   (A_4E_C_LIGHTS_FLOOD_RED,   PinRef(PA7));   // TIM3_CH2 → J_BL2
+
+void onCanopyPos(uint16_t v) { /* custom drive */ }
+OpenSkyhawk::IntegerOutput canopy(A_4E_C_CANOPY_POS, onCanopyPos);
 ```
 
-### AnalogOutput *(new)*
-
-Maps a 16-bit DCS-BIOS value to PWM duty cycle on a direct STM32 GPIO pin. Used for
-instrument panel backlighting, gauge backlighting, and floodlights (three independent zones
-per MCU board — each gets its own `AnalogOutput`).
-
-**Must be a direct STM32 GPIO pin** — MCP23017 cannot do PWM. Enforced by checking
-`pin.isGpio()` in the constructor; sketches still must choose a PWM-capable direct pin.
-
-Value mapping: `dutyCycle = value >> 8` (16-bit → 8-bit). Optional custom scale function as
-third argument.
-
-```cpp
-OpenSkyhawk::AnalogOutput instrLight(A_4E_C_LIGHTS_INSTRUMENTS_A, PinRef(PB9));
-OpenSkyhawk::AnalogOutput floodLight(A_4E_C_LIGHTS_FLOOD_RED_A,   PinRef(PB8));
-```
-
-### NeedleGauge *(new)*
+### NeedleGauge *(implemented)*
 
 Drives a **needle / pointer gauge** from one DCS-BIOS address. `NeedleGauge` is a thin `OutputBase`
 that does only the **gauge semantics** — decode the 16-bit value, map it to a motor position (linear

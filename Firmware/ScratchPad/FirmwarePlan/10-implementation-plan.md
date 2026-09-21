@@ -127,8 +127,9 @@ items marked **Ready for implementation** in TechSpec are in scope for this phas
       INTCAP dispatch (interrupt-driven + 20 ms polling fallback for NO_INT_PIN chips).
 - [x] Implement `LED` using `PinRef` and `OutputBase::onControlPacket()`.
 - [x] Update `Switch2Pos` to accept `PinRef` instead of `uint8_t pin`.
-- [ ] End-to-end integration sketch (one `Switch2Pos` + one `LED` through PanelBridge and
-      SimGateway) — **deferred to Phase 4** once `Switch2Pos` is implemented.
+- [x] End-to-end integration sketch (one `Switch2Pos` + one `LED` through PanelBridge and
+      SimGateway) — done as `Firmware/Examples/E2E_DCS_Test`, hardware-verified against live DCS
+      2026-06-15 (PR #30); it has since grown into the one-instance-of-every-class integration node.
 
 **Hardware verification (STM32F103CBT6 Blue Pill clone, 2026-06-12):**
 
@@ -161,40 +162,85 @@ items marked **Ready for implementation** in TechSpec are in scope for this phas
 
 ---
 
-## Phase 4 — Remaining Input Types *(backlog, gated by TechSpec status)*
+## Phase 4 — Remaining Input Types *(core pass DONE — the A-4E-C's inputs are all covered)*
 
-Do not start these until the matching TechSpec file is marked **Ready for implementation**.
+Checked 2026-09-21 against the DCS-BIOS `A-4E-C.jsonp` export (150 inputs): every input control has
+a class. Push-to-set knobs (`IAS_INDEX`, `STBY_ATT_INDEX`, `RADAR_ALT`) are a `Switch2Pos` plus a
+`RotaryEncoder` — DCS-BIOS exposes separate button and knob identifiers. Class structure follows
+D16 (families, DCS-BIOS names).
 
-- [ ] Implement `Switch3Pos`.
-- [ ] Implement `SwitchMultiPos`.
-- [ ] Implement `ActionButton` (press-only; no release EVT; 20 ms debounce).
-- [ ] Implement `AnalogInput` (STM32 ADC + ADS1115 via PinRef). Depends on PinRef being
-      complete first.
-- [ ] Implement `RotaryEncoder` (with MCP23017 interrupt support).
-- [ ] Implement `RotaryAcceleratedEncoder` (extends `RotaryEncoder` base; fast/slow delta).
-- [ ] Implement `RotarySwitch` (extends `RotaryEncoder` base; tracks absolute position 0–N-1;
-      hard stops at ends).
-- [ ] Implement `AnalogMultiPos` (resistor ladder; equal-division and explicit-threshold modes).
-- [ ] Implement `AngleSensor` abstract base + `AS5600Sensor` + `MT6701Sensor`.
-- [ ] Implement `AngleSensorInput` (calibration, dead-band, EWMA, 8 ms poll).
-- [ ] Implement `SwitchWithCover2Pos` when the first guarded panel control is integrated.
-      This is lower priority than the core input pass but required for full cockpit coverage.
+- [x] `Switch3Pos` — hardware-verified 2026-06-23 (PR #144, #115).
+- [x] `SwitchMultiPos` + the `MultiPosInput` base — hardware-verified 2026-06-22 (PR #140, #124).
+- [x] `AnalogMultiPos` on `MultiPosInput` — hardware-verified 2026-06-23 (PR #143, #114).
+- [x] `AnalogInput` — hardware-verified 2026-08-14 on PanelGroup Rev 1 (PR #145, #118); per-instance
+      `pollMs` (PR #267); HID-axis calibration lives in SimGateway (#251).
+- [x] `RotaryEncoder` with REL / DIR modes over dedicated CAN frames — live-DCS verified (PR #146 / #117,
+      PR #157 / #147).
+- [x] `ActionButton` — one TOGGLE per press on `EVT_ACTION_n` (PR #275, #116). Hardware + live-DCS
+      check happens in the v1.0 soak panel smoke test (#291).
+- [ ] `RotaryAcceleratedEncoder` — thin `RotaryEncoder` subclass, DCS-BIOS parity: momentum filter
+      + `fastStep` (#287). **Firmware v0.1.0.**
+- [ ] `AngleSensorInput` : `AnalogInput`, on a `PinRef` (the sensor's analog output) — for
+      absolute knobs such as `GUNSIGHT_KNB` (#294). **Firmware v0.1.0**, so the class set is locked
+      before v1.0. Spec: `TechSpec/PanelGroup/Inputs/AngleSensorInput.md`.
+- [ ] `SwitchWithCover2Pos` — DCS-BIOS behaviour (one pin; sequences the cover) on a protected
+      `Switch2Pos` hook (#293). **Firmware v0.1.0.** The A-4E-C itself uses it 0× — its only guard,
+      AFCS 1-N-2, is a 3-position switch the mod doesn't gate, so it is a `Switch3Pos` (+ an
+      optional `Switch2Pos` on a cover microswitch); the class is for DCS-BIOS parity.
+- ~~`RotarySwitch`~~ — **dropped** (D16): `RotaryEncoder` DIR drives bounded selectors without the
+      boot-position problem.
 
 ---
 
 ## Phase 5 — Output Types
 
-- [ ] Implement `AnalogOutput` (backlight dimming — 3 zones per MCU board).
-- [x] Implement `NeedleGauge` + the `MotorDriver` / `StepperMotor` layer — supersedes the former
+Checked against the same export (152 outputs): LEDs, needles/flags/ADI and drum digits are
+covered; the only uncovered outputs were the five light-intensity values (`LIGHTS_CONSOLE`,
+`LIGHTS_INSTRUMENTS`, `LIGHTS_FLOOD_RED`, `LIGHTS_FLOOD_WHITE`, `APG53A_GLOW`).
+
+- [x] `LED`.
+- [x] `NeedleGauge` + the `MotorDriver` / `StepperMotor` layer — supersedes the former
       `SwitecX25Output` / `AccelStepperOutput` / `ServoOutput` (one gauge class over a swappable
       backend; STALL or sensor homing, non-blocking update). (#122 / #131)
-- [ ] `ServoMotor` `MotorDriver` backend (servo-driven pointers). (#132)
+- [x] `DrumDisplay` — OLED rolling-drum readouts behind `I2cMux` (PR #129, #113); leading-zero
+      suppression (PR #204, verification #196).
+- [ ] `AnalogOutput` family — abstract base + `Dimmer` (PWM backlight zones, the five
+      light-intensity outputs) + `IntegerOutput` (user callback) (#288). **Firmware v0.1.0.**
+- [ ] `ServoMotor` `MotorDriver` backend (servo-driven pointers). (#132) — after v1.0.
 
 ---
 
-## Phase 6 — First Full Panel Integration
+## Phase 5b — Infrastructure Nodes: PDU *(Firmware v0.2.0)*
 
-- [ ] Write Center_Armament PanelGroup sketch using full library.
-- [ ] Add HID declarations to SimGateway sketch for stick sub-node axes.
-- [ ] End-to-end test: DCS running → switch on panel → DCS-BIOS command received via PanelBridge
-      input map.
+- [ ] PDU boards (#202) assembled and brought up.
+- [ ] PDU monitoring firmware + its new CAN telemetry frame (#216) — reuse the `HEALTH_n` pattern
+      (D13).
+
+---
+
+## v1.0 Release Gate *(Firmware v1.0.0)*
+
+v1.0.0 freezes the sketch API and the CAN wire format — after it, a breaking change means 2.0 — and
+ships **before** Phase 6 panel work. Anything that changes an API or the wire format lands before
+it; anything that doesn't (#269, #132, #228) can land after without breaking anyone. Every control
+class is locked in v0.1.0. The gate itself is tracked in #290 and runs on the hardware from the
+"Base boards Rev 2 + soak test rig" milestone (#209, #95, #291):
+
+- [ ] Multi-node live-DCS soak, 2–3 h: no false offline, `DIAG_ERR` TX-drop counters at zero,
+      reconnect / `SYNC_REQ` keeps mission presets.
+- [ ] #291 smoke test passed — the single live check for every in-scope class.
+- [ ] CAN verified at 500 kbps against the scope (#209's pre-order checks).
+- [ ] API + wire review: constructor signatures, CAN ID map, payload layouts.
+
+---
+
+## Phase 6 — First Full Panel Integration *(after v1.0)*
+
+The first controller is **Right_Navigation** (#168: ASN-41 host + APN-153 and ARC-51A I²C
+sub-panels). Center_Armament was the original target, but its MCU board is retired; its
+sub-panels get redesigned to the harness standard when that controller is picked up.
+
+- [ ] Right_Navigation PanelGroup sketch using the full library (#172, B6).
+- [ ] Add HID declarations to the SimGateway sketch for the stick sub-node axes.
+- [ ] End-to-end test: DCS running → panel control → DCS-BIOS command via PanelBridge, and DCS
+      outputs → panel gauges / drums / lights (#173, B9).
