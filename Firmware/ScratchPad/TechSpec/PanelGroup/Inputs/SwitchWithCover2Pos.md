@@ -37,15 +37,60 @@ other aircraft.
 
 ---
 
-## Design notes
+## Design — built on `Switch2Pos` through a protected hook (option A, PR #292 review)
 
-- Builds on `Switch2Pos` (same pin read, polarity and debounce); overrides the emit path to run the
-  two-control sequence. Two `DCSIN_*` ids at construction: `(switchId, coverId, pin, reverse)`.
-- The 200 ms spacing is non-blocking — a pending second frame is sent from `poll()` once the delay
-  has elapsed, never with `delay()`.
-- The generator already maps `AFCS_1N2_COVER` as its own `DCSIN_*` (the old "paired boolean" gap is
-  gone), so no generator change is needed.
+`Switch2Pos` today keeps its pin/debounce state `private` and sends CAN inline in `poll()` and
+`forceReport()`, so there is nothing a subclass can override. Implementing this class therefore
+starts with a small, **behaviour-neutral** refactor of `Switch2Pos` — its public API, frames and
+timing stay identical, and its six test envs must pass unchanged:
 
 ```cpp
-OpenSkyhawk::SwitchWithCover2Pos gunArm(DCSIN_EXAMPLE_SWITCH, DCSIN_EXAMPLE_COVER, PinRef(PB0));
+class Switch2Pos : public InputBase {
+    // public API unchanged
+protected:
+    /** Send the debounced state. Default: one ControlPacket {controlId, active} on EVT_n.
+     *  poll() calls it on a confirmed change; forceReport() calls it with init = true. */
+    virtual void emit(bool active, bool init);
+
+    uint16_t _controlId;
+    PinRef   _pin;
+    bool     _reverse;
+    bool     _lastConfirmed;
+    // debounce fields stay private — subclasses only ever see confirmed states
+};
+```
+
+`SwitchWithCover2Pos : Switch2Pos` adds a second id and a three-state sequencer, mirroring
+`DcsBios::SwitchWithCover2Pos` (`OFF_CLOSED` → `OFF_OPEN` → `ON_OPEN` and back):
+
+| Physical switch | Frames, each ≥ `COVER_DELAY_MS` (200 ms) after the previous | End state |
+|---|---|---|
+| flips **on** | cover `1` (open) → switch `1` | cover open, switch on |
+| flips **off** | switch `0` → cover `0` (close) | cover closed, switch off |
+
+- `emit()` is overridden to **set the target**, not send: the sequencer then steps one frame at a
+  time from `poll()` (override calls `Switch2Pos::poll()` first, then advances), never with
+  `delay()`. Flipping back mid-sequence walks the machine back the other way, as in DCS-BIOS.
+- **Boot / `SYNC_REQ` (`init = true`) re-asserts the settled pair** in the same order and with the
+  same spacing — cover first when on, switch first when off. This deliberately differs from
+  DCS-BIOS, whose `resetState()` realigns its state machine but re-sends nothing: D5 requires every
+  absolute input to be re-sent on sync, because a missed input leaves DCS wrong until the next
+  physical change.
+- Constructor: `(switchId, coverId, PinRef pin, bool reverse = false)`; both ids are ordinary
+  `DCSIN_*` constants, sent as ABS on `EVT_n`.
+- The generator already maps covers as their own `DCSIN_*` (e.g. `AFCS_1N2_COVER`), so no generator
+  change is needed.
+
+### Tests (`Firmware/Tests/SwitchWithCover2Pos`)
+
+| Env | Asserts |
+|---|---|
+| `sequence_on` | on: cover 1 then switch 1, ≥ 200 ms apart |
+| `sequence_off` | off: switch 0 then cover 0, ≥ 200 ms apart |
+| `reverse_midway` | flipping back mid-sequence walks back without an extra frame |
+| `sync_reassert` | `forceReport()` re-sends the settled pair in order |
+| `switch2pos_unchanged` | the existing `Switch2Pos` envs pass with the hook in place |
+
+```cpp
+OpenSkyhawk::SwitchWithCover2Pos masterArm(DCSIN_EXAMPLE_SWITCH, DCSIN_EXAMPLE_COVER, PinRef(PB0));
 ```
