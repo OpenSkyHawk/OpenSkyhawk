@@ -4074,9 +4074,10 @@ Chinese Blue Pill clone: <code>0x2ba01477</code></p>
 <p>ST-Link refuses to connect without overriding the ID. Add to <code>platformio.ini</code>:</p>
 <pre><code class="language-ini">upload_flags =
     -c
-    set CPUTAPID 0x2ba01477
-debug_extra_cmds = set CPUTAPID 0x2ba01477
+    set CPUTAPID 0
 </code></pre>
+<p>Use <code>0</code>, not the clone's ID: <code>0</code> disables the check outright, while <code>0x2ba01477</code> has been
+observed to fail part-way through the write.</p>
 <p>Flag ordering matters — the <code>-c set CPUTAPID</code> pair must appear before the
 OpenOCD target config loads.</p>
 <h3 id="usb-cdc-crashes-under-dcs-bios">USB CDC crashes under DCS-BIOS</h3>

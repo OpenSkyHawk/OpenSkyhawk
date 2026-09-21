@@ -4145,16 +4145,8 @@ the in-tree <code>Templates/PanelGroup</code> should target <code>genericSTM32F1
 <p>STM32 boards flash over <strong>SWD with an ST-Link</strong> (<code>upload_protocol = stlink</code>). PlatformIO drives
 the probe directly — <code>pio run -t upload</code>. SimGateway (RP2040) flashes over USB by UF2 or
 straight from PlatformIO; no ST-Link.</p>
-<div class="admonition warning">
-<p class="admonition-title">Blue Pill clone won't connect? Override the tap ID</p>
-<p>Many clones report a non-standard JTAG ID and ST-Link refuses to connect with "tap not
-found." Uncomment the override in the template:</p>
-<p><code>ini
-upload_flags =
-    -c
-    set CPUTAPID 0x2ba01477</code></p>
-<p>The standard ID is <code>0x1ba01477</code>; the common clone is <code>0x2ba01477</code>.</p>
-</div>
+<p>If an upload fails — old ST-Link firmware, or a clone's non-standard tap ID — see
+<a href="../../guides/flashing/#st-link-troubleshooting">Flashing → ST-Link troubleshooting</a>.</p>
 <h2 id="serial-monitor">Serial monitor</h2>
 <p><code>monitor_speed = 115200</code> matches the <strong>DiagSerial</strong> debug stream (USART1, PA9/PA10). Attach a
 USB-to-TTL adapter to the board's 3-pin debug header and <code>pio device monitor</code>. See

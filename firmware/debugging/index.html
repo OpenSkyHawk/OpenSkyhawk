@@ -4147,15 +4147,9 @@ MCP23017 interrupts. PC13/PC14/PC15 are also off-limits on custom boards.</p>
 </div>
 <h2 id="bench-gotchas">Bench gotchas</h2>
 <div class="admonition warning">
-<p class="admonition-title">Blue Pill clone — ST-Link 'tap not found'</p>
-<p>Many clones report JTAG ID <code>0x2ba01477</code> (standard is <code>0x1ba01477</code>) and ST-Link refuses to
-connect. Override it in <code>platformio.ini</code>:</p>
-<p><code>ini
-upload_flags =
-    -c
-    set CPUTAPID 0x2ba01477
-debug_extra_cmds = set CPUTAPID 0x2ba01477</code></p>
-<p>The <code>-c set CPUTAPID</code> pair must come before the OpenOCD target config loads.</p>
+<p class="admonition-title">ST-Link won't upload or connect</p>
+<p>Old probe firmware ("only supports deprecated HLA") or a clone's non-standard tap ID
+("tap not found") — see <a href="../../guides/flashing/#st-link-troubleshooting">Flashing → ST-Link troubleshooting</a>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Don't use STM32 USB CDC for DCS-BIOS</p>

@@ -2682,6 +2682,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="STM32 (PanelBridge, PanelGroup) — ST-Link over SWD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#st-link-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ST-Link troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4001,6 +4018,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="STM32 (PanelBridge, PanelGroup) — ST-Link over SWD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#st-link-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ST-Link troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4057,6 +4091,16 @@ pio run -e PanelGroup -t upload   # a specific env
 <p><code>upload_protocol = stlink</code> is already set in the templates. No separate flasher GUI is needed —
 PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 <a href="../../firmware/platformio-setup/">PlatformIO Setup</a>.</p>
+<h3 id="st-link-troubleshooting">ST-Link troubleshooting</h3>
+<div class="admonition warning">
+<p class="admonition-title">Upload fails with 'only supports deprecated HLA'?</p>
+<p>The ST-Link's own firmware is too old — PlatformIO's OpenOCD needs <strong>V2J24 or newer</strong>, and
+many clones ship older. Update the probe with ST's free
+<a href="https://www.st.com/en/development-tools/stsw-link007.html">STSW-LINK007</a> updater: plug the
+ST-Link in on its own, click <strong>Open in update mode</strong>, then <strong>Upgrade</strong>, and replug.
+On macOS the updater needs Java (<code>brew install --cask temurin</code>); without it the app closes
+as soon as it opens.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Clone reports 'tap not found'?</p>
 <p>Many Blue Pill clones use JTAG ID <code>0x2ba01477</code> (standard is <code>0x1ba01477</code>) and ST-Link
