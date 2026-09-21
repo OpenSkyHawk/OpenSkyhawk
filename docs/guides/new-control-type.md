@@ -10,7 +10,7 @@ FirmwarePlan TechSpec.
     debounce, polling rate, edge cases). Implement to the spec — don't improvise behaviour.
     Before writing a new class, check whether it only changes an existing class's *source* (inputs)
     or *sink* (outputs) — then it's a subclass in that class's family, not a new class. Names
-    follow `dcs-bios-arduino-library` where an equivalent exists (the planned `RotaryAcceleratedEncoder` extends
+    follow `dcs-bios-arduino-library` where an equivalent exists (`RotaryAcceleratedEncoder` extends
     `RotaryEncoder`; the planned `Dimmer` and `IntegerOutput` extend `AnalogOutput`).
 
 ## Where it goes

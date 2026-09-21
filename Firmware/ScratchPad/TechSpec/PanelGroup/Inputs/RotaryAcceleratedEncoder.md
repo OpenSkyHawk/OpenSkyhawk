@@ -1,6 +1,6 @@
 # RotaryAcceleratedEncoder — Technical Specification
 
-**Status:** Ready for implementation (#287) — `RotaryEncoder` family member (D16)
+**Status:** Done (hardware-verified — **5/5 envs PASS 2026-09-21** on an STM32F103, CAN silent loopback; the live-DCS feel check is part of the #291 smoke test). `RotaryEncoder` family member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (RotaryAcceleratedEncoder), `FirmwarePlan/00-decisions.md` (D16; supersedes D9)
 **Depends on:** `RotaryEncoder.md`
 
@@ -18,7 +18,10 @@ encoder, both on by construction, exactly as in DCS-BIOS:
    momentum is dropped (not added to the delta) and only moves momentum one step toward zero. When
    no detent has fired for `STOPPED_THRESHOLD_MS` = 500 ms, momentum resets to zero.
 2. **Speed** — a detent that completes less than `FAST_THRESHOLD_MS` = 175 ms after the previous
-   one contributes `fastStep` instead of `step`. Two-tier, not a ramp.
+   one contributes `fastStep` instead of `step`. Two-tier, not a ramp. `fastStep` uses the same sign
+   convention as `step` (a negative `step` flips direction — so should `fastStep`); `fastStep = 0`
+   turns the speed-up off. **The first detent after a resync (`forceReport()`) is always slow** —
+   DCS-BIOS times it from construction, which can misclassify it.
 
 Speed only applies in **REL** mode (`variable_step`): the DIR wire is strictly ±1 — PanelBridge
 drops anything else — so a DIR-mode instance gets the momentum filter only. That matches how
@@ -32,26 +35,34 @@ constructor stays filter-free.
 
 ## File Layout
 
+Own folder and own test project, like every other class (the `MultiPosInput` family precedent):
+
 ```
 Firmware/Libraries/PanelGroup/
-└── Inputs/RotaryEncoder/
-    ├── RotaryEncoder.{h,cpp}             ← gains a protected constructor + the filter/speed path
-    └── RotaryAcceleratedEncoder.h        ← constructors only (header-only subclass)
+├── Inputs/RotaryEncoder/RotaryEncoder.{h,cpp}                 ← family base: protected ctor + filter/speed path
+└── Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h ← constructors only (header-only)
 ```
 
-### Test project
+Included from `OpenSkyhawk.h`.
 
-`Firmware/Tests/RotaryEncoder/` — the eight existing envs stay untouched (plain encoder). New envs,
-driven through the existing `debugSeed()` / `debugStep()` seams with real `delay()` for timing (as
-the ActionButton tests do), so any STM32 node runs them with no wiring:
+### Test project — `Firmware/Tests/RotaryAcceleratedEncoder/`
+
+Same `env_base` as `Firmware/Tests/RotaryEncoder` (`-DROTARYENCODER_TEST`). Driven through the base's
+test seams — `debugSeed()`, `debugStep()` (decode + drain), and `debugDecode()` / `debugDrain()`
+(added for this class, to build up a pending burst) — with real `delay()` for timing. **Rig:** the
+STM32 **alone**, CAN in silent loopback (`CANProtocol::startLoopback()`) — no bus, no PanelBridge, no
+encoder. Not on a board wired to a live bus (a loopback node never ACKs).
 
 | Env | Asserts |
 |---|---|
-| `accel_reverse_blip` | a single reverse transition mid-spin is swallowed; no reverse detent |
-| `accel_momentum_reset` | after 500 ms idle, a genuine reversal registers normally |
-| `accel_fast_slow` | detents < 175 ms apart emit `fastStep`, ≥ 175 ms emit `step` |
-| `accel_burst_coalesce` | a mixed slow + fast burst drains as one REL frame whose value is the sum |
-| `accel_dir_filter_only` | DIR mode: the filter applies; every emit is exactly ±1 |
+| `test_reverse_blip` | a single reverse transition mid-spin is swallowed; the same sequence costs a plain `RotaryEncoder` a detent |
+| `test_momentum_reset` | an immediate reversal is eaten; after 500 ms idle a reversal registers in full |
+| `test_fast_slow` | first detent slow; < 175 ms apart → `fastStep`; ≥ 175 ms → `step` |
+| `test_burst_coalesce` | slow + fast detents drain as one REL frame = their sum; a sum beyond int16 splits into frames that add up (32767 + 5633) |
+| `test_dir_filter_only` | DIR: every emit is exactly ±1; the filter still swallows a blip; reversal from rest → −1 |
+
+The eight `Firmware/Tests/RotaryEncoder` envs keep their assertions (only their rig moved to loopback)
+and still pass — the plain path is byte-identical.
 
 ---
 
@@ -60,7 +71,7 @@ the ActionButton tests do), so any STM32 node runs them with no wiring:
 ```cpp
 // RotaryAcceleratedEncoder.h
 #pragma once
-#include "RotaryEncoder.h"
+#include <Inputs/RotaryEncoder/RotaryEncoder.h>
 
 namespace OpenSkyhawk {
 
@@ -73,7 +84,8 @@ public:
         : RotaryEncoder(controlId, pinA, pinB, stepsPerDetent, EncoderMode::Rel, step,
                         /*momentumFilter*/ true, fastStep) {}
 
-    /** DIR (fixed_step): momentum filter only — the DIR wire carries ±1, so there is no speed. */
+    /** DIR (fixed_step): momentum filter only — the DIR wire carries ±1, so there is no speed.
+     *  Passing EncoderMode::Rel here gives a REL knob with the filter and no speed-up. */
     RotaryAcceleratedEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
                              EncoderStepsPerDetent stepsPerDetent, EncoderMode mode /* Dir */)
         : RotaryEncoder(controlId, pinA, pinB, stepsPerDetent, mode, DEFAULT_STEP,
@@ -83,11 +95,12 @@ public:
 } // namespace OpenSkyhawk
 ```
 
-The DIR constructor rejects `EncoderMode::Rel` (debug assertion) — REL users take the first
-constructor, which makes `fastStep` explicit.
+The mode-taking constructor is meant for `EncoderMode::Dir`; given `EncoderMode::Rel` it yields a REL
+knob with the filter and no speed-up (static-init time is too early to log, so it is documented
+rather than asserted).
 
-Base-class additions (`RotaryEncoder.h`), all `protected` so the plain encoder's public API is
-unchanged:
+Base-class additions (`RotaryEncoder.h`). The family constructor is `protected`; the three timing
+constants are `public` (tests and sketches read them). Nothing a plain-encoder sketch uses changed:
 
 ```cpp
 protected:
@@ -95,7 +108,8 @@ protected:
                   EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step,
                   bool momentumFilter, int16_t fastStep);   // fastStep 0 = speed off
 
-    static constexpr uint8_t  MAX_MOMENTUM         = 4;
+public:
+    static constexpr int8_t   MAX_MOMENTUM         = 4;
     static constexpr uint32_t FAST_THRESHOLD_MS    = 175;
     static constexpr uint32_t STOPPED_THRESHOLD_MS = 500;
 ```
@@ -117,9 +131,18 @@ ShiftBus timer ISR (`SHIFTBUS_ISR_HZ`). Speed must be classified there, per dete
 `millis()` (safe in the ISR on STM32). Classifying at drain time would be wrong: a loop stalled by
 an OLED flush drains several detents at once and their spacing would be lost.
 
-So in REL mode the pending counter holds a **step magnitude** rather than a detent count: each
-completed detent adds `step` or `fastStep`. `drainPending()` chunks the magnitude into `int16`
-frames as it does now. DIR keeps the detent count and its cap of 8.
+Fast detents go to a **separate `volatile int8_t _pendingFast`** counter; `_pendingDetents` and its
+cap logic are untouched. `drainPending()` reads and clears both under the existing `noInterrupts()`
+section:
+
+- **plain REL** (`_pendingFast == 0`, always true for `RotaryEncoder`) — the existing
+  whole-detent chunking, byte-identical;
+- **accelerated REL** — `slow × step + fast × fastStep` as one int32, split into ±32767 frames only
+  if it overflows int16 (`variable_step` adds, so a split sums to the same result);
+- **DIR** — unchanged; `fastStep` is forced to 0 in DIR, so `_pendingFast` is never used.
+
+`millis()` is read only when the filter or the speed-up is on — the plain encoder never reads the
+clock in `decode()`.
 
 ### Why this is safe for existing sketches
 

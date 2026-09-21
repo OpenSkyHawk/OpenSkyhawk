@@ -62,6 +62,11 @@ enum class EncoderMode : uint8_t {
  * decodes at loop rate exactly as before. Loop-side API is unchanged in both modes.
  *
  * Dispatch is sourced from the class (the CAN frame), not the input map — see #147.
+ *
+ * **Family base (D16).** `RotaryAcceleratedEncoder` is a thin subclass that switches on two extra
+ * behaviours through the protected constructor — a momentum filter and a fast-detent step — ported
+ * from `DcsBios::RotaryAcceleratedEncoder`. Both are off for a plain `RotaryEncoder`, whose decode,
+ * drain and emit paths are unchanged.
  */
 class RotaryEncoder : public InputBase {
 public:
@@ -93,11 +98,25 @@ public:
     /** @brief ISR-safe quadrature decode of one sample → pending detents. No CAN. */
     void sampleTick() override;
 
+    /** @brief Momentum cap, in detents' worth of transitions (± MAX_MOMENTUM × stepsPerDetent). DCS-BIOS value. */
+    static constexpr int8_t   MAX_MOMENTUM         = 4;
+    /** @brief A detent completing sooner than this after the previous one is "fast" (ms). DCS-BIOS value. */
+    static constexpr uint32_t FAST_THRESHOLD_MS    = 175;
+    /** @brief With no detent for this long, momentum resets to zero (ms). DCS-BIOS value. */
+    static constexpr uint32_t STOPPED_THRESHOLD_MS = 500;
+
 #ifdef ROTARYENCODER_TEST
     /** @brief Test seam — set the starting Gray state (0..3) + clear the delta; no EVT. */
-    void debugSeed(uint8_t state) { _lastState = (uint8_t)(state & 0x3); _delta = 0; _pendingDetents = 0; _initialized = true; }
+    void debugSeed(uint8_t state) {
+        _lastState = (uint8_t)(state & 0x3); _delta = 0; _pendingDetents = 0; _pendingFast = 0;
+        _momentum = 0; _hasLastDetent = false; _lastDetentMs = millis(); _initialized = true;
+    }
     /** @brief Test seam — feed the next 2-bit A/B Gray state through decode + drain (emits). */
     void debugStep(uint8_t ab) { decode((uint8_t)(ab & 0x3)); drainPending(); }
+    /** @brief Test seam — decode one Gray state WITHOUT draining (build up a pending burst). */
+    void debugDecode(uint8_t ab) { decode((uint8_t)(ab & 0x3)); }
+    /** @brief Test seam — drain whatever is pending (emits). */
+    void debugDrain() { drainPending(); }
     /** @brief Test seam — count of CAN EVTs emitted. */
     uint16_t emitCount() const { return _emitCount; }
     /** @brief Test seam — last emitted signed value (REL: ±step; DIR: ±1; 0 = none yet). */
@@ -106,15 +125,31 @@ public:
     uint32_t lastFrame() const { return _lastFrame; }
     /** @brief Test seam — net detents drained since boot (CW positive). Gate-6 fidelity totals. */
     int32_t netDetents() const { return _netDetents; }
+    /** @brief Test seam — current momentum (transitions, signed; 0 when the filter is off). */
+    int8_t momentum() const { return _momentum; }
 #endif
 
 protected:
+    /**
+     * @brief Family constructor — used by RotaryAcceleratedEncoder (D16).
+     *
+     * @param momentumFilter  true: drop transitions against the current momentum (DcsBios
+     *                        RotaryAcceleratedEncoder behaviour — rejects noisy / faulty encoders).
+     * @param fastStep        REL magnitude for a detent completing < FAST_THRESHOLD_MS after the
+     *                        previous one; same sign convention as @p step. 0 = speed-up off.
+     *                        Ignored in DIR (the DIR wire carries ±1 only).
+     */
+    RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
+                  EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step,
+                  bool momentumFilter, int16_t fastStep);
+
     uint8_t readState();   ///< (pinA << 1) | pinB → 0..3.
 
 private:
-    void decode(uint8_t state);          ///< quadrature transition → delta → pending detent.
+    void decode(uint8_t state);          ///< quadrature transition → (filter) → delta → pending detent.
+    void countDetent(int8_t dir);        ///< classify slow / fast, bump the matching pending counter.
     void drainPending();                 ///< take pending detents (IRQ-safe) → emit EVTs.
-    void emit(int8_t detents);           ///< one EVT: REL = detents×step, DIR = ±1.
+    void emit(int16_t value);            ///< one EVT on this mode's frame: REL ±magnitude, DIR ±1.
 
     uint16_t   _controlId;
     PinRef     _pinA;
@@ -125,6 +160,12 @@ private:
     uint8_t    _lastState;   ///< last 2-bit Gray state. Sampler-owned once one ticks.
     int8_t     _delta;       ///< accumulated quadrature steps since the last detent.
     volatile int8_t _pendingDetents;  ///< detents decoded but not yet emitted (sampler → poll).
+    volatile int8_t _pendingFast;     ///< fast detents pending (REL + fastStep only; else always 0).
+    bool       _filter;      ///< momentum filter on (RotaryAcceleratedEncoder).
+    int16_t    _fastStep;    ///< REL magnitude for a fast detent; 0 = speed-up off.
+    int8_t     _momentum;    ///< signed transition momentum (filter only).
+    uint32_t   _lastDetentMs;   ///< millis() of the last detent (or of init) — filter / speed only.
+    bool       _hasLastDetent;  ///< false until a detent since init: the first detent is never fast.
     volatile bool   _sampled;         ///< latched by the first sampleTick(); poll() then stops decoding.
     bool       _initialized; ///< false until forceReport(); poll()/sampler no-op before this.
 #ifdef ROTARYENCODER_TEST
