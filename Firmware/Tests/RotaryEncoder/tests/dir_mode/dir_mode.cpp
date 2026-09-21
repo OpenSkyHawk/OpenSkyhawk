@@ -4,7 +4,9 @@
 // ±1 DIRECTION on the DIR frame (canIdEvtDir), which the bridge turns into INC/DEC. Confirms the
 // value (±1, not ±step) and the frame routing distinct from REL. OpenSkyhawk::EncoderStepsPerDetent::Four.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no encoder hardware).
+// Do NOT run it on a board wired to a live bus: a loopback node never ACKs, which drives the
+// bridge error-passive. PASS/FAIL comes from the encoder's own test seams, not from CAN.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -28,7 +30,7 @@ void setup() {
     };
 
     gEnc.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
 
     gEnc.debugSeed(0);
     gEnc.debugStep(1); gEnc.debugStep(3); gEnc.debugStep(2); gEnc.debugStep(0);   // CW detent

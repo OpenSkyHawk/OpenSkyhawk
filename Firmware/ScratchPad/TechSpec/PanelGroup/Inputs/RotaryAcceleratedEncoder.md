@@ -50,8 +50,8 @@ Included from `OpenSkyhawk.h`.
 Same `env_base` as `Firmware/Tests/RotaryEncoder` (`-DROTARYENCODER_TEST`). Driven through the base's
 test seams — `debugSeed()`, `debugStep()` (decode + drain), and `debugDecode()` / `debugDrain()`
 (added for this class, to build up a pending burst) — with real `delay()` for timing. **Rig:** the
-STM32 on the CAN bus with a PanelBridge that ACKs (as for the plain encoder's envs); no encoder
-hardware.
+STM32 **alone**, CAN in silent loopback (`CANProtocol::startLoopback()`) — no bus, no PanelBridge, no
+encoder. Not on a board wired to a live bus (a loopback node never ACKs).
 
 | Env | Asserts |
 |---|---|

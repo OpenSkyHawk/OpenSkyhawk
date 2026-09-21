@@ -3,7 +3,9 @@
 // DIR mode: the filter applies but there is no speed-up — the DIR frame carries exactly ±1 and
 // PanelBridge drops anything else. Fast detents still emit +1; a reverse blip is swallowed.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no encoder hardware).
+// Do NOT run it on a board wired to a live bus: a loopback node never ACKs, which drives the
+// bridge error-passive. PASS/FAIL comes from the encoder's own test seams, not from CAN.
 #include <Arduino.h>
 #include <STM32Board.h>
 #include <Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h>
@@ -28,7 +30,7 @@ void setup() {
     STM32Board::begin();
     STM32Board::diagSerial().println("=== RotaryAcceleratedEncoder dir_filter_only ===");
     gEnc.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
     gEnc.debugSeed(0);
 
     cw(gEnc); cw(gEnc);                                         // second one is "fast" timing-wise

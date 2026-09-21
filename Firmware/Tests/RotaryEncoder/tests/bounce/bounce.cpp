@@ -4,7 +4,9 @@
 // keeps |delta| below the detent threshold → no spurious EVT. This is the detent-level glitch
 // rejection (stepsPerDetent > 1).
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no encoder hardware).
+// Do NOT run it on a board wired to a live bus: a loopback node never ACKs, which drives the
+// bridge error-passive. PASS/FAIL comes from the encoder's own test seams, not from CAN.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -27,7 +29,7 @@ void setup() {
     };
 
     gEnc.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
 
     gEnc.debugSeed(0);
     gEnc.debugStep(1); gEnc.debugStep(0);   // forward 1, back 1

@@ -3,7 +3,9 @@
 // A detent completing < FAST_THRESHOLD_MS after the previous one sends fastStep; otherwise step.
 // The first detent after a resync is always slow (no previous detent to time against).
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no encoder hardware).
+// Do NOT run it on a board wired to a live bus: a loopback node never ACKs, which drives the
+// bridge error-passive. PASS/FAIL comes from the encoder's own test seams, not from CAN.
 #include <Arduino.h>
 #include <STM32Board.h>
 #include <Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h>
@@ -28,7 +30,7 @@ void setup() {
     STM32Board::begin();
     STM32Board::diagSerial().println("=== RotaryAcceleratedEncoder fast_slow ===");
     gEnc.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
     gEnc.debugSeed(0);
 
     cw(gEnc);

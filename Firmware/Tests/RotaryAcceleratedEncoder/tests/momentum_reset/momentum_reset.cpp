@@ -4,7 +4,9 @@
 // filter (four transitions just decay the momentum to zero); after STOPPED_THRESHOLD_MS with no
 // detent the momentum resets, so a deliberate reversal from rest registers in full.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no encoder hardware).
+// Do NOT run it on a board wired to a live bus: a loopback node never ACKs, which drives the
+// bridge error-passive. PASS/FAIL comes from the encoder's own test seams, not from CAN.
 #include <Arduino.h>
 #include <STM32Board.h>
 #include <Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h>
@@ -29,7 +31,7 @@ void setup() {
     STM32Board::begin();
     STM32Board::diagSerial().println("=== RotaryAcceleratedEncoder momentum_reset ===");
     gEnc.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
     gEnc.debugSeed(0);
 
     cw(gEnc);                                                   // +1, momentum 4

@@ -45,9 +45,11 @@ Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/
 
 Self-contained — **no encoder hardware**. `debugSeed(state)` sets the starting Gray state and
 `debugStep(ab)` feeds the next 2-bit A/B state through the decoder; assertions are on
-`emitCount()` / `lastValue()` / `lastFrame()` (`#ifdef ROTARYENCODER_TEST`). CAN runs in **normal mode** so the node
-ACKs the PanelBridge. No jumpers or encoder needed (a real detented encoder on A/B is an optional
-throughput sanity check on the bench).
+`emitCount()` / `lastValue()` / `lastFrame()` (`#ifdef ROTARYENCODER_TEST`). CAN runs in **silent
+loopback** (`CANProtocol::startLoopback()`, as the ActionButton tests do), so the board runs **alone** —
+no bus, no PanelBridge, no jumpers, no encoder (a real detented encoder on A/B is an optional
+throughput sanity check on the bench). Don't run these on a board wired to a live bus: a loopback node
+never ACKs and would drive the bridge error-passive. (Switched from normal mode in #287.)
 
 | Scenario env | Verifies |
 |---|---|

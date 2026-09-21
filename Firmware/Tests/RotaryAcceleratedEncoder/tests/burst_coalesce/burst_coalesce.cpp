@@ -4,7 +4,9 @@
 // flush stalled the loop) still carries each detent's own magnitude. Slow + fast detents drain as
 // ONE REL frame whose value is their sum; a sum beyond int16 splits into frames that add up.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no encoder hardware).
+// Do NOT run it on a board wired to a live bus: a loopback node never ACKs, which drives the
+// bridge error-passive. PASS/FAIL comes from the encoder's own test seams, not from CAN.
 #include <Arduino.h>
 #include <STM32Board.h>
 #include <Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h>
@@ -31,7 +33,7 @@ void setup() {
     STM32Board::begin();
     STM32Board::diagSerial().println("=== RotaryAcceleratedEncoder burst_coalesce ===");
     gEnc.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
     gEnc.debugSeed(0);
 
     cwNoDrain();                                                // slow (first)

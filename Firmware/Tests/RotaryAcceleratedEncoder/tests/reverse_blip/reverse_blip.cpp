@@ -5,7 +5,9 @@
 // same Gray sequence through a plain RotaryEncoder loses a detent — that is the difference the
 // filter exists to make. Speed-up off (fastStep 0) so only the filter is exercised.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No encoder hardware needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no encoder hardware).
+// Do NOT run it on a board wired to a live bus: a loopback node never ACKs, which drives the
+// bridge error-passive. PASS/FAIL comes from the encoder's own test seams, not from CAN.
 #include <Arduino.h>
 #include <STM32Board.h>
 #include <Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h>
@@ -38,7 +40,7 @@ void setup() {
     STM32Board::begin();
     STM32Board::diagSerial().println("=== RotaryAcceleratedEncoder reverse_blip ===");
     gAccel.configure(); gPlain.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
 
     gAccel.debugSeed(0);
     spinWithBlip(gAccel);
