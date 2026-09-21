@@ -15,8 +15,7 @@ implemented; one output family is still to come before the first release.
 
 ## PinRef — the hardware abstraction *(implemented)*
 
-Every input and output takes a `PinRef`, not a raw pin number (one hardware-bound exception, `Dimmer`,
-is noted below). One interface over three
+Every input and output takes a `PinRef`, not a raw pin number. One interface over three
 hardware backends:
 
 | Backend | Constructor | Notes |
@@ -25,9 +24,9 @@ hardware backends:
 | MCP23017 | `PinRef(chip, PORT_A\|PORT_B, bit)` | digital I/O expander |
 | ADS1115 | `PinRef(adc, channel)` | analog input, channels 0–3 |
 
-Only direct STM32 GPIO can do PWM or servo output — `isGpio()` reports the backend type. That's
-why the planned `Dimmer` takes a native timer pin (`PA6`) instead of a `PinRef`: PWM comes from an
-STM32 timer, so an expander pin is a build error rather than a silent no-op.
+Only direct STM32 GPIO can do PWM or servo output — `isGpio()` reports the backend type. A class
+that needs one checks its `PinRef` at startup: the planned `Dimmer` refuses anything but a GPIO on
+a timer channel, and says so on the diagnostic serial port instead of silently not dimming.
 
 **Routing is by `controlId`, not by class.** The same input class drives a DCS-BIOS control or
 a HID button depending on the `controlId` you give it:

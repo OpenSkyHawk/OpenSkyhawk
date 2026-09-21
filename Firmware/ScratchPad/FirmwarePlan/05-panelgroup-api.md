@@ -410,15 +410,16 @@ Needles stay on `NeedleGauge` + a `MotorDriver` (`ServoMotor`, #132) — they ne
 smooth motion, which a plain `ServoOutput` doesn't give.
 
 **`Dimmer`** — the A-4E-C's five light-intensity outputs (`LIGHTS_CONSOLE`, `LIGHTS_INSTRUMENTS`,
-`LIGHTS_FLOOD_RED`, `LIGHTS_FLOOD_WHITE`, `APG53A_GLOW`). Takes a **native STM32 pin on a timer
-channel, not a `PinRef`** — PWM comes from a timer peripheral, so an expander or ShiftBus pin is a
-build error rather than a runtime check (an accepted exception to the PinRef rule, like the MCP23017
-interrupt lines). Duty is 0 at `configure()` so a zone stays dark until the first matching frame. Default map `duty = value >> 8`; an optional scale function
+`LIGHTS_FLOOD_RED`, `LIGHTS_FLOOD_WHITE`, `APG53A_GLOW`). Takes a `PinRef` like every control class
+and **checks it**: PWM comes from a timer channel, so `configure()` requires a direct GPIO on one —
+an expander / ShiftBus pin or a GPIO without a timer is logged and the output stays disabled. It
+writes through `PinRef::writeAnalog()`. Duty is 0 at `configure()` so a zone stays dark until the
+first matching frame. Default map `duty = value >> 8`; an optional scale function
 covers perceptual curves or inversion. On the PanelGroup base the two zones are PA6 / PA7.
 
 ```cpp
-OpenSkyhawk::Dimmer instrLights(A_4E_C_LIGHTS_INSTRUMENTS, PA6);   // TIM3_CH1 → J_BL1
-OpenSkyhawk::Dimmer floodRed   (A_4E_C_LIGHTS_FLOOD_RED,   PA7);   // TIM3_CH2 → J_BL2
+OpenSkyhawk::Dimmer instrLights(A_4E_C_LIGHTS_INSTRUMENTS, PinRef(PA6));   // TIM3_CH1 → J_BL1
+OpenSkyhawk::Dimmer floodRed   (A_4E_C_LIGHTS_FLOOD_RED,   PinRef(PA7));   // TIM3_CH2 → J_BL2
 
 void onCanopyPos(uint16_t v) { /* custom drive */ }
 OpenSkyhawk::IntegerOutput canopy(A_4E_C_CANOPY_POS, onCanopyPos);
