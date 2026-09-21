@@ -347,7 +347,7 @@ The 16-bit value is used as-is by both routing paths: PanelBridge passes it to
 `sendDcsBiosMessage()` for DCS-BIOS controls (ABS, `%u` → `set_state`); SimGateway passes it to
 `HIDAxis::dispatch()` for joystick axes — no rescaling at either destination.
 
-### AngleSensorInput *(planned — after v1.0)*
+### AngleSensorInput *(planned — #294, Firmware v0.1.0)*
 
 A magnetic angle sensor (AS5600 / MT6701) as an **absolute** knob or axis — no wiper wear and a full
 360° mechanical range, where a pot stops at ~270°. Use case: absolute DCS-BIOS knobs such as

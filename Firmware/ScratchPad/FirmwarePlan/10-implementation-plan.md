@@ -180,12 +180,13 @@ D16 (families, DCS-BIOS names).
       check happens in the v1.0 soak panel smoke test (#291).
 - [ ] `RotaryAcceleratedEncoder` — thin `RotaryEncoder` subclass, DCS-BIOS parity: momentum filter
       + `fastStep` (#287). **Firmware v0.1.0.**
-- [ ] `AngleSensorInput` : `AnalogInput`, on a `PinRef` (the sensor's analog output) — kept for
-      absolute knobs such as `GUNSIGHT_KNB`; **after v1.0** (a pot on `AnalogInput` covers the A-4
-      today). Spec: `TechSpec/PanelGroup/Inputs/AngleSensorInput.md`.
-- [ ] `SwitchWithCover2Pos` — DCS-BIOS behaviour (one pin; sequences the cover). **After v1.0**:
-      the A-4E-C uses it 0× — its only guard, AFCS 1-N-2, is a 3-position switch the mod doesn't
-      gate, so it is a `Switch3Pos` (+ an optional `Switch2Pos` on a cover microswitch).
+- [ ] `AngleSensorInput` : `AnalogInput`, on a `PinRef` (the sensor's analog output) — for
+      absolute knobs such as `GUNSIGHT_KNB` (#294). **Firmware v0.1.0**, so the class set is locked
+      before v1.0. Spec: `TechSpec/PanelGroup/Inputs/AngleSensorInput.md`.
+- [ ] `SwitchWithCover2Pos` — DCS-BIOS behaviour (one pin; sequences the cover) on a protected
+      `Switch2Pos` hook (#293). **Firmware v0.1.0.** The A-4E-C itself uses it 0× — its only guard,
+      AFCS 1-N-2, is a 3-position switch the mod doesn't gate, so it is a `Switch3Pos` (+ an
+      optional `Switch2Pos` on a cover microswitch); the class is for DCS-BIOS parity.
 - ~~`RotarySwitch`~~ — **dropped** (D16): `RotaryEncoder` DIR drives bounded selectors without the
       boot-position problem.
 
@@ -221,8 +222,8 @@ covered; the only uncovered outputs were the five light-intensity values (`LIGHT
 
 v1.0.0 freezes the sketch API and the CAN wire format — after it, a breaking change means 2.0 — and
 ships **before** Phase 6 panel work. Anything that changes an API or the wire format lands before
-it; anything that doesn't (#269, #132, #228, `AngleSensorInput`, `SwitchWithCover2Pos`) can land
-after without breaking anyone. The gate itself is tracked in #290 and runs on the hardware from the
+it; anything that doesn't (#269, #132, #228) can land after without breaking anyone. Every control
+class is locked in v0.1.0. The gate itself is tracked in #290 and runs on the hardware from the
 "Base boards Rev 2 + soak test rig" milestone (#209, #95, #291):
 
 - [ ] Multi-node live-DCS soak, 2–3 h: no false offline, `DIAG_ERR` TX-drop counters at zero,

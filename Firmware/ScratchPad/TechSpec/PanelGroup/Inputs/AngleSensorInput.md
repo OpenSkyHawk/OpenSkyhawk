@@ -1,6 +1,6 @@
 # AngleSensorInput — Technical Specification
 
-**Status:** Ready for implementation — scheduled after v1.0 (D16). A pot on `AnalogInput` covers the A-4E-C today.
+**Status:** Ready for implementation (#294, Firmware v0.1.0) — `AnalogInput` family member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AngleSensorInput), `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `AnalogInput.md`, `PinRef.md`
 

@@ -58,8 +58,8 @@ void loop() {
 | `RotaryEncoder` | `RotaryEncoder` | implemented — REL (`variable_step`) and DIR (`fixed_step`) modes |
 | `ActionButton` | `ActionButton` | implemented |
 | `RotaryAcceleratedEncoder` | `RotaryAcceleratedEncoder` | planned (#287) — `RotaryEncoder` subclass |
-| `AngleSensorInput` | — | planned, after v1.0 — `AnalogInput` subclass |
-| `SwitchWithCover2Pos` | `SwitchWithCover2Pos` | planned, after v1.0 |
+| `AngleSensorInput` | — | planned (#294) — `AnalogInput` subclass |
+| `SwitchWithCover2Pos` | `SwitchWithCover2Pos` | planned (#293) — `Switch2Pos` subclass |
 
 `RotarySwitch` is deliberately not ported: `RotaryEncoder` in DIR mode drives bounded selectors
 without losing the sim's position at boot.

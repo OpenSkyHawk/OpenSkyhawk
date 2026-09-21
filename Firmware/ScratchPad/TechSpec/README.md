@@ -174,11 +174,11 @@ SimGateway          (depends on HIDControls — CTRL_* constants used in sketch 
         │     ├── SwitchMultiPos          (depends on PinRef, PanelGroup)
         │     ├── AnalogMultiPos          (depends on PinRef, PanelGroup)
         │     ├── ActionButton            (depends on PinRef, PanelGroup)
-        │     ├── SwitchWithCover2Pos     (depends on Switch2Pos — after v1.0)
+        │     ├── SwitchWithCover2Pos     (depends on Switch2Pos — protected emit() hook)
         │     ├── RotaryEncoder           (depends on PinRef, PanelGroup)
         │     ├── RotaryAcceleratedEncoder (depends on RotaryEncoder — family member, D16)
         │     ├── AnalogInput             (depends on PinRef, PanelGroup)
-        │     └── AngleSensorInput        (depends on AnalogInput, PinRef — after v1.0)
+        │     └── AngleSensorInput        (depends on AnalogInput, PinRef)
         │         (AngleSensor = future PinRef backend for a digital I²C read — see AngleSensor.md)
         │     (RotarySwitch dropped — D16)
         ├── Drivers/

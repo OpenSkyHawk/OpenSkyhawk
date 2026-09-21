@@ -49,10 +49,10 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 
 !!! warning "Not yet implemented"
     - **For v0.1.0** — `RotaryAcceleratedEncoder` (a `RotaryEncoder` subclass with the DCS-BIOS
-      momentum filter and speed-up) and the `AnalogOutput` family: `Dimmer` (PWM backlight) and
-      `IntegerOutput` (user callback).
-    - **After v1.0** — `AngleSensorInput` (an `AnalogInput` subclass for magnetic angle
-      sensors), `SwitchWithCover2Pos`, and the `ServoMotor` gauge backend.
+      momentum filter and speed-up), the `AnalogOutput` family (`Dimmer` for PWM backlight,
+      `IntegerOutput` for a user callback), `AngleSensorInput` (an `AnalogInput` subclass for
+      magnetic angle sensors) and `SwitchWithCover2Pos`. Every control class is locked in v0.1.0.
+    - **After v1.0** — the `ServoMotor` gauge backend.
     - **Phase 6** — the Right_Navigation PanelGroup sketch and end-to-end integration.
     - `RotarySwitch` is **not** planned: `RotaryEncoder` in DIR mode drives bounded selectors
       without losing track of the sim's position at boot.
