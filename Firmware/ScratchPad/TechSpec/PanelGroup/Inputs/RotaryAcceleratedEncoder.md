@@ -1,6 +1,6 @@
 # RotaryAcceleratedEncoder — Technical Specification
 
-**Status:** Done (hardware-verified — **5/5 envs PASS 2026-09-21** on an STM32F103, CAN silent loopback; live-DCS feel checked in the #291 smoke test). `RotaryEncoder` family member (D16)
+**Status:** Done (hardware-verified — **5/5 envs PASS 2026-09-21** on an STM32F103, CAN silent loopback; the live-DCS feel check is part of the #291 smoke test). `RotaryEncoder` family member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (RotaryAcceleratedEncoder), `FirmwarePlan/00-decisions.md` (D16; supersedes D9)
 **Depends on:** `RotaryEncoder.md`
 
@@ -61,8 +61,8 @@ encoder. Not on a board wired to a live bus (a loopback node never ACKs).
 | `test_burst_coalesce` | slow + fast detents drain as one REL frame = their sum; a sum beyond int16 splits into frames that add up (32767 + 5633) |
 | `test_dir_filter_only` | DIR: every emit is exactly ±1; the filter still swallows a blip; reversal from rest → −1 |
 
-The eight `Firmware/Tests/RotaryEncoder` envs are unchanged and still pass — the plain path is
-byte-identical.
+The eight `Firmware/Tests/RotaryEncoder` envs keep their assertions (only their rig moved to loopback)
+and still pass — the plain path is byte-identical.
 
 ---
 
