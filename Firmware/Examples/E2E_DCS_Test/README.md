@@ -40,8 +40,8 @@ the analog ABS classes (previously only `debugSetRaw`-seam-verified):
 | `ARC51_VOL` | `AnalogInput` | PA2 (pot) | 16-bit → `%u` | `canIdEvt` | ARC-51 volume sweeps |
 | `ARC51_MODE` | `AnalogMultiPos` | PA3 (pot) | index → `%u` | `canIdEvt` | ARC-51 mode selector steps (4 positions) |
 
-> **PB3 / PB4 are JTAG-DP pins.** `setup()` calls `__HAL_AFIO_REMAP_SWJ_NOJTAG()` to release them
-> while keeping SWD (PA13/PA14) — ST-Link still flashes. The node is already pin-dense (stepper coils
+> **PB3 / PB4 are JTAG-DP pins.** `STM32Board::begin()` (inside `PanelGroup::setup()`) releases JTAG
+> while keeping SWD (PA13/PA14), so they are plain GPIO and ST-Link still flashes. The node is already pin-dense (stepper coils
 > on PA0/PA1/PA4/PA5, button PB0, mux PB8/PB9), so the DIR encoder lands on the remapped JTAG pair.
 
 ## Wiring (PanelGroup node side)
@@ -99,6 +99,4 @@ CAN bus between the two STM32s, **120 Ω** terminator at each end, shared GND.
 
 - Wrong direction → swap that control's two signal pins (encoder A/B, or pot end terminals).
 - One physical detent emits two EVTs → drop the encoder to `EncoderStepsPerDetent::Two`.
-- DIR encoder dead while the rest work → the SWJ remap didn't run; confirm
-  `__HAL_AFIO_REMAP_SWJ_NOJTAG()` is in `setup()` before `PanelGroup::setup()`.
 - Node not `CONNECTED` on the bridge → check CAN wiring + the 120 Ω terminators + a shared GND.

@@ -66,7 +66,8 @@ but the ADCs consumes ADCCLK, so CAN, the UARTs, SPI/ShiftBus and the timers are
 CDC flag, `Serial` maps natively to UART2 on PA2/PA3 — use that.
 
 **SWD programming header:** expose PA13, PA14, NRST, GND, and 3.3V on a 5-pin header on
-every board. Full JTAG pins (PA15, PB3, PB4) are not needed — SWD is sufficient.
+every board. Full JTAG pins (PA15, PB3, PB4) are not needed — SWD is sufficient, and
+`STM32Board::begin()` releases JTAG at boot (SWD kept) so those three are ordinary GPIO (#299).
 
 ---
 

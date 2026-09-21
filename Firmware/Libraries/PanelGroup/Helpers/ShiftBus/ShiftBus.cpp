@@ -89,8 +89,9 @@ void ShiftBus::begin() {
 
 #if defined(STM32F1xx)
     // Release JTAG so PB3 (JTDO) / PB4 (NJTRST) become GPIO/SPI. SWD (PA13/PA14) retained.
-    // (The core's pin_DisconnectDebug does this too when the pins map; explicit is cheap
-    // insurance and self-documenting.)
+    // (STM32Board::begin() already does this board-wide (#299), and the core's
+    // pin_DisconnectDebug does it too when the pins map; explicit is cheap insurance and
+    // self-documenting.)
     __HAL_RCC_AFIO_CLK_ENABLE();
     __HAL_AFIO_REMAP_SWJ_NOJTAG();
 #endif

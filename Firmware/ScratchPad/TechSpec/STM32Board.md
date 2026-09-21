@@ -13,8 +13,9 @@
 
 ## Responsibility
 
-Initialises and manages all shared hardware present on every STM32 board: bi-color status LED
-(PB14/PB15), DiagSerial (USART1/Serial1), and CAN peripheral hardware configuration. Exposes
+Initialises and manages all shared hardware present on every STM32 board: SWD-only debug (JTAG
+released at boot, #299), bi-color status LED (PB14/PB15), DiagSerial (USART1/Serial1), and CAN
+peripheral hardware configuration. Exposes
 `NODE_ID` (compile-time constant from build_flags) with range validation at compile time.
 Owns the LED state machine and tick-based animation driver.
 
@@ -68,6 +69,10 @@ Firmware/Tests/STM32Board/
     ├── warning_clear/              — [STM32BOARD_TEST] setWarning(true/false) latch; no-arg raises
     ├── animation_timing/           — [STM32BOARD_TEST] CONNECTED solid (no toggle) vs NORMAL blink,
     │                                 via direct PB14/PB15 pin reads
+    ├── jtag_release/
+    │   └── jtag_release.cpp        — PA15/PB4 as input + pull-down via HAL_GPIO_Init (not pinMode,
+    │                                 which releases them itself): read 1 before begin() (JTAG's
+    │                                 pull-up wins), 0 after (GPIO owns them). #299
     └── adc_clock/
         └── adc_clock.cpp           — asserts ADCPRE == /6 and ADCCLK inside the F103 window (#263).
                                       Built into TWO envs: test_adc_clock (72 MHz path) and
@@ -76,7 +81,7 @@ Firmware/Tests/STM32Board/
                                       set it. Also prints liveTemp/liveVdd for before/after.
 ```
 
-The four `STM32BOARD_TEST` envs and the two `adc_clock` envs print `PASS`/`FAIL` per assertion plus
+The four `STM32BOARD_TEST` envs, the two `adc_clock` envs and `jtag_release` print `PASS`/`FAIL` per assertion plus
 an `ALL PASS` summary over DiagSerial; the three visual envs are observed against the animation map.
 
 > **Status-LED convention in this suite.** No sketch here calls `CANProtocol::start()` — they test
@@ -161,6 +166,7 @@ namespace STM32Board {
     /**
      * @brief Initialise all shared hardware. Call once at the top of setup().
      *
+     * Releases JTAG and keeps SWD (#299), so PA15 / PB3 / PB4 are ordinary GPIO from here on.
      * Configures PB14 (Red) and PB15 (Green) as outputs and enters BOOTING state.
      * Starts DiagSerial (USART1, PA9/PA10, 115200 baud) — silent until setDebug(true).
      * Calls analogReadResolution(16) — framework scales 12-bit ADC output to 16-bit range
@@ -539,6 +545,25 @@ to feed only the ADCs, so CAN, the UARTs, SPI/ShiftBus and the timers are unaffe
 > justification is that the part was out of spec, plus high-impedance sources in general — which has
 > **not** been measured on an actual potentiometer. See `FirmwarePlan/00-decisions.md` D15 for the
 > measurements and the rigs that could settle the pot question.
+
+### JTAG release (#299)
+
+Every OpenSkyhawk STM32 board is SWD-only (`J_SWD`: SWDIO / SWCLK / NRST), but the F103 boots
+with full SWJ, so PA15 (JTDI), PB3 (JTDO) and PB4 (NJTRST) start as JTAG pins. The first thing
+`begin()` does is `__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_SWJ_NOJTAG();`: JTAG off,
+SWD (PA13/PA14) kept, so ST-Link still flashes and debugs, and the three pins are ordinary GPIO
+for whatever class touches them.
+
+- **Order-independent.** Later HAL remaps (`AFIO_REMAP_ENABLE`, used for the I2C1 / SPI1
+  remaps) write `SWJ_CFG = 0b111`, which RM0008 defines as "no effect". They can't undo it, and
+  the SWJ bits being write-only doesn't matter.
+- **Redundant elsewhere, kept.** The core frees these pins per-pin in `pinMode()` /
+  `attachInterrupt()` (`pinF1_DisconnectDebug`, unless `STM32F1_LOCK_DEBUG`), and
+  `ShiftBus::begin()` does it for PB3/PB4. Both still run and are harmless; `begin()` makes it
+  board policy rather than a side effect of which class touches a pin first.
+- **Verified on hardware (2026-09-21):** `jtag_release` passes. With the two lines commented out
+  it fails (PA15 / PB4 still read 1 after `begin()`), so the test can fail. SWD attaches to and
+  halts the running firmware without a reset.
 
 ### DiagSerial — always initialised, gated by flag
 

@@ -9,7 +9,7 @@ assignments (→ 08), HID frame format (→ 03).
 
 ## PanelGroup Boot Sequence
 
-1. `STM32Board::begin()` — init status LED (PB14/PB15), DiagSerial (USART1 115200), CAN HAL.
+1. `STM32Board::begin()` — release JTAG (SWD kept), init status LED (PB14/PB15), DiagSerial (USART1 115200), CAN HAL.
 2. Read `NODE_ID` compile-time define.
 3. For each registered expander: init MCP23017, read full port state (baseline), configure
    interrupt pins, call `attachInterrupt()`.
