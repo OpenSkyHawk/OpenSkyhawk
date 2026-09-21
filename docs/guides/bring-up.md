@@ -59,7 +59,8 @@ light through the full loop.
 | Symptom | Likely cause |
 |---------|--------------|
 | Red solid, single board | No bus partner / missing 120 Ω termination |
-| ST-Link "tap not found" | Clone JTAG ID — set `CPUTAPID 0x2ba01477` |
+| Upload: "only supports deprecated HLA" | ST-Link firmware older than V2J24 — [update the probe](flashing.md#st-link-troubleshooting) |
+| ST-Link "tap not found" | Clone JTAG ID — set `CPUTAPID 0` ([details](flashing.md#st-link-troubleshooting)) |
 | Nothing on DiagSerial | `setDebug(false)`, wrong baud, or TX/RX swapped |
 | Output never updates | DCS-BIOS export not running, or wrong `A_4E_C_*` address/mask |
 | Input does nothing | Wrong `controlId` (DCS-BIOS vs HID), or pull-up missing |

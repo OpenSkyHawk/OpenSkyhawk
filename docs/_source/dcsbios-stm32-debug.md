@@ -30,9 +30,11 @@ ST-Link refuses to connect without overriding the ID. Add to `platformio.ini`:
 ```ini
 upload_flags =
     -c
-    set CPUTAPID 0x2ba01477
-debug_extra_cmds = set CPUTAPID 0x2ba01477
+    set CPUTAPID 0
 ```
+
+Use `0`, not the clone's ID: `0` disables the check outright, while `0x2ba01477` has been
+observed to fail part-way through the write.
 
 Flag ordering matters — the `-c set CPUTAPID` pair must appear before the
 OpenOCD target config loads.
