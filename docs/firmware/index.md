@@ -27,9 +27,11 @@ source** for any constant or API. When a doc and a header disagree, the header w
 
 ## Implementation status
 
-Be honest about what's built. Phase 3 is complete, and the phases after it have stopped
-running in order: most of Phase 4's input types have landed, Phase 5's outputs are part
-done, and Phase 6 has not started.
+Phases 0–3 are complete. For the A-4E-C, Phase 4's input pass is complete too: every input control
+in the DCS-BIOS export has a class. Phase 5 needs one more output family (`Dimmer` +
+`IntegerOutput`) for the five light-intensity outputs. The first tagged release, v0.1.0, closes
+those gaps; v1.0.0 then freezes the sketch API and CAN wire format **before** the first full panel
+(Phase 6, Right_Navigation) is built.
 
 [Control Types](control-types.md) is the authority on per-class status, including which
 classes are hardware-verified. The summary below is a pointer, not a second source.
@@ -46,11 +48,14 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
     - **Three output classes** — `LED`, `DrumDisplay`, `NeedleGauge`
 
 !!! warning "Not yet implemented"
-    - **Input types** — `RotaryAcceleratedEncoder`, `RotarySwitch`, `AngleSensorInput`,
-      `SwitchWithCover2Pos`
-    - **Phase 5 output types** — `AnalogOutput`, `IntegerOutput`. (`NeedleGauge` is
-      **implemented** and supersedes the former SwitecX25Output / AccelStepperOutput / ServoOutput.)
-    - **Phase 6** — the Center_Armament PanelGroup sketch rewrite and end-to-end integration
+    - **For v0.1.0** — `RotaryAcceleratedEncoder` (a `RotaryEncoder` subclass with the DCS-BIOS
+      momentum filter and speed-up) and the `AnalogOutput` family: `Dimmer` (PWM backlight) and
+      `IntegerOutput` (user callback).
+    - **After v1.0** — `AngleSensorInput` (an `AnalogInput` subclass for magnetic angle
+      sensors), `SwitchWithCover2Pos`, and the `ServoMotor` gauge backend.
+    - **Phase 6** — the Right_Navigation PanelGroup sketch and end-to-end integration.
+    - `RotarySwitch` is **not** planned: `RotaryEncoder` in DIR mode drives bounded selectors
+      without losing track of the sim's position at boot.
 
 ## In this section
 

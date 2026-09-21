@@ -174,18 +174,21 @@ SimGateway          (depends on HIDControls — CTRL_* constants used in sketch 
         │     ├── SwitchMultiPos          (depends on PinRef, PanelGroup)
         │     ├── AnalogMultiPos          (depends on PinRef, PanelGroup)
         │     ├── ActionButton            (depends on PinRef, PanelGroup)
+        │     ├── SwitchWithCover2Pos     (depends on Switch2Pos — after v1.0)
         │     ├── RotaryEncoder           (depends on PinRef, PanelGroup)
-        │     ├── RotaryAcceleratedEncoder (depends on RotaryEncoder)
-        │     ├── RotarySwitch            (depends on RotaryEncoder)
+        │     ├── RotaryAcceleratedEncoder (depends on RotaryEncoder — family member, D16)
         │     ├── AnalogInput             (depends on PinRef, PanelGroup)
-        │     └── AngleSensorInput        (depends on PinRef, PanelGroup)
+        │     ├── AngleSensor             (chip drivers AS5600 / MT6701 — depends on I2cMux)
+        │     └── AngleSensorInput        (depends on AnalogInput, AngleSensor — after v1.0)
+        │     (RotarySwitch dropped — D16)
         ├── Drivers/
               │     ├── MotorDriver       (abstract base — depends on PanelGroup)
               │     └── StepperMotor      (depends on MotorDriver, PinRef, PanelGroup)
         └── Outputs/
               ├── LED                     (depends on PinRef, PanelGroup)
-              ├── IntegerOutput           (depends on PanelGroup)
-              ├── AnalogOutput            (depends on PinRef, PanelGroup)
+              ├── AnalogOutput            (abstract family base — depends on PanelGroup; D16)
+              │     ├── Dimmer            (depends on AnalogOutput, PinRef — PWM backlight)
+              │     └── IntegerOutput     (depends on AnalogOutput — user callback)
               └── NeedleGauge             (depends on PanelGroup, Drivers/MotorDriver + StepperMotor;
                                            supersedes SwitecX25Output / AccelStepperOutput / ServoOutput)
 

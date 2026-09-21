@@ -1,7 +1,7 @@
 # AngleSensor — Technical Specification
 
-**Status:** Not Started (Phase 4)
-**FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#anglesensorinput-new`
+**Status:** Ready for implementation — scheduled after v1.0, together with `AngleSensorInput` (D16)
+**FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AngleSensorInput)
 **Depends on:** `PinRef.md`
 
 ---
@@ -53,7 +53,7 @@ public:
 | Method | Return | Description |
 |--------|--------|-------------|
 | `begin()` | `bool` | Initialises chip over I²C. Returns `false` if chip not found (address not ACK'd). Called by `PanelGroup::setup()` after `Wire.begin()`. |
-| `readAngle()` | `uint16_t` | Returns current angle as a 16-bit value (0–65535 maps to 0°–360° linearly). Called by `AngleSensorInput::poll()` every 8 ms. |
+| `readAngle()` | `uint16_t` | Returns current angle as a 16-bit value (0–65535 maps to 0°–360° linearly). Called through `AngleSensorInput::readRaw()` at the instance's `pollMs` (inherited from `AnalogInput`). |
 
 ---
 
@@ -105,7 +105,9 @@ must call `Wire.begin()` (and `Wire1.begin()` if used) **before** `PanelGroup::s
 `sensor.begin()`. If `begin()` returns `false`, `PanelGroup::setup()` sets the status
 LED to the warning pattern and the sensor is marked inactive.
 
-Two axes on one sub-node require two I²C buses because both chips have fixed addresses:
+Both chips have fixed addresses, so two sensors on one bus need an `I2cMux` (TCA9548A) — the
+constructors take an optional `I2cMux&` + channel, the same pattern `DrumDisplay` uses. Without a
+mux, two sensors need two I²C buses:
 
 ```cpp
 Wire.begin();   // I2C1

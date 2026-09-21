@@ -52,9 +52,11 @@ committed code under `Firmware/Libraries/`.
   `tools/check_node_ids.py` enforces this in CI.
 - **Expander access is via classes, not registers:** the `PanelGroup` library owns MCP23017
   integration; ADS1115 via `ADS1115.h`. Instantiate input classes (`Switch2Pos`, `Switch3Pos`,
-  `RotarySwitch`, `SwitchMultiPos`, `AnalogInput`, `RotaryEncoder`, …) and output classes
-  (`LED`, `IntegerOutput`, `SwitecX25Output`, …) on a `PinRef`. The *electrical* wiring of
-  those parts belongs to the `pcb-design` skill.
+  `SwitchMultiPos`, `AnalogInput`, `RotaryEncoder`, `ActionButton`, …) and output classes
+  (`LED`, `NeedleGauge`, `DrumDisplay`, the `AnalogOutput` family, …) on a `PinRef`. Classes come
+  in **families** with DCS-BIOS names (FirmwarePlan D16): a new class that only changes an existing
+  one's source or sink is a subclass of it. The *electrical* wiring of those parts belongs to the
+  `pcb-design` skill.
 - **Timing:** each class calls `millis()` directly and keeps its own `uint32_t` timestamp —
   no shared clock.
 - **Docblocks:** Doxygen style on every public class/method/enum/non-obvious constant

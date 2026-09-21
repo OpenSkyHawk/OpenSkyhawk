@@ -2,42 +2,39 @@
 
 CAN sub-node domain layer for OpenSkyhawk panel boards.
 
-`PanelGroup` turns an STM32F103CBT6 into a CAN sub-node that receives the full DCS-BIOS  
-output stream (wrapped as `ControlPacket` frames) from the master node and dispatches it  
-to registered output objects. Switches and other inputs are polled, debounced, and sent  
-back over CAN as input events. Heartbeats are sent every 500 ms.
+`PanelGroup` turns an STM32F103 into a CAN sub-node that receives the DCS-BIOS output stream
+(wrapped as `ControlPacket` frames) from PanelBridge and dispatches it to registered output
+objects. Inputs are polled, debounced and sent back over CAN as events. Heartbeats go out every
+500 ms.
 
-The design mirrors DCS-BIOS exactly — output and input objects are declared at global scope  
-in the sketch, self-register via static linked lists, and are dispatched by `PanelGroup::loop()`.
+The design mirrors DCS-BIOS: input and output objects are declared at global scope in the sketch,
+self-register through static linked lists, and are dispatched by `PanelGroup::loop()`. Class names
+follow `dcs-bios-arduino-library` wherever it has an equivalent, and related classes form
+**families** — a base class plus thin subclasses that change only the source or sink (FirmwarePlan
+D16).
 
 ## Dependencies
 
 - [STM32Board](../STM32Board/README.md)
-- [CANProtocol](../CANProtocol/) — `ControlPacket`, CAN IDs, `DIAG_*` constants
+- [CANProtocol](../CANProtocol/) — `ControlPacket`, CAN IDs, batching
+- `A4EC` — generated `DCSIN_*` input IDs and `A_4E_C_*` output addresses
 
-## Node ID strapping
+## Node ID
 
-Node ID is read from **PA0** at boot using an internal pull-down:
-
-| PA0 wiring | node_id | CAN IDs used |
-|---|---|---|
-| Tied to 3.3 V | 1 | HB: 0x100, EVT: 0x200, ECHO: 0x210 |
-| Floating (pull-down reads LOW) | 2 | HB: 0x101, EVT: 0x201, ECHO: 0x211 |
+Each node's ID comes from the build, not a strap: `build_flags = -DNODE_ID=<1–63>` in the sketch's
+`platformio.ini` (never `#define` it in `main.cpp` — library translation units need the value
+too). See `docs/firmware/node-id.md` for the registry.
 
 ## Usage
 
 ```cpp
-#include <PanelGroup.h>
+#include <OpenSkyhawk.h>   // PanelGroup + every concrete class + A4EC headers
 
-// Output: drive PB0 from the ARM_MASTER DCS-BIOS bit
-OpenSkyhawk::LED armLed(A_4E_C_ARM_MASTER, 0x4000, PB0);
+// Output: LED from one bit of a DCS-BIOS word
+OpenSkyhawk::LED gearLight(A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PinRef(PB0));
 
-// Output: custom callback for non-standard logic
-void onCanopyPos(uint16_t v) { /* drive motor etc. */ }
-OpenSkyhawk::IntegerOutput canopy(A_4E_C_CANOPY_POS, onCanopyPos);
-
-// Input: debounced switch → CAN event → DCS-BIOS via SimGateway
-OpenSkyhawk::Switch2Pos ejSafe(A_4E_C_SEAT_EJECT_SAFE, PA1);
+// Input: debounced switch → EVT on CAN → PanelBridge → DCS-BIOS
+OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
 
 void setup() {
     STM32Board::setDebug(true);   // optional
@@ -49,45 +46,59 @@ void loop() {
 }
 ```
 
-## Output objects
+## Input classes
 
-Output objects receive `ControlPacket` frames broadcast by the master node and  
-translate them to panel hardware actions.
-
-| Class | DCS-BIOS equivalent | Behaviour |
+| Class | DCS-BIOS equivalent | Status |
 |---|---|---|
-| `OpenSkyhawk::LED` | `DcsBios::LED` | `(value & mask) != 0` → pin HIGH |
-| `OpenSkyhawk::IntegerOutput` | `DcsBios::IntegerBuffer` | Calls user callback with raw value |
+| `Switch2Pos` | `Switch2Pos` | implemented |
+| `Switch3Pos` | `Switch3Pos` | implemented |
+| `SwitchMultiPos` | `SwitchMultiPos` | implemented (`MultiPosInput` family) |
+| `AnalogMultiPos` | `AnalogMultiPos` | implemented (`MultiPosInput` family) |
+| `AnalogInput` | `Potentiometer` | implemented |
+| `RotaryEncoder` | `RotaryEncoder` | implemented — REL (`variable_step`) and DIR (`fixed_step`) modes |
+| `ActionButton` | `ActionButton` | implemented |
+| `RotaryAcceleratedEncoder` | `RotaryAcceleratedEncoder` | planned (#287) — `RotaryEncoder` subclass |
+| `AngleSensorInput` | — | planned, after v1.0 — `AnalogInput` subclass |
+| `SwitchWithCover2Pos` | `SwitchWithCover2Pos` | planned, after v1.0 |
 
-## Input objects
+`RotarySwitch` is deliberately not ported: `RotaryEncoder` in DIR mode drives bounded selectors
+without losing the sim's position at boot.
 
-Input objects poll GPIO, debounce, and call `PanelGroup::sendEvent()` on state change.  
-The matching `OpenSkyhawk::DCSInput` on the SimGateway translates the event to a  
-DCS-BIOS message — the panel author does not write that translation.
+## Output classes
 
-| Class | DCS-BIOS equivalent | Behaviour |
+| Class | DCS-BIOS equivalent | Status |
 |---|---|---|
-| `OpenSkyhawk::Switch2Pos` | `DcsBios::Switch2Pos` | GPIO (INPUT_PULLUP) → CAN event (0/1) |
+| `LED` | `LED` | implemented — `(value & mask) != 0` → pin on |
+| `NeedleGauge` | `ServoOutput` (closest) | implemented — any pointer gauge, over the `Drivers/` `MotorDriver` layer |
+| `AnalogOutput` | — | planned (#288) — family base |
+| `Dimmer` | `Dimmer` | planned (#288) — PWM duty on a GPIO timer pin |
+| `IntegerOutput` | `IntegerBuffer` | planned (#288) — user callback |
+
+`DrumDisplay` (OLED rolling-drum readouts) is a separate opt-in library:
+[`../DrumDisplay`](../DrumDisplay/).
 
 ## controlId routing
 
-`controlId` values in ControlPackets follow the CANProtocol namespace:
+Routing is decided by the `controlId` an input is constructed with, not by its class:
 
-| Range | Type | Routing on SimGateway |
-|---|---|---|
-| `0x0010`–`0x00FF` | HID axis / hat / button / reserved HID expansion | → USB HID report when a SimGateway handler is registered |
-| `0x8000`–`0xFFFF` | DCS-BIOS address | → `sendDcsBiosMessage()` |
+| Range | Destination |
+|---|---|
+| `DCSIN_*` — `0x8000`–`0x86FF` | PanelBridge → `sendDcsBiosMessage()` → DCS |
+| `CTRL_*` — `< 0x8000` | SimGateway → USB HID report |
 
-For DCS-BIOS outputs (DCS → panel), the controlId **is** the DCS-BIOS address — no  
-translation table needed.
+For outputs (DCS → panel), the `controlId` is the DCS-BIOS output address — no translation table.
 
 ## API
 
-See [`PanelGroup.h`](PanelGroup.h) for full Doxygen documentation.
+See [`PanelGroup.h`](PanelGroup.h) for the full Doxygen documentation.
 
 | Function | Description |
 |---|---|
-| `PanelGroup::setup()` | Init hardware, read PA0 strap, configure CAN filter, start CAN |
-| `PanelGroup::loop()` | Update LED, drain CAN FIFO, poll inputs, send heartbeat |
-| `PanelGroup::sendEvent(controlId, value)` | Send a CAN input event to the master |
-| `PanelGroup::nodeId()` | Return node_id read at boot (1 or 2) |
+| `PanelGroup::setup()` | Configure registered inputs/outputs and expanders, start CAN |
+| `PanelGroup::loop()` | Drain CAN, dispatch outputs, poll inputs, send heartbeat |
+| `PanelGroup::registerExpander(chip, intaPin, intbPin)` | Register an MCP23017 with interrupt pins (per sketch) |
+| `PanelGroup::registerExpander(chip)` | Register an MCP23017 in polling mode |
+| `PanelGroup::registerADC(adc, addr, wire)` | Register an ADS1115 |
+
+Per-class reference: `docs/firmware/control-types.md`; authoritative specs:
+`Firmware/ScratchPad/TechSpec/PanelGroup/`.

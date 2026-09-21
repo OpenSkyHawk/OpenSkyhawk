@@ -1,5 +1,10 @@
 # Example — PanelGroup Sketch: Center_Armament
 
+> **Superseded — kept for history.** Center_Armament's MCU board is retired and Phase 6 now
+> targets Right_Navigation. This sketch also predates several API changes: `AngleSensorInput` is
+> now an `AnalogInput` subclass, `AnalogOutput` is the family base (PWM zones use `Dimmer`), and the
+> output constants no longer carry an `_A` suffix. See `05-panelgroup-api.md` for the current API.
+
 > **Note on identifiers:** All `DCSIN_*` compact command IDs and `A_4E_C_*_A` address constants
 > shown here are representative. `DCSIN_*` constants come from the generated `A4EC_CmdIds.h`
 > header; `A_4E_C_*_A` constants come from the DCS-BIOS `Addresses.h` header. Always verify

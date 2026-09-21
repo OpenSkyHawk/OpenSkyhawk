@@ -74,7 +74,7 @@ MASTER ARM switch  (cockpit → DCS)
   → DCS receives command
 
 Roll axis  (cockpit → HID)
-  AS5600 angle changes → AngleSensorInput polls every 8 ms
+  Stick Hall sensor moves → AnalogInput polls at its pollMs (2 ms for HID axes)
   → emits CAN EVT {CTRL_ROLL, 0–65535}
   → PanelBridge receives CAN → controlId 0x0010 < 0x8000
   → wrap in HID frame: 0xAA 0x55 0x10 0x00 <value_lo> <value_hi> → UART

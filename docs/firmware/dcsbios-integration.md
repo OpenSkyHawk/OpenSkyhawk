@@ -35,7 +35,7 @@ headers:
 - `A_4E_C_<NAME>_AM` — the bitmask for the relevant bits
 
 ```cpp
-OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM, PinRef(PB0));
+OpenSkyhawk::LED gearLight(A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PinRef(PB0));
 ```
 
 !!! warning "No `_A` suffix"
