@@ -47,11 +47,11 @@
 <para>Initialise all shared hardware. Call once at the top of setup(). </para>
         </briefdescription>
         <detaileddescription>
-<para>Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref> after filter setup. </para>
+<para>Releases JTAG and keeps SWD (#299), so PA15 / PB3 / PB4 are ordinary GPIO from here on. Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref> after filter setup. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="232" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="232" bodyend="272" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="60" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="232" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="232" bodyend="281" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="61" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -81,7 +81,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="274" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="274" bodyend="274" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="69" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="283" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="283" bodyend="283" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="70" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1aff9875e49a45d134369605b7be5a1141" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -97,7 +97,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="275" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="275" bodyend="275" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="119" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="284" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="284" bodyend="284" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="120" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a6ec94f52019d82f9b861c429aaae7e01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -113,7 +113,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="276" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="276" bodyend="276" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="130" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="285" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="285" bodyend="285" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="131" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -129,7 +129,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="278" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="278" bodyend="293" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="76" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="287" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="287" bodyend="302" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="77" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a25f2a41dba3a3e6ac8d2d551a0b3a5ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -159,7 +159,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="295" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="295" bodyend="298" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="86" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="304" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="304" bodyend="307" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="87" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a14e66f7f149f5a8bd694e7bdd19ea6cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -190,7 +190,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="300" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="300" bodyend="303" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="98" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="309" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="309" bodyend="312" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="99" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a6426e0a4ad70c59e258245fcb8e044f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -220,7 +220,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="305" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="305" bodyend="313" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="111" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="314" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="314" bodyend="322" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="112" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a0e8f884e426892e02bdef46445776d68" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -249,7 +249,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="315" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="315" bodyend="317" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="136" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="324" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="324" bodyend="326" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="137" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a54f0c0c3de2c351a93f77c8a851c4861" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Uart &amp;</type>
@@ -268,7 +268,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="319" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="319" bodyend="319" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="145" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="328" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="328" bodyend="328" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="146" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a85373f4dbcc7b240521b20938164cb1e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>CAN_HandleTypeDef *</type>
@@ -288,7 +288,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="320" column="19" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="320" bodyend="320" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="153" declcolumn="23"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="329" column="19" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="329" bodyend="329" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="154" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a480fa3dcf5774e6950fb3a0f23e94759" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint16_t</type>
@@ -308,7 +308,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="334" column="10" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="334" bodyend="342" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="177" declcolumn="14"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="343" column="10" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="343" bodyend="351" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="178" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a7d2ec3789c2b1dd22bd0bec6c1064b89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int8_t</type>
@@ -329,7 +329,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="344" column="8" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="344" bodyend="357" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="168" declcolumn="12"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="353" column="8" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="353" bodyend="366" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="169" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSTM32Board_1a60e2cd4bacc4e9bb6d40357a4df37889" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -384,7 +384,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="359" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="359" bodyend="371" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="194" declcolumn="10"/>
+        <location file="Firmware/Libraries/STM32Board/STM32Board.cpp" line="368" column="6" bodyfile="Firmware/Libraries/STM32Board/STM32Board.cpp" bodystart="368" bodyend="380" declfile="Firmware/Libraries/STM32Board/STM32Board.h" declline="195" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

@@ -240,6 +240,15 @@ extern "C" void SystemClock_Config(void) {
 namespace STM32Board {
 
 void begin() {
+    // Every OpenSkyhawk STM32 board is SWD-only (J_SWD: SWDIO/SWCLK/NRST), but the F103 boots
+    // with full SWJ, so PA15 (JTDI), PB3 (JTDO) and PB4 (NJTRST) start as JTAG pins. Release
+    // JTAG here, once, keeping SWD (PA13/PA14) so ST-Link still flashes and debugs (#299). The
+    // core also frees these pins per-pin inside pinMode()/attachInterrupt(), and ShiftBus::begin()
+    // does it for PB3/PB4; both are now redundant but harmless. Order-independent: later HAL
+    // remaps (I2C1/SPI1) write SWJ_CFG=0b111, which RM0008 defines as "no effect".
+    __HAL_RCC_AFIO_CLK_ENABLE();
+    __HAL_AFIO_REMAP_SWJ_NOJTAG();
+
     pinMode(PIN_LED_RED,   OUTPUT);
     pinMode(PIN_LED_GREEN, OUTPUT);
     _begun     = true;

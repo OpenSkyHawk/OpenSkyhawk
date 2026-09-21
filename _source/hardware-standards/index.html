@@ -5047,12 +5047,8 @@ bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated 
 </ul>
 <h3 id="freeing-the-jtag-pins-for-breakout-gpio">Freeing the JTAG pins for breakout GPIO</h3>
 <p><code>PA15</code> (JTDI), <code>PB3</code> (JTDO), <code>PB4</code> (NJTRST) power up as the JTAG-DP. On the <strong>PanelGroup base</strong> they
-are exposed as remap-gated breakout pins; to use them as ordinary GPIO, remap SWJ to SWD-only early
-in <code>setup()</code>. This keeps SWD (PA13/PA14) live so ST-Link still flashes, and releases only the three
-JTAG pins:</p>
-<pre><code class="language-cpp">__HAL_RCC_AFIO_CLK_ENABLE();
-__HAL_AFIO_REMAP_SWJ_NOJTAG();   // JTAG off, SWD on → PA15/PB3/PB4 usable as GPIO
-</code></pre>
+are exposed as breakout pins. <code>STM32Board::begin()</code> remaps SWJ to SWD-only at boot (#299), so they
+are ordinary GPIO with no sketch code; SWD (PA13/PA14) stays live and ST-Link still flashes.</p>
 <p>The Gateway/Bridge base leaves these NC — it has enough clean breakout pins not to bother (see
 <a href="../base-boards/">base boards</a>).</p>
 <h2 id="can-transceiver">CAN Transceiver</h2>

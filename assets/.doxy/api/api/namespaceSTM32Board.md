@@ -143,7 +143,7 @@ void STM32Board::begin ()
 
 
 
-Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call [**CANProtocol::start()**](namespaceCANProtocol.md#function-start) after filter setup. 
+Releases JTAG and keeps SWD (#299), so PA15 / PB3 / PB4 are ordinary GPIO from here on. Configures PB14 (Red) and PB15 (Green) as outputs, enters BOOTING LED state. Starts DiagSerial (USART1 PA9/PA10, 115200 baud) — silent until setDebug(true). Configures the CAN peripheral at 500 kbps on PA11/PA12 but does NOT start it — call [**CANProtocol::start()**](namespaceCANProtocol.md#function-start) after filter setup. 
 
 
         
