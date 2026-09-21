@@ -54,6 +54,8 @@ Here is a list of all files with brief descriptions:
                 * **dir** [**MultiPosInput**](dir_7bc1eaced50854697a5557e9b0a7cd3c.md)     
                     * **file** [**MultiPosInput.cpp**](MultiPosInput_8cpp.md)     
                     * **file** [**MultiPosInput.h**](MultiPosInput_8h.md) _Shared base for multi-position selector inputs (SwitchMultiPos, AnalogMultiPos, ...)._     
+                * **dir** [**RotaryAcceleratedEncoder**](dir_d67d57cd87e8f385bd5b0c09cadb634b.md)     
+                    * **file** [**RotaryAcceleratedEncoder.h**](RotaryAcceleratedEncoder_8h.md) _Quadrature encoder with a momentum filter and a fast-detent step —_ [_**DcsBios**_](namespaceDcsBios.md) _RotaryAcceleratedEncoder parity (D16, #287)._    
                 * **dir** [**RotaryEncoder**](dir_d61b64c3ddc6557ee529e3725418e11d.md)     
                     * **file** [**RotaryEncoder.cpp**](RotaryEncoder_8cpp.md)     
                     * **file** [**RotaryEncoder.h**](RotaryEncoder_8h.md) _Quadrature rotary encoder input for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    

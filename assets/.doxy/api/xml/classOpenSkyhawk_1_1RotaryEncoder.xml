@@ -3,6 +3,7 @@
   <compounddef id="classOpenSkyhawk_1_1RotaryEncoder" kind="class" language="C++" prot="public">
     <compoundname>OpenSkyhawk::RotaryEncoder</compoundname>
     <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" prot="public" virt="non-virtual">OpenSkyhawk::RotaryAcceleratedEncoder</derivedcompoundref>
     <includes refid="RotaryEncoder_8h" local="no">RotaryEncoder.h</includes>
     <sectiondef kind="public-static-attrib">
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a52c4bb5db9a1dceed90deb7dbd03ebf6" prot="public" static="yes" constexpr="yes" mutable="no">
@@ -19,7 +20,55 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="68" column="30" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="68" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="73" column="30" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1ac9a967faa0b2569573b8945ae0c43821" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr int8_t</type>
+        <definition>constexpr int8_t OpenSkyhawk::RotaryEncoder::MAX_MOMENTUM</definition>
+        <argsstring></argsstring>
+        <name>MAX_MOMENTUM</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::MAX_MOMENTUM</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+<para>Momentum cap, in detents&apos; worth of transitions (± MAX_MOMENTUM × stepsPerDetent). DCS-BIOS value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="102" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1aba48c1b67d7a4d9d3513d10bb42f23d6" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::RotaryEncoder::FAST_THRESHOLD_MS</definition>
+        <argsstring></argsstring>
+        <name>FAST_THRESHOLD_MS</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::FAST_THRESHOLD_MS</qualifiedname>
+        <initializer>= 175</initializer>
+        <briefdescription>
+<para>A detent completing sooner than this after the previous one is &quot;fast&quot; (ms). DCS-BIOS value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="104" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a86b1416531a27c1a5b4ca3c7a5c5457b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::RotaryEncoder::STOPPED_THRESHOLD_MS</definition>
+        <argsstring></argsstring>
+        <name>STOPPED_THRESHOLD_MS</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::STOPPED_THRESHOLD_MS</qualifiedname>
+        <initializer>= 500</initializer>
+        <briefdescription>
+<para>With no detent for this long, momentum resets to zero (ms). DCS-BIOS value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="106" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="106" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -35,7 +84,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="119" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="119" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="154" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="154" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" prot="private" static="no" mutable="no">
         <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
@@ -49,7 +98,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="120" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="120" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="155" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="155" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" prot="private" static="no" mutable="no">
         <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
@@ -63,7 +112,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="121" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="121" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="156" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="156" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a53a0bc196f416ce438369fd2e73541df" prot="private" static="no" mutable="no">
         <type><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6" kindref="member">EncoderMode</ref></type>
@@ -77,7 +126,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="122" column="17" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="122" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="157" column="17" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="157" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a0e1e8b0621274d1646a21758e54a7e42" prot="private" static="no" mutable="no">
         <type>int16_t</type>
@@ -92,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="123" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="123" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="158" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="158" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1af89eac629614783498bfd6d46580f2fb" prot="private" static="no" mutable="no">
         <type>uint8_t</type>
@@ -106,7 +155,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="124" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="124" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="159" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="159" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" prot="private" static="no" mutable="no">
         <type>uint8_t</type>
@@ -121,7 +170,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="125" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="125" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="160" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="160" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" prot="private" static="no" mutable="no">
         <type>int8_t</type>
@@ -136,7 +185,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="126" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="126" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="161" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="161" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1aec91b691b0e339480a740d21c2eb1dfe" prot="private" static="no" mutable="no">
         <type>volatile int8_t</type>
@@ -151,7 +200,97 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="127" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="127" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="162" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a74afe44b4ff51d8f7445bfceac6a494b" prot="private" static="no" mutable="no">
+        <type>volatile int8_t</type>
+        <definition>volatile int8_t OpenSkyhawk::RotaryEncoder::_pendingFast</definition>
+        <argsstring></argsstring>
+        <name>_pendingFast</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_pendingFast</qualifiedname>
+        <briefdescription>
+<para>fast detents pending (REL + fastStep only; else always 0). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="163" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a4b6eb477ee8cb1349f6f53351796b0ab" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::RotaryEncoder::_filter</definition>
+        <argsstring></argsstring>
+        <name>_filter</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_filter</qualifiedname>
+        <briefdescription>
+<para>momentum filter on (<ref refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kindref="compound">RotaryAcceleratedEncoder</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="164" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a90f08bf0065bf2bb1821f662b2009980" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::RotaryEncoder::_fastStep</definition>
+        <argsstring></argsstring>
+        <name>_fastStep</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_fastStep</qualifiedname>
+        <briefdescription>
+<para>REL magnitude for a fast detent; 0 = speed-up off. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="165" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1af9a0b6c237f45e762bbd6c5e7af55a58" prot="private" static="no" mutable="no">
+        <type>int8_t</type>
+        <definition>int8_t OpenSkyhawk::RotaryEncoder::_momentum</definition>
+        <argsstring></argsstring>
+        <name>_momentum</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_momentum</qualifiedname>
+        <briefdescription>
+<para>signed transition momentum (filter only). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="166" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1ad055bcf47b4236c257475ec7f37499e1" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::RotaryEncoder::_lastDetentMs</definition>
+        <argsstring></argsstring>
+        <name>_lastDetentMs</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_lastDetentMs</qualifiedname>
+        <briefdescription>
+<para>millis() of the last detent (or of init) — filter / speed only. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="167" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="167" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a6e3834b74cb0fc8f5670ece5bd70062a" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::RotaryEncoder::_hasLastDetent</definition>
+        <argsstring></argsstring>
+        <name>_hasLastDetent</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::_hasLastDetent</qualifiedname>
+        <briefdescription>
+<para>false until a detent since init: the first detent is never fast. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="168" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="168" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a6903cb09bc6973d5f682f5d2374d6feb" prot="private" static="no" mutable="no">
         <type>volatile bool</type>
@@ -166,7 +305,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="128" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="128" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="169" column="21" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="169" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -181,7 +320,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="129" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="129" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="170" column="16" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="170" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -275,7 +414,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="80" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="14" bodyend="26"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="85" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="14" bodyend="17"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -291,7 +430,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="85" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="144" bodyend="149"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="90" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="216" bodyend="221"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -307,7 +446,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="88" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="132" bodyend="142"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="93" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="200" bodyend="214"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -323,7 +462,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="91" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="28" bodyend="31"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="96" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="40" bodyend="43"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -339,10 +478,75 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="94" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="85" bodyend="99"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="99" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="135" bodyend="149"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a98756c30c96e6e8e4e2d54661131d392" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::RotaryEncoder::RotaryEncoder</definition>
+        <argsstring>(uint16_t controlId, PinRef pinA, PinRef pinB, EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step, bool momentumFilter, int16_t fastStep)</argsstring>
+        <name>RotaryEncoder</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::RotaryEncoder</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinA</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinB</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1ae108c4313ff994c4cc46408adea1ef8b" kindref="member">EncoderStepsPerDetent</ref></type>
+          <declname>stepsPerDetent</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6" kindref="member">EncoderMode</ref></type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>step</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>momentumFilter</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>fastStep</declname>
+        </param>
+        <briefdescription>
+<para>Family constructor — used by <ref refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kindref="compound">RotaryAcceleratedEncoder</ref> (D16). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>momentumFilter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true: drop transitions against the current momentum (<ref refid="namespaceDcsBios" kindref="compound">DcsBios</ref> <ref refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kindref="compound">RotaryAcceleratedEncoder</ref> behaviour — rejects noisy / faulty encoders). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fastStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>REL magnitude for a detent completing &lt; FAST_THRESHOLD_MS after the previous one; same sign convention as <computeroutput>step</computeroutput>. 0 = speed-up off. Ignored in DIR (the DIR wire carries ±1 only). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="142" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="19" bodyend="38"/>
+      </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint8_t</type>
         <definition>uint8_t OpenSkyhawk::RotaryEncoder::readState</definition>
@@ -356,7 +560,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="112" column="13" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="33" bodyend="35"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="146" column="13" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="45" bodyend="47"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-func">
@@ -371,13 +575,32 @@
           <declname>state</declname>
         </param>
         <briefdescription>
-<para>quadrature transition → delta → pending detent. </para>
+<para>quadrature transition → (filter) → delta → pending detent. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="115" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="58" bodyend="83"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="149" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="68" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1acbb95ad11403cf74c9354098bc615f2a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RotaryEncoder::countDetent</definition>
+        <argsstring>(int8_t dir)</argsstring>
+        <name>countDetent</name>
+        <qualifiedname>OpenSkyhawk::RotaryEncoder::countDetent</qualifiedname>
+        <param>
+          <type>int8_t</type>
+          <declname>dir</declname>
+        </param>
+        <briefdescription>
+<para>classify slow / fast, bump the matching pending counter. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="150" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="108" bodyend="133"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a3f240c0d7af1fe087ab3ecd1c4a2ae09" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -392,26 +615,26 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="116" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="101" bodyend="130"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="151" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="151" bodyend="198"/>
       </memberdef>
-      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1a88bab25abb126cc696c9392ab742338b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryEncoder_1adc36a58fe7c53a2c7b5512a8926c11d2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void OpenSkyhawk::RotaryEncoder::emit</definition>
-        <argsstring>(int8_t detents)</argsstring>
+        <argsstring>(int16_t value)</argsstring>
         <name>emit</name>
         <qualifiedname>OpenSkyhawk::RotaryEncoder::emit</qualifiedname>
         <param>
-          <type>int8_t</type>
-          <declname>detents</declname>
+          <type>int16_t</type>
+          <declname>value</declname>
         </param>
         <briefdescription>
-<para>one EVT: REL = detents×step, DIR = ±1. </para>
+<para>one EVT on this mode&apos;s frame: REL ±magnitude, DIR ±1. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="117" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="37" bodyend="56"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="152" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.cpp" bodystart="49" bodyend="66"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -426,12 +649,19 @@
 </para>
 <para>Both modes are preset-safe: <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" kindref="member">forceReport()</ref> resyncs the last Gray state and emits <bold>nothing</bold> — a relative control has no baseline to assert at boot / SYNC, so it never clobbers a mission preset. <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" kindref="member">configure()</ref> does not enable internal pull-ups; the schematic biases both pins (external pull-ups; the encoder commons to GND).</para>
 <para><bold>High-rate sampling (#197):</bold> <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" kindref="member">sampleTick()</ref> (the generic <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> hook) decodes one quadrature sample and accumulates <emphasis>pending detents</emphasis>; <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" kindref="member">poll()</ref> drains and emits. When a sampling ISR runs <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" kindref="member">sampleTick()</ref> at kHz rate (<ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> wires this — the encoder does not know who samples it or from where), a loop stalled by an OLED flush no longer loses transitions. CAN traffic never originates in <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" kindref="member">sampleTick()</ref>. Without a sampler, <ref refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" kindref="member">poll()</ref> decodes at loop rate exactly as before. Loop-side API is unchanged in both modes.</para>
-<para>Dispatch is sourced from the class (the CAN frame), not the input map — see #147. </para>
+<para>Dispatch is sourced from the class (the CAN frame), not the input map — see #147.</para>
+<para><bold>Family base (D16).</bold> <computeroutput><ref refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kindref="compound">RotaryAcceleratedEncoder</ref></computeroutput> is a thin subclass that switches on two extra behaviours through the protected constructor — a momentum filter and a fast-detent step — ported from <computeroutput>DcsBios::RotaryAcceleratedEncoder</computeroutput>. Both are off for a plain <computeroutput><ref refid="classOpenSkyhawk_1_1RotaryEncoder" kindref="compound">RotaryEncoder</ref></computeroutput>, whose decode, drain and emit paths are unchanged. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="2">
         <label>OpenSkyhawk::InputBase</label>
         <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::RotaryAcceleratedEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
       </node>
       <node id="1">
         <label>OpenSkyhawk::RotaryEncoder</label>
@@ -452,32 +682,43 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="66" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="66" bodyend="136"/>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" line="71" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder/RotaryEncoder.h" bodystart="71" bodyend="177"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2d62fd70ec5400f90dc9fef5f32f8496" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_controlId</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_delta</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a90f08bf0065bf2bb1821f662b2009980" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_fastStep</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a4b6eb477ee8cb1349f6f53351796b0ab" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_filter</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6e3834b74cb0fc8f5670ece5bd70062a" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_hasLastDetent</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_initialized</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ad055bcf47b4236c257475ec7f37499e1" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_lastDetentMs</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_lastState</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a53a0bc196f416ce438369fd2e73541df" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_mode</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1af9a0b6c237f45e762bbd6c5e7af55a58" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_momentum</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1aec91b691b0e339480a740d21c2eb1dfe" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pendingDetents</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a74afe44b4ff51d8f7445bfceac6a494b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pendingFast</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pinA</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_pinB</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6903cb09bc6973d5f682f5d2374d6feb" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_sampled</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a0e1e8b0621274d1646a21758e54a7e42" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_step</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1af89eac629614783498bfd6d46580f2fb" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>_stepsPerDetent</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acbb95ad11403cf74c9354098bc615f2a" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>countDetent</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a8e81cbad00fab9236a9db28bd0aece82" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>decode</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a52c4bb5db9a1dceed90deb7dbd03ebf6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>DEFAULT_STEP</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3f240c0d7af1fe087ab3ecd1c4a2ae09" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>drainPending</name></member>
-      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a88bab25abb126cc696c9392ab742338b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>emit</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1adc36a58fe7c53a2c7b5512a8926c11d2" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>emit</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1aba48c1b67d7a4d9d3513d10bb42f23d6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>FAST_THRESHOLD_MS</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>forceReport</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>head</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ac9a967faa0b2569573b8945ae0c43821" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>MAX_MOMENTUM</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>next</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>poll</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>readState</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a375402a3323aa232e3085649c0e6a106" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>RotaryEncoder</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a98756c30c96e6e8e4e2d54661131d392" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>RotaryEncoder</name></member>
       <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>sampleTick</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a86b1416531a27c1a5b4ca3c7a5c5457b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryEncoder</scope><name>STOPPED_THRESHOLD_MS</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

@@ -358,8 +358,15 @@
     <member refid="classPinRef_1aa62a3dabcea18b586c55e4c5a0b23f33" kind="function"><name>isSampledSource</name></member>
     <member refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kind="function"><name>gpioPin</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kind="class"><name>OpenSkyhawk::RotaryAcceleratedEncoder</name>
+    <member refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a840e3e1e9ec531803173e7b0b343741c" kind="function"><name>RotaryAcceleratedEncoder</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a7d694121db64667a0c6c133b72f31002" kind="function"><name>RotaryAcceleratedEncoder</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1RotaryEncoder" kind="class"><name>OpenSkyhawk::RotaryEncoder</name>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a52c4bb5db9a1dceed90deb7dbd03ebf6" kind="variable"><name>DEFAULT_STEP</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ac9a967faa0b2569573b8945ae0c43821" kind="variable"><name>MAX_MOMENTUM</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1aba48c1b67d7a4d9d3513d10bb42f23d6" kind="variable"><name>FAST_THRESHOLD_MS</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a86b1416531a27c1a5b4ca3c7a5c5457b" kind="variable"><name>STOPPED_THRESHOLD_MS</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2d62fd70ec5400f90dc9fef5f32f8496" kind="variable"><name>_controlId</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a04faf8f8c531a00636057bd50c2decbe" kind="variable"><name>_pinA</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3d25f34dce92f9d35c5d72ec7a068cca" kind="variable"><name>_pinB</name></member>
@@ -369,6 +376,12 @@
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a42e3c510adbf034834a4e513c5bc8eff" kind="variable"><name>_lastState</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a2bbbec829dd1bfbc07b14677b9240bdc" kind="variable"><name>_delta</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1aec91b691b0e339480a740d21c2eb1dfe" kind="variable"><name>_pendingDetents</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a74afe44b4ff51d8f7445bfceac6a494b" kind="variable"><name>_pendingFast</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a4b6eb477ee8cb1349f6f53351796b0ab" kind="variable"><name>_filter</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a90f08bf0065bf2bb1821f662b2009980" kind="variable"><name>_fastStep</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1af9a0b6c237f45e762bbd6c5e7af55a58" kind="variable"><name>_momentum</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ad055bcf47b4236c257475ec7f37499e1" kind="variable"><name>_lastDetentMs</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6e3834b74cb0fc8f5670ece5bd70062a" kind="variable"><name>_hasLastDetent</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6903cb09bc6973d5f682f5d2374d6feb" kind="variable"><name>_sampled</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a7b0a02f407b9b1643cd1b0ca69cec509" kind="variable"><name>_initialized</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a375402a3323aa232e3085649c0e6a106" kind="function"><name>RotaryEncoder</name></member>
@@ -376,10 +389,12 @@
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" kind="function"><name>forceReport</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" kind="function"><name>configure</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" kind="function"><name>sampleTick</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a98756c30c96e6e8e4e2d54661131d392" kind="function"><name>RotaryEncoder</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" kind="function"><name>readState</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a8e81cbad00fab9236a9db28bd0aece82" kind="function"><name>decode</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acbb95ad11403cf74c9354098bc615f2a" kind="function"><name>countDetent</name></member>
     <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a3f240c0d7af1fe087ab3ecd1c4a2ae09" kind="function"><name>drainPending</name></member>
-    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a88bab25abb126cc696c9392ab742338b" kind="function"><name>emit</name></member>
+    <member refid="classOpenSkyhawk_1_1RotaryEncoder_1adc36a58fe7c53a2c7b5512a8926c11d2" kind="function"><name>emit</name></member>
   </compound>
   <compound refid="structRxQueueEntry" kind="struct"><name>RxQueueEntry</name>
     <member refid="structRxQueueEntry_1a758987839532de7c7ef2e059f552b033" kind="variable"><name>canId</name></member>
@@ -518,17 +533,17 @@
   </compound>
   <compound refid="namespace_0d10" kind="namespace"><name>@10</name>
   </compound>
-  <compound refid="namespace_0d42" kind="namespace"><name>@42</name>
+  <compound refid="namespace_0d43" kind="namespace"><name>@43</name>
   </compound>
-  <compound refid="namespace_0d48" kind="namespace"><name>@48</name>
-    <member refid="namespace_0d48_1a628727db5cb6bfbb4b53a2f3dd7811b6" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d48_1a628727db5cb6bfbb4b53a2f3dd7811b6aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d48_1a628727db5cb6bfbb4b53a2f3dd7811b6a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d48_1a628727db5cb6bfbb4b53a2f3dd7811b6a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d48_1aa762e1d761af47f4b71e171a3bf5bfc9" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d48_1aa762e1d761af47f4b71e171a3bf5bfc9ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d48_1aa762e1d761af47f4b71e171a3bf5bfc9aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d48_1aa762e1d761af47f4b71e171a3bf5bfc9a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d49" kind="namespace"><name>@49</name>
+    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640c" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640caa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640ca1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640ca03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
@@ -1623,6 +1638,8 @@
   </compound>
   <compound refid="MultiPosInput_8h" kind="file"><name>MultiPosInput.h</name>
   </compound>
+  <compound refid="RotaryAcceleratedEncoder_8h" kind="file"><name>RotaryAcceleratedEncoder.h</name>
+  </compound>
   <compound refid="RotaryEncoder_8cpp" kind="file"><name>RotaryEncoder.cpp</name>
   </compound>
   <compound refid="RotaryEncoder_8h" kind="file"><name>RotaryEncoder.h</name>
@@ -1746,6 +1763,8 @@
   <compound refid="dir_f592a3c441b32532ba8eb6b28add2a90" kind="dir"><name>Firmware/Libraries/PanelBridge</name>
   </compound>
   <compound refid="dir_54a06c409a6161127d200302d3061b3f" kind="dir"><name>Firmware/Libraries/PanelGroup</name>
+  </compound>
+  <compound refid="dir_d67d57cd87e8f385bd5b0c09cadb634b" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder</name>
   </compound>
   <compound refid="dir_d61b64c3ddc6557ee529e3725418e11d" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/RotaryEncoder</name>
   </compound>

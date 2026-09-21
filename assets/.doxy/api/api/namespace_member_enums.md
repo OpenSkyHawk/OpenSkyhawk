@@ -35,12 +35,12 @@
 
 * **LeadingZero** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d48.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d49.md))
 
 
 ## p
 
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d48.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d49.md))
 
 
 ## s

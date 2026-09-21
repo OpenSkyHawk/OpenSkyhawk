@@ -13,15 +13,16 @@
     <includes refid="AnalogMultiPos_8h" local="no">Inputs/AnalogMultiPos/AnalogMultiPos.h</includes>
     <includes refid="AnalogInput_8h" local="no">Inputs/AnalogInput/AnalogInput.h</includes>
     <includes refid="RotaryEncoder_8h" local="no">Inputs/RotaryEncoder/RotaryEncoder.h</includes>
+    <includes refid="RotaryAcceleratedEncoder_8h" local="no">Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h</includes>
     <includes refid="ActionButton_8h" local="no">Inputs/ActionButton/ActionButton.h</includes>
     <includes refid="A4EC__CmdIds_8h" local="no">A4EC_CmdIds.h</includes>
     <includes refid="A4EC__OutputIds_8h" local="no">A4EC_OutputIds.h</includes>
     <incdepgraph>
-      <node id="29">
+      <node id="30">
         <label>A4EC_CmdIds.h</label>
         <link refid="A4EC__CmdIds_8h"/>
       </node>
-      <node id="30">
+      <node id="31">
         <label>A4EC_OutputIds.h</label>
         <link refid="A4EC__OutputIds_8h"/>
       </node>
@@ -73,7 +74,7 @@
         <childnode refid="14" relation="include">
         </childnode>
       </node>
-      <node id="28">
+      <node id="29">
         <label>Inputs/ActionButton/ActionButton.h</label>
         <link refid="ActionButton_8h"/>
         <childnode refid="7" relation="include">
@@ -97,6 +98,12 @@
         <label>Inputs/MultiPosInput/MultiPosInput.h</label>
         <link refid="MultiPosInput_8h"/>
         <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h</label>
+        <link refid="RotaryAcceleratedEncoder_8h"/>
+        <childnode refid="27" relation="include">
         </childnode>
       </node>
       <node id="27">
@@ -157,6 +164,8 @@
         <childnode refid="29" relation="include">
         </childnode>
         <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
         </childnode>
       </node>
       <node id="19">
@@ -252,9 +261,10 @@
 <codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AnalogMultiPos_8h" kindref="compound">Inputs/AnalogMultiPos/AnalogMultiPos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AnalogInput_8h" kindref="compound">Inputs/AnalogInput/AnalogInput.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RotaryEncoder_8h" kindref="compound">Inputs/RotaryEncoder/RotaryEncoder.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ActionButton_8h" kindref="compound">Inputs/ActionButton/ActionButton.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RotaryAcceleratedEncoder_8h" kindref="compound">Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ActionButton_8h" kindref="compound">Inputs/ActionButton/ActionButton.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/OpenSkyhawk.h"/>
   </compounddef>

@@ -17,6 +17,7 @@ _Incremental quadrature encoder on two pins (A/B). Emits a signed_ **relative** 
 Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
+Inherited by the following classes: [OpenSkyhawk::RotaryAcceleratedEncoder](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md)
 
 
 
@@ -46,6 +47,9 @@ Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1Inp
 | Type | Name |
 | ---: | :--- |
 |  constexpr int16\_t | [**DEFAULT\_STEP**](#variable-default_step)   = `3200`<br>_REL per-detent magnitude (DCS suggested\_step)._  |
+|  constexpr uint32\_t | [**FAST\_THRESHOLD\_MS**](#variable-fast_threshold_ms)   = `175`<br>_A detent completing sooner than this after the previous one is "fast" (ms). DCS-BIOS value._  |
+|  constexpr int8\_t | [**MAX\_MOMENTUM**](#variable-max_momentum)   = `4`<br>_Momentum cap, in detents' worth of transitions (± MAX\_MOMENTUM × stepsPerDetent). DCS-BIOS value._  |
+|  constexpr uint32\_t | [**STOPPED\_THRESHOLD\_MS**](#variable-stopped_threshold_ms)   = `500`<br>_With no detent for this long, momentum resets to zero (ms). DCS-BIOS value._  |
 
 
 
@@ -78,7 +82,7 @@ Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1Inp
 
 | Type | Name |
 | ---: | :--- |
-|   | [**RotaryEncoder**](#function-rotaryencoder) (uint16\_t controlId, [**PinRef**](classPinRef.md) pinA, [**PinRef**](classPinRef.md) pinB, [**EncoderStepsPerDetent**](namespaceOpenSkyhawk.md#enum-encoderstepsperdetent) stepsPerDetent=EncoderStepsPerDetent::One, [**EncoderMode**](namespaceOpenSkyhawk.md#enum-encodermode) mode=EncoderMode::Rel, int16\_t step=[**DEFAULT\_STEP**](classOpenSkyhawk_1_1RotaryEncoder.md#variable-default_step)) <br>_Construct a quadrature encoder._  |
+|   | [**RotaryEncoder**](#function-rotaryencoder-12) (uint16\_t controlId, [**PinRef**](classPinRef.md) pinA, [**PinRef**](classPinRef.md) pinB, [**EncoderStepsPerDetent**](namespaceOpenSkyhawk.md#enum-encoderstepsperdetent) stepsPerDetent=EncoderStepsPerDetent::One, [**EncoderMode**](namespaceOpenSkyhawk.md#enum-encodermode) mode=EncoderMode::Rel, int16\_t step=[**DEFAULT\_STEP**](classOpenSkyhawk_1_1RotaryEncoder.md#variable-default_step)) <br>_Construct a quadrature encoder._  |
 | virtual void | [**configure**](#function-configure) () override<br>_Configure both pins as inputs. Called by_ [_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _._ |
 | virtual void | [**forceReport**](#function-forcereport) () override<br>_Resync the last state; emit nothing (relative control — no baseline)._  |
 | virtual void | [**poll**](#function-poll) () override<br>_Decode at loop rate (unless a sampler ticks), then drain pending detents → EVTs._  |
@@ -153,6 +157,7 @@ See [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 | Type | Name |
 | ---: | :--- |
+|   | [**RotaryEncoder**](#function-rotaryencoder-22) (uint16\_t controlId, [**PinRef**](classPinRef.md) pinA, [**PinRef**](classPinRef.md) pinB, [**EncoderStepsPerDetent**](namespaceOpenSkyhawk.md#enum-encoderstepsperdetent) stepsPerDetent, [**EncoderMode**](namespaceOpenSkyhawk.md#enum-encodermode) mode, int16\_t step, bool momentumFilter, int16\_t fastStep) <br>_Family constructor — used by_ [_**RotaryAcceleratedEncoder**_](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md) _(D16)._ |
 |  uint8\_t | [**readState**](#function-readstate) () <br>_(pinA &lt;&lt; 1) \| pinB → 0..3._  |
 
 
@@ -188,7 +193,10 @@ Both modes are preset-safe: [**forceReport()**](classOpenSkyhawk_1_1RotaryEncode
 **High-rate sampling (#197):** [**sampleTick()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-sampletick) (the generic [**InputBase**](classOpenSkyhawk_1_1InputBase.md) hook) decodes one quadrature sample and accumulates _pending detents_; [**poll()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-poll) drains and emits. When a sampling ISR runs [**sampleTick()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-sampletick) at kHz rate ([**PanelGroup**](namespacePanelGroup.md) wires this — the encoder does not know who samples it or from where), a loop stalled by an OLED flush no longer loses transitions. CAN traffic never originates in [**sampleTick()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-sampletick). Without a sampler, [**poll()**](classOpenSkyhawk_1_1RotaryEncoder.md#function-poll) decodes at loop rate exactly as before. Loop-side API is unchanged in both modes.
 
 
-Dispatch is sourced from the class (the CAN frame), not the input map — see #147. 
+Dispatch is sourced from the class (the CAN frame), not the input map — see #147.
+
+
+**Family base (D16).** `RotaryAcceleratedEncoder` is a thin subclass that switches on two extra behaviours through the protected constructor — a momentum filter and a fast-detent step — ported from `DcsBios::RotaryAcceleratedEncoder`. Both are off for a plain `RotaryEncoder`, whose decode, drain and emit paths are unchanged. 
 
 
     
@@ -208,12 +216,54 @@ constexpr int16_t OpenSkyhawk::RotaryEncoder::DEFAULT_STEP;
 
 
 <hr>
+
+
+
+### variable FAST\_THRESHOLD\_MS 
+
+_A detent completing sooner than this after the previous one is "fast" (ms). DCS-BIOS value._ 
+```C++
+constexpr uint32_t OpenSkyhawk::RotaryEncoder::FAST_THRESHOLD_MS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable MAX\_MOMENTUM 
+
+_Momentum cap, in detents' worth of transitions (± MAX\_MOMENTUM × stepsPerDetent). DCS-BIOS value._ 
+```C++
+constexpr int8_t OpenSkyhawk::RotaryEncoder::MAX_MOMENTUM;
+```
+
+
+
+
+<hr>
+
+
+
+### variable STOPPED\_THRESHOLD\_MS 
+
+_With no detent for this long, momentum resets to zero (ms). DCS-BIOS value._ 
+```C++
+constexpr uint32_t OpenSkyhawk::RotaryEncoder::STOPPED_THRESHOLD_MS;
+```
+
+
+
+
+<hr>
 ## Public Functions Documentation
 
 
 
 
-### function RotaryEncoder 
+### function RotaryEncoder [1/2]
 
 _Construct a quadrature encoder._ 
 ```C++
@@ -313,6 +363,41 @@ Implements [*OpenSkyhawk::InputBase::sampleTick*](classOpenSkyhawk_1_1InputBase.
 <hr>
 ## Protected Functions Documentation
 
+
+
+
+### function RotaryEncoder [2/2]
+
+_Family constructor — used by_ [_**RotaryAcceleratedEncoder**_](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md) _(D16)._
+```C++
+OpenSkyhawk::RotaryEncoder::RotaryEncoder (
+    uint16_t controlId,
+    PinRef pinA,
+    PinRef pinB,
+    EncoderStepsPerDetent stepsPerDetent,
+    EncoderMode mode,
+    int16_t step,
+    bool momentumFilter,
+    int16_t fastStep
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `momentumFilter` true: drop transitions against the current momentum ([**DcsBios**](namespaceDcsBios.md) [**RotaryAcceleratedEncoder**](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md) behaviour — rejects noisy / faulty encoders). 
+* `fastStep` REL magnitude for a detent completing &lt; FAST\_THRESHOLD\_MS after the previous one; same sign convention as `step`. 0 = speed-up off. Ignored in DIR (the DIR wire carries ±1 only). 
+
+
+
+
+        
+
+<hr>
 
 
 

@@ -66,6 +66,7 @@
 
 * **faces** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
 * **flag** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **FAST\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 
 
 ## g
@@ -110,6 +111,7 @@
 * **maxTravel** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **minTravel** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **maxSeekSteps** ([**OpenSkyhawk::HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md))
+* **MAX\_MOMENTUM** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **MAX\_CHAIN** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **MAX\_ISR\_CONSUMERS** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **maxPos** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
@@ -149,6 +151,7 @@
 * **scroll** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **snapThreshold** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **STOPPED\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **sensor** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **stepsPerRev** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **sr** ([**PinRef**](classPinRef.md))
@@ -232,9 +235,15 @@
 * **\_cal** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **\_motor** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **\_delta** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_fastStep** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_filter** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_hasLastDetent** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_lastDetentMs** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **\_lastState** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **\_mode** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_momentum** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **\_pendingDetents** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **\_pendingFast** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **\_pinA** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md))
 * **\_pinB** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md))
 * **\_sampled** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))

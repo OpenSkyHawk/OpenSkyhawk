@@ -4075,9 +4075,10 @@ implemented; one output family is still to come before the first release.</p>
 <div class="admonition warning">
 <p class="admonition-title">What's built and what isn't</p>
 <p>Implemented today: <strong>Switch2Pos</strong>, <strong>Switch3Pos</strong>, <strong>SwitchMultiPos</strong>, <strong>AnalogMultiPos</strong>,
-<strong>AnalogInput</strong>, <strong>RotaryEncoder</strong> and <strong>ActionButton</strong> (inputs); <strong>LED</strong>, <strong>DrumDisplay</strong> and
-<strong>NeedleGauge</strong> (outputs); plus the <strong>PinRef</strong> abstraction. All are hardware-verified except
-ActionButton, whose hardware and live-DCS run is part of the v1.0 soak test.
+<strong>AnalogInput</strong>, <strong>RotaryEncoder</strong>, <strong>RotaryAcceleratedEncoder</strong> and <strong>ActionButton</strong> (inputs);
+<strong>LED</strong>, <strong>DrumDisplay</strong> and <strong>NeedleGauge</strong> (outputs); plus the <strong>PinRef</strong> abstraction. All are
+hardware-verified; ActionButton's hardware run and RotaryAcceleratedEncoder's live-DCS feel check
+are part of the v1.0 soak test.
 Rows marked <em>Planned</em> below are specified but <strong>not written yet</strong> — don't expect them to
 compile today.</p>
 </div>
@@ -4164,7 +4165,7 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </tr>
 <tr>
 <td><code>RotaryAcceleratedEncoder</code></td>
-<td>Planned — v0.1.0 (#287)</td>
+<td><strong>Implemented</strong> (hardware-verified)</td>
 <td><code>RotaryEncoder</code> subclass: DCS-BIOS's momentum filter for noisy encoders, plus a bigger step when spun fast</td>
 </tr>
 <tr>

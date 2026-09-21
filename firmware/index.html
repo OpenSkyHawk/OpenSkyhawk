@@ -4120,17 +4120,17 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 <li>SimGateway (HID demux: <code>HIDAxis</code>, <code>HIDButton</code>, <code>HIDHatSwitch</code>)</li>
 <li><code>PinRef</code> abstraction, PanelGroup core, MCP23017 management</li>
 <li>Helpers — <code>ShiftBus</code> (shift-register expansion), <code>I2cMux</code>, <code>I2cHealth</code></li>
-<li><strong>Seven input classes</strong> — <code>Switch2Pos</code>, <code>Switch3Pos</code>, <code>SwitchMultiPos</code>,
-  <code>AnalogMultiPos</code>, <code>AnalogInput</code>, <code>RotaryEncoder</code> (REL/DIR), <code>ActionButton</code></li>
+<li><strong>Eight input classes</strong> — <code>Switch2Pos</code>, <code>Switch3Pos</code>, <code>SwitchMultiPos</code>,
+  <code>AnalogMultiPos</code>, <code>AnalogInput</code>, <code>RotaryEncoder</code> (REL/DIR), <code>RotaryAcceleratedEncoder</code>,
+  <code>ActionButton</code></li>
 <li><strong>Three output classes</strong> — <code>LED</code>, <code>DrumDisplay</code>, <code>NeedleGauge</code></li>
 </ul>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Not yet implemented</p>
 <ul>
-<li><strong>For v0.1.0</strong> — <code>RotaryAcceleratedEncoder</code> (a <code>RotaryEncoder</code> subclass with the DCS-BIOS
-  momentum filter and speed-up), the <code>AnalogOutput</code> family (<code>Dimmer</code> for PWM backlight,
-  <code>IntegerOutput</code> for a user callback), <code>AngleSensorInput</code> (an <code>AnalogInput</code> subclass for
+<li><strong>For v0.1.0</strong> — the <code>AnalogOutput</code> family (<code>Dimmer</code> for PWM backlight, <code>IntegerOutput</code> for
+  a user callback), <code>AngleSensorInput</code> (an <code>AnalogInput</code> subclass for
   magnetic angle sensors) and <code>SwitchWithCover2Pos</code>. Every control class is locked in v0.1.0.</li>
 <li><strong>After v1.0</strong> — the <code>ServoMotor</code> gauge backend.</li>
 <li><strong>Phase 6</strong> — the Right_Navigation PanelGroup sketch and end-to-end integration.</li>

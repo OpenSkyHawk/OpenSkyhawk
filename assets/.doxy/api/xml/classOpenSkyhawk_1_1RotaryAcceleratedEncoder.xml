@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::RotaryAcceleratedEncoder</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1RotaryEncoder" prot="public" virt="non-virtual">OpenSkyhawk::RotaryEncoder</basecompoundref>
+    <includes refid="RotaryAcceleratedEncoder_8h" local="no">RotaryAcceleratedEncoder.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a840e3e1e9ec531803173e7b0b343741c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::RotaryAcceleratedEncoder::RotaryAcceleratedEncoder</definition>
+        <argsstring>(uint16_t controlId, PinRef pinA, PinRef pinB, EncoderStepsPerDetent stepsPerDetent, int16_t step, int16_t fastStep)</argsstring>
+        <name>RotaryAcceleratedEncoder</name>
+        <qualifiedname>OpenSkyhawk::RotaryAcceleratedEncoder::RotaryAcceleratedEncoder</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinA</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinB</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1ae108c4313ff994c4cc46408adea1ef8b" kindref="member">EncoderStepsPerDetent</ref></type>
+          <declname>stepsPerDetent</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>step</declname>
+        </param>
+        <param>
+          <type>int16_t</type>
+          <declname>fastStep</declname>
+        </param>
+        <briefdescription>
+<para>REL (variable_step) knob: momentum filter + speed-up. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>quadrature channel A. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pinB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>quadrature channel B (swap A/B to reverse the sensed direction). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stepsPerDetent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>quadrature transitions per emitted click (match the encoder). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>REL magnitude for a normal detent (DCS suggested_step is 3200). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fastStep</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>REL magnitude for a fast detent, same sign as <computeroutput>step</computeroutput> (e.g. 4× step). 0 turns the speed-up off, leaving only the filter. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h" line="47" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h" bodystart="47" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a7d694121db64667a0c6c133b72f31002" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::RotaryAcceleratedEncoder::RotaryAcceleratedEncoder</definition>
+        <argsstring>(uint16_t controlId, PinRef pinA, PinRef pinB, EncoderStepsPerDetent stepsPerDetent, EncoderMode mode)</argsstring>
+        <name>RotaryAcceleratedEncoder</name>
+        <qualifiedname>OpenSkyhawk::RotaryAcceleratedEncoder::RotaryAcceleratedEncoder</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinA</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pinB</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1ae108c4313ff994c4cc46408adea1ef8b" kindref="member">EncoderStepsPerDetent</ref></type>
+          <declname>stepsPerDetent</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6" kindref="member">EncoderMode</ref></type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+<para>Momentum filter only — for DIR (fixed_step) selectors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6a3c4e6dbf3e1df93a734d9959bac9ee94" kindref="member">EncoderMode::Dir</ref>. Passing <ref refid="namespaceOpenSkyhawk_1a37a6ae1d794d8c3a166703b9250301c6aeba991d56b1be0b940d722211bab87bc" kindref="member">EncoderMode::Rel</ref> here gives a REL knob with the filter and no speed-up (use the other constructor to set <computeroutput>fastStep</computeroutput>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h" line="58" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h" bodystart="58" bodyend="61"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><computeroutput><ref refid="classOpenSkyhawk_1_1RotaryEncoder" kindref="compound">RotaryEncoder</ref></computeroutput> plus the two behaviours of <computeroutput>DcsBios::RotaryAcceleratedEncoder</computeroutput>, both on by construction. Header-only: the logic lives in the <ref refid="classOpenSkyhawk_1_1RotaryEncoder" kindref="compound">RotaryEncoder</ref> family base. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><itemizedlist>
+<listitem><para><bold>Momentum filter</bold> — the DCS-BIOS class&apos;s stated purpose (&quot;noisy/faulty rotaries&quot;). Momentum builds by one per transition in the current direction, up to ±(MAX_MOMENTUM × stepsPerDetent); a transition against it is dropped and only decays it; after STOPPED_THRESHOLD_MS (500 ms) with no detent it resets, so a deliberate reversal from rest registers normally.</para>
+</listitem><listitem><para><bold>Speed</bold> (REL only) — a detent completing less than FAST_THRESHOLD_MS (175 ms) after the previous one sends <computeroutput>fastStep</computeroutput> instead of <computeroutput>step</computeroutput>. Two-tier, not a ramp. The first detent after a resync is always slow. A fast detent is just a bigger <computeroutput>±step</computeroutput> on the REL frame — no wire, bridge or input-map change (supersedes D9).</para>
+</listitem></itemizedlist>
+</para>
+<para>DIR mode gets the filter only: the DIR frame carries ±1 and <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> drops anything else, so there is no speed to add — the way DCS-BIOS users apply the class to INC/DEC controls. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::RotaryAcceleratedEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::RotaryEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryEncoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::RotaryAcceleratedEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::RotaryEncoder</label>
+        <link refid="classOpenSkyhawk_1_1RotaryEncoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h" line="34" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h" bodystart="34" bodyend="62"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a17a2769eb991dc8e90f3a67468effa33" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a52c4bb5db9a1dceed90deb7dbd03ebf6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>DEFAULT_STEP</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1aba48c1b67d7a4d9d3513d10bb42f23d6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>FAST_THRESHOLD_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a6f413e07cb12e63b5a51c6fdd5054c13" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ac9a967faa0b2569573b8945ae0c43821" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>MAX_MOMENTUM</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1acecd2605ea1eccdddc04353ad0f6062e" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ab3a2119b3a1f1c1a72f0d41fb34ec3a4" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>readState</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a840e3e1e9ec531803173e7b0b343741c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>RotaryAcceleratedEncoder</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a7d694121db64667a0c6c133b72f31002" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>RotaryAcceleratedEncoder</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a375402a3323aa232e3085649c0e6a106" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>RotaryEncoder</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a98756c30c96e6e8e4e2d54661131d392" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>RotaryEncoder</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1ae6debe54ee077819234b28d2f2bc15dd" prot="public" virt="virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>sampleTick</name></member>
+      <member refid="classOpenSkyhawk_1_1RotaryEncoder_1a86b1416531a27c1a5b4ca3c7a5c5457b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RotaryAcceleratedEncoder</scope><name>STOPPED_THRESHOLD_MS</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

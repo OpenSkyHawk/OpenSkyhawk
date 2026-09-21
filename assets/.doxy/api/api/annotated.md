@@ -35,6 +35,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md) _Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._    
     * **class** [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) _Abstract base for all DCS-driven output objects._     
+    * **class** [**RotaryAcceleratedEncoder**](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md) `RotaryEncoder` _plus the two behaviours of_`DcsBios::RotaryAcceleratedEncoder` _, both on by construction. Header-only: the logic lives in the_[_**RotaryEncoder**_](classOpenSkyhawk_1_1RotaryEncoder.md) _family base._    
     * **class** [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) _Incremental quadrature encoder on two pins (A/B). Emits a signed_ **relative** _value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) _One shared SPI shift-register bus ('165 inputs + '595 outputs)._     
     * **struct** [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) _Full per-instance stepper configuration. Authored per sketch (panel wiring)._     
@@ -52,6 +53,6 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d10.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d42.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d48.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d43.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d49.md)     
 

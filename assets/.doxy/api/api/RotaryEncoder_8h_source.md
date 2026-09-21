@@ -44,22 +44,37 @@ public:
 
     void sampleTick() override;
 
+    static constexpr int8_t   MAX_MOMENTUM         = 4;
+    static constexpr uint32_t FAST_THRESHOLD_MS    = 175;
+    static constexpr uint32_t STOPPED_THRESHOLD_MS = 500;
+
 #ifdef ROTARYENCODER_TEST
-    void debugSeed(uint8_t state) { _lastState = (uint8_t)(state & 0x3); _delta = 0; _pendingDetents = 0; _initialized = true; }
+    void debugSeed(uint8_t state) {
+        _lastState = (uint8_t)(state & 0x3); _delta = 0; _pendingDetents = 0; _pendingFast = 0;
+        _momentum = 0; _hasLastDetent = false; _lastDetentMs = millis(); _initialized = true;
+    }
     void debugStep(uint8_t ab) { decode((uint8_t)(ab & 0x3)); drainPending(); }
+    void debugDecode(uint8_t ab) { decode((uint8_t)(ab & 0x3)); }
+    void debugDrain() { drainPending(); }
     uint16_t emitCount() const { return _emitCount; }
     int16_t lastValue() const { return _lastValue; }
     uint32_t lastFrame() const { return _lastFrame; }
     int32_t netDetents() const { return _netDetents; }
+    int8_t momentum() const { return _momentum; }
 #endif
 
 protected:
+    RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
+                  EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step,
+                  bool momentumFilter, int16_t fastStep);
+
     uint8_t readState();   
 
 private:
     void decode(uint8_t state);          
+    void countDetent(int8_t dir);        
     void drainPending();                 
-    void emit(int8_t detents);           
+    void emit(int16_t value);            
 
     uint16_t   _controlId;
     PinRef     _pinA;
@@ -70,6 +85,12 @@ private:
     uint8_t    _lastState;   
     int8_t     _delta;       
     volatile int8_t _pendingDetents;  
+    volatile int8_t _pendingFast;     
+    bool       _filter;      
+    int16_t    _fastStep;    
+    int8_t     _momentum;    
+    uint32_t   _lastDetentMs;   
+    bool       _hasLastDetent;  
     volatile bool   _sampled;         
     bool       _initialized; 
 #ifdef ROTARYENCODER_TEST
