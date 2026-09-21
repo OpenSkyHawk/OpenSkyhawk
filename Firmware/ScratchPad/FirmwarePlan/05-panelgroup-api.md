@@ -272,7 +272,7 @@ OpenSkyhawk::RotaryEncoder freq10(DCSIN_ARC51_FREQ_10MHZ,
                                    EncoderStepsPerDetent::Four, EncoderMode::Dir);  // INC / DEC
 ```
 
-### RotaryAcceleratedEncoder *(planned — #287, Firmware v0.1.0)*
+### RotaryAcceleratedEncoder *(implemented — #287)*
 
 `DcsBios::RotaryAcceleratedEncoder` parity as a **thin subclass of `RotaryEncoder`** (D16). The
 base class's public constructor stays the plain `DcsBios::RotaryEncoder` equivalent; the subclass
@@ -286,8 +286,11 @@ adds, through a protected base constructor:
 
 Speed is classified **per detent inside `decode()`** (which may run in the ShiftBus ISR), not when
 pending detents are drained — a stalled loop would otherwise erase the timing. REL pending becomes a
-step magnitude. No wire, bridge or map change: a fast detent is just a bigger `±step` on the REL
-frame (supersedes D9's 4-value scheme).
+counter (`_pendingFast`, beside the untouched `_pendingDetents`), and a burst of slow + fast detents
+drains as one REL frame carrying their sum. No wire, bridge or map change: a fast detent is just a
+bigger `±step` on the REL frame (supersedes D9's 4-value scheme). `fastStep = 0` turns the speed-up
+off; the first detent after a resync is always slow. Header-only, in its own
+`Inputs/RotaryAcceleratedEncoder/` folder.
 
 Two constructors:
 

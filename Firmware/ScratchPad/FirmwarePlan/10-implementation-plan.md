@@ -178,8 +178,8 @@ D16 (families, DCS-BIOS names).
       PR #157 / #147).
 - [x] `ActionButton` — one TOGGLE per press on `EVT_ACTION_n` (PR #275, #116). Hardware + live-DCS
       check happens in the v1.0 soak panel smoke test (#291).
-- [ ] `RotaryAcceleratedEncoder` — thin `RotaryEncoder` subclass, DCS-BIOS parity: momentum filter
-      + `fastStep` (#287). **Firmware v0.1.0.**
+- [x] `RotaryAcceleratedEncoder` — thin `RotaryEncoder` subclass, DCS-BIOS parity: momentum filter
+      + `fastStep` (#287). Builds clean; hardware run of its 5 envs pending.
 - [ ] `AngleSensorInput` : `AnalogInput`, on a `PinRef` (the sensor's analog output) — for
       absolute knobs such as `GUNSIGHT_KNB` (#294). **Firmware v0.1.0**, so the class set is locked
       before v1.0. Spec: `TechSpec/PanelGroup/Inputs/AngleSensorInput.md`.

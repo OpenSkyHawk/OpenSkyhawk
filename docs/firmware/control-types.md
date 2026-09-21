@@ -7,9 +7,10 @@ implemented; one output family is still to come before the first release.
 
 !!! warning "What's built and what isn't"
     Implemented today: **Switch2Pos**, **Switch3Pos**, **SwitchMultiPos**, **AnalogMultiPos**,
-    **AnalogInput**, **RotaryEncoder** and **ActionButton** (inputs); **LED**, **DrumDisplay** and
-    **NeedleGauge** (outputs); plus the **PinRef** abstraction. All are hardware-verified except
-    ActionButton, whose hardware and live-DCS run is part of the v1.0 soak test.
+    **AnalogInput**, **RotaryEncoder**, **RotaryAcceleratedEncoder** and **ActionButton** (inputs);
+    **LED**, **DrumDisplay** and **NeedleGauge** (outputs); plus the **PinRef** abstraction. All are
+    hardware-verified except ActionButton and RotaryAcceleratedEncoder, whose live-DCS runs are part
+    of the v1.0 soak test.
     Rows marked *Planned* below are specified but **not written yet** — don't expect them to
     compile today.
 
@@ -51,7 +52,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | `AnalogMultiPos` | **Implemented** (hardware-verified) | Resistor-ladder selector on one analog pin |
 | `ActionButton` | **Implemented** (#116) | Momentary button driving a control that latches *in the sim* — one `TOGGLE` per press, nothing on release. See the note below |
 | `RotaryEncoder` | **Implemented** (dual-mode REL/DIR, #147) | Quadrature encoder, relative. REL → ±step (continuous knobs); DIR → ±1 (no-indicator selectors) |
-| `RotaryAcceleratedEncoder` | Planned — v0.1.0 (#287) | `RotaryEncoder` subclass: DCS-BIOS's momentum filter for noisy encoders, plus a bigger step when spun fast |
+| `RotaryAcceleratedEncoder` | **Implemented** (#287 — hardware run pending) | `RotaryEncoder` subclass: DCS-BIOS's momentum filter for noisy encoders, plus a bigger step when spun fast |
 | `RotarySwitch` | Not planned | Use `RotaryEncoder` in DIR mode — see the note below |
 | `AnalogInput` | **Implemented** (hardware-verified) | Continuous analog, normalised to 16-bit (EWMA + hysteresis) |
 | `AngleSensorInput` | Planned — v0.1.0 (#294) | `AnalogInput` subclass reading a magnetic angle sensor (AS5600/MT6701) — absolute knobs such as gunsight elevation |

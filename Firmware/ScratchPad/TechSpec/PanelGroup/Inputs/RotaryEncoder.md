@@ -131,26 +131,39 @@ void loop() {
 
 ```cpp
 void RotaryEncoder::decode(uint8_t state) {
+    int8_t dir = 0;
     switch (_lastState) {                              // ported verbatim from DcsBios Encoders.h
-        case 0: if (state == 2) _delta--; if (state == 1) _delta++; break;
-        case 1: if (state == 0) _delta--; if (state == 3) _delta++; break;
-        case 2: if (state == 3) _delta--; if (state == 0) _delta++; break;
-        case 3: if (state == 1) _delta--; if (state == 2) _delta++; break;
+        case 0: if (state == 2) dir = -1; if (state == 1) dir = +1; break;
+        case 1: if (state == 0) dir = -1; if (state == 3) dir = +1; break;
+        case 2: if (state == 3) dir = -1; if (state == 0) dir = +1; break;
+        case 3: if (state == 1) dir = -1; if (state == 2) dir = +1; break;
     }
     _lastState = state;
-    if (_delta >=  (int8_t)_stepsPerDetent) { emit(+1); _delta -= _stepsPerDetent; }   // CW
-    if (_delta <= -(int8_t)_stepsPerDetent) { emit(-1); _delta += _stepsPerDetent; }   // CCW
+    if (_filter) { /* momentum gate — RotaryAcceleratedEncoder only, see its TechSpec */ }
+    _delta += dir;
+    if (_delta >=  (int8_t)_stepsPerDetent) { countDetent(+1); _delta -= _stepsPerDetent; }  // CW
+    if (_delta <= -(int8_t)_stepsPerDetent) { countDetent(-1); _delta += _stepsPerDetent; }  // CCW
 }
 ```
 
-`poll()` calls `decode(readState())`. The Gray state is `(A<<1)|B` ∈ 0..3. Valid single-step
-transitions move the delta ±1; double/invalid jumps are ignored by the table. The `stepsPerDetent`
-divisor both scales clicks to the encoder and rejects sub-detent jitter (the `test_bounce` case).
+`poll()` calls `decode(readState())` (or the ShiftBus sampler calls it via `sampleTick()`). The Gray
+state is `(A<<1)|B` ∈ 0..3. Valid single-step transitions move the delta ±1; double/invalid jumps are
+ignored by the table. The `stepsPerDetent` divisor both scales clicks to the encoder and rejects
+sub-detent jitter (the `test_bounce` case). `countDetent()` bumps the pending counter that
+`drainPending()` turns into EVTs loop-side.
+
+**Family base (#287, D16).** A protected constructor adds two switches used only by
+`RotaryAcceleratedEncoder`: `momentumFilter` (the DCS-BIOS momentum gate between the table and
+`_delta`) and `fastStep` (per-detent speed classification into a separate `_pendingFast`). The public
+constructor passes `false` / `0`, and with both off every branch reduces to the original code — no
+`millis()` read, same pending counter, same REL whole-detent chunking — so the eight envs below are
+unchanged. Test seams `debugDecode()` / `debugDrain()` (decode or drain alone) were added for the
+subclass's burst test.
 
 ### forceReport
 
 `forceReport()` reads the current Gray state into `_lastState` (so the first `poll()` sees no
-spurious transition), zeroes the delta, sets `_initialized`, and **emits no EVT**. Unlike the switch
+spurious transition), zeroes the delta and both pending counters (and the momentum / last-detent state the subclass uses), sets `_initialized`, and **emits no EVT**. Unlike the switch
 and analog inputs, a relative encoder has no absolute position to broadcast at boot / SYNC_REQ.
 
 ### Reading over MCP23017

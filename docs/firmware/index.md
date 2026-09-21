@@ -43,14 +43,14 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
     - SimGateway (HID demux: `HIDAxis`, `HIDButton`, `HIDHatSwitch`)
     - `PinRef` abstraction, PanelGroup core, MCP23017 management
     - Helpers — `ShiftBus` (shift-register expansion), `I2cMux`, `I2cHealth`
-    - **Seven input classes** — `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`,
-      `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder` (REL/DIR), `ActionButton`
+    - **Eight input classes** — `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`,
+      `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder` (REL/DIR), `RotaryAcceleratedEncoder`,
+      `ActionButton`
     - **Three output classes** — `LED`, `DrumDisplay`, `NeedleGauge`
 
 !!! warning "Not yet implemented"
-    - **For v0.1.0** — `RotaryAcceleratedEncoder` (a `RotaryEncoder` subclass with the DCS-BIOS
-      momentum filter and speed-up), the `AnalogOutput` family (`Dimmer` for PWM backlight,
-      `IntegerOutput` for a user callback), `AngleSensorInput` (an `AnalogInput` subclass for
+    - **For v0.1.0** — the `AnalogOutput` family (`Dimmer` for PWM backlight, `IntegerOutput` for
+      a user callback), `AngleSensorInput` (an `AnalogInput` subclass for
       magnetic angle sensors) and `SwitchWithCover2Pos`. Every control class is locked in v0.1.0.
     - **After v1.0** — the `ServoMotor` gauge backend.
     - **Phase 6** — the Right_Navigation PanelGroup sketch and end-to-end integration.
