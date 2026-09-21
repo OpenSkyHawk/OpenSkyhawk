@@ -110,7 +110,7 @@ these — don't re-derive, build the per-controller budget on top:
   status LED PB14(red)/PB15(grn) · backlight PWM PA6(BL1)/PA7(BL2) · I2C1 PB6/PB7 ·
   I2C2 PB10/PB11 · I2C1 INT PB12/PB13 · I2C2 INT PB8/PB9 · OSC PD0/PD1 · NC PC13/14/15 + PB2.
 - **Breakout (free panel I/O) — 13 GPIO:** ADC+PWM `PA0 PA1 PA2 PA3 PB0 PB1` · ADC-only
-  `PA4 PA5` · PWM/digital (JTAG-remap for PA15/PB3/PB4) `PA8 PA15 PB3 PB4 PB5`. **8 ADC-capable.**
+  `PA4 PA5` · PWM/digital (PA15/PB3/PB4 freed from JTAG by `STM32Board::begin()`) `PA8 PA15 PB3 PB4 PB5`. **8 ADC-capable.**
 - **I²C:** 2 buses, each with INT_A/INT_B brought to its 8-pin JST-XH header → **one INT-driven
   MCP23017 (inputs) per bus**; output-only expanders need no INT. Addressing MCP23017 0x20–0x27,
   ADS1115 0x48–0x4B per bus. Prefer a **direct STM32 ADC breakout pin** over an ADS1115 when only

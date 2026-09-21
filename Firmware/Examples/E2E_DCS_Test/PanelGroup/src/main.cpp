@@ -17,7 +17,7 @@
 //   RotaryEncoder DIR  ARC51_FREQ_10MHZ PB3/PB4  → ±1     / canIdEvtDir / INC-DEC (steps ch1 drum)
 //   AnalogInput        ARC51_VOL        PA2 pot  → 16-bit / canIdEvt    / "%u"
 //   AnalogMultiPos     ARC51_MODE       PA3 pot  → index  / canIdEvt    / "%u"
-//   (PB3/PB4 are JTAG-DP pins — setup() remaps SWJ→SWD-only to free them; ST-Link still flashes.)
+//   (PB3/PB4 are JTAG-DP pins — STM32Board::begin() releases JTAG, keeping SWD, so they're plain GPIO.)
 
 #include <Wire.h>
 #include <OpenSkyhawk.h>
@@ -108,11 +108,6 @@ AnalogMultiPos arcMode (DCSIN_ARC51_MODE, PinRef(PA3), 4);
 
 void setup() {
     STM32Board::setDebug(true);
-
-    // Free the DIR encoder's PB3/PB4 (default JTAG-DP pins) — remap SWJ to SWD-only. SWD (PA13/PA14)
-    // stays live so ST-Link still flashes; only the unused JTAG pins are released.
-    __HAL_RCC_AFIO_CLK_ENABLE();
-    __HAL_AFIO_REMAP_SWJ_NOJTAG();
 
     // Bring each OLED up on its own mux channel BEFORE PanelGroup::setup() (which calls
     // configure() on every output): begin() must precede configure(), each on its channel.

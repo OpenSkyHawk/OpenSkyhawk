@@ -359,14 +359,8 @@ LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the sign
 ### Freeing the JTAG pins for breakout GPIO
 
 `PA15` (JTDI), `PB3` (JTDO), `PB4` (NJTRST) power up as the JTAG-DP. On the **PanelGroup base** they
-are exposed as remap-gated breakout pins; to use them as ordinary GPIO, remap SWJ to SWD-only early
-in `setup()`. This keeps SWD (PA13/PA14) live so ST-Link still flashes, and releases only the three
-JTAG pins:
-
-```cpp
-__HAL_RCC_AFIO_CLK_ENABLE();
-__HAL_AFIO_REMAP_SWJ_NOJTAG();   // JTAG off, SWD on → PA15/PB3/PB4 usable as GPIO
-```
+are exposed as breakout pins. `STM32Board::begin()` remaps SWJ to SWD-only at boot (#299), so they
+are ordinary GPIO with no sketch code; SWD (PA13/PA14) stays live and ST-Link still flashes.
 
 The Gateway/Bridge base leaves these NC — it has enough clean breakout pins not to bother (see
 [base boards](base-boards.md)).

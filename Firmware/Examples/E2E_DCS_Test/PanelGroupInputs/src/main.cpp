@@ -10,7 +10,7 @@
 // input commands arrive seconds late. This sketch keeps the loop tight so the node stays CONNECTED.
 //
 //   RotaryEncoder REL  DEST_LAT_KNB      PA8/PB5
-//   RotaryEncoder DIR  ARC51_FREQ_10MHZ  PB3/PB4   (JTAG-DP pins — remapped in setup())
+//   RotaryEncoder DIR  ARC51_FREQ_10MHZ  PB3/PB4   (JTAG-DP pins — freed by STM32Board::begin())
 //   AnalogInput        ARC51_VOL         PA2   (hysteresis 1024 — calm dispatch rate)
 //   AnalogMultiPos     ARC51_MODE        PA3
 
@@ -25,10 +25,7 @@ AnalogMultiPos arcMode (DCSIN_ARC51_MODE, PinRef(PA3), 4);
 
 void setup() {
     STM32Board::setDebug(true);
-    // Free PB3/PB4 (JTAG-DP) for the DIR encoder. SWD stays live — ST-Link still flashes.
-    __HAL_RCC_AFIO_CLK_ENABLE();
-    __HAL_AFIO_REMAP_SWJ_NOJTAG();
-    PanelGroup::setup();
+    PanelGroup::setup();   // STM32Board::begin() inside releases JTAG → PB3/PB4 free for the DIR encoder
 }
 
 void loop() {

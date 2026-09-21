@@ -74,7 +74,8 @@ Exercised by `Firmware/Tests/ShiftBus/` (bench project for the #197/#133 combine
   74HC nodes delete their MCPs, freeing them exactly when ShiftBus is present.)
 - **SPI1 remap** because the PanelGroup base spends PA6/PA7 on backlight PWM (TIM3_CH1/CH2):
   firmware releases JTAG (`AFIO` SWJ: JTAG-disable, SWD retained — PB3=JTDO, PB4=NJTRST) before
-  configuring the pins. SWD debug (PA13/PA14) unaffected. No conflict with I2C1 (PB6/PB7),
+  configuring the pins (`STM32Board::begin()` already does this board-wide since #299; ShiftBus
+  keeps its own call as insurance). SWD debug (PA13/PA14) unaffected. No conflict with I2C1 (PB6/PB7),
   I2C2 (PB10/PB11), CAN (PA11/PA12), or debug UART1 (PA9/PA10).
 - **One SPI bus is enough — permanently.** Chains daisy-chain without limit, so I/O count never
   forces a second bus; write-only SPI peripherals could even share MOSI/SCK with their own latch.
