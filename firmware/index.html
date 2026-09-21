@@ -4104,9 +4104,11 @@ source</strong> for any constant or API. When a doc and a header disagree, the h
 </tbody>
 </table>
 <h2 id="implementation-status">Implementation status</h2>
-<p>Be honest about what's built. Phase 3 is complete, and the phases after it have stopped
-running in order: most of Phase 4's input types have landed, Phase 5's outputs are part
-done, and Phase 6 has not started.</p>
+<p>Phases 0–3 are complete. For the A-4E-C, Phase 4's input pass is complete too: every input control
+in the DCS-BIOS export has a class. Phase 5 needs one more output family (<code>Dimmer</code> +
+<code>IntegerOutput</code>) for the five light-intensity outputs. The first tagged release, v0.1.0, closes
+those gaps; v1.0.0 then freezes the sketch API and CAN wire format <strong>before</strong> the first full panel
+(Phase 6, Right_Navigation) is built.</p>
 <p><a href="control-types/">Control Types</a> is the authority on per-class status, including which
 classes are hardware-verified. The summary below is a pointer, not a second source.</p>
 <div class="admonition note">
@@ -4126,11 +4128,14 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 <div class="admonition warning">
 <p class="admonition-title">Not yet implemented</p>
 <ul>
-<li><strong>Input types</strong> — <code>RotaryAcceleratedEncoder</code>, <code>RotarySwitch</code>, <code>AngleSensorInput</code>,
-  <code>SwitchWithCover2Pos</code></li>
-<li><strong>Phase 5 output types</strong> — <code>AnalogOutput</code>, <code>IntegerOutput</code>. (<code>NeedleGauge</code> is
-  <strong>implemented</strong> and supersedes the former SwitecX25Output / AccelStepperOutput / ServoOutput.)</li>
-<li><strong>Phase 6</strong> — the Center_Armament PanelGroup sketch rewrite and end-to-end integration</li>
+<li><strong>For v0.1.0</strong> — <code>RotaryAcceleratedEncoder</code> (a <code>RotaryEncoder</code> subclass with the DCS-BIOS
+  momentum filter and speed-up), the <code>AnalogOutput</code> family (<code>Dimmer</code> for PWM backlight,
+  <code>IntegerOutput</code> for a user callback), <code>AngleSensorInput</code> (an <code>AnalogInput</code> subclass for
+  magnetic angle sensors) and <code>SwitchWithCover2Pos</code>. Every control class is locked in v0.1.0.</li>
+<li><strong>After v1.0</strong> — the <code>ServoMotor</code> gauge backend.</li>
+<li><strong>Phase 6</strong> — the Right_Navigation PanelGroup sketch and end-to-end integration.</li>
+<li><code>RotarySwitch</code> is <strong>not</strong> planned: <code>RotaryEncoder</code> in DIR mode drives bounded selectors
+  without losing track of the sim's position at boot.</li>
 </ul>
 </div>
 <h2 id="in-this-section">In this section</h2>

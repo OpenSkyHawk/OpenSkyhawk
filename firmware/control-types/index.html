@@ -4070,16 +4070,16 @@
 <h1 id="control-types">Control Types</h1>
 <p>A PanelGroup sketch is mostly a list of <strong>control objects</strong> — one per physical switch, knob,
 LED, or gauge. Inputs read hardware and fire CAN events; outputs receive DCS state and drive
-hardware. This page is the catalogue, with honest Phase status: most types are <strong>specified but
-not yet implemented</strong>.</p>
+hardware. This page is the catalogue, with honest status: every input the A-4E-C needs is
+implemented; one output family is still to come before the first release.</p>
 <div class="admonition warning">
-<p class="admonition-title">Most control types are not implemented yet</p>
-<p>Implemented today: <strong>LED</strong>, <strong>DrumDisplay</strong>, and <strong>NeedleGauge</strong> (outputs) and <strong>Switch2Pos</strong> +
-<strong>SwitchMultiPos</strong> + <strong>AnalogMultiPos</strong> + <strong>Switch3Pos</strong> + <strong>AnalogInput</strong> + <strong>RotaryEncoder</strong> + <strong>ActionButton</strong> (inputs), plus the <strong>PinRef</strong> abstraction. LED / Switch2Pos / PinRef are
-hardware-verified (Phase 3); DrumDisplay is hardware-verified (mux + readouts on real OLEDs).
-NeedleGauge is authored and compile-gated, with the on-hardware bench still pending; SwitchMultiPos, AnalogMultiPos, Switch3Pos, AnalogInput, and RotaryEncoder are hardware-verified.
-Everything marked <em>Phase 4</em> or <em>Phase 5</em> below is specified but <strong>not yet written</strong> — don't expect it
-to compile today.</p>
+<p class="admonition-title">What's built and what isn't</p>
+<p>Implemented today: <strong>Switch2Pos</strong>, <strong>Switch3Pos</strong>, <strong>SwitchMultiPos</strong>, <strong>AnalogMultiPos</strong>,
+<strong>AnalogInput</strong>, <strong>RotaryEncoder</strong> and <strong>ActionButton</strong> (inputs); <strong>LED</strong>, <strong>DrumDisplay</strong> and
+<strong>NeedleGauge</strong> (outputs); plus the <strong>PinRef</strong> abstraction. All are hardware-verified except
+ActionButton, whose hardware and live-DCS run is part of the v1.0 soak test.
+Rows marked <em>Planned</em> below are specified but <strong>not written yet</strong> — don't expect them to
+compile today.</p>
 </div>
 <h2 id="pinref-the-hardware-abstraction-implemented">PinRef — the hardware abstraction <em>(implemented)</em></h2>
 <p>Every input and output takes a <code>PinRef</code>, not a raw pin number. One interface over three
@@ -4110,7 +4110,9 @@ hardware backends:</p>
 </tr>
 </tbody>
 </table>
-<p>Only direct STM32 GPIO can do PWM or servo output — <code>isGpio()</code> reports the backend type.</p>
+<p>Only direct STM32 GPIO can do PWM or servo output — <code>isGpio()</code> reports the backend type. A class
+that needs one checks its <code>PinRef</code> at startup: the planned <code>Dimmer</code> refuses anything but a GPIO on
+a timer channel, and says so on the diagnostic serial port instead of silently not dimming.</p>
 <p><strong>Routing is by <code>controlId</code>, not by class.</strong> The same input class drives a DCS-BIOS control or
 a HID button depending on the <code>controlId</code> you give it:</p>
 <pre><code class="language-cpp">// DCS-BIOS route — controlId in 0x8000–0x86FF
@@ -4162,13 +4164,13 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </tr>
 <tr>
 <td><code>RotaryAcceleratedEncoder</code></td>
-<td>Phase 4 — not started</td>
-<td>Encoder with slow/fast (4-value scheme)</td>
+<td>Planned — v0.1.0 (#287)</td>
+<td><code>RotaryEncoder</code> subclass: DCS-BIOS's momentum filter for noisy encoders, plus a bigger step when spun fast</td>
 </tr>
 <tr>
 <td><code>RotarySwitch</code></td>
-<td>Phase 4 — not started</td>
-<td>Encoder used as an N-position absolute switch</td>
+<td>Not planned</td>
+<td>Use <code>RotaryEncoder</code> in DIR mode — see the note below</td>
 </tr>
 <tr>
 <td><code>AnalogInput</code></td>
@@ -4177,13 +4179,13 @@ OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
 </tr>
 <tr>
 <td><code>AngleSensorInput</code></td>
-<td>Phase 4 — not started</td>
-<td>Hall angle sensor (AS5600/MT6701) for flight axes</td>
+<td>Planned — v0.1.0 (#294)</td>
+<td><code>AnalogInput</code> subclass reading a magnetic angle sensor (AS5600/MT6701) — absolute knobs such as gunsight elevation</td>
 </tr>
 <tr>
 <td><code>SwitchWithCover2Pos</code></td>
-<td>Phase 4 — not started</td>
-<td>Guarded switch (cover + switch)</td>
+<td>Planned — v0.1.0 (#293)</td>
+<td>One switch pin driving a guarded sim control: opens the sim's cover before the switch and closes it after (DCS-BIOS behaviour)</td>
 </tr>
 </tbody>
 </table>
@@ -4211,10 +4213,16 @@ position, so a <code>TOGGLE</code> latches them <em>on</em> until the next press
 way would stay lit. Use <code>Switch2Pos</code> for those.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">AngleSensor base class is a documented gap</p>
-<p><code>AngleSensorInput</code> wraps an <code>AngleSensor</code> abstract base (concrete <code>AS5600Sensor</code> /
-<code>MT6701Sensor</code>). The base-class TechSpec is <strong>missing</strong> — it's a known gap, not yet
-specified. Don't assume the API beyond <code>begin()</code> / <code>readAngle()</code>.</p>
+<p class="admonition-title">Classes come in families, named after DCS-BIOS</p>
+<p>A class that only changes where an existing one reads from, or what it drives, is a subclass
+of it — <code>RotaryAcceleratedEncoder</code> extends <code>RotaryEncoder</code>, <code>AngleSensorInput</code> extends
+<code>AnalogInput</code>, <code>Dimmer</code> and <code>IntegerOutput</code> extend <code>AnalogOutput</code>. Names follow
+<code>dcs-bios-arduino-library</code> wherever it has an equivalent, so a DCS-BIOS sketch translates
+class for class.</p>
+<p>The one deliberate gap is <code>RotarySwitch</code>. The DCS-BIOS version assumes position 0 at power-up
+and sends absolute positions, so the first click after a cold start can jump the sim away from
+a mission preset. <code>RotaryEncoder</code> in DIR mode sends "one up / one down" instead: the sim keeps
+the position and stops at the ends, and the cockpit readout shows the result.</p>
 </div>
 <h2 id="output-classes">Output classes</h2>
 <table>
@@ -4238,24 +4246,29 @@ specified. Don't assume the API beyond <code>begin()</code> / <code>readAngle()<
 </tr>
 <tr>
 <td><code>NeedleGauge</code></td>
-<td><strong>Implemented</strong> (bench pending)</td>
+<td><strong>Implemented</strong> (hardware-verified against live DCS, #137)</td>
 <td>Pointer/needle gauge — maps a DCS value to a motor angle over a swappable driver backend (linear or calibrated curve). Supersedes <code>SwitecX25Output</code> / <code>AccelStepperOutput</code> / <code>ServoOutput</code></td>
 </tr>
 <tr>
 <td><code>AnalogOutput</code></td>
-<td>Phase 5 — not started</td>
-<td>16-bit DCS value → PWM duty (backlighting)</td>
+<td>Planned — v0.1.0 (#288)</td>
+<td>Family base for outputs driven by one DCS value: matching, decoding and change detection</td>
+</tr>
+<tr>
+<td><code>Dimmer</code></td>
+<td>Planned — v0.1.0 (#288)</td>
+<td>PWM duty on a GPIO timer pin — backlight zones driven by the sim's <code>LIGHTS_*</code> intensities</td>
 </tr>
 <tr>
 <td><code>IntegerOutput</code></td>
-<td>Phase 5 — not started</td>
-<td>Raw 16-bit value to a user callback</td>
+<td>Planned — v0.1.0 (#288)</td>
+<td>The decoded value to your own callback, for custom displays (DCS-BIOS <code>IntegerBuffer</code>)</td>
 </tr>
 </tbody>
 </table>
 <p>Outputs use DCS-BIOS <strong>output addresses</strong> from the generated <code>A4EC</code> headers — the address
 constant plus its bitmask. Example for the implemented <code>LED</code>:</p>
-<pre><code class="language-cpp">OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM, PinRef(PB0));
+<pre><code class="language-cpp">OpenSkyhawk::LED gearLight(A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PinRef(PB0));
 </code></pre>
 <p>Note the naming: <code>A_4E_C_&lt;NAME&gt;</code> for the address and <code>A_4E_C_&lt;NAME&gt;_AM</code> for the mask — <strong>not</strong>
 the old <code>_A</code> suffix. See <a href="../dcsbios-integration/">DCS-BIOS Integration</a>.</p>

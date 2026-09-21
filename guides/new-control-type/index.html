@@ -4098,7 +4098,10 @@ FirmwarePlan TechSpec.</p>
 <p class="admonition-title">Read the spec first</p>
 <p>Each control type has a detailed specification in the project's TechSpec (value encoding,
 debounce, polling rate, edge cases). Implement to the spec — don't improvise behaviour.
-<code>AngleSensor</code>'s base class is a documented gap with no spec yet; don't invent it.</p>
+Before writing a new class, check whether it only changes an existing class's <em>source</em> (inputs)
+or <em>sink</em> (outputs) — then it's a subclass in that class's family, not a new class. Names
+follow <code>dcs-bios-arduino-library</code> where an equivalent exists (the planned <code>RotaryAcceleratedEncoder</code> extends
+<code>RotaryEncoder</code>; the planned <code>Dimmer</code> and <code>IntegerOutput</code> extend <code>AnalogOutput</code>).</p>
 </div>
 <h2 id="where-it-goes">Where it goes</h2>
 <p>Control classes live in the <strong><code>PanelGroup</code></strong> library (<code>Firmware/Libraries/PanelGroup/</code>). Inputs
@@ -4125,7 +4128,7 @@ which dispatch type it uses and make sure the generator/input-map handles it —
 <p>Every control type ships with a test project under <code>Firmware/Tests/</code>. Add one that exercises the
 value semantics and edge cases from the spec, on real hardware where the type needs it.</p>
 <h2 id="then-document-it">Then document it</h2>
-<p>Update <a href="../../firmware/control-types/">Control Types</a>: move the type from "not started" to
+<p>Update <a href="../../firmware/control-types/">Control Types</a>: move the type from "Planned" to
 implemented, and add an example. Honesty in the status table matters.</p>
 
 
