@@ -57,7 +57,7 @@ void loop() {
 | `AnalogInput` | `Potentiometer` | implemented |
 | `RotaryEncoder` | `RotaryEncoder` | implemented — REL (`variable_step`) and DIR (`fixed_step`) modes |
 | `ActionButton` | `ActionButton` | implemented |
-| `RotaryAcceleratedEncoder` | `RotaryAcceleratedEncoder` | implemented — `RotaryEncoder` subclass: momentum filter + fast-detent step |
+| `RotaryAcceleratedEncoder` | `RotaryAcceleratedEncoder` | implemented (hardware-verified) — `RotaryEncoder` subclass: momentum filter + fast-detent step |
 | `AngleSensorInput` | — | planned (#294) — `AnalogInput` subclass |
 | `SwitchWithCover2Pos` | `SwitchWithCover2Pos` | planned (#293) — `Switch2Pos` subclass |
 

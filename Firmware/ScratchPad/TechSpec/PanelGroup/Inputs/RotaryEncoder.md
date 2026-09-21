@@ -1,6 +1,6 @@
 # RotaryEncoder — Technical Specification
 
-**Status:** Done — dual-mode REL/DIR (#147), verified end to end against live DCS on the `E2E_DCS_Test` node (PR #160: REL `DEST_LAT_KNB` ±3200, DIR `ARC51_FREQ_10MHZ` INC/DEC). Family base for `RotaryAcceleratedEncoder` (D16). (Prior single-mode 0/1 build: hardware-verified 2026-06-23.)
+**Status:** Done — dual-mode REL/DIR (#147), verified end to end against live DCS on the `E2E_DCS_Test` node (PR #160: REL `DEST_LAT_KNB` ±3200, DIR `ARC51_FREQ_10MHZ` INC/DEC). Family base for `RotaryAcceleratedEncoder` (D16). (Prior single-mode 0/1 build: hardware-verified 2026-06-23.) Re-run after the #287 family-base change: **8/8 envs PASS 2026-09-21** (CAN silent loopback).
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (RotaryEncoder)
 **Depends on:** `PinRef.md`, `PanelGroup.md`
 

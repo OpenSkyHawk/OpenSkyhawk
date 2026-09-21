@@ -1,6 +1,6 @@
 # RotaryAcceleratedEncoder — Technical Specification
 
-**Status:** Implemented (#287) — builds clean; hardware-verify of the 5 envs pending. `RotaryEncoder` family member (D16)
+**Status:** Done (hardware-verified — **5/5 envs PASS 2026-09-21** on an STM32F103, CAN silent loopback; live-DCS feel checked in the #291 smoke test). `RotaryEncoder` family member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (RotaryAcceleratedEncoder), `FirmwarePlan/00-decisions.md` (D16; supersedes D9)
 **Depends on:** `RotaryEncoder.md`
 
