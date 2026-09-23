@@ -1,6 +1,6 @@
 # AnalogOutput — Technical Specification
 
-**Status:** Ready for implementation (#288) — family base (D16)
+**Status:** Implemented (#288) — family base (D16). Hardware run of the member suites pending.
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AnalogOutput family), `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `PanelGroup.md`
 
@@ -41,7 +41,8 @@ Firmware/Libraries/PanelGroup/
 ```
 
 No test project of its own — the base is exercised through `Firmware/Tests/Dimmer/` and
-`Firmware/Tests/IntegerOutput/` (the `controlid_filter` and `dedup` scenarios live there).
+`Firmware/Tests/IntegerOutput/` (the `controlid_filter` and `dedup` scenarios live there; the
+IntegerOutput ones also cover mask/shift decoding).
 
 ---
 

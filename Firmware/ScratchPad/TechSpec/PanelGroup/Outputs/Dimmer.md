@@ -1,7 +1,7 @@
 # Dimmer — Technical Specification
 
-**Status:** Ready for implementation (#288). Renamed from `AnalogOutput`, which is now the family
-base this class derives from (D16).
+**Status:** Implemented (#288) — hardware run of the 5 envs pending. Renamed from `AnalogOutput`,
+which is now the family base this class derives from (D16).
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AnalogOutput family), `FirmwarePlan/00-decisions.md` (D16), `FirmwarePlan/10-implementation-plan.md` (Phase 5)
 **Depends on:** `AnalogOutput.md`, `PinRef.md`, `PanelGroup.md`
 
@@ -199,8 +199,7 @@ Like `LED`, the sketch has no direct interaction with `Dimmer` after constructio
 
 ```cpp
 void Dimmer::configure() {
-    _enabled = _pin.isGpio() &&
-               pinmap_peripheral(digitalPinToPinName(_pin.gpioPin()), PinMap_TIM) != NP;
+    _enabled = _pin.isGpio() && digitalPinHasPWM(_pin.gpioPin());
     if (!_enabled) {
         STM32Board::log("[Dimmer] pin is not a timer-capable GPIO — output disabled");
         return;                        // never drive a pin that can't dim
@@ -213,8 +212,9 @@ void Dimmer::configure() {
 ```
 
 All pin access goes through `PinRef` (`configureAsOutput()`, `writeAnalog()`); the class only
-*inspects* the pin to check it. The timer check reads the stm32duino pin map for the GPIO behind the
-PinRef — a direct GPIO without a timer channel is caught at startup, not discovered as a lamp that
+*inspects* the pin to check it. `digitalPinHasPWM()` is the core's own macro (`pins_arduino.h` →
+`pin_in_pinmap(…, PinMap_TIM)`), reachable through `<Arduino.h>`; it reads the stm32duino pin map
+for the GPIO behind the PinRef — a direct GPIO without a timer channel is caught at startup, not discovered as a lamp that
 only switches on and off.
 
 ### apply()

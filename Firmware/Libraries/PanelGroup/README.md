@@ -70,9 +70,9 @@ without losing the sim's position at boot.
 |---|---|---|
 | `LED` | `LED` | implemented — `(value & mask) != 0` → pin on |
 | `NeedleGauge` | `ServoOutput` (closest) | implemented — any pointer gauge, over the `Drivers/` `MotorDriver` layer |
-| `AnalogOutput` | — | planned (#288) — family base |
-| `Dimmer` | `Dimmer` | planned (#288) — PWM duty on a GPIO timer pin |
-| `IntegerOutput` | `IntegerBuffer` | planned (#288) — user callback |
+| `AnalogOutput` | — | implemented — family base: matching, decoding, change dedup |
+| `Dimmer` | `Dimmer` | implemented — PWM duty on a GPIO timer pin (checked at `configure()`) |
+| `IntegerOutput` | `IntegerBuffer` | implemented — user callback |
 
 `DrumDisplay` (OLED rolling-drum readouts) is a separate opt-in library:
 [`../DrumDisplay`](../DrumDisplay/).

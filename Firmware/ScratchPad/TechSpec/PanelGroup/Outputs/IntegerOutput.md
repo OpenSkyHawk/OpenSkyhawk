@@ -1,6 +1,6 @@
 # IntegerOutput — Technical Specification
 
-**Status:** Ready for implementation (#288) — `AnalogOutput` family member (D16)
+**Status:** Implemented (#288) — hardware run of the 4 envs pending. `AnalogOutput` family member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AnalogOutput family), `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `AnalogOutput.md`, `PanelGroup.md`
 
