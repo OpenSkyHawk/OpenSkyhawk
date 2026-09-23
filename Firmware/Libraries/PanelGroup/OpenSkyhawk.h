@@ -15,6 +15,9 @@
 #include <Drivers/StepperMotor/StepperMotor.h>
 #include <Outputs/LED/LED.h>
 #include <Outputs/NeedleGauge/NeedleGauge.h>
+#include <Outputs/AnalogOutput/AnalogOutput.h>
+#include <Outputs/Dimmer/Dimmer.h>
+#include <Outputs/IntegerOutput/IntegerOutput.h>
 #include <Inputs/Switch2Pos/Switch2Pos.h>
 #include <Inputs/Switch3Pos/Switch3Pos.h>
 #include <Inputs/SwitchMultiPos/SwitchMultiPos.h>

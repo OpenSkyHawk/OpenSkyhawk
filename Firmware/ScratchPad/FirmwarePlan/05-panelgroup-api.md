@@ -397,7 +397,7 @@ GPIO pin driven from a single bit of a DCS-BIOS value. Pin HIGH when `(value & m
 OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION_A, 0x4000, PinRef(PB0));
 ```
 
-### AnalogOutput family *(planned — #288, Firmware v0.1.0)*
+### AnalogOutput family *(implemented — #288, Firmware v0.1.0)*
 
 One 16-bit DCS-BIOS value driving something proportional (D16). **`AnalogOutput`** is an abstract
 `OutputBase`: it owns `controlId` + mask/shift matching (like `LED`) and change dedup, and hands

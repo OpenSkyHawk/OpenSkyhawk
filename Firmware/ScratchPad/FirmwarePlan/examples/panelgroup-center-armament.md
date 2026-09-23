@@ -65,7 +65,7 @@ constexpr uint16_t MASK_MASTER_CAUT = 0x4000;   // bit inside DCS value that dri
 // CTRL_BCAST arrives over CAN with a DCS-BIOS address → PanelGroup drives hardware.
 // SimGateway needs no declarations for outputs — broadcast automatically.
 OpenSkyhawk::LED          masterCaution(A_4E_C_MASTER_CAUTION_A,  MASK_MASTER_CAUT, PIN_MASTER_CAUT);
-OpenSkyhawk::AnalogOutput instrBrt     (A_4E_C_LIGHT_INT_INSTR_A,                   PIN_INSTR_BRT);
+OpenSkyhawk::Dimmer       instrBrt     (A_4E_C_LIGHT_INT_INSTR_A,                   PIN_INSTR_BRT);
 
 // --- Inputs (hardware → DCS-BIOS, DCSIN_* control IDs) ---
 // PanelBridge receives CAN EVT → binary search in A4EC_InputMap → sendDcsBiosMessage()
