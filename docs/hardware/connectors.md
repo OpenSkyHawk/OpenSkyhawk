@@ -101,8 +101,9 @@ for encoder-bearing and fast-gauge panels. One per host chain, at the chain's en
 
 *`LOAD` = '165 SH/LD̄ capture strobe, `LATCH` = '595 STCP publish strobe; 33 Ω series on
 SCK/LOAD/LATCH at the host. The bus is dedicated — MISO is never shared with another SPI
-device. View: into the cable-housing mating face, pin 1 marked; pin order is the proposed
-standard — verify against the JST-XH drawing before first crimp.*
+device. View: into the cable-housing mating face, pin 1 marked. Pin order is verified against
+the JST B7B-XH-A drawing and carried on PanelGroup base Rev 2 (`J10`), whose silk reads
+SCK · MOSI · MISO · GND · 3.3V · LOAD · LTCH. Mating plug: XHP-7 + SXH-001T crimps.*
 
 ## Switch & control wiring
 

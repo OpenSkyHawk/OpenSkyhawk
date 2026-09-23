@@ -37,7 +37,7 @@ AN/ASN-41 nav computer. No MCU of its own — routes to the ASN-41 host board ov
 
 | Address | Device | LCSC | Notes |
 |---|---|---|---|
-| 0x20 | MCP23017-E/SS | C506653 | Port A: GPA0–5 = 6 in (DOPPLER_SEL ×5 + MEM), GPA6 = DRV8833 ~SLEEP (sim-gated, 10 kΩ pull-down), GPA7 = MEMORYLIGHT; Port B: GPB0–3 = DRIFT stepper coils. 12/16 used. INT_A → host PB8 |
+| 0x20 | MCP23017-E/SS | C506653 | Port A: GPA0–5 = 6 in (DOPPLER_SEL ×5 + MEM), GPA6 = DRV8833 ~SLEEP (sim-gated, 10 kΩ pull-down), GPA7 = MEMORYLIGHT; Port B: GPB0–3 = DRIFT stepper coils. 12/16 used. INT_A → host `INT_A2` (J_I2C2 pin 6 — PA8 on base Rev 2, PB8 on Rev 1) |
 | 0x3C | OLED SSD1306 0.91″ 128×32 (module) | TBD | GND SPEED via `DrumDisplay` (controller OLED addressing / mux on #168). VCC 3.3–5 V (onboard reg). **PCB-mounted** (tentative — confirm at CAD/B3); own library part (symbol + footprint + STEP). 0.91″ bench-verified on real APN-153 faceplate |
 
 ## Discrete Drivers
@@ -60,7 +60,7 @@ Standard 8-pin JST-XH on **I²C2**:
 | 3 | GND |
 | 4 | GND |
 | 5 | +3V3 |
-| 6 | INT_A → host PB8 |
+| 6 | INT_A → host `INT_A2` (PA8 on base Rev 2, PB8 on Rev 1) |
 | 7 | INT_B (unused) |
 | 8 | +5V (DRV8833 VM — stepper supply) |
 
