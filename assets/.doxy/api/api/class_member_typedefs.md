@@ -2,6 +2,16 @@
 # Class Member Typedefs
 
 
-Nothing related to **Class Member Typedefs** found.
+
+## c
+
+* **Callback** ([**OpenSkyhawk::IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md))
+
+
+## s
+
+* **ScaleFn** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))
+
+
 
 

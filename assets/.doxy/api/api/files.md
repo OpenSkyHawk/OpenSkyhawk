@@ -69,6 +69,15 @@ Here is a list of all files with brief descriptions:
                     * **file** [**SwitchMultiPos.cpp**](SwitchMultiPos_8cpp.md)     
                     * **file** [**SwitchMultiPos.h**](SwitchMultiPos_8h.md) _N-pin rotary selector switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
             * **dir** [**Outputs**](dir_529c528362a647a34d31d0b3b420ca72.md)     
+                * **dir** [**AnalogOutput**](dir_7be86be934beb3a22c91bb10ef55a8df.md)     
+                    * **file** [**AnalogOutput.cpp**](AnalogOutput_8cpp.md) 
+                    * **file** [**AnalogOutput.h**](AnalogOutput_8h.md) _Family base for outputs driven by one 16-bit DCS-BIOS value._     
+                * **dir** [**Dimmer**](dir_3d0eb80e711f6ad414d4aa2e54b5567f.md)     
+                    * **file** [**Dimmer.cpp**](Dimmer_8cpp.md) 
+                    * **file** [**Dimmer.h**](Dimmer_8h.md) _PWM backlight / dimmer output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+                * **dir** [**IntegerOutput**](dir_751c3ce74b607cd528cf65a1346ab5a9.md)     
+                    * **file** [**IntegerOutput.cpp**](IntegerOutput_8cpp.md) 
+                    * **file** [**IntegerOutput.h**](IntegerOutput_8h.md) _Callback output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes — the escape hatch._    
                 * **dir** [**LED**](dir_014b7653223add72b0ed2d7a88fd1566.md)     
                     * **file** [**LED.cpp**](LED_8cpp.md) 
                     * **file** [**LED.h**](LED_8h.md) _Digital LED output for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    

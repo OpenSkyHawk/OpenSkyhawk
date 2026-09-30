@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="classOpenSkyhawk_1_1OutputBase" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>OpenSkyhawk::OutputBase</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1AnalogOutput" prot="public" virt="non-virtual">OpenSkyhawk::AnalogOutput</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1DrumDisplay" prot="public" virt="non-virtual">OpenSkyhawk::DrumDisplay</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1LED" prot="public" virt="non-virtual">OpenSkyhawk::LED</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1NeedleGauge" prot="public" virt="non-virtual">OpenSkyhawk::NeedleGauge</derivedcompoundref>
@@ -47,6 +48,7 @@
         <name>configure</name>
         <qualifiedname>OpenSkyhawk::OutputBase::configure</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1ab07a12fe3327ebad9de87355e2ab6798">configure</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1Dimmer_1ab8c14cce12361799134a83d8dfdc77b7">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9">configure</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1NeedleGauge_1a5ed2454f76ca7d0f9c4c57796b3a831a">configure</reimplementedby>
         <briefdescription>
@@ -65,6 +67,7 @@
         <argsstring>(uint16_t controlId, uint16_t value)=0</argsstring>
         <name>onControlPacket</name>
         <qualifiedname>OpenSkyhawk::OutputBase::onControlPacket</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1AnalogOutput_1a0320b5b9cdf69d3a1506062e0e5b00a5">onControlPacket</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1a2e1a5140487727e70c0afaff5302f7bb">onControlPacket</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341">onControlPacket</reimplementedby>
         <reimplementedby refid="classOpenSkyhawk_1_1NeedleGauge_1a187471a0f4be78da62b242b7d278f37d">onControlPacket</reimplementedby>
@@ -179,18 +182,36 @@
     </detaileddescription>
     <inheritancegraph>
       <node id="2">
+        <label>OpenSkyhawk::AnalogOutput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogOutput"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::Dimmer</label>
+        <link refid="classOpenSkyhawk_1_1Dimmer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
         <label>OpenSkyhawk::DrumDisplay</label>
         <link refid="classOpenSkyhawk_1_1DrumDisplay"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="3">
+      <node id="4">
+        <label>OpenSkyhawk::IntegerOutput</label>
+        <link refid="classOpenSkyhawk_1_1IntegerOutput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
         <label>OpenSkyhawk::LED</label>
         <link refid="classOpenSkyhawk_1_1LED"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="4">
+      <node id="7">
         <label>OpenSkyhawk::NeedleGauge</label>
         <link refid="classOpenSkyhawk_1_1NeedleGauge"/>
         <childnode refid="1" relation="public-inheritance">

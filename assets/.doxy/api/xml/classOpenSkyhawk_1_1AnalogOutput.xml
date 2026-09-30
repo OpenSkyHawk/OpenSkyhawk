@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1AnalogOutput" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>OpenSkyhawk::AnalogOutput</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1OutputBase" prot="public" virt="non-virtual">OpenSkyhawk::OutputBase</basecompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1Dimmer" prot="public" virt="non-virtual">OpenSkyhawk::Dimmer</derivedcompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1IntegerOutput" prot="public" virt="non-virtual">OpenSkyhawk::IntegerOutput</derivedcompoundref>
+    <includes refid="AnalogOutput_8h" local="no">AnalogOutput.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogOutput_1a2f57623c7abb297fdf5fadd2ea966c06" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogOutput::_controlId</definition>
+        <argsstring></argsstring>
+        <name>_controlId</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::_controlId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="60" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogOutput_1a7c190f918af3f2ef3b352f18565328cf" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogOutput::_mask</definition>
+        <argsstring></argsstring>
+        <name>_mask</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::_mask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="61" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogOutput_1a76779564aaa31b4d37ed1d0b9fdec380" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::AnalogOutput::_shift</definition>
+        <argsstring></argsstring>
+        <name>_shift</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::_shift</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="62" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogOutput_1a4590d7ef577ee133abba8932dc692723" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AnalogOutput::_lastValue</definition>
+        <argsstring></argsstring>
+        <name>_lastValue</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::_lastValue</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>last decoded value applied — dedup reference </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="63" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AnalogOutput_1ac8bb27d060411887420e3a587cc39fd0" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::AnalogOutput::_hasValue</definition>
+        <argsstring></argsstring>
+        <name>_hasValue</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::_hasValue</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>false until the first matching packet </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="64" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogOutput_1a0320b5b9cdf69d3a1506062e0e5b00a5" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::AnalogOutput::onControlPacket</definition>
+        <argsstring>(uint16_t controlId, uint16_t value) final</argsstring>
+        <name>onControlPacket</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::onControlPacket</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ae56e43c82d8e380c75e560f744d97375">onControlPacket</reimplements>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Match, decode, dedup, then <ref refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502" kindref="member">apply()</ref>. Called by <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> for every CTRL_BCAST packet. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incoming packet controlId. Ignored if != the configured one. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Raw 16-bit DCS-BIOS value. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="41" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.cpp" bodystart="8" bodyend="15"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogOutput_1a16b686f5912fb6d4b9c4c1ba4c3b1dad" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::AnalogOutput::AnalogOutput</definition>
+        <argsstring>(uint16_t controlId, uint16_t mask=0xFFFF, uint8_t shift=0)</argsstring>
+        <name>AnalogOutput</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::AnalogOutput</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>mask</declname>
+          <defval>0xFFFF</defval>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>shift</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Construct the base. Registration into <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s output list is <ref refid="classOpenSkyhawk_1_1OutputBase" kindref="compound">OutputBase</ref>&apos;s. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCS-BIOS output address (A_4E_C_* from <ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bits of the 16-bit word belonging to this output. Default: all. Use the A_4E_C_*_AM constants for packed fields. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>shift</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right-shift applied after masking. Default 0. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="51" column="5" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.cpp" bodystart="5" bodyend="6"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void OpenSkyhawk::AnalogOutput::apply</definition>
+        <argsstring>(uint16_t value)=0</argsstring>
+        <name>apply</name>
+        <qualifiedname>OpenSkyhawk::AnalogOutput::apply</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1Dimmer_1ac87c8a528e9ebaeea959b6d306b6f31f">apply</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1IntegerOutput_1aefa2659082f28599750ee643bb1c6061">apply</reimplementedby>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Sink hook — called with the decoded value, only when it changed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(raw &amp; mask) &gt;&gt; shift. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="57" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Owns what every member shares, so a subclass is only its sink: controlId matching on each CTRL_BCAST packet, (value &amp; mask) &gt;&gt; shift decoding — the same address/mask/shift triple DCS-BIOS uses, so packed fields work as well as whole-word outputs — and change dedup, so <ref refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502" kindref="member">apply()</ref> runs only when the decoded value differs from the last one applied. DCS-BIOS re-broadcasts full state after SYNC_REQ; without the dedup every subclass would repeat the same work on every resync.</para>
+<para>Does not know what the value means or where it goes — that is the subclass&apos;s <ref refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502" kindref="member">apply()</ref>. Does not configure pins: a subclass with hardware overrides <ref refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" kindref="member">configure()</ref>.</para>
+<para>Members: <ref refid="classOpenSkyhawk_1_1Dimmer" kindref="compound">Dimmer</ref> (PWM duty on a GPIO timer pin), <ref refid="classOpenSkyhawk_1_1IntegerOutput" kindref="compound">IntegerOutput</ref> (user callback). Needle gauges are deliberately not members — they use <ref refid="classOpenSkyhawk_1_1NeedleGauge" kindref="compound">NeedleGauge</ref> + a <ref refid="classOpenSkyhawk_1_1MotorDriver" kindref="compound">MotorDriver</ref>, which add calibration and smooth motion. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::AnalogOutput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogOutput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::Dimmer</label>
+        <link refid="classOpenSkyhawk_1_1Dimmer"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>OpenSkyhawk::IntegerOutput</label>
+        <link refid="classOpenSkyhawk_1_1IntegerOutput"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OpenSkyhawk::AnalogOutput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogOutput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" line="33" column="1" bodyfile="Firmware/Libraries/PanelGroup/Outputs/AnalogOutput/AnalogOutput.h" bodystart="33" bodyend="65"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a2f57623c7abb297fdf5fadd2ea966c06" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1ac8bb27d060411887420e3a587cc39fd0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>_hasValue</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a4590d7ef577ee133abba8932dc692723" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>_lastValue</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a7c190f918af3f2ef3b352f18565328cf" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>_mask</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a76779564aaa31b4d37ed1d0b9fdec380" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>_shift</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a16b686f5912fb6d4b9c4c1ba4c3b1dad" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>AnalogOutput</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502" prot="protected" virt="pure-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>apply</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a0320b5b9cdf69d3a1506062e0e5b00a5" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>onControlPacket</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" prot="public" virt="virtual"><scope>OpenSkyhawk::AnalogOutput</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

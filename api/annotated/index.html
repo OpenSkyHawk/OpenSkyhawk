@@ -3949,8 +3949,10 @@
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1ActionButton/"><strong>ActionButton</strong></a> <em>Momentary push button driving a control that latches in the sim. Self-registers into</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em>    </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>AnalogInput</strong></a> <em>Continuous analog input — one analog</em> <code>PinRef</code> <em>, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into</em><a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em>    </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>AnalogMultiPos</strong></a> <em>Resistor-ladder multi-position selector — one analog</em> <code>PinRef</code> <em>, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch).</em>    </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1AnalogOutput/"><strong>AnalogOutput</strong></a> <em>Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16).</em>     </li>
 <li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1AxisCal/"><strong>AxisCal</strong></a> <em>Captured endpoints for one axis, unsigned 0–65535 throughout.</em>     </li>
 <li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1CalBlob/"><strong>CalBlob</strong></a> <em>The whole persisted calibration set, written and erased as one unit.</em>     </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1Dimmer/"><strong>Dimmer</strong></a> <em>PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin.</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1DrumDisplay/"><strong>DrumDisplay</strong></a> <em>Rolling-drum OLED readout. One instance == one OLED panel.</em>     </li>
 <li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1DrumFlag/"><strong>DrumFlag</strong></a> <em>Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter.</em>     </li>
 <li><strong>struct</strong> <a href="../structOpenSkyhawk_1_1DrumGlyph/"><strong>DrumGlyph</strong></a> <em>A fixed (non-rolling) glyph painted between digit columns — '.', ' ', ':' etc.</em>     </li>
@@ -3965,6 +3967,7 @@
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1I2cHealth/"><strong>I2cHealth</strong></a> <em>Per-device I2C circuit breaker. Mix into any class that talks to an I2C device.</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>I2cMux</strong></a> <em>Selects one downstream channel of a TCA9548A I2C multiplexer.</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> <em>Abstract base for all hardware-polled input objects.</em>     </li>
+<li><strong>class</strong> <a href="../classOpenSkyhawk_1_1IntegerOutput/"><strong>IntegerOutput</strong></a> <em>Callback output — the DcsBios::IntegerBuffer equivalent, for outputs no built-in class covers (a custom display, an LCD, a bespoke actuator).</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1LED/"><strong>LED</strong></a> <em>Digital</em> <a href="../classOpenSkyhawk_1_1LED/"><em><strong>LED</strong></em></a> <em>output. Drives a pin based on a DCS-BIOS state value.</em>    </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1MotorDriver/"><strong>MotorDriver</strong></a> <em>Common interface every motor/servo backend implements.</em>     </li>
 <li><strong>class</strong> <a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>MultiPosInput</strong></a> <em>Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>'s</em><a href="../classOpenSkyhawk_1_1InputBase/"><em><strong>InputBase</strong></em></a> <em>list.</em>    </li>
@@ -3990,8 +3993,8 @@
 <li><strong>namespace</strong> <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a>     </li>
 <li><strong>struct</strong> <a href="../structTxQueueEntry/"><strong>TxQueueEntry</strong></a>     </li>
 <li><strong>namespace</strong> <a href="../namespace_0d10/"><strong>anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}</strong></a> </li>
-<li><strong>namespace</strong> <a href="../namespace_0d43/"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a> </li>
-<li><strong>namespace</strong> <a href="../namespace_0d49/"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a>     </li>
+<li><strong>namespace</strong> <a href="../namespace_0d49/"><strong>anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}</strong></a> </li>
+<li><strong>namespace</strong> <a href="../namespace_0d55/"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a>     </li>
 </ul>
 
 

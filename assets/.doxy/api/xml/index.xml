@@ -65,6 +65,16 @@
     <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1ad3e9d3eb2039288db52fcde9bb08df1f" kind="function"><name>posValAt</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogMultiPos_1a6ac4fc6fd08fa209d889b93bc2387df4" kind="function"><name>isValid</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1AnalogOutput" kind="class"><name>OpenSkyhawk::AnalogOutput</name>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1a2f57623c7abb297fdf5fadd2ea966c06" kind="variable"><name>_controlId</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1a7c190f918af3f2ef3b352f18565328cf" kind="variable"><name>_mask</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1a76779564aaa31b4d37ed1d0b9fdec380" kind="variable"><name>_shift</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1a4590d7ef577ee133abba8932dc692723" kind="variable"><name>_lastValue</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1ac8bb27d060411887420e3a587cc39fd0" kind="variable"><name>_hasValue</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1a0320b5b9cdf69d3a1506062e0e5b00a5" kind="function"><name>onControlPacket</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1a16b686f5912fb6d4b9c4c1ba4c3b1dad" kind="function"><name>AnalogOutput</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502" kind="function"><name>apply</name></member>
+  </compound>
   <compound refid="structOpenSkyhawk_1_1AxisCal" kind="struct"><name>OpenSkyhawk::AxisCal</name>
     <member refid="structOpenSkyhawk_1_1AxisCal_1af8574fdd76f8f9e946bcc1ddcff81108" kind="variable"><name>min</name></member>
     <member refid="structOpenSkyhawk_1_1AxisCal_1ab8bd41a0d47472f683bf9f8a929677da" kind="variable"><name>centre</name></member>
@@ -86,6 +96,17 @@
   <compound refid="structDcsBiosInputEntry" kind="struct"><name>DcsBiosInputEntry</name>
     <member refid="structDcsBiosInputEntry_1ab076abc3d8f2c904d45a44dac3a79044" kind="variable"><name>cmdId</name></member>
     <member refid="structDcsBiosInputEntry_1adea4723339818331154a098605820a17" kind="variable"><name>name</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1Dimmer" kind="class"><name>OpenSkyhawk::Dimmer</name>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1ad0512f5ebd41fc485ef906f1a12902c9" kind="typedef"><name>ScaleFn</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1a8989e44fdb2b437d0b504e1c2764d695" kind="variable"><name>_pin</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1a0340b648381e8169a14984f195750d2b" kind="variable"><name>_scale</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1ad7871783f3a8b19d4bb004866c789176" kind="variable"><name>_enabled</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1a63c94c45afedf4df4a9e04bd58744c4d" kind="variable"><name>_lastDuty</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1a55b3cf115de48ab5563ca00b699875f6" kind="variable"><name>_hasState</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1a26922987494510902b05b9ef573d5d9c" kind="function"><name>Dimmer</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1ab8c14cce12361799134a83d8dfdc77b7" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1Dimmer_1ac87c8a528e9ebaeea959b6d306b6f31f" kind="function"><name>apply</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1DrumDisplay" kind="class"><name>OpenSkyhawk::DrumDisplay</name>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66" kind="enum"><name>Fault</name></member>
@@ -258,6 +279,12 @@
     <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" kind="function"><name>next</name></member>
     <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" kind="function"><name>head</name></member>
     <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" kind="function"><name>InputBase</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1IntegerOutput" kind="class"><name>OpenSkyhawk::IntegerOutput</name>
+    <member refid="classOpenSkyhawk_1_1IntegerOutput_1a8e4ddc17bccad886c4ec98865b9b9cca" kind="typedef"><name>Callback</name></member>
+    <member refid="classOpenSkyhawk_1_1IntegerOutput_1ab11414cb74bec5df889469249c3d76fd" kind="variable"><name>_callback</name></member>
+    <member refid="classOpenSkyhawk_1_1IntegerOutput_1ad40b74e6a634429ed0db1a45dd942037" kind="function"><name>IntegerOutput</name></member>
+    <member refid="classOpenSkyhawk_1_1IntegerOutput_1aefa2659082f28599750ee643bb1c6061" kind="function"><name>apply</name></member>
   </compound>
   <compound refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer" kind="struct"><name>OpenSkyhawk::ShiftBus::IsrConsumer</name>
     <member refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer_1a6662c7beec7a3f2f395b5ea96c5f50f4" kind="variable"><name>hook</name></member>
@@ -533,17 +560,17 @@
   </compound>
   <compound refid="namespace_0d10" kind="namespace"><name>@10</name>
   </compound>
-  <compound refid="namespace_0d43" kind="namespace"><name>@43</name>
-  </compound>
   <compound refid="namespace_0d49" kind="namespace"><name>@49</name>
-    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640c" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640caa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640ca1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d49_1a25a6fa8bf44962576d638076d450640ca03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d49_1a857397551a7feb67dabb7c6b186aacc7a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  </compound>
+  <compound refid="namespace_0d55" kind="namespace"><name>@55</name>
+    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
@@ -1658,6 +1685,18 @@
   </compound>
   <compound refid="OpenSkyhawk_8h" kind="file"><name>OpenSkyhawk.h</name>
   </compound>
+  <compound refid="AnalogOutput_8cpp" kind="file"><name>AnalogOutput.cpp</name>
+  </compound>
+  <compound refid="AnalogOutput_8h" kind="file"><name>AnalogOutput.h</name>
+  </compound>
+  <compound refid="Dimmer_8cpp" kind="file"><name>Dimmer.cpp</name>
+  </compound>
+  <compound refid="Dimmer_8h" kind="file"><name>Dimmer.h</name>
+  </compound>
+  <compound refid="IntegerOutput_8cpp" kind="file"><name>IntegerOutput.cpp</name>
+  </compound>
+  <compound refid="IntegerOutput_8h" kind="file"><name>IntegerOutput.h</name>
+  </compound>
   <compound refid="LED_8cpp" kind="file"><name>LED.cpp</name>
   </compound>
   <compound refid="LED_8h" kind="file"><name>LED.h</name>
@@ -1728,7 +1767,11 @@
   </compound>
   <compound refid="dir_869066037a4dfe81b59e09c740cc62d3" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos</name>
   </compound>
+  <compound refid="dir_7be86be934beb3a22c91bb10ef55a8df" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/AnalogOutput</name>
+  </compound>
   <compound refid="dir_81ff3032570f78b12938068450b63228" kind="dir"><name>Firmware/Libraries/CANProtocol</name>
+  </compound>
+  <compound refid="dir_3d0eb80e711f6ad414d4aa2e54b5567f" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/Dimmer</name>
   </compound>
   <compound refid="dir_da1b6a20235952b69490534d482f5898" kind="dir"><name>Firmware/Libraries/PanelGroup/Drivers</name>
   </compound>
@@ -1745,6 +1788,8 @@
   <compound refid="dir_b0e3ddf276daac85bddb20c46644a5c8" kind="dir"><name>Firmware/Libraries/PanelGroup/Helpers/I2cMux</name>
   </compound>
   <compound refid="dir_2e07d2b82251b5bb8c3d5a17dd64c04b" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs</name>
+  </compound>
+  <compound refid="dir_751c3ce74b607cd528cf65a1346ab5a9" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/IntegerOutput</name>
   </compound>
   <compound refid="dir_014b7653223add72b0ed2d7a88fd1566" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/LED</name>
   </compound>

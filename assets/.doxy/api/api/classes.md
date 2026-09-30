@@ -13,6 +13,8 @@
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
@@ -31,6 +33,8 @@
 ## d
 
 * [**DcsBiosInputEntry**](structDcsBiosInputEntry.md)
+* [**Dimmer**](classOpenSkyhawk_1_1Dimmer.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md)
@@ -74,6 +78,8 @@
 * [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**InputBase**](classOpenSkyhawk_1_1InputBase.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)
 

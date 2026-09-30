@@ -4104,10 +4104,11 @@ source</strong> for any constant or API. When a doc and a header disagree, the h
 </tbody>
 </table>
 <h2 id="implementation-status">Implementation status</h2>
-<p>Phases 0–3 are complete. For the A-4E-C, Phase 4's input pass is complete too: every input control
-in the DCS-BIOS export has a class. Phase 5 needs one more output family (<code>Dimmer</code> +
-<code>IntegerOutput</code>) for the five light-intensity outputs. The first tagged release, v0.1.0, closes
-those gaps; v1.0.0 then freezes the sketch API and CAN wire format <strong>before</strong> the first full panel
+<p>Phases 0–5 are complete. For the A-4E-C that means every input <em>and</em> output control in the
+DCS-BIOS export has a class — the last gap, the five light-intensity outputs, closed with the
+<code>AnalogOutput</code> family (<code>Dimmer</code> + <code>IntegerOutput</code>). The first tagged release, v0.1.0, adds the
+remaining two input classes (<code>AngleSensorInput</code>, <code>SwitchWithCover2Pos</code>) and locks every control
+class; v1.0.0 then freezes the sketch API and CAN wire format <strong>before</strong> the first full panel
 (Phase 6, Right_Navigation) is built.</p>
 <p><a href="control-types/">Control Types</a> is the authority on per-class status, including which
 classes are hardware-verified. The summary below is a pointer, not a second source.</p>
@@ -4123,15 +4124,15 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 <li><strong>Eight input classes</strong> — <code>Switch2Pos</code>, <code>Switch3Pos</code>, <code>SwitchMultiPos</code>,
   <code>AnalogMultiPos</code>, <code>AnalogInput</code>, <code>RotaryEncoder</code> (REL/DIR), <code>RotaryAcceleratedEncoder</code>,
   <code>ActionButton</code></li>
-<li><strong>Three output classes</strong> — <code>LED</code>, <code>DrumDisplay</code>, <code>NeedleGauge</code></li>
+<li><strong>Five output classes</strong> — <code>LED</code>, <code>DrumDisplay</code>, <code>NeedleGauge</code>, <code>Dimmer</code> (PWM backlight)
+  and <code>IntegerOutput</code> (your own callback), the last two over the <code>AnalogOutput</code> family base</li>
 </ul>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Not yet implemented</p>
 <ul>
-<li><strong>For v0.1.0</strong> — the <code>AnalogOutput</code> family (<code>Dimmer</code> for PWM backlight, <code>IntegerOutput</code> for
-  a user callback), <code>AngleSensorInput</code> (an <code>AnalogInput</code> subclass for
-  magnetic angle sensors) and <code>SwitchWithCover2Pos</code>. Every control class is locked in v0.1.0.</li>
+<li><strong>For v0.1.0</strong> — <code>AngleSensorInput</code> (an <code>AnalogInput</code> subclass for magnetic angle sensors)
+  and <code>SwitchWithCover2Pos</code>. Every control class is locked in v0.1.0.</li>
 <li><strong>After v1.0</strong> — the <code>ServoMotor</code> gauge backend.</li>
 <li><strong>Phase 6</strong> — the Right_Navigation PanelGroup sketch and end-to-end integration.</li>
 <li><code>RotarySwitch</code> is <strong>not</strong> planned: <code>RotaryEncoder</code> in DIR mode drives bounded selectors

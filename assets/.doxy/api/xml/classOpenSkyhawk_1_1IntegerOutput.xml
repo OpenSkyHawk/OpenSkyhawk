@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1IntegerOutput" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::IntegerOutput</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1AnalogOutput" prot="public" virt="non-virtual">OpenSkyhawk::AnalogOutput</basecompoundref>
+    <includes refid="IntegerOutput_8h" local="no">IntegerOutput.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classOpenSkyhawk_1_1IntegerOutput_1a8e4ddc17bccad886c4ec98865b9b9cca" prot="public" static="no">
+        <type>void(*)(uint16_t value)</type>
+        <definition>using OpenSkyhawk::IntegerOutput::Callback =  void (*)(uint16_t value)</definition>
+        <argsstring></argsstring>
+        <name>Callback</name>
+        <qualifiedname>OpenSkyhawk::IntegerOutput::Callback</qualifiedname>
+        <briefdescription>
+<para>Callback type: receives the decoded value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" line="31" column="5" bodyfile="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1IntegerOutput_1ab11414cb74bec5df889469249c3d76fd" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1IntegerOutput_1a8e4ddc17bccad886c4ec98865b9b9cca" kindref="member">Callback</ref></type>
+        <definition>Callback OpenSkyhawk::IntegerOutput::_callback</definition>
+        <argsstring></argsstring>
+        <name>_callback</name>
+        <qualifiedname>OpenSkyhawk::IntegerOutput::_callback</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" line="48" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1IntegerOutput_1ad40b74e6a634429ed0db1a45dd942037" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::IntegerOutput::IntegerOutput</definition>
+        <argsstring>(uint16_t controlId, Callback callback, uint16_t mask=0xFFFF, uint8_t shift=0)</argsstring>
+        <name>IntegerOutput</name>
+        <qualifiedname>OpenSkyhawk::IntegerOutput::IntegerOutput</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classOpenSkyhawk_1_1IntegerOutput_1a8e4ddc17bccad886c4ec98865b9b9cca" kindref="member">Callback</ref></type>
+          <declname>callback</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>mask</declname>
+          <defval>0xFFFF</defval>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>shift</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+<para>Construct and register a callback output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCS-BIOS output address (A_4E_C_* from <ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Called with the decoded value on every change. nullptr is accepted (the output then does nothing) so a sketch can stub one out. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bits of the 16-bit word belonging to this output. Default: all. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>shift</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right-shift applied after masking. Default 0. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" line="41" column="5" bodyfile="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.cpp" bodystart="5" bodyend="7"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1IntegerOutput_1aefa2659082f28599750ee643bb1c6061" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::IntegerOutput::apply</definition>
+        <argsstring>(uint16_t value) override</argsstring>
+        <name>apply</name>
+        <qualifiedname>OpenSkyhawk::IntegerOutput::apply</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502">apply</reimplements>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Invoke the callback with the decoded value. Called by the base on a change. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" line="45" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.cpp" bodystart="9" bodyend="11"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Callback output — the DcsBios::IntegerBuffer equivalent, for outputs no built-in class covers (a custom display, an LCD, a bespoke actuator). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Calls a user-supplied callback with the decoded value whenever it changes. No <ref refid="classPinRef" kindref="compound">PinRef</ref>: the callback owns whatever hardware is involved.</para>
+<para>Matching, (value &amp; mask) &gt;&gt; shift decoding and change dedup come from the <ref refid="classOpenSkyhawk_1_1AnalogOutput" kindref="compound">AnalogOutput</ref> base, so the callback runs once per change rather than once per CTRL_BCAST. It runs in <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">PanelGroup::loop()</ref> context — never from an ISR — and must not block: a slow callback delays every other output and the next CAN drain. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::AnalogOutput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogOutput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::IntegerOutput</label>
+        <link refid="classOpenSkyhawk_1_1IntegerOutput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::AnalogOutput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogOutput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::IntegerOutput</label>
+        <link refid="classOpenSkyhawk_1_1IntegerOutput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" line="28" column="1" bodyfile="Firmware/Libraries/PanelGroup/Outputs/IntegerOutput/IntegerOutput.h" bodystart="28" bodyend="49"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1IntegerOutput_1ab11414cb74bec5df889469249c3d76fd" prot="private" virt="non-virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>_callback</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a16b686f5912fb6d4b9c4c1ba4c3b1dad" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>AnalogOutput</name></member>
+      <member refid="classOpenSkyhawk_1_1IntegerOutput_1aefa2659082f28599750ee643bb1c6061" prot="protected" virt="virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>apply</name></member>
+      <member refid="classOpenSkyhawk_1_1IntegerOutput_1a8e4ddc17bccad886c4ec98865b9b9cca" prot="public" virt="non-virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>Callback</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301" prot="public" virt="virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1IntegerOutput_1ad40b74e6a634429ed0db1a45dd942037" prot="public" virt="non-virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>IntegerOutput</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a0320b5b9cdf69d3a1506062e0e5b00a5" prot="public" virt="virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>onControlPacket</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" prot="public" virt="virtual"><scope>OpenSkyhawk::IntegerOutput</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

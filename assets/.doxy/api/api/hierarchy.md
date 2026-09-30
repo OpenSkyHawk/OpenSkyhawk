@@ -15,6 +15,9 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
         * **class** [**OpenSkyhawk::RotaryAcceleratedEncoder**](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md) `RotaryEncoder` _plus the two behaviours of_`DcsBios::RotaryAcceleratedEncoder` _, both on by construction. Header-only: the logic lives in the_[_**RotaryEncoder**_](classOpenSkyhawk_1_1RotaryEncoder.md) _family base._
     * **class** [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md) _Debounced 2-position switch. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._
 * **class** [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md) _Abstract base for all DCS-driven output objects._     
+    * **class** [**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md) _Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16)._     
+        * **class** [**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md) _PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin._ 
+        * **class** [**OpenSkyhawk::IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md) _Callback output — the DcsBios::IntegerBuffer equivalent, for outputs no built-in class covers (a custom display, an LCD, a bespoke actuator)._ 
     * **class** [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._ 
     * **class** [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md) _Digital_ [_**LED**_](classOpenSkyhawk_1_1LED.md) _output. Drives a pin based on a DCS-BIOS state value._
     * **class** [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._

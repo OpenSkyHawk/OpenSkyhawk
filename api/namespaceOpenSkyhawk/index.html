@@ -4574,12 +4574,20 @@
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogMultiPos/"><strong>AnalogMultiPos</strong></a> <br><em>Resistor-ladder multi-position selector — one analog</em> <code>PinRef</code> <em>, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch).</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1AnalogOutput/"><strong>AnalogOutput</strong></a> <br><em>Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">struct</td>
 <td style="text-align: left;"><a href="../structOpenSkyhawk_1_1AxisCal/"><strong>AxisCal</strong></a> <br><em>Captured endpoints for one axis, unsigned 0–65535 throughout.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">struct</td>
 <td style="text-align: left;"><a href="../structOpenSkyhawk_1_1CalBlob/"><strong>CalBlob</strong></a> <br><em>The whole persisted calibration set, written and erased as one unit.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1Dimmer/"><strong>Dimmer</strong></a> <br><em>PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">class</td>
@@ -4636,6 +4644,10 @@
 <tr>
 <td style="text-align: right;">class</td>
 <td style="text-align: left;"><a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a> <br><em>Abstract base for all hardware-polled input objects.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1IntegerOutput/"><strong>IntegerOutput</strong></a> <br><em>Callback output — the DcsBios::IntegerBuffer equivalent, for outputs no built-in class covers (a custom display, an LCD, a bespoke actuator).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">class</td>

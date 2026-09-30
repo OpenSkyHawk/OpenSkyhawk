@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1Dimmer" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::Dimmer</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1AnalogOutput" prot="public" virt="non-virtual">OpenSkyhawk::AnalogOutput</basecompoundref>
+    <includes refid="Dimmer_8h" local="no">Dimmer.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classOpenSkyhawk_1_1Dimmer_1ad0512f5ebd41fc485ef906f1a12902c9" prot="public" static="no">
+        <type>uint16_t(*)(uint16_t value)</type>
+        <definition>using OpenSkyhawk::Dimmer::ScaleFn =  uint16_t (*)(uint16_t value)</definition>
+        <argsstring></argsstring>
+        <name>ScaleFn</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::ScaleFn</qualifiedname>
+        <briefdescription>
+<para>Scale function: raw 16-bit DCS value → 16-bit value handed to writeAnalog(). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="48" column="5" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1a8989e44fdb2b437d0b504e1c2764d695" prot="private" static="no" mutable="no">
+        <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+        <definition>PinRef OpenSkyhawk::Dimmer::_pin</definition>
+        <argsstring></argsstring>
+        <name>_pin</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::_pin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="91" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1a0340b648381e8169a14984f195750d2b" prot="private" static="no" mutable="no">
+        <type><ref refid="classOpenSkyhawk_1_1Dimmer_1ad0512f5ebd41fc485ef906f1a12902c9" kindref="member">ScaleFn</ref></type>
+        <definition>ScaleFn OpenSkyhawk::Dimmer::_scale</definition>
+        <argsstring></argsstring>
+        <name>_scale</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::_scale</qualifiedname>
+        <briefdescription>
+<para>nullptr = identity </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="92" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1ad7871783f3a8b19d4bb004866c789176" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::Dimmer::_enabled</definition>
+        <argsstring></argsstring>
+        <name>_enabled</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::_enabled</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>false until <ref refid="classOpenSkyhawk_1_1Dimmer_1ab8c14cce12361799134a83d8dfdc77b7" kindref="member">configure()</ref> accepts the pin </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="93" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1a63c94c45afedf4df4a9e04bd58744c4d" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::Dimmer::_lastDuty</definition>
+        <argsstring></argsstring>
+        <name>_lastDuty</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::_lastDuty</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>last duty written — dedup reference </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="94" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1a55b3cf115de48ab5563ca00b699875f6" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::Dimmer::_hasState</definition>
+        <argsstring></argsstring>
+        <name>_hasState</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::_hasState</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>_lastDuty valid </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="95" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Dimmer_1a26922987494510902b05b9ef573d5d9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::Dimmer::Dimmer</definition>
+        <argsstring>(uint16_t controlId, PinRef pin, ScaleFn scale=nullptr)</argsstring>
+        <name>Dimmer</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::Dimmer</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pin</declname>
+        </param>
+        <param>
+          <type><ref refid="classOpenSkyhawk_1_1Dimmer_1ad0512f5ebd41fc485ef906f1a12902c9" kindref="member">ScaleFn</ref></type>
+          <declname>scale</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+<para>Construct and register a dimmer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCS-BIOS output address (A_4E_C_* from <ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref> — the full 16-bit word; the matching *_AM mask is 0xffff for these outputs). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classPinRef" kindref="compound">PinRef</ref> for the PWM output: a direct STM32 GPIO on a timer channel (the zone-switch MOSFET gate) — <ref refid="classPinRef" kindref="compound">PinRef(PA6)</ref> / <ref refid="classPinRef" kindref="compound">PinRef(PA7)</ref> on the base. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scale</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional reshaping of the 16-bit value before it is written. nullptr (default) = identity. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="59" column="5" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.cpp" bodystart="6" bodyend="7"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Dimmer_1ab8c14cce12361799134a83d8dfdc77b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::Dimmer::configure</definition>
+        <argsstring>() override</argsstring>
+        <name>configure</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::configure</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1OutputBase_1ac0ad3c47d2cbf3a210fb0840bc1bb301">configure</reimplements>
+        <briefdescription>
+<para>Configure the output pin and drive duty to 0. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip.init(). Requires a direct GPIO on a timer channel; otherwise logs on DiagSerial and disables the output (no writes at all). On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL_BCAST. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="69" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.cpp" bodystart="9" bodyend="22"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Dimmer_1ac87c8a528e9ebaeea959b6d306b6f31f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::Dimmer::apply</definition>
+        <argsstring>(uint16_t value) override</argsstring>
+        <name>apply</name>
+        <qualifiedname>OpenSkyhawk::Dimmer::apply</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502">apply</reimplements>
+        <param>
+          <type>uint16_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Write the value as PWM duty. Called by the base when the decoded value changed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Applies the scale function, then skips the write when the resulting 8-bit duty equals the last one written — different 16-bit values map to the same duty. No-op while the output is disabled. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="88" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.cpp" bodystart="24" bodyend="42"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Primary use is backlight zone dimming: the low-side MOSFET gate of an <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> zone, one <ref refid="classOpenSkyhawk_1_1Dimmer" kindref="compound">Dimmer</ref> per zone (PA6 / PA7 on the <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> base). The A-4E-C drives five such values — LIGHTS_CONSOLE, LIGHTS_INSTRUMENTS, LIGHTS_FLOOD_RED, LIGHTS_FLOOD_WHITE, APG53A_GLOW — and any other PWM-proportional load works the same way.</para>
+<para>The <ref refid="classOpenSkyhawk_1_1AnalogOutput" kindref="compound">AnalogOutput</ref> base owns matching, decoding and change dedup; this class is the sink: <ref refid="classOpenSkyhawk_1_1Dimmer_1ac87c8a528e9ebaeea959b6d306b6f31f" kindref="member">apply()</ref> writes through <ref refid="classPinRef_1ad68f7414ce0f3f99f252cf94159dc534" kindref="member">PinRef::writeAnalog()</ref> (16-bit in; the GPIO path outputs value &gt;&gt; 8 as 8-bit duty). An optional scale function reshapes the value first — perceptual dimming curves, inversion.</para>
+<para>Takes a <ref refid="classPinRef" kindref="compound">PinRef</ref> like every control class and checks its type: brightness comes from an STM32 timer channel, so <ref refid="classOpenSkyhawk_1_1Dimmer_1ab8c14cce12361799134a83d8dfdc77b7" kindref="member">configure()</ref> requires a direct GPIO that has one. Anything else (MCP23017, <ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref>, a GPIO with no timer) is logged and leaves the output disabled rather than degrading silently — writeAnalog() is a no-op through an expander, and analogWrite() on a non-timer GPIO collapses to an on/off threshold. Software PWM through an expander is deliberately not offered: those bits change once per loop or bus transfer, so a duty cycle there would flicker and keep the bus busy, where timer PWM costs no CPU.</para>
+<para>On/off threshold behaviour is <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref>&apos;s job, not this class&apos;s. Polarity is not invertible — the zone-switch hardware standard is fixed (higher duty = brighter); an inverted drive is a scale function, not a constructor flag.</para>
+<para>Duty is driven to 0 during <ref refid="classOpenSkyhawk_1_1Dimmer_1ab8c14cce12361799134a83d8dfdc77b7" kindref="member">configure()</ref> and stays there (zone dark) until a CTRL_BCAST packet with a matching controlId arrives. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::AnalogOutput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogOutput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::Dimmer</label>
+        <link refid="classOpenSkyhawk_1_1Dimmer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::AnalogOutput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogOutput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::Dimmer</label>
+        <link refid="classOpenSkyhawk_1_1Dimmer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::OutputBase</label>
+        <link refid="classOpenSkyhawk_1_1OutputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="45" column="1" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="45" bodyend="99"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1ad7871783f3a8b19d4bb004866c789176" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>_enabled</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1a55b3cf115de48ab5563ca00b699875f6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>_hasState</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1a63c94c45afedf4df4a9e04bd58744c4d" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>_lastDuty</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1a8989e44fdb2b437d0b504e1c2764d695" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>_pin</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1a0340b648381e8169a14984f195750d2b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>_scale</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a16b686f5912fb6d4b9c4c1ba4c3b1dad" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>AnalogOutput</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1ac87c8a528e9ebaeea959b6d306b6f31f" prot="protected" virt="virtual"><scope>OpenSkyhawk::Dimmer</scope><name>apply</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1ab8c14cce12361799134a83d8dfdc77b7" prot="public" virt="virtual"><scope>OpenSkyhawk::Dimmer</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1a26922987494510902b05b9ef573d5d9c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>Dimmer</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a51444828368b99e6cf08b7cdc70b3552" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a050714b371d6cb3df1ebc787f5b5b579" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogOutput_1a0320b5b9cdf69d3a1506062e0e5b00a5" prot="public" virt="virtual"><scope>OpenSkyhawk::Dimmer</scope><name>onControlPacket</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1aa8f3a81efdc0f6dc10b83dfb063e46e0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>OutputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1Dimmer_1ad0512f5ebd41fc485ef906f1a12902c9" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>ScaleFn</name></member>
+      <member refid="classOpenSkyhawk_1_1OutputBase_1a1e233a4bb8b5049586b1c116aaca52f5" prot="public" virt="virtual"><scope>OpenSkyhawk::Dimmer</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

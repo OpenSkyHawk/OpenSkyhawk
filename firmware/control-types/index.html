@@ -4070,15 +4070,16 @@
 <h1 id="control-types">Control Types</h1>
 <p>A PanelGroup sketch is mostly a list of <strong>control objects</strong> — one per physical switch, knob,
 LED, or gauge. Inputs read hardware and fire CAN events; outputs receive DCS state and drive
-hardware. This page is the catalogue, with honest status: every input the A-4E-C needs is
-implemented; one output family is still to come before the first release.</p>
+hardware. This page is the catalogue, with honest status: every input and output the
+A-4E-C needs is implemented; two more input classes land before the first release.</p>
 <div class="admonition warning">
 <p class="admonition-title">What's built and what isn't</p>
 <p>Implemented today: <strong>Switch2Pos</strong>, <strong>Switch3Pos</strong>, <strong>SwitchMultiPos</strong>, <strong>AnalogMultiPos</strong>,
 <strong>AnalogInput</strong>, <strong>RotaryEncoder</strong>, <strong>RotaryAcceleratedEncoder</strong> and <strong>ActionButton</strong> (inputs);
-<strong>LED</strong>, <strong>DrumDisplay</strong> and <strong>NeedleGauge</strong> (outputs); plus the <strong>PinRef</strong> abstraction. All are
-hardware-verified; ActionButton's hardware run and RotaryAcceleratedEncoder's live-DCS feel check
-are part of the v1.0 soak test.
+<strong>LED</strong>, <strong>DrumDisplay</strong>, <strong>NeedleGauge</strong>, <strong>Dimmer</strong> and <strong>IntegerOutput</strong> (outputs, the last
+two over the <strong>AnalogOutput</strong> family base); plus the <strong>PinRef</strong> abstraction. All are
+hardware-verified; ActionButton's hardware run, RotaryAcceleratedEncoder's live-DCS feel check
+and Dimmer's live backlight check are part of the v1.0 soak test.
 Rows marked <em>Planned</em> below are specified but <strong>not written yet</strong> — don't expect them to
 compile today.</p>
 </div>
@@ -4112,7 +4113,7 @@ hardware backends:</p>
 </tbody>
 </table>
 <p>Only direct STM32 GPIO can do PWM or servo output — <code>isGpio()</code> reports the backend type. A class
-that needs one checks its <code>PinRef</code> at startup: the planned <code>Dimmer</code> refuses anything but a GPIO on
+that needs one checks its <code>PinRef</code> at startup: <code>Dimmer</code> refuses anything but a GPIO on
 a timer channel, and says so on the diagnostic serial port instead of silently not dimming.</p>
 <p><strong>Routing is by <code>controlId</code>, not by class.</strong> The same input class drives a DCS-BIOS control or
 a HID button depending on the <code>controlId</code> you give it:</p>
@@ -4252,17 +4253,17 @@ the position and stops at the ends, and the cockpit readout shows the result.</p
 </tr>
 <tr>
 <td><code>AnalogOutput</code></td>
-<td>Planned — v0.1.0 (#288)</td>
+<td><strong>Implemented</strong> (hardware-verified)</td>
 <td>Family base for outputs driven by one DCS value: matching, decoding and change detection</td>
 </tr>
 <tr>
 <td><code>Dimmer</code></td>
-<td>Planned — v0.1.0 (#288)</td>
+<td><strong>Implemented</strong> (hardware-verified)</td>
 <td>PWM duty on a GPIO timer pin — backlight zones driven by the sim's <code>LIGHTS_*</code> intensities</td>
 </tr>
 <tr>
 <td><code>IntegerOutput</code></td>
-<td>Planned — v0.1.0 (#288)</td>
+<td><strong>Implemented</strong> (hardware-verified)</td>
 <td>The decoded value to your own callback, for custom displays (DCS-BIOS <code>IntegerBuffer</code>)</td>
 </tr>
 </tbody>
