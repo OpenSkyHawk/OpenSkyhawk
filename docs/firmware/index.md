@@ -27,10 +27,11 @@ source** for any constant or API. When a doc and a header disagree, the header w
 
 ## Implementation status
 
-Phases 0–3 are complete. For the A-4E-C, Phase 4's input pass is complete too: every input control
-in the DCS-BIOS export has a class. Phase 5 needs one more output family (`Dimmer` +
-`IntegerOutput`) for the five light-intensity outputs. The first tagged release, v0.1.0, closes
-those gaps; v1.0.0 then freezes the sketch API and CAN wire format **before** the first full panel
+Phases 0–5 are complete. For the A-4E-C that means every input *and* output control in the
+DCS-BIOS export has a class — the last gap, the five light-intensity outputs, closed with the
+`AnalogOutput` family (`Dimmer` + `IntegerOutput`). The first tagged release, v0.1.0, adds the
+remaining two input classes (`AngleSensorInput`, `SwitchWithCover2Pos`) and locks every control
+class; v1.0.0 then freezes the sketch API and CAN wire format **before** the first full panel
 (Phase 6, Right_Navigation) is built.
 
 [Control Types](control-types.md) is the authority on per-class status, including which

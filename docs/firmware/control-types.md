@@ -2,14 +2,16 @@
 
 A PanelGroup sketch is mostly a list of **control objects** — one per physical switch, knob,
 LED, or gauge. Inputs read hardware and fire CAN events; outputs receive DCS state and drive
-hardware. This page is the catalogue, with honest status: every input the A-4E-C needs is
-implemented; one output family is still to come before the first release.
+hardware. This page is the catalogue, with honest status: every input and output the
+A-4E-C needs is implemented; two more input classes land before the first release.
 
 !!! warning "What's built and what isn't"
     Implemented today: **Switch2Pos**, **Switch3Pos**, **SwitchMultiPos**, **AnalogMultiPos**,
     **AnalogInput**, **RotaryEncoder**, **RotaryAcceleratedEncoder** and **ActionButton** (inputs);
-    **LED**, **DrumDisplay** and **NeedleGauge** (outputs); plus the **PinRef** abstraction. All are
-    hardware-verified; ActionButton's hardware run and RotaryAcceleratedEncoder's live-DCS feel check
+    **LED**, **DrumDisplay**, **NeedleGauge**, **Dimmer** and **IntegerOutput** (outputs, the last
+    two over the **AnalogOutput** family base); plus the **PinRef** abstraction. All are
+    hardware-verified except the newest three: **Dimmer** and **IntegerOutput** are awaiting their
+    hardware run, and ActionButton's hardware run and RotaryAcceleratedEncoder's live-DCS feel check
     are part of the v1.0 soak test.
     Rows marked *Planned* below are specified but **not written yet** — don't expect them to
     compile today.
