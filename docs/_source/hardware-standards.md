@@ -325,6 +325,57 @@ LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the sign
 | 1 | +12V_BACKLIGHT (always-on 12V supply to LED string tops) |
 | 2 | BACKLIGHT_SW_RETURN (MOSFET drain — near GND when LEDs on) |
 
+## Silkscreen
+
+Checked on every board **before gerber export** — a silk error is only discoverable after fab,
+and a mislabelled power connector destroys hardware.
+
+### Connector pin labels
+
+Every connector gets a label per pin, naming the **signal**, placed beside its own pad:
+
+- **Power and bus connectors are mandatory.** `12V`, `5V`, `CANH`, `CANL`, `GND` on the Mini-Fit
+  Jr bus connectors. These are unkeyed in practice and often sit side by side, so a reversed
+  harness is a destroyed board — this is the one place silk is a safety feature, not a courtesy.
+- **Label the signal, not the net.** A pin whose net is auto-named because it passes through a
+  series resistor (`Net-(J2-Pin_1)`) is labelled by what it *is* — trace through the resistor and
+  use `SDA`, not the generated name.
+- **Match the connector's own function.** A UART debug header is `RX` / `TX` / `GND`, never an
+  I²C label set copied from a neighbouring connector.
+- Off-board-facing headers (I²C, ShiftBus, SWD, diagnostics) get the same treatment.
+
+### Function legends — free text, never the Value field
+
+A jumper or block legend (`CAN TERM`, `POWER`, `PANEL`, `STATUS`) is a **free silk text item**.
+
+**Do not create one by overriding the footprint's `Value` field on the board.** It looks
+identical on the rendered silk and is wrong twice over: it raises a `footprint_symbol_mismatch`
+schematic-parity error, and the next *Update PCB from Schematic* resets the field and silently
+deletes the legend. It also pollutes the BOM's Value column with a legend string instead of the
+part's value.
+
+### Revision text
+
+Back silk, uppercase, one line:
+
+```
+REVISION <x.y.z> | <BOARD NAME>
+```
+
+`layer B.SilkS` · `size 1 x 1` · `thickness 0.15` · `justify left bottom mirror` · `rotation 0`
+
+**Bump it in the same change that bumps the board revision.** A board fabbed carrying the
+previous revision's text is indistinguishable from the older batch on the bench.
+
+### The gate
+
+Before exporting gerbers, confirm:
+
+1. ERC 0, DRC 0 violations, 0 unconnected, **0 schematic parity**
+2. Every connector pin has its signal label within a few mm of the pad
+3. Revision text present, correct revision, correct format and stroke
+4. No legend implemented via a footprint `Value` override
+
 ## Switches & Controls
 
 - Toggle switches: 12 mm (standard), ~6 mm (ECM modules)
