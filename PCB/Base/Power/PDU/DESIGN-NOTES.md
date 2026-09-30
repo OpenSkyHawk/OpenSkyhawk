@@ -40,7 +40,7 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 - F103 Vrefint not per-chip trimmed (±~3% absolute) but tracks load/temp drift — enough for ballpark.
 - **LM4040 dropped** — ~$0.60 (not $0.15) precision ref; overkill vs Vrefint for ballpark goal. Revisit only if absolute-V accuracy becomes a requirement.
 
-### B2. Shunt resistor ×2 — 10 mΩ 2512  [FINAL: CSRF2512FT10L0, C346481, 2-terminal]
+### B2. Shunt resistor ×2 — 10 mΩ 2512  [CURRENT SKU: C2903468 — see 2026-09-30 note below]
 - **Stackpole CSRF2512FT10L0** — **2512**, 2W, ±1%, **±100 ppm/°C**, **2-terminal**, LCSC **C346481**. Footprint = STOCK **`Resistor_SMD:R_2512_6332Metric`**. Symbol = 2-pin `Device:R` (value 10m).
 - **Reverted from HoRCG27284 (2728, ±25ppm, C53115028)** during layout: the 2728 had NO stock KiCad footprint + no working EasyEDA model (easyeda2kicad API failed) → would need hand-draw. CSRF2512 = 2512 with a stock footprint, cheap, and ±100ppm is acceptable (±12mA/40°C at 3A, inside ballpark). Traded ±25ppm (nice-to-have) for a stock footprint.
 - **2-terminal → Kelvin via LAYOUT:** route INA180 IN+/IN− to the **inner corners of the two pads**, off the fat current copper (poor-man's Kelvin — adequate for INA180 ±1% class). Current in/out on the outer pad ends.
@@ -210,6 +210,8 @@ Blocks drawn (PDU-specific; standard STM32 block imported separately):
 **1k series/anti-alias downgraded to 1% (2026-07-10):** the 8× 1k (R8-12, R15-17) were originally spec'd 0.1% (C110774) for grade-consistency, but they sit **in series into the high-Z ADC pins** (fault-limit + anti-alias RC with Cf) — the value doesn't set any ratio, so 0.1% is wasted there. Precision belongs **only on the divider ratio resistors** (33k/13k/10k). Downgraded to generic **1% C844939** (Vishay CRCW08051K00, the fleet 1k) — drops the precision C110774 from the board entirely and consolidates all generic 1k under one SKU.
 
 **Shunt UPGRADED at order time (2026-07-10):** `C346481` (Stackpole CSRF2512, ±100ppm) went **backordered** at LCSC → swapped to **`C500740`** (Milliohm LR2512DS-3W-10mR-1%, **±25ppm**, 2512, in-stock). This is a strict improvement — it restores the ±25ppm precision that the original 2728 pick (HoRCG27284) was dropped for, now in a stock 2512 footprint (same land). Adopt as the shunt of record for the next PDU rev; update InvenTree pk47 SupplierPart accordingly. (Same order pass also brand-swapped 7 backordered fleet passives — 100nF/10nF/10µF×2/4.7k/AO3400A/2N7002 — to in-stock equivalents; those are procurement-only, no design change. Full list: order summary 2026-07-10.)
+
+**Shunt re-sourced AGAIN (2026-09-30):** `C500740` went out of stock too, so both prior SKUs on `RES-0R010-1PCT-2512` are now dead. Live source is **`C2903468`** (Milliohm HoJLR2512-3W-10mR-1%, **±50 ppm/°C**, 3 W, 2512, same land, ~$0.08 @20). Tempco history on this part is now C346481 ±100 → C500740 ±25 → C2903468 ±50: a step down from what it replaces, but still better than the ±100 ppm originally accepted as adequate here (±12 mA/40 °C at 3 A). Datasheet gives ±50 ppm across 2 mΩ–500 mΩ, -50 to +170 °C, molded alloy non-inductive. **5× C500740 are already in stock** — enough for two PDUs — so the boards in hand are unaffected; C2903468 is what to buy next. InvenTree pk47 now carries all three SKUs with the two dead ones marked inactive; KiCad `LCSC` field on R1/R2 updated.
 
 ---
 
