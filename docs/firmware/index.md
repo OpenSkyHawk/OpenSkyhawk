@@ -27,10 +27,11 @@ source** for any constant or API. When a doc and a header disagree, the header w
 
 ## Implementation status
 
-Phases 0–3 are complete. For the A-4E-C, Phase 4's input pass is complete too: every input control
-in the DCS-BIOS export has a class. Phase 5 needs one more output family (`Dimmer` +
-`IntegerOutput`) for the five light-intensity outputs. The first tagged release, v0.1.0, closes
-those gaps; v1.0.0 then freezes the sketch API and CAN wire format **before** the first full panel
+Phases 0–5 are complete. For the A-4E-C that means every input *and* output control in the
+DCS-BIOS export has a class — the last gap, the five light-intensity outputs, closed with the
+`AnalogOutput` family (`Dimmer` + `IntegerOutput`). The first tagged release, v0.1.0, adds the
+remaining two input classes (`AngleSensorInput`, `SwitchWithCover2Pos`) and locks every control
+class; v1.0.0 then freezes the sketch API and CAN wire format **before** the first full panel
 (Phase 6, Right_Navigation) is built.
 
 [Control Types](control-types.md) is the authority on per-class status, including which
@@ -46,12 +47,12 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
     - **Eight input classes** — `Switch2Pos`, `Switch3Pos`, `SwitchMultiPos`,
       `AnalogMultiPos`, `AnalogInput`, `RotaryEncoder` (REL/DIR), `RotaryAcceleratedEncoder`,
       `ActionButton`
-    - **Three output classes** — `LED`, `DrumDisplay`, `NeedleGauge`
+    - **Five output classes** — `LED`, `DrumDisplay`, `NeedleGauge`, `Dimmer` (PWM backlight)
+      and `IntegerOutput` (your own callback), the last two over the `AnalogOutput` family base
 
 !!! warning "Not yet implemented"
-    - **For v0.1.0** — the `AnalogOutput` family (`Dimmer` for PWM backlight, `IntegerOutput` for
-      a user callback), `AngleSensorInput` (an `AnalogInput` subclass for
-      magnetic angle sensors) and `SwitchWithCover2Pos`. Every control class is locked in v0.1.0.
+    - **For v0.1.0** — `AngleSensorInput` (an `AnalogInput` subclass for magnetic angle sensors)
+      and `SwitchWithCover2Pos`. Every control class is locked in v0.1.0.
     - **After v1.0** — the `ServoMotor` gauge backend.
     - **Phase 6** — the Right_Navigation PanelGroup sketch and end-to-end integration.
     - `RotarySwitch` is **not** planned: `RotaryEncoder` in DIR mode drives bounded selectors

@@ -1,6 +1,6 @@
 # IntegerOutput — Technical Specification
 
-**Status:** Ready for implementation (#288) — `AnalogOutput` family member (D16)
+**Status:** Done (hardware-verified — **4/4 envs PASS 2026-09-30**). `AnalogOutput` family member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AnalogOutput family), `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `AnalogOutput.md`, `PanelGroup.md`
 
@@ -60,14 +60,16 @@ public:
 
     /**
      * @param controlId  DCS-BIOS output address (A_4E_C_* from A4EC_OutputIds.h).
-     * @param callback   called with the decoded value when it changes. Must not be nullptr.
+     * @param callback   called with the decoded value when it changes. nullptr is accepted —
+     *                   the output then does nothing, so a sketch can stub one out during
+     *                   bring-up instead of hard-faulting on the first matching packet.
      * @param mask       bits of the 16-bit word that belong to this output (default: all).
      * @param shift      right-shift applied after masking (default 0).
      */
     IntegerOutput(uint16_t controlId, Callback callback, uint16_t mask = 0xFFFF, uint8_t shift = 0);
 
 protected:
-    void apply(uint16_t value) override { _callback(value); }
+    void apply(uint16_t value) override { if (_callback) _callback(value); }
 
 private:
     Callback _callback;
