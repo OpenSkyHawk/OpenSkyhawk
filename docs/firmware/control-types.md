@@ -10,9 +10,8 @@ A-4E-C needs is implemented; two more input classes land before the first releas
     **AnalogInput**, **RotaryEncoder**, **RotaryAcceleratedEncoder** and **ActionButton** (inputs);
     **LED**, **DrumDisplay**, **NeedleGauge**, **Dimmer** and **IntegerOutput** (outputs, the last
     two over the **AnalogOutput** family base); plus the **PinRef** abstraction. All are
-    hardware-verified except the newest three: **Dimmer** and **IntegerOutput** are awaiting their
-    hardware run, and ActionButton's hardware run and RotaryAcceleratedEncoder's live-DCS feel check
-    are part of the v1.0 soak test.
+    hardware-verified; ActionButton's hardware run, RotaryAcceleratedEncoder's live-DCS feel check
+    and Dimmer's live backlight check are part of the v1.0 soak test.
     Rows marked *Planned* below are specified but **not written yet** — don't expect them to
     compile today.
 
@@ -105,9 +104,9 @@ and why the event families are split.
 | `LED` | **Implemented** | GPIO pin driven from one bit of a DCS value |
 | `DrumDisplay` | **Implemented** (hardware-verified) | OLED rolling-drum readout — multi-digit gauges (speed, lat/lon, frequency, range) + optional 2-state flag. Own library; pulls U8g2 |
 | `NeedleGauge` | **Implemented** (hardware-verified against live DCS, #137) | Pointer/needle gauge — maps a DCS value to a motor angle over a swappable driver backend (linear or calibrated curve). Supersedes `SwitecX25Output` / `AccelStepperOutput` / `ServoOutput` |
-| `AnalogOutput` | **Implemented** | Family base for outputs driven by one DCS value: matching, decoding and change detection |
-| `Dimmer` | **Implemented** | PWM duty on a GPIO timer pin — backlight zones driven by the sim's `LIGHTS_*` intensities |
-| `IntegerOutput` | **Implemented** | The decoded value to your own callback, for custom displays (DCS-BIOS `IntegerBuffer`) |
+| `AnalogOutput` | **Implemented** (hardware-verified) | Family base for outputs driven by one DCS value: matching, decoding and change detection |
+| `Dimmer` | **Implemented** (hardware-verified) | PWM duty on a GPIO timer pin — backlight zones driven by the sim's `LIGHTS_*` intensities |
+| `IntegerOutput` | **Implemented** (hardware-verified) | The decoded value to your own callback, for custom displays (DCS-BIOS `IntegerBuffer`) |
 
 Outputs use DCS-BIOS **output addresses** from the generated `A4EC` headers — the address
 constant plus its bitmask. Example for the implemented `LED`:

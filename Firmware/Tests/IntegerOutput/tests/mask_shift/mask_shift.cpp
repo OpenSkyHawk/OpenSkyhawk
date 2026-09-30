@@ -40,7 +40,8 @@ void setup() {
     check("default mask: whole word       ", gWholeLast == 0xAB34);
 
     // Only the masked nibble matters: the rest of the word changed, the field did not.
-    gField.onControlPacket(CTRL_ID, 0x12B9);
+    // 0xFBFF & 0x0F00 = 0x0B00 — same field as 0xAB34, every other bit different.
+    gField.onControlPacket(CTRL_ID, 0xFBFF);
     check("other bits changed: no new call", gFieldCalls == 1);
     check("field value unchanged          ", gFieldLast == 0x000B);
 

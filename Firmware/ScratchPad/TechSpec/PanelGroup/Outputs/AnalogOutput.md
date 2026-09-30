@@ -1,6 +1,6 @@
 # AnalogOutput — Technical Specification
 
-**Status:** Implemented (#288) — family base (D16). Hardware run of the member suites pending.
+**Status:** Done (#288) — family base (D16). Exercised on hardware through both member suites: **9/9 envs PASS 2026-09-30**.
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AnalogOutput family), `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `PanelGroup.md`
 

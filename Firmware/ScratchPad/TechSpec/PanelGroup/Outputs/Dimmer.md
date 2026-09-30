@@ -1,7 +1,8 @@
 # Dimmer — Technical Specification
 
-**Status:** Implemented (#288) — hardware run of the 5 envs pending. Renamed from `AnalogOutput`,
-which is now the family base this class derives from (D16).
+**Status:** Done (hardware-verified — **5/5 envs PASS 2026-09-30** on an STM32F103; the live-DCS
+backlight check is part of the #291 smoke test). Renamed from `AnalogOutput`, which is now the
+family base this class derives from (D16).
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AnalogOutput family), `FirmwarePlan/00-decisions.md` (D16), `FirmwarePlan/10-implementation-plan.md` (Phase 5)
 **Depends on:** `AnalogOutput.md`, `PinRef.md`, `PanelGroup.md`
 

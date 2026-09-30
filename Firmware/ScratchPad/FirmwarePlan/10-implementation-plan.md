@@ -206,7 +206,7 @@ covered; the only uncovered outputs were the five light-intensity values (`LIGHT
       suppression (PR #204, verification #196).
 - [x] `AnalogOutput` family — abstract base + `Dimmer` (PWM backlight zones, the five
       light-intensity outputs) + `IntegerOutput` (user callback) (#288). **Firmware v0.1.0.**
-      Tests: `Firmware/Tests/Dimmer` (5 envs) + `Firmware/Tests/IntegerOutput` (4 envs).
+      Hardware-verified 2026-09-30: `Firmware/Tests/Dimmer` 5/5 + `Firmware/Tests/IntegerOutput` 4/4.
 - [ ] `ServoMotor` `MotorDriver` backend (servo-driven pointers). (#132) — after v1.0.
 
 ---
