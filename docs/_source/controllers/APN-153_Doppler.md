@@ -1,7 +1,7 @@
 # AN/APN-153 Doppler Navigation
 
 **Location:** Right Console, Navigation section
-**Controller:** Right_Navigation (NODE_ID 2) — I²C1 sub-panel on the ASN-41 host's `J6`; host MCU on AN/ASN-41
+**Controller:** Right_Navigation (NODE_ID 2) — I²C2 sub-panel; host MCU on AN/ASN-41
 **Repo:** `PCB/Right_Console/Right_Navigation/APN-153_Doppler/` (scaffolded at B2)
 **Tracking:** panel issue [#170](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/170) · controller [#168](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/168)
 **Stage:** B2 Schematic complete — ERC clean ([#181](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/181)) → B3 CAD next
@@ -10,7 +10,7 @@ The Doppler navigation radar set: pilot selects radar mode (OFF/STBY/LAND/SEA/TE
 reads drift angle on a needle gauge and ground speed on a 3-digit readout, with a MEMORY
 lamp indicating the set is holding last-known velocity. Feeds ground-speed + drift to the
 AN/ASN-41 nav computer. No MCU of its own — routes to the ASN-41 host board over a standard
-8-pin I²C harness on I²C1.
+8-pin I²C harness on I²C2.
 
 ## Controls Inventory
 
@@ -33,11 +33,11 @@ AN/ASN-41 nav computer. No MCU of its own — routes to the ASN-41 host board ov
 | Ground Speed | `APN153_SPEED_X00/_0X0/_00X` (0x847E/80/82) | `DrumDisplay` | OLED (I²C, SSD1306 0.91″ 128×32, PCB-mounted) — no motor; U8G2 ctor = SSD1306 128×32 |
 | Memory Light (yellow) | `APN153_MEMORYLIGHT` (0x8470) | `LED` | integrated in MEMORY pushbutton; driven solely by DCS-BIOS output |
 
-## I²C Devices (on I²C1)
+## I²C Devices (on I²C2)
 
 | Address | Device | LCSC | Notes |
 |---|---|---|---|
-| 0x20 | MCP23017-E/SS | C506653 | Port A: GPA0–5 = 6 in (DOPPLER_SEL ×5 + MEM), GPA6 = DRV8833 ~SLEEP (sim-gated, 10 kΩ pull-down), GPA7 = MEMORYLIGHT; Port B: GPB0–3 = DRIFT stepper coils. 12/16 used. INT_A → host `INT_A1` (J_I2C1 pin 6) |
+| 0x20 | MCP23017-E/SS | C506653 | Port A: GPA0–5 = 6 in (DOPPLER_SEL ×5 + MEM), GPA6 = DRV8833 ~SLEEP (sim-gated, 10 kΩ pull-down), GPA7 = MEMORYLIGHT; Port B: GPB0–3 = DRIFT stepper coils. 12/16 used. INT_A → host `INT_A2` (J_I2C2 pin 6 — PA8 on the ASN-41 host) |
 | 0x3C | OLED SSD1306 0.91″ 128×32 (module) | TBD | GND SPEED via `DrumDisplay` (controller OLED addressing / mux on #168). VCC 3.3–5 V (onboard reg). **PCB-mounted** (tentative — confirm at CAD/B3); own library part (symbol + footprint + STEP). 0.91″ bench-verified on real APN-153 faceplate |
 
 ## Discrete Drivers
@@ -51,7 +51,7 @@ DRIFT stepper coils + its MCP stay **local** to this board — they do not cross
 
 ## Harness (to ASN-41 host)
 
-Standard 8-pin JST-XH on **I²C1** (ASN-41 `J6`):
+Standard 8-pin JST-XH on **I²C2**:
 
 | Pin | Signal |
 |---|---|
@@ -60,7 +60,7 @@ Standard 8-pin JST-XH on **I²C1** (ASN-41 `J6`):
 | 3 | GND |
 | 4 | GND |
 | 5 | +3V3 |
-| 6 | INT_A → host `INT_A1` |
+| 6 | INT_A → host `INT_A2` (PA8 on the ASN-41 host) |
 | 7 | INT_B (unused) |
 | 8 | +5V (DRV8833 VM — stepper supply) |
 
