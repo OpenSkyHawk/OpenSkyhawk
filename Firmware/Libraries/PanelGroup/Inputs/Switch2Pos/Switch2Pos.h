@@ -85,11 +85,27 @@ public:
      */
     void configure() override;
 
-private:
+protected:
+    /**
+     * @brief Send the debounced state. The one hook a family member overrides.
+     *
+     * Default: one ControlPacket {controlId, active ? 1 : 0} on EVT_n, plus the [SW2] debug line.
+     * poll() calls it on a confirmed change; forceReport() calls it with init = true for the boot
+     * and SYNC_REQ baseline. SwitchWithCover2Pos overrides it to drive a cover/switch sequence
+     * instead of sending here (#293).
+     *
+     * @param active  confirmed switch state (true = active).
+     * @param init    true when this is the boot / SYNC_REQ baseline rather than a change.
+     */
+    virtual void emit(bool active, bool init);
+
     uint16_t _controlId;
     PinRef   _pin;
     bool     _reverse;          // true = active-HIGH (external pull-down required)
     bool     _lastConfirmed;    // last emitted state (true = active)
+
+private:
+    // Debounce internals stay private: a subclass only ever sees confirmed states.
     bool     _pendingRaw;       // raw reading at the last level change
     uint32_t _debounceStartMs;  // millis() when _pendingRaw last changed
     bool     _initialized;      // false until forceReport() is called; poll() no-op before this

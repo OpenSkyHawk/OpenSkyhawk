@@ -1,6 +1,6 @@
 # SwitchWithCover2Pos — Technical Specification
 
-**Status:** Ready for implementation (#293, Firmware v0.1.0) — `Switch2Pos` family member (D16). The A-4E-C uses it 0× (see below).
+**Status:** Implemented (#293, Firmware v0.1.0) — `Switch2Pos` family member (D16). Hardware run of the 4 envs pending. The A-4E-C uses it 0× (see below).
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md`, `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `Switch2Pos.md`, `PinRef.md`, `PanelGroup.md`
 
