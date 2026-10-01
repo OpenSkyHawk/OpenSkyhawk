@@ -2876,6 +2876,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-releases-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How releases work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#in-this-section" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4037,6 +4048,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-releases-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How releases work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#in-this-section" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4099,11 +4121,25 @@ install, claiming a NODE_ID, the PR process, and the
 <a href="https://github.com/OpenSkyhawk/OpenSkyhawk/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a>. The
 short version:</p>
 <ul>
-<li>Branch from <code>main</code> with a <code>feat/</code> <code>fix/</code> <code>chore/</code> <code>docs/</code> <code>ci/</code> prefix; one focused change per PR.</li>
+<li>Branch from <code>main</code> with a <code>feat/</code> <code>fix/</code> <code>chore/</code> <code>docs/</code> <code>ci/</code> <code>build/</code> prefix; one focused change per PR.</li>
+<li>Title the PR as a Conventional Commit, <code>type(scope): summary</code> — a required check enforces it.</li>
 <li>Firmware: <code>pio run</code> must compile. PCB: ERC clean (DRC clean for layout PRs).</li>
 <li><strong>CI must pass — never merge with failing checks.</strong></li>
 <li>Claim your <code>NODE_ID</code> in <code>Firmware/NODE_IDS.md</code> <em>before</em> starting firmware work.</li>
 </ul>
+<h2 id="how-releases-work">How releases work</h2>
+<ul>
+<li><strong>Your PR title matters.</strong> Write it as <code>type(scope): summary</code> — e.g.
+  <code>feat(firmware): add a dimmer output</code> or <code>fix(pcb): swap the TVS diode</code>. A required check fails
+  the PR if it isn't; the title becomes the line in the changelog.</li>
+<li><strong>Firmware releases itself.</strong> Each merge to <code>main</code> keeps a draft <em>"release firmware X.Y.Z"</em> pull
+  request up to date with the next version and its changelog. When a maintainer marks it ready
+  and merges it, the release is tagged and published — nothing for you to do.</li>
+<li><strong>Boards and the cockpit are released by hand.</strong> A board gets a version tag when it's sent to be
+  made; the whole cockpit gets a release once its boards have been tested together.</li>
+</ul>
+<p>Want the details? See <a href="conventions/#releases">Releases</a> and
+<a href="../architecture/design-decisions/#d10-versioning-one-repo-three-release-tracks">design decision D10</a>.</p>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><strong><a href="conventions/">Design Conventions</a></strong> — naming, NODE_IDs, wiring maps, CAD files, the rules that keep things consistent</li>

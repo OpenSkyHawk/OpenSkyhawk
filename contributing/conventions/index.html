@@ -4324,7 +4324,8 @@ reasons are <a href="../../architecture/design-decisions/#d10-versioning-one-rep
   <code>Firmware/CHANGELOG.md</code> entry, and every <code>library.json</code> bumped together. The PR stays a
   <strong>draft</strong> so it can't be merged by accident. <strong>Marking it ready and merging it is the
   release:</strong> it tags <code>firmware-vX.Y.Z</code> and publishes the GitHub Release. Don't edit the release
-  PR — the next push to <code>main</code> rebuilds it; reword notes on the published GitHub Release instead.</li>
+  PR — release-please rebuilds it from <code>main</code> whenever its contents change; reword notes on the
+  published GitHub Release instead.</li>
 <li>Only <code>feat</code>, <code>fix</code>, <code>perf</code>, and breaking changes under <code>Firmware/</code> move the version and appear
   in the changelog; <code>docs</code>, <code>chore</code>, <code>test</code> and the rest don't, and neither do commits that touch
   only <code>Firmware/ScratchPad/</code>.</li>
