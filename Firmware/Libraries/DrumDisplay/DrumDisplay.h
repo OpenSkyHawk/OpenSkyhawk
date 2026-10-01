@@ -316,8 +316,9 @@ private:
     const DrumReadout* _r;           // descriptor (not owned)
     I2cMux*            _mux;          // nullptr for direct-bus instances
     uint8_t            _channel;      // mux channel; ignored when _mux == nullptr
-    TwoWire*           _wire;         // direct-bus trunk for the probe; ignored when _mux != nullptr
-                                      // (TwoWire comes in via I2cMux.h -> Wire.h)
+    TwoWire*           _wire;         // the trunk this panel is on — the mux's bus when muxed,
+                                      // else the one given to the ctor (default Wire). Always
+                                      // set. (TwoWire comes in via I2cMux.h -> Wire.h)
     DrumFont           _font;         // current glyph size
     float              _xOffMm, _yOffMm;  // registration offset, mm (→ px via PX_PER_MM in fitGeometry)
 

@@ -61,6 +61,7 @@ DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
     : DrumDisplay(oled, readout, font, xOffsetMm, yOffsetMm) {
     _mux     = &mux;
     _channel = channel;
+    _wire    = &mux.bus();   // keep _wire truthful: the trunk is the mux's, not the default
 }
 
 // ── decode helpers ────────────────────────────────────────────────────────────
