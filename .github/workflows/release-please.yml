@@ -1,0 +1,93 @@
+name: Release
+
+# Firmware release track (design decision D10). On every push to main,
+# release-please keeps one release PR up to date: the next firmware version,
+# Firmware/CHANGELOG.md, and every Libraries/*/library.json bumped together.
+# Merging that PR tags firmware-vX.Y.Z and publishes the GitHub Release.
+#
+# The token is a fine-grained PAT (RELEASE_PLEASE_TOKEN), not GITHUB_TOKEN: a
+# PR opened with GITHUB_TOKEN never triggers pull_request workflows, so the
+# release PR would never get its required checks.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release-please
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    name: Release PR and tag
+    runs-on: ubuntu-latest
+    outputs:
+      firmware_released: ${{ steps.release.outputs['Firmware--release_created'] }}
+      firmware_tag: ${{ steps.release.outputs['Firmware--tag_name'] }}
+    steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  firmware-dependencies:
+    # Third-party versions are declared as ranges (^2.0.0, >=3.0.0), so
+    # record what a release actually resolved to rather than pinning them.
+    name: Record third-party versions
+    needs: release-please
+    if: needs.release-please.outputs.firmware_released == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ needs.release-please.outputs.firmware_tag }}
+    steps:
+      - name: Checkout the release tag
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PlatformIO
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install platformio
+
+      - name: Resolve and list packages
+        run: |
+          set -euo pipefail
+          # The three templates cover every board's dependencies;
+          # Tests/DrumDisplay adds U8g2, which no template uses.
+          projects=(
+            Firmware/Templates/SimGateway
+            Firmware/Templates/PanelBridge
+            Firmware/Templates/PanelGroup
+            Firmware/Tests/DrumDisplay
+          )
+          out="$RUNNER_TEMP/dependencies.txt"
+          echo "Third-party versions resolved for $TAG" > "$out"
+          for project in "${projects[@]}"; do
+            platformio pkg install -d "$project" > /dev/null
+            {
+              echo
+              echo "=== $project"
+              platformio pkg list -d "$project"
+            } >> "$out"
+          done
+
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" "$RUNNER_TEMP/dependencies.txt" --clobber

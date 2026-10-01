@@ -248,6 +248,70 @@ Full rules and the harness interface-class table: the
 
 ---
 
+## D10 — Versioning: one repo, three release tracks
+
+**Decision:** firmware, boards, and the cockpit as a whole each carry their **own version**,
+released on their own clock from this one repository. Docs follow `main` and are not versioned.
+
+| Track | Tag | Moves when |
+|---|---|---|
+| **Firmware** | `firmware-vX.Y.Z` | Automatically, from Conventional Commits under `Firmware/` |
+| **Board** | `pcb/<Board>-vX.Y.Z` | By hand, when that board is sent to fab |
+| **Cockpit hardware** | `hardware-vX.Y.Z` | By hand, when a set of boards has been brought up together |
+
+Why not the alternatives:
+
+- **One repo-wide version** — a silkscreen fix would bump the firmware version, and a firmware
+  fix would imply new boards.
+- **Firmware in its own repo** — the cleanest release story, but it loses the cross-layer PRs
+  (spec + firmware + docs in one change) the project relies on.
+
+**Rule: a version only counts once it is tagged.** A board's title-block revision on an
+unfinished board is the version it is *aiming* for, not a release.
+
+### Firmware
+
+- **One version for the whole library set.** The libraries ship together and share the CAN
+  wire format, so a mixed set has no meaning. Every `Firmware/Libraries/*/library.json` carries
+  the same version.
+- **[release-please](https://github.com/googleapis/release-please)** keeps a release PR open on
+  `main`, holding the next version, `Firmware/CHANGELOG.md`, and the `library.json` bumps.
+  Merging it tags the release. Commits that touch only `Firmware/ScratchPad/` (the spec) don't
+  count toward a release.
+- **Before 1.0, a breaking change bumps the minor** version; 1.0 freezes the sketch API and the
+  wire format.
+- The first release counts from the baseline tag `firmware-v0.0.0`, an annotated tag with no
+  GitHub Release, on the commit where the v0.1.0 work began.
+- Third-party libraries stay declared as version ranges; each release records the versions it
+  resolved to as a `dependencies.txt` release asset, rather than pinning them.
+
+### Boards
+
+- Each board keeps the semver already in its KiCad title block and its back-silk
+  `REVISION x.y.z` text ([Hardware Standards](../hardware/standards.md)).
+- A board is tagged **when it is ordered**, on the as-fabricated commit, with the fab order ID
+  in the annotated tag message. The tag records a fact: *this* is what was built.
+- Commits never bump a board — a revision is a human decision, made when the board is re-fabbed.
+
+### Cockpit hardware
+
+- One version for the **whole cockpit**, 0.x for a long time. Its release notes are a
+  **manifest**: every tagged board at its version, plus the minimum firmware version that
+  drives them.
+- Cut **only after bring-up passes** — where a board tag records what was built, a cockpit
+  release claims that these boards work together.
+- Changelogs come from [git-cliff](https://git-cliff.org), filtered by path between tags
+  (`PCB/` for the cockpit, a board's own folder for its notes). The first cockpit release is the
+  baseline; its notes are the manifest alone.
+- **Bumps while in 0.x:** *minor* for a board revision that changes a connector pinout, harness,
+  mounting, or the minimum firmware, or for a new board joining the cockpit; *patch* for a
+  compatible fix (BOM, silkscreen, protection — same pinouts).
+
+The hardware tooling (manifest, the git-cliff workflow, the per-board fab bundle) is tracked in
+[#305](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/305).
+
+---
+
 ## Related reading
 
 - [CAN Bus Protocol](can-bus.md) — the full frame ID table, `ControlPacket` wire format,

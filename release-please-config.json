@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    "Firmware": {
+      "release-type": "simple",
+      "component": "firmware",
+      "include-component-in-tag": true,
+      "bump-minor-pre-major": true,
+      "changelog-path": "CHANGELOG.md",
+      "exclude-paths": ["Firmware/ScratchPad"],
+      "extra-files": [
+        { "type": "json", "path": "Libraries/A4EC/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/CANProtocol/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/DrumDisplay/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/HIDControls/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/NodeStatus/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/PanelBridge/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/PanelGroup/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/STM32Board/library.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "Libraries/SimGateway/library.json", "jsonpath": "$.version" }
+      ]
+    }
+  }
+}
