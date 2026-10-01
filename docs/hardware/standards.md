@@ -73,8 +73,7 @@ everything else is fine on I²C-class. Key rules:
 - **The SPI bus is dedicated** — a '165's data output never tristates, so the bus is the
   shift chains' alone. Chains daisy without limit; capacity never needs a second bus.
 - **Standard pins:** SCK=PB3 · MISO=PB4 · MOSI=PB5 · LOAD=PB8 · LATCH=PB9 — one contiguous
-  header run with I²C1.
-- **I²C interrupts:** I²C1 on PB12/PB13, I²C2 on PA8/PA15.
+  header run with I²C1. I²C interrupt pins are assigned around it; see the reference below.
 
 Full rules, the measured numbers, and chip-placement guidance:
 `docs/_source/hardware-standards.md` (Shift-Register I/O section). Harness pinouts:
