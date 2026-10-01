@@ -1,9 +1,15 @@
 name: Release
 
-# Firmware release track (design decision D10). On every push to main,
-# release-please keeps one release PR up to date: the next firmware version,
-# Firmware/CHANGELOG.md, and every Libraries/*/library.json bumped together.
-# Merging that PR tags firmware-vX.Y.Z and publishes the GitHub Release.
+# Firmware and hardware release tracks (design decision D10). On every push to
+# main, release-please keeps one draft release PR per track up to date:
+#   firmware — commits under Firmware/: the next version, Firmware/CHANGELOG.md,
+#              and every Libraries/*/library.json bumped together;
+#   hardware — commits under PCB/: the next version, PCB/CHANGELOG.md, and
+#              `release:` in PCB/manifest.yaml.
+# Merging a release PR tags firmware-vX.Y.Z / hardware-vX.Y.Z and publishes the
+# GitHub Release. A follow-up job then adds what release-please can't know: the
+# third-party versions a firmware release resolved, or the boards a hardware
+# release contains.
 #
 # The token is a fine-grained PAT (RELEASE_PLEASE_TOKEN), not GITHUB_TOKEN: a
 # PR opened with GITHUB_TOKEN never triggers pull_request workflows, so the
@@ -28,6 +34,8 @@ jobs:
     outputs:
       firmware_released: ${{ steps.release.outputs['Firmware--release_created'] }}
       firmware_tag: ${{ steps.release.outputs['Firmware--tag_name'] }}
+      hardware_released: ${{ steps.release.outputs['PCB--release_created'] }}
+      hardware_tag: ${{ steps.release.outputs['PCB--tag_name'] }}
     steps:
       - name: Run release-please
         id: release
@@ -91,3 +99,48 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "$TAG" "$RUNNER_TEMP/dependencies.txt" --clobber
+
+  hardware-boards:
+    # release-please's changelog lists every PCB/ commit; this adds which
+    # boards the release contains, at which version, and what changed in each
+    # (from PCB/manifest.yaml).
+    name: Add the boards to the release notes
+    needs: release-please
+    if: needs.release-please.outputs.hardware_released == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ needs.release-please.outputs.hardware_tag }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # the full history and every tag
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install git-cliff and PyYAML
+        run: python -m pip install "git-cliff==2.14.2" "pyyaml>=6"
+
+      - name: Append the board notes
+        run: |
+          set -euo pipefail
+          body="$RUNNER_TEMP/body.md"
+          gh release view "$TAG" --json body -q .body > "$body"
+          { echo; python tools/hardware-release/release_notes.py "$TAG"; } >> "$body"
+          gh release edit "$TAG" --notes-file "$body"
+
+      - name: Keep Latest on firmware
+        # release-please marks every new release Latest; the badge belongs to
+        # the newest firmware release.
+        run: |
+          set -euo pipefail
+          latest="$(gh release list --limit 100 --json tagName -q '.[].tagName' | grep '^firmware-v' | sort -V | tail -1 || true)"
+          if [ -n "$latest" ]; then
+            gh release edit "$latest" --latest
+          fi

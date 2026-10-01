@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/firmware-v0.0.0...firmware-v0.1.0) (2026-10-01)
+## [0.1.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/625e581f...firmware-v0.1.0) (2026-10-01)
 
 
 ### Features

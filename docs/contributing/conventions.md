@@ -104,10 +104,10 @@ Do **not** add `Co-Authored-By:` trailers or AI-attribution signatures — see
 
 ## Releases
 
-Firmware, each board, and the cockpit as a whole are versioned separately — the model and its
-reasons are [design decision D10](../architecture/design-decisions.md#d10-versioning-one-repo-three-release-tracks).
+Firmware and hardware are versioned separately, both through release-please — the model and its
+reasons are [design decision D10](../architecture/design-decisions.md#d10-versioning-firmware-and-hardware-release-separately).
 
-- **Firmware** releases itself. On every push to `main`, release-please updates one open
+- **Firmware** releases itself. On every push to `main`, release-please updates one draft
   release PR (`chore(main): release firmware X.Y.Z`) with the next version, the
   `Firmware/CHANGELOG.md` entry, and every `library.json` bumped together. The PR stays a
   **draft** so it can't be merged by accident. **Marking it ready and merging it is the
@@ -119,9 +119,10 @@ reasons are [design decision D10](../architecture/design-decisions.md#d10-versio
   only `Firmware/ScratchPad/`.
 - **Adding a firmware library?** Add its `library.json` to `extra-files` in
   `release-please-config.json`, so its version moves with the rest.
-- **Boards and the cockpit** are released by hand, once they're ready: a board is tagged after it
-  has been built and verified, the cockpit after its boards are released. Their notes come from
-  the same commits, picked by the folders they touched — so mark a hardware break (a pinout,
-  harness, mounting or minimum-firmware change) with `!`: `feat(pcb)!: move J_SR to pin header`.
-  The tagging standard and release checklist are in `docs/_source/hardware-standards.md`
-  (*Releases*); the model is D10.
+- **Hardware** works the same way: commits under `PCB/` feed a draft `release hardware X.Y.Z` PR
+  (`PCB/CHANGELOG.md`, `release:` in `PCB/manifest.yaml`); merging it tags `hardware-vX.Y.Z`. What
+  you add by hand is the **manifest** — a board is listed there only once it has been built and
+  verified. Mark a hardware break (a pinout, harness, mounting or minimum-firmware change) with
+  `!`: `feat(pcb)!: move J_SR to pin header`. A commit touching both `Firmware/` and `PCB/` counts
+  for both releases. Standard and checklist: `docs/_source/hardware-standards.md` (*Releases*).
+- **Tags are only for releases.** release-please creates them; never tag by hand.

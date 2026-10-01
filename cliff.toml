@@ -1,11 +1,11 @@
-# git-cliff configuration for the hardware release track (design decision D10).
-# Firmware releases use release-please instead (release-please-config.json).
+# git-cliff configuration for the per-board sections of a hardware release's notes
+# (design decision D10). The releases themselves go through release-please, like firmware
+# (release-please-config.json); git-cliff only lists what changed in each board.
 #
-# The release workflow (.github/workflows/hardware-release.yml) runs it once per board,
-# over the range <previous board tag>..<this tag> with --include-path "<board folder>/**".
-# The workflow, not this template, adds the tag message (the fab order ID) and the
-# "Initial tagged revision" line, because a tag on a commit outside the board folder
-# is invisible to a path-filtered git-cliff.
+# tools/hardware-release/release_notes.py runs it once per board in a hardware release,
+# over <the board's previous release (or release-please's bootstrap-sha)>..<the commit the
+# boards were made from>, with --include-path "<board folder>/**". The script, not this
+# template, adds the board's order ID, errata and version.
 # Commit type picks the section; `!` (a pinout / harness / mounting / minimum-firmware
 # break) lists the change under Breaking changes.
 
