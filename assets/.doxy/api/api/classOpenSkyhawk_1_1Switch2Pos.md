@@ -17,6 +17,7 @@ _Debounced 2-position switch. Self-registers into_ [_**PanelGroup**_](namespaceP
 Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
+Inherited by the following classes: [OpenSkyhawk::SwitchWithCover2Pos](classOpenSkyhawk_1_1SwitchWithCover2Pos.md)
 
 
 
@@ -117,6 +118,14 @@ See [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
 
+## Protected Attributes
+
+| Type | Name |
+| ---: | :--- |
+|  uint16\_t | [**\_controlId**](#variable-_controlid)  <br> |
+|  bool | [**\_lastConfirmed**](#variable-_lastconfirmed)  <br> |
+|  [**PinRef**](classPinRef.md) | [**\_pin**](#variable-_pin)  <br> |
+|  bool | [**\_reverse**](#variable-_reverse)  <br> |
 
 
 
@@ -149,6 +158,11 @@ See [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
 
+## Protected Functions
+
+| Type | Name |
+| ---: | :--- |
+| virtual void | [**emit**](#function-emit) (bool active, bool init) <br>_Send the debounced state. The one hook a family member overrides._  |
 
 
 ## Protected Functions inherited from OpenSkyhawk::InputBase
@@ -328,6 +342,94 @@ Called by [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) during 
         
 Implements [*OpenSkyhawk::InputBase::poll*](classOpenSkyhawk_1_1InputBase.md#function-poll)
 
+
+<hr>
+## Protected Attributes Documentation
+
+
+
+
+### variable \_controlId 
+
+```C++
+uint16_t OpenSkyhawk::Switch2Pos::_controlId;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_lastConfirmed 
+
+```C++
+bool OpenSkyhawk::Switch2Pos::_lastConfirmed;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_pin 
+
+```C++
+PinRef OpenSkyhawk::Switch2Pos::_pin;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_reverse 
+
+```C++
+bool OpenSkyhawk::Switch2Pos::_reverse;
+```
+
+
+
+
+<hr>
+## Protected Functions Documentation
+
+
+
+
+### function emit 
+
+_Send the debounced state. The one hook a family member overrides._ 
+```C++
+virtual void OpenSkyhawk::Switch2Pos::emit (
+    bool active,
+    bool init
+) 
+```
+
+
+
+Default: one ControlPacket {controlId, active ? 1 : 0} on EVT\_n, plus the [SW2] debug line. [**poll()**](classOpenSkyhawk_1_1Switch2Pos.md#function-poll) calls it on a confirmed change; [**forceReport()**](classOpenSkyhawk_1_1Switch2Pos.md#function-forcereport) calls it with init = true for the boot and SYNC\_REQ baseline. [**SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md) overrides it to drive a cover/switch sequence instead of sending here (#293).
+
+
+
+
+**Parameters:**
+
+
+* `active` confirmed switch state (true = active). 
+* `init` true when this is the boot / SYNC\_REQ baseline rather than a change. 
+
+
+
+
+        
 
 <hr>
 

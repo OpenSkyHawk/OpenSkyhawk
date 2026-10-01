@@ -4,6 +4,7 @@
     <compoundname>Switch2Pos.h</compoundname>
     <includes refid="PanelGroup_8h" local="no">PanelGroup.h</includes>
     <includedby refid="Switch2Pos_8cpp" local="yes">Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</includedby>
+    <includedby refid="SwitchWithCover2Pos_8h" local="no">Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h</includedby>
     <includedby refid="OpenSkyhawk_8h" local="no">Firmware/Libraries/PanelGroup/OpenSkyhawk.h</includedby>
     <incdepgraph>
       <node id="11">
@@ -101,8 +102,22 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp</label>
+        <link refid="SwitchWithCover2Pos_8cpp"/>
       </node>
       <node id="3">
+        <label>Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h</label>
+        <link refid="SwitchWithCover2Pos_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
         <label>Firmware/Libraries/PanelGroup/OpenSkyhawk.h</label>
         <link refid="OpenSkyhawk_8h"/>
       </node>
@@ -142,19 +157,24 @@
 <codeline lineno="75"><highlight class="normal"></highlight></codeline>
 <codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520" kindref="member">configure</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="87"><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>_controlId;</highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/><sp/><sp/>_pin;</highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_reverse;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>true<sp/>=<sp/>active-HIGH<sp/>(external<sp/>pull-down<sp/>required)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_lastConfirmed;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>last<sp/>emitted<sp/>state<sp/>(true<sp/>=<sp/>active)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_pendingRaw;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>raw<sp/>reading<sp/>at<sp/>the<sp/>last<sp/>level<sp/>change</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>_debounceStartMs;<sp/><sp/></highlight><highlight class="comment">//<sp/>millis()<sp/>when<sp/>_pendingRaw<sp/>last<sp/>changed</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_initialized;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>false<sp/>until<sp/>forceReport()<sp/>is<sp/>called;<sp/>poll()<sp/>no-op<sp/>before<sp/>this</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="99"><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1aae82ede89d96b138b2d26a5fb0ff15a9" kindref="member">emit</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>active,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>init);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="classOpenSkyhawk_1_1Switch2Pos_1abbca2d12cc05962ee6c0c47abe36e036" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1abbca2d12cc05962ee6c0c47abe36e036" kindref="member">_controlId</ref>;</highlight></codeline>
+<codeline lineno="103" refid="classOpenSkyhawk_1_1Switch2Pos_1aa4b2ccac869d7e1d8475e991fb932dc0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1aa4b2ccac869d7e1d8475e991fb932dc0" kindref="member">_pin</ref>;</highlight></codeline>
+<codeline lineno="104" refid="classOpenSkyhawk_1_1Switch2Pos_1a2d9e5bf1cd831f34159b6886378b30c4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1a2d9e5bf1cd831f34159b6886378b30c4" kindref="member">_reverse</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>true<sp/>=<sp/>active-HIGH<sp/>(external<sp/>pull-down<sp/>required)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="classOpenSkyhawk_1_1Switch2Pos_1a680d5cb4f96707b9e90569f0c14815c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1Switch2Pos_1a680d5cb4f96707b9e90569f0c14815c8" kindref="member">_lastConfirmed</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>last<sp/>emitted<sp/>state<sp/>(true<sp/>=<sp/>active)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Debounce<sp/>internals<sp/>stay<sp/>private:<sp/>a<sp/>subclass<sp/>only<sp/>ever<sp/>sees<sp/>confirmed<sp/>states.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_pendingRaw;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>raw<sp/>reading<sp/>at<sp/>the<sp/>last<sp/>level<sp/>change</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>_debounceStartMs;<sp/><sp/></highlight><highlight class="comment">//<sp/>millis()<sp/>when<sp/>_pendingRaw<sp/>last<sp/>changed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>_initialized;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>false<sp/>until<sp/>forceReport()<sp/>is<sp/>called;<sp/>poll()<sp/>no-op<sp/>before<sp/>this</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h"/>
   </compounddef>

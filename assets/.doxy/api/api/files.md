@@ -71,6 +71,9 @@ Here is a list of all files with brief descriptions:
                 * **dir** [**SwitchMultiPos**](dir_4dc253f801dfeffbf99c560a0635ade6.md)     
                     * **file** [**SwitchMultiPos.cpp**](SwitchMultiPos_8cpp.md)     
                     * **file** [**SwitchMultiPos.h**](SwitchMultiPos_8h.md) _N-pin rotary selector switch for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+                * **dir** [**SwitchWithCover2Pos**](dir_0a1cdbbabc21d9a1747f90460cf2cff5.md)     
+                    * **file** [**SwitchWithCover2Pos.cpp**](SwitchWithCover2Pos_8cpp.md)     
+                    * **file** [**SwitchWithCover2Pos.h**](SwitchWithCover2Pos_8h.md) _Guarded 2-position switch — one pin drives the sim's cover and the switch under it._     
             * **dir** [**Outputs**](dir_529c528362a647a34d31d0b3b420ca72.md)     
                 * **dir** [**AnalogOutput**](dir_7be86be934beb3a22c91bb10ef55a8df.md)     
                     * **file** [**AnalogOutput.cpp**](AnalogOutput_8cpp.md) 

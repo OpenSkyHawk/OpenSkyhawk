@@ -19,6 +19,7 @@
 #include <Outputs/Dimmer/Dimmer.h>
 #include <Outputs/IntegerOutput/IntegerOutput.h>
 #include <Inputs/Switch2Pos/Switch2Pos.h>
+#include <Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h>
 #include <Inputs/Switch3Pos/Switch3Pos.h>
 #include <Inputs/SwitchMultiPos/SwitchMultiPos.h>
 #include <Inputs/AnalogMultiPos/AnalogMultiPos.h>

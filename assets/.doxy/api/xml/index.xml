@@ -540,6 +540,7 @@
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f" kind="function"><name>poll</name></member>
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891" kind="function"><name>forceReport</name></member>
     <member refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1Switch2Pos_1aae82ede89d96b138b2d26a5fb0ff15a9" kind="function"><name>emit</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1Switch3Pos" kind="class"><name>OpenSkyhawk::Switch3Pos</name>
     <member refid="classOpenSkyhawk_1_1Switch3Pos_1a68f1823d004b399fa249ba74274efbdb" kind="variable"><name>DEBOUNCE_MS</name></member>
@@ -559,6 +560,23 @@
     <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a877222668af46793a279a71dada6052a" kind="function"><name>configure</name></member>
     <member refid="classOpenSkyhawk_1_1SwitchMultiPos_1a3fcd22d73936b7632c855b048383f224" kind="function"><name>readRaw</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1SwitchWithCover2Pos" kind="class"><name>OpenSkyhawk::SwitchWithCover2Pos</name>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9" kind="enum"><name>Cover</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9a147e57e0085baf06ddb81c2e47263c43" kind="enumvalue"><name>OFF_CLOSED</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9abcb9bcf945ed88782e147e3ce02707d9" kind="enumvalue"><name>OFF_OPEN</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9ac155bab1776e326547a2ec28cfa6270d" kind="enumvalue"><name>ON_OPEN</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a01f4fe8f9a427e214aeaa1f590de14d2" kind="variable"><name>COVER_DELAY_MS</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a4d731abf0fa64049525c497527ad4332" kind="variable"><name>_coverId</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ad600a226656be348c85748c0e5addf44" kind="variable"><name>_state</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1aa6f599d5960ba2cde910d41de69df172" kind="variable"><name>_target</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1adf893b713f7b9b7148295cf27359690b" kind="variable"><name>_lastStepMs</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a9385c4fa236cb39289e413cb4073baf8" kind="function"><name>SwitchWithCover2Pos</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a1c80169785a7f82cf3690f43e3b68af4" kind="function"><name>poll</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ad323cf5de30d503e2ab3785596f7d0bd" kind="function"><name>emit</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a0cf965f9feb09b39cf7317de0b7fc72a" kind="function"><name>step</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ab12e3c86f2dd4db77899752c3aba80e0" kind="function"><name>sendCover</name></member>
+    <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a76d2778c0ca0af1dc58665fc9cf38243" kind="function"><name>sendSwitch</name></member>
+  </compound>
   <compound refid="structTxQueueEntry" kind="struct"><name>TxQueueEntry</name>
     <member refid="structTxQueueEntry_1aa218a9b070cfc094584bbfcf398b6f29" kind="variable"><name>canId</name></member>
     <member refid="structTxQueueEntry_1ac97d64f73e4b53529f3cb74ecf432d47" kind="variable"><name>len</name></member>
@@ -567,17 +585,17 @@
   </compound>
   <compound refid="namespace_0d10" kind="namespace"><name>@10</name>
   </compound>
-  <compound refid="namespace_0d51" kind="namespace"><name>@51</name>
+  <compound refid="namespace_0d53" kind="namespace"><name>@53</name>
   </compound>
-  <compound refid="namespace_0d57" kind="namespace"><name>@57</name>
-    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7a" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7aab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7aaa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7aa9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d59" kind="namespace"><name>@59</name>
+    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343ae" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343aeaa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343aea1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343aea03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
@@ -1696,6 +1714,10 @@
   </compound>
   <compound refid="SwitchMultiPos_8h" kind="file"><name>SwitchMultiPos.h</name>
   </compound>
+  <compound refid="SwitchWithCover2Pos_8cpp" kind="file"><name>SwitchWithCover2Pos.cpp</name>
+  </compound>
+  <compound refid="SwitchWithCover2Pos_8h" kind="file"><name>SwitchWithCover2Pos.h</name>
+  </compound>
   <compound refid="OpenSkyhawk_8h" kind="file"><name>OpenSkyhawk.h</name>
   </compound>
   <compound refid="AnalogOutput_8cpp" kind="file"><name>AnalogOutput.cpp</name>
@@ -1841,5 +1863,7 @@
   <compound refid="dir_344ec6ab1ff9af7411f07538fed6b206" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/Switch3Pos</name>
   </compound>
   <compound refid="dir_4dc253f801dfeffbf99c560a0635ade6" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/SwitchMultiPos</name>
+  </compound>
+  <compound refid="dir_0a1cdbbabc21d9a1747f90460cf2cff5" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos</name>
   </compound>
 </doxygenindex>

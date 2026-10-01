@@ -1,0 +1,406 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1SwitchWithCover2Pos" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::SwitchWithCover2Pos</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1Switch2Pos" prot="public" virt="non-virtual">OpenSkyhawk::Switch2Pos</basecompoundref>
+    <includes refid="SwitchWithCover2Pos_8h" local="no">SwitchWithCover2Pos.h</includes>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9" prot="private" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>Cover</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::Cover</qualifiedname>
+        <enumvalue id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9a147e57e0085baf06ddb81c2e47263c43" prot="private">
+          <name>OFF_CLOSED</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9abcb9bcf945ed88782e147e3ce02707d9" prot="private">
+          <name>OFF_OPEN</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9ac155bab1776e326547a2ec28cfa6270d" prot="private">
+          <name>ON_OPEN</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Sequence positions, in travel order. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="82" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" bodystart="82" bodyend="82"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a01f4fe8f9a427e214aeaa1f590de14d2" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t OpenSkyhawk::SwitchWithCover2Pos::COVER_DELAY_MS</definition>
+        <argsstring></argsstring>
+        <name>COVER_DELAY_MS</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::COVER_DELAY_MS</qualifiedname>
+        <initializer>= 200</initializer>
+        <briefdescription>
+<para>Minimum gap between the cover frame and the switch frame, ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="47" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a4d731abf0fa64049525c497527ad4332" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::SwitchWithCover2Pos::_coverId</definition>
+        <argsstring></argsstring>
+        <name>_coverId</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::_coverId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="88" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ad600a226656be348c85748c0e5addf44" prot="private" static="no" mutable="no">
+        <type>Cover</type>
+        <definition>Cover OpenSkyhawk::SwitchWithCover2Pos::_state</definition>
+        <argsstring></argsstring>
+        <name>_state</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::_state</qualifiedname>
+        <briefdescription>
+<para>where the sim is believed to be </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="89" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1aa6f599d5960ba2cde910d41de69df172" prot="private" static="no" mutable="no">
+        <type>Cover</type>
+        <definition>Cover OpenSkyhawk::SwitchWithCover2Pos::_target</definition>
+        <argsstring></argsstring>
+        <name>_target</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::_target</qualifiedname>
+        <briefdescription>
+<para>where the physical switch says it should be </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="90" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1adf893b713f7b9b7148295cf27359690b" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::SwitchWithCover2Pos::_lastStepMs</definition>
+        <argsstring></argsstring>
+        <name>_lastStepMs</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::_lastStepMs</qualifiedname>
+        <briefdescription>
+<para>millis() of the last frame sent by the sequencer </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="91" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a9385c4fa236cb39289e413cb4073baf8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::SwitchWithCover2Pos::SwitchWithCover2Pos</definition>
+        <argsstring>(uint16_t switchId, uint16_t coverId, PinRef pin, bool reverse=false)</argsstring>
+        <name>SwitchWithCover2Pos</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::SwitchWithCover2Pos</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>switchId</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>coverId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pin</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>reverse</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>Construct a guarded 2-position switch. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>switchId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* constant for the switch under the cover. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coverId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* constant for the cover itself (the generator already emits covers as their own control, e.g. AFCS_1N2_COVER). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="classPinRef" kindref="compound">PinRef</ref> for the one physical switch (GPIO or MCP23017). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>false (default): active-LOW, as <ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref>. true: active-HIGH. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="58" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp" bodystart="14" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a1c80169785a7f82cf3690f43e3b68af4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::SwitchWithCover2Pos::poll</definition>
+        <argsstring>() override</argsstring>
+        <name>poll</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::poll</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f">poll</reimplements>
+        <briefdescription>
+<para>Debounce through <ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref>, then advance the cover/switch sequence. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="61" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp" bodystart="35" bodyend="38"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ad323cf5de30d503e2ab3785596f7d0bd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::SwitchWithCover2Pos::emit</definition>
+        <argsstring>(bool active, bool init) override</argsstring>
+        <name>emit</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::emit</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1Switch2Pos_1aae82ede89d96b138b2d26a5fb0ff15a9">emit</reimplements>
+        <param>
+          <type>bool</type>
+          <declname>active</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+<para>Set the sequence target instead of sending. Called by <ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref> on a confirmed change, and with init = true for the boot / SYNC_REQ baseline. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>On init the machine is seeded at the opposite end of the travel so the sequencer re-asserts both frames in the correct order rather than only the one that changed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="78" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp" bodystart="22" bodyend="33"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a0cf965f9feb09b39cf7317de0b7fc72a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::SwitchWithCover2Pos::step</definition>
+        <argsstring>()</argsstring>
+        <name>step</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::step</qualifiedname>
+        <briefdescription>
+<para>advance one position toward _target when the delay elapsed </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="84" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp" bodystart="40" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ab12e3c86f2dd4db77899752c3aba80e0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::SwitchWithCover2Pos::sendCover</definition>
+        <argsstring>(bool open)</argsstring>
+        <name>sendCover</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::sendCover</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>open</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="85" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp" bodystart="57" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a76d2778c0ca0af1dc58665fc9cf38243" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::SwitchWithCover2Pos::sendSwitch</definition>
+        <argsstring>(bool on)</argsstring>
+        <name>sendSwitch</name>
+        <qualifiedname>OpenSkyhawk::SwitchWithCover2Pos::sendSwitch</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>on</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="86" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp" bodystart="67" bodyend="75"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Guarded switch — the DcsBios::SwitchWithCover2Pos equivalent. One physical switch pin drives two sim controls: the guard cover and the switch it protects. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The cover is <bold>not sensed</bold>. There is one switch on the panel, and this class sequences the pair so the sim&apos;s cover animates and any sim logic gated on the cover is satisfied:</para>
+<para><table rows="3" cols="3"><row>
+<entry thead="yes"><para>Physical switch   </para>
+</entry><entry thead="yes"><para>Frames, each COVER_DELAY_MS apart   </para>
+</entry><entry thead="yes"><para>End state    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>flips <bold>on</bold>   </para>
+</entry><entry thead="no"><para>cover <computeroutput>1</computeroutput> (open) → switch <computeroutput>1</computeroutput>   </para>
+</entry><entry thead="no"><para>cover open, switch on    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>flips <bold>off</bold>   </para>
+</entry><entry thead="no"><para>switch <computeroutput>0</computeroutput> → cover <computeroutput>0</computeroutput> (close)   </para>
+</entry><entry thead="no"><para>cover closed, switch off   </para>
+</entry></row>
+</table>
+</para>
+<para>States mirror DCS-BIOS — OFF_CLOSED → OFF_OPEN → ON_OPEN and back — and the 20 ms debounce comes from <ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref>. The sequencer steps from <ref refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a1c80169785a7f82cf3690f43e3b68af4" kindref="member">poll()</ref>, one frame at a time, and never calls delay(): a node blocking for 200 ms would stall every other control and the CAN drain with it. Flipping back mid-sequence simply retargets the machine, so it walks back the way it came.</para>
+<para>On boot and SYNC_REQ the settled pair is re-asserted in the same order (cover first when on, switch first when off). That is deliberately more than DCS-BIOS does — its reset re-sends nothing — because FirmwarePlan D5 requires every absolute input to be re-sent on sync: a missed input otherwise leaves DCS wrong until the control is next touched.</para>
+<para>Does <bold>not</bold> read a cover microswitch: a builder with a sensed cover wires it as its own <ref refid="classOpenSkyhawk_1_1Switch2Pos" kindref="compound">Switch2Pos</ref> on the cover&apos;s control. Does <bold>not</bold> cover 3-position guarded switches — the DCS-BIOS class is 2-position only, and the A-4E-C&apos;s one cover guards a 3-position switch the mod does not gate, so the A-4 build uses <ref refid="classOpenSkyhawk_1_1Switch3Pos" kindref="compound">Switch3Pos</ref> there. This class is for DCS-BIOS parity and other aircraft. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::Switch2Pos</label>
+        <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::SwitchWithCover2Pos</label>
+        <link refid="classOpenSkyhawk_1_1SwitchWithCover2Pos"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="5">
+        <label>ADS1115</label>
+        <link refid="classADS1115"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Adafruit_ADS1115</label>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="7">
+        <label>OpenSkyhawk::ShiftBus</label>
+        <link refid="classOpenSkyhawk_1_1ShiftBus"/>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::Switch2Pos</label>
+        <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>_pin</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::SwitchWithCover2Pos</label>
+        <link refid="classOpenSkyhawk_1_1SwitchWithCover2Pos"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PinRef</label>
+        <link refid="classPinRef"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>adc</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>bus</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" line="44" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h" bodystart="44" bodyend="92"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1abbca2d12cc05962ee6c0c47abe36e036" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a4d731abf0fa64049525c497527ad4332" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_coverId</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1a680d5cb4f96707b9e90569f0c14815c8" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_lastConfirmed</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1adf893b713f7b9b7148295cf27359690b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_lastStepMs</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1aa4b2ccac869d7e1d8475e991fb932dc0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_pin</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1a2d9e5bf1cd831f34159b6886378b30c4" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_reverse</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ad600a226656be348c85748c0e5addf44" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_state</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1aa6f599d5960ba2cde910d41de69df172" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>_target</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520" prot="public" virt="virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a5e9983a4da72eae246acfeec1fe9bfa9" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>Cover</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a01f4fe8f9a427e214aeaa1f590de14d2" prot="public" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>COVER_DELAY_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1af04a08b30176de7081fae6a2f3cc41a8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>DEBOUNCE_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ad323cf5de30d503e2ab3785596f7d0bd" prot="protected" virt="virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>emit</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891" prot="public" virt="virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a1c80169785a7f82cf3690f43e3b68af4" prot="public" virt="virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1addb3ef7b8d33fee0bcdd6db53f504040" prot="public" virt="virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>sampleTick</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ab12e3c86f2dd4db77899752c3aba80e0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>sendCover</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a76d2778c0ca0af1dc58665fc9cf38243" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>sendSwitch</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a0cf965f9feb09b39cf7317de0b7fc72a" prot="private" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>step</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1aa29dc746406d59421dbcaddc243e1d19" prot="public" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>Switch2Pos</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1aa78218d9fb2065db0dc5fd01bc9ad30a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>Switch2Pos</name></member>
+      <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a9385c4fa236cb39289e413cb4073baf8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::SwitchWithCover2Pos</scope><name>SwitchWithCover2Pos</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

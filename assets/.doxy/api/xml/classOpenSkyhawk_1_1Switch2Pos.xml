@@ -3,6 +3,7 @@
   <compounddef id="classOpenSkyhawk_1_1Switch2Pos" kind="class" language="C++" prot="public">
     <compoundname>OpenSkyhawk::Switch2Pos</compoundname>
     <basecompoundref refid="classOpenSkyhawk_1_1InputBase" prot="public" virt="non-virtual">OpenSkyhawk::InputBase</basecompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1SwitchWithCover2Pos" prot="public" virt="non-virtual">OpenSkyhawk::SwitchWithCover2Pos</derivedcompoundref>
     <includes refid="Switch2Pos_8h" local="no">Switch2Pos.h</includes>
     <sectiondef kind="public-static-attrib">
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1af04a08b30176de7081fae6a2f3cc41a8" prot="public" static="yes" constexpr="yes" mutable="no">
@@ -21,8 +22,8 @@
         <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="36" column="31" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="36" bodyend="-1"/>
       </memberdef>
     </sectiondef>
-    <sectiondef kind="private-attrib">
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1abbca2d12cc05962ee6c0c47abe36e036" prot="private" static="no" mutable="no">
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1abbca2d12cc05962ee6c0c47abe36e036" prot="protected" static="no" mutable="no">
         <type>uint16_t</type>
         <definition>uint16_t OpenSkyhawk::Switch2Pos::_controlId</definition>
         <argsstring></argsstring>
@@ -34,9 +35,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="89" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="89" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="102" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="102" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1aa4b2ccac869d7e1d8475e991fb932dc0" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1aa4b2ccac869d7e1d8475e991fb932dc0" prot="protected" static="no" mutable="no">
         <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
         <definition>PinRef OpenSkyhawk::Switch2Pos::_pin</definition>
         <argsstring></argsstring>
@@ -48,9 +49,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="90" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="90" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="103" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="103" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1a2d9e5bf1cd831f34159b6886378b30c4" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1a2d9e5bf1cd831f34159b6886378b30c4" prot="protected" static="no" mutable="no">
         <type>bool</type>
         <definition>bool OpenSkyhawk::Switch2Pos::_reverse</definition>
         <argsstring></argsstring>
@@ -62,9 +63,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="91" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="91" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="104" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="104" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1a680d5cb4f96707b9e90569f0c14815c8" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1a680d5cb4f96707b9e90569f0c14815c8" prot="protected" static="no" mutable="no">
         <type>bool</type>
         <definition>bool OpenSkyhawk::Switch2Pos::_lastConfirmed</definition>
         <argsstring></argsstring>
@@ -76,8 +77,10 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="92" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="92" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="105" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="105" bodyend="-1"/>
       </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1a07321f9f72cf7c85dc2b15b103d1a823" prot="private" static="no" mutable="no">
         <type>bool</type>
         <definition>bool OpenSkyhawk::Switch2Pos::_pendingRaw</definition>
@@ -90,7 +93,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="93" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="93" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="109" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="109" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1a168347970026c2f7a9382fed4def277b" prot="private" static="no" mutable="no">
         <type>uint32_t</type>
@@ -104,7 +107,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="94" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="94" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="110" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="110" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Switch2Pos_1ac58d4ae002a7a9bcd3dbb018fc2c9aeb" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -118,7 +121,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="95" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="95" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="111" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="111" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -224,6 +227,7 @@
         <name>poll</name>
         <qualifiedname>OpenSkyhawk::Switch2Pos::poll</qualifiedname>
         <reimplements refid="classOpenSkyhawk_1_1InputBase_1abe4599c9fd224766d742761261391b45">poll</reimplements>
+        <reimplementedby refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a1c80169785a7f82cf3690f43e3b68af4">poll</reimplementedby>
         <briefdescription>
 <para>Read current pin state, apply debounce, emit EVT if confirmed state changed. </para>
         </briefdescription>
@@ -232,7 +236,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="66" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp" bodystart="45" bodyend="64"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="66" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp" bodystart="51" bodyend="64"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -249,7 +253,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="74" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp" bodystart="30" bodyend="43"/>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="74" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp" bodystart="42" bodyend="49"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -272,6 +276,51 @@
         <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="86" column="10" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp" bodystart="26" bodyend="28"/>
       </memberdef>
     </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Switch2Pos_1aae82ede89d96b138b2d26a5fb0ff15a9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::Switch2Pos::emit</definition>
+        <argsstring>(bool active, bool init)</argsstring>
+        <name>emit</name>
+        <qualifiedname>OpenSkyhawk::Switch2Pos::emit</qualifiedname>
+        <reimplementedby refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ad323cf5de30d503e2ab3785596f7d0bd">emit</reimplementedby>
+        <param>
+          <type>bool</type>
+          <declname>active</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+<para>Send the debounced state. The one hook a family member overrides. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Default: one ControlPacket {controlId, active ? 1 : 0} on EVT_n, plus the [SW2] debug line. <ref refid="classOpenSkyhawk_1_1Switch2Pos_1a678c017bf049459445851b5d3e9cf84f" kindref="member">poll()</ref> calls it on a confirmed change; <ref refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891" kindref="member">forceReport()</ref> calls it with init = true for the boot and SYNC_REQ baseline. <ref refid="classOpenSkyhawk_1_1SwitchWithCover2Pos" kindref="compound">SwitchWithCover2Pos</ref> overrides it to drive a cover/switch sequence instead of sending here (#293).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>active</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>confirmed switch state (true = active). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>init</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true when this is the boot / SYNC_REQ baseline rather than a change. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="100" column="18" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp" bodystart="30" bodyend="40"/>
+      </memberdef>
+    </sectiondef>
     <briefdescription>
 <para>Debounced 2-position switch. Self-registers into <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>&apos;s <ref refid="classOpenSkyhawk_1_1InputBase" kindref="compound">InputBase</ref> list. </para>
     </briefdescription>
@@ -292,30 +341,63 @@
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
+      <node id="3">
+        <label>OpenSkyhawk::SwitchWithCover2Pos</label>
+        <link refid="classOpenSkyhawk_1_1SwitchWithCover2Pos"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
     </inheritancegraph>
     <collaborationgraph>
+      <node id="4">
+        <label>ADS1115</label>
+        <link refid="classADS1115"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Adafruit_ADS1115</label>
+      </node>
       <node id="2">
         <label>OpenSkyhawk::InputBase</label>
         <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+      <node id="6">
+        <label>OpenSkyhawk::ShiftBus</label>
+        <link refid="classOpenSkyhawk_1_1ShiftBus"/>
       </node>
       <node id="1">
         <label>OpenSkyhawk::Switch2Pos</label>
         <link refid="classOpenSkyhawk_1_1Switch2Pos"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>_pin</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PinRef</label>
+        <link refid="classPinRef"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>adc</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>bus</edgelabel>
+        </childnode>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="34" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="34" bodyend="96"/>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" line="34" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.h" bodystart="34" bodyend="112"/>
     <listofallmembers>
-      <member refid="classOpenSkyhawk_1_1Switch2Pos_1abbca2d12cc05962ee6c0c47abe36e036" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_controlId</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1abbca2d12cc05962ee6c0c47abe36e036" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_controlId</name></member>
       <member refid="classOpenSkyhawk_1_1Switch2Pos_1a168347970026c2f7a9382fed4def277b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_debounceStartMs</name></member>
       <member refid="classOpenSkyhawk_1_1Switch2Pos_1ac58d4ae002a7a9bcd3dbb018fc2c9aeb" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_initialized</name></member>
-      <member refid="classOpenSkyhawk_1_1Switch2Pos_1a680d5cb4f96707b9e90569f0c14815c8" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_lastConfirmed</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1a680d5cb4f96707b9e90569f0c14815c8" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_lastConfirmed</name></member>
       <member refid="classOpenSkyhawk_1_1Switch2Pos_1a07321f9f72cf7c85dc2b15b103d1a823" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_pendingRaw</name></member>
-      <member refid="classOpenSkyhawk_1_1Switch2Pos_1aa4b2ccac869d7e1d8475e991fb932dc0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_pin</name></member>
-      <member refid="classOpenSkyhawk_1_1Switch2Pos_1a2d9e5bf1cd831f34159b6886378b30c4" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_reverse</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1aa4b2ccac869d7e1d8475e991fb932dc0" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_pin</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1a2d9e5bf1cd831f34159b6886378b30c4" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>_reverse</name></member>
       <member refid="classOpenSkyhawk_1_1Switch2Pos_1af59f54b2d018698feab3072fd771f520" prot="public" virt="virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>configure</name></member>
       <member refid="classOpenSkyhawk_1_1Switch2Pos_1af04a08b30176de7081fae6a2f3cc41a8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>DEBOUNCE_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1Switch2Pos_1aae82ede89d96b138b2d26a5fb0ff15a9" prot="protected" virt="virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>emit</name></member>
       <member refid="classOpenSkyhawk_1_1Switch2Pos_1a2ee0d4efaba371adfc8e795bd760a891" prot="public" virt="virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>forceReport</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>head</name></member>
       <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::Switch2Pos</scope><name>InputBase</name></member>

@@ -3946,6 +3946,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#protected-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#protected-functions-inherited-from-openskyhawkinputbase" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4067,6 +4089,95 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#protected-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protected Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-_controlid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _controlId
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_lastconfirmed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _lastConfirmed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_pin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _pin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_reverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _reverse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protected Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-emit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function emit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4094,6 +4205,7 @@
 <li><code>#include &lt;Switch2Pos.h&gt;</code></li>
 </ul>
 <p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
+<p>Inherited by the following classes: <a href="../classOpenSkyhawk_1_1SwitchWithCover2Pos/">OpenSkyhawk::SwitchWithCover2Pos</a></p>
 <h2 id="public-static-attributes">Public Static Attributes</h2>
 <table>
 <thead>
@@ -4188,6 +4300,48 @@
 </tr>
 </tbody>
 </table>
+<h2 id="protected-attributes">Protected Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#variable-_controlid"><strong>_controlId</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_lastconfirmed"><strong>_lastConfirmed</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../classPinRef/"><strong>PinRef</strong></a></td>
+<td style="text-align: left;"><a href="#variable-_pin"><strong>_pin</strong></a>  <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_reverse"><strong>_reverse</strong></a>  <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="protected-functions">Protected Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">virtual void</td>
+<td style="text-align: left;"><a href="#function-emit"><strong>emit</strong></a> (bool active, bool init) <br><em>Send the debounced state. The one hook a family member overrides.</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="protected-functions-inherited-from-openskyhawkinputbase">Protected Functions inherited from OpenSkyhawk::InputBase</h2>
 <p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
 <table>
@@ -4270,6 +4424,41 @@
 </code></pre>
 <p>Called by <a href="../namespacePanelGroup/#function-loop"><strong>PanelGroup::loop()</strong></a> during normal operation. No-op until <a href="./#function-forcereport"><strong>forceReport()</strong></a> has been called at least once. </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><em>OpenSkyhawk::InputBase::poll</em></a></p>
+<hr>
+<h2 id="protected-attributes-documentation">Protected Attributes Documentation</h2>
+<h3 id="variable-_controlid">variable _controlId</h3>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::Switch2Pos::_controlId;
+</code></pre>
+<hr>
+
+<h3 id="variable-_lastconfirmed">variable _lastConfirmed</h3>
+<pre><code class="language-C++">bool OpenSkyhawk::Switch2Pos::_lastConfirmed;
+</code></pre>
+<hr>
+
+<h3 id="variable-_pin">variable _pin</h3>
+<pre><code class="language-C++">PinRef OpenSkyhawk::Switch2Pos::_pin;
+</code></pre>
+<hr>
+
+<h3 id="variable-_reverse">variable _reverse</h3>
+<pre><code class="language-C++">bool OpenSkyhawk::Switch2Pos::_reverse;
+</code></pre>
+<hr>
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+<h3 id="function-emit">function emit</h3>
+<p><em>Send the debounced state. The one hook a family member overrides.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::Switch2Pos::emit (
+    bool active,
+    bool init
+) 
+</code></pre>
+<p>Default: one ControlPacket {controlId, active ? 1 : 0} on EVT_n, plus the [SW2] debug line. <a href="./#function-poll"><strong>poll()</strong></a> calls it on a confirmed change; <a href="./#function-forcereport"><strong>forceReport()</strong></a> calls it with init = true for the boot and SYNC_REQ baseline. <a href="../classOpenSkyhawk_1_1SwitchWithCover2Pos/"><strong>SwitchWithCover2Pos</strong></a> overrides it to drive a cover/switch sequence instead of sending here (#293).</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>active</code> confirmed switch state (true = active). </li>
+<li><code>init</code> true when this is the boot / SYNC_REQ baseline rather than a change. </li>
+</ul>
 <hr>
 
 <hr />

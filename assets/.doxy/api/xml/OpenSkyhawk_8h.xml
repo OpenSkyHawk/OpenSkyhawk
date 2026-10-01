@@ -11,6 +11,7 @@
     <includes refid="Dimmer_8h" local="no">Outputs/Dimmer/Dimmer.h</includes>
     <includes refid="IntegerOutput_8h" local="no">Outputs/IntegerOutput/IntegerOutput.h</includes>
     <includes refid="Switch2Pos_8h" local="no">Inputs/Switch2Pos/Switch2Pos.h</includes>
+    <includes refid="SwitchWithCover2Pos_8h" local="no">Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h</includes>
     <includes refid="Switch3Pos_8h" local="no">Inputs/Switch3Pos/Switch3Pos.h</includes>
     <includes refid="SwitchMultiPos_8h" local="no">Inputs/SwitchMultiPos/SwitchMultiPos.h</includes>
     <includes refid="AnalogMultiPos_8h" local="no">Inputs/AnalogMultiPos/AnalogMultiPos.h</includes>
@@ -22,11 +23,11 @@
     <includes refid="A4EC__CmdIds_8h" local="no">A4EC_CmdIds.h</includes>
     <includes refid="A4EC__OutputIds_8h" local="no">A4EC_OutputIds.h</includes>
     <incdepgraph>
-      <node id="34">
+      <node id="35">
         <label>A4EC_CmdIds.h</label>
         <link refid="A4EC__CmdIds_8h"/>
       </node>
-      <node id="35">
+      <node id="36">
         <label>A4EC_OutputIds.h</label>
         <link refid="A4EC__OutputIds_8h"/>
       </node>
@@ -78,45 +79,45 @@
         <childnode refid="14" relation="include">
         </childnode>
       </node>
-      <node id="33">
+      <node id="34">
         <label>Inputs/ActionButton/ActionButton.h</label>
         <link refid="ActionButton_8h"/>
         <childnode refid="7" relation="include">
         </childnode>
       </node>
-      <node id="29">
+      <node id="30">
         <label>Inputs/AnalogInput/AnalogInput.h</label>
         <link refid="AnalogInput_8h"/>
         <childnode refid="7" relation="include">
         </childnode>
       </node>
-      <node id="28">
+      <node id="29">
         <label>Inputs/AnalogMultiPos/AnalogMultiPos.h</label>
         <link refid="AnalogMultiPos_8h"/>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="26" relation="include">
+        <childnode refid="27" relation="include">
         </childnode>
       </node>
-      <node id="30">
+      <node id="31">
         <label>Inputs/AngleSensorInput/AngleSensorInput.h</label>
         <link refid="AngleSensorInput_8h"/>
-        <childnode refid="29" relation="include">
+        <childnode refid="30" relation="include">
         </childnode>
       </node>
-      <node id="26">
+      <node id="27">
         <label>Inputs/MultiPosInput/MultiPosInput.h</label>
         <link refid="MultiPosInput_8h"/>
         <childnode refid="7" relation="include">
         </childnode>
       </node>
-      <node id="32">
+      <node id="33">
         <label>Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h</label>
         <link refid="RotaryAcceleratedEncoder_8h"/>
-        <childnode refid="31" relation="include">
+        <childnode refid="32" relation="include">
         </childnode>
       </node>
-      <node id="31">
+      <node id="32">
         <label>Inputs/RotaryEncoder/RotaryEncoder.h</label>
         <link refid="RotaryEncoder_8h"/>
         <childnode refid="7" relation="include">
@@ -128,20 +129,26 @@
         <childnode refid="7" relation="include">
         </childnode>
       </node>
-      <node id="25">
+      <node id="26">
         <label>Inputs/Switch3Pos/Switch3Pos.h</label>
         <link refid="Switch3Pos_8h"/>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="26" relation="include">
+        <childnode refid="27" relation="include">
         </childnode>
       </node>
-      <node id="27">
+      <node id="28">
         <label>Inputs/SwitchMultiPos/SwitchMultiPos.h</label>
         <link refid="SwitchMultiPos_8h"/>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="26" relation="include">
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h</label>
+        <link refid="SwitchWithCover2Pos_8h"/>
+        <childnode refid="24" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -167,7 +174,7 @@
         </childnode>
         <childnode refid="25" relation="include">
         </childnode>
-        <childnode refid="27" relation="include">
+        <childnode refid="26" relation="include">
         </childnode>
         <childnode refid="28" relation="include">
         </childnode>
@@ -184,6 +191,8 @@
         <childnode refid="34" relation="include">
         </childnode>
         <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
         </childnode>
       </node>
       <node id="21">
@@ -295,16 +304,17 @@
 <codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Dimmer_8h" kindref="compound">Outputs/Dimmer/Dimmer.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="IntegerOutput_8h" kindref="compound">Outputs/IntegerOutput/IntegerOutput.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch2Pos_8h" kindref="compound">Inputs/Switch2Pos/Switch2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch3Pos_8h" kindref="compound">Inputs/Switch3Pos/Switch3Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SwitchMultiPos_8h" kindref="compound">Inputs/SwitchMultiPos/SwitchMultiPos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AnalogMultiPos_8h" kindref="compound">Inputs/AnalogMultiPos/AnalogMultiPos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AnalogInput_8h" kindref="compound">Inputs/AnalogInput/AnalogInput.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AngleSensorInput_8h" kindref="compound">Inputs/AngleSensorInput/AngleSensorInput.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RotaryEncoder_8h" kindref="compound">Inputs/RotaryEncoder/RotaryEncoder.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RotaryAcceleratedEncoder_8h" kindref="compound">Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ActionButton_8h" kindref="compound">Inputs/ActionButton/ActionButton.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SwitchWithCover2Pos_8h" kindref="compound">Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="Switch3Pos_8h" kindref="compound">Inputs/Switch3Pos/Switch3Pos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="SwitchMultiPos_8h" kindref="compound">Inputs/SwitchMultiPos/SwitchMultiPos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AnalogMultiPos_8h" kindref="compound">Inputs/AnalogMultiPos/AnalogMultiPos.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AnalogInput_8h" kindref="compound">Inputs/AnalogInput/AnalogInput.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="AngleSensorInput_8h" kindref="compound">Inputs/AngleSensorInput/AngleSensorInput.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RotaryEncoder_8h" kindref="compound">Inputs/RotaryEncoder/RotaryEncoder.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="RotaryAcceleratedEncoder_8h" kindref="compound">Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="ActionButton_8h" kindref="compound">Inputs/ActionButton/ActionButton.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__CmdIds_8h" kindref="compound">A4EC_CmdIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="A4EC__OutputIds_8h" kindref="compound">A4EC_OutputIds.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PanelGroup/OpenSkyhawk.h"/>
   </compounddef>

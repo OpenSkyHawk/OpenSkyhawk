@@ -3941,19 +3941,25 @@ void Switch2Pos::configure() {
     _pin.configureAsInput();
 }
 
+void Switch2Pos::emit(bool active, bool init) {
+    CANProtocol::sendBatched(canIdEvt(NODE_ID),
+                             ControlPacket{_controlId, static_cast&lt;uint16_t&gt;(active ? 1u : 0u)});
+    if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[SW2] 0x&quot;)); d.print(_controlId, HEX);
+        d.print(F(&quot;: &quot;)); d.print(active ? 1 : 0);
+        if (init) d.print(F(&quot; (init)&quot;));
+        d.println();
+    }
+}
+
 void Switch2Pos::forceReport() {
     bool current     = _reverse ? _pin.read() : !_pin.read();
     _lastConfirmed   = current;
     _pendingRaw      = current;
     _debounceStartMs = millis();
     _initialized     = true;
-    CANProtocol::sendBatched(canIdEvt(NODE_ID),
-                             ControlPacket{_controlId, static_cast&lt;uint16_t&gt;(current ? 1u : 0u)});
-    if (STM32Board::isDebug()) {
-        auto&amp; d = STM32Board::diagSerial();
-        d.print(F(&quot;[SW2] 0x&quot;)); d.print(_controlId, HEX);
-        d.print(F(&quot;: &quot;)); d.print(current ? 1 : 0); d.println(F(&quot; (init)&quot;));
-    }
+    emit(current, /*init=*/true);
 }
 
 void Switch2Pos::poll() {
@@ -3967,13 +3973,7 @@ void Switch2Pos::poll() {
     } else if (_pendingRaw != _lastConfirmed &amp;&amp;
                millis() - _debounceStartMs &gt;= DEBOUNCE_MS) {
         _lastConfirmed = _pendingRaw;
-        if (STM32Board::isDebug()) {
-            auto&amp; d = STM32Board::diagSerial();
-            d.print(F(&quot;[SW2] 0x&quot;)); d.print(_controlId, HEX);
-            d.print(F(&quot;: &quot;)); d.println(_pendingRaw ? 1 : 0);
-        }
-        CANProtocol::sendBatched(canIdEvt(NODE_ID),
-                                 ControlPacket{_controlId, static_cast&lt;uint16_t&gt;(_lastConfirmed ? 1u : 0u)});
+        emit(_lastConfirmed, /*init=*/false);
     }
 }
 

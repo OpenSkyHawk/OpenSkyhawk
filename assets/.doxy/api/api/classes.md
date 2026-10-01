@@ -140,6 +140,8 @@
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
 ## t
