@@ -31,7 +31,14 @@ namespace OpenSkyhawk {
  * centre and travel into the base's [minRaw, maxRaw] window, and readRaw() re-centres every
  * reading so the centre angle lands at mid-scale. Unsigned arithmetic wraps for free, which is
  * what makes a travel spanning 0°/360° (say 340°→40°) behave like any other — no rotating the
- * magnet mount to dodge the seam. Only travel wider than ±180° remains ambiguous.
+ * magnet mount to dodge the seam.
+ *
+ * **The seam does not disappear, it moves opposite the centre.** A single-turn absolute sensor
+ * reads the same angle at both ends of a full turn, so the circle cannot map onto a line without
+ * one break; re-centring puts that break as far from the knob's centre as possible. Travel is
+ * therefore up to *just under* a full turn: at exactly 360° the two ends would be the same sensor
+ * angle, and the output would jump full-scale there. A knob that genuinely rotates without end
+ * needs different semantics (turn counting, or a relative mode) and is not this class.
  *
  * Resolution note: the analog output is coarser than the chip's I²C register and picks up ADC
  * noise — fine for a gunsight or reticle knob. The AS5600's ZPOS/MPOS can narrow its output span
@@ -50,7 +57,10 @@ public:
      * @param pin        analog PinRef for the sensor's output (STM32 ADC pin or ADS1115 channel).
      * @param centerDeg  sensor angle at the knob's centre position. Wraps, so 370 == 10.
      * @param travelDeg  total mechanical travel, centred on centerDeg: the knob spans
-     *                   centerDeg ± travelDeg/2. Clamped to (0, 360].
+     *                   centerDeg ± travelDeg/2. Clamped to (0, 360) — up to just under a full
+     *                   turn, because the ends of a full turn are one sensor angle. The wrap
+     *                   point sits opposite centerDeg, so the closer travel comes to 360° the
+     *                   nearer that break sits to the ends of travel.
      * @param pollMs     min interval between ADC reads, ms (default DEFAULT_POLL_MS). Per
      *                   instance; an ADS1115 PinRef blocks ~8 ms per conversion regardless.
      */

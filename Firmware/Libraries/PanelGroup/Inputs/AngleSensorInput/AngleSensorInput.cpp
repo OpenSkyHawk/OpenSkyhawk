@@ -17,7 +17,13 @@ uint16_t degToCounts(float deg) {
     return (uint16_t)(uint32_t)(wrapped * AngleSensorInput::COUNTS_PER_DEG);
 }
 
-/** @brief Half the travel in counts, clamped so the window stays inside the 16-bit range. */
+/**
+ * @brief Half the travel in counts, clamped so the window stays inside the 16-bit range.
+ *
+ * The 32767 cap is what keeps travel just under a full turn: at exactly 360° both ends of the
+ * travel are the same sensor angle, so the output would jump full-scale at the wrap point. That
+ * point sits opposite the centre angle (see the class doc) — it cannot be removed, only placed.
+ */
 uint16_t halfSpanCounts(float travelDeg) {
     if (!(travelDeg > 0.0f)) travelDeg = 1.0f;             // also catches NaN
     if (travelDeg > 360.0f)  travelDeg = 360.0f;

@@ -12,7 +12,8 @@ member (D16)
 ## Responsibility
 
 `AngleSensorInput : AnalogInput` — a magnetic angle sensor (AS5600 / MT6701) as an **absolute**
-knob or axis. No wiper wear and a full 360° mechanical range, where a pot stops at ~270°. Intended
+knob or axis. No wiper wear, and the sensor reads a full 360° where a pot stops at ~270° (usable
+travel is just under a turn — see the seam note below). Intended
 for absolute DCS-BIOS knobs such as `GUNSIGHT_KNB` (gunsight elevation) and `RADAR_RETICLE`.
 Flight-control axes use linear Hall sensors on plain `AnalogInput` (#278).
 
@@ -42,8 +43,15 @@ base call. `configure()` is inherited unchanged (`_pin.configureAsInput()`).
   reading the pin itself. **No base member becomes `protected`:** the subclass's `readRaw()` is
   `AnalogInput::readRaw()` plus a re-centre, so it touches no base state — the smaller surface.
 - `AngleSensorInput::readRaw()` calls `AnalogInput::readRaw()` and **re-centres** the value so
-  `centerDeg` lands at mid-scale (32768). The 0°/360° seam then only matters for travel wider than
-  ±180°, which removes the old "rotate the magnet mount" constraint.
+  `centerDeg` lands at mid-scale (32768), which removes the old "rotate the magnet mount"
+  constraint — a travel straddling 0°/360° is contiguous like any other.
+- **The seam moves, it does not vanish.** A single-turn absolute sensor reads one angle at both
+  ends of a full turn, so the circle cannot map onto a line without a break; re-centring puts that
+  break opposite `centerDeg`, as far from the knob's centre as it goes. `travelDeg` is therefore
+  **(0, 360)** — up to just under a full turn. At exactly 360° both ends are the same sensor angle
+  and the output would jump full-scale at the break (the `halfSpanCounts()` 32767 cap keeps the
+  window just inside that). Continuous rotation needs other semantics — turn counting or a
+  relative mode — and is not this class.
 - The public `AnalogInput` constructor and behaviour are unchanged, so existing sketches and the
   eight `Firmware/Tests/AnalogInput` envs are unaffected. Cost: one virtual call per read.
 
