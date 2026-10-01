@@ -191,7 +191,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 |---|---|---|
 | `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:85` |
 | `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:90` |
-| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:246` |
+| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:258` |
 | `LED_TEST` | LED | `Outputs/LED/LED.h:68` |
 | `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:60` |
 | `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:78` |

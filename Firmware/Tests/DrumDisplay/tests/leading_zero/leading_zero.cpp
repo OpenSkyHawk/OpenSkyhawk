@@ -25,7 +25,7 @@ static const DrumSource CH_SRC[] = {
     { ADDR_TENS,  0xFFFF, 1, 1 },
 };
 static uint16_t digitVal(int d) {  // value that decodes to single digit d (round(d/9 * 65535))
-    return static_cast<uint16_t>(lroundf(static_cast<float>(d) / 9.0f * 65535.0f));
+    return static_cast<uint16_t>(static_cast<float>(d) / 10.0f * 65535.0f);
 }
 
 // suppress ON — the ARC-51 channel window

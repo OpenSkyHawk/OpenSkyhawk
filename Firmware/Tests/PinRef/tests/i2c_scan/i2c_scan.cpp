@@ -49,8 +49,8 @@ static void scanConfig(uint32_t sda, uint32_t scl, const char* label) {
 void setup() {
     STM32Board::setDebug(true);
     STM32Board::begin();
-    Wire.setSDA(PB9);
-    Wire.setSCL(PB8);
+    Wire.setSDA(I2C_TEST_SDA);
+    Wire.setSCL(I2C_TEST_SCL);
     Wire.begin(); // must be called before first scanConfig() calls Wire.end()
     STM32Board::diagSerial().println("=== I2C Scanner — all pin configs ===");
     STM32Board::diagSerial().println("Scanning every 5 seconds...");

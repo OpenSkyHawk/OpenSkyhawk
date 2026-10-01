@@ -40,7 +40,9 @@ static void check(const char* label, bool ok) {
     d.println(label);
 }
 static uint16_t digitWord(int digit) {
-    return static_cast<uint16_t>(lroundf(digit / 9.0f * 65535.0f));
+    // DCS exports a drum digit as digit/10 of the gauge's arg range (utils.lua jumpwheel()
+    // returns B/10), and TRUNCATES on the way out — a 9 arrives as 58981, not 65535.
+    return static_cast<uint16_t>(digit / 10.0f * 65535.0f);
 }
 static void drive(DrumDisplay& dd) {
     dd.onControlPacket(A_4E_C_APN153_SPEED_X00, digitWord(2));
@@ -54,8 +56,8 @@ void setup() {
     auto& d = STM32Board::diagSerial();
     d.println(F("=== DrumDisplay font ==="));
 
-    Wire.setSCL(PB8);
-    Wire.setSDA(PB9);
+    Wire.setSCL(I2C_TEST_SCL);
+    Wire.setSDA(I2C_TEST_SDA);
     Wire.begin();
     oledBig.setI2CAddress(0x3C << 1);
     oledBig.begin();

@@ -121,7 +121,8 @@ the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
 !!! note "NeedleGauge drives gauge motors through a swappable backend"
     `NeedleGauge` does only the value→angle mapping. The drive lives in a reusable **motor-driver layer**
     (`Firmware/Libraries/PanelGroup/Drivers/`): a `MotorDriver` base with a `StepperMotor` backend today —
-    non-blocking, driving four coils through `PinRef` (native GPIO **or** an MCP23017 expander). One
+    non-blocking, driving four coils through `PinRef` (native GPIO **or** an MCP23017 expander, all
+    four on one port so the coil pattern changes in one transaction). One
     air-core profile covers the X27.589 / VID-29 / BKA-30 family; homing is either a mechanical hard-stop
     or a digital home sensor (switch / reed / hall / opto). Drive the X27 at **5 V** through a DRV8833. A
     `ServoMotor` backend is planned (#132).
@@ -132,6 +133,12 @@ the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
     to a sketch's `lib_deps` to use it. Each readout (its digit sources, geometry, and optional
     flag) is described by a `DrumReadout` defined in the sketch, like the `PinRef` wiring map.
     Many same-address OLEDs can share one bus behind a TCA9548A via the `I2cMux` helper.
+
+    Each source also declares its **band** — how many positions the gauge divides its range into,
+    and what each one displays. DCS-BIOS normalises a gauge's declared range to 16 bits and leaves
+    the meaning to the client, and the A-4E-C gauges genuinely differ: an ordinary digit drum
+    exports `digit/10`, the ARC-51 selectors export a position index, and the altimeter's inHg
+    group runs over `{29, 30}`. A plain digit drum needs no extra fields.
 
 ## Wiring map convention
 

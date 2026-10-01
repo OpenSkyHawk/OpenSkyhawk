@@ -1,6 +1,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <Drivers/StepperMotor/StepperMotor.h>
+#include <STM32Board.h>   // log() — coil-placement refusal (#137)
 
 namespace OpenSkyhawk {
 
@@ -39,6 +40,7 @@ StepperMotor::StepperMotor(PinRef c1, PinRef c2, PinRef c3, PinRef c4, const Ste
       _maxVel(cfg.accelN ? cfg.accel[cfg.accelN - 1].stepThreshold : 1),
       _currentStep(0), _targetStep(0), _vel(0), _dir(0), _stopped(true),
       _state(0), _microDelay(0), _time0(0), _homed(false),
+      _recalAssertMs(0), _recalPending(false), _coilsOk(true),
       _lastRecalMs(0), _sensorOverride(-1) {}
 
 void StepperMotor::writeIO() {
@@ -91,7 +93,31 @@ void StepperMotor::advance() {
     _time0 = micros();
 }
 
+// All four coils must flush in ONE writePort(): writeIO() caches them with writeDeferred() and
+// PanelGroup::flushExpanderWrites() pushes one transaction per dirty port. Coils split across two
+// ports (or two chips) flush as two transactions, so the four-bit coil pattern is briefly
+// half-applied — that is how you get shoot-through and lost steps. Direct GPIO coils are written
+// immediately and are always fine.
+bool StepperMotor::coilsShareOnePort() const {
+    uint8_t mcpCount = 0;
+    for (uint8_t i = 0; i < 4; i++) if (_coil[i].isMcp()) mcpCount++;
+
+    if (mcpCount == 0) return true;   // direct GPIO (or NC in tests): written immediately, never deferred
+    if (mcpCount != 4) return false;  // a mixed set cannot flip in one transaction either
+
+    for (uint8_t i = 1; i < 4; i++)
+        if (!_coil[0].sameMcpPortAs(_coil[i])) return false;
+    return true;
+}
+
 void StepperMotor::configure() {
+    _coilsOk = coilsShareOnePort();
+    if (!_coilsOk) {
+        // Refuse to drive rather than move erratically: a silently wrong gauge reads as a sim or
+        // calibration fault, and costs far more to chase than a dead one. Same choice Dimmer makes.
+        STM32Board::log("[STEP] coils are not on one MCP23017 port — motor disabled");
+        return;
+    }
     for (uint8_t i = 0; i < 4; i++) _coil[i].configureAsOutput();
     if (!_sleepEn.isNC())   { _sleepEn.configureAsOutput(); _sleepEn.write(true); } // enable driver
     if (_cfg.home == HomeMode::SENSOR && !_homeSense.isNC()) _homeSense.configureAsInput();
@@ -194,13 +220,30 @@ void StepperMotor::moveTo(int32_t pos) {
 }
 
 void StepperMotor::update() {
+    if (!_coilsOk) return;                               // configure() refused this motor
+
     if (!_stopped && (uint32_t)(micros() - _time0) >= _microDelay) advance();
 
-    if (_cfg.autoRecal && !_homeSense.isNC() &&
-        (uint32_t)(millis() - _lastRecalMs) > _cfg.recalDebounceMs && sensorAsserted(false)) {
-        _currentStep = _cfg.homePosition;               // re-zero; the move toward _targetStep continues
-        _lastRecalMs = millis();                         // cache read: loop()'s ~20 ms poll keeps it fresh
-    }
+    if (!_cfg.autoRecal || _homeSense.isNC()) return;
+
+    // Only re-zero against a home we actually found. An aborted home leaves _currentStep wherever
+    // the needle stopped; re-zeroing there writes a phantom origin and every later move inherits it.
+    if (!_homed) { _recalPending = false; return; }
+
+    // Non-blocking debounce. sensorConfirmed() busy-waits for debounceMs, which is fine during
+    // homing but not here — update() runs every loop. Instead latch when the sensor first reads
+    // asserted and require it to STAY asserted across calls; recalDebounceMs only spaces recals
+    // apart, it filters nothing.
+    if (!sensorAsserted(false)) { _recalPending = false; return; }
+
+    const uint32_t now = millis();
+    if (!_recalPending) { _recalPending = true; _recalAssertMs = now; return; }
+    if ((uint32_t)(now - _recalAssertMs) < _cfg.sensor.debounceMs) return;
+    if ((uint32_t)(now - _lastRecalMs) <= _cfg.recalDebounceMs)    return;
+
+    _currentStep  = _cfg.homePosition;                   // re-zero; the move toward _targetStep continues
+    _lastRecalMs  = now;
+    _recalPending = false;
 }
 
 int32_t StepperMotor::position() const {

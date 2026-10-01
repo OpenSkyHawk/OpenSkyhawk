@@ -28,8 +28,8 @@ void setup() {
     STM32Board::diagSerial().println("=== PanelGroup interrupt_dispatch ===");
     STM32Board::diagSerial().println("Hardware: MCP23017 @ 0x20 required");
 
-    Wire.setSDA(PB9);
-    Wire.setSCL(PB8);
+    Wire.setSDA(I2C_TEST_SDA);
+    Wire.setSCL(I2C_TEST_SCL);
     Wire.begin(); // Bench workaround: production PCB uses Wire.begin() default (PB6/PB7).
 
     // Register in polling-fallback mode (no interrupt pin required)

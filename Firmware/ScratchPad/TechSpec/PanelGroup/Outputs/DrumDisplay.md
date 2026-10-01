@@ -67,12 +67,14 @@ Firmware/Tests/DrumDisplay/
     ├── arc51_manual/               — ARC-51 manual freq: two sources share one address (mask-split)
     ├── bdhi/                       — BDHI DME range: 3 digits + a dedicated 2-state flag source
     ├── font/                       — SMALL/LARGE + a 128x32 panel; runtime setFontSize() re-fit
-    └── mux/                        — two panels on one I2cMux; independent decoded state
+    ├── mux/                        — two panels on one I2cMux; independent decoded state
+    ├── descriptor_guard/           — out-of-bounds descriptors rejected + inert; a valid one renders
+    └── decode_bands/               — real captured values: every digit 0..9, band edges, clamping
 ```
 
 Compile-gated in CI on `genericSTM32F103C8`; logic asserts run via the `check()`→`diagSerial()`
 PASS/FAIL idiom (`-DDRUMDISPLAY_TEST` exposes `debugTarget()` / `debugCellCount()` /
-`debugRowWidth()` / `debugFlagTarget()`). The `bluepill_f103c8` env is flashed to a real SH1106
+`debugRowWidth()` / `debugFlagTarget()` / `debugDescriptorOk()`). The `bluepill_f103c8` env is flashed to a real SH1106
 for the on-hardware bench pass.
 
 ---
@@ -160,7 +162,7 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C oledSpeed(U8G2_R0, U8X8_PIN_NONE);
 DrumDisplay speed(oledSpeed, APN153_SPEED, DrumFont::LARGE);
 
 void setup() {
-    Wire.setSCL(PB8); Wire.setSDA(PB9); Wire.begin();   // bus pins owned by the sketch
+    Wire.setSCL(PB10);   // J_I2C2 on the base board Wire.setSDA(PB11); Wire.begin();   // bus pins owned by the sketch
     oledSpeed.setI2CAddress(0x3C << 1); oledSpeed.begin();
     PanelGroup::setup();   // calls configure() on every DrumDisplay (auto-fits + blanks)
 }
@@ -178,7 +180,7 @@ every buffer send.
 
 | Struct | Role |
 |---|---|
-| `DrumSource` | One DCS-BIOS address → `nDigits` digits at `place`. `mask` (an `_AM` constant) extracts a field; two sources may share one address (ARC-51 10/1 MHz). |
+| `DrumSource` | One DCS-BIOS address → `nDigits` digits at `place`. `mask` (an `_AM` constant) extracts a field; two sources may share one address (ARC-51 10/1 MHz). `steps`/`mul`/`offset` give the band (see onControlPacket); omit them for a plain digit drum. |
 | `DrumGlyph` | A fixed, non-rolling glyph (decimal point) in its own cell at `afterCol`. |
 | `DrumFlag` | Optional 2-state tape; configurable position (`atVisualCol`) and faces. Default off. |
 | `DrumReadout` | The whole readout: sources, geometry (mm), glyphs, flag, scroll mode + threshold. |
@@ -192,12 +194,58 @@ Geometry is mm-based and resolution-independent — `configure()` converts mm �
 
 ### onControlPacket() — decode + splice, never draws
 
-A masked source value scales to its digits: `digits = round((value & mask) / mask · (10^nDigits − 1))`.
-The decoded field is spliced into the combined `_target` at its `place` via keep-high / part /
-keep-low, then `_dirty` is set. The loop scans **all** sources (not just the first match) so
+A source value is mapped onto its **band**, then onto what the drum shows:
+`shown = idx · mul + offset`, where `idx` is the band the value falls in. The decoded field is
+spliced into the combined `_target` at its `place` via keep-high / part / keep-low, then `_dirty`
+is set.
+
+**Why a band and not a scale (#137).** DCS-BIOS segments nothing of its own: `Module.valueConvert()`
+maps the gauge's declared arg range linearly onto 0..65535 and `MemoryAllocation:setValue()` floors
+the result. The meaning is the gauge's, and the A-4E-C gauges do not agree:
+
+| source | export | `steps` / `mul` / `offset` |
+|---|---|---|
+| digit drum (LAT/LON/MagVar/speed/BDHI/ALT_ADJ decimals) | `digit/10` — `utils.lua jumpwheel()` returns `B/10` | 10 / 1 / 0 (the default) |
+| ARC-51 50 kHz | 0.00–0.95 in 0.05 steps, declared `{0, 0.95}` | 20 / 5 / 0 |
+| ARC-51 10 MHz (float) | 0.05 steps across `{0,1}` | 20 / 1 / 22 |
+| ARC-51 selectors (packed) | `defineTumb` exports the POSITION INDEX | 18 or 20 / per drum |
+| ALT_ADJ inHg group | `math.floor(alt_setting)` over `{29,30}` | 2 / 1 / 29 |
+
+The old `round(value/mask · (10^nDigits − 1))` matched none of these: a digit drum's 9 arrives as
+58981, which it rendered as **8** — every digit from 5 up read one low. `steps` defaults to
+`10^nDigits`, so a plain drum needs no extra fields.
+
+Two mapping rules, picked by the mask, matching what the DCS-BIOS Arduino library does:
+
+- **whole word (`0xFFFF`)** — a `defineFloat`, so the value is the arg normalised onto the range:
+  `idx = ⌊value/65535 · steps + BAND_EPS⌋`. `BAND_EPS` undoes the `math.floor` on the export side,
+  which otherwise leaves a clean band edge one LSB short. A roll fraction `(B+dd)/10` stays inside
+  its band, so the cascade still animates from the right digit.
+- **packed field** — a `defineTumb`/`defineMultipositionSwitch`, which allocates a small integer,
+  so the field already *is* the index: right-justify it (`(value & mask) >> shift`, exactly
+  `IntegerBuffer::getData()` upstream) and use it. Scaling it would be wrong.
+
+`idx` is clamped to `steps − 1`, matching `defineTumb`'s own clamp to `last_n`. The loop scans **all** sources (not just the first match) so
 two sources sharing one address both splice. The flag branch does **not** early-return, so an
 address that is *both* a digit and the hemisphere flag (NAV dual-role) updates both. Drawing is
 deferred to `update()` (full-buffer I²C is the expensive op — the `LED.cpp` store-only idiom).
+
+### configure() — descriptor validation (#137)
+
+`_pos[6]` and `_cellX[MAX_CELLS]` are fixed arrays and a `DrumReadout` is hand-authored, so
+`configure()` validates the descriptor before laying anything out:
+
+- `nDigits` within **1..6** — the depth of `_pos[]`;
+- total visual cells (digits + glyphs + the flag) ≤ `MAX_CELLS` (8);
+- every source fits the readout it splices into: `place + nDigits <= readout.nDigits`;
+- every source's band fits its columns: `(steps − 1) · mul + offset <= 10^nDigits − 1`, with a
+  non-negative `offset` — a mis-copied band is otherwise a quietly wrong readout.
+
+A failing descriptor is **rejected, not clamped**: the offending field is logged on DiagSerial and
+the readout is disabled — no cells are laid out, and `onControlPacket()` / `update()` return
+immediately, so neither the decode state nor the ease loop can touch the arrays. The ease loop is
+why this matters at render time and not only at layout: it walks `_r->nDigits` entries of `_pos[]`,
+so an `nDigits` of 7 writes past the array on every frame. `debugDescriptorOk()` reads the verdict.
 
 ### fitGeometry() — descriptor-driven auto-fit (replaces the prototype's constants)
 
@@ -253,8 +301,19 @@ no stale freeze. The OLED address is read from `_oled->getU8x8()->i2c_address`. 
 | I2cMux | `PanelGroup/Helpers/I2cMux` | Optional TCA9548A selector for multi-panel nodes |
 | A4EC | `Firmware/Libraries/A4EC` | `A_4E_C_*` addresses + `_AM` masks (`A4EC_OutputIds.h`); descriptors are per-sketch |
 
-### Bench-confirm TODOs (flagged on the sketch descriptors)
+### A-4E-C readout encodings — settled (#137)
 
-- Hemisphere dual-role on the rightmost LAT/LON/MAGVAR source (digit vs N/S·E/W flag vs both).
-- ARC-51 manual selector split (which of `_10MHZ`/`_1MHZ`/`_50KHZ` carries what; linear vs packed).
-- Decimal positions for the altimeter setting + displayed frequency.
+Read out of the mod + DCS-BIOS sources and confirmed against two recorded sim captures, where each
+float drum was paired with its selector's exported position index:
+
+- **The rightmost LAT/LON/MagVar output is the hemisphere, never a digit.** `nav.lua` sets it from
+  `N_S` / `E_W`, so longitude is 5 digits + flag, latitude 4 + flag, MagVar 4 + flag. In a captured
+  session `LON_0000X0` took 2044 values while `LON_00000X` never left `32767`.
+- **Flag scales differ within one aircraft.** ASN-41 position flags are **half scale** (0.0 / 0.5 →
+  `steps = 2`); MagVar and the BDHI DME flag are full scale (0 / 1 → `steps = 1`). A half-scale flag
+  read as full scale never reaches its second face.
+- **ARC-51 outputs are selector positions**, not grouped 00–99 values: 10 MHz → 22–39, 1 MHz → a
+  digit, 50 kHz → 00,05…95. Display is XXX.XX, so the dot sits after the third digit.
+- **Decimal positions** confirmed: ALT_ADJ `29.92` (dot after 2), frequency `299.90` (dot after 3).
+
+Verified by `decode_bands` against the values the captures carry, not synthesised ones.

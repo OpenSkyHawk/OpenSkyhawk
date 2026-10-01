@@ -70,8 +70,8 @@ static void drawFlag(int cx, float p, const char *faces, int cellw) {
 }
 
 void setup() {
-    Wire.setSCL(PB8);
-    Wire.setSDA(PB9);
+    Wire.setSCL(I2C_TEST_SCL);
+    Wire.setSDA(I2C_TEST_SDA);
     Wire.begin();
     oled.setI2CAddress(0x3C << 1);
     oled.begin();

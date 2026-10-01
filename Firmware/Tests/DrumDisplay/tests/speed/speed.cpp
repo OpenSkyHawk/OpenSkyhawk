@@ -40,9 +40,11 @@ static void check(const char* label, bool ok) {
     d.println(label);
 }
 
-// A full-word source carries 0..65535 for one digit 0..9: value = round(digit / 9 * 65535).
+// A full-word source carries one drum digit as digit/10 of the range (see digitWord).
 static uint16_t digitWord(int digit) {
-    return static_cast<uint16_t>(lroundf(digit / 9.0f * 65535.0f));
+    // DCS exports a drum digit as digit/10 of the gauge's arg range (utils.lua jumpwheel()
+    // returns B/10), and TRUNCATES on the way out — a 9 arrives as 58981, not 65535.
+    return static_cast<uint16_t>(digit / 10.0f * 65535.0f);
 }
 
 void setup() {
@@ -51,8 +53,8 @@ void setup() {
     auto& d = STM32Board::diagSerial();
     d.println(F("=== DrumDisplay speed ==="));
 
-    Wire.setSCL(PB8);
-    Wire.setSDA(PB9);
+    Wire.setSCL(I2C_TEST_SCL);
+    Wire.setSDA(I2C_TEST_SDA);
     Wire.begin();
     oled.setI2CAddress(0x3C << 1);
     oled.begin();

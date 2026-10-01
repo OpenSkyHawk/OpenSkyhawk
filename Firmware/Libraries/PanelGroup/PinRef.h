@@ -229,6 +229,21 @@ public:
      */
     uint8_t gpioPin() const;
 
+    /**
+     * @brief True when both PinRefs are MCP23017 bits on the SAME chip and the SAME port.
+     *
+     * @details For callers that depend on a group of pins flushing in ONE writePort() — the
+     * stepper coils, where a split across ports means two I2C transactions and therefore a
+     * non-atomic coil flip. Keeps the backend union private: the caller asks the question
+     * rather than reading chip/port out.
+     *
+     * @return false if either side is not an MCP23017 pin.
+     */
+    bool sameMcpPortAs(const PinRef& other) const;
+
+    /** @brief True when this PinRef wraps an MCP23017 expander bit. */
+    bool isMcp() const;
+
 private:
     /** @brief Backing source type. */
     enum class Type : uint8_t {
