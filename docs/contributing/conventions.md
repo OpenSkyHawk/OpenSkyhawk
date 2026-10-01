@@ -83,8 +83,9 @@ them. See [Docs Workflow](docs-workflow.md).
 
 Use **[Conventional Commits](https://www.conventionalcommits.org/)** — `type(scope): summary` —
 for **both commit messages and PR titles**. The repo squash-merges, so the **PR title becomes the
-commit on `main`** that drives the release-version automation; a non-conventional title breaks the
-version bump.
+commit on `main`** that release-please reads for the firmware version bump and changelog. The
+**PR Title** check fails a pull request whose title isn't a Conventional Commit — otherwise the
+change would silently drop out of the release.
 
 - **Types:** `feat` (new capability), `fix`, `chore`, `test`, `docs`, `refactor`, `perf`, `build`, `ci`.
 - **Scope** (optional, encouraged) names the area: `feat(panelbridge): …`, `fix(pcb): …`.
@@ -98,3 +99,20 @@ docs(contributing): document the conventional-commit standard
 
 Do **not** add `Co-Authored-By:` trailers or AI-attribution signatures — see
 [AI-Assisted Development](ai-assisted-development.md).
+
+## Releases
+
+Firmware, each board, and the cockpit as a whole are versioned separately — the model and its
+reasons are [design decision D10](../architecture/design-decisions.md#d10-versioning-one-repo-three-release-tracks).
+
+- **Firmware** releases itself. On every push to `main`, release-please updates one open
+  release PR (`chore(main): release firmware X.Y.Z`) with the next version, the
+  `Firmware/CHANGELOG.md` entry, and every `library.json` bumped together. **Merging that PR is
+  the release:** it tags `firmware-vX.Y.Z` and publishes the GitHub Release.
+- Only `feat`, `fix`, `perf`, and breaking changes under `Firmware/` move the version and appear
+  in the changelog; `docs`, `chore`, `test` and the rest don't, and neither do commits that touch
+  only `Firmware/ScratchPad/`.
+- **Adding a firmware library?** Add its `library.json` to `extra-files` in
+  `release-please-config.json`, so its version moves with the rest.
+- **Boards** are tagged by hand at order time, and the **cockpit** release is cut by hand after
+  bring-up — see D10.

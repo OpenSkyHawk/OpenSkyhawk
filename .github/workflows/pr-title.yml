@@ -1,0 +1,36 @@
+name: PR Title
+
+# The repo squash-merges, so the PR title becomes the commit on main that
+# release-please reads for the version bump and the changelog. A title that
+# isn't a Conventional Commit is silently left out of both — fail it here.
+# pull_request_target is safe: this job never checks out the PR's code.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, edited, synchronize]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  pr-title:
+    name: Conventional PR title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the title is a Conventional Commit
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Keep in step with docs/contributing/conventions.md. Scope is
+          # optional and not checked against a list.
+          types: |
+            feat
+            fix
+            chore
+            test
+            docs
+            refactor
+            perf
+            build
+            ci

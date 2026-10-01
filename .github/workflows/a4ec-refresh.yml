@@ -155,8 +155,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: bot/update-a4ec-dcs-bios-${{ steps.release.outputs.safe_tag }}
           BASE_BRANCH: ${{ github.ref_name }}
-          COMMIT_MESSAGE: "firmware: update A4EC metadata for DCS-BIOS ${{ steps.release.outputs.tag }}"
-          PR_TITLE: "Update A4EC metadata for DCS-BIOS ${{ steps.release.outputs.tag }}"
+          # Conventional Commits: the PR title must pass pr-title.yml, and the
+          # squash commit it becomes feeds the firmware release changelog.
+          COMMIT_MESSAGE: "feat(a4ec): update A4EC metadata for DCS-BIOS ${{ steps.release.outputs.tag }}"
+          PR_TITLE: "feat(a4ec): update A4EC metadata for DCS-BIOS ${{ steps.release.outputs.tag }}"
         run: |
           set -euo pipefail
 
