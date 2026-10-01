@@ -383,8 +383,7 @@ transcribed from the 0.2.0 netlist.
 | I2C1 (`Wire`) | PB6 | PB7 | PB12 | PB13 |
 | I2C2 (`Wire1`) | PB10 | PB11 | **PA8** | **PA15** |
 
-I2C2's interrupts moved off PB8/PB9 in 0.2.0 so those pins could take the ShiftBus; the `J_I2C`
-connectors keep their 0.1.0 pinout, so the same cables fit both revisions.
+The `J_I2C` connector pinout is identical on 0.1.0 and 0.2.0, so the same cables fit both.
 
 On-board passives (per hardware-standards.md): **4.7 kΩ pull-ups, one set per bus** (R2–R5);
 **33 Ω series on SDA/SCL** (R11/R12 on I2C2, R21/R22 on I2C1); **100 Ω series on each INT line**

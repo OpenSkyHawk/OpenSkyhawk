@@ -193,7 +193,7 @@ them behind a mux (address shadowing while a channel is open).
 | **'595 output drive** | ≤4 mA indicator LED → direct drive + series R (push-pull, ~6 mA/pin recommended, 70 mA/chip total). >6 mA, any 5 V/12 V rail load, or chip total nearing 70 mA → 2N7002 + 100 k gate pulldown. DRV8833 inputs are µA logic — never count against the budget. |
 | **DRV8833 VM ≤ 10.8 V — steppers NEVER on 12 V** | Absolute maximum. Stepper supply = 5 V (bench-validated). Servos = 12 V + panel-local buck (never a 5 V rail). |
 | **SPI bus is dedicated** | The '165 QH output never tristates — MISO cannot be shared with any other SPI reader. Chains daisy without limit; capacity never forces a second bus. |
-| **Standard pins** | SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. **PB8/PB9 belong to the ShiftBus, so I²C interrupts move off them:** I2C1 INT_A/INT_B on **PB12/PB13**, I2C2 INT_A/INT_B on **PA8/PA15** (PanelGroup base 0.2.0). Pick INT pins whose EXTI line (the pin *number*, shared across ports) is not already an interrupt elsewhere. |
+| **Standard pins** | SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. **I²C interrupts:** I2C1 INT_A/INT_B on **PB12/PB13**, I2C2 INT_A/INT_B on **PA8/PA15** (PanelGroup base 0.2.0). Pick INT pins whose EXTI line (the pin *number*, shared across ports) is not already an interrupt elsewhere. |
 | **Remote legs** | 33 Ω series on SCK/LOAD/LATCH; ~1 MHz SPI tolerates ~12" harness. |
 
 ### Chip placement (guidance, per-controller call at B2)
