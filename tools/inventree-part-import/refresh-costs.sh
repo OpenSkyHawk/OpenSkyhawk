@@ -69,12 +69,31 @@ for supplier in lcsc digikey; do
         echo "-- $supplier: no SKUs, skipping" | tee -a "$LOG"
         continue
     fi
-    echo "-- refreshing $supplier ($(wc -l < "$list" | tr -d ' ') SKUs)" | tee -a "$LOG"
+    want=$(grep -c . "$list")
+    out="$SKUDIR/$supplier.out"
+    echo "-- refreshing $supplier ($want SKUs)" | tee -a "$LOG"
     # Unquoted on purpose: one SKU per line, none contain whitespace.
     # shellcheck disable=SC2046
-    "$IPI" -m inventree_part_import -o "$supplier" -i false $(cat "$list") | tee -a "$LOG"
+    "$IPI" -m inventree_part_import -o "$supplier" -i false $(cat "$list") 2>&1 \
+        | tee "$out" | tee -a "$LOG"
     rc=${PIPESTATUS[0]}
     [ "$rc" -eq 0 ] || status="$rc"
+
+    # The tool exits 0 even when a SKU resolves to nothing — that is exactly how the old
+    # by-category call hid the fact it was refreshing 1 part in 75. A clean exit is not
+    # evidence of a refresh, so require one confirmed update per SKU we sent.
+    missing=""
+    while read -r sku; do
+        [ -n "$sku" ] || continue
+        grep -qE "successfully (updated|added) [A-Za-z]+ part ${sku}\b" "$out" \
+            || missing="$missing $sku"
+    done < "$list"
+    if [ -n "$missing" ]; then
+        echo "!! $supplier: these SKUs did not refresh —$missing" | tee -a "$LOG"
+        status=1
+    else
+        echo "-- $supplier: $want/$want refreshed" | tee -a "$LOG"
+    fi
 done
 
 echo "exit=$status at $(date)" | tee -a "$LOG"
