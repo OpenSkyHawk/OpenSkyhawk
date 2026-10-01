@@ -69,7 +69,7 @@ Pure-I²C harness: `DOPPLER_SEL` is digital `SwitchMultiPos` → no host ADC, no
 ## Dimensions & Mounting
 
 - **Panel:** 146.05 × 57.15 mm — standard Dzus single-width (5¾″) × 6 Dzus units; 1⁄16″ aluminum.
-- **Mounting:** 4× Dzus quarter-turn studs in a 136.5 × 28.575 mm pattern (MIL-F-25173A, `PR 3½`
+- **Mounting:** 4× Dzus quarter-turn studs in a 136.525 × 28.575 mm pattern (MIL-F-25173A, `PR 3½`
   receptacle strip + .375″-head / .257″-body stud), on the 3⁄8″ rail grid. See
   `docs/hardware/mechanical-standards.md`.
 

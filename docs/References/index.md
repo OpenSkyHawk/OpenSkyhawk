@@ -21,4 +21,4 @@ USAF / Navy Bureau of Aeronautics (Aeronautical Standards Group), 16 Feb 1956 �
 | Panel | **1⁄16″ (1.59 mm)** thick · quarter-turn lock (85–135°), positive stop |
 | Stud detail design | left to the fastener manufacturer within the Figure-2 envelope — **no single mandated stud part number** |
 
-**Applied in:** the OpenSkyhawk Dzus rail panel-mounting standard — panel width 146.05 mm (5¾″), mounting-screw centers 136.5 mm (5⅜″), 3⁄8″ vertical pitch — see [`mechanical-standards.md`](../hardware/mechanical-standards.md).
+**Applied in:** the OpenSkyhawk Dzus rail panel-mounting standard — panel width 146.05 mm (5¾″), mounting-screw centers 136.525 mm (5⅜″), 3⁄8″ vertical pitch — see [`mechanical-standards.md`](../hardware/mechanical-standards.md).
