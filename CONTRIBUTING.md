@@ -27,11 +27,20 @@ Every panel group board needs a unique `NODE_ID` (1–63). NODE_IDs are permanen
 
 ## Pull Request Process
 
-1. Branch from `main`. Use prefixes: `feat/`, `fix/`, `chore/`, `docs/`, `ci/`.
+1. Branch from `main`. Use prefixes: `feat/`, `fix/`, `chore/`, `docs/`, `ci/`, `build/`.
 2. Keep PRs focused — one issue per PR.
-3. Firmware: verify `pio run` compiles before pushing.
-4. PCB: run KiCad ERC before pushing; DRC clean is required for layout PRs.
-5. CI must pass — do not merge with failing checks.
+3. Title the PR as a Conventional Commit — `type(scope): summary` (see below). A required check enforces it.
+4. Firmware: verify `pio run` compiles before pushing.
+5. PCB: run KiCad ERC before pushing; DRC clean is required for layout PRs.
+6. CI must pass — do not merge with failing checks.
+
+## How Releases Work
+
+- **Your PR title matters.** Write it as `type(scope): summary` — e.g. `feat(firmware): add a dimmer output` or `fix(pcb): swap the TVS diode`. A required check fails the PR if it isn't; the title becomes the line in the changelog.
+- **Firmware releases itself.** Each merge to `main` keeps a draft *"release firmware X.Y.Z"* pull request up to date with the next version and its changelog. When a maintainer marks it ready and merges it, the release is tagged and published — nothing for you to do.
+- **Boards and the cockpit are released by hand.** A board gets a version tag when it's sent to be made; the whole cockpit gets a release once its boards have been tested together.
+
+Want the details? See *Releases* in [Design Conventions](docs/contributing/conventions.md#releases) and design decision D10 in [Design Decisions](docs/architecture/design-decisions.md).
 
 ## AI-Assisted Development
 
