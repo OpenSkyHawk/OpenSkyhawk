@@ -29,6 +29,7 @@
 
 * **canId** ([**BatchState**](structBatchState.md), [**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
 * **cmdId** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
+* **COUNTS\_PER\_DEG** ([**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md))
 * **centre** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **crc** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
 * **ch** ([**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md))
@@ -193,6 +194,7 @@
 * **\_lastValue** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md))
 * **\_mask** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **\_shift** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md))
+* **\_centerRaw** ([**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md))
 * **\_enabled** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))
 * **\_hasState** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md), [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md))
 * **\_lastDuty** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))

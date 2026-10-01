@@ -43,6 +43,9 @@ public:
     uint32_t readCount() const { return _readCount; }
 #endif
 
+protected:
+    virtual uint16_t readRaw();
+
 private:
     void     sample();                       
     uint16_t readScaled();                   

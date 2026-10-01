@@ -17,6 +17,7 @@ _Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit valu
 Inherits the following classes: [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
+Inherited by the following classes: [OpenSkyhawk::AngleSensorInput](classOpenSkyhawk_1_1AngleSensorInput.md)
 
 
 
@@ -151,6 +152,11 @@ See [OpenSkyhawk::InputBase](classOpenSkyhawk_1_1InputBase.md)
 
 
 
+## Protected Functions
+
+| Type | Name |
+| ---: | :--- |
+| virtual uint16\_t | [**readRaw**](#function-readraw) () <br>_Read the raw 16-bit source value. The one hook a family member overrides._  |
 
 
 ## Protected Functions inherited from OpenSkyhawk::InputBase
@@ -335,6 +341,26 @@ virtual void OpenSkyhawk::AnalogInput::poll () override
 
 Implements [*OpenSkyhawk::InputBase::poll*](classOpenSkyhawk_1_1InputBase.md#function-poll)
 
+
+<hr>
+## Protected Functions Documentation
+
+
+
+
+### function readRaw 
+
+_Read the raw 16-bit source value. The one hook a family member overrides._ 
+```C++
+virtual uint16_t OpenSkyhawk::AnalogInput::readRaw () 
+```
+
+
+
+Default: the analog [**PinRef**](classPinRef.md) (or the injected value under ANALOGINPUT\_TEST). A subclass that reinterprets the reading overrides this and calls [**AnalogInput::readRaw()**](classOpenSkyhawk_1_1AnalogInput.md#function-readraw) for the source value — [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) re-centres it on its centre angle. Everything after this point (clamp, scale, EWMA, hysteresis, emit) is the base's and is shared unchanged. 
+
+
+        
 
 <hr>
 

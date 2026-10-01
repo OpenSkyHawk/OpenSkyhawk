@@ -10,6 +10,7 @@
 * **AnalogMultiPos** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **AnalogOutput** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md))
 * **apply** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md), [**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md), [**OpenSkyhawk::IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md))
+* **AngleSensorInput** ([**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md))
 * **axisIndex** ([**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md))
 * **active** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **addIsrConsumer** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
@@ -131,8 +132,8 @@
 ## r
 
 * **readPressed** ([**OpenSkyhawk::ActionButton**](classOpenSkyhawk_1_1ActionButton.md))
+* **readRaw** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **readScaled** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **readRaw** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **resolve** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **RotaryAcceleratedEncoder** ([**OpenSkyhawk::RotaryAcceleratedEncoder**](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md))
 * **RotaryEncoder** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))

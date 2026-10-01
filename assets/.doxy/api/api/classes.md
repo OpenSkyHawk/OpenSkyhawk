@@ -15,6 +15,8 @@
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 

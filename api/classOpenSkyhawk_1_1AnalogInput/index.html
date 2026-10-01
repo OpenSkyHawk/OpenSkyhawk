@@ -3946,6 +3946,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#protected-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#protected-functions-inherited-from-openskyhawkinputbase" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4089,6 +4100,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#protected-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protected Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protected Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-readraw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function readRaw
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4116,6 +4155,7 @@
 <li><code>#include &lt;AnalogInput.h&gt;</code></li>
 </ul>
 <p>Inherits the following classes: <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
+<p>Inherited by the following classes: <a href="../classOpenSkyhawk_1_1AngleSensorInput/">OpenSkyhawk::AngleSensorInput</a></p>
 <h2 id="public-static-attributes">Public Static Attributes</h2>
 <table>
 <thead>
@@ -4218,6 +4258,21 @@
 </tr>
 </tbody>
 </table>
+<h2 id="protected-functions">Protected Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">virtual uint16_t</td>
+<td style="text-align: left;"><a href="#function-readraw"><strong>readRaw</strong></a> () <br><em>Read the raw 16-bit source value. The one hook a family member overrides.</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="protected-functions-inherited-from-openskyhawkinputbase">Protected Functions inherited from OpenSkyhawk::InputBase</h2>
 <p>See <a href="../classOpenSkyhawk_1_1InputBase/">OpenSkyhawk::InputBase</a></p>
 <table>
@@ -4311,6 +4366,13 @@
 <pre><code class="language-C++">virtual void OpenSkyhawk::AnalogInput::poll () override
 </code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><em>OpenSkyhawk::InputBase::poll</em></a></p>
+<hr>
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+<h3 id="function-readraw">function readRaw</h3>
+<p><em>Read the raw 16-bit source value. The one hook a family member overrides.</em> </p>
+<pre><code class="language-C++">virtual uint16_t OpenSkyhawk::AnalogInput::readRaw () 
+</code></pre>
+<p>Default: the analog <a href="../classPinRef/"><strong>PinRef</strong></a> (or the injected value under ANALOGINPUT_TEST). A subclass that reinterprets the reading overrides this and calls <a href="./#function-readraw"><strong>AnalogInput::readRaw()</strong></a> for the source value — <a href="../classOpenSkyhawk_1_1AngleSensorInput/"><strong>AngleSensorInput</strong></a> re-centres it on its centre angle. Everything after this point (clamp, scale, EWMA, hysteresis, emit) is the base's and is shared unchanged. </p>
 <hr>
 
 <hr />

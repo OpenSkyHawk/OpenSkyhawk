@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1AngleSensorInput" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::AngleSensorInput</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1AnalogInput" prot="public" virt="non-virtual">OpenSkyhawk::AnalogInput</basecompoundref>
+    <includes refid="AngleSensorInput_8h" local="no">AngleSensorInput.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AngleSensorInput_1a9299ada172ab5c7a2b3c086730a673d6" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr float</type>
+        <definition>constexpr float OpenSkyhawk::AngleSensorInput::COUNTS_PER_DEG</definition>
+        <argsstring></argsstring>
+        <name>COUNTS_PER_DEG</name>
+        <qualifiedname>OpenSkyhawk::AngleSensorInput::COUNTS_PER_DEG</qualifiedname>
+        <initializer>= 65536.0f / 360.0f</initializer>
+        <briefdescription>
+<para>Counts per degree: a full turn spans the 16-bit range (65536 / 360). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" line="51" column="28" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1AngleSensorInput_1aa07504137fc9eb9743bdf925191a84b5" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AngleSensorInput::_centerRaw</definition>
+        <argsstring></argsstring>
+        <name>_centerRaw</name>
+        <qualifiedname>OpenSkyhawk::AngleSensorInput::_centerRaw</qualifiedname>
+        <briefdescription>
+<para>centerDeg in counts — the offset subtracted from every reading </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" line="75" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AngleSensorInput_1ac37698b28ba96661796ad7064f090210" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::AngleSensorInput::AngleSensorInput</definition>
+        <argsstring>(uint16_t controlId, PinRef pin, float centerDeg, float travelDeg, uint16_t pollMs=DEFAULT_POLL_MS)</argsstring>
+        <name>AngleSensorInput</name>
+        <qualifiedname>OpenSkyhawk::AngleSensorInput::AngleSensorInput</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>controlId</declname>
+        </param>
+        <param>
+          <type><ref refid="classPinRef" kindref="compound">PinRef</ref></type>
+          <declname>pin</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>centerDeg</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>travelDeg</declname>
+        </param>
+        <param>
+          <type>uint16_t</type>
+          <declname>pollMs</declname>
+          <defval><ref refid="classOpenSkyhawk_1_1AnalogInput_1acc444df86842f120d6f310ef3b587608" kindref="member">DEFAULT_POLL_MS</ref></defval>
+        </param>
+        <briefdescription>
+<para>Construct an absolute angle input. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>controlId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DCSIN_* or CTRL_* constant. Determines <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> routing. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>analog <ref refid="classPinRef" kindref="compound">PinRef</ref> for the sensor&apos;s output (STM32 ADC pin or <ref refid="classADS1115" kindref="compound">ADS1115</ref> channel). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>centerDeg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sensor angle at the knob&apos;s centre position. Wraps, so 370 == 10. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>travelDeg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>total mechanical travel, centred on centerDeg: the knob spans centerDeg ± travelDeg/2. Clamped to (0, 360) — up to just under a full turn, because the ends of a full turn are one sensor angle. The wrap point sits opposite centerDeg, so the closer travel comes to 360° the nearer that break sits to the ends of travel. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pollMs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>min interval between ADC reads, ms (default DEFAULT_POLL_MS). Per instance; an <ref refid="classADS1115" kindref="compound">ADS1115</ref> <ref refid="classPinRef" kindref="compound">PinRef</ref> blocks ~8 ms per conversion regardless. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" line="67" column="5" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.cpp" bodystart="38" bodyend="44"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1AngleSensorInput_1ab27969f213cedefb6b618a3356356e77" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::AngleSensorInput::readRaw</definition>
+        <argsstring>() override</argsstring>
+        <name>readRaw</name>
+        <qualifiedname>OpenSkyhawk::AngleSensorInput::readRaw</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1AnalogInput_1aa493708876430da0d60e904fae971515">readRaw</reimplements>
+        <briefdescription>
+<para>The base&apos;s reading, re-centred so centerDeg sits at mid-scale (0°/360° wraps). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" line="72" column="14" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.cpp" bodystart="46" bodyend="50"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>An <computeroutput><ref refid="classOpenSkyhawk_1_1AnalogInput" kindref="compound">AnalogInput</ref></computeroutput> that reads the sensor&apos;s <bold>analog output</bold> through any analog-capable <ref refid="classPinRef" kindref="compound">PinRef</ref> — an STM32 ADC pin or an <ref refid="classADS1115" kindref="compound">ADS1115</ref> channel. No wiper to wear out, and a full 360° mechanical range where a pot stops around 270°. Intended for absolute DCS-BIOS knobs such as GUNSIGHT_KNB and RADAR_RETICLE; flight-control axes use linear Hall sensors on a plain <ref refid="classOpenSkyhawk_1_1AnalogInput" kindref="compound">AnalogInput</ref>.</para>
+<para>The base owns everything that makes an analog input behave: EWMA smoothing, hysteresis, per-instance pollMs, and routing by controlId (DCSIN_* → absolute set_state via <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>; CTRL_* → HID via <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref>). This class adds only the <bold>angle meaning</bold> — where the travel sits on the circle, and what happens at the 0°/360° seam.</para>
+<para>A full turn is 65536 counts, so one degree is 65536/360 ≈ 182 counts. The constructor turns centre and travel into the base&apos;s [minRaw, maxRaw] window, and <ref refid="classOpenSkyhawk_1_1AngleSensorInput_1ab27969f213cedefb6b618a3356356e77" kindref="member">readRaw()</ref> re-centres every reading so the centre angle lands at mid-scale. Unsigned arithmetic wraps for free, which is what makes a travel spanning 0°/360° (say 340°→40°) behave like any other — no rotating the magnet mount to dodge the seam.</para>
+<para><bold>The seam does not disappear, it moves opposite the centre.</bold> A single-turn absolute sensor reads the same angle at both ends of a full turn, so the circle cannot map onto a line without one break; re-centring puts that break as far from the knob&apos;s centre as possible. Travel is therefore up to <emphasis>just under</emphasis> a full turn: at exactly 360° the two ends would be the same sensor angle, and the output would jump full-scale there. A knob that genuinely rotates without end needs different semantics (turn counting, or a relative mode) and is not this class.</para>
+<para>Resolution note: the analog output is coarser than the chip&apos;s I²C register and picks up ADC noise — fine for a gunsight or reticle knob. The AS5600&apos;s ZPOS/MPOS can narrow its output span to the knob&apos;s travel to win some of that back. Reading the angle register over I²C belongs in a future <ref refid="classPinRef" kindref="compound">PinRef</ref> backend, not here, so this class keeps taking a <ref refid="classPinRef" kindref="compound">PinRef</ref>. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::AnalogInput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogInput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::AngleSensorInput</label>
+        <link refid="classOpenSkyhawk_1_1AngleSensorInput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::AnalogInput</label>
+        <link refid="classOpenSkyhawk_1_1AnalogInput"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::AngleSensorInput</label>
+        <link refid="classOpenSkyhawk_1_1AngleSensorInput"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>OpenSkyhawk::InputBase</label>
+        <link refid="classOpenSkyhawk_1_1InputBase"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" line="48" column="1" bodyfile="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.h" bodystart="48" bodyend="76"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1AngleSensorInput_1aa07504137fc9eb9743bdf925191a84b5" prot="private" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>_centerRaw</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a322efb80c3873b9f2455b60ace04ba73" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>AnalogInput</name></member>
+      <member refid="classOpenSkyhawk_1_1AngleSensorInput_1ac37698b28ba96661796ad7064f090210" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>AngleSensorInput</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621" prot="public" virt="virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>configure</name></member>
+      <member refid="classOpenSkyhawk_1_1AngleSensorInput_1a9299ada172ab5c7a2b3c086730a673d6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>COUNTS_PER_DEG</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1acce89dec9a0ff1e3bb768c63d4a6d8b7" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>DEFAULT_EWMA_SHIFT</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a5befd11f71ef63da0eeecade9369b49c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>DEFAULT_HYSTERESIS</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1acc444df86842f120d6f310ef3b587608" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>DEFAULT_POLL_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25" prot="public" virt="virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>forceReport</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1aa031a1f2ce5dd9cf005948cada8d195b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a82da66ef0a4572523930ff05555acf6c" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>InputBase</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1af107f07386028bb09320cb09f6551697" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>MAX_EWMA_SHIFT</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1a3110076043d85f8925ce2b899d54eb6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284" prot="public" virt="virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>poll</name></member>
+      <member refid="classOpenSkyhawk_1_1AngleSensorInput_1ab27969f213cedefb6b618a3356356e77" prot="protected" virt="virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>readRaw</name></member>
+      <member refid="classOpenSkyhawk_1_1InputBase_1addb3ef7b8d33fee0bcdd6db53f504040" prot="public" virt="virtual"><scope>OpenSkyhawk::AngleSensorInput</scope><name>sampleTick</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -3946,15 +3946,16 @@ void AnalogInput::configure() {
     _pin.configureAsInput();
 }
 
-uint16_t AnalogInput::readScaled() {
+uint16_t AnalogInput::readRaw() {
 #ifdef ANALOGINPUT_TEST
     _readCount++;   // one ADC read, on every path: poll(), forceReport(), debugStep()
+    if (_testRawSet) return _testRaw;
 #endif
-    uint16_t raw =
-#ifdef ANALOGINPUT_TEST
-        _testRawSet ? _testRaw :
-#endif
-        _pin.readAnalog();
+    return _pin.readAnalog();
+}
+
+uint16_t AnalogInput::readScaled() {
+    uint16_t raw = readRaw();   // virtual: AngleSensorInput re-centres before the clamp below
 
     if (raw &lt; _minRaw) raw = _minRaw;
     else if (raw &gt; _maxRaw) raw = _maxRaw;

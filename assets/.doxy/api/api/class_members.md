@@ -11,6 +11,7 @@
 * **AnalogMultiPos** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **AnalogOutput** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md))
 * **apply** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md), [**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md), [**OpenSkyhawk::IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md))
+* **AngleSensorInput** ([**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md))
 * **axes** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
 * **address** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **atVisualCol** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
@@ -41,6 +42,7 @@
 * **canId** ([**BatchState**](structBatchState.md), [**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
 * **cmdId** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
 * **configure** ([**OpenSkyhawk::ActionButton**](classOpenSkyhawk_1_1ActionButton.md), [**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md), [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md), [**OpenSkyhawk::Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
+* **COUNTS\_PER\_DEG** ([**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md))
 * **centre** ([**OpenSkyhawk::AxisCal**](structOpenSkyhawk_1_1AxisCal.md))
 * **crc** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
 * **ch** ([**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md))
@@ -215,8 +217,8 @@
 ## r
 
 * **readPressed** ([**OpenSkyhawk::ActionButton**](classOpenSkyhawk_1_1ActionButton.md))
+* **readRaw** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **readScaled** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
-* **readRaw** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::Switch3Pos**](classOpenSkyhawk_1_1Switch3Pos.md), [**OpenSkyhawk::SwitchMultiPos**](classOpenSkyhawk_1_1SwitchMultiPos.md))
 * **resolve** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **reverse** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **RotaryAcceleratedEncoder** ([**OpenSkyhawk::RotaryAcceleratedEncoder**](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md))
@@ -323,6 +325,7 @@
 * **\_lastValue** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md))
 * **\_mask** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **\_shift** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md))
+* **\_centerRaw** ([**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md))
 * **\_enabled** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))
 * **\_hasState** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md), [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md))
 * **\_lastDuty** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))

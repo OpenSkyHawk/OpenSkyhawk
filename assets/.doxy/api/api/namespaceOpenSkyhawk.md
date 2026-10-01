@@ -34,6 +34,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | class | [**AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md) <br>_Continuous analog input — one analog_ `PinRef` _, normalised to a 16-bit value 0..65535. Emits the smoothed value over CAN (MULTIPOS transport). Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md) <br>_Resistor-ladder multi-position selector — one analog_ `PinRef` _, a different voltage per position. Emits the resolved position index 0..N-1 over CAN (MULTIPOS dispatch)._ |
 | class | [**AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md) <br>_Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16)._  |
+| class | [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) <br>_Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis._  |
 | struct | [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) <br>_Captured endpoints for one axis, unsigned 0–65535 throughout._  |
 | struct | [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) <br>_The whole persisted calibration set, written and erased as one unit._  |
 | class | [**Dimmer**](classOpenSkyhawk_1_1Dimmer.md) <br>_PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin._  |

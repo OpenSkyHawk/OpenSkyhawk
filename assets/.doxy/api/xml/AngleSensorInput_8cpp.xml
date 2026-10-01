@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="AngleSensorInput_8cpp" kind="file" language="C++">
+    <compoundname>AngleSensorInput.cpp</compoundname>
+    <includes refid="AngleSensorInput_8h" local="yes">AngleSensorInput.h</includes>
+    <incdepgraph>
+      <node id="13">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="16">
+        <label>NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>ADS1115.h</label>
+        <link refid="ADS1115_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Helpers/ShiftBus/ShiftBus.h</label>
+        <link refid="ShiftBus_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Inputs/AnalogInput/AnalogInput.h</label>
+        <link refid="AnalogInput_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.cpp</label>
+        <link refid="AngleSensorInput_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>AngleSensorInput.h</label>
+        <link refid="AngleSensorInput_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PanelGroup.h</label>
+        <link refid="PanelGroup_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>PinRef.h</label>
+        <link refid="PinRef_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Adafruit_ADS1X15.h</label>
+      </node>
+      <node id="5">
+        <label>Arduino.h</label>
+      </node>
+      <node id="7">
+        <label>MCP23017.h</label>
+      </node>
+      <node id="12">
+        <label>SPI.h</label>
+      </node>
+      <node id="6">
+        <label>Wire.h</label>
+      </node>
+      <node id="14">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="AngleSensorInput_8h" kindref="compound">AngleSensorInput.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">uint16_t<sp/>degToCounts(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>deg)<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>wrapped<sp/>=<sp/>deg<sp/>-<sp/>360.0f<sp/>*<sp/>floorf(deg<sp/>/<sp/>360.0f);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>any<sp/>input<sp/>→<sp/>[0,<sp/>360)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)(uint32_t)(wrapped<sp/>*<sp/><ref refid="classOpenSkyhawk_1_1AngleSensorInput_1a9299ada172ab5c7a2b3c086730a673d6" kindref="member">AngleSensorInput::COUNTS_PER_DEG</ref>);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal">uint16_t<sp/>halfSpanCounts(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>travelDeg)<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!(travelDeg<sp/>&gt;<sp/>0.0f))<sp/>travelDeg<sp/>=<sp/>1.0f;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>also<sp/>catches<sp/>NaN</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(travelDeg<sp/>&gt;<sp/>360.0f)<sp/><sp/>travelDeg<sp/>=<sp/>360.0f;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>half<sp/>=<sp/>(uint32_t)(travelDeg<sp/>*<sp/>0.5f<sp/>*<sp/><ref refid="classOpenSkyhawk_1_1AngleSensorInput_1a9299ada172ab5c7a2b3c086730a673d6" kindref="member">AngleSensorInput::COUNTS_PER_DEG</ref>);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>half<sp/>&gt;<sp/>32767u<sp/>?<sp/>32767u<sp/>:<sp/>(uint16_t)half;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>base&apos;s<sp/>[minRaw,<sp/>maxRaw]<sp/>window<sp/>is<sp/>centred<sp/>on<sp/>mid-scale<sp/>because<sp/>readRaw()<sp/>moves<sp/>the<sp/>centre</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>angle<sp/>there<sp/>—<sp/>so<sp/>the<sp/>window<sp/>is<sp/>the<sp/>same<sp/>whatever<sp/>part<sp/>of<sp/>the<sp/>circle<sp/>the<sp/>knob<sp/>sits<sp/>on.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1AngleSensorInput_1ac37698b28ba96661796ad7064f090210" kindref="member">AngleSensorInput::AngleSensorInput</ref>(uint16_t<sp/>controlId,<sp/><ref refid="classPinRef" kindref="compound">PinRef</ref><sp/>pin,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>centerDeg,</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>travelDeg,<sp/>uint16_t<sp/>pollMs)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>AnalogInput(controlId,<sp/>pin,<sp/></highlight><highlight class="comment">/*reverse=*/</highlight><highlight class="normal">false,</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*minRaw=*/</highlight><highlight class="normal">(uint16_t)(32768u<sp/>-<sp/>halfSpanCounts(travelDeg)),</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*maxRaw=*/</highlight><highlight class="normal">(uint16_t)(32768u<sp/>+<sp/>halfSpanCounts(travelDeg)),</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DEFAULT_HYSTERESIS,<sp/>DEFAULT_EWMA_SHIFT,<sp/>pollMs),</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_centerRaw(degToCounts(centerDeg))<sp/>{}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">uint16_t<sp/>AngleSensorInput::readRaw()<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Unsigned<sp/>wrap<sp/>is<sp/>the<sp/>0°/360°<sp/>seam<sp/>handling:<sp/>subtracting<sp/>the<sp/>centre<sp/>and<sp/>adding<sp/>mid-scale<sp/>is</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>modulo<sp/>65536,<sp/>so<sp/>a<sp/>travel<sp/>straddling<sp/>the<sp/>seam<sp/>is<sp/>contiguous<sp/>like<sp/>any<sp/>other.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)(AnalogInput::readRaw()<sp/>-<sp/>_centerRaw<sp/>+<sp/>32768u);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}<sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput/AngleSensorInput.cpp"/>
+  </compounddef>
+</doxygen>

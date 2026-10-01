@@ -51,6 +51,9 @@ Here is a list of all files with brief descriptions:
                 * **dir** [**AnalogMultiPos**](dir_869066037a4dfe81b59e09c740cc62d3.md)     
                     * **file** [**AnalogMultiPos.cpp**](AnalogMultiPos_8cpp.md)     
                     * **file** [**AnalogMultiPos.h**](AnalogMultiPos_8h.md) _Resistor-ladder multi-position selector for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
+                * **dir** [**AngleSensorInput**](dir_204c2e67ee983494592248b9f39f712d.md)     
+                    * **file** [**AngleSensorInput.cpp**](AngleSensorInput_8cpp.md)     
+                    * **file** [**AngleSensorInput.h**](AngleSensorInput_8h.md) _Magnetic angle sensor as an absolute knob / axis, for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**PanelGroup**_](namespacePanelGroup.md) _nodes._    
                 * **dir** [**MultiPosInput**](dir_7bc1eaced50854697a5557e9b0a7cd3c.md)     
                     * **file** [**MultiPosInput.cpp**](MultiPosInput_8cpp.md)     
                     * **file** [**MultiPosInput.h**](MultiPosInput_8h.md) _Shared base for multi-position selector inputs (SwitchMultiPos, AnalogMultiPos, ...)._     

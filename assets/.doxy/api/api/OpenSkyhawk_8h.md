@@ -23,6 +23,7 @@ _Umbrella include for_ [_**PanelGroup**_](namespacePanelGroup.md) _sketch files.
 * `#include <Inputs/SwitchMultiPos/SwitchMultiPos.h>`
 * `#include <Inputs/AnalogMultiPos/AnalogMultiPos.h>`
 * `#include <Inputs/AnalogInput/AnalogInput.h>`
+* `#include <Inputs/AngleSensorInput/AngleSensorInput.h>`
 * `#include <Inputs/RotaryEncoder/RotaryEncoder.h>`
 * `#include <Inputs/RotaryAcceleratedEncoder/RotaryAcceleratedEncoder.h>`
 * `#include <Inputs/ActionButton/ActionButton.h>`

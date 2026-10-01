@@ -42,6 +42,7 @@
     <member refid="classOpenSkyhawk_1_1AnalogInput_1a2e445048e31fd932fef3ddd934b53284" kind="function"><name>poll</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogInput_1aea2a2c0da69d586a264d03c65a691f25" kind="function"><name>forceReport</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogInput_1aa5eaf38fda70f6615891c0f07930c621" kind="function"><name>configure</name></member>
+    <member refid="classOpenSkyhawk_1_1AnalogInput_1aa493708876430da0d60e904fae971515" kind="function"><name>readRaw</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogInput_1a08f28e32f3db305153fed58b96600ba1" kind="function"><name>sample</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogInput_1aaba91f4aecd81038b5cd5a15a55df91f" kind="function"><name>readScaled</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogInput_1ae3ce2bce99cd64e491c6a2b844eacc94" kind="function"><name>shouldEmit</name></member>
@@ -74,6 +75,12 @@
     <member refid="classOpenSkyhawk_1_1AnalogOutput_1a0320b5b9cdf69d3a1506062e0e5b00a5" kind="function"><name>onControlPacket</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogOutput_1a16b686f5912fb6d4b9c4c1ba4c3b1dad" kind="function"><name>AnalogOutput</name></member>
     <member refid="classOpenSkyhawk_1_1AnalogOutput_1a9206c374e9f357131d65817858232502" kind="function"><name>apply</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1AngleSensorInput" kind="class"><name>OpenSkyhawk::AngleSensorInput</name>
+    <member refid="classOpenSkyhawk_1_1AngleSensorInput_1a9299ada172ab5c7a2b3c086730a673d6" kind="variable"><name>COUNTS_PER_DEG</name></member>
+    <member refid="classOpenSkyhawk_1_1AngleSensorInput_1aa07504137fc9eb9743bdf925191a84b5" kind="variable"><name>_centerRaw</name></member>
+    <member refid="classOpenSkyhawk_1_1AngleSensorInput_1ac37698b28ba96661796ad7064f090210" kind="function"><name>AngleSensorInput</name></member>
+    <member refid="classOpenSkyhawk_1_1AngleSensorInput_1ab27969f213cedefb6b618a3356356e77" kind="function"><name>readRaw</name></member>
   </compound>
   <compound refid="structOpenSkyhawk_1_1AxisCal" kind="struct"><name>OpenSkyhawk::AxisCal</name>
     <member refid="structOpenSkyhawk_1_1AxisCal_1af8574fdd76f8f9e946bcc1ddcff81108" kind="variable"><name>min</name></member>
@@ -560,17 +567,17 @@
   </compound>
   <compound refid="namespace_0d10" kind="namespace"><name>@10</name>
   </compound>
-  <compound refid="namespace_0d49" kind="namespace"><name>@49</name>
+  <compound refid="namespace_0d51" kind="namespace"><name>@51</name>
   </compound>
-  <compound refid="namespace_0d55" kind="namespace"><name>@55</name>
-    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d55_1a78d94469367daa12612a138483fadd78a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d55_1a98b6f21f4e78f601748b5e3ecf6129f2a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d57" kind="namespace"><name>@57</name>
+    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d57_1a04520752ed7513bf0ef34790987bed01a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7a" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7aab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7aaa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d57_1a4df4158f308018a3323456bb4b9e4a7aa9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
@@ -678,6 +685,8 @@
     <member refid="namespaceOpenSkyhawk_1ad6b903a2fa71bedb61152f923493b37c" kind="function"><name>calFrameCrcOk</name></member>
   </compound>
   <compound refid="namespaceOpenSkyhawk_1_1_0d14" kind="namespace"><name>OpenSkyhawk::@14</name>
+  </compound>
+  <compound refid="namespaceOpenSkyhawk_1_1_0d27" kind="namespace"><name>OpenSkyhawk::@27</name>
   </compound>
   <compound refid="namespacePanelBridge" kind="namespace"><name>PanelBridge</name>
     <member refid="namespacePanelBridge_1aa4d303af811bcf25628d8086b6087a4e" kind="typedef"><name>NodeCallback</name></member>
@@ -1661,6 +1670,10 @@
   </compound>
   <compound refid="AnalogMultiPos_8h" kind="file"><name>AnalogMultiPos.h</name>
   </compound>
+  <compound refid="AngleSensorInput_8cpp" kind="file"><name>AngleSensorInput.cpp</name>
+  </compound>
+  <compound refid="AngleSensorInput_8h" kind="file"><name>AngleSensorInput.h</name>
+  </compound>
   <compound refid="MultiPosInput_8cpp" kind="file"><name>MultiPosInput.cpp</name>
   </compound>
   <compound refid="MultiPosInput_8h" kind="file"><name>MultiPosInput.h</name>
@@ -1768,6 +1781,8 @@
   <compound refid="dir_869066037a4dfe81b59e09c740cc62d3" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/AnalogMultiPos</name>
   </compound>
   <compound refid="dir_7be86be934beb3a22c91bb10ef55a8df" kind="dir"><name>Firmware/Libraries/PanelGroup/Outputs/AnalogOutput</name>
+  </compound>
+  <compound refid="dir_204c2e67ee983494592248b9f39f712d" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/AngleSensorInput</name>
   </compound>
   <compound refid="dir_81ff3032570f78b12938068450b63228" kind="dir"><name>Firmware/Libraries/CANProtocol</name>
   </compound>
