@@ -59,14 +59,44 @@ DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
 
 // ── decode helpers ────────────────────────────────────────────────────────────
 
-long DrumDisplay::decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits) {
-    uint16_t m = mask ? mask : 0xFFFF;
-    uint32_t masked = static_cast<uint32_t>(value & m);
-    long span = pow10l(nDigits) - 1;  // 1 digit → 9, 2 digits → 99
-    // Whole-word sources (m == 0xFFFF) scale 0..65535 → 0..span. A low-justified bit field
-    // scales 0..m → 0..span. Non-contiguous packed fields would need a right-shift first —
-    // none shipped; see the TODO(bench) notes on the sketch-defined descriptors.
-    return lroundf(static_cast<float>(masked) / static_cast<float>(m) * static_cast<float>(span));
+// Map an exported value onto its band, then onto what the drum shows.
+//
+// DCS-BIOS itself does not segment anything: Module.valueConvert() maps the gauge's declared arg
+// range linearly onto 0..65535 (with a small snap at either end) and stops there. The segmentation
+// is the gauge's, so each source declares its own band count. A plain A-4E-C digit drum carries
+// digit/10 — utils.lua jumpwheel() returns B/10, and (B+dd)/10 mid-roll — so 10 steps, with the
+// roll fraction living inside the band. Selector drums differ: the ARC-51 50 kHz group runs 20
+// steps of 5, and the 10 MHz group 20 steps offset by 22.
+//
+// The value is TRUNCATED on the way out of DCS, so a position that should sit exactly on a band
+// edge arrives one LSB below it (digit 9 as 58981, which is 8.99992 of a band). BAND_EPS pulls it
+// back — it is far below the resolution of a roll fraction, so it cannot promote a rolling drum
+// into the next digit.
+long DrumDisplay::decodeDigits(uint16_t value, const DrumSource& s) {
+    const uint16_t m      = s.mask ? s.mask : 0xFFFF;
+    const uint32_t masked = static_cast<uint32_t>(value & m);
+    const uint16_t steps  = s.steps ? s.steps : static_cast<uint16_t>(pow10l(s.nDigits));
+    if (steps == 0) return s.offset;
+
+    long idx;
+    if (m == 0xFFFF) {
+        // A float output: defineFloat always takes a whole word, so the value is the gauge's arg
+        // normalised onto 0..65535 and the band says where that lands.
+        const float pos = static_cast<float>(masked) / 65535.0f
+                          * static_cast<float>(steps) + BAND_EPS;
+        idx = static_cast<long>(pos);
+    } else {
+        // A packed field: defineMultipositionSwitch and friends allocate a small INTEGER into a
+        // bit field, so the field already IS the position index — only right-justify it. Scaling
+        // it like a float would be wrong, and would also break a field that is not low-justified.
+        uint16_t shift = 0;
+        while (shift < 16 && ((m >> shift) & 1u) == 0u) shift++;
+        idx = static_cast<long>(masked >> shift);
+    }
+
+    if (idx < 0)                            idx = 0;
+    if (idx > static_cast<long>(steps) - 1) idx = steps - 1;   // arg pinned at full scale
+    return idx * static_cast<long>(s.mul) + static_cast<long>(s.offset);
 }
 
 // ── onControlPacket — decode + splice + mark dirty; NEVER draws ────────────────
@@ -81,9 +111,20 @@ void DrumDisplay::onControlPacket(uint16_t controlId, uint16_t value) {
         uint32_t masked = static_cast<uint32_t>(value & m);
         int nFaces = static_cast<int>(strlen(_r->flag.faces));
         if (nFaces < 1) nFaces = 1;
-        long face = (m == 0xFFFF)
-                        ? lroundf(static_cast<float>(masked) / 65535.0f * static_cast<float>(nFaces - 1))
-                        : (masked ? (nFaces - 1) : 0);
+        // A flag is discrete, not a rolling tape, so it rounds to the nearest position instead of
+        // taking the band it sits in. steps defaults to nFaces−1 (a full-scale flag); the ASN-41
+        // hemisphere needs steps = 2 because nav.lua drives it at 0.0 / 0.5.
+        const uint16_t steps = _r->flag.steps ? _r->flag.steps : static_cast<uint16_t>(nFaces - 1);
+        long face;
+        if (m == 0xFFFF) {
+            face = lroundf(static_cast<float>(masked) / 65535.0f * static_cast<float>(steps));
+        } else {
+            uint16_t shift = 0;                       // packed field: already the position index
+            while (shift < 16 && ((m >> shift) & 1u) == 0u) shift++;
+            face = static_cast<long>(masked >> shift);
+        }
+        if (face < 0)          face = 0;
+        if (face > nFaces - 1) face = nFaces - 1;
         if (!_hasState || face != _flagTarget) {
             _flagTarget = face;
             _dirty      = true;
@@ -96,7 +137,7 @@ void DrumDisplay::onControlPacket(uint16_t controlId, uint16_t value) {
     for (uint8_t i = 0; i < _r->nSources; i++) {
         const DrumSource& s = _r->sources[i];
         if (controlId != s.address) continue;
-        long part     = decodeDigits(value, s.mask, s.nDigits);
+        long part     = decodeDigits(value, s);
         long lo       = pow10l(s.place);                 // weight of the low column of this field
         long hi       = pow10l(s.place + s.nDigits);     // weight just above the field
         long keepHigh = (_target / hi) * hi;             // digits above the field
@@ -159,6 +200,15 @@ bool DrumDisplay::descriptorValid() const {
         const DrumSource& s = _r->sources[i];
         if (s.nDigits < 1 || (uint16_t)(s.place + s.nDigits) > _r->nDigits) {
             STM32Board::log("[DRUM] source place+nDigits exceeds the readout — readout disabled");
+            return false;
+        }
+        // The band must fit the columns it is spliced into: a 2-digit field cannot show 100, and a
+        // mis-copied steps/mul/offset is exactly the kind of mistake that would otherwise surface
+        // as a quietly wrong readout rather than a refusal.
+        const long steps    = s.steps ? (long)s.steps : pow10l(s.nDigits);
+        const long maxShown = (steps - 1) * (long)s.mul + (long)s.offset;
+        if (steps < 1 || s.offset < 0 || maxShown > pow10l(s.nDigits) - 1) {
+            STM32Board::log("[DRUM] source band does not fit its digit columns — readout disabled");
             return false;
         }
     }
@@ -352,7 +402,10 @@ void DrumDisplay::update() {
     for (uint8_t ci = 0; ci < _nCells; ci++) {
         int16_t cx = _cellX[ci];
         int16_t w  = _cellW[ci];
-        _oled->setClipWindow(cx, _cy - _cellH / 2, cx + w, _cy + _cellH / 2);
+        int clipX0, clipY0, clipX1, clipY1;
+        if (!clipRectFor(ci, clipX0, clipY0, clipX1, clipY1)) continue;  // entirely off-panel
+        _oled->setClipWindow(static_cast<u8g2_uint_t>(clipX0), static_cast<u8g2_uint_t>(clipY0),
+                             static_cast<u8g2_uint_t>(clipX1), static_cast<u8g2_uint_t>(clipY1));
         if (_cellKind[ci] == KIND_DIGIT) {
             const uint8_t place = static_cast<uint8_t>(_cellData[ci]);
             if (place < vis) drawTape(cx, _pos[place], w);  // else leading-zero cell → left blank
@@ -373,6 +426,89 @@ void DrumDisplay::update() {
 }
 
 // ── runtime setters ────────────────────────────────────────────────────────────
+
+// Clip rect for one cell, clamped to the panel.
+//
+// u8g2's coordinates are UNSIGNED (u8g2_uint_t), so an edge that computes negative wraps to 65535
+// and setClipWindow produces an EMPTY window — the readout vanishes instead of being clipped. The
+// rect is built from _cy and _cellH, so a setOffset() nudge, or a tall cell on a short panel, is
+// enough to push the top edge below zero.
+//
+// @return false when the cell lies entirely off the panel and must be skipped.
+bool DrumDisplay::clipRectFor(uint8_t ci, int& x0, int& y0, int& x1, int& y1) {
+    const int panelW = static_cast<int>(_oled->getDisplayWidth());
+    const int panelH = static_cast<int>(_oled->getDisplayHeight());
+
+    x0 = _cellX[ci];               y0 = _cy - _cellH / 2;
+    x1 = _cellX[ci] + _cellW[ci];  y1 = _cy + _cellH / 2;
+
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) y0 = 0;
+    if (x1 > panelW) x1 = panelW;
+    if (y1 > panelH) y1 = panelH;
+    return x1 > x0 && y1 > y0;
+}
+
+#ifdef DRUMDISPLAY_TEST
+void DrumDisplay::debugDumpGeometry(Print& out) {
+    if (_geomDirty || _nCells == 0) {
+        _oled->setFont(fontPtr());
+        _oled->setFontPosCenter();
+        fitGeometry();
+    }
+    out.print(F("  panel ")); out.print(_oled->getDisplayWidth());
+    out.print('x');           out.print(_oled->getDisplayHeight());
+    out.print(F("  cy="));    out.print(_cy);
+    out.print(F(" cellH="));  out.print(_cellH);
+    out.print(F(" cells="));  out.print(_nCells);
+    out.print(F(" descOk=")); out.print(_descriptorOk ? 1 : 0);
+    out.print(F(" target=")); out.print(_target);
+    out.print(F(" hasState=")); out.print(_hasState ? 1 : 0);
+    // How much ink is actually in the full buffer after the last render. Geometry can look right
+    // while nothing reaches the glass, so count the bytes rather than reason about it.
+    {
+        const uint8_t* buf = _oled->getBufferPtr();
+        const uint16_t len = static_cast<uint16_t>(_oled->getBufferTileHeight()) * 8u
+                           * static_cast<uint16_t>(_oled->getBufferTileWidth());
+        uint16_t ink = 0;
+        if (buf) for (uint16_t i = 0; i < len; i++) if (buf[i]) ink++;
+        out.print(F(" inkBytes=")); out.print(ink);
+        out.print('/');             out.println(len);
+    }
+    for (uint8_t ci = 0; ci < _nCells; ci++) {
+        int x0, y0, x1, y1;
+        const bool vis = clipRectFor(ci, x0, y0, x1, y1);
+        out.print(F("   cell ")); out.print(ci);
+        out.print(F(" kind "));   out.print(_cellKind[ci]);
+        out.print(F(" x="));      out.print(_cellX[ci]);
+        out.print(F(" w="));      out.print(_cellW[ci]);
+        out.print(F(" clip("));   out.print(x0); out.print(',');  out.print(y0);
+        out.print(F(")-("));      out.print(x1); out.print(',');  out.print(y1);
+        out.print(F(") visible=")); out.println(vis ? 1 : 0);
+    }
+}
+
+// Every visible cell must produce a clip rect that is non-empty and inside the panel. Without the
+// clamp above, an offset readout returns a negative edge here — which on the panel is a blank
+// screen, not a clipped one.
+bool DrumDisplay::debugClipFits() {
+    if (_geomDirty || _nCells == 0) {
+        _oled->setFont(fontPtr());
+        _oled->setFontPosCenter();
+        fitGeometry();
+    }
+    const int panelW = static_cast<int>(_oled->getDisplayWidth());
+    const int panelH = static_cast<int>(_oled->getDisplayHeight());
+    bool anyVisible = false;
+    for (uint8_t ci = 0; ci < _nCells; ci++) {
+        int x0, y0, x1, y1;
+        if (!clipRectFor(ci, x0, y0, x1, y1)) continue;
+        anyVisible = true;
+        if (x0 < 0 || y0 < 0 || x1 > panelW || y1 > panelH || x1 <= x0 || y1 <= y0) return false;
+    }
+    return anyVisible;
+}
+#endif
 
 void DrumDisplay::setFontSize(DrumFont font) {
     _font      = font;

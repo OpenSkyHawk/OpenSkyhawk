@@ -9,7 +9,7 @@
 //   Button PB0  (active-LOW, 10kΩ pull-up to 3V3) → DCSIN_MASTER_TEST
 // Needle gauge — X27 air-core stepper via DRV8833 (coils PA0/PA1/PA4/PA5):
 //   APN-153 DRIFT needle ← A_4E_C_APN153_DRIFT_GAUGE (centre-zero)
-// OLED drum readouts — TCA9548A @ 0x70 on I2C1 (SCL=PB8, SDA=PB9), each panel @ 0x3C:
+// OLED drum readouts — TCA9548A @ 0x70 on J_I2C2 (I2C2: SCL=PB10, SDA=PB11), each panel @ 0x3C:
 //   ch0 → current longitude  (NAV_CURPOS_LON, 6 digits + E/W flag)
 //   ch1 → ARC-51 UHF frequency (ARC51_FREQ, 5 digits + '.', e.g. 225.50)
 // DCS-routed inputs (bench: 2 EC11 encoders + 2 pots — see README.md for wiring + pull-ups):
@@ -62,22 +62,19 @@ I2cMux drumMux(0x70, Wire);
 // 4 + flag — and a hemisphere that arrives at half scale never reaches the second face through a
 // 0xFFFF mask.
 //
-// The descriptor below still reads six digits and still takes the flag at full scale, so it does
-// not yet match that. Correcting it needs a per-source scale first: every A-4E-C drum exports
-// digit/10 (utils.lua jumpwheel() returns B/10) while decodeDigits() assumes digit/9, which reads
-// a live 9 as an 8. Recorded in #137; the descriptors follow that change rather than lead it.
+// The descriptor below now matches: five digit drums, with the hemisphere as the flag at half
+// scale (steps = 2, faces ordered W then E).
 static const DrumSource LON_SRC[] = {
-    { A_4E_C_NAV_CURPOS_LON_X00000, A_4E_C_NAV_CURPOS_LON_X00000_AM, 1, 5 },
-    { A_4E_C_NAV_CURPOS_LON_0X0000, A_4E_C_NAV_CURPOS_LON_0X0000_AM, 1, 4 },
-    { A_4E_C_NAV_CURPOS_LON_00X000, A_4E_C_NAV_CURPOS_LON_00X000_AM, 1, 3 },
-    { A_4E_C_NAV_CURPOS_LON_000X00, A_4E_C_NAV_CURPOS_LON_000X00_AM, 1, 2 },
-    { A_4E_C_NAV_CURPOS_LON_0000X0, A_4E_C_NAV_CURPOS_LON_0000X0_AM, 1, 1 },
-    { A_4E_C_NAV_CURPOS_LON_00000X, A_4E_C_NAV_CURPOS_LON_00000X_AM, 1, 0 },
+    { A_4E_C_NAV_CURPOS_LON_X00000, A_4E_C_NAV_CURPOS_LON_X00000_AM, 1, 4 },
+    { A_4E_C_NAV_CURPOS_LON_0X0000, A_4E_C_NAV_CURPOS_LON_0X0000_AM, 1, 3 },
+    { A_4E_C_NAV_CURPOS_LON_00X000, A_4E_C_NAV_CURPOS_LON_00X000_AM, 1, 2 },
+    { A_4E_C_NAV_CURPOS_LON_000X00, A_4E_C_NAV_CURPOS_LON_000X00_AM, 1, 1 },
+    { A_4E_C_NAV_CURPOS_LON_0000X0, A_4E_C_NAV_CURPOS_LON_0000X0_AM, 1, 0 },
 };
 static const DrumReadout LON_READOUT = {
-    .sources = LON_SRC, .nSources = 6, .nDigits = 6,
+    .sources = LON_SRC, .nSources = 5, .nDigits = 5,
     .digitWidthMm = 4.5f, .digitHeightMm = 8.0f, .interDigitGapMm = 1.0f,
-    .flag = { .enabled = true, .address = A_4E_C_NAV_CURPOS_LON_00000X, .mask = A_4E_C_NAV_CURPOS_LON_00000X_AM, .faces = "EW", .atVisualCol = 6, .widthMm = 5.5f },
+    .flag = { .enabled = true, .address = A_4E_C_NAV_CURPOS_LON_00000X, .mask = A_4E_C_NAV_CURPOS_LON_00000X_AM, .faces = "WE", .atVisualCol = 5, .widthMm = 5.5f, .steps = 2 },
 };
 
 // ARC-51 UHF displayed frequency — XXX.XX, so five digits with the dot after the third. The dot
@@ -87,14 +84,18 @@ static const DrumReadout LON_READOUT = {
 // 00–99 value each. radio_controls2.lua drives ARC51_FREQ_XX000 from the 10 MHz selector (0.00–0.85
 // in 0.05 steps, 18 positions → displayed 22–39), ARC51_FREQ_00X00 from the 1 MHz digit (digit/10),
 // and ARC51_FREQ_000XX from the 50 kHz selector (0.00–0.95 in 0.05 steps → 00, 05 … 95). Only the
-// last is declared {0, 0.95} in DCS-BIOS, so only it normalises to full scale. Decoding all three
-// needs the same per-source scale noted on the longitude readout above.
+// last is declared {0, 0.95} in DCS-BIOS, so only it normalises to full scale.
 // (Raw manual-selector knobs live at A_4E_C_ARC51_FREQ_10MHZ/_1MHZ/_50KHZ, bit-packed — swap to
 //  those if you want the knob positions instead of the displayed frequency.)
 static const DrumSource ARC51_SRC[] = {
-    { A_4E_C_ARC51_FREQ_XX000, A_4E_C_ARC51_FREQ_XX000_AM, 2, 3 },
-    { A_4E_C_ARC51_FREQ_00X00, A_4E_C_ARC51_FREQ_00X00_AM, 1, 2 },
-    { A_4E_C_ARC51_FREQ_000XX, A_4E_C_ARC51_FREQ_000XX_AM, 2, 0 },
+    // Bands, confirmed by pairing each float against its selector's exported position index in a
+    // sim capture: 22937 ↔ 10 MHz position 7, 58981 ↔ 1 MHz 9, 62085 ↔ 50 kHz 18, i.e. 299.90.
+    // Note the 10 MHz float spans its declared {0,1} range in 0.05 steps — 20 bands, of which the
+    // switch only uses 18 — while the selector INTEGER has 18 positions. Band count follows the
+    // declared range, not the switch.
+    { A_4E_C_ARC51_FREQ_XX000, A_4E_C_ARC51_FREQ_XX000_AM, 2, 3, /*steps*/ 20, /*mul*/ 1, /*offset*/ 22 },
+    { A_4E_C_ARC51_FREQ_00X00, A_4E_C_ARC51_FREQ_00X00_AM, 1, 2, /*steps*/ 10 },
+    { A_4E_C_ARC51_FREQ_000XX, A_4E_C_ARC51_FREQ_000XX_AM, 2, 0, /*steps*/ 20, /*mul*/ 5 },
 };
 static const DrumGlyph ARC51_DOT[] = { { '.', 3, 1.8f } };
 static const DrumReadout ARC51_READOUT = {
@@ -128,8 +129,10 @@ void setup() {
 
     // Bring each OLED up on its own mux channel BEFORE PanelGroup::setup() (which calls
     // configure() on every output): begin() must precede configure(), each on its channel.
-    Wire.setSCL(PB8);
-    Wire.setSDA(PB9);
+    // J_I2C2 on the base board (docs/_source/base-boards.md). PB8/PB9 are the Blue Pill I2C1
+    // remap and are MCP23017 interrupt lines here — driving them reaches no panel.
+    Wire.setSCL(PB10);
+    Wire.setSDA(PB11);
     Wire.begin();
     drumMux.select(0);
     oledLon.setI2CAddress(0x3C << 1);

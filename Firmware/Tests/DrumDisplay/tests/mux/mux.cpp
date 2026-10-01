@@ -53,7 +53,9 @@ static void check(const char* label, bool ok) {
     d.println(label);
 }
 static uint16_t digitWord(int digit) {
-    return static_cast<uint16_t>(lroundf(digit / 9.0f * 65535.0f));
+    // DCS exports a drum digit as digit/10 of the gauge's arg range (utils.lua jumpwheel()
+    // returns B/10), and TRUNCATES on the way out — a 9 arrives as 58981, not 65535.
+    return static_cast<uint16_t>(digit / 10.0f * 65535.0f);
 }
 
 void setup() {
@@ -62,8 +64,8 @@ void setup() {
     auto& d = STM32Board::diagSerial();
     d.println(F("=== DrumDisplay mux ==="));
 
-    Wire.setSCL(PB8);
-    Wire.setSDA(PB9);
+    Wire.setSCL(I2C_TEST_SCL);
+    Wire.setSDA(I2C_TEST_SDA);
     Wire.begin();
     // Bring each panel up on its OWN mux channel first: begin() must precede configure(), and
     // each begin() must run while that panel's channel is selected (both share address 0x3C).

@@ -4,7 +4,7 @@
 // instead of native GPIO — proving the PinRef path drives a stepper over I2C. Step rate
 // is capped by the per-pin I2C write (~one transaction per coil), so keep sweeps moderate.
 //
-// Hardware: STM32 + MCP23017 @ 0x20 on I2C1 (PB8=SCL, PB9=SDA); X27 coils on GPB0..GPB3.
+// Hardware: STM32 + MCP23017 @ 0x20 on I2C2 (PB10=SCL, PB11=SDA — J_I2C2 on the base board); X27 coils on GPB0..GPB3.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -45,8 +45,8 @@ void setup() {
     STM32Board::begin();
     STM32Board::diagSerial().println("=== StepperMotor mcp23017 (bench) ===");
 
-    Wire.setSDA(PB9);
-    Wire.setSCL(PB8);
+    Wire.setSDA(I2C_TEST_SDA);
+    Wire.setSCL(I2C_TEST_SCL);
     Wire.begin();
     Wire.setClock(400000);   // 400kHz — STM32F103 I2C ceiling (no fast-mode-plus on F1)
     PanelGroup::registerExpander(gExpander);   // polling-fallback mode

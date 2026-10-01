@@ -6,7 +6,7 @@
 //   Registering the same ADS1115 instance twice is deduplicated (no double-begin).
 //   A PinRef(adc, channel) reads a valid value after setup() has initialised the chip.
 //
-// Hardware: ADS1115 dev board on I2C1 remap (PB8=SCL, PB9=SDA), addr 0x48 (ADDR→GND).
+// Hardware: ADS1115 dev board on I2C1 remap (J_I2C2: PB10=SCL, PB11=SDA), addr 0x48 (ADDR→GND).
 //   A0 connected to ~1.65 V mid-rail (10 kΩ + 10 kΩ voltage divider, 3.3 V → GND).
 //   No MCP23017 required. CAN loopback used so no physical bus needed.
 //
@@ -33,8 +33,8 @@ void setup() {
     };
 
     // Register ADC before setup() — pattern identical to sketch usage
-    Wire.setSDA(PB9);
-    Wire.setSCL(PB8);
+    Wire.setSDA(I2C_TEST_SDA);
+    Wire.setSCL(I2C_TEST_SCL);
     Wire.begin(); // Bench workaround: production PCB uses Wire.begin() default (PB6/PB7).
     PanelGroup::registerADC(gAdc, 0x48, Wire);
 

@@ -82,6 +82,14 @@ struct DrumSource {
     uint16_t mask;      ///< field mask (A_4E_C_*_AM); 0xFFFF for whole-word sources
     uint8_t  nDigits;   ///< digits this address encodes (1 for APN153, 2 for ARC-51 groups)
     uint8_t  place;     ///< least-significant digit column this source writes (0 = rightmost)
+
+    // ── band: how the exported 0..mask range divides into displayable positions ──
+    // DCS-BIOS does no segmentation of its own — Module.valueConvert() maps the gauge's declared
+    // arg range linearly onto 0..65535 and nothing more. The division into positions belongs to
+    // the gauge, so it is declared per source rather than assumed from nDigits.
+    uint16_t steps  = 0;   ///< positions across the range; 0 ⇒ 10^nDigits (a plain drum digit)
+    uint8_t  mul    = 1;   ///< displayed value per position (5 for the ARC-51 50 kHz drum)
+    int16_t  offset = 0;   ///< added after mul (22 for the ARC-51 10 MHz group, 29 for ALT_ADJ)
 };
 
 /**
@@ -97,10 +105,13 @@ struct DrumGlyph {
 /**
  * @brief Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode letter.
  * @note OFF by default (@c enabled = false). Position is configurable (not hardcoded
- *       rightmost). Populate @c address / @c mask from the A4EC constants. For a whole-word
- *       source (mask 0xFFFF) the value maps to a face by round(value/65535·(nFaces−1));
- *       for a bit-packed source the masked value selects face 0 (zero) or the last face
- *       (non-zero). Bench-confirm the real encoding before trusting it.
+ *       rightmost). Populate @c address / @c mask from the A4EC constants. The face is
+ *       round(value/mask · steps), clamped to the face count.
+ * @note @c steps matters because the A-4E-C does not drive every flag over the same range:
+ *       the ASN-41 hemisphere arrives at HALF scale (nav.lua sets 0.0 or 0.5 for N/S and
+ *       E/W, so steps = 2), while MagVar and the BDHI DME flag use the full range
+ *       (0 or 1, so steps = 1). A half-scale flag read as full scale never reaches its
+ *       second face.
  */
 struct DrumFlag {
     bool        enabled;      ///< false ⇒ no flag tape rendered (default)
@@ -109,6 +120,7 @@ struct DrumFlag {
     const char* faces;        ///< face string, one char per state, e.g. "NS" / "EW" (nFaces = strlen)
     uint8_t     atVisualCol;  ///< visual column the flag cell is inserted at (after this many digits)
     float       widthMm;      ///< flag cell width, mm (wider than a digit so a broad 'W' fits)
+    uint16_t    steps = 0;    ///< positions across the range; 0 ⇒ nFaces−1 (a full-scale flag)
 };
 
 /**
@@ -257,6 +269,8 @@ public:
     bool     debugReachable()          { return i2cReachable(); }               ///< test-only: drive the breaker gate
     uint32_t debugProbeCount() const   { return _probeCount; }                  ///< test-only: i2cProbe() calls
     bool     debugDescriptorOk() const { return _descriptorOk; }                ///< test-only: descriptor passed validation
+    bool     debugClipFits();                                                   ///< test-only: every cell's clip rect lies inside the panel
+    void     debugDumpGeometry(Print& out);                                     ///< test-only: print cells, centre line and clip rects
 #endif
 
 protected:
@@ -267,6 +281,7 @@ private:
 
     uint8_t oledAddr() const;        // OLED 7-bit address, read from the U8G2 object (for the probe)
     bool    descriptorValid() const; // nDigits/cell/splice bounds — logs the offending field
+    bool    clipRectFor(uint8_t ci, int& x0, int& y0, int& x1, int& y1);  // panel-clamped clip rect
     Fault   _fault = Fault::None;    // which hop failed the last probe (mux vs device)
     bool    _descriptorOk = true;    // false = descriptor out of bounds; render is a no-op
 #ifdef DRUMDISPLAY_TEST
@@ -314,7 +329,9 @@ private:
     bool settled() const;                            // every |target/10^k − pos[k]| < epsilon
     uint8_t visibleDigits() const;                   // significant digit cells to draw (== nDigits unless suppressLeadingZero)
     const uint8_t* fontPtr() const;                  // ProFont face for _font
-    static long decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits);
+    /** @brief Pull a truncated value back onto its band edge (see decodeDigits). */
+    static constexpr float BAND_EPS = 0.002f;
+    static long decodeDigits(uint16_t value, const DrumSource& s);
 };
 
 }  // namespace OpenSkyhawk

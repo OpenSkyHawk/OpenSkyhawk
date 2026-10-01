@@ -134,6 +134,12 @@ the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
     flag) is described by a `DrumReadout` defined in the sketch, like the `PinRef` wiring map.
     Many same-address OLEDs can share one bus behind a TCA9548A via the `I2cMux` helper.
 
+    Each source also declares its **band** — how many positions the gauge divides its range into,
+    and what each one displays. DCS-BIOS normalises a gauge's declared range to 16 bits and leaves
+    the meaning to the client, and the A-4E-C gauges genuinely differ: an ordinary digit drum
+    exports `digit/10`, the ARC-51 selectors export a position index, and the altimeter's inHg
+    group runs over `{29, 30}`. A plain digit drum needs no extra fields.
+
 ## Wiring map convention
 
 `PinRef` bit positions and mask values must be **named constants**, never inline literals.

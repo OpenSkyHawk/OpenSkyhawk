@@ -7,7 +7,7 @@
 //   write() is a no-op on ADS1115 — pin state unchanged.
 //   isGpio() == false for an ADS1115 PinRef.
 //
-// Hardware: ADS1115 dev board on I2C1 remap (PB8=SCL, PB9=SDA), addr 0x48 (ADDR→GND).
+// Hardware: ADS1115 dev board on I2C1 remap (J_I2C2: PB10=SCL, PB11=SDA), addr 0x48 (ADDR→GND).
 //   A0 connected to ~1.65 V mid-rail (10 kΩ + 10 kΩ voltage divider, 3.3 V → GND).
 //   Expected readAnalog() ≈ 32768 ± wide tolerance (~16000–48000 at mid-rail).
 //   Connect A0 to 3.3 V for a high reading (≥ 52000). Connect to GND for near-zero.
@@ -28,8 +28,8 @@ void setup() {
     STM32Board::diagSerial().println("=== PinRef ads1115_analog ===");
     STM32Board::diagSerial().println("Hardware: ADS1115 @ 0x48, A0 wired to ~1.65 V mid-rail divider");
 
-    Wire.setSDA(PB9);
-    Wire.setSCL(PB8);
+    Wire.setSDA(I2C_TEST_SDA);
+    Wire.setSCL(I2C_TEST_SCL);
     Wire.begin();
 
     // Raw I2C read test: write config register pointer, read 2 bytes.

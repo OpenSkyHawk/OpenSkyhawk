@@ -17,8 +17,8 @@ static uint16_t value = 0;       // rolling 000–999 demo value
 static uint32_t lastTick = 0;    // last update time (ms)
 
 void setup() {
-    Wire.setSCL(PB8);
-    Wire.setSDA(PB9);
+    Wire.setSCL(I2C_TEST_SCL);
+    Wire.setSDA(I2C_TEST_SDA);
     Wire.begin();
     oled.setI2CAddress(0x3C << 1);
     oled.begin();
