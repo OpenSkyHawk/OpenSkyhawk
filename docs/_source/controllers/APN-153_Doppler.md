@@ -37,7 +37,7 @@ AN/ASN-41 nav computer. No MCU of its own — routes to the ASN-41 host board ov
 
 | Address | Device | LCSC | Notes |
 |---|---|---|---|
-| 0x20 | MCP23017-E/SS | C506653 | Port A: GPA0–5 = 6 in (DOPPLER_SEL ×5 + MEM), GPA6 = DRV8833 ~SLEEP (sim-gated, 10 kΩ pull-down), GPA7 = MEMORYLIGHT; Port B: GPB0–3 = DRIFT stepper coils. 12/16 used. INT_A → host PB8 |
+| 0x27 | MCP23017-E/SS | C506653 | Port A: GPA0–5 = 6 in (DOPPLER_SEL ×5 + MEM), GPA6 = DRV8833 ~SLEEP (sim-gated, 10 kΩ pull-down), GPA7 = MEMORYLIGHT; Port B: GPB0–3 = DRIFT stepper coils. 12/16 used. INT_A → host PB8 |
 | 0x3C | OLED SSD1306 0.91″ 128×32 (module) | TBD | GND SPEED via `DrumDisplay` (controller OLED addressing / mux on #168). VCC 3.3–5 V (onboard reg). **PCB-mounted** (tentative — confirm at CAD/B3); own library part (symbol + footprint + STEP). 0.91″ bench-verified on real APN-153 faceplate |
 
 ## Discrete Drivers
