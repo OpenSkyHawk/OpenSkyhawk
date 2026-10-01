@@ -101,9 +101,20 @@ public:
     uint32_t readCount() const { return _readCount; }
 #endif
 
+protected:
+    /**
+     * @brief Read the raw 16-bit source value. The one hook a family member overrides.
+     *
+     * Default: the analog PinRef (or the injected value under ANALOGINPUT_TEST). A subclass that
+     * reinterprets the reading overrides this and calls AnalogInput::readRaw() for the source
+     * value — AngleSensorInput re-centres it on its centre angle. Everything after this point
+     * (clamp, scale, EWMA, hysteresis, emit) is the base's and is shared unchanged.
+     */
+    virtual uint16_t readRaw();
+
 private:
     void     sample();                       ///< one read + EWMA step + conditional emit (no throttle).
-    uint16_t readScaled();                   ///< read ADC (test seam), clamp [min,max], map → 0..65535.
+    uint16_t readScaled();                   ///< readRaw(), clamp [min,max], map → 0..65535.
     bool     shouldEmit(uint16_t v) const;   ///< hysteresis + near-rail test vs _lastSent.
     void     emit(uint16_t v, bool init = false);
 

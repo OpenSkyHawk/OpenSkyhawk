@@ -1,6 +1,9 @@
 # AngleSensorInput — Technical Specification
 
-**Status:** Ready for implementation (#294, Firmware v0.1.0) — `AnalogInput` family member (D16)
+**Status:** Done (hardware-verified — **3/3 envs PASS 2026-09-30** on an STM32F103, CAN silent
+loopback, readings injected; the 8 `AnalogInput` envs re-run 8/8 as the refactor's regression gate.
+A real AS5600/MT6701 on a live DCS knob is part of the #291 smoke test). `AnalogInput` family
+member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AngleSensorInput), `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `AnalogInput.md`, `PinRef.md`
 
@@ -35,13 +38,25 @@ base call. `configure()` is inherited unchanged (`_pin.configureAsInput()`).
 ### The one base hook (added in the same PR as this class)
 
 - `AnalogInput` gains `protected: virtual uint16_t readRaw();` whose default returns
-  `_pin.readAnalog()`. `readScaled()` calls it instead of reading the pin itself. The members it
-  needs become `protected`.
+  `_pin.readAnalog()` (or the `ANALOGINPUT_TEST` injected value). `readScaled()` calls it instead of
+  reading the pin itself. **No base member becomes `protected`:** the subclass's `readRaw()` is
+  `AnalogInput::readRaw()` plus a re-centre, so it touches no base state — the smaller surface.
 - `AngleSensorInput::readRaw()` calls `AnalogInput::readRaw()` and **re-centres** the value so
   `centerDeg` lands at mid-scale (32768). The 0°/360° seam then only matters for travel wider than
   ±180°, which removes the old "rotate the magnet mount" constraint.
 - The public `AnalogInput` constructor and behaviour are unchanged, so existing sketches and the
   eight `Firmware/Tests/AnalogInput` envs are unaffected. Cost: one virtual call per read.
+
+### Tests
+
+`Firmware/Tests/AngleSensorInput` — `test_mapping` (centre 180° / travel 150°: centre → mid-scale,
+±75° → the rails, beyond → clamped), `test_wrap` (centre 10° / travel 60° straddling 0°/360°:
+350°/30° symmetric about mid, 340°/40° the rails, 190° clamped not mid-travel) and `test_inherits`
+(the base still owns baseline, hysteresis and emission through the subclass). Seam-driven via
+`debugSetRaw()` / `forceReport()`, CAN in silent loopback — one bare board, no sensor.
+
+The eight `Firmware/Tests/AnalogInput` envs are the regression gate on the `readRaw()` refactor;
+they keep their assertions and moved to silent loopback so they run on the same bare board.
 
 ### Faults
 

@@ -56,7 +56,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | `RotaryAcceleratedEncoder` | **Implemented** (hardware-verified) | `RotaryEncoder` subclass: DCS-BIOS's momentum filter for noisy encoders, plus a bigger step when spun fast |
 | `RotarySwitch` | Not planned | Use `RotaryEncoder` in DIR mode — see the note below |
 | `AnalogInput` | **Implemented** (hardware-verified) | Continuous analog, normalised to 16-bit (EWMA + hysteresis) |
-| `AngleSensorInput` | Planned — v0.1.0 (#294) | `AnalogInput` subclass reading a magnetic angle sensor (AS5600/MT6701) — absolute knobs such as gunsight elevation |
+| `AngleSensorInput` | **Implemented** (hardware-verified) | `AnalogInput` subclass reading a magnetic angle sensor (AS5600/MT6701) — absolute knobs such as gunsight elevation |
 | `SwitchWithCover2Pos` | Planned — v0.1.0 (#293) | One switch pin driving a guarded sim control: opens the sim's cover before the switch and closes it after (DCS-BIOS behaviour) |
 
 All inputs normalise analog sources to **16-bit (0–65535)** before sending. Inputs self-register
