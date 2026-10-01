@@ -105,8 +105,11 @@ struct DrumReadout {
 
 class DrumDisplay : public OutputBase, public I2cHealth, public FaultSource {  // FaultSource: #163
 public:
-    // Direct-bus: one panel on the MCU's I²C bus.
+    // Direct-bus on the default trunk (Wire).
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
+                DrumFont font = DrumFont::LARGE, float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
+    // Direct-bus on a stated trunk — needed when a node drives both I²C buses at once.
+    DrumDisplay(U8G2& oled, const DrumReadout& readout, TwoWire& wire,
                 DrumFont font = DrumFont::LARGE, float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
     // Muxed: one panel behind a TCA9548A branch (re-selects its channel before each I²C op).
     DrumDisplay(U8G2& oled, const DrumReadout& readout, I2cMux& mux, uint8_t channel,
@@ -162,17 +165,37 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C oledSpeed(U8G2_R0, U8X8_PIN_NONE);
 DrumDisplay speed(oledSpeed, APN153_SPEED, DrumFont::LARGE);
 
 void setup() {
-    Wire.setSCL(PB10);   // J_I2C2 on the base board Wire.setSDA(PB11); Wire.begin();   // bus pins owned by the sketch
+    Wire.begin();                        // I2C1 = PB6/PB7 on the base board (core defaults)
     oledSpeed.setI2CAddress(0x3C << 1); oledSpeed.begin();
     PanelGroup::setup();   // calls configure() on every DrumDisplay (auto-fits + blanks)
 }
 void loop() { PanelGroup::loop(); }   // dispatches CTRL_BCAST → onControlPacket; calls update()
 ```
 
-For several panels on one TCA9548A: `#include <Helpers/I2cMux/I2cMux.h>`, construct one
-`I2cMux navMux(0x70, Wire);`, and pass it + a channel to each ctor —
-`DrumDisplay lat(oledLat, LAT_READOUT, navMux, /*channel*/ 0);` — each re-selects its channel before
-every buffer send.
+**One transport argument: a bus, or a mux.**
+
+Several panels on one TCA9548A — each re-selects its channel before every buffer send:
+
+```cpp
+#include <Helpers/I2cMux/I2cMux.h>
+
+I2cMux navMux(0x70, Wire);                 // the mux carries the bus
+DrumDisplay lat(oledLat, LAT_READOUT, navMux, /*channel*/ 0);
+DrumDisplay lon(oledLon, LON_READOUT, navMux, /*channel*/ 1);
+```
+
+A single panel on the second trunk. The core does not predefine a `Wire1` for these variants, so
+the sketch declares one; pass it to the ctor so the probe follows the panel:
+
+```cpp
+TwoWire Wire1(PB11, PB10);                 // J_I2C2 — SDA, SCL
+U8G2_SSD1306_128X32_UNIVISION_F_2ND_HW_I2C oledSpeed(U8G2_R0, U8X8_PIN_NONE);
+DrumDisplay speed(oledSpeed, APN153_SPEED, Wire1);
+```
+
+A bare OLED may not share a trunk with same-address panels behind a mux — it is shadowed whenever
+a channel is open (`hardware-standards.md`). Put the mux on one trunk and the bare panel on the
+other.
 
 ---
 
@@ -281,8 +304,9 @@ send) behind `i2cReachable()`. `i2cProbe()`:
 - **muxed:** a **forced** `select(channel, true)` (uncached write — confirms the mux *and* re-routes,
   so a mux reset / power-glitch recovers) then `deviceAcks(oledAddr)` for the OLED on the branch —
   classifying the failure `Fault::Mux` vs `Fault::Device` (feeds #163).
-- **direct-bus:** probes the OLED address on `Wire`. (A direct OLED on `Wire1` isn't covered yet — put
-  it on the mux, or a follow-up adds a bus handle.)
+- **direct-bus:** probes the OLED address on the trunk the ctor was given — `Wire` unless a
+  `TwoWire&` was passed. The U8G2 object already carries its own bus, so the handle exists to keep
+  the probe on the same one; mismatch them and the breaker faults a working panel.
 
 A dead/absent panel → the render is skipped and the breaker backs off ~2 s between re-probes, so a
 missing OLED can no longer stall `PanelGroup::loop()` and flap the node. The decode path

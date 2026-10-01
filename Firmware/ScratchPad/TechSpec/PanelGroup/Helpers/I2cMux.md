@@ -43,6 +43,7 @@ public:
     bool select(uint8_t channel, bool force = false);  // route to 0–7; force = uncached write (recovery)
     void disableAll();              // control byte 0x00 (optional bus quiescing)
     bool deviceAcks(uint8_t addr7); // probe a device on the CURRENTLY selected channel
+    TwoWire& bus() const;           // the trunk this mux is on
 };
 
 }  // namespace OpenSkyhawk

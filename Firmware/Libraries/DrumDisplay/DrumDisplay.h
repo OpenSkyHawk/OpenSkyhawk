@@ -171,8 +171,29 @@ public:
      * @param xOffsetMm  X shift (mm) of the whole digit block, registers it to the faceplate window.
      * @param yOffsetMm  Y shift (mm) of the digit block centre line.
      * @note The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in configure().
+     * @note Probes on `Wire`. For a panel on the second trunk, use the overload that takes a bus.
      */
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
+                DrumFont font = DrumFont::LARGE,
+                float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
+
+    /**
+     * @brief Construct and register a direct-bus drum display on an explicit I2C bus.
+     *
+     * @details Same as the overload above, but states which bus the panel is on so the
+     * reachability probe talks to it. A node using both trunks at once needs this: the U8G2
+     * object already carries its own bus (chosen by its constructor variant), and without a
+     * matching handle here the probe would test the wrong one and the health breaker would
+     * fault a working panel. One per transport — a bus, or an I2cMux.
+     *
+     * @param oled       Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this.
+     * @param readout    Descriptor for this readout. Must outlive this.
+     * @param wire       I2C bus this panel sits on. Must outlive this and match the U8G2 object's.
+     * @param font       Per-mounting glyph size. Default DrumFont::LARGE.
+     * @param xOffsetMm  X registration shift (mm).
+     * @param yOffsetMm  Y registration shift (mm).
+     */
+    DrumDisplay(U8G2& oled, const DrumReadout& readout, TwoWire& wire,
                 DrumFont font = DrumFont::LARGE,
                 float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
 
@@ -295,6 +316,9 @@ private:
     const DrumReadout* _r;           // descriptor (not owned)
     I2cMux*            _mux;          // nullptr for direct-bus instances
     uint8_t            _channel;      // mux channel; ignored when _mux == nullptr
+    TwoWire*           _wire;         // the trunk this panel is on — the mux's bus when muxed,
+                                      // else the one given to the ctor (default Wire). Always
+                                      // set. (TwoWire comes in via I2cMux.h -> Wire.h)
     DrumFont           _font;         // current glyph size
     float              _xOffMm, _yOffMm;  // registration offset, mm (→ px via PX_PER_MM in fitGeometry)
 
