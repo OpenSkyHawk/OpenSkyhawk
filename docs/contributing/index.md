@@ -35,10 +35,25 @@ install, claiming a NODE_ID, the PR process, and the
 [Code of Conduct](https://github.com/OpenSkyhawk/OpenSkyhawk/blob/main/CODE_OF_CONDUCT.md). The
 short version:
 
-- Branch from `main` with a `feat/` `fix/` `chore/` `docs/` `ci/` prefix; one focused change per PR.
+- Branch from `main` with a `feat/` `fix/` `chore/` `docs/` `ci/` `build/` prefix; one focused change per PR.
+- Title the PR as a Conventional Commit, `type(scope): summary` — a required check enforces it.
 - Firmware: `pio run` must compile. PCB: ERC clean (DRC clean for layout PRs).
 - **CI must pass — never merge with failing checks.**
 - Claim your `NODE_ID` in `Firmware/NODE_IDS.md` *before* starting firmware work.
+
+## How releases work
+
+- **Your PR title matters.** Write it as `type(scope): summary` — e.g.
+  `feat(firmware): add a dimmer output` or `fix(pcb): swap the TVS diode`. A required check fails
+  the PR if it isn't; the title becomes the line in the changelog.
+- **Firmware releases itself.** Each merge to `main` keeps a draft *"release firmware X.Y.Z"* pull
+  request up to date with the next version and its changelog. When a maintainer marks it ready
+  and merges it, the release is tagged and published — nothing for you to do.
+- **Boards and the cockpit are released by hand.** A board gets a version tag when it's sent to be
+  made; the whole cockpit gets a release once its boards have been tested together.
+
+Want the details? See [Releases](conventions.md#releases) and
+[design decision D10](../architecture/design-decisions.md#d10-versioning-one-repo-three-release-tracks).
 
 ## In this section
 
