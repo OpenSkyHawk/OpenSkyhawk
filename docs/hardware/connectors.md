@@ -45,14 +45,13 @@ controller needs them).
 ## CAN trunk — `J_BUS_IN` / `J_BUS_OUT`
 
 Molex Mini-Fit Jr 2×4 (`5566-08A2` header / 5557 cable housing), two per host board,
-bus passes straight through. Fleet parts are the chxunda XD clones of that series —
-see [Mini-Fit Jr part numbers](#mini-fit-jr-part-numbers) below.
+bus passes straight through. See [Mini-Fit Jr parts](#mini-fit-jr-parts) below.
 
 ![CAN trunk connector pinout](../assets/images/diagrams/connectors/connector-can-trunk.svg)
 
 *Pass-through pair on every host: `J_BUS_IN` ↔ `J_BUS_OUT`. 18 AWG, ≈8 A/pin all-loaded;
 carries the per-console power feed. CANH/CANL share a row for clean differential routing.
-View: into the cable-housing mating face, latch up; numbering per the `XD-5557-2*4Y` drawing.
+View: into the cable-housing mating face, latch up; numbering per the Molex 5557 drawing.
 **The housing and header number mirror each other** — build one harness and buzz it out end to
 end before crimping the rest.*
 
@@ -79,31 +78,16 @@ string may hang on 12 V (legend strips) or 5 V (in-gauge LEDs).
 The +5 V is a **utility feed for small loads only** (≲50 mA — driver logic, in-gauge LEDs);
 its return rides the panel's signal-cable GND. **Servos never use it** — servo panels buck
 locally from 12 V. View: into the cable-housing mating face, latch up; pin order is the
-proposed standard — verify against the `XD-5557-2*2Y` drawing before first crimp.*
+proposed standard — verify against the Molex 5557 drawing before first crimp.*
 
-## Mini-Fit Jr part numbers
+## Mini-Fit Jr parts
 
-The fleet uses the **chxunda XD-5557 / XD-5566** clones of the Molex 4.2 mm series, not
-genuine Molex. Board headers and cable parts must come from the same family — the clone
-housings mate the clone headers, and the pin geometry is the standard Mini-Fit Jr grid.
+The standard is **Molex Mini-Fit Jr, 4.2 mm**: `5566` board header, `5557` cable housing,
+`5556` crimp terminal (18–24 AWG). Board and cable parts must come from the same series.
 
-| Role | Part | LCSC | Notes |
-|---|---|---|---|
-| Board header 2×4 (`J_BUS_IN`/`J_BUS_OUT`) | `XD-5566-2*4A` | `C20608116` | THT vertical |
-| Board header 2×2 (dual-zone backlight) | `XD-5566-2*2A` | `C20608114` | |
-| Board header 2×1 (`J_BL`) | `XD-5566-2*1A` | `C20608113` | |
-| **Cable housing 2×4** | `XD-5557-2*4Y` | `C19193339` | PA66, locking |
-| **Cable housing 2×2** | `XD-5557-2*2Y` | `C19193337` | |
-| **Cable housing 2×1** | `XD-5557-2*1Y` | `C19193336` | |
-| **Crimp terminal, female** | `XD-5557-T` | `C19193346` | **20–28 AWG**, tin over phosphor bronze |
-
-Series ratings: **9 A / 300 V per circuit**, contact resistance ≤20 mΩ initial and ≤40 mΩ
-after ageing, 30 °C max temperature rise at rated current, **30 mating cycles**, −40 to
-+105 °C.
-
-Worth knowing before building a harness: **30 mating cycles is the connector's rated
-life**, genuine Molex included. The trunk is not a frequently-demated interface; plan
-console teardowns accordingly.
+Series ratings: **9 A / 300 V per circuit**, contact resistance ≤20 mΩ initial, 30 °C max
+temperature rise at rated current, **30 mating cycles**, −40 to +105 °C. Thirty cycles is
+the rated life — the trunk is not a frequently-demated interface.
 
 The crimp tool is the JRready ST6490-ACT (see the table at the top of this page).
 

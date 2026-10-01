@@ -294,6 +294,30 @@ Two identical connectors per MCU board (J_BUS_IN + J_BUS_OUT) — same nets, bus
 
 Pins 1/2 both connect to +12V net. Pins 4/7/8 all connect to GND plane. CANH/CANL on pins 5/6 (same row) for clean differential pair routing.
 
+#### Mini-Fit Jr — ordering parts (internal)
+
+Spec is genuine **Molex**: `5566` header, `5557` cable housing, `5556` terminal (18–24 AWG).
+The fleet *buys* chxunda's XD clones of the same series — they mate the genuine parts and
+share the pin geometry, but a substitute is not automatically equivalent.
+
+| Role | Spec (Molex) | Fleet part | LCSC |
+|---|---|---|---|
+| Board header 2×4 (`J_BUS_IN`/`J_BUS_OUT`) | 5566, 8 circuit, THT vertical | `XD-5566-2*4A` | `C20608116` |
+| Board header 2×2 (dual-zone backlight) | 5566, 4 circuit | `XD-5566-2*2A` | `C20608114` |
+| Board header 2×1 (`J_BL`) | 5566, 2 circuit | `XD-5566-2*1A` | `C20608113` |
+| Cable housing 2×4 | 5557, 8 circuit | `XD-5557-2*4Y` | `C19193339` |
+| Cable housing 2×2 | 5557, 4 circuit | `XD-5557-2*2Y` | `C19193337` |
+| Cable housing 2×1 | 5557, 2 circuit | `XD-5557-2*1Y` | `C19193336` |
+| Crimp terminal, female | **5556, 18–24 AWG** | `XD-5557-T` (**20–28 AWG**) | `C19193346` |
+
+**Known deviation — crimp terminal gauge.** The spec is 18–24 AWG, which covers the 18 AWG
+trunk. The `XD-5557-T` we stock is **20–28 AWG** and will not accept 18 AWG. Either fit a
+genuine 5556 on the trunk, or build that harness in 20 AWG. Check the datasheet of the
+terminal actually in hand before crimping.
+
+Cable-side parts sit on no PCB BOM, so a BOM-driven shortfall cannot see them — the same
+blind spot that let `CONN-XHP-7P` reach zero unnoticed. Count them by hand when ordering.
+
 ### JST-XH (intra-group harnesses + switch wiring)
 
 - **PCB footprint:** Through-hole, single-row, vertical
