@@ -1011,6 +1011,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#d10-versioning-one-repo-three-release-tracks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D10 — Versioning: one repo, three release tracks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D10 — Versioning: one repo, three release tracks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firmware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cockpit-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cockpit hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4169,6 +4219,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#d10-versioning-one-repo-three-release-tracks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D10 — Versioning: one repo, three release tracks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="D10 — Versioning: one repo, three release tracks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firmware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cockpit-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cockpit hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related-reading" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4474,6 +4574,85 @@ that already sit on an I²C leg — no encoders, no speed pressure, fewer wires.
 <p>Full rules and the harness interface-class table: the
 <a href="../../hardware/standards/">Hardware Standards</a> Shift-Register I/O section and the
 <a href="../../hardware/connectors/">Connector &amp; Harness Guide</a>.</p>
+<hr />
+<h2 id="d10-versioning-one-repo-three-release-tracks">D10 — Versioning: one repo, three release tracks</h2>
+<p><strong>Decision:</strong> firmware, boards, and the cockpit as a whole each carry their <strong>own version</strong>,
+released on their own clock from this one repository. Docs follow <code>main</code> and are not versioned.</p>
+<table>
+<thead>
+<tr>
+<th>Track</th>
+<th>Tag</th>
+<th>Moves when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Firmware</strong></td>
+<td><code>firmware-vX.Y.Z</code></td>
+<td>Automatically, from Conventional Commits under <code>Firmware/</code></td>
+</tr>
+<tr>
+<td><strong>Board</strong></td>
+<td><code>pcb/&lt;Board&gt;-vX.Y.Z</code></td>
+<td>By hand, when that board is sent to fab</td>
+</tr>
+<tr>
+<td><strong>Cockpit hardware</strong></td>
+<td><code>hardware-vX.Y.Z</code></td>
+<td>By hand, when a set of boards has been brought up together</td>
+</tr>
+</tbody>
+</table>
+<p>Why not the alternatives:</p>
+<ul>
+<li><strong>One repo-wide version</strong> — a silkscreen fix would bump the firmware version, and a firmware
+  fix would imply new boards.</li>
+<li><strong>Firmware in its own repo</strong> — the cleanest release story, but it loses the cross-layer PRs
+  (spec + firmware + docs in one change) the project relies on.</li>
+</ul>
+<p><strong>Rule: a version only counts once it is tagged.</strong> A board's title-block revision on an
+unfinished board is the version it is <em>aiming</em> for, not a release.</p>
+<h3 id="firmware">Firmware</h3>
+<ul>
+<li><strong>One version for the whole library set.</strong> The libraries ship together and share the CAN
+  wire format, so a mixed set has no meaning. Every <code>Firmware/Libraries/*/library.json</code> carries
+  the same version.</li>
+<li><strong><a href="https://github.com/googleapis/release-please">release-please</a></strong> keeps a release PR open on
+  <code>main</code>, holding the next version, <code>Firmware/CHANGELOG.md</code>, and the <code>library.json</code> bumps.
+  Merging it tags the release. Commits that touch only <code>Firmware/ScratchPad/</code> (the spec) don't
+  count toward a release.</li>
+<li><strong>Before 1.0, a breaking change bumps the minor</strong> version; 1.0 freezes the sketch API and the
+  wire format.</li>
+<li>The first release counts from the baseline tag <code>firmware-v0.0.0</code>, an annotated tag with no
+  GitHub Release, on the commit where the v0.1.0 work began.</li>
+<li>Third-party libraries stay declared as version ranges; each release records the versions it
+  resolved to as a <code>dependencies.txt</code> release asset, rather than pinning them.</li>
+</ul>
+<h3 id="boards">Boards</h3>
+<ul>
+<li>Each board keeps the semver already in its KiCad title block and its back-silk
+  <code>REVISION x.y.z</code> text (<a href="../../hardware/standards/">Hardware Standards</a>).</li>
+<li>A board is tagged <strong>when it is ordered</strong>, on the as-fabricated commit, with the fab order ID
+  in the annotated tag message. The tag records a fact: <em>this</em> is what was built.</li>
+<li>Commits never bump a board — a revision is a human decision, made when the board is re-fabbed.</li>
+</ul>
+<h3 id="cockpit-hardware">Cockpit hardware</h3>
+<ul>
+<li>One version for the <strong>whole cockpit</strong>, 0.x for a long time. Its release notes are a
+  <strong>manifest</strong>: every tagged board at its version, plus the minimum firmware version that
+  drives them.</li>
+<li>Cut <strong>only after bring-up passes</strong> — where a board tag records what was built, a cockpit
+  release claims that these boards work together.</li>
+<li>Changelogs come from <a href="https://git-cliff.org">git-cliff</a>, filtered by path between tags
+  (<code>PCB/</code> for the cockpit, a board's own folder for its notes). The first cockpit release is the
+  baseline; its notes are the manifest alone.</li>
+<li><strong>Bumps while in 0.x:</strong> <em>minor</em> for a board revision that changes a connector pinout, harness,
+  mounting, or the minimum firmware, or for a new board joining the cockpit; <em>patch</em> for a
+  compatible fix (BOM, silkscreen, protection — same pinouts).</li>
+</ul>
+<p>The hardware tooling (manifest, the git-cliff workflow, the per-board fab bundle) is tracked in
+<a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/305">#305</a>.</p>
 <hr />
 <h2 id="related-reading">Related reading</h2>
 <ul>
