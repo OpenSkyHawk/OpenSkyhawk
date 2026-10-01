@@ -1,6 +1,9 @@
 # SwitchWithCover2Pos — Technical Specification
 
-**Status:** Implemented (#293, Firmware v0.1.0) — `Switch2Pos` family member (D16). Hardware run of the 4 envs pending. The A-4E-C uses it 0× (see below).
+**Status:** Done (hardware-verified — **4/4 envs PASS 2026-10-01**, with the 6 `Switch2Pos` envs
+re-run 6/6 as the `emit()` hook's regression gate; a negative control with the input grounded
+fails all four, so the suite detects a broken rig). `Switch2Pos` family member (D16). The A-4E-C
+uses it 0× (see below).
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md`, `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `Switch2Pos.md`, `PinRef.md`, `PanelGroup.md`
 

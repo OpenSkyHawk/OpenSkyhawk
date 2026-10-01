@@ -57,7 +57,7 @@ See [DCS-BIOS vs HID](../architecture/dcsbios-vs-hid.md) for which to use.
 | `RotarySwitch` | Not planned | Use `RotaryEncoder` in DIR mode — see the note below |
 | `AnalogInput` | **Implemented** (hardware-verified) | Continuous analog, normalised to 16-bit (EWMA + hysteresis) |
 | `AngleSensorInput` | **Implemented** (hardware-verified) | `AnalogInput` subclass reading a magnetic angle sensor (AS5600/MT6701) — absolute knobs such as gunsight elevation |
-| `SwitchWithCover2Pos` | **Implemented** | One switch pin driving a guarded sim control: opens the sim's cover before the switch and closes it after (DCS-BIOS behaviour) |
+| `SwitchWithCover2Pos` | **Implemented** (hardware-verified) | One switch pin driving a guarded sim control: opens the sim's cover before the switch and closes it after (DCS-BIOS behaviour) |
 
 All inputs normalise analog sources to **16-bit (0–65535)** before sending. Inputs self-register
 at global scope; `PanelGroup::loop()` polls them and batches events into CAN frames — `EVT_n`

@@ -188,7 +188,7 @@ D16 (families, DCS-BIOS names).
       `Switch2Pos` `emit()` hook (#293). **Firmware v0.1.0.** The A-4E-C itself uses it 0× — its
       only guard, AFCS 1-N-2, is a 3-position switch the mod doesn't gate — so this is DCS-BIOS
       parity for other aircraft. Tests: `Firmware/Tests/SwitchWithCover2Pos` (4 envs) + the 6
-      `Switch2Pos` envs as the hook's regression gate.
+      `Switch2Pos` envs as the hook's regression gate. Hardware-verified 2026-10-01: 4/4 + 6/6.
 - ~~`RotarySwitch`~~ — **dropped** (D16): `RotaryEncoder` DIR drives bounded selectors without the
       boot-position problem.
 
