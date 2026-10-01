@@ -157,6 +157,31 @@ OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
 OpenSkyhawk::Switch2Pos ejSafe   (DCSIN_SEAT_EJECT_SAFE, PinRef(expander1, PORT_A, 3));
 ```
 
+### SwitchWithCover2Pos *(implemented — #293, Firmware v0.1.0)*
+
+One physical switch pin driving **two** sim controls — the guard cover and the switch under it
+(D16: a `Switch2Pos` subclass). The cover is not sensed; the class sequences the pair so the sim's
+cover animates and any sim logic gated on it is satisfied:
+
+| Physical switch | Frames, `COVER_DELAY_MS` (200 ms) apart | End state |
+|---|---|---|
+| flips **on** | cover `1` → switch `1` | cover open, switch on |
+| flips **off** | switch `0` → cover `0` | cover closed, switch off |
+
+States follow DCS-BIOS (`OFF_CLOSED` → `OFF_OPEN` → `ON_OPEN`); the 20 ms debounce is inherited.
+The sequencer steps from `poll()`, never with `delay()` — a node blocking 200 ms would stall every
+other control and the CAN drain. Flipping back mid-sequence retargets the machine, which walks back
+the way it came, so a frame that was never sent is never retracted. Boot / `SYNC_REQ` re-asserts
+the settled pair in the same order (D5 — DCS-BIOS re-sends nothing there, we do).
+
+The base gained one `protected virtual emit(active, init)` for this; its public API, frames and
+timing are unchanged. The A-4E-C uses the class **0×** (its one cover guards a 3-position switch
+the mod does not gate) — it is here for DCS-BIOS parity and other aircraft.
+
+```cpp
+OpenSkyhawk::SwitchWithCover2Pos ejectArm(DCSIN_EXAMPLE_SWITCH, DCSIN_EXAMPLE_COVER, PinRef(PB0));
+```
+
 ### Switch3Pos *(implemented)*
 
 3-position switch (ON-OFF-ON or ON-ON). VALUE: 0 = pin A active, 1 = neither (centre),

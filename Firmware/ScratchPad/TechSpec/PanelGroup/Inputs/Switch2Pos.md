@@ -170,11 +170,18 @@ public:
      */
     void configure() override;
 
-private:
+protected:
+    /** Send the debounced state. Default: one ControlPacket {controlId, active} on EVT_n.
+     *  poll() calls it on a confirmed change; forceReport() with init = true (#293). */
+    virtual void emit(bool active, bool init);
+
     uint16_t _controlId;
     PinRef   _pin;
     bool     _reverse;          // true = active-HIGH (external pull-down required)
     bool     _lastConfirmed;    // last emitted state (true = active)
+
+private:
+    // Debounce internals stay private — a subclass only ever sees confirmed states.
     bool     _pendingRaw;       // raw reading at the last level change
     uint32_t _debounceStartMs;  // millis() when _pendingRaw last changed
     bool     _initialized;      // false until forceReport() is called

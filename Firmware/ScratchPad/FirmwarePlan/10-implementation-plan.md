@@ -184,10 +184,11 @@ D16 (families, DCS-BIOS names).
       absolute knobs such as `GUNSIGHT_KNB` (#294). **Firmware v0.1.0**, so the class set is locked
       before v1.0. Spec: `TechSpec/PanelGroup/Inputs/AngleSensorInput.md`. Adds the base's
       `readRaw()` hook. Hardware-verified 2026-09-30: 3/3 new envs + the 8 AnalogInput envs 8/8.
-- [ ] `SwitchWithCover2Pos` — DCS-BIOS behaviour (one pin; sequences the cover) on a protected
-      `Switch2Pos` hook (#293). **Firmware v0.1.0.** The A-4E-C itself uses it 0× — its only guard,
-      AFCS 1-N-2, is a 3-position switch the mod doesn't gate, so it is a `Switch3Pos` (+ an
-      optional `Switch2Pos` on a cover microswitch); the class is for DCS-BIOS parity.
+- [x] `SwitchWithCover2Pos` — DCS-BIOS behaviour (one pin; sequences the cover) on a protected
+      `Switch2Pos` `emit()` hook (#293). **Firmware v0.1.0.** The A-4E-C itself uses it 0× — its
+      only guard, AFCS 1-N-2, is a 3-position switch the mod doesn't gate — so this is DCS-BIOS
+      parity for other aircraft. Tests: `Firmware/Tests/SwitchWithCover2Pos` (4 envs) + the 6
+      `Switch2Pos` envs as the hook's regression gate. Hardware-verified 2026-10-01: 4/4 + 6/6.
 - ~~`RotarySwitch`~~ — **dropped** (D16): `RotaryEncoder` DIR drives bounded selectors without the
       boot-position problem.
 

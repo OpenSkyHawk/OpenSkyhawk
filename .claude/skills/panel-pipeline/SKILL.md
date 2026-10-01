@@ -198,7 +198,7 @@ real sim.** Deliverables:
   built); the pipeline flags, tickets, and blocks until it lands. Implemented today: `Switch2Pos ·
   Switch3Pos · SwitchMultiPos · AnalogMultiPos · AnalogInput · AngleSensorInput · RotaryEncoder ·
   RotaryAcceleratedEncoder · ActionButton · LED · DrumDisplay (OLED) · NeedleGauge · Dimmer ·
-  IntegerOutput · PinRef · ShiftBus`. Planned: `SwitchWithCover2Pos (#293)` for v0.1.0;
+  IntegerOutput · SwitchWithCover2Pos · PinRef · ShiftBus`. Planned: none for v0.1.0;
   after v1.0 `ServoMotor (#132)`. **Confirms the A1 provisional
   Ready/Blocked** now that types are sim-verified.
 - **Body cleanup** — refine the A1 first-pass into build-ready issue bodies; **preserve Notes +
