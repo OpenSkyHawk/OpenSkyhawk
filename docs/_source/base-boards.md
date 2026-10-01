@@ -371,85 +371,133 @@ vocabulary, not the engine.
 
 ## Board 2 — PanelGroup base
 
-**Path:** `PCB/Base/PanelGroup_Base/` · **STM32:** STM32F103**C8**T6 (64 KB default; drop-in CB for flash-heavy variants) · **NODE_ID** set per build via `platformio.ini`
+**Path:** `PCB/Base/PanelGroup_Base/` · **STM32:** STM32F103**C8**T6 (64 KB default; drop-in CB for
+flash-heavy variants) · **NODE_ID** set per build via `platformio.ini` · **Rev 0.2.0** — adds the
+74HC ShiftBus connector `J_SR` and the pin re-map that goes with it (#209). Everything below is
+transcribed from the 0.2.0 netlist.
 
 ### I²C buses (both pre-wired on this board)
 
 | Bus | SCL | SDA | INT_A | INT_B |
 |---|---|---|---|---|
 | I2C1 (`Wire`) | PB6 | PB7 | PB12 | PB13 |
-| I2C2 (`Wire1`) | PB10 | PB11 | PB8 | PB9 |
+| I2C2 (`Wire1`) | PB10 | PB11 | **PA8** | **PA15** |
 
-On-board passives (per hardware-standards.md): **4.7 kΩ pull-ups, one set per bus** (SCL+SDA);
-**33 Ω series on SDA/SCL**; **100 Ω series on each INT line** before the connector. Addressing:
-MCP23017 0x20–0x27, ADS1115 0x48–0x4B (independent per bus).
+The `J_I2C` connector pinout is identical on 0.1.0 and 0.2.0, so the same cables fit both.
+
+On-board passives (per hardware-standards.md): **4.7 kΩ pull-ups, one set per bus** (R2–R5);
+**33 Ω series on SDA/SCL** (R11/R12 on I2C2, R21/R22 on I2C1); **100 Ω series on each INT line**
+before the connector (R19/R20 on I2C1, R16/R17 on I2C2). Addressing: MCP23017 0x20–0x27,
+ADS1115 0x48–0x4B (independent per bus).
+
+### ShiftBus (`J_SR`) — 74HC165 / 74HC595 chains
+
+The SPI-class interface, one connector per host. Pins follow the fleet ShiftBus standard
+(hardware-standards.md), and ASN-41 consumes the same names.
+
+| J_SR pin | Net | MCU pin | Series R | Silk |
+|---|---|---|---|---|
+| 1 | `SR_SCK` | PB3 (39) | **33 Ω** (R28) | `SCK` |
+| 2 | `SR_MOSI` | PB5 (41) | — | `MOSI` |
+| 3 | `SR_MISO` | PB4 (40) | — | `MISO` |
+| 4 | `GND` | — | — | `GND` |
+| 5 | `+3V3` | — | — | `3.3V` |
+| 6 | `SR_LOAD` | PB8 (45) | **33 Ω** (R27) | `LOAD` |
+| 7 | `SR_LATCH` | PB9 (46) | **33 Ω** (R29) | `LTCH` |
+
+**7 pins on purpose** — it cannot mate with the 8-pin I²C leg. The three series resistors sit on
+the driven lines only (SCK, LOAD, LATCH); MOSI and MISO run straight through. On the series legs
+the `SR_*` net name belongs to the MCU side, the same pattern as the I²C legs.
 
 ### Backlight (on the base — all panels are backlit)
 
-Two PWM-dimmed low-side zones per the LED-zone standard: **IRLML2502** N-ch MOSFET ×2, gates
-driven directly by STM32 PWM, drain → `BLn_RETURN`, source → GND. Per-string
-current-limit resistors live on the LED strings (per zone), not on this board.
+Two PWM-dimmed low-side zones per the LED-zone standard: **AO3400A** N-ch MOSFET ×2, gates driven
+directly by STM32 PWM, drain → `BLn_RETURN`, source → GND. Per-string current-limit resistors live
+on the LED strings (per zone), not on this board.
 
-| Zone | PWM net | Pin | Timer | MOSFET | Return |
-|---|---|---|---|---|---|
-| BL1 | `PWM_BL1` | PA6 | TIM3_CH1 | Q2 | `BL1_RETURN` |
-| BL2 | `PWM_BL2` | PA7 | TIM3_CH2 | Q3 | `BL2_RETURN` |
+| Zone | PWM net | Pin | Timer | MOSFET | Return | Connector |
+|---|---|---|---|---|---|---|
+| BL1 | `PWM_BL1` | PA6 | TIM3_CH1 | Q2 | `BL1_RETURN` | J2 |
+| BL2 | `PWM_BL2` | PA7 | TIM3_CH2 | Q3 | `BL2_RETURN` | J6 |
 
-Each MOSFET: 100 Ω gate series + 100 kΩ gate pull-down (gate-side, holds off at boot). `+12V`
-is the always-on bus +12V (no separate backlight net).
+Each MOSFET: 100 Ω gate series (R23/R25) + 100 kΩ gate pull-down (R24/R26), which holds the gate
+off through boot, reset and flashing. `+12V` is the always-on bus +12V (no separate backlight net).
 
 ### STM32 pin assignment (LQFP48)
 
 | Pin | Port | Function | Pin | Port | Function |
 |---|---|---|---|---|---|
-| 1 | VBAT | +3V3 | 25 | PB12 | I2C1 INT_A (100 Ω → J_I2C1.6) |
-| 2 | PC13 | NC | 26 | PB13 | I2C1 INT_B (100 Ω → J_I2C1.7) |
-| 3 | PC14 | NC | 27 | PB14 | STATUS_LED_RED |
-| 4 | PC15 | NC | 28 | PB15 | STATUS_LED_GRN |
-| 5 | PD0 | OSC_IN (8 MHz) | 29 | PA8 | breakout (GPIO) |
+| 1 | VBAT | +3V3 | 25 | PB12 | `INT_A1` — I2C1 (100 Ω → J_I2C1.6) |
+| 2 | PC13 | NC | 26 | PB13 | `INT_B1` — I2C1 (100 Ω → J_I2C1.7) |
+| 3 | PC14 | **breakout → J11.11** (weak pin) | 27 | PB14 | `PANEL_RED` status LED |
+| 4 | PC15 | NC | 28 | PB15 | `PANEL_GREEN` status LED |
+| 5 | PD0 | OSC_IN (8 MHz) | 29 | PA8 | **`INT_A2`** — I2C2 (100 Ω → J_I2C2.6) |
 | 6 | PD1 | OSC_OUT (8 MHz) | 30 | PA9 | USART1_TX (diag) |
 | 7 | NRST | reset | 31 | PA10 | USART1_RX (diag) |
-| 8 | VSSA | GND (filtered) | 32 | PA11 | CAN_RX → SN65HVD230 |
-| 9 | VDDA | +3V3 (filtered) | 33 | PA12 | CAN_TX → SN65HVD230 |
-| 10 | PA0 | breakout (ADC0) | 34 | PA13 | SWDIO |
-| 11 | PA1 | breakout (ADC1) | 35 | VSS | GND |
-| 12 | PA2 | breakout (ADC2 / USART2) | 36 | VDD | +3V3 |
-| 13 | PA3 | breakout (ADC3 / USART2) | 37 | PA14 | SWCLK |
-| 14 | PA4 | breakout (ADC4) | 38 | PA15 | breakout (JTAG remap) |
-| 15 | PA5 | breakout (ADC5) | 39 | PB3 | breakout (JTAG remap) |
-| 16 | **PA6** | **PWM_BL1 → Q2** | 40 | PB4 | breakout (JTAG remap) |
-| 17 | **PA7** | **PWM_BL2 → Q3** | 41 | PB5 | breakout (GPIO) |
-| 18 | PB0 | breakout (ADC8) | 42 | PB6 | I2C1_SCL |
-| 19 | PB1 | breakout (ADC9) | 43 | PB7 | I2C1_SDA |
-| 20 | PB2 | BOOT1 → NC | 44 | BOOT0 | 10 k pull-down + jumper |
-| 21 | PB10 | I2C2_SCL | 45 | PB8 | I2C2 INT_A (100 Ω → J_I2C2.6) |
-| 22 | PB11 | I2C2_SDA | 46 | PB9 | I2C2 INT_B (100 Ω → J_I2C2.7) |
+| 8 | VSSA | GND | 32 | PA11 | `CAN_RX` → SN65HVD230 |
+| 9 | VDDA | +3V3 (C10 1 µF + C9 100 nF) | 33 | PA12 | `CAN_TX` → SN65HVD230 |
+| 10 | PA0 | breakout (ADC0) → J11.4 | 34 | PA13 | SWDIO (33 Ω R18 → J7.2) |
+| 11 | PA1 | breakout (ADC1) → J11.6 | 35 | VSS | GND |
+| 12 | PA2 | breakout (ADC2 / USART2) → J11.8 | 36 | VDD | +3V3 |
+| 13 | PA3 | breakout (ADC3 / USART2) → J11.10 | 37 | PA14 | SWCLK → J7.3 |
+| 14 | PA4 | breakout (ADC4) → J11.12 | 38 | PA15 | **`INT_B2`** — I2C2 (100 Ω → J_I2C2.7) |
+| 15 | PA5 | breakout (ADC5) → J11.9 | 39 | PB3 | **`SR_SCK`** (33 Ω → J_SR.1) |
+| 16 | **PA6** | **`PWM_BL1` → Q2** | 40 | PB4 | **`SR_MISO`** → J_SR.3 |
+| 17 | **PA7** | **`PWM_BL2` → Q3** | 41 | PB5 | **`SR_MOSI`** → J_SR.2 |
+| 18 | PB0 | breakout (ADC8) → J11.3 | 42 | PB6 | `I2C1_SCL` |
+| 19 | PB1 | breakout (ADC9) → J11.5 | 43 | PB7 | `I2C1_SDA` |
+| 20 | PB2 | **breakout → J11.7** (BOOT1) | 44 | BOOT0 | 10 k pull-down (R_BOOT1) |
+| 21 | PB10 | `I2C2_SCL` | 45 | PB8 | **`SR_LOAD`** (33 Ω → J_SR.6) |
+| 22 | PB11 | `I2C2_SDA` | 46 | PB9 | **`SR_LATCH`** (33 Ω → J_SR.7) |
 | 23 | VSS | GND | 47 | VSS | GND |
 | 24 | VDD | +3V3 | 48 | VDD | +3V3 |
 
-**Breakout summary (full breakout is a goal here).** Capability per pin — label these on the
-silkscreen / breakout header:
+PA15, PB3 and PB4 are JTAG pins on reset; `STM32Board::begin()` releases them and keeps SWD on
+PA13/PA14 (#299). Only **PC13 and PC15** remain NC.
+
+### Breakout header `J11` (2×7, `CONN-HDR-2X7P`)
+
+| Pos | Pin | Pos | Pin |
+|---|---|---|---|
+| 1 | +3V3 | 2 | +3V3 |
+| 3 | PB0 | 4 | PA0 |
+| 5 | PB1 | 6 | PA1 |
+| 7 | **PB2** | 8 | PA2 |
+| 9 | PA5 | 10 | PA3 |
+| 11 | **PC14** | 12 | PA4 |
+| 13 | GND | 14 | GND |
+
+**Capability per pin** — these are on the silkscreen:
 
 - **Analog (ADC) + PWM:** PA0, PA1, PA2, PA3, PB0, PB1 — analog input *or* timer PWM out.
 - **Analog (ADC), no PWM:** PA4, PA5 — ADC only (no timer channel).
-- **PWM (timer), digital:** PA8 (TIM1) + PA15, PB3, PB4, PB5 (timer via remap).
-- **Plain digital GPIO:** every breakout pin also works as digital I/O.
+- **Plain digital GPIO:** every breakout pin.
+- **PB2** is BOOT1 — sampled at reset only when BOOT0 is high, and BOOT0 is tied low, so it is an
+  ordinary GPIO.
+- **PC14 is a weak pin:** ~3 mA sink, no LED drive, slow. Inputs only.
 
-PA15/PB3/PB4 require JTAG remap (SWD still works on PA13/PA14). Per-channel ADC RC filter
-(1 kΩ + 100 nF) is added **per variant**, not on the base.
+**Interrupt lines are shared per pin number across ports.** A sketch must not use both pins of a
+pair as interrupts: PB2/PA2, PA0/PB0, PA1/PB1. PC14's line (EXTI14) is free — which is why
+positions 7 and 11 are PB2 and PC14 rather than PC13 or PC15, whose lines are taken by PB13
+(`INT_B1`) and PA15 (`INT_B2`).
+
+Per-channel ADC RC filter (1 kΩ + 100 nF) is added **per variant**, not on the base.
 
 ### Connectors & indicators
 
-| Ref | Type | Purpose |
-|---|---|---|
-| J_BUS_IN, J_BUS_OUT | Molex Mini-Fit Jr 2×4 | CAN + power, pass-through |
-| J_I2C1, J_I2C2 | JST-XH 8-pin | I²C bus to sub-panels (pinout below) |
-| J_BL1, J_BL2 | Molex Mini-Fit Jr 2×01 | switched-12V backlight feed to sub-panels (pin 1 +12V, pin 2 return) |
-| J_SWD | 1×5 header | programming/debug (incl. NRST) |
-| J_DIAG | 1×3 JST-XH | `DiagSerial` console |
-| J_TERM | 2-pin jumper | switches in 120 Ω CAN termination |
-| (breakout) | 0.1″ headers | full spare-pin field |
-| status / power LEDs | 3× LED | PB14 / PB15 + power |
+| Ref | Value | Type | Purpose |
+|---|---|---|---|
+| J8, J9 | `J_BUS_IN`, `J_BUS_OUT` | Molex Mini-Fit Jr 2×4 | CAN + power, pass-through |
+| J4, J3 | `J_I2C1`, `J_I2C2` | JST-XH 8-pin | I²C bus to sub-panels (pinout below) |
+| **J10** | **`J_SR`** | **JST-XH 7-pin** | **ShiftBus to 74HC sub-panels** |
+| J2, J6 | `J_BL1`, `J_BL2` | Molex Mini-Fit Jr 2×01 | switched-12V backlight feed (pin 1 +12V, pin 2 return) |
+| J7 | `J_SWD` | 1×5 header | programming/debug (incl. NRST) |
+| J1 | `J_DIAG` | JST-XH 3-pin | `DiagSerial` console — 1 = board RX, 2 = board TX, 3 = GND |
+| J5 | `J_CAN_TERM` | 1×2 header | jumper switches in the 120 Ω termination (R13) |
+| J11 | `J_BREAKOUT` | 2×7 header | spare-pin field |
+| D1 / D4 / D5 | power / red / green | 0805 LEDs | D1 = power, D4/D5 = PB14/PB15 status |
+| SW1 | `RESET` | 6 mm tact | NRST |
+| H1–H4 | — | M2.5 | mounting holes |
 
 **I²C header (`J_I2C1` / `J_I2C2`, JST-XH 8-pin):**
 
@@ -458,42 +506,67 @@ PA15/PB3/PB4 require JTAG remap (SWD still works on PA13/PA14). Per-channel ADC 
 | 1 | SDA | 5 | +3V3 |
 | 2 | SCL | 6 | INT_A |
 | 3 | GND | 7 | INT_B |
-| 4 | GND | 8 | spare |
+| 4 | GND | 8 | spare (NC) |
 
 **Backlight power-out (`J_BL1` / `J_BL2`, Molex Mini-Fit Jr 2×01):** pin 1 `+12V` (always-on bus),
 pin 2 `BLn_RETURN` (MOSFET drain). Sub-panel LED strings dim off this board's MOSFET. Keep this
 pin order on **every** backlight connector for harness consistency.
 
+### 0.1.0 → 0.2.0 delta
+
+| What | 0.1.0 (fabbed) | 0.2.0 |
+|---|---|---|
+| ShiftBus | not possible — PB3/PB4 NC, no connector | `J_SR` + PB3/PB4/PB5/PB8/PB9 |
+| I2C2 INT_A / INT_B | PB8 / PB9 | **PA8 / PA15** |
+| J11 position 7 / 11 | PB5 / PA8 | **PB2 / PC14** |
+| Backlight MOSFETs | IRLML2502 | **AO3400A** (Q2/Q3) |
+| Input protection | none | **D2 SMBJ12A** (+12V), **D3 SMBJ6.0A** (+5V) |
+| +12V bus-entry bulk | 10 µF | **C15 22 µF / 35 V** |
+| Series resistors | 5× 33 Ω | **8× 33 Ω** (+R27–R29 on the ShiftBus) |
+
+A 0.1.0 board cannot host a hardware ShiftBus: the pins are not brought out. Sketches moved from
+0.1.0 to 0.2.0 must swap the I2C2 interrupt pins and the J11 position 7/11 constants.
+
 ### BOM
 
-| Ref | Part | Library symbol | Notes |
-|---|---|---|---|
-| U1 | STM32F103C8T6 | `MCU_ST_STM32F1:STM32F103C8Tx` | LQFP48 (CB drop-in) |
-| U2 | SN65HVD230 | `Interface_CAN_LIN:SN65HVD230` | SOIC-8 |
-| U3 | AMS1117-3.3 | `Regulator_Linear:AMS1117-3.3_SOT223` | 5→3.3 V |
-| Q1, Q2 | IRLML2502 | `OpenSkyhawk:IRLML2502` | SOT-23, backlight |
-| Y1 | 8 MHz crystal | `Device:Crystal` | + 2×22 pF |
-| R_pullup | 4.7 kΩ ×4 | `Device:R` | I²C pull-ups (2/bus) |
-| R_i2c_ser | 33 Ω ×4 | `Device:R` | SDA/SCL series (2/bus) |
-| R_int | 100 Ω ×4 | `Device:R` | INT_A/INT_B series (2/bus) |
-| R_gate | 100 Ω ×2 | `Device:R` | MOSFET gate series |
-| R_gpd | 100 kΩ ×2 | `Device:R` | MOSFET gate pull-down |
-| R_term | 120 Ω | `Device:R` | + J_TERM jumper |
-| R_boot | 10 kΩ | `Device:R` | BOOT0 pull-down |
-| R_led | ≈1 k–3.3 k ×3 | `Device:R` | status/power LEDs |
-| C_xtal | 22 pF ×2 (C0G/NP0) | `Device:C` | crystal load — stable dielectric |
-| C_dec | 100 nF ×~5 | `Device:C` | decoupling |
-| C_bulk | 10 µF in / 22 µF out, aluminum electrolytic | `Device:CP` | AMS1117 bulk — electrolytic for loop-stability ESR; mind polarity. +100 nF ceramic each rail |
-| C_busentry | 10 µF ×2 | `Device:C` | bus-entry bulk on +5V & +12V at J_BUS_IN (C14/C15) |
-| C_nrst | 100 nF | `Device:C` | NRST |
-| C_vdda | 1 µF + 100 nF | `Device:C` | VDDA filter |
-| D1/D2/D3 | LEDs | `Device:LED` | red / green / power |
-| J_BUS_IN/OUT | Molex Mini-Fit Jr 2×4 | `Connector_Molex:Molex_Mini-Fit_Jr_5566-08A2_2x04_P4.20mm_Vertical` | ×2 |
-| J_I2C1/2 | JST-XH 8-pin | `Connector_JST:JST_XH_B8B-XH-A_1x08_P2.50mm_Vertical` | ×2 |
-| J_BL1, J_BL2 | Molex Mini-Fit Jr 2×01 | `Connector_Molex:Molex_Mini-Fit_Jr_5566-02A2_2x01_P4.20mm_Vertical` | ×2 |
-| J_SWD | 1×5 header | `Connector_Generic:Conn_01x05` | +3V3/SWDIO/SWCLK/NRST/GND |
-| J_DIAG | 1×3 JST-XH | `Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical` | |
-| J_TERM | 1×2 header | `Connector_Generic:Conn_01x02` | jumper |
+| Ref | Part | IPN | LCSC | Notes |
+|---|---|---|---|---|
+| U1 | STM32F103C8T6 | `IC-STM32F103C8-LQFP` | C8734 | LQFP48 (CB drop-in) |
+| U2 | SN65HVD230 | `IC-SN65HVD230-SOIC` | C12084 | SOIC-8, Rs → GND |
+| U3 | AMS1117-3.3 | `IC-AMS1117-3V3-SOT223` | C347222 | 5→3.3 V, ≤175 mA budget |
+| Q2, Q3 | AO3400A | `Q-AO3400A-SOT23` | C49195711 | SOT-23, backlight |
+| D2 | SMBJ12A | `TVS-SMBJ12A-SMB` | C42368008 | +12V input clamp |
+| D3 | SMBJ6.0A | `TVS-SMBJ6V0A-SMB` | C5331096 | +5V input clamp |
+| D1, D5 | green LED | `LED-GREEN-0805` | C19171393 | power, PB15 |
+| D4 | red LED | `LED-RED-0805` | C19171391 | PB14 |
+| Y1 | 8 MHz crystal | `XTAL-8MHZ-SMD5032` | C20617997 | + C7/C8 22 pF C0G |
+| R2–R5 | 4.7 kΩ | `RES-4K7-1PCT-0805` | C844941 | I²C pull-ups (2/bus) |
+| R11, R12, R21, R22 | 33 Ω | `RES-33R-1PCT-0805` | C2090807 | SDA/SCL series (2/bus) |
+| **R27, R28, R29** | **33 Ω** | `RES-33R-1PCT-0805` | C2090807 | **ShiftBus SCK / LOAD / LATCH** |
+| R18 | 33 Ω | `RES-33R-1PCT-0805` | C2090807 | SWDIO series |
+| R16, R17, R19, R20 | 100 Ω | `RES-100R-1PCT-0805` | C844936 | INT_A/INT_B series (2/bus) |
+| R23, R25 | 100 Ω | `RES-100R-1PCT-0805` | C844936 | MOSFET gate series |
+| R24, R26 | 100 kΩ | `RES-100K-1PCT-0805` | C844935 | MOSFET gate pull-down |
+| R13 | 120 Ω | `RES-120R-1PCT-0805` | C844816 | CAN termination + J5 jumper |
+| R6, R_BOOT1 | 10 kΩ | `RES-10K-1PCT-0805` | C844937 | NRST, BOOT0 |
+| R1, R9, R10 | 3.3 kΩ | `RES-3K3-1PCT-0805` | C844412 | LED series |
+| C1–C6, C9, C12, C14 | 100 nF | `CAP-CER-100NF-50V-0805` | C1711 | decoupling |
+| C7, C8 | 22 pF C0G | `CAP-C0G-22PF-50V-0805` | C1804 | crystal load |
+| C10 | 1 µF | `CAP-CER-1UF-50V-0805` | C28323 | VDDA filter |
+| C11 | 10 µF | `CAP-ELEC-10UF-25V-D4` | C3343 | regulator input |
+| C13 | 22 µF | `CAP-ELEC-22UF-16V-D4` | C72502 | regulator output (ESR for loop stability) |
+| C15 | 22 µF / 35 V | `CAP-ELEC-22UF-35V-D5` | C48971029 | +12V bus entry |
+| J8, J9 | Molex Mini-Fit Jr 2×4 | `CONN-MF-8P` | C20608116 | bus in / out |
+| J3, J4 | JST-XH 8-pin | `CONN-XH-8P` | C23067548 | I²C legs |
+| **J10** | **JST-XH 7-pin** | **`CONN-XH-7P`** | **C144398** | **ShiftBus leg** (alt C23067547) |
+| J2, J6 | Molex Mini-Fit Jr 2×01 | `CONN-MF-2P` | C20608113 | backlight out |
+| J1 | JST-XH 3-pin | `CONN-XH-3P` | C51940188 | diag console |
+| J5 | 1×2 header | `CONN-HDR-2P` | — | termination jumper |
+| J7 | 1×5 header | `CONN-HDR-5P` | — | SWD |
+| J11 | 2×7 header | `CONN-HDR-2X7P` | — | breakout |
+| SW1 | 6 mm tact | `SW-TACT-6MM` | C2939600 | reset |
+
+Mating parts for `J_SR`: **XHP-7 housing** (`CONN-XHP-7P` / C144406) + SXH-001T crimps (C140573).
 
 ---
 

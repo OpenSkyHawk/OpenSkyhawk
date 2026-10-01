@@ -53,7 +53,8 @@ or fast gauges → SPI-class (74HC ShiftBus); otherwise I²C-class:
   tie-offs '165 CLK_INH→GND + chain-end SER→GND, '595 MR̄→3V3 + OĒ→GND; 100 nF per chip;
   33 Ω series on SCK/LOAD/LATCH for remote legs; J_SR leg per the harness table.
 - digital switch/button (I²C-class) → MCP23017 GPIO (14 inputs/chip; 3-pos = 2 GPIO;
-  n-pos rotary = n GPIO; **INT lines on PB12/PB13 when the node also carries a ShiftBus**)
+  n-pos rotary = n GPIO; **INT lines: I2C1 → PB12/PB13, I2C2 → PA8/PA15 — PB8/PB9 are the
+  ShiftBus LOAD/LATCH; an INT pin's EXTI line is its pin number, shared across ports**)
 - continuous pot / analog axis → ADS1115 channel (or STM32 ADC) with a 1 kΩ + 100 nF RC filter
 - LED zone → AO3400A low-side MOSFET (30V — required for the 12V rail's SMBJ12A 19.9V clamp; not IRLML2502's 20V), gate from STM32 3.3 V PWM; 5-LED series strings, one
   current-limiting resistor per string (120 Ω default)
@@ -71,5 +72,6 @@ use the **`inventree-parts`** skill.
 
 `kicad-cli sch erc` (clean) and `kicad-cli pcb drc` (clean against the JLCPCB rules) before
 calling a board done — see `docs/_source/kicad.md` for the CLI. Boards with a shift-register
-block: verify against the ShiftBus pin standard (PB3/4/5/8/9; MCP INTs on PB12/PB13 when
-mixed) and the harness interface-class table in `docs/_source/hardware-standards.md`.
+block: verify against the ShiftBus pin standard (PB3/4/5/8/9; MCP INTs on PB12/PB13 for I2C1
+and PA8/PA15 for I2C2) and the harness interface-class table in
+`docs/_source/hardware-standards.md`.

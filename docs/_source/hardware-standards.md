@@ -193,7 +193,7 @@ them behind a mux (address shadowing while a channel is open).
 | **'595 output drive** | ≤4 mA indicator LED → direct drive + series R (push-pull, ~6 mA/pin recommended, 70 mA/chip total). >6 mA, any 5 V/12 V rail load, or chip total nearing 70 mA → 2N7002 + 100 k gate pulldown. DRV8833 inputs are µA logic — never count against the budget. |
 | **DRV8833 VM ≤ 10.8 V — steppers NEVER on 12 V** | Absolute maximum. Stepper supply = 5 V (bench-validated). Servos = 12 V + panel-local buck (never a 5 V rail). |
 | **SPI bus is dedicated** | The '165 QH output never tristates — MISO cannot be shared with any other SPI reader. Chains daisy without limit; capacity never forces a second bus. |
-| **Standard pins** | SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. On mixed nodes MCP INT lines move to **PB12/PB13**. |
+| **Standard pins** | SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. **I²C interrupts:** I2C1 INT_A/INT_B on **PB12/PB13**, I2C2 INT_A/INT_B on **PA8/PA15** (PanelGroup base 0.2.0). Pick INT pins whose EXTI line (the pin *number*, shared across ports) is not already an interrupt elsewhere. |
 | **Remote legs** | 33 Ω series on SCK/LOAD/LATCH; ~1 MHz SPI tolerates ~12" harness. |
 
 ### Chip placement (guidance, per-controller call at B2)
@@ -241,8 +241,9 @@ switch harnesses are excluded from the guarantee — they stay on 4/6-pin JST-XH
 7/8-pin reserved for the interface legs; both ends of a switch harness live on one
 assembly, so location disambiguates them). **Wires are not color-coded — pin position is the only identification**;
 build-time reference = the connector diagrams on the published Connector & Harness Guide.
-Pinouts below are the fabbed Rev 1 truth (J_BUS / J_BL / J_I2C) or the adopted proposal
-(J_SR, dual-BL).
+Pinouts below are the fabbed 0.1.0 truth (J_BUS / J_BL / J_I2C), the 0.2.0 design truth
+(`J_SR` — pin order and footprint verified against the JST B7B-XH-A drawing, boards not yet
+fabricated), or the adopted proposal (dual-BL).
 
 | Class | Pins | Pinout | Family |
 |---|---|---|---|
@@ -293,6 +294,30 @@ Two identical connectors per MCU board (J_BUS_IN + J_BUS_OUT) — same nets, bus
 
 Pins 1/2 both connect to +12V net. Pins 4/7/8 all connect to GND plane. CANH/CANL on pins 5/6 (same row) for clean differential pair routing.
 
+#### Mini-Fit Jr — ordering parts (internal)
+
+Spec is genuine **Molex**: `5566` header, `5557` cable housing, `5556` terminal (18–24 AWG).
+The fleet *buys* chxunda's XD clones of the same series — they mate the genuine parts and
+share the pin geometry, but a substitute is not automatically equivalent.
+
+| Role | Spec (Molex) | Fleet part | LCSC |
+|---|---|---|---|
+| Board header 2×4 (`J_BUS_IN`/`J_BUS_OUT`) | 5566, 8 circuit, THT vertical | `XD-5566-2*4A` | `C20608116` |
+| Board header 2×2 (dual-zone backlight) | 5566, 4 circuit | `XD-5566-2*2A` | `C20608114` |
+| Board header 2×1 (`J_BL`) | 5566, 2 circuit | `XD-5566-2*1A` | `C20608113` |
+| Cable housing 2×4 | 5557, 8 circuit | `XD-5557-2*4Y` | `C19193339` |
+| Cable housing 2×2 | 5557, 4 circuit | `XD-5557-2*2Y` | `C19193337` |
+| Cable housing 2×1 | 5557, 2 circuit | `XD-5557-2*1Y` | `C19193336` |
+| Crimp terminal, female | **5556, 18–24 AWG** | `XD-5557-T` (**20–28 AWG**) | `C19193346` |
+
+**Known deviation — crimp terminal gauge.** The spec is 18–24 AWG, which covers the 18 AWG
+trunk. The `XD-5557-T` we stock is **20–28 AWG** and will not accept 18 AWG. Either fit a
+genuine 5556 on the trunk, or build that harness in 20 AWG. Check the datasheet of the
+terminal actually in hand before crimping.
+
+Cable-side parts sit on no PCB BOM, so a BOM-driven shortfall cannot see them — the same
+blind spot that let `CONN-XHP-7P` reach zero unnoticed. Count them by hand when ordering.
+
 ### JST-XH (intra-group harnesses + switch wiring)
 
 - **PCB footprint:** Through-hole, single-row, vertical
@@ -323,6 +348,59 @@ LED power is carried on a **separate 2-pin Mini-Fit Jr connector** (not the sign
 |---|---|
 | 1 | +12V_BACKLIGHT (always-on 12V supply to LED string tops) |
 | 2 | BACKLIGHT_SW_RETURN (MOSFET drain — near GND when LEDs on) |
+
+## Silkscreen
+
+Checked on every board **before gerber export** — a silk error is only discoverable after fab,
+and a mislabelled power connector destroys hardware.
+
+### Connector pin labels
+
+Every connector gets a label per pin, naming the **signal**, placed beside its own pad:
+
+- **Power and bus connectors are mandatory.** `12V`, `5V`, `CANH`, `CANL`, `GND` on the Mini-Fit
+  Jr bus connectors. These are unkeyed in practice and often sit side by side, so a reversed
+  harness is a destroyed board — this is the one place silk is a safety feature, not a courtesy.
+- **Label the signal, not the net.** A pin whose net is auto-named because it passes through a
+  series resistor (`Net-(J2-Pin_1)`) is labelled by what it *is* — trace through the resistor and
+  use `SDA`, not the generated name.
+- **Match the connector's own function.** A UART debug header is `RX` / `TX` / `GND`, never an
+  I²C label set copied from a neighbouring connector.
+- Off-board-facing headers (I²C, ShiftBus, SWD, diagnostics) get the same treatment.
+
+### Function legends — free text, never the Value field
+
+A jumper or block legend (`CAN TERM`, `POWER`, `PANEL`, `STATUS`) is a **free silk text item**.
+
+**Do not create one by overriding the footprint's `Value` field on the board.** It looks
+identical on the rendered silk and is wrong twice over: it raises a `footprint_symbol_mismatch`
+schematic-parity error, and the next *Update PCB from Schematic* resets the field and silently
+deletes the legend. It also pollutes the BOM's Value column with a legend string instead of the
+part's value.
+
+### Revision text
+
+Back silk, uppercase, one line:
+
+```
+REVISION <x.y.z> | <BOARD NAME>
+```
+
+`layer B.SilkS` · `size 1 x 1` · `thickness 0.15` · `justify left bottom mirror` · `rotation 0`
+
+**Write a board revision as `0.2.0` everywhere** — silkscreen, InvenTree, BOM, docs and commit messages. It is the identifier a reader matches against the board in their hand. "Rev 2" is acceptable only for a *round of work* ("the Rev 2 order", "Rev 1 bench checks"), never to identify hardware.
+
+**Bump it in the same change that bumps the board revision.** A board fabbed carrying the
+previous revision's text is indistinguishable from the older batch on the bench.
+
+### The gate
+
+Before exporting gerbers, confirm:
+
+1. ERC 0, DRC 0 violations, 0 unconnected, **0 schematic parity**
+2. Every connector pin has its signal label within a few mm of the pad
+3. Revision text present, correct revision, correct format and stroke
+4. No legend implemented via a footprint `Value` override
 
 ## Switches & Controls
 

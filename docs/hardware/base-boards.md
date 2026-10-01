@@ -79,6 +79,7 @@ bus.
 | **Node ID** | 1–63, set per build in `platformio.ini` |
 | **Microcontroller** | STM32F103 |
 | **I/O expansion** | two I²C buses (MCP23017 / ADS1115), each with interrupt lines |
+| **Shift-register bus** | one dedicated SPI chain for 74HC165 / '595 (`ShiftBus`) |
 | **Lighting** | two PWM-dimmed backlight zones |
 
 **Highlights**
@@ -87,6 +88,9 @@ bus.
   switches and LEDs.
 - **Two expander buses** — two independent I²C buses, each carrying its own interrupt lines, drive
   the GPIO expanders (MCP23017) and analog inputs (ADS1115) that read a panel's controls.
+- **Shift-register chains** — a dedicated SPI bus drives 74HC165 inputs and '595 outputs,
+  daisy-chained without limit. The route for panels with many switches or encoders, where
+  an I²C expander would run out of interrupt latency before it ran out of pins.
 - **Backlighting built in** — two PWM-dimmed lighting zones, fed from the always-on 12 V bus, so
   panel backlights dim straight from firmware.
 - **Wide-open breakout** — the full field of spare microcontroller pins (analog, PWM, digital) is

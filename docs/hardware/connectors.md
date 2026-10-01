@@ -45,14 +45,15 @@ controller needs them).
 ## CAN trunk — `J_BUS_IN` / `J_BUS_OUT`
 
 Molex Mini-Fit Jr 2×4 (`5566-08A2` header / 5557 cable housing), two per host board,
-bus passes straight through.
+bus passes straight through. See [Mini-Fit Jr parts](#mini-fit-jr-parts) below.
 
 ![CAN trunk connector pinout](../assets/images/diagrams/connectors/connector-can-trunk.svg)
 
 *Pass-through pair on every host: `J_BUS_IN` ↔ `J_BUS_OUT`. 18 AWG, ≈8 A/pin all-loaded;
 carries the per-console power feed. CANH/CANL share a row for clean differential routing.
-View: into the cable-housing mating face, latch up; numbering per the Molex 5557 drawing —
-verify before first crimp.*
+View: into the cable-housing mating face, latch up; numbering per the Molex 5557 drawing.
+**The housing and header number mirror each other** — build one harness and buzz it out end to
+end before crimping the rest.*
 
 ## Backlight single-zone — `J_BL`
 
@@ -79,6 +80,17 @@ its return rides the panel's signal-cable GND. **Servos never use it** — servo
 locally from 12 V. View: into the cable-housing mating face, latch up; pin order is the
 proposed standard — verify against the Molex 5557 drawing before first crimp.*
 
+## Mini-Fit Jr parts
+
+The standard is **Molex Mini-Fit Jr, 4.2 mm**: `5566` board header, `5557` cable housing,
+`5556` crimp terminal (18–24 AWG). Board and cable parts must come from the same series.
+
+Series ratings: **9 A / 300 V per circuit**, contact resistance ≤20 mΩ initial, 30 °C max
+temperature rise at rated current, **30 mating cycles**, −40 to +105 °C. Thirty cycles is
+the rated life — the trunk is not a frequently-demated interface.
+
+The crimp tool is the JRready ST6490-ACT (see the table at the top of this page).
+
 ## I²C leg — `J_I2C1` / `J_I2C2`
 
 JST-XH 8-pin. The I²C-class sub-panel interface: MCP23017 I/O, OLED displays (behind a
@@ -101,8 +113,8 @@ for encoder-bearing and fast-gauge panels. One per host chain, at the chain's en
 
 *`LOAD` = '165 SH/LD̄ capture strobe, `LATCH` = '595 STCP publish strobe; 33 Ω series on
 SCK/LOAD/LATCH at the host. The bus is dedicated — MISO is never shared with another SPI
-device. View: into the cable-housing mating face, pin 1 marked; pin order is the proposed
-standard — verify against the JST-XH drawing before first crimp.*
+device. View: into the cable-housing mating face, pin 1 marked. Pin order is verified
+against the JST B7B-XH-A drawing and fabricated on PanelGroup base 0.2.0 (`J10`).*
 
 ## Switch & control wiring
 
