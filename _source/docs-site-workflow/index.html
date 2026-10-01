@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3991,36 +4191,36 @@
 <p>OpenSkyhawk uses MkDocs Material for the documentation site and mkdoxy/Doxygen for generated API reference pages.</p>
 <h2 id="local-setup">Local Setup</h2>
 <p>Install the local documentation dependencies:</p>
-<pre><code class="language-bash">pip install mkdocs-material mkdoxy
-</code></pre>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mkdocs-material<span class="w"> </span>mkdoxy
+</code></pre></div>
 <p>Doxygen must also be available on the local system. On macOS, install it with Homebrew or the official Doxygen package.</p>
 <h2 id="build-check">Build Check</h2>
 <p>Run a strict build before opening a PR:</p>
-<pre><code class="language-bash">mkdocs build -f docs/mkdocs.yml --strict
-</code></pre>
+<div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>docs/mkdocs.yml<span class="w"> </span>--strict
+</code></pre></div>
 <p>This generates the local <code>site/</code> directory. The directory is build output only, is gitignored, and should not be committed.</p>
 <h2 id="local-preview">Local Preview</h2>
 <p>Run the local preview server from the repository root:</p>
-<pre><code class="language-bash">mkdocs serve -f docs/mkdocs.yml -a 127.0.0.1:8010
-</code></pre>
+<div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>serve<span class="w"> </span>-f<span class="w"> </span>docs/mkdocs.yml<span class="w"> </span>-a<span class="w"> </span><span class="m">127</span>.0.0.1:8010
+</code></pre></div>
 <p>Open:</p>
-<pre><code class="language-text">http://127.0.0.1:8010/OpenSkyhawk/
-</code></pre>
+<div class="highlight"><pre><span></span><code>http://127.0.0.1:8010/OpenSkyhawk/
+</code></pre></div>
 <p>The <code>/OpenSkyhawk/</code> prefix matches the configured GitHub Pages path and catches broken absolute links before publishing.</p>
 <h2 id="generated-api-reference">Generated API Reference</h2>
 <p>API pages are generated during the MkDocs build by mkdoxy. The checked-in <code>docs/api/index.md</code> page is the stable overview page; generated API detail pages remain ephemeral and are ignored by git.</p>
 <p>If API navigation looks stale, rebuild from a clean generated state:</p>
-<pre><code class="language-bash">mkdocs build -f docs/mkdocs.yml --strict
-</code></pre>
+<div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>docs/mkdocs.yml<span class="w"> </span>--strict
+</code></pre></div>
 <h2 id="publishing">Publishing</h2>
 <p>The source branch contains documentation source files only. The generated site is published separately by the GitHub Actions workflow:</p>
-<pre><code class="language-bash">mkdocs gh-deploy -f docs/mkdocs.yml --force --remote-branch gh-pages
-</code></pre>
+<div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>gh-deploy<span class="w"> </span>-f<span class="w"> </span>docs/mkdocs.yml<span class="w"> </span>--force<span class="w"> </span>--remote-branch<span class="w"> </span>gh-pages
+</code></pre></div>
 <p>That command builds the site and pushes the rendered output to the <code>gh-pages</code> branch. Do not commit the local <code>site/</code> directory to a source branch.</p>
 <h2 id="asset-notes">Asset Notes</h2>
 <p>Source mock images used while designing the site can live under:</p>
-<pre><code class="language-text">docs/assets/source-mocks/
-</code></pre>
+<div class="highlight"><pre><span></span><code>docs/assets/source-mocks/
+</code></pre></div>
 <p>That folder is gitignored and excluded from the published site. Commit only the cropped or optimized assets that the site actually references.</p>
 
 

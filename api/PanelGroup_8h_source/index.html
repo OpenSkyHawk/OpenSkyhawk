@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,111 +4116,110 @@
 <h1 id="file-panelgrouph">File PanelGroup.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../PanelGroup_8h/"><strong>PanelGroup.h</strong></a></p>
 <p><a href="../PanelGroup_8h/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#pragma once
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &lt;Arduino.h&gt;
-#include &lt;Wire.h&gt;
-#include &lt;MCP23017.h&gt;
-#include &quot;ADS1115.h&quot;
-#include &quot;PinRef.h&quot;
-#include &quot;Helpers/ShiftBus/ShiftBus.h&quot;   // ShiftBus + the pre-defined ShiftBus1 instance
-#include &lt;CANProtocol.h&gt;
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MCP23017.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"ADS1115.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"PinRef.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Helpers/ShiftBus/ShiftBus.h"</span><span class="w">   </span><span class="c1">// ShiftBus + the pre-defined ShiftBus1 instance</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;CANProtocol.h&gt;</span>
 
-// ── OpenSkyhawk base classes ──────────────────────────────────────────────────
+<span class="c1">// ── OpenSkyhawk base classes ──────────────────────────────────────────────────</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-class InputBase {
-public:
-    virtual void configure() {}
+<span class="k">class</span><span class="w"> </span><span class="nc">InputBase</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">configure</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
 
-    virtual void poll() = 0;
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">poll</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
-    virtual void forceReport() = 0;
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">forceReport</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
-    virtual void sampleTick() {}
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">sampleTick</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
 
-    static InputBase* head();
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">InputBase</span><span class="o">*</span><span class="w"> </span><span class="nf">head</span><span class="p">();</span>
 
-    InputBase* next() const;
+<span class="w">    </span><span class="n">InputBase</span><span class="o">*</span><span class="w"> </span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 
-protected:
-    InputBase();  
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="n">InputBase</span><span class="p">();</span><span class="w">  </span>
 
-private:
-    static InputBase* _head;
-    InputBase* _next;
-};
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">InputBase</span><span class="o">*</span><span class="w"> </span><span class="n">_head</span><span class="p">;</span>
+<span class="w">    </span><span class="n">InputBase</span><span class="o">*</span><span class="w"> </span><span class="n">_next</span><span class="p">;</span>
+<span class="p">};</span>
 
-class OutputBase {
-public:
-    virtual void configure() {}
+<span class="k">class</span><span class="w"> </span><span class="nc">OutputBase</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">configure</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
 
-    virtual void onControlPacket(uint16_t controlId, uint16_t value) = 0;
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">onControlPacket</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
-    virtual void update() {}
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
 
-    // Node-health faults are NOT an OutputBase concern — an output that can fault also inherits
-    // OpenSkyhawk::FaultSource (NodeStatus.h) and self-registers there; the node aggregator walks
-    // FaultSource::head(), independent of the output list. See DrumDisplay (#163).
+<span class="w">    </span><span class="c1">// Node-health faults are NOT an OutputBase concern — an output that can fault also inherits</span>
+<span class="w">    </span><span class="c1">// OpenSkyhawk::FaultSource (NodeStatus.h) and self-registers there; the node aggregator walks</span>
+<span class="w">    </span><span class="c1">// FaultSource::head(), independent of the output list. See DrumDisplay (#163).</span>
 
-    static OutputBase* head();
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">OutputBase</span><span class="o">*</span><span class="w"> </span><span class="nf">head</span><span class="p">();</span>
 
-    OutputBase* next() const;
+<span class="w">    </span><span class="n">OutputBase</span><span class="o">*</span><span class="w"> </span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 
-protected:
-    OutputBase();  
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="n">OutputBase</span><span class="p">();</span><span class="w">  </span>
 
-private:
-    static OutputBase* _head;
-    OutputBase* _next;
-};
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">OutputBase</span><span class="o">*</span><span class="w"> </span><span class="n">_head</span><span class="p">;</span>
+<span class="w">    </span><span class="n">OutputBase</span><span class="o">*</span><span class="w"> </span><span class="n">_next</span><span class="p">;</span>
+<span class="p">};</span>
 
-} // namespace OpenSkyhawk
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
 
-// ── PanelGroup namespace — sketch-facing API ──────────────────────────────────
+<span class="c1">// ── PanelGroup namespace — sketch-facing API ──────────────────────────────────</span>
 
-namespace PanelGroup {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">PanelGroup</span><span class="w"> </span><span class="p">{</span>
 
-    void registerADC(ADS1115&amp; adc, uint8_t addr = 0x48, TwoWire&amp; wire = Wire);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">registerADC</span><span class="p">(</span><span class="n">ADS1115</span><span class="o">&amp;</span><span class="w"> </span><span class="n">adc</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x48</span><span class="p">,</span><span class="w"> </span><span class="n">TwoWire</span><span class="o">&amp;</span><span class="w"> </span><span class="n">wire</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Wire</span><span class="p">);</span>
 
-    void registerExpander(MCP23017&amp; chip, uint8_t intaPin, uint8_t intbPin);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">registerExpander</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">intaPin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">intbPin</span><span class="p">);</span>
 
-    void registerExpander(MCP23017&amp; chip);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">registerExpander</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">);</span>
 
-    void setup();
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">();</span>
 
-    void loop();
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">();</span>
 
-    // ── Package-internal — MCP cache bridge for PinRef ───────────────────────
-    //
-    // Not sketch API. Called exclusively by PinRef::read() and PinRef::write().
-    // Direct GPIO and ADS1115 PinRefs bypass this path entirely.
-    //
-    // MCP23017 reads go through the cache (no live I2C per poll) because:
-    //   • A full readPort() at 400 kHz takes ~100 µs — too slow for every poll().
-    //   • INTCAP captures port state at interrupt time; a subsequent readPort()
-    //     may return an already-transitioned value, losing the captured snapshot.
-    //   • All poll() calls after an interrupt must see the same captured snapshot.
+<span class="w">    </span><span class="c1">// ── Package-internal — MCP cache bridge for PinRef ───────────────────────</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">// Not sketch API. Called exclusively by PinRef::read() and PinRef::write().</span>
+<span class="w">    </span><span class="c1">// Direct GPIO and ADS1115 PinRefs bypass this path entirely.</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">// MCP23017 reads go through the cache (no live I2C per poll) because:</span>
+<span class="w">    </span><span class="c1">//   • A full readPort() at 400 kHz takes ~100 µs — too slow for every poll().</span>
+<span class="w">    </span><span class="c1">//   • INTCAP captures port state at interrupt time; a subsequent readPort()</span>
+<span class="w">    </span><span class="c1">//     may return an already-transitioned value, losing the captured snapshot.</span>
+<span class="w">    </span><span class="c1">//   • All poll() calls after an interrupt must see the same captured snapshot.</span>
 
-    bool readCachedPin(const MCP23017&amp; chip, uint8_t port, uint8_t bit);
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readCachedPin</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
 
-    void writeCachedPin(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">writeCachedPin</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
 
-    void writeCachedPinDeferred(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">writeCachedPinDeferred</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
 
-    void flushExpanderWrites();
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">flushExpanderWrites</span><span class="p">();</span>
 
-    bool readLivePin(MCP23017&amp; chip, uint8_t port, uint8_t bit);
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readLivePin</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
 
-    void noteShiftBus(OpenSkyhawk::ShiftBus&amp; bus);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">noteShiftBus</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bus</span><span class="p">);</span>
 
-} // namespace PanelGroup
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace PanelGroup</span>
 
-#endif // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

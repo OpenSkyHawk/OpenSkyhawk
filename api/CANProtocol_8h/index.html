@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4438,100 +4638,100 @@
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 <h3 id="typedef-canrxcallback">typedef CanRxCallback</h3>
-<p><em>Fired when a CAN frame is received. Register via onReceive().</em> </p>
-<pre><code class="language-C++">using CanRxCallback =  void(*)(uint32_t canId, const uint8_t* data, uint8_t len);
-</code></pre>
+<p><em>Fired when a CAN frame is received. Register via onReceive().</em> 
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">CanRxCallback</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="enum-canstatus">enum CanStatus</h3>
-<p><em>CAN bus health states. Reported to</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> <em>via onStatusChange().</em></p>
-<pre><code class="language-C++">enum CanStatus {
-    STARTING,
-    NORMAL,
-    TX_ERROR,
-    BUS_OFF
-};
-</code></pre>
+<p><em>CAN bus health states. Reported to</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> <em>via onStatusChange().</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">CanStatus</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">STARTING</span><span class="p">,</span>
+<span class="w">    </span><span class="n">NORMAL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TX_ERROR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">BUS_OFF</span>
+<span class="p">};</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="typedef-canstatuscallback">typedef CanStatusCallback</h3>
-<p><em>Fired when CAN bus status changes. Register via onStatusChange().</em> </p>
-<pre><code class="language-C++">using CanStatusCallback =  void(*)(CanStatus status);
-</code></pre>
+<p><em>Fired when CAN bus status changes. Register via onStatusChange().</em> 
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">CanStatusCallback</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="n">CanStatus</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="typedef-cansyncreqcallback">typedef CanSyncReqCallback</h3>
-<p><em>Fired when SYNC_REQ is received. Register via onSyncReq().</em> </p>
-<pre><code class="language-C++">using CanSyncReqCallback =  void(*)();
-</code></pre>
+<p><em>Fired when SYNC_REQ is received. Register via onSyncReq().</em> 
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">CanSyncReqCallback</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)();</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-can_id_ctrl_bcast">variable CAN_ID_CTRL_BCAST</h3>
-<p><em>Broadcast ControlPacketPair to all panels.</em> </p>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_CTRL_BCAST;
-</code></pre>
+<p><em>Broadcast ControlPacketPair to all panels.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CAN_ID_CTRL_BCAST</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-can_id_sync_req">variable CAN_ID_SYNC_REQ</h3>
-<p><em>Request all nodes to re-poll inputs.</em> </p>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_SYNC_REQ;
-</code></pre>
+<p><em>Request all nodes to re-poll inputs.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CAN_ID_SYNC_REQ</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-can_id_test_seq">variable CAN_ID_TEST_SEQ</h3>
-<p><em>RTT throughput test.</em> </p>
-<pre><code class="language-C++">constexpr uint32_t CAN_ID_TEST_SEQ;
-</code></pre>
+<p><em>RTT throughput test.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CAN_ID_TEST_SEQ</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-ctrl_id_dcs_max">variable CTRL_ID_DCS_MAX</h3>
-<p><em>DCS-BIOS range end.</em> </p>
-<pre><code class="language-C++">constexpr uint16_t CTRL_ID_DCS_MAX;
-</code></pre>
+<p><em>DCS-BIOS range end.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MAX</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-ctrl_id_dcs_min">variable CTRL_ID_DCS_MIN</h3>
-<p><em>DCS-BIOS range start.</em> </p>
-<pre><code class="language-C++">constexpr uint16_t CTRL_ID_DCS_MIN;
-</code></pre>
+<p><em>DCS-BIOS range start.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MIN</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-diag_err">variable DIAG_ERR</h3>
-<p><em>CAN error counter frame.</em> </p>
-<pre><code class="language-C++">constexpr uint8_t DIAG_ERR;
-</code></pre>
+<p><em>CAN error counter frame.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_ERR</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-diag_evt">variable DIAG_EVT</h3>
-<p><em>Sub-node input event forwarded upstream.</em> </p>
-<pre><code class="language-C++">constexpr uint8_t DIAG_EVT;
-</code></pre>
+<p><em>Sub-node input event forwarded upstream.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_EVT</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-diag_hb">variable DIAG_HB</h3>
-<p><em>Sub-node heartbeat frame.</em> </p>
-<pre><code class="language-C++">constexpr uint8_t DIAG_HB;
-</code></pre>
+<p><em>Sub-node heartbeat frame.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_HB</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-diag_magic">variable DIAG_MAGIC</h3>
-<p><em>Frame sync byte.</em> </p>
-<pre><code class="language-C++">constexpr uint8_t DIAG_MAGIC;
-</code></pre>
+<p><em>Frame sync byte.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_MAGIC</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-diag_rtt">variable DIAG_RTT</h3>
-<p><em>Round-trip time measurement frame.</em> </p>
-<pre><code class="language-C++">constexpr uint8_t DIAG_RTT;
-</code></pre>
+<p><em>Round-trip time measurement frame.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DIAG_RTT</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-__attribute__">function __attribute__</h3>
-<p><em>Primary input/output routing packet. 4 bytes; two are batched for CTRL_BCAST/EVT_n.</em> </p>
-<pre><code class="language-C++">struct __attribute__ (
-    (packed)
-) 
-</code></pre>
+<p><em>Primary input/output routing packet. 4 bytes; two are batched for CTRL_BCAST/EVT_n.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">__attribute__</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">(</span><span class="n">packed</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>8-byte payload carried by HEALTH_n frames — per-node health telemetry.</p>
 <p>8-byte payload carried by HB_n heartbeat frames.</p>
 <p>Two ControlPackets packed into one 8-byte input/output CAN frame.</p>
@@ -4547,68 +4747,68 @@
 <hr>
 
 <h3 id="function-canidecho">function canIdEcho</h3>
-<p><em>TEST_SEQ echo frame ID for node n. Range 0x301-0x33F.</em> </p>
-<pre><code class="language-C++">constexpr uint32_t canIdEcho (
-    uint8_t n
-) 
-</code></pre>
+<p><em>TEST_SEQ echo frame ID for node n. Range 0x301-0x33F.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdEcho</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-canidevt">function canIdEvt</h3>
-<p><em>Input event frame ID for node n. Range 0x201-0x23F.</em> </p>
-<pre><code class="language-C++">constexpr uint32_t canIdEvt (
-    uint8_t n
-) 
-</code></pre>
+<p><em>Input event frame ID for node n. Range 0x201-0x23F.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdEvt</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-canidevtaction">function canIdEvtAction</h3>
-<p><em>Action-input event frame ID for node n. ActionButton: the payload value is a selector, not a magnitude — 0 means</em> <code>TOGGLE</code> <em>, the only argument DCS-BIOS's action interface defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F.</em></p>
-<pre><code class="language-C++">constexpr uint32_t canIdEvtAction (
-    uint8_t n
-) 
-</code></pre>
+<p><em>Action-input event frame ID for node n. ActionButton: the payload value is a selector, not a magnitude — 0 means</em> <code>TOGGLE</code> <em>, the only argument DCS-BIOS's action interface defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdEvtAction</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>This frame exists because an action is a <em>keyword</em>, not a number: the ABS value space is already spoken for as literal set_state values, so <code>TOGGLE</code> has no integer to ride on — the same reason DIR exists for <code>INC</code>/<code>DEC</code>. </p>
 <hr>
 
 <h3 id="function-canidevtdir">function canIdEvtDir</h3>
-<p><em>Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it</em> <code>INC</code> <em>/</em><code>DEC</code> <em>for a DCS-BIOS fixed_step control. Range 0x601-0x63F.</em></p>
-<pre><code class="language-C++">constexpr uint32_t canIdEvtDir (
-    uint8_t n
-) 
-</code></pre>
+<p><em>Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it</em> <code>INC</code> <em>/</em><code>DEC</code> <em>for a DCS-BIOS fixed_step control. Range 0x601-0x63F.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdEvtDir</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-canidevtrel">function canIdEvtRel</h3>
-<p><em>Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a signed ±step (int16); the bridge formats it</em> <code>%+d</code> <em>for a DCS-BIOS variable_step control. Range 0x501-0x53F.</em></p>
-<pre><code class="language-C++">constexpr uint32_t canIdEvtRel (
-    uint8_t n
-) 
-</code></pre>
+<p><em>Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a signed ±step (int16); the bridge formats it</em> <code>%+d</code> <em>for a DCS-BIOS variable_step control. Range 0x501-0x53F.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdEvtRel</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-canidhb">function canIdHb</h3>
-<p><em>Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">constexpr uint32_t canIdHb (
-    uint8_t n
-) 
-</code></pre>
+<p><em>Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdHb</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-canidhealth">function canIdHealth</h3>
-<p><em>Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>. Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands).</em></p>
-<pre><code class="language-C++">constexpr uint32_t canIdHealth (
-    uint8_t n
-) 
-</code></pre>
+<p><em>Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>. Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands).</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdHealth</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-canidready">function canIdReady</h3>
-<p><em>Boot-complete READY frame ID for node n. Range 0x401-0x43F.</em> </p>
-<pre><code class="language-C++">constexpr uint32_t canIdReady (
-    uint8_t n
-) 
-</code></pre>
+<p><em>Boot-complete READY frame ID for node n. Range 0x401-0x43F.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdReady</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <hr />

@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4427,10 +4627,10 @@
 <h1 id="a-4e-c-dcs-bios-address-reference">A-4E-C DCS-BIOS Address Reference</h1>
 <p>Module base address: <code>0x8400</code>. All addresses are in the range <code>0x8400</code>–<code>0x8554</code>.</p>
 <h2 id="address-format">Address Format</h2>
-<p>Each <code>#define</code> in <code>Addresses.h</code> expands to <code>address, mask, shift</code> for use with <code>DcsBios::IntegerBuffer</code>:</p>
-<pre><code class="language-cpp">DcsBios::IntegerBuffer buf(A_4E_C_RPM, onRpmChange);
-</code></pre>
-<p>The <code>_A</code> suffix variant provides the address only (for <code>StringBuffer</code> or direct reads).
+<p>Each <code>#define</code> in <code>Addresses.h</code> expands to <code>address, mask, shift</code> for use with <code>DcsBios::IntegerBuffer</code>:
+<div class="highlight"><pre><span></span><code><span class="n">DcsBios</span><span class="o">::</span><span class="n">IntegerBuffer</span><span class="w"> </span><span class="nf">buf</span><span class="p">(</span><span class="n">A_4E_C_RPM</span><span class="p">,</span><span class="w"> </span><span class="n">onRpmChange</span><span class="p">);</span>
+</code></pre></div>
+The <code>_A</code> suffix variant provides the address only (for <code>StringBuffer</code> or direct reads).
 The <code>_AM</code> suffix variant provides <code>address, mask</code> (for <code>ChangeDispatcher</code>).</p>
 <h2 id="direction-key">Direction Key</h2>
 <table>

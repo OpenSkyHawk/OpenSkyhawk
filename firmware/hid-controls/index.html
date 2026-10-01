@@ -755,6 +755,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4154,11 +4354,11 @@ the throttle <em>axis</em> is HID. The speed brake is a DCS-BIOS switch, not an 
 <h2 id="how-hid-controls-are-declared">How HID controls are declared</h2>
 <p>Unlike DCS-BIOS controls (which need no sketch declaration — the input map covers them), HID
 controls are declared on the <strong>SimGateway</strong> sketch, binding a <code>controlId</code> to a joystick slot:</p>
-<pre><code class="language-cpp">OpenSkyhawk::HIDAxis   roll   (CTRL_ROLL,    0);  // axis index 0
-OpenSkyhawk::HIDAxis   throttle(CTRL_THROTTLE, 2);
-OpenSkyhawk::HIDButton trigger(CTRL_TRIGGER,  0);  // button index 0
-OpenSkyhawk::HIDHatSwitch hat (CTRL_HAT_0,    0);  // hat index 0
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDAxis</span><span class="w">   </span><span class="nf">roll</span><span class="w">   </span><span class="p">(</span><span class="n">CTRL_ROLL</span><span class="p">,</span><span class="w">    </span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// axis index 0</span>
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDAxis</span><span class="w">   </span><span class="nf">throttle</span><span class="p">(</span><span class="n">CTRL_THROTTLE</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDButton</span><span class="w"> </span><span class="nf">trigger</span><span class="p">(</span><span class="n">CTRL_TRIGGER</span><span class="p">,</span><span class="w">  </span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// button index 0</span>
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDHatSwitch</span><span class="w"> </span><span class="nf">hat</span><span class="w"> </span><span class="p">(</span><span class="n">CTRL_HAT_0</span><span class="p">,</span><span class="w">    </span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// hat index 0</span>
+</code></pre></div>
 <p>The matching PanelGroup input fires the same <code>controlId</code>; SimGateway maps it to the joystick
 report:</p>
 <ul>

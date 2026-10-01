@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,49 +4116,48 @@
 <h1 id="file-anglesensorinputcpp">File AngleSensorInput.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_204c2e67ee983494592248b9f39f712d/"><strong>AngleSensorInput</strong></a> <strong>&gt;</strong> <a href="../AngleSensorInput_8cpp/"><strong>AngleSensorInput.cpp</strong></a></p>
 <p><a href="../AngleSensorInput_8cpp/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &quot;AngleSensorInput.h&quot;
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"AngleSensorInput.h"</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-namespace {
+<span class="k">namespace</span><span class="w"> </span><span class="p">{</span>
 
-uint16_t degToCounts(float deg) {
-    float wrapped = deg - 360.0f * floorf(deg / 360.0f);   // any input → [0, 360)
-    return (uint16_t)(uint32_t)(wrapped * AngleSensorInput::COUNTS_PER_DEG);
-}
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">degToCounts</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">deg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">wrapped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">deg</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">360.0f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">floorf</span><span class="p">(</span><span class="n">deg</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">);</span><span class="w">   </span><span class="c1">// any input → [0, 360)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">wrapped</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AngleSensorInput</span><span class="o">::</span><span class="n">COUNTS_PER_DEG</span><span class="p">);</span>
+<span class="p">}</span>
 
-uint16_t halfSpanCounts(float travelDeg) {
-    if (!(travelDeg &gt; 0.0f)) travelDeg = 1.0f;             // also catches NaN
-    if (travelDeg &gt; 360.0f)  travelDeg = 360.0f;
-    uint32_t half = (uint32_t)(travelDeg * 0.5f * AngleSensorInput::COUNTS_PER_DEG);
-    return half &gt; 32767u ? 32767u : (uint16_t)half;
-}
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">halfSpanCounts</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">travelDeg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">travelDeg</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">))</span><span class="w"> </span><span class="n">travelDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w">             </span><span class="c1">// also catches NaN</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">travelDeg</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">)</span><span class="w">  </span><span class="n">travelDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">half</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">travelDeg</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.5f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AngleSensorInput</span><span class="o">::</span><span class="n">COUNTS_PER_DEG</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">half</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">32767u</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">32767u</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">half</span><span class="p">;</span>
+<span class="p">}</span>
 
-}  // namespace
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace</span>
 
-// The base's [minRaw, maxRaw] window is centred on mid-scale because readRaw() moves the centre
-// angle there — so the window is the same whatever part of the circle the knob sits on.
-AngleSensorInput::AngleSensorInput(uint16_t controlId, PinRef pin, float centerDeg,
-                                   float travelDeg, uint16_t pollMs)
-    : AnalogInput(controlId, pin, /*reverse=*/false,
-                  /*minRaw=*/(uint16_t)(32768u - halfSpanCounts(travelDeg)),
-                  /*maxRaw=*/(uint16_t)(32768u + halfSpanCounts(travelDeg)),
-                  DEFAULT_HYSTERESIS, DEFAULT_EWMA_SHIFT, pollMs),
-      _centerRaw(degToCounts(centerDeg)) {}
+<span class="c1">// The base's [minRaw, maxRaw] window is centred on mid-scale because readRaw() moves the centre</span>
+<span class="c1">// angle there — so the window is the same whatever part of the circle the knob sits on.</span>
+<span class="n">AngleSensorInput</span><span class="o">::</span><span class="n">AngleSensorInput</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">centerDeg</span><span class="p">,</span>
+<span class="w">                                   </span><span class="kt">float</span><span class="w"> </span><span class="n">travelDeg</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pollMs</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">AnalogInput</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="cm">/*reverse=*/</span><span class="nb">false</span><span class="p">,</span>
+<span class="w">                  </span><span class="cm">/*minRaw=*/</span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="mi">32768u</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">halfSpanCounts</span><span class="p">(</span><span class="n">travelDeg</span><span class="p">)),</span>
+<span class="w">                  </span><span class="cm">/*maxRaw=*/</span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="mi">32768u</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">halfSpanCounts</span><span class="p">(</span><span class="n">travelDeg</span><span class="p">)),</span>
+<span class="w">                  </span><span class="n">DEFAULT_HYSTERESIS</span><span class="p">,</span><span class="w"> </span><span class="n">DEFAULT_EWMA_SHIFT</span><span class="p">,</span><span class="w"> </span><span class="n">pollMs</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_centerRaw</span><span class="p">(</span><span class="n">degToCounts</span><span class="p">(</span><span class="n">centerDeg</span><span class="p">))</span><span class="w"> </span><span class="p">{}</span>
 
-uint16_t AngleSensorInput::readRaw() {
-    // Unsigned wrap is the 0°/360° seam handling: subtracting the centre and adding mid-scale is
-    // modulo 65536, so a travel straddling the seam is contiguous like any other.
-    return (uint16_t)(AnalogInput::readRaw() - _centerRaw + 32768u);
-}
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">AngleSensorInput::readRaw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Unsigned wrap is the 0°/360° seam handling: subtracting the centre and adding mid-scale is</span>
+<span class="w">    </span><span class="c1">// modulo 65536, so a travel straddling the seam is contiguous like any other.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="n">AnalogInput</span><span class="o">::</span><span class="n">readRaw</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_centerRaw</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">32768u</span><span class="p">);</span>
+<span class="p">}</span>
 
-}  // namespace OpenSkyhawk
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
 
-#endif  // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

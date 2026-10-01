@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,118 +4116,117 @@
 <h1 id="file-shiftbush">File ShiftBus.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_9e93d9a1721bcf27b2030ff612e0fc11/"><strong>Helpers</strong></a> <strong>&gt;</strong> <a href="../dir_5de82edf055e68e6d2d76fc20b67149e/"><strong>ShiftBus</strong></a> <strong>&gt;</strong> <a href="../ShiftBus_8h/"><strong>ShiftBus.h</strong></a></p>
 <p><a href="../ShiftBus_8h/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#pragma once
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &lt;Arduino.h&gt;
-#include &lt;SPI.h&gt;
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;SPI.h&gt;</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-class ShiftBus {
-public:
-    static constexpr uint8_t MAX_CHAIN         = 8;   
-    static constexpr uint8_t MAX_ISR_CONSUMERS = 16;  
+<span class="k">class</span><span class="w"> </span><span class="nc">ShiftBus</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w">   </span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">MAX_ISR_CONSUMERS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w">  </span>
 
-    ShiftBus(SPIClass&amp; spi, uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin,
-             uint8_t loadPin, uint8_t latchPin);
+<span class="w">    </span><span class="n">ShiftBus</span><span class="p">(</span><span class="n">SPIClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">spi</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sckPin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">misoPin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mosiPin</span><span class="p">,</span>
+<span class="w">             </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">loadPin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">latchPin</span><span class="p">);</span>
 
-    // ── PinRef backend — package-internal, mirrors the MCP cache bridge ─────────
+<span class="w">    </span><span class="c1">// ── PinRef backend — package-internal, mirrors the MCP cache bridge ─────────</span>
 
-    void noteInput(uint8_t chip);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">noteInput</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">);</span>
 
-    void noteOutput(uint8_t chip);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">noteOutput</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">);</span>
 
-    bool readBit(uint8_t chip, uint8_t bit) const;
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 
-    bool readOutBit(uint8_t chip, uint8_t bit) const;
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readOutBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 
-    void writeBit(uint8_t chip, uint8_t bit, bool v);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">writeBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
 
-    bool readLiveBit(uint8_t chip, uint8_t bit);
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readLiveBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
 
-    bool dirty() const { return _dirty; }
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">dirty</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_dirty</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-    bool active() const { return _active; }
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">active</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_active</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-    // ── Lifecycle — called by PanelGroup ─────────────────────────────────────────
+<span class="w">    </span><span class="c1">// ── Lifecycle — called by PanelGroup ─────────────────────────────────────────</span>
 
-    void begin();
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">begin</span><span class="p">();</span>
 
-    void transfer();
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">transfer</span><span class="p">();</span>
 
-    void flushNow() { transfer(); }
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">flushNow</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">transfer</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
 
-    // ── Timer-ISR sampling (encoder-feel mode, -DSHIFTBUS_ISR_HZ) ────────────────
+<span class="w">    </span><span class="c1">// ── Timer-ISR sampling (encoder-feel mode, -DSHIFTBUS_ISR_HZ) ────────────────</span>
 
-    void beginIsrSampling(TIM_TypeDef* tim, uint16_t sampleHz);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">beginIsrSampling</span><span class="p">(</span><span class="n">TIM_TypeDef</span><span class="o">*</span><span class="w"> </span><span class="n">tim</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sampleHz</span><span class="p">);</span>
 
-    void addIsrConsumer(void (*hook)(void* ctx), void* ctx);
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">addIsrConsumer</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">hook</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span><span class="p">),</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span><span class="p">);</span>
 
-    bool isrActive() const { return _isrActive; }
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isrActive</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_isrActive</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-#ifdef SHIFTBUS_TEST
-    // ── Test seams — chip-less logic tests (no SPI, no strobe pins) ──────────────
-    void testSetBypass(bool on) { _testBypass = on; }
-    void testInjectIn(uint8_t chip, uint8_t value) { if (chip &lt; MAX_CHAIN) _testIn[chip] = value; }
-    uint8_t testOutFrame(uint8_t chip) const { return (chip &lt; MAX_CHAIN) ? _outFrame[chip] : 0; }
-    uint8_t testWire(uint8_t i) const { return (i &lt; MAX_CHAIN) ? _wireTx[i] : 0; }
-    uint16_t testTransferCount() const { return _transferCount; }
-    uint8_t testChainIn()  const { return _nIn; }
-    uint8_t testChainOut() const { return _nOut; }
-#endif
+<span class="cp">#ifdef SHIFTBUS_TEST</span>
+<span class="w">    </span><span class="c1">// ── Test seams — chip-less logic tests (no SPI, no strobe pins) ──────────────</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testSetBypass</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">on</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_testBypass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">on</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testInjectIn</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">)</span><span class="w"> </span><span class="n">_testIn</span><span class="p">[</span><span class="n">chip</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">testOutFrame</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">_outFrame</span><span class="p">[</span><span class="n">chip</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">testWire</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">_wireTx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">testTransferCount</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_transferCount</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">testChainIn</span><span class="p">()</span><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_nIn</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">testChainOut</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_nOut</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="cp">#endif</span>
 
-private:
-    // Unguarded body; callers handle the ISR critical section. commitStage: loop-context
-    // paths publish pending writeBit() stage changes; the ISR passes false so it never
-    // ships a half-written multi-pin group.
-    void doTransfer(bool commitStage);
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="c1">// Unguarded body; callers handle the ISR critical section. commitStage: loop-context</span>
+<span class="w">    </span><span class="c1">// paths publish pending writeBit() stage changes; the ISR passes false so it never</span>
+<span class="w">    </span><span class="c1">// ships a half-written multi-pin group.</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">doTransfer</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">commitStage</span><span class="p">);</span>
 
-    SPIClass* _spi;
-    uint8_t   _sckPin;
-    uint8_t   _misoPin;
-    uint8_t   _mosiPin;
-    uint8_t   _loadPin;
-    uint8_t   _latchPin;
+<span class="w">    </span><span class="n">SPIClass</span><span class="o">*</span><span class="w"> </span><span class="n">_spi</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_sckPin</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_misoPin</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_mosiPin</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_loadPin</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_latchPin</span><span class="p">;</span>
 
-    uint8_t   _nIn  = 0;        // '165 chips in use (auto-sized at configure)
-    uint8_t   _nOut = 0;        // '595 chips in use
-    bool      _active = false;
-    bool      _begun  = false;
-    volatile bool _dirty = false;   // stage differs from committed frame
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_nIn</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// '165 chips in use (auto-sized at configure)</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_nOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// '595 chips in use</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">      </span><span class="n">_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">      </span><span class="n">_begun</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">_dirty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">   </span><span class="c1">// stage differs from committed frame</span>
 
-    // Concurrency model (no-LTO assumption): the frames are plain bytes shared between the
-    // sampling ISR and loop context. Safe because all cross-context access goes through
-    // out-of-line methods in this TU (the compiler cannot cache them across calls) and
-    // byte load/store is atomic on Cortex-M3. Revisit if LTO is ever enabled.
-    uint8_t   _inFrame[MAX_CHAIN]  = {0};  // '165 cache: [chip] = D7..D0
-    uint8_t   _stage[MAX_CHAIN]    = {0};  // '595 staging: loop-owned, writeBit() target
-    uint8_t   _outFrame[MAX_CHAIN] = {0};  // '595 committed frame: what transfers ship
-    uint8_t   _wire[MAX_CHAIN]     = {0};  // scratch for the in-place full-duplex transfer
+<span class="w">    </span><span class="c1">// Concurrency model (no-LTO assumption): the frames are plain bytes shared between the</span>
+<span class="w">    </span><span class="c1">// sampling ISR and loop context. Safe because all cross-context access goes through</span>
+<span class="w">    </span><span class="c1">// out-of-line methods in this TU (the compiler cannot cache them across calls) and</span>
+<span class="w">    </span><span class="c1">// byte load/store is atomic on Cortex-M3. Revisit if LTO is ever enabled.</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_inFrame</span><span class="p">[</span><span class="n">MAX_CHAIN</span><span class="p">]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w">  </span><span class="c1">// '165 cache: [chip] = D7..D0</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_stage</span><span class="p">[</span><span class="n">MAX_CHAIN</span><span class="p">]</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w">  </span><span class="c1">// '595 staging: loop-owned, writeBit() target</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_outFrame</span><span class="p">[</span><span class="n">MAX_CHAIN</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w">  </span><span class="c1">// '595 committed frame: what transfers ship</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">   </span><span class="n">_wire</span><span class="p">[</span><span class="n">MAX_CHAIN</span><span class="p">]</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w">  </span><span class="c1">// scratch for the in-place full-duplex transfer</span>
 
-    // ISR sampling
-    volatile bool _isrActive = false;
-    struct IsrConsumer { void (*hook)(void*); void* ctx; };
-    IsrConsumer _consumers[MAX_ISR_CONSUMERS];
-    uint8_t     _consumerCount = 0;
-    static void isrTrampoline();   // static → member via _isrInstance (one ISR bus supported)
-    static ShiftBus* _isrInstance;
+<span class="w">    </span><span class="c1">// ISR sampling</span>
+<span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">_isrActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">IsrConsumer</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">hook</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="p">);</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">IsrConsumer</span><span class="w"> </span><span class="n">_consumers</span><span class="p">[</span><span class="n">MAX_ISR_CONSUMERS</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">_consumerCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">isrTrampoline</span><span class="p">();</span><span class="w">   </span><span class="c1">// static → member via _isrInstance (one ISR bus supported)</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">ShiftBus</span><span class="o">*</span><span class="w"> </span><span class="n">_isrInstance</span><span class="p">;</span>
 
-#ifdef SHIFTBUS_TEST
-    bool     _testBypass = false;
-    uint8_t  _testIn[MAX_CHAIN]  = {0};
-    uint8_t  _wireTx[MAX_CHAIN]  = {0};   // TX wire snapshot (reversal/pad coverage)
-    uint16_t _transferCount = 0;
-#endif
-};
+<span class="cp">#ifdef SHIFTBUS_TEST</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_testBypass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">_testIn</span><span class="p">[</span><span class="n">MAX_CHAIN</span><span class="p">]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">_wireTx</span><span class="p">[</span><span class="n">MAX_CHAIN</span><span class="p">]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w">   </span><span class="c1">// TX wire snapshot (reversal/pad coverage)</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_transferCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="p">};</span>
 
-}  // namespace OpenSkyhawk
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
 
-extern OpenSkyhawk::ShiftBus ShiftBus1;
+<span class="k">extern</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="w"> </span><span class="n">ShiftBus1</span><span class="p">;</span>
 
-#endif  // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

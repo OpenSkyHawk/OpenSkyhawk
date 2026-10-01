@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4219,15 +4419,15 @@
 </table>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-busoff">function busOff</h3>
-<p><em>Return true if the CAN controller is in bus-off state.</em> </p>
-<pre><code class="language-C++">bool CANProtocol::busOff () 
-</code></pre>
+<p><em>Return true if the CAN controller is in bus-off state.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">busOff</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-drain">function drain</h3>
-<p><em>Process RX callbacks and batched-ControlPacket deadlines. Call once per loop().</em> </p>
-<pre><code class="language-C++">void CANProtocol::drain () 
-</code></pre>
+<p><em>Process RX callbacks and batched-ControlPacket deadlines. Call once per loop().</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">drain</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Drains all frames received since the last call:
 * SYNC_REQ: fires <a href="./#function-onsyncreq"><strong>onSyncReq()</strong></a>, not forwarded to <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
 * TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
@@ -4236,18 +4436,18 @@
 <hr>
 
 <h3 id="function-filteracceptall">function filterAcceptAll</h3>
-<p><em>Accept all incoming CAN frames. Use for</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">void CANProtocol::filterAcceptAll () 
-</code></pre>
+<p><em>Accept all incoming CAN frames. Use for</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">filterAcceptAll</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Configures a pass-all hardware mask filter. Mandatory IDs (CTRL_BCAST, TEST_SEQ, SYNC_REQ) are included but have no effect with pass-all active. </p>
 <hr>
 
 <h3 id="function-filteracceptid">function filterAcceptId</h3>
-<p><em>Accept a specific CAN ID. Use for</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>nodes.</em></p>
-<pre><code class="language-C++">void CANProtocol::filterAcceptId (
-    uint32_t canId
-) 
-</code></pre>
+<p><em>Accept a specific CAN ID. Use for</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>nodes.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">filterAcceptId</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Adds one ID to the hardware filter list. Call multiple times for multiple IDs. CTRL_BCAST (0x010), TEST_SEQ (0x011), and SYNC_REQ (0x012) are always included automatically by <a href="./#function-start"><strong>start()</strong></a> — do not add them manually.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4256,11 +4456,11 @@
 <hr>
 
 <h3 id="function-flushbatched">function flushBatched</h3>
-<p><em>Force a half-full ControlPacketPair batch to send immediately.</em> </p>
-<pre><code class="language-C++">void CANProtocol::flushBatched (
-    uint32_t canId
-) 
-</code></pre>
+<p><em>Force a half-full ControlPacketPair batch to send immediately.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">flushBatched</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>If the named CAN ID has a pending slot A, sends it with slot B as the null sentinel. No-op if no packet is pending.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4269,12 +4469,12 @@
 <hr>
 
 <h3 id="function-makeheartbeatpayload">function makeHeartbeatPayload</h3>
-<p><em>Build the standard 8-byte heartbeat payload for the current node.</em> </p>
-<pre><code class="language-C++">HeartbeatPayload CANProtocol::makeHeartbeatPayload (
-    uint8_t nodeId,
-    uint16_t rxCount
-) 
-</code></pre>
+<p><em>Build the standard 8-byte heartbeat payload for the current node.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">HeartbeatPayload</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeHeartbeatPayload</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">rxCount</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Fills uptime, CAN health flags, and ESR-derived TEC/REC from <a href="./"><strong>CANProtocol</strong></a> state.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4286,13 +4486,13 @@
 <hr>
 
 <h3 id="function-makenodehealthpayload">function makeNodeHealthPayload</h3>
-<p><em>Build the 8-byte node-health payload for the current node.</em> </p>
-<pre><code class="language-C++">NodeHealthPayload CANProtocol::makeNodeHealthPayload (
-    uint8_t nodeId,
-    int8_t dieTempC,
-    NodeFaultCode fault=NodeFaultCode::NONE
-) 
-</code></pre>
+<p><em>Build the 8-byte node-health payload for the current node.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeNodeHealthPayload</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">dieTempC</span><span class="p">,</span>
+<span class="w">    </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">fault</span><span class="o">=</span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>The CAN/DCS packing boundary: takes the internal die temperature (via <a href="../namespaceSTM32Board/#function-readdietempc"><strong>STM32Board::readDieTempC()</strong></a>) and the node's aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when <code>fault</code> is not NONE (the enum→byte cast happens here). faultMask + reserved bytes stay 0.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4305,11 +4505,11 @@
 <hr>
 
 <h3 id="function-onreceive">function onReceive</h3>
-<p><em>Register a general-purpose RX frame handler.</em> </p>
-<pre><code class="language-C++">void CANProtocol::onReceive (
-    CanRxCallback cb
-) 
-</code></pre>
+<p><em>Register a general-purpose RX frame handler.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onReceive</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">CanRxCallback</span><span class="w"> </span><span class="n">cb</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Fired by <a href="./#function-drain"><strong>drain()</strong></a> for all frames except SYNC_REQ and TEST_SEQ. Only one handler per node — <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> each register their own.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4318,11 +4518,11 @@
 <hr>
 
 <h3 id="function-onstatuschange">function onStatusChange</h3>
-<p><em>Register a CAN bus status change callback.</em> </p>
-<pre><code class="language-C++">void CANProtocol::onStatusChange (
-    CanStatusCallback cb
-) 
-</code></pre>
+<p><em>Register a CAN bus status change callback.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onStatusChange</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">CanStatusCallback</span><span class="w"> </span><span class="n">cb</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Fires immediately with the current status upon registration (STARTING before <a href="./#function-start"><strong>start()</strong></a> is called), then on each subsequent status transition.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4331,11 +4531,11 @@
 <hr>
 
 <h3 id="function-onsyncreq">function onSyncReq</h3>
-<p><em>Register a SYNC_REQ handler.</em> </p>
-<pre><code class="language-C++">void CANProtocol::onSyncReq (
-    CanSyncReqCallback cb
-) 
-</code></pre>
+<p><em>Register a SYNC_REQ handler.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onSyncReq</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">CanSyncReqCallback</span><span class="w"> </span><span class="n">cb</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Fired by <a href="./#function-drain"><strong>drain()</strong></a> when SYNC_REQ (0x012) is received. <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> registers this to trigger a re-poll of all registered input objects.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4344,19 +4544,19 @@
 <hr>
 
 <h3 id="function-rec">function rec</h3>
-<p><em>Return the CAN Receive Error Counter (0-255) from ESR.</em> </p>
-<pre><code class="language-C++">uint8_t CANProtocol::rec () 
-</code></pre>
+<p><em>Return the CAN Receive Error Counter (0-255) from ESR.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">rec</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-send">function send</h3>
-<p><em>Send a CAN frame.</em> </p>
-<pre><code class="language-C++">void CANProtocol::send (
-    uint32_t canId,
-    const uint8_t * data,
-    uint8_t len
-) 
-</code></pre>
+<p><em>Send a CAN frame.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Sends immediately if a TX mailbox is free; otherwise enqueues in the TX ring buffer (~16 entries), drained automatically via TX-complete interrupt. CTRL_BCAST coalesces stale queued state (newest wins). EVT/control frames retry up to 3 attempts then drop. All drops increment <a href="./#function-txdropcount"><strong>txDropCount()</strong></a>.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4367,12 +4567,12 @@
 <hr>
 
 <h3 id="function-sendbatched">function sendBatched</h3>
-<p><em>Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.</em> </p>
-<pre><code class="language-C++">void CANProtocol::sendBatched (
-    uint32_t canId,
-    const ControlPacket &amp; pkt
-) 
-</code></pre>
+<p><em>Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendBatched</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">ControlPacket</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">pkt</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Valid only for CAN_ID_CTRL_BCAST and the batched event frames — canIdEvt(n) (absolute), canIdEvtRel(n) (RotaryEncoder REL), canIdEvtDir(n) (RotaryEncoder DIR), and canIdEvtAction(n) (ActionButton) — each with its own pending slot. Pairs two consecutive packets into one 8-byte frame. If slot B does not arrive within two <a href="./#function-drain"><strong>drain()</strong></a> calls, slot A is sent with slot B set to the null sentinel (controlId == 0x0000).</p>
 <p>A frame ID with no batch slot is <strong>silently discarded</strong> — adding a batched frame means registering it in _batches[] in begin(), not just defining its canId helper.</p>
 <p><strong>Parameters:</strong></p>
@@ -4383,32 +4583,32 @@
 <hr>
 
 <h3 id="function-start">function start</h3>
-<p><em>Start the CAN peripheral and apply registered filters.</em> </p>
-<pre><code class="language-C++">void CANProtocol::start () 
-</code></pre>
+<p><em>Start the CAN peripheral and apply registered filters.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">start</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Must be called after <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded.</p>
 <p>Fires the onStatusChange callback with NORMAL on success. </p>
 <hr>
 
 <h3 id="function-startloopback">function startLoopback</h3>
-<p><em>Start in silent loopback mode — for bench testing only.</em> </p>
-<pre><code class="language-C++">void CANProtocol::startLoopback () 
-</code></pre>
+<p><em>Start in silent loopback mode — for bench testing only.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">startLoopback</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Identical to <a href="./#function-start"><strong>start()</strong></a> but uses CAN_MODE_SILENT_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus.</p>
 <p><strong>Note:</strong></p>
 <p>Never call this in production firmware. </p>
 <hr>
 
 <h3 id="function-tec">function tec</h3>
-<p><em>Return the CAN Transmit Error Counter (0-255) from ESR.</em> </p>
-<pre><code class="language-C++">uint8_t CANProtocol::tec () 
-</code></pre>
+<p><em>Return the CAN Transmit Error Counter (0-255) from ESR.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">tec</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-txdropcount">function txDropCount</h3>
-<p><em>Return the cumulative TX queue drop count since startup.</em> </p>
-<pre><code class="language-C++">uint32_t CANProtocol::txDropCount () 
-</code></pre>
+<p><em>Return the cumulative TX queue drop count since startup.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">txDropCount</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <hr />

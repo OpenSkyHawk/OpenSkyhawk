@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,24 +4116,24 @@
 <h1 id="file-analogoutputcpp">File AnalogOutput.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_7be86be934beb3a22c91bb10ef55a8df/"><strong>AnalogOutput</strong></a> <strong>&gt;</strong> <a href="../AnalogOutput_8cpp/"><strong>AnalogOutput.cpp</strong></a></p>
 <p><a href="../AnalogOutput_8cpp/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &quot;AnalogOutput.h&quot;
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"AnalogOutput.h"</span>
 
-OpenSkyhawk::AnalogOutput::AnalogOutput(uint16_t controlId, uint16_t mask, uint8_t shift)
-    : _controlId(controlId), _mask(mask), _shift(shift) {}
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogOutput</span><span class="o">::</span><span class="n">AnalogOutput</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">shift</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">_controlId</span><span class="p">(</span><span class="n">controlId</span><span class="p">),</span><span class="w"> </span><span class="n">_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">),</span><span class="w"> </span><span class="n">_shift</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
 
-void OpenSkyhawk::AnalogOutput::onControlPacket(uint16_t controlId, uint16_t value) {
-    if (controlId != _controlId) return;
-    const uint16_t v = (uint16_t)((value &amp; _mask) &gt;&gt; _shift);
-    if (_hasValue &amp;&amp; v == _lastValue) return;   // change dedup — SYNC_REQ re-broadcasts full state
-    _lastValue = v;
-    _hasValue  = true;
-    apply(v);
-}
+<span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogOutput</span><span class="o">::</span><span class="n">onControlPacket</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_controlId</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)((</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">_mask</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">_shift</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_hasValue</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">_lastValue</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">   </span><span class="c1">// change dedup — SYNC_REQ re-broadcasts full state</span>
+<span class="w">    </span><span class="n">_lastValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hasValue</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">apply</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+<span class="p">}</span>
 
-#endif // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

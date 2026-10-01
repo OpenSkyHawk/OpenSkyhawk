@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4515,25 +4715,25 @@
 <p>Construct at global scope so <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> self-registers it. <a href="./#function-oncontrolpacket"><strong>onControlPacket()</strong></a> only decodes + flags dirty (cheap); <a href="./#function-update"><strong>update()</strong></a> does the ~60 fps gate, channel reselect, ease+snap, render, and the single expensive sendBuffer(). </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 <h3 id="enum-fault">enum Fault</h3>
-<p><em>Which I2C hop failed the last reachability probe (feeds node health reporting, #163).</em> </p>
-<pre><code class="language-C++">enum OpenSkyhawk::DrumDisplay::Fault {
-    None,
-    Mux,
-    Device
-};
-</code></pre>
+<p><em>Which I2C hop failed the last reachability probe (feeds node health reporting, #163).</em> 
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">Fault</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">None</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Mux</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Device</span>
+<span class="p">};</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-drumdisplay-13">function DrumDisplay [1/3]</h3>
-<p><em>Construct and register a direct-bus drum display.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::DrumDisplay::DrumDisplay (
-    U8G2 &amp; oled,
-    const DrumReadout &amp; readout,
-    DrumFont font=DrumFont::LARGE,
-    float xOffsetMm=0.0f,
-    float yOffsetMm=0.0f
-) 
-</code></pre>
+<p><em>Construct and register a direct-bus drum display.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">U8G2</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">oled</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DrumReadout</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">readout</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DrumFont</span><span class="w"> </span><span class="n">font</span><span class="o">=</span><span class="n">DrumFont</span><span class="o">::</span><span class="n">LARGE</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">xOffsetMm</span><span class="o">=</span><span class="mf">0.0f</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">yOffsetMm</span><span class="o">=</span><span class="mf">0.0f</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>oled</code> Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this. </li>
@@ -4549,16 +4749,16 @@
 <hr>
 
 <h3 id="function-drumdisplay-23">function DrumDisplay [2/3]</h3>
-<p><em>Construct and register a direct-bus drum display on an explicit I2C bus.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::DrumDisplay::DrumDisplay (
-    U8G2 &amp; oled,
-    const DrumReadout &amp; readout,
-    TwoWire &amp; wire,
-    DrumFont font=DrumFont::LARGE,
-    float xOffsetMm=0.0f,
-    float yOffsetMm=0.0f
-) 
-</code></pre>
+<p><em>Construct and register a direct-bus drum display on an explicit I2C bus.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">U8G2</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">oled</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DrumReadout</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">readout</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TwoWire</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">wire</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DrumFont</span><span class="w"> </span><span class="n">font</span><span class="o">=</span><span class="n">DrumFont</span><span class="o">::</span><span class="n">LARGE</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">xOffsetMm</span><span class="o">=</span><span class="mf">0.0f</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">yOffsetMm</span><span class="o">=</span><span class="mf">0.0f</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Same as the overload above, but states which bus the panel is on so the reachability probe talks to it. A node using both trunks at once needs this: the U8G2 object already carries its own bus (chosen by its constructor variant), and without a matching handle here the probe would test the wrong one and the health breaker would fault a working panel. One per transport — a bus, or an <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>I2cMux</strong></a>.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4572,17 +4772,17 @@
 <hr>
 
 <h3 id="function-drumdisplay-33">function DrumDisplay [3/3]</h3>
-<p><em>Construct and register a muxed drum display (one TCA9548A branch).</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::DrumDisplay::DrumDisplay (
-    U8G2 &amp; oled,
-    const DrumReadout &amp; readout,
-    I2cMux &amp; mux,
-    uint8_t channel,
-    DrumFont font=DrumFont::LARGE,
-    float xOffsetMm=0.0f,
-    float yOffsetMm=0.0f
-) 
-</code></pre>
+<p><em>Construct and register a muxed drum display (one TCA9548A branch).</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">U8G2</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">oled</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DrumReadout</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">readout</span><span class="p">,</span>
+<span class="w">    </span><span class="n">I2cMux</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">mux</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">channel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DrumFont</span><span class="w"> </span><span class="n">font</span><span class="o">=</span><span class="n">DrumFont</span><span class="o">::</span><span class="n">LARGE</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">xOffsetMm</span><span class="o">=</span><span class="mf">0.0f</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">yOffsetMm</span><span class="o">=</span><span class="mf">0.0f</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>oled</code> Caller-owned U8G2. Must outlive this. </li>
@@ -4598,35 +4798,35 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>Compute pixel geometry from the panel + descriptor, set the font, blank the panel.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::DrumDisplay::configure () override
-</code></pre>
+<p><em>Compute pixel geometry from the panel + descriptor, set the font, blank the panel.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p><strong>Note:</strong></p>
 <p>Called once by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip init. Selects the mux channel (if any) first, reads getDisplayWidth()/Height(), runs the geometry fit, and clears the OLED. The sketch owns oled.begin(); this does NOT call begin(). </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><em>OpenSkyhawk::OutputBase::configure</em></a></p>
 <hr>
 
 <h3 id="function-faultcode">function faultCode</h3>
-<p><a href="../classOpenSkyhawk_1_1FaultSource/"><em><strong>FaultSource</strong></em></a> <em>: I2C_PERIPHERAL when the</em><a href="../classOpenSkyhawk_1_1I2cHealth/"><em><strong>I2cHealth</strong></em></a> <em>breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH_n.faultId.</em></p>
-<pre><code class="language-C++">inline virtual NodeFaultCode OpenSkyhawk::DrumDisplay::faultCode () override const
-</code></pre>
+<p><a href="../classOpenSkyhawk_1_1FaultSource/"><em><strong>FaultSource</strong></em></a> <em>: I2C_PERIPHERAL when the</em><a href="../classOpenSkyhawk_1_1I2cHealth/"><em><strong>I2cHealth</strong></em></a> <em>breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH_n.faultId.</em>
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">faultCode</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1FaultSource/#function-faultcode"><em>OpenSkyhawk::FaultSource::faultCode</em></a></p>
 <hr>
 
 <h3 id="function-faultdetail">function faultDetail</h3>
-<p><em>DiagSerial-only fault detail (#163): which I2C hop failed the last probe.</em> </p>
-<pre><code class="language-C++">inline virtual const char * OpenSkyhawk::DrumDisplay::faultDetail () override const
-</code></pre>
+<p><em>DiagSerial-only fault detail (#163): which I2C hop failed the last probe.</em> 
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">faultDetail</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1FaultSource/#function-faultdetail"><em>OpenSkyhawk::FaultSource::faultDetail</em></a></p>
 <hr>
 
 <h3 id="function-oncontrolpacket">function onControlPacket</h3>
-<p><em>Decode one CTRL_BCAST packet into this readout's digits/flag. Never draws.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::DrumDisplay::onControlPacket (
-    uint16_t controlId,
-    uint16_t value
-) override
-</code></pre>
+<p><em>Decode one CTRL_BCAST packet into this readout's digits/flag. Never draws.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">onControlPacket</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCS-BIOS output address from the packet. Ignored unless it matches a <a href="../structOpenSkyhawk_1_1DrumSource/#variable-address"><strong>DrumSource.address</strong></a> or the flag.address of this readout. </li>
@@ -4638,11 +4838,11 @@
 <hr>
 
 <h3 id="function-setfontsize">function setFontSize</h3>
-<p><em>Change glyph size at runtime (e.g. swap a cramped 6-digit readout to SMALL).</em> </p>
-<pre><code class="language-C++">void OpenSkyhawk::DrumDisplay::setFontSize (
-    DrumFont font
-) 
-</code></pre>
+<p><em>Change glyph size at runtime (e.g. swap a cramped 6-digit readout to SMALL).</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">setFontSize</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">DrumFont</span><span class="w"> </span><span class="n">font</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>font</code> New DrumFont. Re-fits geometry on the next <a href="./#function-update"><strong>update()</strong></a> so cells re-auto-fit. </li>
@@ -4650,12 +4850,12 @@
 <hr>
 
 <h3 id="function-setoffset">function setOffset</h3>
-<p><em>Re-register the digit block to the faceplate window at runtime.</em> </p>
-<pre><code class="language-C++">void OpenSkyhawk::DrumDisplay::setOffset (
-    float xOffsetMm,
-    float yOffsetMm
-) 
-</code></pre>
+<p><em>Re-register the digit block to the faceplate window at runtime.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">setOffset</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">xOffsetMm</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">yOffsetMm</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>xOffsetMm</code> New X shift (mm) of the digit block — measure the cutout misalignment after assembly. </li>
@@ -4668,18 +4868,18 @@
 <hr>
 
 <h3 id="function-update">function update</h3>
-<p><em>Advance the ease/snap animation and push one frame if needed.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::DrumDisplay::update () override
-</code></pre>
+<p><em>Advance the ease/snap animation and push one frame if needed.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">update</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p><strong>Note:</strong></p>
 <p>Called every loop(). ~60 fps frame gate; early-out when idle (settled AND not dirty). On a live frame: mux.select(channel), ease each place toward target/10^place with SNAP_SETTLE jump handling, render every cell with setClipWindow, then one sendBuffer(). </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-update"><em>OpenSkyhawk::OutputBase::update</em></a></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-i2cprobe">function i2cProbe</h3>
-<p><em>Contract: probe this device's reachability (e.g. the mux ACKs</em> <em>and</em> <em>the device ACKs).</em></p>
-<pre><code class="language-C++">virtual bool OpenSkyhawk::DrumDisplay::i2cProbe () override
-</code></pre>
+<p><em>Contract: probe this device's reachability (e.g. the mux ACKs</em> <em>and</em> <em>the device ACKs).</em>
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumDisplay</span><span class="o">::</span><span class="n">i2cProbe</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p><strong>Returns:</strong></p>
 <p>true if reachable. The implementer records any fault detail it wants to report. </p>
 <p><strong>Note:</strong></p>

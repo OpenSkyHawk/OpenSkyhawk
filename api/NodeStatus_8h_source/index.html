@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,58 +4116,57 @@
 <h1 id="file-nodestatush">File NodeStatus.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_9111f7d39b5fc785aa55dffe02a55e74/"><strong>NodeStatus</strong></a> <strong>&gt;</strong> <a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a></p>
 <p><a href="../NodeStatus_8h/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#pragma once
-#include &lt;stdint.h&gt;
+<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
 
-// ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────
-// PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump
-// NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.
-// Full 26-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
-#define NODE_STATUS_PROTO_VERSION 2
-#define NODE_STATUS_REQ_ADDR      0x86FE     // host→device roster-request export address
-#define NODE_STATUS_MSG_NAME      &quot;_NODE_STATUS&quot;
-#define NODE_STATUS_END_MSG_NAME  &quot;_NODE_STATUS_END&quot;
+<span class="c1">// ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────</span>
+<span class="c1">// PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump</span>
+<span class="c1">// NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.</span>
+<span class="c1">// Full 26-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.</span>
+<span class="cp">#define NODE_STATUS_PROTO_VERSION 2</span>
+<span class="cp">#define NODE_STATUS_REQ_ADDR      0x86FE     </span><span class="c1">// host→device roster-request export address</span>
+<span class="cp">#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"</span>
+<span class="cp">#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"</span>
 
-enum class NodeHealthFlag : uint8_t {
-    OVERHEAT = 0x01,  // die temp &gt;= NODE_OVERHEAT_C (opt-in, #213)
-    DEGRADED = 0x02,  // a FaultSource reports faultCode() != NodeFaultCode::NONE (#163)
-};
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeHealthFlag</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">OVERHEAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w">  </span><span class="c1">// die temp &gt;= NODE_OVERHEAT_C (opt-in, #213)</span>
+<span class="w">    </span><span class="n">DEGRADED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w">  </span><span class="c1">// a FaultSource reports faultCode() != NodeFaultCode::NONE (#163)</span>
+<span class="p">};</span>
 
-enum class NodeFaultCode : uint8_t {
-    NONE           = 0x00,
-    I2C_PERIPHERAL = 0x01,  // an I2C device (OLED/mux/expander) tripped its I2cHealth breaker
-    OVER_VOLTAGE   = 0x02,  // rail over-voltage (PDU)
-    UNDER_VOLTAGE  = 0x03,  // rail under-voltage (PDU)
-    SHORT_CIRCUIT  = 0x04,  // rail short / over-current (PDU)
-    HOST_LINK_LOST = 0x05,  // PanelBridge lost the host serial link
-    // 0x06–0xFF reserved for future fault sources
-};
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeFaultCode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NONE</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
+<span class="w">    </span><span class="n">I2C_PERIPHERAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w">  </span><span class="c1">// an I2C device (OLED/mux/expander) tripped its I2cHealth breaker</span>
+<span class="w">    </span><span class="n">OVER_VOLTAGE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w">  </span><span class="c1">// rail over-voltage (PDU)</span>
+<span class="w">    </span><span class="n">UNDER_VOLTAGE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w">  </span><span class="c1">// rail under-voltage (PDU)</span>
+<span class="w">    </span><span class="n">SHORT_CIRCUIT</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w">  </span><span class="c1">// rail short / over-current (PDU)</span>
+<span class="w">    </span><span class="n">HOST_LINK_LOST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w">  </span><span class="c1">// PanelBridge lost the host serial link</span>
+<span class="w">    </span><span class="c1">// 0x06–0xFF reserved for future fault sources</span>
+<span class="p">};</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-class FaultSource {
-public:
-    virtual NodeFaultCode faultCode() const { return NodeFaultCode::NONE; }
+<span class="k">class</span><span class="w"> </span><span class="nc">FaultSource</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">faultCode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-    virtual const char* faultDetail() const { return &quot;&quot;; }
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="nf">faultDetail</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s">""</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-    static FaultSource* head();
-    FaultSource* next() const;
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="nf">head</span><span class="p">();</span>
+<span class="w">    </span><span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 
-protected:
-    FaultSource();          
-    ~FaultSource() = default;  
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="n">FaultSource</span><span class="p">();</span><span class="w">          </span>
+<span class="w">    </span><span class="o">~</span><span class="n">FaultSource</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w">  </span>
 
-private:
-    static FaultSource* _head;
-    FaultSource* _next;
-};
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="n">_head</span><span class="p">;</span>
+<span class="w">    </span><span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="n">_next</span><span class="p">;</span>
+<span class="p">};</span>
 
-NodeFaultCode aggregateFaults(const char** detailOut = nullptr);
+<span class="n">NodeFaultCode</span><span class="w"> </span><span class="nf">aggregateFaults</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">detailOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">);</span>
 
-} // namespace OpenSkyhawk
-</code></pre>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
+</code></pre></div>
 
 
 

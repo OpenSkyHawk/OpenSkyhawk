@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -5242,8 +5442,8 @@ deletes the legend. It also pollutes the BOM's Value column with a legend string
 part's value.</p>
 <h3 id="revision-text">Revision text</h3>
 <p>Back silk, uppercase, one line:</p>
-<pre><code>REVISION &lt;x.y.z&gt; | &lt;BOARD NAME&gt;
-</code></pre>
+<div class="highlight"><pre><span></span><code>REVISION &lt;x.y.z&gt; | &lt;BOARD NAME&gt;
+</code></pre></div>
 <p><code>layer B.SilkS</code> · <code>size 1 x 1</code> · <code>thickness 0.15</code> · <code>justify left bottom mirror</code> · <code>rotation 0</code></p>
 <p><strong>Write a board revision as <code>0.2.0</code> everywhere</strong> — silkscreen, InvenTree, BOM, docs and commit messages. It is the identifier a reader matches against the board in their hand. "Rev 2" is acceptable only for a <em>round of work</em> ("the Rev 2 order", "Rev 1 bench checks"), never to identify hardware.</p>
 <p><strong>Bump it in the same change that bumps the board revision.</strong> A board fabbed carrying the
@@ -5279,15 +5479,15 @@ design decision D10 (<a href="../../architecture/design-decisions/">Design Decis
 <h3 id="the-manifest-pcbmanifestyaml">The manifest — <code>PCB/manifest.yaml</code></h3>
 <p>Lists the boards a release contains. release-please owns <code>release:</code>; the rest is edited by hand.
 A board is listed <strong>only once bring-up passes</strong>:</p>
-<pre><code class="language-yaml">min_firmware: firmware-v0.1.0
-boards:
-  - board: PanelGroup_Base            # KiCad project folder name
-    path: PCB/Base/PanelGroup_Base
-    version: 0.2.0                    # matches its title block at `fabricated`
-    fabricated: a4e75ff9              # commit the boards were made from
-    order: JLC W2026093021050394
-    errata: &quot;&quot;                        # rework needed to pass bring-up, if any
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nt">min_firmware</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">firmware-v0.1.0</span>
+<span class="nt">boards</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PanelGroup_Base</span><span class="w">            </span><span class="c1"># KiCad project folder name</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PCB/Base/PanelGroup_Base</span>
+<span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2.0</span><span class="w">                    </span><span class="c1"># matches its title block at `fabricated`</span>
+<span class="w">    </span><span class="nt">fabricated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a4e75ff9</span><span class="w">              </span><span class="c1"># commit the boards were made from</span>
+<span class="w">    </span><span class="nt">order</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JLC W2026093021050394</span>
+<span class="w">    </span><span class="nt">errata</span><span class="p">:</span><span class="w"> </span><span class="s">""</span><span class="w">                        </span><span class="c1"># rework needed to pass bring-up, if any</span>
+</code></pre></div>
 <ul>
 <li><strong><code>fabricated</code></strong> is the commit whose files were sent to fab; the board's title-block revision there
   must equal <code>version</code>, or the notes job fails. If the design has moved on since, the notes say so
@@ -5478,18 +5678,18 @@ violating them causes functional failures that cannot be fixed after fabrication
 GPA7 and GPB7 may drive LEDs, enables, or any other output load without restriction.<br />
 Source: Microchip support article <em>"GPA7 &amp; GPB7 Cannot Be Used as Inputs In MCP23017"</em></p>
 <p><strong>Firmware consequence — GPINTEN must exclude bit 7 on both ports.</strong>
-<code>chip.interrupt(port, CHANGE)</code> (blemasle library) enables GPINTEN for all 8 bits. Do not use it directly. Instead, read IODIR after <code>configure()</code> and write it masked (<code>&amp; 0x7F</code>) to GPINTEN:</p>
-<pre><code class="language-cpp">uint8_t gpintenA = chip.readRegister(MCP23017Register::IODIR_A) &amp; 0x7Fu;
-uint8_t gpintenB = chip.readRegister(MCP23017Register::IODIR_B) &amp; 0x7Fu;
-chip.writeRegister(MCP23017Register::GPINTEN_A, gpintenA);
-chip.writeRegister(MCP23017Register::GPINTEN_B, gpintenB);
-</code></pre>
-<p>This also ensures interrupts are never enabled on output pins — redundant per datasheet (output pins cannot fire GPINTEN), but explicit.</p>
+<code>chip.interrupt(port, CHANGE)</code> (blemasle library) enables GPINTEN for all 8 bits. Do not use it directly. Instead, read IODIR after <code>configure()</code> and write it masked (<code>&amp; 0x7F</code>) to GPINTEN:
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">gpintenA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chip</span><span class="p">.</span><span class="n">readRegister</span><span class="p">(</span><span class="n">MCP23017Register</span><span class="o">::</span><span class="n">IODIR_A</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x7Fu</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">gpintenB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chip</span><span class="p">.</span><span class="n">readRegister</span><span class="p">(</span><span class="n">MCP23017Register</span><span class="o">::</span><span class="n">IODIR_B</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x7Fu</span><span class="p">;</span>
+<span class="n">chip</span><span class="p">.</span><span class="n">writeRegister</span><span class="p">(</span><span class="n">MCP23017Register</span><span class="o">::</span><span class="n">GPINTEN_A</span><span class="p">,</span><span class="w"> </span><span class="n">gpintenA</span><span class="p">);</span>
+<span class="n">chip</span><span class="p">.</span><span class="n">writeRegister</span><span class="p">(</span><span class="n">MCP23017Register</span><span class="o">::</span><span class="n">GPINTEN_B</span><span class="p">,</span><span class="w"> </span><span class="n">gpintenB</span><span class="p">);</span>
+</code></pre></div>
+This also ensures interrupts are never enabled on output pins — redundant per datasheet (output pins cannot fire GPINTEN), but explicit.</p>
 <hr />
 <h2 id="standard-circuit-blocks-design-library">Standard Circuit Blocks (Design Library)</h2>
 <p>These subcircuits repeat on every MCU board and are candidates for KiCad hierarchical sheet templates (<code>PCB/Libraries/sheets/</code>).</p>
 <h3 id="led-zone-switch-per-lighting-zone">LED Zone Switch (per lighting zone)</h3>
-<pre><code>+12V_BACKLIGHT ── R (120 Ω) ──┬── LED1 A
+<div class="highlight"><pre><span></span><code>+12V_BACKLIGHT ── R (120 Ω) ──┬── LED1 A
                                └── LED2 A  (one resistor per string, each string 5 LEDs in series)
                                    ...
                                LED_n K → BACKLIGHT_SW_RETURN
@@ -5497,7 +5697,7 @@ chip.writeRegister(MCP23017Register::GPINTEN_B, gpintenB);
                                         AO3400A drain
                                         AO3400A source → GND
                                         AO3400A gate ← STM32 PWM (3.3V direct)
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Default off (gate at 0V, Vgs = 0V → MOSFET off)</li>
 <li>STM32 HIGH (3.3V) → Vgs = 3.3V → N-ch fully enhanced → BACKLIGHT_SW_RETURN pulled to GND → LED strings conduct</li>
@@ -5566,8 +5766,8 @@ do not use them as the standard bias for OpenSkyhawk switch nets unless a specif
 intentionally documents that choice.</p>
 <h3 id="adc-input-filter-per-analog-input">ADC Input Filter (per analog input)</h3>
 <p>Placed on MCU board, close to STM32 ADC pin:</p>
-<pre><code>pot wiper (via harness) → 1 kΩ → STM32 ADC pin → 100 nF → GND
-</code></pre>
+<div class="highlight"><pre><span></span><code>pot wiper (via harness) → 1 kΩ → STM32 ADC pin → 100 nF → GND
+</code></pre></div>
 <ul>
 <li>1 kΩ: protects ADC pin during faults/transients, forms RC with 100 nF</li>
 <li>100 nF: low-pass filter, reduces noise/jitter on ADC reading</li>

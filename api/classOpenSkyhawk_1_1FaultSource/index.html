@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4152,39 +4352,39 @@
 <p><strong>Lifetime: a <a href="./"><strong>FaultSource</strong></a> must have static/global lifetime</strong> (same rule as <a href="../classOpenSkyhawk_1_1OutputBase/"><strong>OutputBase</strong></a> / <a href="../classOpenSkyhawk_1_1InputBase/"><strong>InputBase</strong></a>). Registration is permanent — there is no unregister — so a stack/local <a href="./"><strong>FaultSource</strong></a> would leave a dangling pointer in the registry the aggregator walks. Construct fault sources as globals (or members of a global object), never on the stack. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-faultcode">function faultCode</h3>
-<p><em>Current fault code (</em> NodeFaultCode::NONE <em>when healthy). Cheap/const, cached state only.</em></p>
-<pre><code class="language-C++">inline virtual NodeFaultCode OpenSkyhawk::FaultSource::faultCode () const
-</code></pre>
+<p><em>Current fault code (</em> NodeFaultCode::NONE <em>when healthy). Cheap/const, cached state only.</em>
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">FaultSource</span><span class="o">::</span><span class="n">faultCode</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-faultdetail">function faultDetail</h3>
-<p><em>Human-readable fault detail for the local DiagSerial tap only — never on the wire.</em> </p>
-<pre><code class="language-C++">inline virtual const char * OpenSkyhawk::FaultSource::faultDetail () const
-</code></pre>
+<p><em>Human-readable fault detail for the local DiagSerial tap only — never on the wire.</em> 
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">FaultSource</span><span class="o">::</span><span class="n">faultDetail</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-next">function next</h3>
-<p><em>Next fault source; nullptr at end.</em> </p>
-<pre><code class="language-C++">FaultSource * OpenSkyhawk::FaultSource::next () const
-</code></pre>
+<p><em>Next fault source; nullptr at end.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">FaultSource</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">FaultSource</span><span class="o">::</span><span class="n">next</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
 <h3 id="function-head">function head</h3>
-<p><em>Head of the self-registered fault-source list.</em> </p>
-<pre><code class="language-C++">static FaultSource * OpenSkyhawk::FaultSource::head () 
-</code></pre>
+<p><em>Head of the self-registered fault-source list.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="n">FaultSource</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">FaultSource</span><span class="o">::</span><span class="n">head</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-faultsource">function FaultSource</h3>
-<p><em>Registers this instance into the list.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::FaultSource::FaultSource () 
-</code></pre>
+<p><em>Registers this instance into the list.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">FaultSource</span><span class="o">::</span><span class="n">FaultSource</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-faultsource_1">function ~FaultSource</h3>
-<p><em>Protected, non-virtual: a base/mixin, never deleted through this type.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::FaultSource::~FaultSource () = default
-</code></pre>
+<p><em>Protected, non-virtual: a base/mixin, never deleted through this type.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">FaultSource</span><span class="o">::~</span><span class="n">FaultSource</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span>
+</code></pre></div></p>
 <hr>
 
 <hr />

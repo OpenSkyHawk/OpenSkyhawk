@@ -755,6 +755,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4668,11 +4868,11 @@ check catches <strong>drift</strong> — a flag added, removed, or renamed after
 not prove the inventory is <strong>complete</strong>: a flag consumed in some way neither grep looks for would
 be missed by the check exactly as it was missed by the page. Treat 32 as the current count, not a
 guarantee.</p>
-<pre><code class="language-bash">grep -rhE '^[^;#]*-D[A-Za-z_]' --include=platformio.ini Firmware | sed -E 's/[;#].*//' | grep -oE '[[:space:]]-D[A-Za-z_][A-Za-z0-9_]*' | sed 's/.*-D//' | sort -u
-</code></pre>
+<div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-rhE<span class="w"> </span><span class="s1">'^[^;#]*-D[A-Za-z_]'</span><span class="w"> </span>--include<span class="o">=</span>platformio.ini<span class="w"> </span>Firmware<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-E<span class="w"> </span><span class="s1">'s/[;#].*//'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">'[[:space:]]-D[A-Za-z_][A-Za-z0-9_]*'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">'s/.*-D//'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u
+</code></pre></div>
 <p>That's every flag <strong>set</strong> by some environment — 22 of them.</p>
-<pre><code class="language-bash">grep -rhoE '#[[:space:]]*(ifdef|ifndef|if|elif)[^A-Za-z_]*defined[^A-Za-z_]*[A-Za-z_][A-Za-z0-9_]*|#[[:space:]]*(ifdef|ifndef)[[:space:]]+[A-Za-z_][A-Za-z0-9_]*' --include='*.h' --include='*.cpp' Firmware/Libraries | grep -oE '[A-Za-z_][A-Za-z0-9_]*$' | sort -u | grep -vE '^(ARDUINO_ARCH_|STM32F1xx$|ATEMP$|guard$|_)'
-</code></pre>
+<div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-rhoE<span class="w"> </span><span class="s1">'#[[:space:]]*(ifdef|ifndef|if|elif)[^A-Za-z_]*defined[^A-Za-z_]*[A-Za-z_][A-Za-z0-9_]*|#[[:space:]]*(ifdef|ifndef)[[:space:]]+[A-Za-z_][A-Za-z0-9_]*'</span><span class="w"> </span>--include<span class="o">=</span><span class="s1">'*.h'</span><span class="w"> </span>--include<span class="o">=</span><span class="s1">'*.cpp'</span><span class="w"> </span>Firmware/Libraries<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">'[A-Za-z_][A-Za-z0-9_]*$'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-vE<span class="w"> </span><span class="s1">'^(ARDUINO_ARCH_|STM32F1xx$|ATEMP$|guard$|_)'</span>
+</code></pre></div>
 <p>That's every flag <strong>read</strong> by a library conditional — 25 of them. The trailing filter drops
 architecture macros, the <code>ATEMP</code> pin macro, and internal include guards; none are build flags.</p>
 <p>The two lists deliberately don't match, and the differences are the interesting part:</p>
@@ -4686,10 +4886,10 @@ architecture macros, the <code>ATEMP</code> pin macro, and internal include guar
   sketch source instead of passed as <code>-D</code>.</li>
 </ul>
 <p>To check the <code>USB_NONE</code> claim specifically, both of these must return nothing:</p>
-<pre><code class="language-bash">grep -rn 'USBCON\|USBD_USE_' Firmware
-</code></pre>
-<pre><code class="language-bash">grep -rn 'USB_NONE' ~/.platformio/platforms ~/.platformio/packages/framework-arduinoststm32
-</code></pre>
+<div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-rn<span class="w"> </span><span class="s1">'USBCON\|USBD_USE_'</span><span class="w"> </span>Firmware
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-rn<span class="w"> </span><span class="s1">'USB_NONE'</span><span class="w"> </span>~/.platformio/platforms<span class="w"> </span>~/.platformio/packages/framework-arduinoststm32
+</code></pre></div>
 
 
 

@@ -755,6 +755,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4119,21 +4319,21 @@ Every physical board is its own KiCad project; shared parts and rules live in <c
 library tables use the built-in <code>${KIPRJMOD}</code> variable, so they resolve automatically — clone
 the repo, open a project, and the library is just there. <strong>No global KiCad configuration.</strong></p>
 <p>The tables resolve three levels up from the board folder, matching the fixed structure:</p>
-<pre><code>PCB/
+<div class="highlight"><pre><span></span><code>PCB/
 ├── Libraries/          ← shared library root
 └── &lt;Console&gt;/
     └── &lt;Group&gt;/
         └── &lt;Board&gt;/    ← the KiCad project, 3 levels below Libraries
             ├── sym-lib-table
             └── fp-lib-table
-</code></pre>
+</code></pre></div>
 <h2 id="scaffolding-a-new-board-use-the-skill">Scaffolding a new board — use the skill</h2>
 <p><strong>Always create a new board with the <code>/new-kicad-project</code> skill — never hand-roll the project
 files.</strong> It copies the library tables, pins the OpenSkyhawk libs, pre-loads the
 <a href="../pcb-design-rules/">design rules</a>, creates the root schematic, and registers the board in
 the GitHub Project (Panel Research &amp; Assignment).</p>
-<pre><code>/new-kicad-project &lt;Console&gt; &lt;Group&gt; &lt;BoardName&gt; [mcu|breakout]
-</code></pre>
+<div class="highlight"><pre><span></span><code>/new-kicad-project &lt;Console&gt; &lt;Group&gt; &lt;BoardName&gt; [mcu|breakout]
+</code></pre></div>
 <h2 id="the-shared-library">The shared library</h2>
 <p><code>PCB/Libraries/OpenSkyhawk.kicad_sym</code> + <code>OpenSkyhawk.pretty/</code> hold the custom symbols and
 footprints (the 5050 LED, the <code>Q_NMOS_GSD</code> N-FET, the X27 steppers). Everything else is a KiCad built-in. The
@@ -4146,21 +4346,21 @@ zone switch, ADC filter, CAN transceiver) — <strong>Place → Add Sheet</stron
 (README present; the <code>.kicad_sch</code> templates aren't populated yet.)</p>
 <h2 id="the-kicad-cli">The KiCad CLI</h2>
 <p>KiCad 10.0.1 ships a CLI used for validation and fabrication outputs:</p>
-<pre><code class="language-bash">KICAD=/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli
+<div class="highlight"><pre><span></span><code><span class="nv">KICAD</span><span class="o">=</span>/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli
 
-# Validation
-$KICAD sch erc --output erc.json &lt;board.kicad_sch&gt;
-$KICAD pcb drc --output drc.json &lt;board.kicad_pcb&gt;
+<span class="c1"># Validation</span>
+<span class="nv">$KICAD</span><span class="w"> </span>sch<span class="w"> </span>erc<span class="w"> </span>--output<span class="w"> </span>erc.json<span class="w"> </span>&lt;board.kicad_sch&gt;
+<span class="nv">$KICAD</span><span class="w"> </span>pcb<span class="w"> </span>drc<span class="w"> </span>--output<span class="w"> </span>drc.json<span class="w"> </span>&lt;board.kicad_pcb&gt;
 
-# Fabrication
-$KICAD pcb export gerbers --output ./gerbers/ &lt;board.kicad_pcb&gt;
-$KICAD pcb export drill   --output ./gerbers/ &lt;board.kicad_pcb&gt;
-$KICAD sch export bom     --output bom.csv     &lt;board.kicad_sch&gt;
+<span class="c1"># Fabrication</span>
+<span class="nv">$KICAD</span><span class="w"> </span>pcb<span class="w"> </span><span class="nb">export</span><span class="w"> </span>gerbers<span class="w"> </span>--output<span class="w"> </span>./gerbers/<span class="w"> </span>&lt;board.kicad_pcb&gt;
+<span class="nv">$KICAD</span><span class="w"> </span>pcb<span class="w"> </span><span class="nb">export</span><span class="w"> </span>drill<span class="w">   </span>--output<span class="w"> </span>./gerbers/<span class="w"> </span>&lt;board.kicad_pcb&gt;
+<span class="nv">$KICAD</span><span class="w"> </span>sch<span class="w"> </span><span class="nb">export</span><span class="w"> </span>bom<span class="w">     </span>--output<span class="w"> </span>bom.csv<span class="w">     </span>&lt;board.kicad_sch&gt;
 
-# Fusion/FreeCAD fit-check + panel cutout
-$KICAD pcb export step --output board.step  &lt;board.kicad_pcb&gt;
-$KICAD pcb export dxf  --output cutout.dxf  &lt;board.kicad_pcb&gt;
-</code></pre>
+<span class="c1"># Fusion/FreeCAD fit-check + panel cutout</span>
+<span class="nv">$KICAD</span><span class="w"> </span>pcb<span class="w"> </span><span class="nb">export</span><span class="w"> </span>step<span class="w"> </span>--output<span class="w"> </span>board.step<span class="w">  </span>&lt;board.kicad_pcb&gt;
+<span class="nv">$KICAD</span><span class="w"> </span>pcb<span class="w"> </span><span class="nb">export</span><span class="w"> </span>dxf<span class="w">  </span>--output<span class="w"> </span>cutout.dxf<span class="w">  </span>&lt;board.kicad_pcb&gt;
+</code></pre></div>
 <p>ERC/DRC also run automatically in CI on PRs that touch PCB files.</p>
 <h2 id="cad-fit-check">CAD fit-check</h2>
 <p>The <code>pcb export step</code> output drops straight into the mechanical CAD for a board-in-enclosure fit

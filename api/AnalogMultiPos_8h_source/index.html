@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,61 +4116,60 @@
 <h1 id="file-analogmultiposh">File AnalogMultiPos.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_869066037a4dfe81b59e09c740cc62d3/"><strong>AnalogMultiPos</strong></a> <strong>&gt;</strong> <a href="../AnalogMultiPos_8h/"><strong>AnalogMultiPos.h</strong></a></p>
 <p><a href="../AnalogMultiPos_8h/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#pragma once
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &lt;PanelGroup.h&gt;                          // PinRef
-#include &lt;Inputs/MultiPosInput/MultiPosInput.h&gt;  // MultiPosInput base
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;PanelGroup.h&gt;</span><span class="w">                          </span><span class="c1">// PinRef</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Inputs/MultiPosInput/MultiPosInput.h&gt;</span><span class="w">  </span><span class="c1">// MultiPosInput base</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-static constexpr uint16_t ANALOG_NC = MultiPosInput::NO_POSITION;
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">ANALOG_NC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MultiPosInput</span><span class="o">::</span><span class="n">NO_POSITION</span><span class="p">;</span>
 
-class AnalogMultiPos : public MultiPosInput {
-public:
-    static constexpr uint16_t DEFAULT_DEADBAND = 1000;  
-    static constexpr uint16_t POLL_MS          = 8;     
+<span class="k">class</span><span class="w"> </span><span class="nc">AnalogMultiPos</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">MultiPosInput</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">DEFAULT_DEADBAND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w">  </span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">POLL_MS</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w">     </span>
 
-    AnalogMultiPos(uint16_t controlId, PinRef pin, uint8_t numPos,
-                   const uint16_t* posVals, uint16_t deadband = DEFAULT_DEADBAND);
+<span class="w">    </span><span class="n">AnalogMultiPos</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">numPos</span><span class="p">,</span>
+<span class="w">                   </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="o">*</span><span class="w"> </span><span class="n">posVals</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">deadband</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_DEADBAND</span><span class="p">);</span>
 
-    AnalogMultiPos(uint16_t controlId, PinRef pin, uint8_t numPos,
-                   uint16_t deadband = DEFAULT_DEADBAND);
+<span class="w">    </span><span class="n">AnalogMultiPos</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">numPos</span><span class="p">,</span>
+<span class="w">                   </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">deadband</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_DEADBAND</span><span class="p">);</span>
 
-    void configure() override;
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-    void forceReport() override;
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">forceReport</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-#ifdef ANALOGMULTIPOS_TEST
-    uint16_t debugResolve(uint16_t raw) const { return resolve(raw); }
-    void debugSetRaw(uint16_t raw) { _testRaw = raw; _testRawSet = true; _forceRead = true; }
-#endif
+<span class="cp">#ifdef ANALOGMULTIPOS_TEST</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">debugResolve</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">resolve</span><span class="p">(</span><span class="n">raw</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">debugSetRaw</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_testRaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">raw</span><span class="p">;</span><span class="w"> </span><span class="n">_testRawSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="n">_forceRead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="cp">#endif</span>
 
-protected:
-    uint16_t readRaw() override;   // POLL_MS-throttled ADC read → resolve()
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">readRaw</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span><span class="w">   </span><span class="c1">// POLL_MS-throttled ADC read → resolve()</span>
 
-private:
-    uint16_t resolve(uint16_t raw) const;   
-    uint16_t posValAt(uint8_t i) const;     
-    bool     isValid(uint8_t i) const;      
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">resolve</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">   </span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">posValAt</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">     </span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="nf">isValid</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">      </span>
 
-    PinRef          _pin;
-    const uint16_t* _posVals;     
-    uint16_t        _deadband;
-    uint16_t        _cachedIdx;   
-    uint32_t        _lastReadMs;
-    bool            _forceRead = true;  
-#ifdef ANALOGMULTIPOS_TEST
-    uint16_t        _testRaw    = 0;
-    bool            _testRawSet = false;
-#endif
-};
+<span class="w">    </span><span class="n">PinRef</span><span class="w">          </span><span class="n">_pin</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="o">*</span><span class="w"> </span><span class="n">_posVals</span><span class="p">;</span><span class="w">     </span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w">        </span><span class="n">_deadband</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w">        </span><span class="n">_cachedIdx</span><span class="p">;</span><span class="w">   </span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">        </span><span class="n">_lastReadMs</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">            </span><span class="n">_forceRead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">  </span>
+<span class="cp">#ifdef ANALOGMULTIPOS_TEST</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w">        </span><span class="n">_testRaw</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">            </span><span class="n">_testRawSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="p">};</span>
 
-}  // namespace OpenSkyhawk
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
 
-#endif  // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

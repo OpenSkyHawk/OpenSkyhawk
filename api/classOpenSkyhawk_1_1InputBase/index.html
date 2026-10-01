@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4165,50 +4365,50 @@
 <p>Declare concrete input objects at global scope; the constructor self-registers into a static linked list. <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> calls <a href="./#function-configure"><strong>configure()</strong></a> on every registered input after chip initialisation, then calls <a href="./#function-forcereport"><strong>forceReport()</strong></a> for the boot EVT burst. <a href="../namespacePanelGroup/#function-loop"><strong>PanelGroup::loop()</strong></a> calls <a href="./#function-poll"><strong>poll()</strong></a> every iteration. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-configure">function configure</h3>
-<p><em>Configure hardware pins for this input.</em> </p>
-<pre><code class="language-C++">inline virtual void OpenSkyhawk::InputBase::configure () 
-</code></pre>
+<p><em>Configure hardware pins for this input.</em> 
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip.init() completes. Call _pin.configureAsInput() here — not in the constructor — because MCP23017 register writes require chip.init() to have run first.</p>
 <p>Default is a no-op. Override in every input class that owns a <a href="../classPinRef/"><strong>PinRef</strong></a>. </p>
 <hr>
 
 <h3 id="function-forcereport">function forceReport</h3>
-<p><em>Read hardware state and emit a CAN EVT unconditionally.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::InputBase::forceReport () = 0
-</code></pre>
+<p><em>Read hardware state and emit a CAN EVT unconditionally.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">forceReport</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div></p>
 <p>Called during the boot EVT burst and on every SYNC_REQ. Bypasses debounce. Establishes the current reading as the new baseline so subsequent <a href="./#function-poll"><strong>poll()</strong></a> calls have a valid comparison point. </p>
 <hr>
 
 <h3 id="function-next">function next</h3>
-<p><em>Next input in the list; nullptr at end.</em> </p>
-<pre><code class="language-C++">InputBase * OpenSkyhawk::InputBase::next () const
-</code></pre>
+<p><em>Next input in the list; nullptr at end.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">InputBase</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">next</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-poll">function poll</h3>
-<p><em>Read hardware state and emit a CAN EVT if state changed.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::InputBase::poll () = 0
-</code></pre>
+<p><em>Read hardware state and emit a CAN EVT if state changed.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">poll</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div></p>
 <p>Called by <a href="../namespacePanelGroup/#function-loop"><strong>PanelGroup::loop()</strong></a> every iteration. Must be non-blocking. Implementations apply their own debounce / filtering and call <a href="../namespaceCANProtocol/#function-sendbatched"><strong>CANProtocol::sendBatched()</strong></a> only on confirmed state change. </p>
 <hr>
 
 <h3 id="function-sampletick">function sampleTick</h3>
-<p><em>High-rate sample hook — called from a sampling ISR when the node runs one (e.g.</em> <a href="../classOpenSkyhawk_1_1ShiftBus/"><em><strong>ShiftBus</strong></em></a> <em>timer sampling, -DSHIFTBUS_ISR_HZ). Default no-op.</em></p>
-<pre><code class="language-C++">inline virtual void OpenSkyhawk::InputBase::sampleTick () 
-</code></pre>
+<p><em>High-rate sample hook — called from a sampling ISR when the node runs one (e.g.</em> <a href="../classOpenSkyhawk_1_1ShiftBus/"><em><strong>ShiftBus</strong></em></a> <em>timer sampling, -DSHIFTBUS_ISR_HZ). Default no-op.</em>
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">sampleTick</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Implementations must be ISR-safe: read cached pin state only, no CAN, no I2C, no allocation. Level-sampled inputs never need this; <a href="../classOpenSkyhawk_1_1RotaryEncoder/"><strong>RotaryEncoder</strong></a> overrides it to decode quadrature at the sample rate (loop stalls then cannot lose transitions). The input class does not know who calls this or at what rate — <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> owns the wiring. </p>
 <hr>
 <h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
 <h3 id="function-head">function head</h3>
-<p><em>Head of the self-registered linked list.</em> </p>
-<pre><code class="language-C++">static InputBase * OpenSkyhawk::InputBase::head () 
-</code></pre>
+<p><em>Head of the self-registered linked list.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="n">InputBase</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">head</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-inputbase">function InputBase</h3>
-<p><em>Registers this instance into the linked list.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::InputBase::InputBase () 
-</code></pre>
+<p><em>Registers this instance into the linked list.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">InputBase</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <hr>
 
 <hr />

@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4275,19 +4475,19 @@
 <p>Duty is driven to 0 during <a href="./#function-configure"><strong>configure()</strong></a> and stays there (zone dark) until a CTRL_BCAST packet with a matching controlId arrives. </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 <h3 id="typedef-scalefn">typedef ScaleFn</h3>
-<p><em>Scale function: raw 16-bit DCS value → 16-bit value handed to writeAnalog().</em> </p>
-<pre><code class="language-C++">using OpenSkyhawk::Dimmer::ScaleFn =  uint16_t (*)(uint16_t value);
-</code></pre>
+<p><em>Scale function: raw 16-bit DCS value → 16-bit value handed to writeAnalog().</em> 
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Dimmer</span><span class="o">::</span><span class="n">ScaleFn</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="kt">uint16_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-dimmer">function Dimmer</h3>
-<p><em>Construct and register a dimmer.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::Dimmer::Dimmer (
-    uint16_t controlId,
-    PinRef pin,
-    ScaleFn scale=nullptr
-) 
-</code></pre>
+<p><em>Construct and register a dimmer.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Dimmer</span><span class="o">::</span><span class="n">Dimmer</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ScaleFn</span><span class="w"> </span><span class="n">scale</span><span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCS-BIOS output address (A_4E_C_* from <a href="../A4EC__OutputIds_8h/"><strong>A4EC_OutputIds.h</strong></a> — the full 16-bit word; the matching *_AM mask is 0xffff for these outputs). </li>
@@ -4297,19 +4497,19 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>Configure the output pin and drive duty to 0.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::Dimmer::configure () override
-</code></pre>
+<p><em>Configure the output pin and drive duty to 0.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Dimmer</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip.init(). Requires a direct GPIO on a timer channel; otherwise logs on DiagSerial and disables the output (no writes at all). On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL_BCAST. </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><em>OpenSkyhawk::OutputBase::configure</em></a></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-apply">function apply</h3>
-<p><em>Write the value as PWM duty. Called by the base when the decoded value changed.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::Dimmer::apply (
-    uint16_t value
-) override
-</code></pre>
+<p><em>Write the value as PWM duty. Called by the base when the decoded value changed.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Dimmer</span><span class="o">::</span><span class="n">apply</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Applies the scale function, then skips the write when the resulting 8-bit duty equals the last one written — different 16-bit values map to the same duty. No-op while the output is disabled. </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1AnalogOutput/#function-apply"><em>OpenSkyhawk::AnalogOutput::apply</em></a></p>
 <hr>

@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,51 +4116,50 @@
 <h1 id="file-needlegaugeh">File NeedleGauge.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_529c528362a647a34d31d0b3b420ca72/"><strong>Outputs</strong></a> <strong>&gt;</strong> <a href="../dir_61ced45d99aac20e353c7cae873553bb/"><strong>NeedleGauge</strong></a> <strong>&gt;</strong> <a href="../NeedleGauge_8h/"><strong>NeedleGauge.h</strong></a></p>
 <p><a href="../NeedleGauge_8h/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#pragma once
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &lt;PanelGroup.h&gt;                       // OutputBase
-#include &lt;Drivers/MotorDriver/MotorDriver.h&gt;  // MotorDriver
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;PanelGroup.h&gt;</span><span class="w">                       </span><span class="c1">// OutputBase</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Drivers/MotorDriver/MotorDriver.h&gt;</span><span class="w">  </span><span class="c1">// MotorDriver</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-struct GaugeCal {
-    int16_t         minTravel;  
-    int16_t         maxTravel;  
-    bool            reverse;    
-    const uint16_t* curveIn;    
-    const uint16_t* curveOut;   
-    uint8_t         curveN;     
-};
+<span class="k">struct</span><span class="w"> </span><span class="nc">GaugeCal</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int16_t</span><span class="w">         </span><span class="n">minTravel</span><span class="p">;</span><span class="w">  </span>
+<span class="w">    </span><span class="kt">int16_t</span><span class="w">         </span><span class="n">maxTravel</span><span class="p">;</span><span class="w">  </span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">            </span><span class="n">reverse</span><span class="p">;</span><span class="w">    </span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="o">*</span><span class="w"> </span><span class="n">curveIn</span><span class="p">;</span><span class="w">    </span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="o">*</span><span class="w"> </span><span class="n">curveOut</span><span class="p">;</span><span class="w">   </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w">         </span><span class="n">curveN</span><span class="p">;</span><span class="w">     </span>
+<span class="p">};</span>
 
-class NeedleGauge : public OutputBase {
-public:
-    NeedleGauge(uint16_t controlId, uint16_t mask, MotorDriver&amp; motor, const GaugeCal&amp; cal);
+<span class="k">class</span><span class="w"> </span><span class="nc">NeedleGauge</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OutputBase</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">NeedleGauge</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="n">MotorDriver</span><span class="o">&amp;</span><span class="w"> </span><span class="n">motor</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">GaugeCal</span><span class="o">&amp;</span><span class="w"> </span><span class="n">cal</span><span class="p">);</span>
 
-    void configure() override;
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-    void onControlPacket(uint16_t controlId, uint16_t value) override;
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onControlPacket</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-    void update() override;
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-#ifdef NEEDLEGAUGE_TEST
-    int32_t debugValueToPos(uint16_t value) const { return valueToPos(value); } 
-#endif
+<span class="cp">#ifdef NEEDLEGAUGE_TEST</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">debugValueToPos</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">valueToPos</span><span class="p">(</span><span class="n">value</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"> </span>
+<span class="cp">#endif</span>
 
-private:
-    uint16_t      _controlId;
-    uint16_t      _mask;
-    MotorDriver*  _motor;   // caller-owned
-    const GaugeCal* _cal;   // caller-owned
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w">      </span><span class="n">_controlId</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w">      </span><span class="n">_mask</span><span class="p">;</span>
+<span class="w">    </span><span class="n">MotorDriver</span><span class="o">*</span><span class="w">  </span><span class="n">_motor</span><span class="p">;</span><span class="w">   </span><span class="c1">// caller-owned</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">GaugeCal</span><span class="o">*</span><span class="w"> </span><span class="n">_cal</span><span class="p">;</span><span class="w">   </span><span class="c1">// caller-owned</span>
 
-    int32_t valueToPos(uint16_t value) const;  // decode → position (linear or piecewise)
-};
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">valueToPos</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">  </span><span class="c1">// decode → position (linear or piecewise)</span>
+<span class="p">};</span>
 
-} // namespace OpenSkyhawk
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
 
-#endif // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

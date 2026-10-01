@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4121,17 +4321,17 @@
 </table>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-steppermotor">function StepperMotor</h3>
-<p><em>Construct a stepper over four coil pins.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::StepperMotor::StepperMotor (
-    PinRef c1,
-    PinRef c2,
-    PinRef c3,
-    PinRef c4,
-    const StepperConfig &amp; cfg,
-    PinRef homeSense=PinRef (),
-    PinRef sleepEn=PinRef ()
-) 
-</code></pre>
+<p><em>Construct a stepper over four coil pins.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperMotor</span><span class="o">::</span><span class="n">StepperMotor</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">c1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">c2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">c3</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">c4</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">StepperConfig</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">cfg</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">homeSense</span><span class="o">=</span><span class="n">PinRef</span><span class="w"> </span><span class="p">(),</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">sleepEn</span><span class="o">=</span><span class="n">PinRef</span><span class="w"> </span><span class="p">()</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>c1..c4</code> Coil PinRefs (GPIO or MCP23017). Swap two to reverse direction. </li>
@@ -4142,45 +4342,45 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>coils OUTPUT, ~SLEEP HIGH, sensor INPUT, energise.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::StepperMotor::configure () override
-</code></pre>
+<p><em>coils OUTPUT, ~SLEEP HIGH, sensor INPUT, energise.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperMotor</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1MotorDriver/#function-configure"><em>OpenSkyhawk::MotorDriver::configure</em></a></p>
 <hr>
 
 <h3 id="function-home">function home</h3>
-<p><em>blocking homing (STALL or SENSOR), then park.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::StepperMotor::home () override
-</code></pre>
+<p><em>blocking homing (STALL or SENSOR), then park.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperMotor</span><span class="o">::</span><span class="n">home</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1MotorDriver/#function-home"><em>OpenSkyhawk::MotorDriver::home</em></a></p>
 <hr>
 
 <h3 id="function-homed">function homed</h3>
-<p><em>True once homing has completed successfully (false if a SENSOR seek aborted).</em> </p>
-<pre><code class="language-C++">inline bool OpenSkyhawk::StepperMotor::homed () const
-</code></pre>
+<p><em>True once homing has completed successfully (false if a SENSOR seek aborted).</em> 
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperMotor</span><span class="o">::</span><span class="n">homed</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="function-moveto">function moveTo</h3>
-<p><em>retarget (clamp/wrap + deadband); non-blocking.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::StepperMotor::moveTo (
-    int32_t pos
-) override
-</code></pre>
+<p><em>retarget (clamp/wrap + deadband); non-blocking.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperMotor</span><span class="o">::</span><span class="n">moveTo</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">pos</span>
+<span class="p">)</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1MotorDriver/#function-moveto"><em>OpenSkyhawk::MotorDriver::moveTo</em></a></p>
 <hr>
 
 <h3 id="function-position">function position</h3>
-<p><em>current step (wrapped to 0..stepsPerRev if wrap).</em> </p>
-<pre><code class="language-C++">virtual int32_t OpenSkyhawk::StepperMotor::position () override const
-</code></pre>
+<p><em>current step (wrapped to 0..stepsPerRev if wrap).</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperMotor</span><span class="o">::</span><span class="n">position</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1MotorDriver/#function-position"><em>OpenSkyhawk::MotorDriver::position</em></a></p>
 <hr>
 
 <h3 id="function-update">function update</h3>
-<p><em>step toward target if due; auto-recal.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::StepperMotor::update () override
-</code></pre>
+<p><em>step toward target if due; auto-recal.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperMotor</span><span class="o">::</span><span class="n">update</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1MotorDriver/#function-update"><em>OpenSkyhawk::MotorDriver::update</em></a></p>
 <hr>
 

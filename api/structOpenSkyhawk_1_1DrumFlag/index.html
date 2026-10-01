@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4089,45 +4289,45 @@
 <p><code>steps</code> matters because the A-4E-C does not drive every flag over the same range: the ASN-41 hemisphere arrives at HALF scale (nav.lua sets 0.0 or 0.5 for N/S and E/W, so steps = 2), while MagVar and the BDHI DME flag use the full range (0 or 1, so steps = 1). A half-scale flag read as full scale never reaches its second face. </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 <h3 id="variable-address">variable address</h3>
-<p><em>DCS-BIOS address that drives the flag.</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumFlag::address;
-</code></pre>
+<p><em>DCS-BIOS address that drives the flag.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumFlag</span><span class="o">::</span><span class="n">address</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-atvisualcol">variable atVisualCol</h3>
-<p><em>visual column the flag cell is inserted at (after this many digits)</em> </p>
-<pre><code class="language-C++">uint8_t OpenSkyhawk::DrumFlag::atVisualCol;
-</code></pre>
+<p><em>visual column the flag cell is inserted at (after this many digits)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumFlag</span><span class="o">::</span><span class="n">atVisualCol</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-enabled">variable enabled</h3>
-<p><em>false ⇒ no flag tape rendered (default)</em> </p>
-<pre><code class="language-C++">bool OpenSkyhawk::DrumFlag::enabled;
-</code></pre>
+<p><em>false ⇒ no flag tape rendered (default)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumFlag</span><span class="o">::</span><span class="n">enabled</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-faces">variable faces</h3>
-<p><em>face string, one char per state, e.g. "NS" / "EW" (nFaces = strlen)</em> </p>
-<pre><code class="language-C++">const char* OpenSkyhawk::DrumFlag::faces;
-</code></pre>
+<p><em>face string, one char per state, e.g. "NS" / "EW" (nFaces = strlen)</em> 
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumFlag</span><span class="o">::</span><span class="n">faces</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-mask">variable mask</h3>
-<p><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumFlag::mask;
-</code></pre>
+<p><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumFlag</span><span class="o">::</span><span class="n">mask</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-steps">variable steps</h3>
-<p><em>positions across the range; 0 ⇒ nFaces−1 (a full-scale flag)</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumFlag::steps;
-</code></pre>
+<p><em>positions across the range; 0 ⇒ nFaces−1 (a full-scale flag)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumFlag</span><span class="o">::</span><span class="n">steps</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-widthmm">variable widthMm</h3>
-<p><em>flag cell width, mm (wider than a digit so a broad 'W' fits)</em> </p>
-<pre><code class="language-C++">float OpenSkyhawk::DrumFlag::widthMm;
-</code></pre>
+<p><em>flag cell width, mm (wider than a digit so a broad 'W' fits)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumFlag</span><span class="o">::</span><span class="n">widthMm</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <hr />

@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,37 +4116,36 @@
 <h1 id="file-switch3poscpp">File Switch3Pos.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_2e07d2b82251b5bb8c3d5a17dd64c04b/"><strong>Inputs</strong></a> <strong>&gt;</strong> <a href="../dir_344ec6ab1ff9af7411f07538fed6b206/"><strong>Switch3Pos</strong></a> <strong>&gt;</strong> <a href="../Switch3Pos_8cpp/"><strong>Switch3Pos.cpp</strong></a></p>
 <p><a href="../Switch3Pos_8cpp/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &quot;Switch3Pos.h&quot;
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Switch3Pos.h"</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-Switch3Pos::Switch3Pos(uint16_t controlId, PinRef pinA, PinRef pinB, bool reverse,
-                       uint16_t debounceMs)
-    : MultiPosInput(controlId, 3, debounceMs),
-      _pinA(pinA),
-      _pinB(pinB),
-      _reverse(reverse) {}
+<span class="n">Switch3Pos</span><span class="o">::</span><span class="n">Switch3Pos</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">reverse</span><span class="p">,</span>
+<span class="w">                       </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">debounceMs</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">MultiPosInput</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">debounceMs</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_pinA</span><span class="p">(</span><span class="n">pinA</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_pinB</span><span class="p">(</span><span class="n">pinB</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_reverse</span><span class="p">(</span><span class="n">reverse</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
 
-void Switch3Pos::configure() {
-    _pinA.configureAsInput();
-    _pinB.configureAsInput();
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">Switch3Pos::configure</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">_pinA</span><span class="p">.</span><span class="n">configureAsInput</span><span class="p">();</span>
+<span class="w">    </span><span class="n">_pinB</span><span class="p">.</span><span class="n">configureAsInput</span><span class="p">();</span>
+<span class="p">}</span>
 
-uint16_t Switch3Pos::readRaw() {
-    bool a = _reverse ? _pinA.read() : !_pinA.read();
-    bool b = _reverse ? _pinB.read() : !_pinB.read();
-    if (a) return 0;   // pin A priority — matches DcsBios both-active behaviour
-    if (b) return 2;
-    return 1;          // centre — a real position, never NO_POSITION
-}
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">Switch3Pos::readRaw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_reverse</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">_pinA</span><span class="p">.</span><span class="n">read</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">_pinA</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_reverse</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">_pinB</span><span class="p">.</span><span class="n">read</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">_pinB</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// pin A priority — matches DcsBios both-active behaviour</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">          </span><span class="c1">// centre — a real position, never NO_POSITION</span>
+<span class="p">}</span>
 
-}  // namespace OpenSkyhawk
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
 
-#endif  // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

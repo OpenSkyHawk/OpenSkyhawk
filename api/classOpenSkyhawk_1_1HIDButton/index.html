@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4095,12 +4295,12 @@
 <p>Self-registers into a static linked list at construction. value != 0 → button pressed; value == 0 → button released. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-hidbutton">function HIDButton</h3>
-<p><em>Register a HID button handler.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::HIDButton::HIDButton (
-    uint16_t controlId,
-    uint8_t buttonIndex
-) 
-</code></pre>
+<p><em>Register a HID button handler.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDButton</span><span class="o">::</span><span class="n">HIDButton</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buttonIndex</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> CTRL_* button constant from <a href="../HIDControls_8h/"><strong>HIDControls.h</strong></a> (0x0030–0x00AF range). </li>
@@ -4109,16 +4309,16 @@
 <hr>
 
 <h3 id="function-controlid">function controlId</h3>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::HIDButton::controlId () const
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDButton</span><span class="o">::</span><span class="n">controlId</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div>
 <hr>
 
 <h3 id="function-dispatch">function dispatch</h3>
-<p><em>Dispatch a value to the joystick button.</em> </p>
-<pre><code class="language-C++">void OpenSkyhawk::HIDButton::dispatch (
-    uint16_t value
-) 
-</code></pre>
+<p><em>Dispatch a value to the joystick button.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDButton</span><span class="o">::</span><span class="n">dispatch</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>value</code> 0 → released; non-zero → pressed. </li>
@@ -4126,13 +4326,13 @@
 <hr>
 
 <h3 id="function-next">function next</h3>
-<pre><code class="language-C++">HIDButton * OpenSkyhawk::HIDButton::next () const
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">HIDButton</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDButton</span><span class="o">::</span><span class="n">next</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div>
 <hr>
 <h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
 <h3 id="function-head">function head</h3>
-<pre><code class="language-C++">static HIDButton * OpenSkyhawk::HIDButton::head () 
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="n">HIDButton</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">HIDButton</span><span class="o">::</span><span class="n">head</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div>
 <hr>
 
 <hr />

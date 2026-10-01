@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4087,45 +4287,45 @@
 <p>Populate <code>address</code> / <code>mask</code> from the A_4E_C_* and A_4E_C_*_AM constants in <a href="../A4EC__OutputIds_8h/"><strong>A4EC_OutputIds.h</strong></a>. The masked value (0..mask) is scaled to nDigits decimal digits: digits = round((value &amp; mask) / mask * (10^nDigits − 1)); each of those nDigits digits is spliced into the readout's combined number starting at <code>place</code> (0 = least-significant column). </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 <h3 id="variable-address">variable address</h3>
-<p><em>DCS-BIOS output address (A_4E_C_* from</em> <a href="../A4EC__OutputIds_8h/"><em><strong>A4EC_OutputIds.h</strong></em></a> <em>)</em></p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumSource::address;
-</code></pre>
+<p><em>DCS-BIOS output address (A_4E_C_* from</em> <a href="../A4EC__OutputIds_8h/"><em><strong>A4EC_OutputIds.h</strong></em></a> <em>)</em>
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumSource</span><span class="o">::</span><span class="n">address</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-mask">variable mask</h3>
-<p><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word sources</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumSource::mask;
-</code></pre>
+<p><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word sources</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumSource</span><span class="o">::</span><span class="n">mask</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-mul">variable mul</h3>
-<p><em>displayed value per position (5 for the ARC-51 50 kHz drum)</em> </p>
-<pre><code class="language-C++">uint8_t OpenSkyhawk::DrumSource::mul;
-</code></pre>
+<p><em>displayed value per position (5 for the ARC-51 50 kHz drum)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumSource</span><span class="o">::</span><span class="n">mul</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-ndigits">variable nDigits</h3>
-<p><em>digits this address encodes (1 for APN153, 2 for ARC-51 groups)</em> </p>
-<pre><code class="language-C++">uint8_t OpenSkyhawk::DrumSource::nDigits;
-</code></pre>
+<p><em>digits this address encodes (1 for APN153, 2 for ARC-51 groups)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumSource</span><span class="o">::</span><span class="n">nDigits</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-offset">variable offset</h3>
-<p><em>added after mul (22 for the ARC-51 10 MHz group, 29 for ALT_ADJ)</em> </p>
-<pre><code class="language-C++">int16_t OpenSkyhawk::DrumSource::offset;
-</code></pre>
+<p><em>added after mul (22 for the ARC-51 10 MHz group, 29 for ALT_ADJ)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumSource</span><span class="o">::</span><span class="n">offset</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-place">variable place</h3>
-<p><em>least-significant digit column this source writes (0 = rightmost)</em> </p>
-<pre><code class="language-C++">uint8_t OpenSkyhawk::DrumSource::place;
-</code></pre>
+<p><em>least-significant digit column this source writes (0 = rightmost)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumSource</span><span class="o">::</span><span class="n">place</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-steps">variable steps</h3>
-<p><em>positions across the range; 0 ⇒ 10^nDigits (a plain drum digit)</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumSource::steps;
-</code></pre>
+<p><em>positions across the range; 0 ⇒ 10^nDigits (a plain drum digit)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">DrumSource</span><span class="o">::</span><span class="n">steps</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <hr />

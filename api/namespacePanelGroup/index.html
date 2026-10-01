@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4143,17 +4343,17 @@
 <p>Manages MCP23017 expander registration and cache, <a href="../classADS1115/"><strong>ADS1115</strong></a> registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL_BCAST dispatch, SYNC_REQ response, and the 500 ms HB_n heartbeat. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-flushexpanderwrites">function flushExpanderWrites</h3>
-<p><em>Push every port dirtied by</em> <a href="./#function-writecachedpindeferred"><em><strong>writeCachedPinDeferred()</strong></em></a> <em>— one writePort() each.</em></p>
-<pre><code class="language-C++">void PanelGroup::flushExpanderWrites () 
-</code></pre>
+<p><em>Push every port dirtied by</em> <a href="./#function-writecachedpindeferred"><em><strong>writeCachedPinDeferred()</strong></em></a> <em>— one writePort() each.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">flushExpanderWrites</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Note:</strong></p>
 <p>No-op when nothing is pending (GPIO-only outputs never dirty a port). </p>
 <hr>
 
 <h3 id="function-loop">function loop</h3>
-<p><em>Run all</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>work. Call once per</em><a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></p>
-<pre><code class="language-C++">void PanelGroup::loop () 
-</code></pre>
+<p><em>Run all</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>work. Call once per</em><a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">loop</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Each call:
 * Check interrupt flags; read INTCAP; update expander port caches.
 * Polling fallback (~20 ms): read ports for chips registered without interrupt.
@@ -4164,22 +4364,22 @@
 <hr>
 
 <h3 id="function-noteshiftbus">function noteShiftBus</h3>
-<p><em>Collect a ShiftBus at configure time. Called by</em> <a href="../classPinRef/#function-configureasinput"><em><strong>PinRef::configureAsInput()</strong></em></a> <em>/ configureAsOutput() on SR pins — never by sketches (zero-setup lifecycle).</em></p>
-<pre><code class="language-C++">void PanelGroup::noteShiftBus (
-    OpenSkyhawk::ShiftBus &amp; bus
-) 
-</code></pre>
+<p><em>Collect a ShiftBus at configure time. Called by</em> <a href="../classPinRef/#function-configureasinput"><em><strong>PinRef::configureAsInput()</strong></em></a> <em>/ configureAsOutput() on SR pins — never by sketches (zero-setup lifecycle).</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">noteShiftBus</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">bus</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Deduplicated. <a href="./#function-setup"><strong>setup()</strong></a> begin()s every collected bus after step 3; <a href="./#function-loop"><strong>loop()</strong></a> transfers them each iteration; <a href="./#function-flushexpanderwrites"><strong>flushExpanderWrites()</strong></a> flushes dirty ones. </p>
 <hr>
 
 <h3 id="function-readcachedpin">function readCachedPin</h3>
-<p><em>Return cached MCP23017 pin state. Called by</em> <a href="../classPinRef/#function-read"><em><strong>PinRef::read()</strong></em></a> <em>. No I2C.</em></p>
-<pre><code class="language-C++">bool PanelGroup::readCachedPin (
-    const MCP23017 &amp; chip,
-    uint8_t port,
-    uint8_t bit
-) 
-</code></pre>
+<p><em>Return cached MCP23017 pin state. Called by</em> <a href="../classPinRef/#function-read"><em><strong>PinRef::read()</strong></em></a> <em>. No I2C.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">readCachedPin</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">MCP23017</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>chip</code> Chip reference — used as key to locate the ExpanderEntry. </li>
@@ -4191,13 +4391,13 @@
 <hr>
 
 <h3 id="function-readlivepin">function readLivePin</h3>
-<p><em>Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache.</em> </p>
-<pre><code class="language-C++">bool PanelGroup::readLivePin (
-    MCP23017 &amp; chip,
-    uint8_t port,
-    uint8_t bit
-) 
-</code></pre>
+<p><em>Live MCP23017 pin read — fresh readPort() over I2C, refreshing the cache.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">readLivePin</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">MCP23017</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>chip</code> Chip reference. </li>
@@ -4211,18 +4411,18 @@
 <hr>
 
 <h3 id="function-registeradc">function registerADC</h3>
-<p><em>Register an</em> <a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC. Call before</em><a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">void PanelGroup::registerADC (
-    ADS1115 &amp; adc,
-    uint8_t addr=0x48,
-    TwoWire &amp; wire=Wire
-) 
-</code></pre>
+<p><em>Register an</em> <a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC. Call before</em><a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerADC</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ADS1115</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">adc</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">addr</span><span class="o">=</span><span class="mh">0x48</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TwoWire</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">wire</span><span class="o">=</span><span class="n">Wire</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><a href="./"><strong>PanelGroup</strong></a> calls adc.begin(addr, wire) during <a href="./#function-setup"><strong>setup()</strong></a>. Register each <a href="../classADS1115/"><strong>ADS1115</strong></a> instance exactly once — multiple AnalogInput objects may share the same chip.</p>
-<p>Adafruit_ADS1115 takes address and bus via begin(), not the constructor. Pattern: </p>
-<pre><code class="language-C++">ADS1115 adc;
-PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
-</code></pre>
+<p>Adafruit_ADS1115 takes address and bus via begin(), not the constructor. Pattern: 
+<div class="highlight"><pre><span></span><code><span class="n">ADS1115</span><span class="w"> </span><span class="n">adc</span><span class="p">;</span>
+<span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerADC</span><span class="p">(</span><span class="n">adc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x48</span><span class="p">,</span><span class="w"> </span><span class="n">Wire</span><span class="p">);</span><span class="w">   </span><span class="c1">// 0x48–0x4B via ADDR pin</span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>adc</code> <a href="../classADS1115/"><strong>ADS1115</strong></a> instance. Must outlive <a href="./"><strong>PanelGroup</strong></a>. </li>
@@ -4234,13 +4434,13 @@ PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
 <hr>
 
 <h3 id="function-registerexpander">function registerExpander</h3>
-<p><em>Register an MCP23017 expander in interrupt-driven mode. Call before</em> <a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">void PanelGroup::registerExpander (
-    MCP23017 &amp; chip,
-    uint8_t intaPin,
-    uint8_t intbPin
-) 
-</code></pre>
+<p><em>Register an MCP23017 expander in interrupt-driven mode. Call before</em> <a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerExpander</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">MCP23017</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">intaPin</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">intbPin</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><a href="./"><strong>PanelGroup</strong></a> calls chip.init(), configures IOCON (MIRROR and/or open-drain as detected), enables interrupt-on-change on input pins only (IODIR-masked, bit 7 excluded per GPA7/GPB7 silicon erratum), reads baseline port state, and attaches STM32 ISRs.</p>
 <p>Pass the same STM32 pin for intaPin and intbPin to use MIRROR mode (IOCON.MIRROR=1), where either port interrupt asserts the shared line.</p>
 <p>If two or more chips share an interrupt line (wired-OR), <a href="./"><strong>PanelGroup</strong></a> sets IOCON.ODR=1 (open-drain) automatically on all chips on that line.</p>
@@ -4255,11 +4455,11 @@ PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
 <hr>
 
 <h3 id="function-registerexpander_1">function registerExpander</h3>
-<p><em>Register an MCP23017 expander in polling-fallback mode. Call before</em> <a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">void PanelGroup::registerExpander (
-    MCP23017 &amp; chip
-) 
-</code></pre>
+<p><em>Register an MCP23017 expander in polling-fallback mode. Call before</em> <a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerExpander</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">MCP23017</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><a href="./"><strong>PanelGroup</strong></a> reads all port registers every ~20 ms in <a href="./#function-loop"><strong>loop()</strong></a>. No STM32 interrupt pin is required. Use when interrupt lines are not wired or not needed.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4268,9 +4468,9 @@ PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
 <hr>
 
 <h3 id="function-setup">function setup</h3>
-<p><em>Initialise</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>. Call from sketch</em><a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>after Wire.begin().</em></p>
-<pre><code class="language-C++">void PanelGroup::setup () 
-</code></pre>
+<p><em>Initialise</em> <a href="./"><em><strong>PanelGroup</strong></em></a> <em>. Call from sketch</em><a href="./#function-setup"><em><strong>setup()</strong></em></a> <em>after Wire.begin().</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">setup</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Performs the 8-step boot sequence:
 * <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a>
 * For each registered ADC: begin(addr, wire). For each registered expander: init(), configure IOCON, enable interrupt-on-change on input pins, read baseline port state, attach STM32 ISR.
@@ -4285,14 +4485,14 @@ PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
 <hr>
 
 <h3 id="function-writecachedpin">function writeCachedPin</h3>
-<p><em>Write MCP23017 pin and update cache. Called by</em> <a href="../classPinRef/#function-write"><em><strong>PinRef::write()</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">void PanelGroup::writeCachedPin (
-    MCP23017 &amp; chip,
-    uint8_t port,
-    uint8_t bit,
-    bool value
-) 
-</code></pre>
+<p><em>Write MCP23017 pin and update cache. Called by</em> <a href="../classPinRef/#function-write"><em><strong>PinRef::write()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">writeCachedPin</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">MCP23017</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>chip</code> Chip reference. </li>
@@ -4303,14 +4503,14 @@ PanelGroup::registerADC(adc, 0x48, Wire);   // 0x48–0x4B via ADDR pin
 <hr>
 
 <h3 id="function-writecachedpindeferred">function writeCachedPinDeferred</h3>
-<p><em>Deferred MCP23017 write — update the cache + mark the port dirty, no I2C.</em> </p>
-<pre><code class="language-C++">void PanelGroup::writeCachedPinDeferred (
-    MCP23017 &amp; chip,
-    uint8_t port,
-    uint8_t bit,
-    bool value
-) 
-</code></pre>
+<p><em>Deferred MCP23017 write — update the cache + mark the port dirty, no I2C.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">writeCachedPinDeferred</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">MCP23017</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Note:</strong></p>
 <p>Pair with <a href="./#function-flushexpanderwrites"><strong>flushExpanderWrites()</strong></a>. Lets a multi-pin output (e.g. a stepper's four coils) collapse N per-pin read-modify-writes into one writePort() per port. </p>
 <hr>

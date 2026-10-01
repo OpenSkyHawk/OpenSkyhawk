@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3967,20 +4167,20 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> bridges the RP2040 <a href="../namespaceSimGateway/"><strong>SimGateway</strong></a> (UART2, PA2/PA3) and the <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> CAN cluster. It runs the DCS-BIOS library on Serial, batches DCS output to CAN CTRL_BCAST frames, routes CAN EVTs to DCS-BIOS commands or HID frames, and tracks <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> node liveness.</p>
-<p>Minimal production sketch: </p>
-<pre><code class="language-C++">#define DCSBIOS_DEFAULT_SERIAL
-#include &lt;DcsBios.h&gt;
-#include &lt;PanelBridge.h&gt;
+<p>Minimal production sketch: 
+<div class="highlight"><pre><span></span><code><span class="cp">#define DCSBIOS_DEFAULT_SERIAL</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;DcsBios.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;PanelBridge.h&gt;</span>
 
-void setup() {
-    PanelBridge::setup();
-    DcsBios::setup();
-}
-void loop() {
-    DcsBios::loop();
-    PanelBridge::loop();
-}
-</code></pre>
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
+<span class="w">    </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">loop</span><span class="p">();</span>
+<span class="w">    </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">loop</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></p>
 <p><strong>Version:</strong></p>
 <p>0.2.0 </p>
 <p><strong>Copyright:</strong></p>

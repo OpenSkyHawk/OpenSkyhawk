@@ -755,6 +755,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4117,12 +4317,12 @@ that needs one checks its <code>PinRef</code> at startup: <code>Dimmer</code> re
 a timer channel, and says so on the diagnostic serial port instead of silently not dimming.</p>
 <p><strong>Routing is by <code>controlId</code>, not by class.</strong> The same input class drives a DCS-BIOS control or
 a HID button depending on the <code>controlId</code> you give it:</p>
-<pre><code class="language-cpp">// DCS-BIOS route — controlId in 0x8000–0x86FF
-OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
+<div class="highlight"><pre><span></span><code><span class="c1">// DCS-BIOS route — controlId in 0x8000–0x86FF</span>
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch2Pos</span><span class="w"> </span><span class="nf">masterArm</span><span class="p">(</span><span class="n">DCSIN_ARM_MASTER</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB5</span><span class="p">));</span>
 
-// HID route — controlId &lt; 0x8000
-OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, PinRef(PA6));
-</code></pre>
+<span class="c1">// HID route — controlId &lt; 0x8000</span>
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch2Pos</span><span class="w"> </span><span class="nf">trigger</span><span class="p">(</span><span class="n">CTRL_TRIGGER</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PA6</span><span class="p">));</span>
+</code></pre></div>
 <p>See <a href="../../architecture/dcsbios-vs-hid/">DCS-BIOS vs HID</a> for which to use.</p>
 <h2 id="input-classes">Input classes</h2>
 <table>
@@ -4270,8 +4470,8 @@ the position and stops at the ends, and the cockpit readout shows the result.</p
 </table>
 <p>Outputs use DCS-BIOS <strong>output addresses</strong> from the generated <code>A4EC</code> headers — the address
 constant plus its bitmask. Example for the implemented <code>LED</code>:</p>
-<pre><code class="language-cpp">OpenSkyhawk::LED gearLight(A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PinRef(PB0));
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="w"> </span><span class="nf">gearLight</span><span class="p">(</span><span class="n">A_4E_C_GEAR_LIGHT</span><span class="p">,</span><span class="w"> </span><span class="n">A_4E_C_GEAR_LIGHT_AM</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB0</span><span class="p">));</span>
+</code></pre></div>
 <p>Note the naming: <code>A_4E_C_&lt;NAME&gt;</code> for the address and <code>A_4E_C_&lt;NAME&gt;_AM</code> for the mask — <strong>not</strong>
 the old <code>_A</code> suffix. See <a href="../dcsbios-integration/">DCS-BIOS Integration</a>.</p>
 <div class="admonition note">

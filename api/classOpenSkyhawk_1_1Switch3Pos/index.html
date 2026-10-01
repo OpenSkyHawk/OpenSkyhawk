@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4348,21 +4548,21 @@
 <p>Used by: AN/ASN-41 LAT/LON slew (spring-centred momentary L / centre / R). </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-debounce_ms">variable DEBOUNCE_MS</h3>
-<p><em>index stability window (ms).</em> </p>
-<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::Switch3Pos::DEBOUNCE_MS;
-</code></pre>
+<p><em>index stability window (ms).</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch3Pos</span><span class="o">::</span><span class="n">DEBOUNCE_MS</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-switch3pos">function Switch3Pos</h3>
-<p><em>Construct a 3-position switch.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::Switch3Pos::Switch3Pos (
-    uint16_t controlId,
-    PinRef pinA,
-    PinRef pinB,
-    bool reverse=false,
-    uint16_t debounceMs=DEBOUNCE_MS
-) 
-</code></pre>
+<p><em>Construct a 3-position switch.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch3Pos</span><span class="o">::</span><span class="n">Switch3Pos</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">reverse</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">debounceMs</span><span class="o">=</span><span class="n">DEBOUNCE_MS</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
@@ -4374,9 +4574,9 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>Configure both pins as inputs. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::Switch3Pos::configure () override
-</code></pre>
+<p><em>Configure both pins as inputs. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch3Pos</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Does not enable internal pull-ups; board wiring supplies input bias.</p>
 <p><strong>Note:</strong></p>
 <p>Must not run from the constructor — MCP23017 register writes require the expander to be initialised first. </p>
@@ -4384,9 +4584,9 @@
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-readraw">function readRaw</h3>
-<p><em>pin A → 0, pin B → 2, neither → 1 (centre). pin A wins if both read active.</em> </p>
-<pre><code class="language-C++">virtual uint16_t OpenSkyhawk::Switch3Pos::readRaw () override
-</code></pre>
+<p><em>pin A → 0, pin B → 2, neither → 1 (centre). pin A wins if both read active.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch3Pos</span><span class="o">::</span><span class="n">readRaw</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1MultiPosInput/#function-readraw"><em>OpenSkyhawk::MultiPosInput::readRaw</em></a></p>
 <hr>
 

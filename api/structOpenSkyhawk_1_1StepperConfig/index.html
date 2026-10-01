@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4237,105 +4437,105 @@
 <p><code>accel</code> must point at storage that outlives the <a href="../classOpenSkyhawk_1_1StepperMotor/"><strong>StepperMotor</strong></a> (e.g. a static const table). <code>homePosition</code> / <code>parkPosition</code> / <code>minPos</code> / <code>maxPos</code> are in steps; a sketch may compute them from degrees as <code>round</code>(deg*stepsPerRev/360). </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 <h3 id="variable-accel">variable accel</h3>
-<p><em>acceleration curve (not owned)</em> </p>
-<pre><code class="language-C++">const AccelPoint* OpenSkyhawk::StepperConfig::accel;
-</code></pre>
+<p><em>acceleration curve (not owned)</em> 
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">AccelPoint</span><span class="o">*</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">accel</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-acceln">variable accelN</h3>
-<p><em>entries in accel[]</em> </p>
-<pre><code class="language-C++">uint8_t OpenSkyhawk::StepperConfig::accelN;
-</code></pre>
+<p><em>entries in accel[]</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">accelN</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-autorecal">variable autoRecal</h3>
-<p><em>re-zero to homePosition when the sensor next asserts</em> </p>
-<pre><code class="language-C++">bool OpenSkyhawk::StepperConfig::autoRecal;
-</code></pre>
+<p><em>re-zero to homePosition when the sensor next asserts</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">autoRecal</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-deadband">variable deadband</h3>
-<p><em>ignore target changes within this many steps</em> </p>
-<pre><code class="language-C++">uint8_t OpenSkyhawk::StepperConfig::deadband;
-</code></pre>
+<p><em>ignore target changes within this many steps</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">deadband</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-home">variable home</h3>
-<p><em>homing strategy</em> </p>
-<pre><code class="language-C++">HomeMode OpenSkyhawk::StepperConfig::home;
-</code></pre>
+<p><em>homing strategy</em> 
+<div class="highlight"><pre><span></span><code><span class="n">HomeMode</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">home</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-homeposition">variable homePosition</h3>
-<p><em>step index assigned at the home reference</em> </p>
-<pre><code class="language-C++">int16_t OpenSkyhawk::StepperConfig::homePosition;
-</code></pre>
+<p><em>step index assigned at the home reference</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">homePosition</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-homeseekclockwise">variable homeSeekClockwise</h3>
-<p><em>direction to seek the home reference</em> </p>
-<pre><code class="language-C++">bool OpenSkyhawk::StepperConfig::homeSeekClockwise;
-</code></pre>
+<p><em>direction to seek the home reference</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">homeSeekClockwise</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-homestepus">variable homeStepUs</h3>
-<p><em>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::StepperConfig::homeStepUs;
-</code></pre>
+<p><em>homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">homeStepUs</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-maxpos">variable maxPos</h3>
-<p><em>upper travel clamp for moveTo (ignored if wrap)</em> </p>
-<pre><code class="language-C++">int16_t OpenSkyhawk::StepperConfig::maxPos;
-</code></pre>
+<p><em>upper travel clamp for moveTo (ignored if wrap)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">maxPos</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-minpos">variable minPos</h3>
-<p><em>lower travel clamp for moveTo (ignored if wrap)</em> </p>
-<pre><code class="language-C++">int16_t OpenSkyhawk::StepperConfig::minPos;
-</code></pre>
+<p><em>lower travel clamp for moveTo (ignored if wrap)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">minPos</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-parkposition">variable parkPosition</h3>
-<p><em>step to rest at after homing</em> </p>
-<pre><code class="language-C++">int16_t OpenSkyhawk::StepperConfig::parkPosition;
-</code></pre>
+<p><em>step to rest at after homing</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">parkPosition</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-pattern">variable pattern</h3>
-<p><em>coil drive sequence</em> </p>
-<pre><code class="language-C++">StepPattern OpenSkyhawk::StepperConfig::pattern;
-</code></pre>
+<p><em>coil drive sequence</em> 
+<div class="highlight"><pre><span></span><code><span class="n">StepPattern</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">pattern</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-rangesteps">variable rangeSteps</h3>
-<p><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::StepperConfig::rangeSteps;
-</code></pre>
+<p><em>mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">rangeSteps</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-recaldebouncems">variable recalDebounceMs</h3>
-<p><em>minimum interval between auto-recals</em> </p>
-<pre><code class="language-C++">uint32_t OpenSkyhawk::StepperConfig::recalDebounceMs;
-</code></pre>
+<p><em>minimum interval between auto-recals</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">recalDebounceMs</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-sensor">variable sensor</h3>
-<p><em>SENSOR-mode params (ignored for STALL)</em> </p>
-<pre><code class="language-C++">HomeSensor OpenSkyhawk::StepperConfig::sensor;
-</code></pre>
+<p><em>SENSOR-mode params (ignored for STALL)</em> 
+<div class="highlight"><pre><span></span><code><span class="n">HomeSensor</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">sensor</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-stepsperrev">variable stepsPerRev</h3>
-<p><em>steps per full revolution (calibrate empirically)</em> </p>
-<pre><code class="language-C++">uint16_t OpenSkyhawk::StepperConfig::stepsPerRev;
-</code></pre>
+<p><em>steps per full revolution (calibrate empirically)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">stepsPerRev</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-wrap">variable wrap</h3>
-<p><em>continuous-rotation gauge (shortest-path, no clamp)</em> </p>
-<pre><code class="language-C++">bool OpenSkyhawk::StepperConfig::wrap;
-</code></pre>
+<p><em>continuous-rotation gauge (shortest-path, no clamp)</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">StepperConfig</span><span class="o">::</span><span class="n">wrap</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <hr />

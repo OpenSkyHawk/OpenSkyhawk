@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4391,27 +4591,27 @@
 <p>The base debounce window is 0: the deadband gaps provide the filtering, not a timer. </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-default_deadband">variable DEFAULT_DEADBAND</h3>
-<p><em>counts trimmed from each band edge</em> </p>
-<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::AnalogMultiPos::DEFAULT_DEADBAND;
-</code></pre>
+<p><em>counts trimmed from each band edge</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">DEFAULT_DEADBAND</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 
 <h3 id="variable-poll_ms">variable POLL_MS</h3>
-<p><em>min interval between ADC reads (ms)</em> </p>
-<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::AnalogMultiPos::POLL_MS;
-</code></pre>
+<p><em>min interval between ADC reads (ms)</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">POLL_MS</span><span class="p">;</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-analogmultipos-12">function AnalogMultiPos [1/2]</h3>
-<p><em>Explicit resistor-ladder selector.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::AnalogMultiPos::AnalogMultiPos (
-    uint16_t controlId,
-    PinRef pin,
-    uint8_t numPos,
-    const uint16_t * posVals,
-    uint16_t deadband=DEFAULT_DEADBAND
-) 
-</code></pre>
+<p><em>Explicit resistor-ladder selector.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">numPos</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">posVals</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">deadband</span><span class="o">=</span><span class="n">DEFAULT_DEADBAND</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
@@ -4423,14 +4623,14 @@
 <hr>
 
 <h3 id="function-analogmultipos-22">function AnalogMultiPos [2/2]</h3>
-<p><em>Equal-spacing shorthand — positions evenly spaced across the full ADC range.</em> </p>
-<pre><code class="language-C++">OpenSkyhawk::AnalogMultiPos::AnalogMultiPos (
-    uint16_t controlId,
-    PinRef pin,
-    uint8_t numPos,
-    uint16_t deadband=DEFAULT_DEADBAND
-) 
-</code></pre>
+<p><em>Equal-spacing shorthand — positions evenly spaced across the full ADC range.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">numPos</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">deadband</span><span class="o">=</span><span class="n">DEFAULT_DEADBAND</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. </li>
@@ -4441,24 +4641,24 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>Configure the pin as an input. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em></p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::AnalogMultiPos::configure () override
-</code></pre>
+<p><em>Configure the pin as an input. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-configure"><em>OpenSkyhawk::InputBase::configure</em></a></p>
 <hr>
 
 <h3 id="function-forcereport">function forceReport</h3>
-<p><em>Force a fresh ADC sample (bypassing the read throttle), then emit the baseline.</em> </p>
-<pre><code class="language-C++">virtual void OpenSkyhawk::AnalogMultiPos::forceReport () override
-</code></pre>
+<p><em>Force a fresh ADC sample (bypassing the read throttle), then emit the baseline.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">forceReport</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>The boot EVT burst and SYNC_REQ must report the <em>current</em> position, never a stale cache: at boot — before millis() reaches POLL_MS — the throttle would otherwise return the uninitialised NO_POSITION cache and the base would emit position 0; and a SYNC arriving within POLL_MS of the last poll-read would echo an old reading. Overrides the base. </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-forcereport"><em>OpenSkyhawk::InputBase::forceReport</em></a></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-readraw">function readRaw</h3>
-<p><em>Resolve the instantaneous position index, or NO_POSITION to hold the last.</em> </p>
-<pre><code class="language-C++">virtual uint16_t OpenSkyhawk::AnalogMultiPos::readRaw () override
-</code></pre>
+<p><em>Resolve the instantaneous position index, or NO_POSITION to hold the last.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AnalogMultiPos</span><span class="o">::</span><span class="n">readRaw</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</code></pre></div></p>
 <p>Implemented per subclass (one-hot pin scan, analog band-resolve, ...). Must be non-blocking. Return a value in 0..numPositions-1, or NO_POSITION when nothing is currently active.</p>
 <p><strong>Returns:</strong></p>
 <p>resolved index, or NO_POSITION. </p>

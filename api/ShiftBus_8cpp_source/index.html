@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,245 +4116,244 @@
 <h1 id="file-shiftbuscpp">File ShiftBus.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_9e93d9a1721bcf27b2030ff612e0fc11/"><strong>Helpers</strong></a> <strong>&gt;</strong> <a href="../dir_5de82edf055e68e6d2d76fc20b67149e/"><strong>ShiftBus</strong></a> <strong>&gt;</strong> <a href="../ShiftBus_8cpp/"><strong>ShiftBus.cpp</strong></a></p>
 <p><a href="../ShiftBus_8cpp/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &quot;ShiftBus.h&quot;
-#include &lt;STM32Board.h&gt;
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"ShiftBus.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;STM32Board.h&gt;</span>
 
-// ── Standard pin assignment for the pre-defined ShiftBus1 (override via build flags) ──
+<span class="c1">// ── Standard pin assignment for the pre-defined ShiftBus1 (override via build flags) ──</span>
 
-#ifndef SHIFTBUS_SCK
-#define SHIFTBUS_SCK   PB3   // SPI1 remap (JTDO — JTAG released in begin(), SWD unaffected)
-#endif
-#ifndef SHIFTBUS_MISO
-#define SHIFTBUS_MISO  PB4   // SPI1 remap (NJTRST)
-#endif
-#ifndef SHIFTBUS_MOSI
-#define SHIFTBUS_MOSI  PB5   // SPI1 remap
-#endif
-#ifndef SHIFTBUS_LOAD
-#define SHIFTBUS_LOAD  PB8   // '165 SH/LD̄
-#endif
-#ifndef SHIFTBUS_LATCH
-#define SHIFTBUS_LATCH PB9   // '595 STCP
-#endif
+<span class="cp">#ifndef SHIFTBUS_SCK</span>
+<span class="cp">#define SHIFTBUS_SCK   PB3   </span><span class="c1">// SPI1 remap (JTDO — JTAG released in begin(), SWD unaffected)</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef SHIFTBUS_MISO</span>
+<span class="cp">#define SHIFTBUS_MISO  PB4   </span><span class="c1">// SPI1 remap (NJTRST)</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef SHIFTBUS_MOSI</span>
+<span class="cp">#define SHIFTBUS_MOSI  PB5   </span><span class="c1">// SPI1 remap</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef SHIFTBUS_LOAD</span>
+<span class="cp">#define SHIFTBUS_LOAD  PB8   </span><span class="c1">// '165 SH/LD̄</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef SHIFTBUS_LATCH</span>
+<span class="cp">#define SHIFTBUS_LATCH PB9   </span><span class="c1">// '595 STCP</span>
+<span class="cp">#endif</span>
 
-// ~1 MHz: comfortable for 74HC at 3.3 V and for a ~12&quot; remote harness leg (33 Ω series R).
-static const SPISettings kShiftBusSettings(1000000, MSBFIRST, SPI_MODE0);
+<span class="c1">// ~1 MHz: comfortable for 74HC at 3.3 V and for a ~12" remote harness leg (33 Ω series R).</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SPISettings</span><span class="w"> </span><span class="nf">kShiftBusSettings</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span><span class="w"> </span><span class="n">MSBFIRST</span><span class="p">,</span><span class="w"> </span><span class="n">SPI_MODE0</span><span class="p">);</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-ShiftBus* ShiftBus::_isrInstance = nullptr;
+<span class="n">ShiftBus</span><span class="o">*</span><span class="w"> </span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">_isrInstance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
 
-ShiftBus::ShiftBus(SPIClass&amp; spi, uint8_t sckPin, uint8_t misoPin, uint8_t mosiPin,
-                   uint8_t loadPin, uint8_t latchPin)
-    : _spi(&amp;spi), _sckPin(sckPin), _misoPin(misoPin), _mosiPin(mosiPin),
-      _loadPin(loadPin), _latchPin(latchPin) {}
-    // Nothing else: constructors of global buses run during static init, before HAL init.
+<span class="n">ShiftBus</span><span class="o">::</span><span class="n">ShiftBus</span><span class="p">(</span><span class="n">SPIClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">spi</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sckPin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">misoPin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mosiPin</span><span class="p">,</span>
+<span class="w">                   </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">loadPin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">latchPin</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">_spi</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spi</span><span class="p">),</span><span class="w"> </span><span class="n">_sckPin</span><span class="p">(</span><span class="n">sckPin</span><span class="p">),</span><span class="w"> </span><span class="n">_misoPin</span><span class="p">(</span><span class="n">misoPin</span><span class="p">),</span><span class="w"> </span><span class="n">_mosiPin</span><span class="p">(</span><span class="n">mosiPin</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_loadPin</span><span class="p">(</span><span class="n">loadPin</span><span class="p">),</span><span class="w"> </span><span class="n">_latchPin</span><span class="p">(</span><span class="n">latchPin</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="c1">// Nothing else: constructors of global buses run during static init, before HAL init.</span>
 
-// ── configure-time notification (PinRef::configureAsInput/Output) ──────────────
+<span class="c1">// ── configure-time notification (PinRef::configureAsInput/Output) ──────────────</span>
 
-void ShiftBus::noteInput(uint8_t chip) {
-    if (chip &gt;= MAX_CHAIN) return;
-    if (chip + 1 &gt; _nIn) _nIn = chip + 1;
-    _active = true;
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::noteInput</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">_nIn</span><span class="p">)</span><span class="w"> </span><span class="n">_nIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chip</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
 
-void ShiftBus::noteOutput(uint8_t chip) {
-    if (chip &gt;= MAX_CHAIN) return;
-    if (chip + 1 &gt; _nOut) _nOut = chip + 1;
-    _active = true;
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::noteOutput</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">_nOut</span><span class="p">)</span><span class="w"> </span><span class="n">_nOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chip</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
 
-// ── Frame access ────────────────────────────────────────────────────────────────
+<span class="c1">// ── Frame access ────────────────────────────────────────────────────────────────</span>
 
-bool ShiftBus::readBit(uint8_t chip, uint8_t bit) const {
-    if (chip &gt;= MAX_CHAIN || bit &gt; 7) return false;
-    return (_inFrame[chip] &gt;&gt; bit) &amp; 1u;
-}
+<span class="kt">bool</span><span class="w"> </span><span class="nf">ShiftBus::readBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">_inFrame</span><span class="p">[</span><span class="n">chip</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mi">1u</span><span class="p">;</span>
+<span class="p">}</span>
 
-bool ShiftBus::readOutBit(uint8_t chip, uint8_t bit) const {
-    if (chip &gt;= MAX_CHAIN || bit &gt; 7) return false;
-    return (_stage[chip] &gt;&gt; bit) &amp; 1u;   // last written (staged) value
-}
+<span class="kt">bool</span><span class="w"> </span><span class="nf">ShiftBus::readOutBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">_stage</span><span class="p">[</span><span class="n">chip</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mi">1u</span><span class="p">;</span><span class="w">   </span><span class="c1">// last written (staged) value</span>
+<span class="p">}</span>
 
-void ShiftBus::writeBit(uint8_t chip, uint8_t bit, bool v) {
-    if (chip &gt;= MAX_CHAIN || bit &gt; 7) return;
-    // Stage is loop-owned — the ISR only ships the committed _outFrame, so a multi-pin
-    // group (four stepper coils) staged across several calls can never reach the outputs
-    // half-written. No masking needed here; the commit in doTransfer() is the sync point.
-    const uint8_t mask = (uint8_t)(1u &lt;&lt; bit);
-    if (v) _stage[chip] |=  mask;
-    else   _stage[chip] &amp;= ~mask;
-    _dirty = true;
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::writeBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chip</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Stage is loop-owned — the ISR only ships the committed _outFrame, so a multi-pin</span>
+<span class="w">    </span><span class="c1">// group (four stepper coils) staged across several calls can never reach the outputs</span>
+<span class="w">    </span><span class="c1">// half-written. No masking needed here; the commit in doTransfer() is the sync point.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="mi">1u</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="n">_stage</span><span class="p">[</span><span class="n">chip</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w">  </span><span class="n">mask</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w">   </span><span class="n">_stage</span><span class="p">[</span><span class="n">chip</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="n">mask</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_dirty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
 
-bool ShiftBus::readLiveBit(uint8_t chip, uint8_t bit) {
-    transfer();
-    return readBit(chip, bit);
-}
+<span class="kt">bool</span><span class="w"> </span><span class="nf">ShiftBus::readLiveBit</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">transfer</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">readBit</span><span class="p">(</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
+<span class="p">}</span>
 
-// ── Lifecycle ───────────────────────────────────────────────────────────────────
+<span class="c1">// ── Lifecycle ───────────────────────────────────────────────────────────────────</span>
 
-void ShiftBus::begin() {
-    if (_begun || !_active) return;
-    _begun = true;
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::begin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_begun</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">_active</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_begun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 
-#if defined(STM32F1xx)
-    // Release JTAG so PB3 (JTDO) / PB4 (NJTRST) become GPIO/SPI. SWD (PA13/PA14) retained.
-    // (STM32Board::begin() already does this board-wide (#299), and the core's
-    // pin_DisconnectDebug does it too when the pins map; explicit is cheap insurance and
-    // self-documenting.)
-    __HAL_RCC_AFIO_CLK_ENABLE();
-    __HAL_AFIO_REMAP_SWJ_NOJTAG();
-#endif
+<span class="cp">#if defined(STM32F1xx)</span>
+<span class="w">    </span><span class="c1">// Release JTAG so PB3 (JTDO) / PB4 (NJTRST) become GPIO/SPI. SWD (PA13/PA14) retained.</span>
+<span class="w">    </span><span class="c1">// (STM32Board::begin() already does this board-wide (#299), and the core's</span>
+<span class="w">    </span><span class="c1">// pin_DisconnectDebug does it too when the pins map; explicit is cheap insurance and</span>
+<span class="w">    </span><span class="c1">// self-documenting.)</span>
+<span class="w">    </span><span class="n">__HAL_RCC_AFIO_CLK_ENABLE</span><span class="p">();</span>
+<span class="w">    </span><span class="n">__HAL_AFIO_REMAP_SWJ_NOJTAG</span><span class="p">();</span>
+<span class="cp">#endif</span>
 
-    // Strobes idle: LOAD high ('165 shift mode), LATCH low ('595 waits for a rising edge).
-    pinMode(_loadPin, OUTPUT);
-    digitalWrite(_loadPin, HIGH);
-    pinMode(_latchPin, OUTPUT);
-    digitalWrite(_latchPin, LOW);
+<span class="w">    </span><span class="c1">// Strobes idle: LOAD high ('165 shift mode), LATCH low ('595 waits for a rising edge).</span>
+<span class="w">    </span><span class="n">pinMode</span><span class="p">(</span><span class="n">_loadPin</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_loadPin</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span>
+<span class="w">    </span><span class="n">pinMode</span><span class="p">(</span><span class="n">_latchPin</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_latchPin</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
 
-#ifdef SHIFTBUS_TEST
-    if (_testBypass) { doTransfer(true); return; }  // no SPI in chip-less logic tests
-#endif
+<span class="cp">#ifdef SHIFTBUS_TEST</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_testBypass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">doTransfer</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">// no SPI in chip-less logic tests</span>
+<span class="cp">#endif</span>
 
-    _spi-&gt;setSCLK(_sckPin);
-    _spi-&gt;setMISO(_misoPin);
-    _spi-&gt;setMOSI(_mosiPin);
-    _spi-&gt;begin();
+<span class="w">    </span><span class="n">_spi</span><span class="o">-&gt;</span><span class="n">setSCLK</span><span class="p">(</span><span class="n">_sckPin</span><span class="p">);</span>
+<span class="w">    </span><span class="n">_spi</span><span class="o">-&gt;</span><span class="n">setMISO</span><span class="p">(</span><span class="n">_misoPin</span><span class="p">);</span>
+<span class="w">    </span><span class="n">_spi</span><span class="o">-&gt;</span><span class="n">setMOSI</span><span class="p">(</span><span class="n">_mosiPin</span><span class="p">);</span>
+<span class="w">    </span><span class="n">_spi</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">();</span>
 
-    // Defined '595 state as early as possible: the power-on shift/storage registers are
-    // undefined (OĒ is tied to GND — stance (a), boot twitch is cosmetic). The stage is
-    // all zeros here, so the first transfer publishes an all-off frame, then primes the
-    // '165 cache for the forceReport() boot burst.
-    doTransfer(true);
+<span class="w">    </span><span class="c1">// Defined '595 state as early as possible: the power-on shift/storage registers are</span>
+<span class="w">    </span><span class="c1">// undefined (OĒ is tied to GND — stance (a), boot twitch is cosmetic). The stage is</span>
+<span class="w">    </span><span class="c1">// all zeros here, so the first transfer publishes an all-off frame, then primes the</span>
+<span class="w">    </span><span class="c1">// '165 cache for the forceReport() boot burst.</span>
+<span class="w">    </span><span class="n">doTransfer</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
 
-    if (STM32Board::isDebug()) {
-        auto&amp; d = STM32Board::diagSerial();
-        d.print(F(&quot;[ShiftBus] begin: in=&quot;));  d.print(_nIn);
-        d.print(F(&quot; out=&quot;));                  d.print(_nOut);
-        d.print(F(&quot; frame=&quot;));                d.print((int)max(_nIn, _nOut));
-        d.println(F(&quot;B&quot;));
-    }
-}
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[ShiftBus] begin: in="</span><span class="p">));</span><span class="w">  </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">_nIn</span><span class="p">);</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" out="</span><span class="p">));</span><span class="w">                  </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">_nOut</span><span class="p">);</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" frame="</span><span class="p">));</span><span class="w">                </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">max</span><span class="p">(</span><span class="n">_nIn</span><span class="p">,</span><span class="w"> </span><span class="n">_nOut</span><span class="p">));</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"B"</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void ShiftBus::transfer() {
-    if (!_begun) return;
-    // Loop-context call while the sampling ISR owns the cadence: mask interrupts for the
-    // µs-scale transaction so ISR and loop never interleave on the frame buffers. The
-    // window is bounded (≤ MAX_CHAIN bytes at 1 MHz ≈ 64 µs + strobes); no CAN/I2C inside.
-    if (_isrActive) {
-        noInterrupts();
-        doTransfer(true);
-        interrupts();
-    } else {
-        doTransfer(true);
-    }
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::transfer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_begun</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Loop-context call while the sampling ISR owns the cadence: mask interrupts for the</span>
+<span class="w">    </span><span class="c1">// µs-scale transaction so ISR and loop never interleave on the frame buffers. The</span>
+<span class="w">    </span><span class="c1">// window is bounded (≤ MAX_CHAIN bytes at 1 MHz ≈ 64 µs + strobes); no CAN/I2C inside.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_isrActive</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">noInterrupts</span><span class="p">();</span>
+<span class="w">        </span><span class="n">doTransfer</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="w">        </span><span class="n">interrupts</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">doTransfer</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void ShiftBus::doTransfer(bool commitStage) {
-    // Commit: publish staged writeBit() changes into the frame the wire ships. Only
-    // loop-context paths commit (transfer/flushNow — masked when the ISR runs); the ISR
-    // never commits, so it can never latch a half-staged multi-pin group.
-    if (commitStage &amp;&amp; _dirty) {
-        for (uint8_t i = 0; i &lt; MAX_CHAIN; i++) _outFrame[i] = _stage[i];
-        _dirty = false;
-    }
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::doTransfer</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">commitStage</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Commit: publish staged writeBit() changes into the frame the wire ships. Only</span>
+<span class="w">    </span><span class="c1">// loop-context paths commit (transfer/flushNow — masked when the ISR runs); the ISR</span>
+<span class="w">    </span><span class="c1">// never commits, so it can never latch a half-staged multi-pin group.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">commitStage</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_dirty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">_outFrame</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_stage</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="n">_dirty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-    const uint8_t n = max(_nIn, _nOut);
-    if (n == 0) return;
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">_nIn</span><span class="p">,</span><span class="w"> </span><span class="n">_nOut</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 
-#ifdef SHIFTBUS_TEST
-    _transferCount++;
-#endif
+<span class="cp">#ifdef SHIFTBUS_TEST</span>
+<span class="w">    </span><span class="n">_transferCount</span><span class="o">++</span><span class="p">;</span>
+<span class="cp">#endif</span>
 
-    // Build the wire frame. MSB-first, so byte chip bit n = pin Dn/Qn.
-    // '595: the LAST byte shifted lands in chip 0 (nearest the MCU) → transmit
-    // outFrame[nOut-1] … outFrame[0], padded in FRONT when the '165 chain is longer
-    // (leading pad bits fall off the far end of the '595 chain).
-    // '165: the FIRST byte received is chip 0 → inFrame[i] = wire[i] straight.
-    const uint8_t pad = n - _nOut;
-    for (uint8_t i = 0; i &lt; pad; i++)  _wire[i] = 0;
-    for (uint8_t i = 0; i &lt; _nOut; i++) _wire[pad + i] = _outFrame[_nOut - 1 - i];
+<span class="w">    </span><span class="c1">// Build the wire frame. MSB-first, so byte chip bit n = pin Dn/Qn.</span>
+<span class="w">    </span><span class="c1">// '595: the LAST byte shifted lands in chip 0 (nearest the MCU) → transmit</span>
+<span class="w">    </span><span class="c1">// outFrame[nOut-1] … outFrame[0], padded in FRONT when the '165 chain is longer</span>
+<span class="w">    </span><span class="c1">// (leading pad bits fall off the far end of the '595 chain).</span>
+<span class="w">    </span><span class="c1">// '165: the FIRST byte received is chip 0 → inFrame[i] = wire[i] straight.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_nOut</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">pad</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w">  </span><span class="n">_wire</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">_nOut</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">_wire</span><span class="p">[</span><span class="n">pad</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_outFrame</span><span class="p">[</span><span class="n">_nOut</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">];</span>
 
-#ifdef SHIFTBUS_TEST
-    for (uint8_t i = 0; i &lt; MAX_CHAIN; i++) _wireTx[i] = _wire[i];
-    if (_testBypass) {
-        for (uint8_t i = 0; i &lt; MAX_CHAIN; i++) _inFrame[i] = _testIn[i];
-        return;
-    }
-#endif
+<span class="cp">#ifdef SHIFTBUS_TEST</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">_wireTx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_wire</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_testBypass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_CHAIN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">_inFrame</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_testIn</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
 
-    // '165 capture: pulse SH/LD̄ low. Data-sheet minimum pulse width is tens of ns; two
-    // digitalWrite() calls at 72 MHz are comfortably above it.
-    digitalWrite(_loadPin, LOW);
-    digitalWrite(_loadPin, HIGH);
+<span class="w">    </span><span class="c1">// '165 capture: pulse SH/LD̄ low. Data-sheet minimum pulse width is tens of ns; two</span>
+<span class="w">    </span><span class="c1">// digitalWrite() calls at 72 MHz are comfortably above it.</span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_loadPin</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_loadPin</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span>
 
-    _spi-&gt;beginTransaction(kShiftBusSettings);
-    _spi-&gt;transfer(_wire, n);   // in-place full-duplex: TX consumed, RX replaces
-    _spi-&gt;endTransaction();
+<span class="w">    </span><span class="n">_spi</span><span class="o">-&gt;</span><span class="n">beginTransaction</span><span class="p">(</span><span class="n">kShiftBusSettings</span><span class="p">);</span>
+<span class="w">    </span><span class="n">_spi</span><span class="o">-&gt;</span><span class="n">transfer</span><span class="p">(</span><span class="n">_wire</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w">   </span><span class="c1">// in-place full-duplex: TX consumed, RX replaces</span>
+<span class="w">    </span><span class="n">_spi</span><span class="o">-&gt;</span><span class="n">endTransaction</span><span class="p">();</span>
 
-    for (uint8_t i = 0; i &lt; _nIn; i++) _inFrame[i] = _wire[i];
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">_nIn</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">_inFrame</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_wire</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 
-    // '595 publish: STCP rising edge copies the (freshly re-shifted) frame to the outputs.
-    digitalWrite(_latchPin, HIGH);
-    digitalWrite(_latchPin, LOW);
-}
+<span class="w">    </span><span class="c1">// '595 publish: STCP rising edge copies the (freshly re-shifted) frame to the outputs.</span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_latchPin</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_latchPin</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="p">}</span>
 
-// ── Timer-ISR sampling ──────────────────────────────────────────────────────────
+<span class="c1">// ── Timer-ISR sampling ──────────────────────────────────────────────────────────</span>
 
-void ShiftBus::isrTrampoline() {
-    ShiftBus* bus = _isrInstance;
-    if (!bus) return;
-    bus-&gt;doTransfer(false);  // ISR ships the committed frame only — never commits stage
-    for (uint8_t i = 0; i &lt; bus-&gt;_consumerCount; i++)
-        bus-&gt;_consumers[i].hook(bus-&gt;_consumers[i].ctx);
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::isrTrampoline</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ShiftBus</span><span class="o">*</span><span class="w"> </span><span class="n">bus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_isrInstance</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bus</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">doTransfer</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">  </span><span class="c1">// ISR ships the committed frame only — never commits stage</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">_consumerCount</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">_consumers</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">hook</span><span class="p">(</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">_consumers</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ctx</span><span class="p">);</span>
+<span class="p">}</span>
 
-void ShiftBus::beginIsrSampling(TIM_TypeDef* tim, uint16_t sampleHz) {
-    if (!_begun || _isrActive || sampleHz == 0) return;
-    if (_isrInstance &amp;&amp; _isrInstance != this) {
-        STM32Board::log(&quot;[ShiftBus] ISR sampling already claimed by another bus — skipped&quot;);
-        return;
-    }
-    _isrInstance = this;
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::beginIsrSampling</span><span class="p">(</span><span class="n">TIM_TypeDef</span><span class="o">*</span><span class="w"> </span><span class="n">tim</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sampleHz</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_begun</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">_isrActive</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">sampleHz</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_isrInstance</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_isrInstance</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[ShiftBus] ISR sampling already claimed by another bus — skipped"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">_isrInstance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
 
-    // Setup-time allocation only (never in the ISR); the timer lives for the node's uptime.
-    HardwareTimer* timer = new HardwareTimer(tim);
-    timer-&gt;setOverflow(sampleHz, HERTZ_FORMAT);
-    timer-&gt;attachInterrupt(isrTrampoline);
-    _isrActive = true;   // set before resume so the first tick sees a consistent flag
-    timer-&gt;resume();
+<span class="w">    </span><span class="c1">// Setup-time allocation only (never in the ISR); the timer lives for the node's uptime.</span>
+<span class="w">    </span><span class="n">HardwareTimer</span><span class="o">*</span><span class="w"> </span><span class="n">timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HardwareTimer</span><span class="p">(</span><span class="n">tim</span><span class="p">);</span>
+<span class="w">    </span><span class="n">timer</span><span class="o">-&gt;</span><span class="n">setOverflow</span><span class="p">(</span><span class="n">sampleHz</span><span class="p">,</span><span class="w"> </span><span class="n">HERTZ_FORMAT</span><span class="p">);</span>
+<span class="w">    </span><span class="n">timer</span><span class="o">-&gt;</span><span class="n">attachInterrupt</span><span class="p">(</span><span class="n">isrTrampoline</span><span class="p">);</span>
+<span class="w">    </span><span class="n">_isrActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">   </span><span class="c1">// set before resume so the first tick sees a consistent flag</span>
+<span class="w">    </span><span class="n">timer</span><span class="o">-&gt;</span><span class="n">resume</span><span class="p">();</span>
 
-    if (STM32Board::isDebug()) {
-        auto&amp; d = STM32Board::diagSerial();
-        d.print(F(&quot;[ShiftBus] ISR sampling @&quot;)); d.print(sampleHz); d.println(F(&quot; Hz&quot;));
-    }
-}
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[ShiftBus] ISR sampling @"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">sampleHz</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" Hz"</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void ShiftBus::addIsrConsumer(void (*hook)(void* ctx), void* ctx) {
-    if (_consumerCount &gt;= MAX_ISR_CONSUMERS) {
-        STM32Board::log(&quot;[ShiftBus] MAX_ISR_CONSUMERS exceeded — consumer dropped&quot;);
-        return;
-    }
-    if (_isrActive) noInterrupts();
-    _consumers[_consumerCount] = { hook, ctx };
-    _consumerCount++;
-    if (_isrActive) interrupts();
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">ShiftBus::addIsrConsumer</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">hook</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span><span class="p">),</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_consumerCount</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAX_ISR_CONSUMERS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[ShiftBus] MAX_ISR_CONSUMERS exceeded — consumer dropped"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_isrActive</span><span class="p">)</span><span class="w"> </span><span class="n">noInterrupts</span><span class="p">();</span>
+<span class="w">    </span><span class="n">_consumers</span><span class="p">[</span><span class="n">_consumerCount</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">hook</span><span class="p">,</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">_consumerCount</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_isrActive</span><span class="p">)</span><span class="w"> </span><span class="n">interrupts</span><span class="p">();</span>
+<span class="p">}</span>
 
-}  // namespace OpenSkyhawk
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
 
-// ── Pre-defined global instance ────────────────────────────────────────────────
-// Static-init safe: the constructor stores the SPI pointer + pin numbers and nothing else.
+<span class="c1">// ── Pre-defined global instance ────────────────────────────────────────────────</span>
+<span class="c1">// Static-init safe: the constructor stores the SPI pointer + pin numbers and nothing else.</span>
 
-OpenSkyhawk::ShiftBus ShiftBus1(SPI, SHIFTBUS_SCK, SHIFTBUS_MISO, SHIFTBUS_MOSI,
-                                SHIFTBUS_LOAD, SHIFTBUS_LATCH);
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="w"> </span><span class="n">ShiftBus1</span><span class="p">(</span><span class="n">SPI</span><span class="p">,</span><span class="w"> </span><span class="n">SHIFTBUS_SCK</span><span class="p">,</span><span class="w"> </span><span class="n">SHIFTBUS_MISO</span><span class="p">,</span><span class="w"> </span><span class="n">SHIFTBUS_MOSI</span><span class="p">,</span>
+<span class="w">                                </span><span class="n">SHIFTBUS_LOAD</span><span class="p">,</span><span class="w"> </span><span class="n">SHIFTBUS_LATCH</span><span class="p">);</span>
 
-#endif  // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,395 +4116,395 @@
 <h1 id="file-stm32boardcpp">File STM32Board.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_aa1816754c0645981f9c7af905857f7d/"><strong>STM32Board</strong></a> <strong>&gt;</strong> <a href="../STM32Board_8cpp/"><strong>STM32Board.cpp</strong></a></p>
 <p><a href="../STM32Board_8cpp/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &quot;STM32Board.h&quot;
-#include &lt;CANProtocol.h&gt;  // for CanStatus enum values
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"STM32Board.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;CANProtocol.h&gt;</span><span class="w">  </span><span class="c1">// for CanStatus enum values</span>
 
-// ── Private types ─────────────────────────────────────────────────────────────
+<span class="c1">// ── Private types ─────────────────────────────────────────────────────────────</span>
 
-// Under STM32BOARD_TEST this enum lives in the header (so currentState() can return it);
-// keep the two definitions identical.
-#ifndef STM32BOARD_TEST
-enum class LedState {
-    OFF,       
-    BOOTING,   
-    NORMAL,    
-    CONNECTED, 
-    CAN_ERROR, 
-    BUS_OFF,   
-    WARNING,   
-};
-#endif
+<span class="c1">// Under STM32BOARD_TEST this enum lives in the header (so currentState() can return it);</span>
+<span class="c1">// keep the two definitions identical.</span>
+<span class="cp">#ifndef STM32BOARD_TEST</span>
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">LedState</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">OFF</span><span class="p">,</span><span class="w">       </span>
+<span class="w">    </span><span class="n">BOOTING</span><span class="p">,</span><span class="w">   </span>
+<span class="w">    </span><span class="n">NORMAL</span><span class="p">,</span><span class="w">    </span>
+<span class="w">    </span><span class="n">CONNECTED</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="n">CAN_ERROR</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="n">BUS_OFF</span><span class="p">,</span><span class="w">   </span>
+<span class="w">    </span><span class="n">WARNING</span><span class="p">,</span><span class="w">   </span>
+<span class="p">};</span>
+<span class="cp">#endif</span>
 
-// ── Private state ─────────────────────────────────────────────────────────────
+<span class="c1">// ── Private state ─────────────────────────────────────────────────────────────</span>
 
-static LedState          _state      = LedState::OFF;
-static bool              _blinkPhase = false;
-static uint32_t          _ledLastMs  = 0;
-static bool              _debugOn    = false;
-static Uart              _diag(PA10, PA9);  // USART1: RX=PA10, TX=PA9
-static CAN_HandleTypeDef _hcan;
+<span class="k">static</span><span class="w"> </span><span class="n">LedState</span><span class="w">          </span><span class="n">_state</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">OFF</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w">              </span><span class="n">_blinkPhase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w">          </span><span class="n">_ledLastMs</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w">              </span><span class="n">_debugOn</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="n">Uart</span><span class="w">              </span><span class="nf">_diag</span><span class="p">(</span><span class="n">PA10</span><span class="p">,</span><span class="w"> </span><span class="n">PA9</span><span class="p">);</span><span class="w">  </span><span class="c1">// USART1: RX=PA10, TX=PA9</span>
+<span class="k">static</span><span class="w"> </span><span class="n">CAN_HandleTypeDef</span><span class="w"> </span><span class="n">_hcan</span><span class="p">;</span>
 
-// Derived-state inputs — arbitrated by _recompute() into the effective _state.
-// Storing inputs (not the final state) lets CONNECTED survive a transient CAN fault and
-// re-engage on recovery, and lets WARNING be cleared independently.
-static CanStatus _canStatus  = CanStatus::STARTING; 
-static bool      _linkActive = false;               
-static uint32_t  _linkLastMs = 0;                   
-static bool      _warning    = false;               
-static bool      _begun      = false;               
-static bool      _clockFault = false;               
+<span class="c1">// Derived-state inputs — arbitrated by _recompute() into the effective _state.</span>
+<span class="c1">// Storing inputs (not the final state) lets CONNECTED survive a transient CAN fault and</span>
+<span class="c1">// re-engage on recovery, and lets WARNING be cleared independently.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">CanStatus</span><span class="w"> </span><span class="n">_canStatus</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">CanStatus</span><span class="o">::</span><span class="n">STARTING</span><span class="p">;</span><span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w">      </span><span class="n">_linkActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">               </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w">  </span><span class="n">_linkLastMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                   </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w">      </span><span class="n">_warning</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">               </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w">      </span><span class="n">_begun</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">               </span>
+<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w">      </span><span class="n">_clockFault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">               </span>
 
-static constexpr uint32_t LINK_DECAY_MS = 500;      
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">LINK_DECAY_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span><span class="w">      </span>
 
-// ── Private helpers ───────────────────────────────────────────────────────────
+<span class="c1">// ── Private helpers ───────────────────────────────────────────────────────────</span>
 
-static uint16_t _blinkPeriodFor(LedState s) {
-    switch (s) {
-        case LedState::BOOTING:   return 1000;
-        case LedState::NORMAL:    return 1000;
-        case LedState::CAN_ERROR: return 250;
-        case LedState::WARNING:   return 500;
-        default:                  return 0;  // solid or off — no timer needed
-    }
-}
+<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">_blinkPeriodFor</span><span class="p">(</span><span class="n">LedState</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">BOOTING</span><span class="p">:</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">NORMAL</span><span class="p">:</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">CAN_ERROR</span><span class="p">:</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">250</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">WARNING</span><span class="p">:</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w">                  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// solid or off — no timer needed</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-static void _applyLed() {
-    switch (_state) {
-        case LedState::OFF:
-            digitalWrite(STM32Board::PIN_LED_RED,   LOW);
-            digitalWrite(STM32Board::PIN_LED_GREEN, LOW);
-            break;
-        case LedState::BOOTING:
-        case LedState::CAN_ERROR:
-            digitalWrite(STM32Board::PIN_LED_RED,   _blinkPhase ? HIGH : LOW);
-            digitalWrite(STM32Board::PIN_LED_GREEN, LOW);
-            break;
-        case LedState::NORMAL:
-            digitalWrite(STM32Board::PIN_LED_RED,   LOW);
-            digitalWrite(STM32Board::PIN_LED_GREEN, _blinkPhase ? HIGH : LOW);
-            break;
-        case LedState::CONNECTED:
-            digitalWrite(STM32Board::PIN_LED_RED,   LOW);
-            digitalWrite(STM32Board::PIN_LED_GREEN, HIGH);
-            break;
-        case LedState::BUS_OFF:
-            digitalWrite(STM32Board::PIN_LED_RED,   HIGH);
-            digitalWrite(STM32Board::PIN_LED_GREEN, LOW);
-            break;
-        case LedState::WARNING:
-            digitalWrite(STM32Board::PIN_LED_RED,   _blinkPhase ? HIGH : LOW);
-            digitalWrite(STM32Board::PIN_LED_GREEN, _blinkPhase ? LOW  : HIGH);
-            break;
-    }
-}
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">_applyLed</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">OFF</span><span class="p">:</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_RED</span><span class="p">,</span><span class="w">   </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_GREEN</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">BOOTING</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">CAN_ERROR</span><span class="p">:</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_RED</span><span class="p">,</span><span class="w">   </span><span class="n">_blinkPhase</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HIGH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_GREEN</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">NORMAL</span><span class="p">:</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_RED</span><span class="p">,</span><span class="w">   </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_GREEN</span><span class="p">,</span><span class="w"> </span><span class="n">_blinkPhase</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HIGH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">CONNECTED</span><span class="p">:</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_RED</span><span class="p">,</span><span class="w">   </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_GREEN</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">BUS_OFF</span><span class="p">:</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_RED</span><span class="p">,</span><span class="w">   </span><span class="n">HIGH</span><span class="p">);</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_GREEN</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">LedState</span><span class="o">::</span><span class="no">WARNING</span><span class="p">:</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_RED</span><span class="p">,</span><span class="w">   </span><span class="n">_blinkPhase</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HIGH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<span class="w">            </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">PIN_LED_GREEN</span><span class="p">,</span><span class="w"> </span><span class="n">_blinkPhase</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">LOW</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-// Arbitrate the inputs into the effective LED state by fixed precedence (highest first).
-// Sole writer of _state. Resets the blink phase and repaints only on an actual transition,
-// preserving the invariant that the phase resets only when the state genuinely changes.
-//
-//   not begun            → OFF
-//   clock fault          → WARNING    (amber alt)      ← root HW fault: outranks the CAN
-//                                                        errors it causes, so a bad clock is
-//                                                        not misdiagnosed as a bus problem (#245)
-//   CAN BUS_OFF          → BUS_OFF    (solid red)      } CAN faults outrank an app-layer
-//   CAN TX_ERROR         → CAN_ERROR  (fast red)       } warning — a dead/erroring bus must
-//   CAN STARTING         → BOOTING    (slow red)       } not be masked by setWarning().
-//   warning              → WARNING    (amber alt)
-//   NORMAL + linkActive  → CONNECTED  (solid green)    ← only reachable when CAN is NORMAL
-//   NORMAL               → NORMAL     (slow green)
-static void _recompute() {
-    LedState next;
-    if      (!_begun)                            next = LedState::OFF;
-    else if (_clockFault)                        next = LedState::WARNING;
-    else if (_canStatus == CanStatus::BUS_OFF)   next = LedState::BUS_OFF;
-    else if (_canStatus == CanStatus::TX_ERROR)  next = LedState::CAN_ERROR;
-    else if (_canStatus == CanStatus::STARTING)  next = LedState::BOOTING;
-    else if (_warning)                           next = LedState::WARNING;
-    else if (_linkActive)                        next = LedState::CONNECTED;
-    else                                         next = LedState::NORMAL;
+<span class="c1">// Arbitrate the inputs into the effective LED state by fixed precedence (highest first).</span>
+<span class="c1">// Sole writer of _state. Resets the blink phase and repaints only on an actual transition,</span>
+<span class="c1">// preserving the invariant that the phase resets only when the state genuinely changes.</span>
+<span class="c1">//</span>
+<span class="c1">//   not begun            → OFF</span>
+<span class="c1">//   clock fault          → WARNING    (amber alt)      ← root HW fault: outranks the CAN</span>
+<span class="c1">//                                                        errors it causes, so a bad clock is</span>
+<span class="c1">//                                                        not misdiagnosed as a bus problem (#245)</span>
+<span class="c1">//   CAN BUS_OFF          → BUS_OFF    (solid red)      } CAN faults outrank an app-layer</span>
+<span class="c1">//   CAN TX_ERROR         → CAN_ERROR  (fast red)       } warning — a dead/erroring bus must</span>
+<span class="c1">//   CAN STARTING         → BOOTING    (slow red)       } not be masked by setWarning().</span>
+<span class="c1">//   warning              → WARNING    (amber alt)</span>
+<span class="c1">//   NORMAL + linkActive  → CONNECTED  (solid green)    ← only reachable when CAN is NORMAL</span>
+<span class="c1">//   NORMAL               → NORMAL     (slow green)</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">_recompute</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">LedState</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w">      </span><span class="p">(</span><span class="o">!</span><span class="n">_begun</span><span class="p">)</span><span class="w">                            </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">OFF</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_clockFault</span><span class="p">)</span><span class="w">                        </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">WARNING</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_canStatus</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CanStatus</span><span class="o">::</span><span class="n">BUS_OFF</span><span class="p">)</span><span class="w">   </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">BUS_OFF</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_canStatus</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CanStatus</span><span class="o">::</span><span class="n">TX_ERROR</span><span class="p">)</span><span class="w">  </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">CAN_ERROR</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_canStatus</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CanStatus</span><span class="o">::</span><span class="n">STARTING</span><span class="p">)</span><span class="w">  </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">BOOTING</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_warning</span><span class="p">)</span><span class="w">                           </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">WARNING</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_linkActive</span><span class="p">)</span><span class="w">                        </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">CONNECTED</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w">                                         </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LedState</span><span class="o">::</span><span class="n">NORMAL</span><span class="p">;</span>
 
-    if (next != _state) {
-        _state      = next;
-        _blinkPhase = false;
-        _ledLastMs  = millis();
-        _applyLed();
-    }
-}
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_state</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_blinkPhase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_ledLastMs</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
+<span class="w">        </span><span class="n">_applyLed</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-// HAL weak-symbol override — defines CAN GPIO once for all OpenSkyhawk STM32 boards.
-extern &quot;C&quot; void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan_p) {
-    if (hcan_p-&gt;Instance != CAN1) return;
-    __HAL_RCC_CAN1_CLK_ENABLE();
-    __HAL_RCC_GPIOA_CLK_ENABLE();
+<span class="c1">// HAL weak-symbol override — defines CAN GPIO once for all OpenSkyhawk STM32 boards.</span>
+<span class="k">extern</span><span class="w"> </span><span class="s">"C"</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">HAL_CAN_MspInit</span><span class="p">(</span><span class="n">CAN_HandleTypeDef</span><span class="o">*</span><span class="w"> </span><span class="n">hcan_p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hcan_p</span><span class="o">-&gt;</span><span class="n">Instance</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CAN1</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="n">__HAL_RCC_CAN1_CLK_ENABLE</span><span class="p">();</span>
+<span class="w">    </span><span class="n">__HAL_RCC_GPIOA_CLK_ENABLE</span><span class="p">();</span>
 
-    GPIO_InitTypeDef gpio = {};
-    gpio.Pin   = GPIO_PIN_12;
-    gpio.Mode  = GPIO_MODE_AF_PP;
-    gpio.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(GPIOA, &amp;gpio);
+<span class="w">    </span><span class="n">GPIO_InitTypeDef</span><span class="w"> </span><span class="n">gpio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="n">gpio</span><span class="p">.</span><span class="n">Pin</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_PIN_12</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gpio</span><span class="p">.</span><span class="n">Mode</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_MODE_AF_PP</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gpio</span><span class="p">.</span><span class="n">Speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_SPEED_FREQ_HIGH</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HAL_GPIO_Init</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gpio</span><span class="p">);</span>
 
-    gpio.Pin  = GPIO_PIN_11;
-    gpio.Mode = GPIO_MODE_INPUT;
-    gpio.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOA, &amp;gpio);
-}
+<span class="w">    </span><span class="n">gpio</span><span class="p">.</span><span class="n">Pin</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_PIN_11</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gpio</span><span class="p">.</span><span class="n">Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_MODE_INPUT</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gpio</span><span class="p">.</span><span class="n">Pull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_NOPULL</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HAL_GPIO_Init</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gpio</span><span class="p">);</span>
+<span class="p">}</span>
 
-// PCLK2 / 6 → ADCCLK, called on BOTH exit paths of SystemClock_Config below.
-//
-// ADCPRE resets to /2, which off the 72 MHz PCLK2 is 36 MHz — 2.6x the F103's 14 MHz maximum.
-// /4 = 18 MHz is still over, so /6 = 12 MHz is the fastest legal divider. (On the fault path
-// PCLK2 is 8 MHz, so /6 gives 1.33 MHz — above the 0.6 MHz minimum.)
-//
-// Nobody else was setting it: on F1 the Arduino core defers the prescaler to SystemClock_Config
-// (analog.cpp guards its __HAL_RCC_ADC_CONFIG with !defined(STM32F1xx)) and variant_generic.cpp
-// never set it, so this strong override is the only owner. Running here means it lands before
-// setup(), so the core's own analogRead() ADC init inherits it. Nothing but the ADCs consumes
-// ADCCLK, so the #245 clock work below is untouched.
-//
-// This mirrors variant_PILL_F103Cx.cpp, which does the same via HAL; we omit its
-// RCC_PERIPHCLK_USB branch deliberately — every OpenSkyhawk STM32 env builds -DUSB_NONE.
-//
-// NOTE: nothing observable was fixed by this. Axis noise, PA2 in production, and die-temperature
-// telemetry were each predicted to improve and each measured unchanged on PanelGroup Rev 1. The
-// justification is that the part was running out of spec, plus high-impedance sources in general
-// (cockpit pots are ~2.5 kΩ at mid-travel) — which has NOT been measured on an actual pot. (#263)
-static void _configAdcClock(void) {
-    RCC_PeriphCLKInitTypeDef adc = {};
-    adc.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-    adc.AdcClockSelection    = RCC_ADCPCLK2_DIV6;
-    // On F1 the ADC branch is assert_param + a CFGR field write — it cannot fail. The cast
-    // says ignoring the status is deliberate, not an oversight.
-    (void)HAL_RCCEx_PeriphCLKConfig(&amp;adc);
-}
+<span class="c1">// PCLK2 / 6 → ADCCLK, called on BOTH exit paths of SystemClock_Config below.</span>
+<span class="c1">//</span>
+<span class="c1">// ADCPRE resets to /2, which off the 72 MHz PCLK2 is 36 MHz — 2.6x the F103's 14 MHz maximum.</span>
+<span class="c1">// /4 = 18 MHz is still over, so /6 = 12 MHz is the fastest legal divider. (On the fault path</span>
+<span class="c1">// PCLK2 is 8 MHz, so /6 gives 1.33 MHz — above the 0.6 MHz minimum.)</span>
+<span class="c1">//</span>
+<span class="c1">// Nobody else was setting it: on F1 the Arduino core defers the prescaler to SystemClock_Config</span>
+<span class="c1">// (analog.cpp guards its __HAL_RCC_ADC_CONFIG with !defined(STM32F1xx)) and variant_generic.cpp</span>
+<span class="c1">// never set it, so this strong override is the only owner. Running here means it lands before</span>
+<span class="c1">// setup(), so the core's own analogRead() ADC init inherits it. Nothing but the ADCs consumes</span>
+<span class="c1">// ADCCLK, so the #245 clock work below is untouched.</span>
+<span class="c1">//</span>
+<span class="c1">// This mirrors variant_PILL_F103Cx.cpp, which does the same via HAL; we omit its</span>
+<span class="c1">// RCC_PERIPHCLK_USB branch deliberately — every OpenSkyhawk STM32 env builds -DUSB_NONE.</span>
+<span class="c1">//</span>
+<span class="c1">// NOTE: nothing observable was fixed by this. Axis noise, PA2 in production, and die-temperature</span>
+<span class="c1">// telemetry were each predicted to improve and each measured unchanged on PanelGroup Rev 1. The</span>
+<span class="c1">// justification is that the part was running out of spec, plus high-impedance sources in general</span>
+<span class="c1">// (cockpit pots are ~2.5 kΩ at mid-travel) — which has NOT been measured on an actual pot. (#263)</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">_configAdcClock</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">RCC_PeriphCLKInitTypeDef</span><span class="w"> </span><span class="n">adc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="n">adc</span><span class="p">.</span><span class="n">PeriphClockSelection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_PERIPHCLK_ADC</span><span class="p">;</span>
+<span class="w">    </span><span class="n">adc</span><span class="p">.</span><span class="n">AdcClockSelection</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_ADCPCLK2_DIV6</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// On F1 the ADC branch is assert_param + a CFGR field write — it cannot fail. The cast</span>
+<span class="w">    </span><span class="c1">// says ignoring the status is deliberate, not an oversight.</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">HAL_RCCEx_PeriphCLKConfig</span><span class="p">(</span><span class="o">&amp;</span><span class="n">adc</span><span class="p">);</span>
+<span class="p">}</span>
 
-// Strong override of the core's __weak SystemClock_Config. The genericSTM32F103C8/CB
-// variant defaults SYSCLK to HSI-PLL 64 MHz → APB1 32 MHz → CAN 444 kbps (spec 500).
-// -DHSE_VALUE only tells HAL the crystal frequency; nothing selects HSE. Every
-// OpenSkyhawk STM32 node links STM32Board, so selecting HSE here fixes the fleet in
-// one place: HSE 8 MHz × 9 = 72 MHz → APB1 36 MHz → CAN 500 kbps, matching begin()'s
-// bit timing. If HSE fails to start (dead crystal / cold joint → HSERDY timeout) or the
-// configured tree is self-inconsistent, _clockFault latches and begin() raises a visible
-// WARNING rather than silently running the wrong rate. NOTE: this does NOT detect a
-// wrong-VALUE crystal — HAL_RCC_Get*Freq() derive from the compile-time HSE_VALUE, not a
-// measurement, so a 12 MHz part would compute (and pass) as 72 MHz while really running
-// 108 MHz. Correct crystal value is a BOM/build guarantee, not runtime-detectable here.
-// See issue #245. -DFORCE_CLOCK_FALLBACK exercises the fault path without a dead crystal.
-// Displacing the variant also made this the owner of the ADC prescaler — see _configAdcClock
-// above, called on both exit paths (#263).
-extern &quot;C&quot; void SystemClock_Config(void) {
-#ifndef FORCE_CLOCK_FALLBACK
-    RCC_OscInitTypeDef osc = {};
-    osc.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    osc.HSEState       = RCC_HSE_ON;
-    osc.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-    osc.PLL.PLLState   = RCC_PLL_ON;
-    osc.PLL.PLLSource  = RCC_PLLSOURCE_HSE;
-    osc.PLL.PLLMUL     = RCC_PLL_MUL9;               // 8 MHz × 9 = 72 MHz
-    if (HAL_RCC_OscConfig(&amp;osc) == HAL_OK) {
-        RCC_ClkInitTypeDef clk = {};
-        clk.ClockType      = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK |
-                             RCC_CLOCKTYPE_PCLK1  | RCC_CLOCKTYPE_PCLK2;
-        clk.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
-        clk.AHBCLKDivider  = RCC_SYSCLK_DIV1;        // 72 MHz
-        clk.APB1CLKDivider = RCC_HCLK_DIV2;          // 36 MHz — CAN, USART2/3
-        clk.APB2CLKDivider = RCC_HCLK_DIV1;          // 72 MHz — USART1 diag
-        if (HAL_RCC_ClockConfig(&amp;clk, FLASH_LATENCY_2) == HAL_OK) {
-            // Verify the configured tree is self-consistent (guards a bad edit to the
-            // dividers/mult above). These freqs are computed from the RCC config × the
-            // compile-time HSE_VALUE, NOT measured — so this cannot catch a wrong-value
-            // crystal (see header note); it only confirms the config we just applied.
-            if (HAL_RCC_GetSysClockFreq() == 72000000UL &amp;&amp;
-                HAL_RCC_GetPCLK1Freq()   == 36000000UL) {
-                _configAdcClock();                   // PCLK2 72 MHz → ADCCLK 12 MHz (#263)
-                return;                              // 72 MHz locked and verified
-            }
-        }
-    }
-#endif
-    // HSE failed / forced / wrong frequency → do NOT silently run at the wrong CAN rate.
-    // Latch the fault (begin() → WARNING) and limp on internal RC just enough to signal.
-    _clockFault = true;
-    RCC_OscInitTypeDef h = {};
-    h.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-    h.HSIState = RCC_HSI_ON;
-    h.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-    h.PLL.PLLState = RCC_PLL_NONE;
-    HAL_RCC_OscConfig(&amp;h);
-    RCC_ClkInitTypeDef c = {};
-    c.ClockType = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK |
-                  RCC_CLOCKTYPE_PCLK1  | RCC_CLOCKTYPE_PCLK2;
-    c.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;           // 8 MHz — visibly wrong, safe boot
-    c.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    c.APB1CLKDivider = RCC_HCLK_DIV1;
-    c.APB2CLKDivider = RCC_HCLK_DIV1;
-    HAL_RCC_ClockConfig(&amp;c, FLASH_LATENCY_0);
-    _configAdcClock();                               // PCLK2 8 MHz → ADCCLK 1.33 MHz (#263)
-}
+<span class="c1">// Strong override of the core's __weak SystemClock_Config. The genericSTM32F103C8/CB</span>
+<span class="c1">// variant defaults SYSCLK to HSI-PLL 64 MHz → APB1 32 MHz → CAN 444 kbps (spec 500).</span>
+<span class="c1">// -DHSE_VALUE only tells HAL the crystal frequency; nothing selects HSE. Every</span>
+<span class="c1">// OpenSkyhawk STM32 node links STM32Board, so selecting HSE here fixes the fleet in</span>
+<span class="c1">// one place: HSE 8 MHz × 9 = 72 MHz → APB1 36 MHz → CAN 500 kbps, matching begin()'s</span>
+<span class="c1">// bit timing. If HSE fails to start (dead crystal / cold joint → HSERDY timeout) or the</span>
+<span class="c1">// configured tree is self-inconsistent, _clockFault latches and begin() raises a visible</span>
+<span class="c1">// WARNING rather than silently running the wrong rate. NOTE: this does NOT detect a</span>
+<span class="c1">// wrong-VALUE crystal — HAL_RCC_Get*Freq() derive from the compile-time HSE_VALUE, not a</span>
+<span class="c1">// measurement, so a 12 MHz part would compute (and pass) as 72 MHz while really running</span>
+<span class="c1">// 108 MHz. Correct crystal value is a BOM/build guarantee, not runtime-detectable here.</span>
+<span class="c1">// See issue #245. -DFORCE_CLOCK_FALLBACK exercises the fault path without a dead crystal.</span>
+<span class="c1">// Displacing the variant also made this the owner of the ADC prescaler — see _configAdcClock</span>
+<span class="c1">// above, called on both exit paths (#263).</span>
+<span class="k">extern</span><span class="w"> </span><span class="s">"C"</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">SystemClock_Config</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#ifndef FORCE_CLOCK_FALLBACK</span>
+<span class="w">    </span><span class="n">RCC_OscInitTypeDef</span><span class="w"> </span><span class="n">osc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="n">osc</span><span class="p">.</span><span class="n">OscillatorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_OSCILLATORTYPE_HSE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">osc</span><span class="p">.</span><span class="n">HSEState</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HSE_ON</span><span class="p">;</span>
+<span class="w">    </span><span class="n">osc</span><span class="p">.</span><span class="n">HSEPredivValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HSE_PREDIV_DIV1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">osc</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLState</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_PLL_ON</span><span class="p">;</span>
+<span class="w">    </span><span class="n">osc</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLSource</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_PLLSOURCE_HSE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">osc</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLMUL</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_PLL_MUL9</span><span class="p">;</span><span class="w">               </span><span class="c1">// 8 MHz × 9 = 72 MHz</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_RCC_OscConfig</span><span class="p">(</span><span class="o">&amp;</span><span class="n">osc</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">RCC_ClkInitTypeDef</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">clk</span><span class="p">.</span><span class="n">ClockType</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_CLOCKTYPE_SYSCLK</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">RCC_CLOCKTYPE_HCLK</span><span class="w"> </span><span class="o">|</span>
+<span class="w">                             </span><span class="n">RCC_CLOCKTYPE_PCLK1</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">RCC_CLOCKTYPE_PCLK2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">clk</span><span class="p">.</span><span class="n">SYSCLKSource</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_SYSCLKSOURCE_PLLCLK</span><span class="p">;</span>
+<span class="w">        </span><span class="n">clk</span><span class="p">.</span><span class="n">AHBCLKDivider</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_SYSCLK_DIV1</span><span class="p">;</span><span class="w">        </span><span class="c1">// 72 MHz</span>
+<span class="w">        </span><span class="n">clk</span><span class="p">.</span><span class="n">APB1CLKDivider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HCLK_DIV2</span><span class="p">;</span><span class="w">          </span><span class="c1">// 36 MHz — CAN, USART2/3</span>
+<span class="w">        </span><span class="n">clk</span><span class="p">.</span><span class="n">APB2CLKDivider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HCLK_DIV1</span><span class="p">;</span><span class="w">          </span><span class="c1">// 72 MHz — USART1 diag</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_RCC_ClockConfig</span><span class="p">(</span><span class="o">&amp;</span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">FLASH_LATENCY_2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Verify the configured tree is self-consistent (guards a bad edit to the</span>
+<span class="w">            </span><span class="c1">// dividers/mult above). These freqs are computed from the RCC config × the</span>
+<span class="w">            </span><span class="c1">// compile-time HSE_VALUE, NOT measured — so this cannot catch a wrong-value</span>
+<span class="w">            </span><span class="c1">// crystal (see header note); it only confirms the config we just applied.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_RCC_GetSysClockFreq</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">72000000UL</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">                </span><span class="n">HAL_RCC_GetPCLK1Freq</span><span class="p">()</span><span class="w">   </span><span class="o">==</span><span class="w"> </span><span class="mi">36000000UL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">_configAdcClock</span><span class="p">();</span><span class="w">                   </span><span class="c1">// PCLK2 72 MHz → ADCCLK 12 MHz (#263)</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span><span class="w">                              </span><span class="c1">// 72 MHz locked and verified</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="w">    </span><span class="c1">// HSE failed / forced / wrong frequency → do NOT silently run at the wrong CAN rate.</span>
+<span class="w">    </span><span class="c1">// Latch the fault (begin() → WARNING) and limp on internal RC just enough to signal.</span>
+<span class="w">    </span><span class="n">_clockFault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">RCC_OscInitTypeDef</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="n">h</span><span class="p">.</span><span class="n">OscillatorType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_OSCILLATORTYPE_HSI</span><span class="p">;</span>
+<span class="w">    </span><span class="n">h</span><span class="p">.</span><span class="n">HSIState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HSI_ON</span><span class="p">;</span>
+<span class="w">    </span><span class="n">h</span><span class="p">.</span><span class="n">HSICalibrationValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HSICALIBRATION_DEFAULT</span><span class="p">;</span>
+<span class="w">    </span><span class="n">h</span><span class="p">.</span><span class="n">PLL</span><span class="p">.</span><span class="n">PLLState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_PLL_NONE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HAL_RCC_OscConfig</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h</span><span class="p">);</span>
+<span class="w">    </span><span class="n">RCC_ClkInitTypeDef</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="n">c</span><span class="p">.</span><span class="n">ClockType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_CLOCKTYPE_SYSCLK</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">RCC_CLOCKTYPE_HCLK</span><span class="w"> </span><span class="o">|</span>
+<span class="w">                  </span><span class="n">RCC_CLOCKTYPE_PCLK1</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">RCC_CLOCKTYPE_PCLK2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">c</span><span class="p">.</span><span class="n">SYSCLKSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_SYSCLKSOURCE_HSI</span><span class="p">;</span><span class="w">           </span><span class="c1">// 8 MHz — visibly wrong, safe boot</span>
+<span class="w">    </span><span class="n">c</span><span class="p">.</span><span class="n">AHBCLKDivider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_SYSCLK_DIV1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">c</span><span class="p">.</span><span class="n">APB1CLKDivider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HCLK_DIV1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">c</span><span class="p">.</span><span class="n">APB2CLKDivider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCC_HCLK_DIV1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HAL_RCC_ClockConfig</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">FLASH_LATENCY_0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">_configAdcClock</span><span class="p">();</span><span class="w">                               </span><span class="c1">// PCLK2 8 MHz → ADCCLK 1.33 MHz (#263)</span>
+<span class="p">}</span>
 
-// ── Public API ────────────────────────────────────────────────────────────────
+<span class="c1">// ── Public API ────────────────────────────────────────────────────────────────</span>
 
-namespace STM32Board {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">STM32Board</span><span class="w"> </span><span class="p">{</span>
 
-void begin() {
-    // Every OpenSkyhawk STM32 board is SWD-only (J_SWD: SWDIO/SWCLK/NRST), but the F103 boots
-    // with full SWJ, so PA15 (JTDI), PB3 (JTDO) and PB4 (NJTRST) start as JTAG pins. Release
-    // JTAG here, once, keeping SWD (PA13/PA14) so ST-Link still flashes and debugs (#299). The
-    // core also frees these pins per-pin inside pinMode()/attachInterrupt(), and ShiftBus::begin()
-    // does it for PB3/PB4; both are now redundant but harmless. Order-independent: later HAL
-    // remaps (I2C1/SPI1) write SWJ_CFG=0b111, which RM0008 defines as &quot;no effect&quot;.
-    __HAL_RCC_AFIO_CLK_ENABLE();
-    __HAL_AFIO_REMAP_SWJ_NOJTAG();
+<span class="kt">void</span><span class="w"> </span><span class="nf">begin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Every OpenSkyhawk STM32 board is SWD-only (J_SWD: SWDIO/SWCLK/NRST), but the F103 boots</span>
+<span class="w">    </span><span class="c1">// with full SWJ, so PA15 (JTDI), PB3 (JTDO) and PB4 (NJTRST) start as JTAG pins. Release</span>
+<span class="w">    </span><span class="c1">// JTAG here, once, keeping SWD (PA13/PA14) so ST-Link still flashes and debugs (#299). The</span>
+<span class="w">    </span><span class="c1">// core also frees these pins per-pin inside pinMode()/attachInterrupt(), and ShiftBus::begin()</span>
+<span class="w">    </span><span class="c1">// does it for PB3/PB4; both are now redundant but harmless. Order-independent: later HAL</span>
+<span class="w">    </span><span class="c1">// remaps (I2C1/SPI1) write SWJ_CFG=0b111, which RM0008 defines as "no effect".</span>
+<span class="w">    </span><span class="n">__HAL_RCC_AFIO_CLK_ENABLE</span><span class="p">();</span>
+<span class="w">    </span><span class="n">__HAL_AFIO_REMAP_SWJ_NOJTAG</span><span class="p">();</span>
 
-    pinMode(PIN_LED_RED,   OUTPUT);
-    pinMode(PIN_LED_GREEN, OUTPUT);
-    _begun     = true;
-    _canStatus = CanStatus::STARTING;
-    _recompute();  // → BOOTING, or WARNING if _clockFault latched in SystemClock_Config (#245)
+<span class="w">    </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_LED_RED</span><span class="p">,</span><span class="w">   </span><span class="n">OUTPUT</span><span class="p">);</span>
+<span class="w">    </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_LED_GREEN</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+<span class="w">    </span><span class="n">_begun</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_canStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CanStatus</span><span class="o">::</span><span class="n">STARTING</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_recompute</span><span class="p">();</span><span class="w">  </span><span class="c1">// → BOOTING, or WARNING if _clockFault latched in SystemClock_Config (#245)</span>
 
-    _diag.begin(115200);
-    analogReadResolution(16);  // STM32duino defaults to 10-bit; 16-bit fills uint16_t directly for PinRef
+<span class="w">    </span><span class="n">_diag</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<span class="w">    </span><span class="n">analogReadResolution</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span><span class="w">  </span><span class="c1">// STM32duino defaults to 10-bit; 16-bit fills uint16_t directly for PinRef</span>
 
-    // Report the resulting clock + derived CAN bitrate so a wrong-speed board is
-    // self-evident on the diag console, not just via the WARNING LED (issue #245).
-    // ADCCLK is read back the same way, so an unset prescaler is visible without a
-    // bench probe (#263). Nothing parses this line — it is diagnostic, not a contract.
-    if (_debugOn) {
-        uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
-        _diag.print(_clockFault ? F(&quot;CLOCK FAULT: &quot;) : F(&quot;CLOCK OK: &quot;));
-        _diag.print(F(&quot;SYSCLK=&quot;)); _diag.print(HAL_RCC_GetSysClockFreq() / 1000000UL); _diag.print(F(&quot;MHz &quot;));
-        _diag.print(F(&quot;PCLK1=&quot;)); _diag.print(pclk1 / 1000000UL); _diag.print(F(&quot;MHz &quot;));
-        _diag.print(F(&quot;CAN=&quot;)); _diag.print(pclk1 / (4UL * 18UL)); _diag.print(F(&quot;bps &quot;));
-        _diag.print(F(&quot;ADC=&quot;)); _diag.print(HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_ADC) / 1000UL);
-        _diag.println(F(&quot;kHz&quot;));
-    }
+<span class="w">    </span><span class="c1">// Report the resulting clock + derived CAN bitrate so a wrong-speed board is</span>
+<span class="w">    </span><span class="c1">// self-evident on the diag console, not just via the WARNING LED (issue #245).</span>
+<span class="w">    </span><span class="c1">// ADCCLK is read back the same way, so an unset prescaler is visible without a</span>
+<span class="w">    </span><span class="c1">// bench probe (#263). Nothing parses this line — it is diagnostic, not a contract.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_debugOn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">pclk1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HAL_RCC_GetPCLK1Freq</span><span class="p">();</span>
+<span class="w">        </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">_clockFault</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">F</span><span class="p">(</span><span class="s">"CLOCK FAULT: "</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">F</span><span class="p">(</span><span class="s">"CLOCK OK: "</span><span class="p">));</span>
+<span class="w">        </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"SYSCLK="</span><span class="p">));</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">HAL_RCC_GetSysClockFreq</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000000UL</span><span class="p">);</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"MHz "</span><span class="p">));</span>
+<span class="w">        </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"PCLK1="</span><span class="p">));</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">pclk1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000000UL</span><span class="p">);</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"MHz "</span><span class="p">));</span>
+<span class="w">        </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"CAN="</span><span class="p">));</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">pclk1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">4UL</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">18UL</span><span class="p">));</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"bps "</span><span class="p">));</span>
+<span class="w">        </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"ADC="</span><span class="p">));</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">HAL_RCCEx_GetPeriphCLKFreq</span><span class="p">(</span><span class="n">RCC_PERIPHCLK_ADC</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000UL</span><span class="p">);</span>
+<span class="w">        </span><span class="n">_diag</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"kHz"</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
 
-    // 500 kbps on APB1 @ 36 MHz: prescaler=4, BS1=13TQ, BS2=4TQ → 18TQ total.
-    // SJW=4TQ required for Blue Pill clone crystal tolerance (validated Experiment B).
-    _hcan.Instance                  = CAN1;
-    _hcan.Init.Prescaler            = 4;
-    _hcan.Init.Mode                 = CAN_MODE_NORMAL;
-    _hcan.Init.SyncJumpWidth        = CAN_SJW_4TQ;
-    _hcan.Init.TimeSeg1             = CAN_BS1_13TQ;
-    _hcan.Init.TimeSeg2             = CAN_BS2_4TQ;
-    _hcan.Init.TimeTriggeredMode    = DISABLE;
-    _hcan.Init.AutoBusOff           = ENABLE;   // hardware recovery ~3 ms, no firmware action needed
-    _hcan.Init.AutoWakeUp           = DISABLE;
-    _hcan.Init.AutoRetransmission   = DISABLE;  // prevents runaway bus-off on unACKed frames
-    _hcan.Init.ReceiveFifoLocked    = DISABLE;
-    _hcan.Init.TransmitFifoPriority = DISABLE;
-    HAL_CAN_Init(&amp;_hcan);
+<span class="w">    </span><span class="c1">// 500 kbps on APB1 @ 36 MHz: prescaler=4, BS1=13TQ, BS2=4TQ → 18TQ total.</span>
+<span class="w">    </span><span class="c1">// SJW=4TQ required for Blue Pill clone crystal tolerance (validated Experiment B).</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Instance</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="n">CAN1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">Prescaler</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">Mode</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_MODE_NORMAL</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">SyncJumpWidth</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_SJW_4TQ</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">TimeSeg1</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_BS1_13TQ</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">TimeSeg2</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_BS2_4TQ</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">TimeTriggeredMode</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">AutoBusOff</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span><span class="w">   </span><span class="c1">// hardware recovery ~3 ms, no firmware action needed</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">AutoWakeUp</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">AutoRetransmission</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">;</span><span class="w">  </span><span class="c1">// prevents runaway bus-off on unACKed frames</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">ReceiveFifoLocked</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hcan</span><span class="p">.</span><span class="n">Init</span><span class="p">.</span><span class="n">TransmitFifoPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HAL_CAN_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">_hcan</span><span class="p">);</span>
 
-}
+<span class="p">}</span>
 
-void setDebug(bool on) { _debugOn = on; }
-bool isDebug()         { return _debugOn; }
-bool clockFault()      { return _clockFault; }
+<span class="kt">void</span><span class="w"> </span><span class="nf">setDebug</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">on</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_debugOn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">on</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">isDebug</span><span class="p">()</span><span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_debugOn</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">clockFault</span><span class="p">()</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_clockFault</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-void tick() {
-    uint32_t now = millis();
+<span class="kt">void</span><span class="w"> </span><span class="nf">tick</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
 
-    // Decay the data-flowing link → drop CONNECTED back to NORMAL after a quiet gap.
-    if (_linkActive &amp;&amp; (now - _linkLastMs) &gt;= LINK_DECAY_MS) {
-        _linkActive = false;
-        _recompute();
-    }
+<span class="w">    </span><span class="c1">// Decay the data-flowing link → drop CONNECTED back to NORMAL after a quiet gap.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_linkActive</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_linkLastMs</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">LINK_DECAY_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_linkActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_recompute</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
 
-    uint16_t period = _blinkPeriodFor(_state);
-    if (period &gt; 0 &amp;&amp; (now - _ledLastMs) &gt;= (uint32_t)(period / 2)) {
-        _blinkPhase = !_blinkPhase;
-        _ledLastMs  = now;
-        _applyLed();
-    }
-}
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_blinkPeriodFor</span><span class="p">(</span><span class="n">_state</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">period</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_ledLastMs</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">period</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_blinkPhase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">_blinkPhase</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_ledLastMs</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_applyLed</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void onCanStatus(CanStatus status) {
-    _canStatus = status;
-    _recompute();
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">onCanStatus</span><span class="p">(</span><span class="n">CanStatus</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">_canStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_recompute</span><span class="p">();</span>
+<span class="p">}</span>
 
-void setWarning(bool on) {
-    _warning = on;
-    _recompute();
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">setWarning</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">on</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">_warning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">on</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_recompute</span><span class="p">();</span>
+<span class="p">}</span>
 
-void setLinkActive(bool active) {
-    if (active) {
-        _linkActive = true;
-        _linkLastMs = millis();
-    } else {
-        _linkActive = false;
-    }
-    _recompute();
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">setLinkActive</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_linkActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_linkLastMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">_linkActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">_recompute</span><span class="p">();</span>
+<span class="p">}</span>
 
-void log(const char* msg) {
-    if (_debugOn) _diag.println(msg);
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_debugOn</span><span class="p">)</span><span class="w"> </span><span class="n">_diag</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
 
-Uart&amp; diagSerial()               { return _diag; }
-CAN_HandleTypeDef* canHandle()   { return &amp;_hcan; }
+<span class="n">Uart</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">diagSerial</span><span class="p">()</span><span class="w">               </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_diag</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="n">CAN_HandleTypeDef</span><span class="o">*</span><span class="w"> </span><span class="nf">canHandle</span><span class="p">()</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_hcan</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
-// ── Internal die-temperature telemetry ──────────────────────────────────────────
-// Free node health from the F103's built-in sensor (ADC ch16) + Vrefint (ch17); no
-// external parts. STM32duino's analogRead(ATEMP)/analogRead(AVREF) enable TSVREFE and
-// pick the internal channels. Conversion uses F103 datasheet typicals (uncalibrated —
-// no factory trim), referencing Vsense to the Vdd derived from Vrefint.
-#if defined(ATEMP) &amp;&amp; defined(AVREF)
-static constexpr uint32_t ADC_FULL     = 1UL &lt;&lt; 16;  // full-scale count at analogReadResolution(16)
-static constexpr uint32_t VREFINT_MV   = 1200;       // F103 Vrefint typical (no VREFINT_CAL on F103)
-static constexpr int32_t  V25_MV       = 1430;       // temp-sensor output at 25 °C, typical
-static constexpr int32_t  AVG_SLOPE_10 = 43;         // Avg_Slope 4.3 mV/°C, ×10 for integer math
-#endif
+<span class="c1">// ── Internal die-temperature telemetry ──────────────────────────────────────────</span>
+<span class="c1">// Free node health from the F103's built-in sensor (ADC ch16) + Vrefint (ch17); no</span>
+<span class="c1">// external parts. STM32duino's analogRead(ATEMP)/analogRead(AVREF) enable TSVREFE and</span>
+<span class="c1">// pick the internal channels. Conversion uses F103 datasheet typicals (uncalibrated —</span>
+<span class="c1">// no factory trim), referencing Vsense to the Vdd derived from Vrefint.</span>
+<span class="cp">#if defined(ATEMP) &amp;&amp; defined(AVREF)</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">ADC_FULL</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">1UL</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w">  </span><span class="c1">// full-scale count at analogReadResolution(16)</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">VREFINT_MV</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1200</span><span class="p">;</span><span class="w">       </span><span class="c1">// F103 Vrefint typical (no VREFINT_CAL on F103)</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int32_t</span><span class="w">  </span><span class="n">V25_MV</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">1430</span><span class="p">;</span><span class="w">       </span><span class="c1">// temp-sensor output at 25 °C, typical</span>
+<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">int32_t</span><span class="w">  </span><span class="n">AVG_SLOPE_10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">43</span><span class="p">;</span><span class="w">         </span><span class="c1">// Avg_Slope 4.3 mV/°C, ×10 for integer math</span>
+<span class="cp">#endif</span>
 
-uint16_t readVddMv() {
-#if defined(ATEMP) &amp;&amp; defined(AVREF)
-    uint32_t vref = analogRead(AVREF);
-    if (vref == 0) return 0;
-    return (uint16_t)(VREFINT_MV * ADC_FULL / vref);
-#else
-    return 0;
-#endif
-}
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">readVddMv</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#if defined(ATEMP) &amp;&amp; defined(AVREF)</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">vref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">analogRead</span><span class="p">(</span><span class="n">AVREF</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vref</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="n">VREFINT_MV</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ADC_FULL</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">vref</span><span class="p">);</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
 
-int8_t readDieTempC() {
-#if defined(ATEMP) &amp;&amp; defined(AVREF)
-    uint16_t vdd = readVddMv();
-    if (vdd == 0) return INT8_MIN;  // internal reference unreadable → unavailable
-    uint32_t traw = analogRead(ATEMP);
-    int32_t vsense_mv = (int32_t)((uint64_t)traw * vdd / ADC_FULL);
-    int32_t tempC = ((V25_MV - vsense_mv) * 10) / AVG_SLOPE_10 + 25;
-    if (tempC &lt;= INT8_MIN) tempC = INT8_MIN + 1;  // reserve INT8_MIN as the &quot;unavailable&quot; sentinel
-    if (tempC &gt;  INT8_MAX) tempC = INT8_MAX;
-    return (int8_t)tempC;
-#else
-    return INT8_MIN;
-#endif
-}
+<span class="kt">int8_t</span><span class="w"> </span><span class="nf">readDieTempC</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#if defined(ATEMP) &amp;&amp; defined(AVREF)</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vdd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readVddMv</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vdd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">INT8_MIN</span><span class="p">;</span><span class="w">  </span><span class="c1">// internal reference unreadable → unavailable</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">traw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">analogRead</span><span class="p">(</span><span class="n">ATEMP</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">vsense_mv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)((</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">traw</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">vdd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ADC_FULL</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">tempC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">V25_MV</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">vsense_mv</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">AVG_SLOPE_10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tempC</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">INT8_MIN</span><span class="p">)</span><span class="w"> </span><span class="n">tempC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT8_MIN</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// reserve INT8_MIN as the "unavailable" sentinel</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tempC</span><span class="w"> </span><span class="o">&gt;</span><span class="w">  </span><span class="n">INT8_MAX</span><span class="p">)</span><span class="w"> </span><span class="n">tempC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT8_MAX</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">tempC</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">INT8_MIN</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="p">}</span>
 
-void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail) {
-    static NodeFaultCode _prevFault = NodeFaultCode::NONE;
-    if (fault != _prevFault &amp;&amp; _debugOn) {
-        auto&amp; d = diagSerial();
-        if (fault != NodeFaultCode::NONE) {
-            d.print('['); d.print(tag); d.print(F(&quot;] degraded: &quot;)); d.print(detail);
-            d.print(F(&quot; (fault &quot;)); d.print((int)(uint8_t)fault); d.println(')');
-        } else {
-            d.print('['); d.print(tag); d.println(F(&quot;] recovered&quot;));
-        }
-    }
-    _prevFault = fault;
-}
+<span class="kt">void</span><span class="w"> </span><span class="nf">logNodeFaultEdge</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">tag</span><span class="p">,</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">fault</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">detail</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">_prevFault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fault</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_prevFault</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_debugOn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">diagSerial</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fault</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="sc">'['</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">tag</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"] degraded: "</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">detail</span><span class="p">);</span>
+<span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" (fault "</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">((</span><span class="kt">int</span><span class="p">)(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">fault</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="sc">')'</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="sc">'['</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">tag</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"] recovered"</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">_prevFault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fault</span><span class="p">;</span>
+<span class="p">}</span>
 
-#ifdef STM32BOARD_TEST
-LedState currentState() { return _state; }
-#endif
+<span class="cp">#ifdef STM32BOARD_TEST</span>
+<span class="n">LedState</span><span class="w"> </span><span class="nf">currentState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_state</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="cp">#endif</span>
 
-} // namespace STM32Board
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace STM32Board</span>
 
-#endif // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

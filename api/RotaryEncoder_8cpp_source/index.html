@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3916,228 +4116,227 @@
 <h1 id="file-rotaryencodercpp">File RotaryEncoder.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_2e07d2b82251b5bb8c3d5a17dd64c04b/"><strong>Inputs</strong></a> <strong>&gt;</strong> <a href="../dir_d61b64c3ddc6557ee529e3725418e11d/"><strong>RotaryEncoder</strong></a> <strong>&gt;</strong> <a href="../RotaryEncoder_8cpp/"><strong>RotaryEncoder.cpp</strong></a></p>
 <p><a href="../RotaryEncoder_8cpp/">Go to the documentation of this file</a></p>
-<pre><code class="language-C++">
-#ifdef ARDUINO_ARCH_STM32
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
 
-#include &quot;RotaryEncoder.h&quot;
-#include &lt;CANProtocol.h&gt;  // sendBatched, canIdEvtRel, canIdEvtDir, ControlPacket
-#include &lt;STM32Board.h&gt;
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"RotaryEncoder.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;CANProtocol.h&gt;</span><span class="w">  </span><span class="c1">// sendBatched, canIdEvtRel, canIdEvtDir, ControlPacket</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;STM32Board.h&gt;</span>
 
-namespace OpenSkyhawk {
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 
-RotaryEncoder::RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                             EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step)
-    : RotaryEncoder(controlId, pinA, pinB, stepsPerDetent, mode, step,
-                    /*momentumFilter*/ false, /*fastStep*/ 0) {}
+<span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span><span class="w"> </span><span class="n">EncoderMode</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">step</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
+<span class="w">                    </span><span class="cm">/*momentumFilter*/</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="cm">/*fastStep*/</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
 
-RotaryEncoder::RotaryEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
-                             EncoderStepsPerDetent stepsPerDetent, EncoderMode mode, int16_t step,
-                             bool momentumFilter, int16_t fastStep)
-    : _controlId(controlId),
-      _pinA(pinA),
-      _pinB(pinB),
-      _mode(mode),
-      _step(step),
-      _stepsPerDetent((uint8_t)stepsPerDetent),
-      _lastState(0),
-      _delta(0),
-      _pendingDetents(0),
-      _pendingFast(0),
-      _filter(momentumFilter),
-      _fastStep(mode == EncoderMode::Rel ? fastStep : 0),   // DIR carries ±1 only — no speed
-      _momentum(0),
-      _lastDetentMs(0),
-      _hasLastDetent(false),
-      _sampled(false),
-      _initialized(false) {}
+<span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span><span class="w"> </span><span class="n">EncoderMode</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
+<span class="w">                             </span><span class="kt">bool</span><span class="w"> </span><span class="n">momentumFilter</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">fastStep</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">_controlId</span><span class="p">(</span><span class="n">controlId</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_pinA</span><span class="p">(</span><span class="n">pinA</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_pinB</span><span class="p">(</span><span class="n">pinB</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_mode</span><span class="p">(</span><span class="n">mode</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_step</span><span class="p">(</span><span class="n">step</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_stepsPerDetent</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">stepsPerDetent</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_lastState</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_delta</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_pendingDetents</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_pendingFast</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_filter</span><span class="p">(</span><span class="n">momentumFilter</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_fastStep</span><span class="p">(</span><span class="n">mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EncoderMode</span><span class="o">::</span><span class="n">Rel</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">fastStep</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w">   </span><span class="c1">// DIR carries ±1 only — no speed</span>
+<span class="w">      </span><span class="n">_momentum</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_lastDetentMs</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_hasLastDetent</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_sampled</span><span class="p">(</span><span class="nb">false</span><span class="p">),</span>
+<span class="w">      </span><span class="n">_initialized</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
 
-void RotaryEncoder::configure() {
-    _pinA.configureAsInput();
-    _pinB.configureAsInput();
-}
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">configure</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">_pinA</span><span class="p">.</span><span class="n">configureAsInput</span><span class="p">();</span>
+<span class="w">    </span><span class="n">_pinB</span><span class="p">.</span><span class="n">configureAsInput</span><span class="p">();</span>
+<span class="p">}</span>
 
-uint8_t RotaryEncoder::readState() {
-    return (uint8_t)(((_pinA.read() ? 1u : 0u) &lt;&lt; 1) | (_pinB.read() ? 1u : 0u));
-}
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">readState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(((</span><span class="n">_pinA</span><span class="p">.</span><span class="n">read</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">1u</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0u</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">_pinB</span><span class="p">.</span><span class="n">read</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">1u</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0u</span><span class="p">));</span>
+<span class="p">}</span>
 
-void RotaryEncoder::emit(int16_t value) {
-    // REL → one frame carrying a coalesced magnitude (a burst reads as one bigger twist, same DCS
-    // result, fewer frames); DIR → ±1 per frame (DCS steps one position per INC/DEC, so a burst
-    // must stay one frame per detent — the caller loops). drainPending() computes the value.
-    const uint32_t frame = (_mode == EncoderMode::Rel) ? canIdEvtRel(NODE_ID) : canIdEvtDir(NODE_ID);
-    CANProtocol::sendBatched(frame, ControlPacket{_controlId, (uint16_t)value});
-#ifdef ROTARYENCODER_TEST
-    _emitCount++;
-    _lastValue = value;
-    _lastFrame = frame;
-#endif
-    if (STM32Board::isDebug()) {
-        auto&amp; d = STM32Board::diagSerial();
-        d.print(F(&quot;[ENC] 0x&quot;)); d.print(_controlId, HEX);
-        d.print(_mode == EncoderMode::Rel ? F(&quot; REL &quot;) : F(&quot; DIR &quot;));
-        d.println(value);   // signed: + = CW, - = CCW
-    }
-}
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">emit</span><span class="p">(</span><span class="kt">int16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// REL → one frame carrying a coalesced magnitude (a burst reads as one bigger twist, same DCS</span>
+<span class="w">    </span><span class="c1">// result, fewer frames); DIR → ±1 per frame (DCS steps one position per INC/DEC, so a burst</span>
+<span class="w">    </span><span class="c1">// must stay one frame per detent — the caller loops). drainPending() computes the value.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">_mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EncoderMode</span><span class="o">::</span><span class="n">Rel</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">canIdEvtRel</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">canIdEvtDir</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">);</span>
+<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendBatched</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="n">ControlPacket</span><span class="p">{</span><span class="n">_controlId</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">value</span><span class="p">});</span>
+<span class="cp">#ifdef ROTARYENCODER_TEST</span>
+<span class="w">    </span><span class="n">_emitCount</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_lastValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_lastFrame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[ENC] 0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">_controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">_mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EncoderMode</span><span class="o">::</span><span class="n">Rel</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">F</span><span class="p">(</span><span class="s">" REL "</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">F</span><span class="p">(</span><span class="s">" DIR "</span><span class="p">));</span>
+<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">value</span><span class="p">);</span><span class="w">   </span><span class="c1">// signed: + = CW, - = CCW</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void RotaryEncoder::decode(uint8_t state) {
-    // Quadrature transition table — ported verbatim from DcsBios RotaryEncoder (Encoders.h).
-    // Runs wherever the sampling happens — sampleTick() (possibly ISR context) once a
-    // sampler ticks, poll() otherwise; never both. Completed detents go to the pending
-    // counters; emission always happens loop-side in drainPending().
-    int8_t dir = 0;
-    switch (_lastState) {
-        case 0: if (state == 2) dir = -1; if (state == 1) dir = +1; break;
-        case 1: if (state == 0) dir = -1; if (state == 3) dir = +1; break;
-        case 2: if (state == 3) dir = -1; if (state == 0) dir = +1; break;
-        case 3: if (state == 1) dir = -1; if (state == 2) dir = +1; break;
-    }
-    _lastState = state;
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Quadrature transition table — ported verbatim from DcsBios RotaryEncoder (Encoders.h).</span>
+<span class="w">    </span><span class="c1">// Runs wherever the sampling happens — sampleTick() (possibly ISR context) once a</span>
+<span class="w">    </span><span class="c1">// sampler ticks, poll() otherwise; never both. Completed detents go to the pending</span>
+<span class="w">    </span><span class="c1">// counters; emission always happens loop-side in drainPending().</span>
+<span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_lastState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">_lastState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">;</span>
 
-    if (_filter) {
-        // Momentum filter — DcsBios RotaryAcceleratedEncoder: a transition against non-zero
-        // momentum is a bounce on a noisy encoder; drop it and only decay the momentum.
-        const int8_t maxM = (int8_t)(MAX_MOMENTUM * (int8_t)_stepsPerDetent);
-        if (dir &gt; 0) {
-            if (_momentum &gt;= 0) { if (_momentum &lt; maxM) _momentum++; }
-            else                { dir = 0; _momentum++; }
-        } else if (dir &lt; 0) {
-            if (_momentum &lt;= 0) { if (_momentum &gt; -maxM) _momentum--; }
-            else                { dir = 0; _momentum--; }
-        } else if ((uint32_t)(millis() - _lastDetentMs) &gt; STOPPED_THRESHOLD_MS) {
-            _momentum = 0;   // knob at rest — a reversal from here is genuine
-        }
-    }
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_filter</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Momentum filter — DcsBios RotaryAcceleratedEncoder: a transition against non-zero</span>
+<span class="w">        </span><span class="c1">// momentum is a bounce on a noisy encoder; drop it and only decay the momentum.</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">maxM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)(</span><span class="n">MAX_MOMENTUM</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">_stepsPerDetent</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dir</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_momentum</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_momentum</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">maxM</span><span class="p">)</span><span class="w"> </span><span class="n">_momentum</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span><span class="w">                </span><span class="p">{</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">_momentum</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dir</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_momentum</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_momentum</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="n">maxM</span><span class="p">)</span><span class="w"> </span><span class="n">_momentum</span><span class="o">--</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span><span class="w">                </span><span class="p">{</span><span class="w"> </span><span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">_momentum</span><span class="o">--</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">millis</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_lastDetentMs</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">STOPPED_THRESHOLD_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">_momentum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// knob at rest — a reversal from here is genuine</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 
-    _delta += dir;
-    if (_delta &gt;= (int8_t)_stepsPerDetent) {       // clockwise
-        countDetent(+1);
-        _delta -= (int8_t)_stepsPerDetent;
-    }
-    if (_delta &lt;= -(int8_t)_stepsPerDetent) {      // counter-clockwise
-        countDetent(-1);
-        _delta += (int8_t)_stepsPerDetent;
-    }
-}
+<span class="w">    </span><span class="n">_delta</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dir</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_delta</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">_stepsPerDetent</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">       </span><span class="c1">// clockwise</span>
+<span class="w">        </span><span class="n">countDetent</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">_delta</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">_stepsPerDetent</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_delta</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">-</span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">_stepsPerDetent</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">      </span><span class="c1">// counter-clockwise</span>
+<span class="w">        </span><span class="n">countDetent</span><span class="p">(</span><span class="mi">-1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">_delta</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">_stepsPerDetent</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void RotaryEncoder::countDetent(int8_t dir) {
-    // Pending cap: REL coalesces on drain, so deep accumulation is cheap (one frame);
-    // DIR emits one CAN frame per detent — an absurd backlog (multi-second stall while
-    // spinning) would flood the 16-slot TX ring and silently drop frames, so clamp it.
-    const int8_t cap = (_mode == EncoderMode::Dir) ? 8 : INT8_MAX;
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">countDetent</span><span class="p">(</span><span class="kt">int8_t</span><span class="w"> </span><span class="n">dir</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Pending cap: REL coalesces on drain, so deep accumulation is cheap (one frame);</span>
+<span class="w">    </span><span class="c1">// DIR emits one CAN frame per detent — an absurd backlog (multi-second stall while</span>
+<span class="w">    </span><span class="c1">// spinning) would flood the 16-slot TX ring and silently drop frames, so clamp it.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">cap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">_mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EncoderMode</span><span class="o">::</span><span class="n">Dir</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">INT8_MAX</span><span class="p">;</span>
 
-    // Speed is classified HERE, per detent, not at drain time: a loop stalled by an OLED flush
-    // drains several detents at once and their spacing would be lost. Only the accelerated
-    // class pays for the millis() read; the plain encoder never enters this branch.
-    bool fast = false;
-    if (_filter || _fastStep != 0) {
-        const uint32_t now = millis();
-        fast = _fastStep != 0 &amp;&amp; _hasLastDetent &amp;&amp;
-               (uint32_t)(now - _lastDetentMs) &lt; FAST_THRESHOLD_MS;
-        _lastDetentMs  = now;
-        _hasLastDetent = true;
-    }
+<span class="w">    </span><span class="c1">// Speed is classified HERE, per detent, not at drain time: a loop stalled by an OLED flush</span>
+<span class="w">    </span><span class="c1">// drains several detents at once and their spacing would be lost. Only the accelerated</span>
+<span class="w">    </span><span class="c1">// class pays for the millis() read; the plain encoder never enters this branch.</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">fast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_filter</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">_fastStep</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
+<span class="w">        </span><span class="n">fast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_fastStep</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_hasLastDetent</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">               </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_lastDetentMs</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FAST_THRESHOLD_MS</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_lastDetentMs</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">        </span><span class="n">_hasLastDetent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-    if (fast) {
-        if (dir &gt; 0) { if (_pendingFast &lt;  cap) _pendingFast = _pendingFast + 1; }
-        else         { if (_pendingFast &gt; -cap) _pendingFast = _pendingFast - 1; }
-    } else {
-        if (dir &gt; 0) { if (_pendingDetents &lt;  cap) _pendingDetents = _pendingDetents + 1; }
-        else         { if (_pendingDetents &gt; -cap) _pendingDetents = _pendingDetents - 1; }
-    }
-}
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fast</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dir</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_pendingFast</span><span class="w"> </span><span class="o">&lt;</span><span class="w">  </span><span class="n">cap</span><span class="p">)</span><span class="w"> </span><span class="n">_pendingFast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_pendingFast</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_pendingFast</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="n">cap</span><span class="p">)</span><span class="w"> </span><span class="n">_pendingFast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_pendingFast</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dir</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">&lt;</span><span class="w">  </span><span class="n">cap</span><span class="p">)</span><span class="w"> </span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="n">cap</span><span class="p">)</span><span class="w"> </span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void RotaryEncoder::sampleTick() {
-    // Generic InputBase high-rate hook — the encoder does not know (or care) who calls it.
-    // ISR-safe: cached pin reads + the transition table, no CAN.
-    // Decline ownership unless BOTH pins are sampler-refreshed sources (ShiftBus '165):
-    // a GPIO/MCP-pinned encoder on a mixed node keeps its loop-rate decode unchanged —
-    // its cache only refreshes at loop rate, so sampler ownership would gain nothing and
-    // silently rewire behavior the SHIFTBUS_ISR_HZ flag has no business touching.
-    if (!(_pinA.isSampledSource() &amp;&amp; _pinB.isSampledSource())) return;
-    // Claim ownership BEFORE the initialized check: once a sampler ticks at all, poll()
-    // must never decode again, or a poll between forceReport() and the next tick could be
-    // preempted mid-decode by this ISR (torn _delta/_lastState).
-    _sampled = true;
-    if (!_initialized) return;
-    decode(readState());
-}
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">sampleTick</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Generic InputBase high-rate hook — the encoder does not know (or care) who calls it.</span>
+<span class="w">    </span><span class="c1">// ISR-safe: cached pin reads + the transition table, no CAN.</span>
+<span class="w">    </span><span class="c1">// Decline ownership unless BOTH pins are sampler-refreshed sources (ShiftBus '165):</span>
+<span class="w">    </span><span class="c1">// a GPIO/MCP-pinned encoder on a mixed node keeps its loop-rate decode unchanged —</span>
+<span class="w">    </span><span class="c1">// its cache only refreshes at loop rate, so sampler ownership would gain nothing and</span>
+<span class="w">    </span><span class="c1">// silently rewire behavior the SHIFTBUS_ISR_HZ flag has no business touching.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">_pinA</span><span class="p">.</span><span class="n">isSampledSource</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_pinB</span><span class="p">.</span><span class="n">isSampledSource</span><span class="p">()))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Claim ownership BEFORE the initialized check: once a sampler ticks at all, poll()</span>
+<span class="w">    </span><span class="c1">// must never decode again, or a poll between forceReport() and the next tick could be</span>
+<span class="w">    </span><span class="c1">// preempted mid-decode by this ISR (torn _delta/_lastState).</span>
+<span class="w">    </span><span class="n">_sampled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_initialized</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="n">decode</span><span class="p">(</span><span class="n">readState</span><span class="p">());</span>
+<span class="p">}</span>
 
-void RotaryEncoder::drainPending() {
-    // Read-and-clear must be atomic against a sampler ticking from ISR context. Masking
-    // unconditionally costs a few cycles and spares this class any knowledge of whether
-    // (or from where) a sampler runs.
-    noInterrupts();
-    int8_t d = _pendingDetents;
-    int8_t f = _pendingFast;
-    _pendingDetents = 0;
-    _pendingFast    = 0;
-    interrupts();
-    if (d == 0 &amp;&amp; f == 0) return;
-#ifdef ROTARYENCODER_TEST
-    _netDetents += d + f;
-#endif
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">drainPending</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Read-and-clear must be atomic against a sampler ticking from ISR context. Masking</span>
+<span class="w">    </span><span class="c1">// unconditionally costs a few cycles and spares this class any knowledge of whether</span>
+<span class="w">    </span><span class="c1">// (or from where) a sampler runs.</span>
+<span class="w">    </span><span class="n">noInterrupts</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_pendingDetents</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_pendingFast</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_pendingFast</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">interrupts</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="cp">#ifdef ROTARYENCODER_TEST</span>
+<span class="w">    </span><span class="n">_netDetents</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="cp">#endif</span>
 
-    if (_mode == EncoderMode::Dir) {
-        while (d &gt; 0) { emit(+1); d--; }
-        while (d &lt; 0) { emit(-1); d++; }
-        return;
-    }
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EncoderMode</span><span class="o">::</span><span class="n">Dir</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">emit</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="o">--</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">emit</span><span class="p">(</span><span class="mi">-1</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-    if (f == 0) {
-        // Plain REL path (unchanged): coalesce, chunked in whole detents so detents×step stays
-        // within int16. Magnitude-based so a negative step (direction-invert config) chunks
-        // correctly too.
-        const int16_t mag = (_step &lt; 0) ? (int16_t)-_step : _step;
-        const int16_t maxChunk = (mag &gt; 1) ? (int16_t)(32767 / mag) : 127;
-        while (d != 0) {
-            int8_t chunk = d;
-            if (chunk &gt;  maxChunk) chunk = (int8_t)maxChunk;
-            if (chunk &lt; -maxChunk) chunk = (int8_t)-maxChunk;
-            emit((int16_t)(chunk * _step));
-            d = (int8_t)(d - chunk);
-        }
-        return;
-    }
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Plain REL path (unchanged): coalesce, chunked in whole detents so detents×step stays</span>
+<span class="w">        </span><span class="c1">// within int16. Magnitude-based so a negative step (direction-invert config) chunks</span>
+<span class="w">        </span><span class="c1">// correctly too.</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">mag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">_step</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="kt">int16_t</span><span class="p">)</span><span class="o">-</span><span class="n">_step</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_step</span><span class="p">;</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">maxChunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">mag</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="kt">int16_t</span><span class="p">)(</span><span class="mi">32767</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">mag</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">127</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chunk</span><span class="w"> </span><span class="o">&gt;</span><span class="w">  </span><span class="n">maxChunk</span><span class="p">)</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">maxChunk</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chunk</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">maxChunk</span><span class="p">)</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="o">-</span><span class="n">maxChunk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">emit</span><span class="p">((</span><span class="kt">int16_t</span><span class="p">)(</span><span class="n">chunk</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_step</span><span class="p">));</span>
+<span class="w">            </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)(</span><span class="n">d</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">chunk</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
-    // Accelerated REL: slow and fast detents drain together as one signed magnitude, split
-    // only if it overflows int16 (variable_step adds, so a split sums to the same result).
-    int32_t total = (int32_t)d * _step + (int32_t)f * _fastStep;
-    while (total != 0) {
-        int32_t chunk = total;
-        if (chunk &gt;  32767) chunk =  32767;
-        if (chunk &lt; -32767) chunk = -32767;
-        emit((int16_t)chunk);
-        total -= chunk;
-    }
-}
+<span class="w">    </span><span class="c1">// Accelerated REL: slow and fast detents drain together as one signed magnitude, split</span>
+<span class="w">    </span><span class="c1">// only if it overflows int16 (variable_step adds, so a split sums to the same result).</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)</span><span class="n">d</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_step</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)</span><span class="n">f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_fastStep</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">total</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chunk</span><span class="w"> </span><span class="o">&gt;</span><span class="w">  </span><span class="mi">32767</span><span class="p">)</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mi">32767</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">chunk</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">-32767</span><span class="p">)</span><span class="w"> </span><span class="n">chunk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-32767</span><span class="p">;</span>
+<span class="w">        </span><span class="n">emit</span><span class="p">((</span><span class="kt">int16_t</span><span class="p">)</span><span class="n">chunk</span><span class="p">);</span>
+<span class="w">        </span><span class="n">total</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">chunk</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-void RotaryEncoder::forceReport() {
-    // Resync so the first decode sees no spurious transition. Masked against a sampler
-    // (SYNC_REQ arrives in loop context).
-    noInterrupts();
-    _lastState      = readState();
-    _delta          = 0;
-    _pendingDetents = 0;
-    _pendingFast    = 0;
-    _momentum       = 0;
-    _hasLastDetent  = false;   // the first detent after a resync is never &quot;fast&quot;
-    _lastDetentMs   = millis();
-    _initialized    = true;
-    interrupts();
-    // No EVT — a relative encoder has no absolute state to report at boot / SYNC.
-}
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">forceReport</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Resync so the first decode sees no spurious transition. Masked against a sampler</span>
+<span class="w">    </span><span class="c1">// (SYNC_REQ arrives in loop context).</span>
+<span class="w">    </span><span class="n">noInterrupts</span><span class="p">();</span>
+<span class="w">    </span><span class="n">_lastState</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">readState</span><span class="p">();</span>
+<span class="w">    </span><span class="n">_delta</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_pendingDetents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_pendingFast</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_momentum</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">_hasLastDetent</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">   </span><span class="c1">// the first detent after a resync is never "fast"</span>
+<span class="w">    </span><span class="n">_lastDetentMs</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
+<span class="w">    </span><span class="n">_initialized</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">interrupts</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// No EVT — a relative encoder has no absolute state to report at boot / SYNC.</span>
+<span class="p">}</span>
 
-void RotaryEncoder::poll() {
-    if (!_initialized) return;
-    // Once a sampler ticks, it owns the decode; poll() only drains.
-    if (!_sampled) decode(readState());
-    drainPending();
-}
+<span class="kt">void</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">poll</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_initialized</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Once a sampler ticks, it owns the decode; poll() only drains.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_sampled</span><span class="p">)</span><span class="w"> </span><span class="n">decode</span><span class="p">(</span><span class="n">readState</span><span class="p">());</span>
+<span class="w">    </span><span class="n">drainPending</span><span class="p">();</span>
+<span class="p">}</span>
 
-}  // namespace OpenSkyhawk
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
 
-#endif  // ARDUINO_ARCH_STM32
-</code></pre>
+<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
+</code></pre></div>
 
 
 

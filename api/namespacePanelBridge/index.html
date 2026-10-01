@@ -749,6 +749,206 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -4078,26 +4278,26 @@
 </table>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 <h3 id="typedef-nodecallback">typedef NodeCallback</h3>
-<p><em>Callback type for node liveness events. Parameter is</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>node ID (1–63).</em></p>
-<pre><code class="language-C++">using PanelBridge::NodeCallback = typedef void(*)(uint8_t nodeId);
-</code></pre>
+<p><em>Callback type for node liveness events. Parameter is</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>node ID (1–63).</em>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">NodeCallback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">);</span>
+</code></pre></div></p>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-loop">function loop</h3>
-<p><em>Run</em> <a href="./"><em><strong>PanelBridge</strong></em></a> <em>work not owned by DcsBios::loop().</em></p>
-<pre><code class="language-C++">void PanelBridge::loop () 
-</code></pre>
+<p><em>Run</em> <a href="./"><em><strong>PanelBridge</strong></em></a> <em>work not owned by DcsBios::loop().</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">loop</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Drains <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> RX, dispatches EVT packets, services <a href="../namespaceCANProtocol/"><strong>CANProtocol</strong></a> batching deadlines, checks node heartbeat timeouts (3 s), and handles DiagSerial 'T' bytes for TEST_SEQ.</p>
 <p><strong>Note:</strong></p>
 <p>Call after DcsBios::loop() each iteration. </p>
 <hr>
 
 <h3 id="function-onnodealive">function onNodeAlive</h3>
-<p><em>Register a callback fired when a node transitions from dead/unseen to alive.</em> </p>
-<pre><code class="language-C++">void PanelBridge::onNodeAlive (
-    NodeCallback cb
-) 
-</code></pre>
+<p><em>Register a callback fired when a node transitions from dead/unseen to alive.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">onNodeAlive</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">NodeCallback</span><span class="w"> </span><span class="n">cb</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Passing nullptr clears the callback. Set before calling <a href="./#function-setup"><strong>setup()</strong></a>.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4106,11 +4306,11 @@
 <hr>
 
 <h3 id="function-onnodedead">function onNodeDead</h3>
-<p><em>Register a callback fired when a live node misses the heartbeat timeout (3 s).</em> </p>
-<pre><code class="language-C++">void PanelBridge::onNodeDead (
-    NodeCallback cb
-) 
-</code></pre>
+<p><em>Register a callback fired when a live node misses the heartbeat timeout (3 s).</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">onNodeDead</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">NodeCallback</span><span class="w"> </span><span class="n">cb</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Passing nullptr clears the callback. Set before calling <a href="./#function-setup"><strong>setup()</strong></a>.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4119,9 +4319,9 @@
 <hr>
 
 <h3 id="function-setup">function setup</h3>
-<p><em>Initialise STM32 board services, UART2,</em> <a href="../namespaceCANProtocol/"><em><strong>CANProtocol</strong></em></a> <em>, and</em><a href="./"><em><strong>PanelBridge</strong></em></a> <em>internals.</em></p>
-<pre><code class="language-C++">void PanelBridge::setup () 
-</code></pre>
+<p><em>Initialise STM32 board services, UART2,</em> <a href="../namespaceCANProtocol/"><em><strong>CANProtocol</strong></em></a> <em>, and</em><a href="./"><em><strong>PanelBridge</strong></em></a> <em>internals.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PanelBridge</span><span class="o">::</span><span class="n">setup</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
 <p>Performs in order: <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a>, Serial.begin(250000), DCS-BIOS export listener registration, <a href="../namespaceCANProtocol/#function-filteracceptall"><strong>CANProtocol::filterAcceptAll()</strong></a>, <a href="../namespaceCANProtocol/#function-onreceive"><strong>CANProtocol::onReceive()</strong></a> registration, <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>, and cold-boot SYNC_REQ broadcast.</p>
 <p><strong>Note:</strong></p>
 <p>Sketch must call DcsBios::setup() immediately after this. </p>
