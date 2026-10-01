@@ -79,6 +79,16 @@ Full rules, the measured numbers, and chip-placement guidance:
 `docs/_source/hardware-standards.md` (Shift-Register I/O section). Harness pinouts:
 the [Connector & Harness Guide](connectors.md).
 
+## Releases
+
+A board release means **the board is ready** — built, brought up, and verified. Each board is
+tagged `pcb/<Board>-vX.Y.Z` once it passes bring-up, and the whole cockpit gets a `hardware-vX.Y.Z`
+release once its boards are released; the release notes list each board and what changed in it.
+Every board folder's `README.md` says whether it is **Released**, **In progress**, or
+**Deprecated**. The model is [design decision D10](../architecture/design-decisions.md#d10-versioning-one-repo-three-release-tracks);
+the tagging standard and release checklist are in `docs/_source/hardware-standards.md`
+(*Releases*).
+
 ## The other reference pages
 
 - **[Mechanical Standards](mechanical-standards.md)** — screws, gauges, switch sizes, panel dims

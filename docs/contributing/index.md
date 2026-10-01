@@ -49,8 +49,10 @@ short version:
 - **Firmware releases itself.** Each merge to `main` keeps a draft *"release firmware X.Y.Z"* pull
   request up to date with the next version and its changelog. When a maintainer marks it ready
   and merges it, the release is tagged and published — nothing for you to do.
-- **Boards and the cockpit are released by hand.** A board gets a version tag when it's sent to be
-  made; the whole cockpit gets a release once its boards have been tested together.
+- **Boards and the cockpit are released by hand, once they're ready.** A board gets a version tag
+  after it has been built and verified; the whole cockpit gets a release once its boards are
+  released. Each board folder's `README.md` says whether that board is Released, In progress, or
+  Deprecated.
 
 Want the details? See [Releases](conventions.md#releases) and
 [design decision D10](../architecture/design-decisions.md#d10-versioning-one-repo-three-release-tracks).

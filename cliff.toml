@@ -1,0 +1,37 @@
+# git-cliff configuration for the hardware release track (design decision D10).
+# Firmware releases use release-please instead (release-please-config.json).
+#
+# The release workflow (.github/workflows/hardware-release.yml) runs it once per board,
+# over the range <previous board tag>..<this tag> with --include-path "<board folder>/**".
+# The workflow, not this template, adds the tag message (the fab order ID) and the
+# "Initial tagged revision" line, because a tag on a commit outside the board folder
+# is invisible to a path-filtered git-cliff.
+# Commit type picks the section; `!` (a pinout / harness / mounting / minimum-firmware
+# break) lists the change under Breaking changes.
+
+[changelog]
+header = ""
+body = """
+{% if commits | length == 0 %}No changes to this board's design files.
+{% else %}{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | striptags | trim }}
+{% for commit in commits %}
+- {{ commit.message | split(pat="\n") | first | trim | upper_first }} \
+  ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/{{ commit.id }}))\
+{% endfor %}
+{% endfor %}{% endif %}
+"""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+protect_breaking_commits = true
+sort_commits = "oldest"
+commit_parsers = [
+  { field = "breaking", pattern = "true", group = "<!-- 0 -->⚠ Breaking changes" },
+  { message = "^feat", group = "<!-- 1 -->Features" },
+  { message = "^fix", group = "<!-- 2 -->Fixes" },
+  { message = "^(refactor|perf)", group = "<!-- 3 -->Changes" },
+  { message = ".*", skip = true },
+]
