@@ -53,6 +53,7 @@ _Selects one downstream channel of a TCA9548A I2C multiplexer._ [More...](#detai
 | Type | Name |
 | ---: | :--- |
 |   | [**I2cMux**](#function-i2cmux) (uint8\_t addr=0x70, TwoWire & wire=Wire) <br>_Construct a mux handle. No I2C occurs here._  |
+|  TwoWire & | [**bus**](#function-bus) () const<br>_The I2C bus this mux sits on._  |
 |  bool | [**deviceAcks**](#function-deviceacks) (uint8\_t addr7) <br>_Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?_  |
 |  void | [**disableAll**](#function-disableall) () <br>_Disable all channels (control byte 0x00). Optional bus quiescing._  |
 |  bool | [**select**](#function-select) (uint8\_t channel, bool force=false) <br>_Route the bus to one downstream channel._  |
@@ -117,6 +118,24 @@ explicit OpenSkyhawk::I2cMux::I2cMux (
 * `wire` I2C bus the mux sits on. Default Wire (I2C1 on STM32). 
 
 
+
+
+        
+
+<hr>
+
+
+
+### function bus 
+
+_The I2C bus this mux sits on._ 
+```C++
+inline TwoWire & OpenSkyhawk::I2cMux::bus () const
+```
+
+
+
+Lets a device behind the mux report which trunk it is actually on, rather than assuming the default. Set once at construction and never changes. 
 
 
         

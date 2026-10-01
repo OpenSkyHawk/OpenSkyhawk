@@ -4290,7 +4290,10 @@ or a digital home sensor (switch / reed / hall / opto). Drive the X27 at <strong
 driver only lands on nodes that actually use a display — add <code>file://../../Libraries/DrumDisplay</code>
 to a sketch's <code>lib_deps</code> to use it. Each readout (its digit sources, geometry, and optional
 flag) is described by a <code>DrumReadout</code> defined in the sketch, like the <code>PinRef</code> wiring map.
-Many same-address OLEDs can share one bus behind a TCA9548A via the <code>I2cMux</code> helper.</p>
+Each panel takes one transport argument: an <strong>I²C bus</strong>, or an <strong><code>I2cMux</code></strong> when several
+same-address OLEDs share a TCA9548A. Omit it and the default bus is used. A bare OLED may not
+share a trunk with panels behind a mux — it is shadowed whenever a channel is open — so put
+the mux on one trunk and a bare panel on the other.</p>
 <p>Each source also declares its <strong>band</strong> — how many positions the gauge divides its range into,
 and what each one displays. DCS-BIOS normalises a gauge's declared range to 16 bits and leaves
 the meaning to the client, and the A-4E-C gauges genuinely differ: an ordinary digit drum

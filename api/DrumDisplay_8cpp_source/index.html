@@ -3948,7 +3948,7 @@ static long pow10l(uint8_t n) {
 
 DrumDisplay::DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout,
                          DrumFont font, float xOffsetMm, float yOffsetMm)
-    : _oled(&amp;oled), _r(&amp;readout), _mux(nullptr), _channel(0), _font(font),
+    : _oled(&amp;oled), _r(&amp;readout), _mux(nullptr), _channel(0), _wire(&amp;Wire), _font(font),
       _xOffMm(xOffsetMm), _yOffMm(yOffsetMm),
       _target(0), _flagTarget(0), _dirty(false), _hasState(false),
       _flagPos(0.0f),
@@ -3957,12 +3957,19 @@ DrumDisplay::DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout,
     for (uint8_t i = 0; i &lt; 6; i++) _pos[i] = 0.0f;
 }
 
+DrumDisplay::DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout, TwoWire&amp; wire,
+                         DrumFont font, float xOffsetMm, float yOffsetMm)
+    : DrumDisplay(oled, readout, font, xOffsetMm, yOffsetMm) {
+    _wire = &amp;wire;
+}
+
 DrumDisplay::DrumDisplay(U8G2&amp; oled, const DrumReadout&amp; readout,
                          I2cMux&amp; mux, uint8_t channel,
                          DrumFont font, float xOffsetMm, float yOffsetMm)
     : DrumDisplay(oled, readout, font, xOffsetMm, yOffsetMm) {
     _mux     = &amp;mux;
     _channel = channel;
+    _wire    = &amp;mux.bus();   // keep _wire truthful: the trunk is the mux's, not the default
 }
 
 // ── decode helpers ────────────────────────────────────────────────────────────
@@ -4066,9 +4073,9 @@ bool DrumDisplay::i2cProbe() {
     _probeCount++;
     if (_probeOverride &gt;= 0) { _fault = _probeOverride ? Fault::None : Fault::Device; return _probeOverride != 0; }
 #endif
-    if (!_mux) {                                       // direct-bus: probe the OLED on the default bus (Wire)
-        Wire.beginTransmission(oledAddr());            // NOTE: assumes Wire; a direct OLED on Wire1 isn't covered yet
-        const bool ok = (Wire.endTransmission() == 0);
+    if (!_mux) {                                       // direct-bus: probe the OLED on its own trunk
+        _wire-&gt;beginTransmission(oledAddr());          // Wire unless a bus was passed to the ctor
+        const bool ok = (_wire-&gt;endTransmission() == 0);
         _fault = ok ? Fault::None : Fault::Device;
         return ok;
     }

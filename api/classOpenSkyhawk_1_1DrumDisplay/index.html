@@ -4085,10 +4085,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#function-drumdisplay-12" class="md-nav__link">
+  <a href="#function-drumdisplay-13" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function DrumDisplay [1/2]
+        function DrumDisplay [1/3]
       
     </span>
   </a>
@@ -4096,10 +4096,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-drumdisplay-22" class="md-nav__link">
+  <a href="#function-drumdisplay-23" class="md-nav__link">
     <span class="md-ellipsis">
       
-        function DrumDisplay [2/2]
+        function DrumDisplay [2/3]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-drumdisplay-33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function DrumDisplay [3/3]
       
     </span>
   </a>
@@ -4269,11 +4280,15 @@
 <tbody>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-drumdisplay-12"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br><em>Construct and register a direct-bus drum display.</em></td>
+<td style="text-align: left;"><a href="#function-drumdisplay-13"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br><em>Construct and register a direct-bus drum display.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;"></td>
-<td style="text-align: left;"><a href="#function-drumdisplay-22"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>I2cMux</strong></a> &amp; mux, uint8_t channel, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br><em>Construct and register a muxed drum display (one TCA9548A branch).</em></td>
+<td style="text-align: left;"><a href="#function-drumdisplay-23"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, TwoWire &amp; wire, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br><em>Construct and register a direct-bus drum display on an explicit I2C bus.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"><a href="#function-drumdisplay-33"><strong>DrumDisplay</strong></a> (U8G2 &amp; oled, const <a href="../structOpenSkyhawk_1_1DrumReadout/"><strong>DrumReadout</strong></a> &amp; readout, <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>I2cMux</strong></a> &amp; mux, uint8_t channel, <a href="../namespaceOpenSkyhawk/#enum-drumfont"><strong>DrumFont</strong></a> font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br><em>Construct and register a muxed drum display (one TCA9548A branch).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">virtual void</td>
@@ -4509,7 +4524,7 @@
 </code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
-<h3 id="function-drumdisplay-12">function DrumDisplay [1/2]</h3>
+<h3 id="function-drumdisplay-13">function DrumDisplay [1/3]</h3>
 <p><em>Construct and register a direct-bus drum display.</em> </p>
 <pre><code class="language-C++">OpenSkyhawk::DrumDisplay::DrumDisplay (
     U8G2 &amp; oled,
@@ -4529,9 +4544,34 @@
 </ul>
 <p><strong>Note:</strong></p>
 <p>The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in <a href="./#function-configure"><strong>configure()</strong></a>. </p>
+<p><strong>Note:</strong></p>
+<p>Probes on <code>Wire</code>. For a panel on the second trunk, use the overload that takes a bus. </p>
 <hr>
 
-<h3 id="function-drumdisplay-22">function DrumDisplay [2/2]</h3>
+<h3 id="function-drumdisplay-23">function DrumDisplay [2/3]</h3>
+<p><em>Construct and register a direct-bus drum display on an explicit I2C bus.</em> </p>
+<pre><code class="language-C++">OpenSkyhawk::DrumDisplay::DrumDisplay (
+    U8G2 &amp; oled,
+    const DrumReadout &amp; readout,
+    TwoWire &amp; wire,
+    DrumFont font=DrumFont::LARGE,
+    float xOffsetMm=0.0f,
+    float yOffsetMm=0.0f
+) 
+</code></pre>
+<p>Same as the overload above, but states which bus the panel is on so the reachability probe talks to it. A node using both trunks at once needs this: the U8G2 object already carries its own bus (chosen by its constructor variant), and without a matching handle here the probe would test the wrong one and the health breaker would fault a working panel. One per transport — a bus, or an <a href="../classOpenSkyhawk_1_1I2cMux/"><strong>I2cMux</strong></a>.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>oled</code> Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this. </li>
+<li><code>readout</code> Descriptor for this readout. Must outlive this. </li>
+<li><code>wire</code> I2C bus this panel sits on. Must outlive this and match the U8G2 object's. </li>
+<li><code>font</code> Per-mounting glyph size. Default DrumFont::LARGE. </li>
+<li><code>xOffsetMm</code> X registration shift (mm). </li>
+<li><code>yOffsetMm</code> Y registration shift (mm). </li>
+</ul>
+<hr>
+
+<h3 id="function-drumdisplay-33">function DrumDisplay [3/3]</h3>
 <p><em>Construct and register a muxed drum display (one TCA9548A branch).</em> </p>
 <pre><code class="language-C++">OpenSkyhawk::DrumDisplay::DrumDisplay (
     U8G2 &amp; oled,

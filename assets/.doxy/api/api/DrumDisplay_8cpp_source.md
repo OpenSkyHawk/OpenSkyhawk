@@ -40,7 +40,7 @@ static long pow10l(uint8_t n) {
 
 DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
                          DrumFont font, float xOffsetMm, float yOffsetMm)
-    : _oled(&oled), _r(&readout), _mux(nullptr), _channel(0), _font(font),
+    : _oled(&oled), _r(&readout), _mux(nullptr), _channel(0), _wire(&Wire), _font(font),
       _xOffMm(xOffsetMm), _yOffMm(yOffsetMm),
       _target(0), _flagTarget(0), _dirty(false), _hasState(false),
       _flagPos(0.0f),
@@ -49,12 +49,19 @@ DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
     for (uint8_t i = 0; i < 6; i++) _pos[i] = 0.0f;
 }
 
+DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout, TwoWire& wire,
+                         DrumFont font, float xOffsetMm, float yOffsetMm)
+    : DrumDisplay(oled, readout, font, xOffsetMm, yOffsetMm) {
+    _wire = &wire;
+}
+
 DrumDisplay::DrumDisplay(U8G2& oled, const DrumReadout& readout,
                          I2cMux& mux, uint8_t channel,
                          DrumFont font, float xOffsetMm, float yOffsetMm)
     : DrumDisplay(oled, readout, font, xOffsetMm, yOffsetMm) {
     _mux     = &mux;
     _channel = channel;
+    _wire    = &mux.bus();   // keep _wire truthful: the trunk is the mux's, not the default
 }
 
 // ── decode helpers ────────────────────────────────────────────────────────────
@@ -158,9 +165,9 @@ bool DrumDisplay::i2cProbe() {
     _probeCount++;
     if (_probeOverride >= 0) { _fault = _probeOverride ? Fault::None : Fault::Device; return _probeOverride != 0; }
 #endif
-    if (!_mux) {                                       // direct-bus: probe the OLED on the default bus (Wire)
-        Wire.beginTransmission(oledAddr());            // NOTE: assumes Wire; a direct OLED on Wire1 isn't covered yet
-        const bool ok = (Wire.endTransmission() == 0);
+    if (!_mux) {                                       // direct-bus: probe the OLED on its own trunk
+        _wire->beginTransmission(oledAddr());          // Wire unless a bus was passed to the ctor
+        const bool ok = (_wire->endTransmission() == 0);
         _fault = ok ? Fault::None : Fault::Device;
         return ok;
     }

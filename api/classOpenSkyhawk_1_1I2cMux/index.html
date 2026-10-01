@@ -3947,6 +3947,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function bus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-deviceacks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4024,6 +4035,10 @@
 <td style="text-align: left;"><a href="#function-i2cmux"><strong>I2cMux</strong></a> (uint8_t addr=0x70, TwoWire &amp; wire=Wire) <br><em>Construct a mux handle. No I2C occurs here.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">TwoWire &amp;</td>
+<td style="text-align: left;"><a href="#function-bus"><strong>bus</strong></a> () const<br><em>The I2C bus this mux sits on.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#function-deviceacks"><strong>deviceAcks</strong></a> (uint8_t addr7) <br><em>Probe a downstream device on the CURRENTLY SELECTED channel — does it ACK?</em></td>
 </tr>
@@ -4052,6 +4067,13 @@
 <li><code>addr</code> TCA9548A 7-bit I2C address (0x70–0x77 via A0/A1/A2). Default 0x70. </li>
 <li><code>wire</code> I2C bus the mux sits on. Default Wire (I2C1 on STM32). </li>
 </ul>
+<hr>
+
+<h3 id="function-bus">function bus</h3>
+<p><em>The I2C bus this mux sits on.</em> </p>
+<pre><code class="language-C++">inline TwoWire &amp; OpenSkyhawk::I2cMux::bus () const
+</code></pre>
+<p>Lets a device behind the mux report which trunk it is actually on, rather than assuming the default. Set once at construction and never changes. </p>
 <hr>
 
 <h3 id="function-deviceacks">function deviceAcks</h3>

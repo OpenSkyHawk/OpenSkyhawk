@@ -118,8 +118,9 @@ Inherits the following classes: [OpenSkyhawk::OutputBase](classOpenSkyhawk_1_1Ou
 
 | Type | Name |
 | ---: | :--- |
-|   | [**DrumDisplay**](#function-drumdisplay-12) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a direct-bus drum display._  |
-|   | [**DrumDisplay**](#function-drumdisplay-22) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md) & mux, uint8\_t channel, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a muxed drum display (one TCA9548A branch)._  |
+|   | [**DrumDisplay**](#function-drumdisplay-13) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a direct-bus drum display._  |
+|   | [**DrumDisplay**](#function-drumdisplay-23) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, TwoWire & wire, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a direct-bus drum display on an explicit I2C bus._  |
+|   | [**DrumDisplay**](#function-drumdisplay-33) (U8G2 & oled, const [**DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md) & readout, [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md) & mux, uint8\_t channel, [**DrumFont**](namespaceOpenSkyhawk.md#enum-drumfont) font=DrumFont::LARGE, float xOffsetMm=0.0f, float yOffsetMm=0.0f) <br>_Construct and register a muxed drum display (one TCA9548A branch)._  |
 | virtual void | [**configure**](#function-configure) () override<br>_Compute pixel geometry from the panel + descriptor, set the font, blank the panel._  |
 | virtual [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) | [**faultCode**](#function-faultcode) () override const<br>[_**FaultSource**_](classOpenSkyhawk_1_1FaultSource.md) _: I2C\_PERIPHERAL when the_[_**I2cHealth**_](classOpenSkyhawk_1_1I2cHealth.md) _breaker is tripped, else NONE (#163). Cached breaker state only — no I2C op. The node aggregator packs this into HEALTH\_n.faultId._ |
 | virtual const char \* | [**faultDetail**](#function-faultdetail) () override const<br>_DiagSerial-only fault detail (#163): which I2C hop failed the last probe._  |
@@ -347,7 +348,7 @@ enum OpenSkyhawk::DrumDisplay::Fault {
 
 
 
-### function DrumDisplay [1/2]
+### function DrumDisplay [1/3]
 
 _Construct and register a direct-bus drum display._ 
 ```C++
@@ -382,6 +383,13 @@ The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in [**confi
 
 
 
+**Note:**
+
+Probes on `Wire`. For a panel on the second trunk, use the overload that takes a bus. 
+
+
+
+
 
         
 
@@ -389,7 +397,47 @@ The sketch owns Wire.begin() + oled.begin(). Geometry is auto-fitted in [**confi
 
 
 
-### function DrumDisplay [2/2]
+### function DrumDisplay [2/3]
+
+_Construct and register a direct-bus drum display on an explicit I2C bus._ 
+```C++
+OpenSkyhawk::DrumDisplay::DrumDisplay (
+    U8G2 & oled,
+    const DrumReadout & readout,
+    TwoWire & wire,
+    DrumFont font=DrumFont::LARGE,
+    float xOffsetMm=0.0f,
+    float yOffsetMm=0.0f
+) 
+```
+
+
+
+Same as the overload above, but states which bus the panel is on so the reachability probe talks to it. A node using both trunks at once needs this: the U8G2 object already carries its own bus (chosen by its constructor variant), and without a matching handle here the probe would test the wrong one and the health breaker would fault a working panel. One per transport — a bus, or an [**I2cMux**](classOpenSkyhawk_1_1I2cMux.md).
+
+
+
+
+**Parameters:**
+
+
+* `oled` Caller-owned U8G2 (already begin()'d, rotation set). Must outlive this. 
+* `readout` Descriptor for this readout. Must outlive this. 
+* `wire` I2C bus this panel sits on. Must outlive this and match the U8G2 object's. 
+* `font` Per-mounting glyph size. Default DrumFont::LARGE. 
+* `xOffsetMm` X registration shift (mm). 
+* `yOffsetMm` Y registration shift (mm). 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function DrumDisplay [3/3]
 
 _Construct and register a muxed drum display (one TCA9548A branch)._ 
 ```C++

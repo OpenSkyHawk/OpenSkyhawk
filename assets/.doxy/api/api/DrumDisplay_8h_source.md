@@ -99,6 +99,10 @@ public:
                 DrumFont font = DrumFont::LARGE,
                 float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
 
+    DrumDisplay(U8G2& oled, const DrumReadout& readout, TwoWire& wire,
+                DrumFont font = DrumFont::LARGE,
+                float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);
+
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
                 I2cMux& mux, uint8_t channel,
                 DrumFont font = DrumFont::LARGE,
@@ -167,6 +171,9 @@ private:
     const DrumReadout* _r;           // descriptor (not owned)
     I2cMux*            _mux;          // nullptr for direct-bus instances
     uint8_t            _channel;      // mux channel; ignored when _mux == nullptr
+    TwoWire*           _wire;         // the trunk this panel is on — the mux's bus when muxed,
+                                      // else the one given to the ctor (default Wire). Always
+                                      // set. (TwoWire comes in via I2cMux.h -> Wire.h)
     DrumFont           _font;         // current glyph size
     float              _xOffMm, _yOffMm;  // registration offset, mm (→ px via PX_PER_MM in fitGeometry)
 

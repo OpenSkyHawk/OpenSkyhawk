@@ -27,6 +27,8 @@ public:
 
     bool deviceAcks(uint8_t addr7);
 
+    TwoWire& bus() const { return *_wire; }
+
 private:
     uint8_t  _addr;         // TCA9548A 7-bit address
     TwoWire* _wire;         // bus the mux is on
