@@ -4172,6 +4172,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Molex Mini-Fit Jr (main bus + LED power)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mini-fit-jr-ordering-parts-internal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mini-Fit Jr — ordering parts (internal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4179,6 +4196,67 @@
     <span class="md-ellipsis">
       
         JST-XH (intra-group harnesses + switch wiring)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#silkscreen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Silkscreen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Silkscreen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connector-pin-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connector pin labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-legends-free-text-never-the-value-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function legends — free text, never the Value field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revision-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revision text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The gate
       
     </span>
   </a>
@@ -4740,7 +4818,7 @@ them behind a mux (address shadowing while a channel is open).</p>
 </tr>
 <tr>
 <td><strong>Standard pins</strong></td>
-<td>SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. On mixed nodes MCP INT lines move to <strong>PB12/PB13</strong>.</td>
+<td>SCK=PB3 · MISO=PB4 · MOSI=PB5 (SPI1-remap; firmware releases JTAG, SWD unaffected) · LOAD=PB8 · LATCH=PB9. With I2C1 that is one contiguous header run PB9..PB3. <strong>I²C interrupts:</strong> I2C1 INT_A/INT_B on <strong>PB12/PB13</strong>, I2C2 INT_A/INT_B on <strong>PA8/PA15</strong> (PanelGroup base 0.2.0). Pick INT pins whose EXTI line (the pin <em>number</em>, shared across ports) is not already an interrupt elsewhere.</td>
 </tr>
 <tr>
 <td><strong>Remote legs</strong></td>
@@ -4825,8 +4903,9 @@ switch harnesses are excluded from the guarantee — they stay on 4/6-pin JST-XH
 7/8-pin reserved for the interface legs; both ends of a switch harness live on one
 assembly, so location disambiguates them). <strong>Wires are not color-coded — pin position is the only identification</strong>;
 build-time reference = the connector diagrams on the published Connector &amp; Harness Guide.
-Pinouts below are the fabbed Rev 1 truth (J_BUS / J_BL / J_I2C) or the adopted proposal
-(J_SR, dual-BL).</p>
+Pinouts below are the fabbed 0.1.0 truth (J_BUS / J_BL / J_I2C), the 0.2.0 design truth
+(<code>J_SR</code> — pin order and footprint verified against the JST B7B-XH-A drawing, boards not yet
+fabricated), or the adopted proposal (dual-BL).</p>
 <table>
 <thead>
 <tr>
@@ -4947,6 +5026,70 @@ bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated 
 </tbody>
 </table>
 <p>Pins 1/2 both connect to +12V net. Pins 4/7/8 all connect to GND plane. CANH/CANL on pins 5/6 (same row) for clean differential pair routing.</p>
+<h4 id="mini-fit-jr-ordering-parts-internal">Mini-Fit Jr — ordering parts (internal)</h4>
+<p>Spec is genuine <strong>Molex</strong>: <code>5566</code> header, <code>5557</code> cable housing, <code>5556</code> terminal (18–24 AWG).
+The fleet <em>buys</em> chxunda's XD clones of the same series — they mate the genuine parts and
+share the pin geometry, but a substitute is not automatically equivalent.</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Spec (Molex)</th>
+<th>Fleet part</th>
+<th>LCSC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Board header 2×4 (<code>J_BUS_IN</code>/<code>J_BUS_OUT</code>)</td>
+<td>5566, 8 circuit, THT vertical</td>
+<td><code>XD-5566-2*4A</code></td>
+<td><code>C20608116</code></td>
+</tr>
+<tr>
+<td>Board header 2×2 (dual-zone backlight)</td>
+<td>5566, 4 circuit</td>
+<td><code>XD-5566-2*2A</code></td>
+<td><code>C20608114</code></td>
+</tr>
+<tr>
+<td>Board header 2×1 (<code>J_BL</code>)</td>
+<td>5566, 2 circuit</td>
+<td><code>XD-5566-2*1A</code></td>
+<td><code>C20608113</code></td>
+</tr>
+<tr>
+<td>Cable housing 2×4</td>
+<td>5557, 8 circuit</td>
+<td><code>XD-5557-2*4Y</code></td>
+<td><code>C19193339</code></td>
+</tr>
+<tr>
+<td>Cable housing 2×2</td>
+<td>5557, 4 circuit</td>
+<td><code>XD-5557-2*2Y</code></td>
+<td><code>C19193337</code></td>
+</tr>
+<tr>
+<td>Cable housing 2×1</td>
+<td>5557, 2 circuit</td>
+<td><code>XD-5557-2*1Y</code></td>
+<td><code>C19193336</code></td>
+</tr>
+<tr>
+<td>Crimp terminal, female</td>
+<td><strong>5556, 18–24 AWG</strong></td>
+<td><code>XD-5557-T</code> (<strong>20–28 AWG</strong>)</td>
+<td><code>C19193346</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Known deviation — crimp terminal gauge.</strong> The spec is 18–24 AWG, which covers the 18 AWG
+trunk. The <code>XD-5557-T</code> we stock is <strong>20–28 AWG</strong> and will not accept 18 AWG. Either fit a
+genuine 5556 on the trunk, or build that harness in 20 AWG. Check the datasheet of the
+terminal actually in hand before crimping.</p>
+<p>Cable-side parts sit on no PCB BOM, so a BOM-driven shortfall cannot see them — the same
+blind spot that let <code>CONN-XHP-7P</code> reach zero unnoticed. Count them by hand when ordering.</p>
 <h3 id="jst-xh-intra-group-harnesses-switch-wiring">JST-XH (intra-group harnesses + switch wiring)</h3>
 <ul>
 <li><strong>PCB footprint:</strong> Through-hole, single-row, vertical</li>
@@ -5013,6 +5156,45 @@ bus wire: 18 AWG → standard 5556 (18–24 AWG); 16 AWG → HCS / 16 AWG-rated 
 </tr>
 </tbody>
 </table>
+<h2 id="silkscreen">Silkscreen</h2>
+<p>Checked on every board <strong>before gerber export</strong> — a silk error is only discoverable after fab,
+and a mislabelled power connector destroys hardware.</p>
+<h3 id="connector-pin-labels">Connector pin labels</h3>
+<p>Every connector gets a label per pin, naming the <strong>signal</strong>, placed beside its own pad:</p>
+<ul>
+<li><strong>Power and bus connectors are mandatory.</strong> <code>12V</code>, <code>5V</code>, <code>CANH</code>, <code>CANL</code>, <code>GND</code> on the Mini-Fit
+  Jr bus connectors. These are unkeyed in practice and often sit side by side, so a reversed
+  harness is a destroyed board — this is the one place silk is a safety feature, not a courtesy.</li>
+<li><strong>Label the signal, not the net.</strong> A pin whose net is auto-named because it passes through a
+  series resistor (<code>Net-(J2-Pin_1)</code>) is labelled by what it <em>is</em> — trace through the resistor and
+  use <code>SDA</code>, not the generated name.</li>
+<li><strong>Match the connector's own function.</strong> A UART debug header is <code>RX</code> / <code>TX</code> / <code>GND</code>, never an
+  I²C label set copied from a neighbouring connector.</li>
+<li>Off-board-facing headers (I²C, ShiftBus, SWD, diagnostics) get the same treatment.</li>
+</ul>
+<h3 id="function-legends-free-text-never-the-value-field">Function legends — free text, never the Value field</h3>
+<p>A jumper or block legend (<code>CAN TERM</code>, <code>POWER</code>, <code>PANEL</code>, <code>STATUS</code>) is a <strong>free silk text item</strong>.</p>
+<p><strong>Do not create one by overriding the footprint's <code>Value</code> field on the board.</strong> It looks
+identical on the rendered silk and is wrong twice over: it raises a <code>footprint_symbol_mismatch</code>
+schematic-parity error, and the next <em>Update PCB from Schematic</em> resets the field and silently
+deletes the legend. It also pollutes the BOM's Value column with a legend string instead of the
+part's value.</p>
+<h3 id="revision-text">Revision text</h3>
+<p>Back silk, uppercase, one line:</p>
+<pre><code>REVISION &lt;x.y.z&gt; | &lt;BOARD NAME&gt;
+</code></pre>
+<p><code>layer B.SilkS</code> · <code>size 1 x 1</code> · <code>thickness 0.15</code> · <code>justify left bottom mirror</code> · <code>rotation 0</code></p>
+<p><strong>Write a board revision as <code>0.2.0</code> everywhere</strong> — silkscreen, InvenTree, BOM, docs and commit messages. It is the identifier a reader matches against the board in their hand. "Rev 2" is acceptable only for a <em>round of work</em> ("the Rev 2 order", "Rev 1 bench checks"), never to identify hardware.</p>
+<p><strong>Bump it in the same change that bumps the board revision.</strong> A board fabbed carrying the
+previous revision's text is indistinguishable from the older batch on the bench.</p>
+<h3 id="the-gate">The gate</h3>
+<p>Before exporting gerbers, confirm:</p>
+<ol>
+<li>ERC 0, DRC 0 violations, 0 unconnected, <strong>0 schematic parity</strong></li>
+<li>Every connector pin has its signal label within a few mm of the pad</li>
+<li>Revision text present, correct revision, correct format and stroke</li>
+<li>No legend implemented via a footprint <code>Value</code> override</li>
+</ol>
 <h2 id="switches-controls">Switches &amp; Controls</h2>
 <ul>
 <li>Toggle switches: 12 mm (standard), ~6 mm (ECM modules)</li>

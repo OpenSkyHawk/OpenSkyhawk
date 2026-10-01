@@ -1363,6 +1363,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mini-fit-jr-parts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mini-Fit Jr parts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#i2c-leg-j_i2c1-j_i2c2" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4081,6 +4092,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mini-fit-jr-parts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mini-Fit Jr parts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#i2c-leg-j_i2c1-j_i2c2" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4207,12 +4229,13 @@ mating face</strong>; the board header is the mirror image.</p>
 </div>
 <h2 id="can-trunk-j_bus_in-j_bus_out">CAN trunk — <code>J_BUS_IN</code> / <code>J_BUS_OUT</code></h2>
 <p>Molex Mini-Fit Jr 2×4 (<code>5566-08A2</code> header / 5557 cable housing), two per host board,
-bus passes straight through.</p>
+bus passes straight through. See <a href="#mini-fit-jr-parts">Mini-Fit Jr parts</a> below.</p>
 <p><img alt="CAN trunk connector pinout" src="../../assets/images/diagrams/connectors/connector-can-trunk.svg" /></p>
 <p><em>Pass-through pair on every host: <code>J_BUS_IN</code> ↔ <code>J_BUS_OUT</code>. 18 AWG, ≈8 A/pin all-loaded;
 carries the per-console power feed. CANH/CANL share a row for clean differential routing.
-View: into the cable-housing mating face, latch up; numbering per the Molex 5557 drawing —
-verify before first crimp.</em></p>
+View: into the cable-housing mating face, latch up; numbering per the Molex 5557 drawing.
+</em><em>The housing and header number mirror each other</em><em> — build one harness and buzz it out end to
+end before crimping the rest.</em></p>
 <h2 id="backlight-single-zone-j_bl">Backlight single-zone — <code>J_BL</code></h2>
 <p>Molex Mini-Fit Jr 1×2 (<code>5566-02A2</code>), one per lighting zone, never mixed into a signal
 harness.</p>
@@ -4230,6 +4253,13 @@ The +5 V is a </em><em>utility feed for small loads only</em><em> (≲50 mA — 
 its return rides the panel's signal-cable GND. </em><em>Servos never use it</em><em> — servo panels buck
 locally from 12 V. View: into the cable-housing mating face, latch up; pin order is the
 proposed standard — verify against the Molex 5557 drawing before first crimp.</em></p>
+<h2 id="mini-fit-jr-parts">Mini-Fit Jr parts</h2>
+<p>The standard is <strong>Molex Mini-Fit Jr, 4.2 mm</strong>: <code>5566</code> board header, <code>5557</code> cable housing,
+<code>5556</code> crimp terminal (18–24 AWG). Board and cable parts must come from the same series.</p>
+<p>Series ratings: <strong>9 A / 300 V per circuit</strong>, contact resistance ≤20 mΩ initial, 30 °C max
+temperature rise at rated current, <strong>30 mating cycles</strong>, −40 to +105 °C. Thirty cycles is
+the rated life — the trunk is not a frequently-demated interface.</p>
+<p>The crimp tool is the JRready ST6490-ACT (see the table at the top of this page).</p>
 <h2 id="i2c-leg-j_i2c1-j_i2c2">I²C leg — <code>J_I2C1</code> / <code>J_I2C2</code></h2>
 <p>JST-XH 8-pin. The I²C-class sub-panel interface: MCP23017 I/O, OLED displays (behind a
 panel-local mux when several share an address), ADS1115 analog — internals are the panel's
@@ -4245,8 +4275,8 @@ for encoder-bearing and fast-gauge panels. One per host chain, at the chain's en
 <p><img alt="SPI leg connector pinout" src="../../assets/images/diagrams/connectors/connector-j-sr.svg" /></p>
 <p><em><code>LOAD</code> = '165 SH/LD̄ capture strobe, <code>LATCH</code> = '595 STCP publish strobe; 33 Ω series on
 SCK/LOAD/LATCH at the host. The bus is dedicated — MISO is never shared with another SPI
-device. View: into the cable-housing mating face, pin 1 marked; pin order is the proposed
-standard — verify against the JST-XH drawing before first crimp.</em></p>
+device. View: into the cable-housing mating face, pin 1 marked. Pin order is verified
+against the JST B7B-XH-A drawing and fabricated on PanelGroup base 0.2.0 (<code>J10</code>).</em></p>
 <h2 id="switch-control-wiring">Switch &amp; control wiring</h2>
 <p>Switch harnesses use JST-XH sized to the pin count (4/6/8), one shared GND per connector
 group. Deep pin tables, net names, and the electrical rationale live in the discipline
