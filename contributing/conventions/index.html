@@ -4306,7 +4306,9 @@ commit on <code>main</code></strong> that release-please reads for the firmware 
 change would silently drop out of the release.</p>
 <ul>
 <li><strong>Types:</strong> <code>feat</code> (new capability), <code>fix</code>, <code>chore</code>, <code>test</code>, <code>docs</code>, <code>refactor</code>, <code>perf</code>, <code>build</code>, <code>ci</code>.</li>
-<li><strong>Scope</strong> (optional, encouraged) names the area: <code>feat(panelbridge): …</code>, <code>fix(pcb): …</code>.</li>
+<li><strong>Scope</strong> (optional, encouraged) names the area: <code>feat(panelbridge): …</code>, <code>fix(pcb): …</code>. For
+  hardware use the discipline — <code>pcb</code> (KiCad: schematic, layout, silkscreen, footprints), later
+  <code>cad</code> (panels, bezels, knobs).</li>
 <li><strong>Breaking change:</strong> <code>type(scope)!: …</code>, or a <code>BREAKING CHANGE:</code> footer.</li>
 </ul>
 <pre><code class="language-text">feat(firmware): add RotaryEncoder REL/DIR relative dispatch
@@ -4331,8 +4333,12 @@ reasons are <a href="../../architecture/design-decisions/#d10-versioning-one-rep
   only <code>Firmware/ScratchPad/</code>.</li>
 <li><strong>Adding a firmware library?</strong> Add its <code>library.json</code> to <code>extra-files</code> in
   <code>release-please-config.json</code>, so its version moves with the rest.</li>
-<li><strong>Boards</strong> are tagged by hand at order time, and the <strong>cockpit</strong> release is cut by hand after
-  bring-up — see D10.</li>
+<li><strong>Boards and the cockpit</strong> are released by hand, once they're ready: a board is tagged after it
+  has been built and verified, the cockpit after its boards are released. Their notes come from
+  the same commits, picked by the folders they touched — so mark a hardware break (a pinout,
+  harness, mounting or minimum-firmware change) with <code>!</code>: <code>feat(pcb)!: move J_SR to pin header</code>.
+  The tagging standard and release checklist are in <code>docs/_source/hardware-standards.md</code>
+  (<em>Releases</em>); the model is D10.</li>
 </ul>
 
 

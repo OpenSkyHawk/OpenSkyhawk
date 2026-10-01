@@ -4595,12 +4595,12 @@ released on their own clock from this one repository. Docs follow <code>main</co
 <tr>
 <td><strong>Board</strong></td>
 <td><code>pcb/&lt;Board&gt;-vX.Y.Z</code></td>
-<td>By hand, when that board is sent to fab</td>
+<td>By hand, once that board has been built and verified</td>
 </tr>
 <tr>
 <td><strong>Cockpit hardware</strong></td>
 <td><code>hardware-vX.Y.Z</code></td>
-<td>By hand, when a set of boards has been brought up together</td>
+<td>By hand, once its boards are released</td>
 </tr>
 </tbody>
 </table>
@@ -4633,26 +4633,37 @@ unfinished board is the version it is <em>aiming</em> for, not a release.</p>
 <ul>
 <li>Each board keeps the semver already in its KiCad title block and its back-silk
   <code>REVISION x.y.z</code> text (<a href="../../hardware/standards/">Hardware Standards</a>).</li>
-<li>A board is tagged <strong>when it is ordered</strong>, on the as-fabricated commit, with the fab order ID
-  in the annotated tag message. The tag records a fact: <em>this</em> is what was built.</li>
+<li><strong>A board tag means the board is ready</strong> — built, brought up, and verified. It is created only
+  after bring-up passes; a revision that fails is never tagged. The fab order ID goes in the
+  annotated tag message, and rework a board needed to pass is listed there as errata.</li>
+<li><strong>The tagged tree must be the board that was built.</strong> It goes on <code>HEAD</code> when the board's design
+  files are unchanged since the as-fabricated commit, otherwise on that commit.</li>
 <li>Commits never bump a board — a revision is a human decision, made when the board is re-fabbed.</li>
+<li><strong>A release tag captures the whole repository</strong>, in-progress boards included. Each board folder
+  carries a <code>README.md</code> stating its status (Released / In progress / Deprecated); the manifest is
+  the authoritative list of what a release contains. CAD folders get the same READMEs once CAD
+  joins the hardware release.</li>
 </ul>
 <h3 id="cockpit-hardware">Cockpit hardware</h3>
 <ul>
 <li>One version for the <strong>whole cockpit</strong>, 0.x for a long time. Its release notes are a
   <strong>manifest</strong>: every tagged board at its version, plus the minimum firmware version that
   drives them.</li>
-<li>Cut <strong>only after bring-up passes</strong> — where a board tag records what was built, a cockpit
-  release claims that these boards work together.</li>
-<li>Changelogs come from <a href="https://git-cliff.org">git-cliff</a>, filtered by path between tags
-  (<code>PCB/</code> for the cockpit, a board's own folder for its notes). The first cockpit release is the
-  baseline; its notes are the manifest alone.</li>
+<li>Cut <strong>after its boards are released</strong> — like a board tag, it says the items in it are ready.</li>
+<li><strong>Release notes list each board and what changed in it.</strong> <a href="https://git-cliff.org">git-cliff</a>
+  reads the same Conventional Commits as firmware, but selects them <strong>by path</strong> — the commits that
+  touched a board's folder since its previous tag — so a cross-layer PR shows up in every track it
+  touched. The commit <strong>type</strong> picks the section, the <strong>scope</strong> names the discipline (<code>pcb</code>, later
+  <code>cad</code>), and <strong><code>!</code></strong> marks a hardware break — a pinout, harness, mounting or minimum-firmware
+  change — listed first.</li>
+<li>Changelogs count from baseline tags <code>pcb/&lt;Board&gt;-v0.0.0</code> and <code>hardware-v0.0.0</code> (no Release), set
+  on <code>ff065bd4</code> (2026-07-10) — <code>main</code>'s history starts 2026-07-06, after the 0.1.0 boards were made.</li>
 <li><strong>Bumps while in 0.x:</strong> <em>minor</em> for a board revision that changes a connector pinout, harness,
   mounting, or the minimum firmware, or for a new board joining the cockpit; <em>patch</em> for a
   compatible fix (BOM, silkscreen, protection — same pinouts).</li>
 </ul>
-<p>The hardware tooling (manifest, the git-cliff workflow, the per-board fab bundle) is tracked in
-<a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/305">#305</a>.</p>
+<p>The tagging standard and release checklist are in <a href="../../hardware/standards/#releases">Hardware Standards</a>; the per-board fab
+bundle is tracked in <a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/314">#314</a>.</p>
 <hr />
 <h2 id="related-reading">Related reading</h2>
 <ul>
