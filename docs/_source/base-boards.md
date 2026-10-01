@@ -383,8 +383,8 @@ transcribed from the 0.2.0 netlist.
 | I2C1 (`Wire`) | PB6 | PB7 | PB12 | PB13 |
 | I2C2 (`Wire1`) | PB10 | PB11 | **PA8** | **PA15** |
 
-I2C2's interrupts moved off PB8/PB9 in Rev 2 so those pins could take the ShiftBus; the `J_I2C`
-connectors keep their Rev 1 pinout, so the same cables fit both revisions.
+I2C2's interrupts moved off PB8/PB9 in 0.2.0 so those pins could take the ShiftBus; the `J_I2C`
+connectors keep their 0.1.0 pinout, so the same cables fit both revisions.
 
 On-board passives (per hardware-standards.md): **4.7 kΩ pull-ups, one set per bus** (R2–R5);
 **33 Ω series on SDA/SCL** (R11/R12 on I2C2, R21/R22 on I2C1); **100 Ω series on each INT line**
@@ -513,9 +513,9 @@ Per-channel ADC RC filter (1 kΩ + 100 nF) is added **per variant**, not on the 
 pin 2 `BLn_RETURN` (MOSFET drain). Sub-panel LED strings dim off this board's MOSFET. Keep this
 pin order on **every** backlight connector for harness consistency.
 
-### Rev 1 → Rev 2 delta
+### 0.1.0 → 0.2.0 delta
 
-| What | Rev 1 (0.1.0, fabbed) | Rev 2 (0.2.0) |
+| What | 0.1.0 (fabbed) | 0.2.0 |
 |---|---|---|
 | ShiftBus | not possible — PB3/PB4 NC, no connector | `J_SR` + PB3/PB4/PB5/PB8/PB9 |
 | I2C2 INT_A / INT_B | PB8 / PB9 | **PA8 / PA15** |
@@ -525,8 +525,8 @@ pin order on **every** backlight connector for harness consistency.
 | +12V bus-entry bulk | 10 µF | **C15 22 µF / 35 V** |
 | Series resistors | 5× 33 Ω | **8× 33 Ω** (+R27–R29 on the ShiftBus) |
 
-A Rev 1 board cannot host a hardware ShiftBus: the pins are not brought out. Sketches moved from
-Rev 1 to Rev 2 must swap the I2C2 interrupt pins and the J11 position 7/11 constants.
+A 0.1.0 board cannot host a hardware ShiftBus: the pins are not brought out. Sketches moved from
+0.1.0 to 0.2.0 must swap the I2C2 interrupt pins and the J11 position 7/11 constants.
 
 ### BOM
 

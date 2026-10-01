@@ -132,7 +132,7 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 
 ---
 
-## SCHEMATIC FRONT-END DRAWN 2026-07-03 (`PDU.kicad_sch`, Rev 1.0)
+## SCHEMATIC FRONT-END DRAWN 2026-07-03 (`PDU.kicad_sch`, 0.1.0)
 
 Blocks drawn (PDU-specific; standard STM32 block imported separately):
 - **Input/fuse/TVS** (refs **per fabricated board**) — **J1** J_PSU_IN (Mini-Fit Jr 4-pin) → per rail: TVS shunt-to-GND (**D1 SMBJ12A on 12V, D2 SMBJ6.0A on 5V**, cathode→rail/anode→GND, pre-fuse) → fuse (**F1 5A on 12V, F2 2A on 5V**) → `+12V_FUSED`/`+5V_FUSED`. (Matches BOM table above: D1=C42368008 12V clamp, D2=C5331096 5V clamp.) **D2 schematic symbol still shows SMBJ5.0A → swap to SMBJ6.0A on the next KiCad touch (GUI: same DO-214AA footprint, change value/MPN/LCSC only — no layout change).**
