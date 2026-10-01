@@ -4318,10 +4318,10 @@ docs(contributing): document the conventional-commit standard
 <p>Do <strong>not</strong> add <code>Co-Authored-By:</code> trailers or AI-attribution signatures — see
 <a href="../ai-assisted-development/">AI-Assisted Development</a>.</p>
 <h2 id="releases">Releases</h2>
-<p>Firmware, each board, and the cockpit as a whole are versioned separately — the model and its
-reasons are <a href="../../architecture/design-decisions/#d10-versioning-one-repo-three-release-tracks">design decision D10</a>.</p>
+<p>Firmware and hardware are versioned separately, both through release-please — the model and its
+reasons are <a href="../../architecture/design-decisions/#d10-versioning-firmware-and-hardware-release-separately">design decision D10</a>.</p>
 <ul>
-<li><strong>Firmware</strong> releases itself. On every push to <code>main</code>, release-please updates one open
+<li><strong>Firmware</strong> releases itself. On every push to <code>main</code>, release-please updates one draft
   release PR (<code>chore(main): release firmware X.Y.Z</code>) with the next version, the
   <code>Firmware/CHANGELOG.md</code> entry, and every <code>library.json</code> bumped together. The PR stays a
   <strong>draft</strong> so it can't be merged by accident. <strong>Marking it ready and merging it is the
@@ -4333,12 +4333,13 @@ reasons are <a href="../../architecture/design-decisions/#d10-versioning-one-rep
   only <code>Firmware/ScratchPad/</code>.</li>
 <li><strong>Adding a firmware library?</strong> Add its <code>library.json</code> to <code>extra-files</code> in
   <code>release-please-config.json</code>, so its version moves with the rest.</li>
-<li><strong>Boards and the cockpit</strong> are released by hand, once they're ready: a board is tagged after it
-  has been built and verified, the cockpit after its boards are released. Their notes come from
-  the same commits, picked by the folders they touched — so mark a hardware break (a pinout,
-  harness, mounting or minimum-firmware change) with <code>!</code>: <code>feat(pcb)!: move J_SR to pin header</code>.
-  The tagging standard and release checklist are in <code>docs/_source/hardware-standards.md</code>
-  (<em>Releases</em>); the model is D10.</li>
+<li><strong>Hardware</strong> works the same way: commits under <code>PCB/</code> feed a draft <code>release hardware X.Y.Z</code> PR
+  (<code>PCB/CHANGELOG.md</code>, <code>release:</code> in <code>PCB/manifest.yaml</code>); merging it tags <code>hardware-vX.Y.Z</code>. What
+  you add by hand is the <strong>manifest</strong> — a board is listed there only once it has been built and
+  verified. Mark a hardware break (a pinout, harness, mounting or minimum-firmware change) with
+  <code>!</code>: <code>feat(pcb)!: move J_SR to pin header</code>. A commit touching both <code>Firmware/</code> and <code>PCB/</code> counts
+  for both releases. Standard and checklist: <code>docs/_source/hardware-standards.md</code> (<em>Releases</em>).</li>
+<li><strong>Tags are only for releases.</strong> release-please creates them; never tag by hand.</li>
 </ul>
 
 

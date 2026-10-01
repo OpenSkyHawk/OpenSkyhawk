@@ -4135,13 +4135,13 @@ short version:</p>
 <li><strong>Firmware releases itself.</strong> Each merge to <code>main</code> keeps a draft <em>"release firmware X.Y.Z"</em> pull
   request up to date with the next version and its changelog. When a maintainer marks it ready
   and merges it, the release is tagged and published — nothing for you to do.</li>
-<li><strong>Boards and the cockpit are released by hand, once they're ready.</strong> A board gets a version tag
-  after it has been built and verified; the whole cockpit gets a release once its boards are
-  released. Each board folder's <code>README.md</code> says whether that board is Released, In progress, or
-  Deprecated.</li>
+<li><strong>Hardware releases the same way.</strong> Commits under <code>PCB/</code> keep a draft <em>"release hardware
+  X.Y.Z"</em> pull request up to date. A board joins a release once it has been built and verified —
+  it's then listed in <code>PCB/manifest.yaml</code> — and each board folder's <code>README.md</code> says whether it is
+  Released, In progress, or Deprecated.</li>
 </ul>
 <p>Want the details? See <a href="conventions/#releases">Releases</a> and
-<a href="../architecture/design-decisions/#d10-versioning-one-repo-three-release-tracks">design decision D10</a>.</p>
+<a href="../architecture/design-decisions/#d10-versioning-firmware-and-hardware-release-separately">design decision D10</a>.</p>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><strong><a href="conventions/">Design Conventions</a></strong> — naming, NODE_IDs, wiring maps, CAD files, the rules that keep things consistent</li>

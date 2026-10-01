@@ -1011,15 +1011,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#d10-versioning-one-repo-three-release-tracks" class="md-nav__link">
+  <a href="#d10-versioning-firmware-and-hardware-release-separately" class="md-nav__link">
     <span class="md-ellipsis">
       
-        D10 — Versioning: one repo, three release tracks
+        D10 — Versioning: firmware and hardware release separately
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D10 — Versioning: one repo, three release tracks">
+    <nav class="md-nav" aria-label="D10 — Versioning: firmware and hardware release separately">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1034,21 +1034,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#boards" class="md-nav__link">
+  <a href="#hardware" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Boards
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cockpit-hardware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cockpit hardware
+        Hardware
       
     </span>
   </a>
@@ -4219,15 +4208,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#d10-versioning-one-repo-three-release-tracks" class="md-nav__link">
+  <a href="#d10-versioning-firmware-and-hardware-release-separately" class="md-nav__link">
     <span class="md-ellipsis">
       
-        D10 — Versioning: one repo, three release tracks
+        D10 — Versioning: firmware and hardware release separately
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="D10 — Versioning: one repo, three release tracks">
+    <nav class="md-nav" aria-label="D10 — Versioning: firmware and hardware release separately">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -4242,21 +4231,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#boards" class="md-nav__link">
+  <a href="#hardware" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Boards
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cockpit-hardware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cockpit hardware
+        Hardware
       
     </span>
   </a>
@@ -4575,32 +4553,33 @@ that already sit on an I²C leg — no encoders, no speed pressure, fewer wires.
 <a href="../../hardware/standards/">Hardware Standards</a> Shift-Register I/O section and the
 <a href="../../hardware/connectors/">Connector &amp; Harness Guide</a>.</p>
 <hr />
-<h2 id="d10-versioning-one-repo-three-release-tracks">D10 — Versioning: one repo, three release tracks</h2>
-<p><strong>Decision:</strong> firmware, boards, and the cockpit as a whole each carry their <strong>own version</strong>,
-released on their own clock from this one repository. Docs follow <code>main</code> and are not versioned.</p>
+<h2 id="d10-versioning-firmware-and-hardware-release-separately">D10 — Versioning: firmware and hardware release separately</h2>
+<p><strong>Decision:</strong> firmware and hardware each carry their <strong>own version</strong> and release on their own
+clock from this one repository, both through
+<a href="https://github.com/googleapis/release-please">release-please</a>: <strong>merging a release PR is the
+release.</strong> Docs follow <code>main</code> and are not versioned. <strong>Tags are only for releases</strong> — created by
+release-please when a release PR merges, never by hand.</p>
 <table>
 <thead>
 <tr>
 <th>Track</th>
 <th>Tag</th>
-<th>Moves when</th>
+<th>Counts commits under</th>
+<th>Release PR updates</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Firmware</strong></td>
 <td><code>firmware-vX.Y.Z</code></td>
-<td>Automatically, from Conventional Commits under <code>Firmware/</code></td>
+<td><code>Firmware/</code></td>
+<td><code>Firmware/CHANGELOG.md</code>, every <code>library.json</code></td>
 </tr>
 <tr>
-<td><strong>Board</strong></td>
-<td><code>pcb/&lt;Board&gt;-vX.Y.Z</code></td>
-<td>By hand, once that board has been built and verified</td>
-</tr>
-<tr>
-<td><strong>Cockpit hardware</strong></td>
+<td><strong>Hardware</strong></td>
 <td><code>hardware-vX.Y.Z</code></td>
-<td>By hand, once its boards are released</td>
+<td><code>PCB/</code></td>
+<td><code>PCB/CHANGELOG.md</code>, <code>release:</code> in <code>PCB/manifest.yaml</code></td>
 </tr>
 </tbody>
 </table>
@@ -4610,60 +4589,51 @@ released on their own clock from this one repository. Docs follow <code>main</co
   fix would imply new boards.</li>
 <li><strong>Firmware in its own repo</strong> — the cleanest release story, but it loses the cross-layer PRs
   (spec + firmware + docs in one change) the project relies on.</li>
+<li><strong>A tag per board</strong> — tried first, dropped: a tag should mean a release, and boards are released
+  together, through the manifest.</li>
 </ul>
-<p><strong>Rule: a version only counts once it is tagged.</strong> A board's title-block revision on an
-unfinished board is the version it is <em>aiming</em> for, not a release.</p>
+<p>Both tracks read the same Conventional Commits. <strong>Path</strong> decides which release a commit counts
+toward — one touching <code>Firmware/</code> and <code>PCB/</code> counts for both. <strong>Type</strong> decides the effect: <code>feat</code>
+and <code>fix</code> are listed and bump the version, <strong><code>!</code></strong> marks a breaking change and is listed first;
+<code>docs</code>, <code>chore</code>, <code>ci</code>, <code>test</code> are neither listed nor bump. Release PRs open as drafts so neither
+can be merged by accident.</p>
 <h3 id="firmware">Firmware</h3>
 <ul>
 <li><strong>One version for the whole library set.</strong> The libraries ship together and share the CAN
   wire format, so a mixed set has no meaning. Every <code>Firmware/Libraries/*/library.json</code> carries
   the same version.</li>
-<li><strong><a href="https://github.com/googleapis/release-please">release-please</a></strong> keeps a release PR open on
-  <code>main</code>, holding the next version, <code>Firmware/CHANGELOG.md</code>, and the <code>library.json</code> bumps.
-  Merging it tags the release. Commits that touch only <code>Firmware/ScratchPad/</code> (the spec) don't
-  count toward a release.</li>
+<li>Commits that touch only <code>Firmware/ScratchPad/</code> (the spec) don't count toward a release.</li>
 <li><strong>Before 1.0, a breaking change bumps the minor</strong> version; 1.0 freezes the sketch API and the
   wire format.</li>
-<li>The first release counts from the baseline tag <code>firmware-v0.0.0</code>, an annotated tag with no
-  GitHub Release, on the commit where the v0.1.0 work began.</li>
 <li>Third-party libraries stay declared as version ranges; each release records the versions it
   resolved to as a <code>dependencies.txt</code> release asset, rather than pinning them.</li>
 </ul>
-<h3 id="boards">Boards</h3>
+<h3 id="hardware">Hardware</h3>
 <ul>
-<li>Each board keeps the semver already in its KiCad title block and its back-silk
-  <code>REVISION x.y.z</code> text (<a href="../../hardware/standards/">Hardware Standards</a>).</li>
-<li><strong>A board tag means the board is ready</strong> — built, brought up, and verified. It is created only
-  after bring-up passes; a revision that fails is never tagged. The fab order ID goes in the
-  annotated tag message, and rework a board needed to pass is listed there as errata.</li>
-<li><strong>The tagged tree must be the board that was built.</strong> It goes on <code>HEAD</code> when the board's design
-  files are unchanged since the as-fabricated commit, otherwise on that commit.</li>
-<li>Commits never bump a board — a revision is a human decision, made when the board is re-fabbed.</li>
-<li><strong>A release tag captures the whole repository</strong>, in-progress boards included. Each board folder
+<li><strong>A hardware release means the boards in it are ready</strong> — built, brought up, and verified. Which
+  boards, at which version, is the <strong>manifest</strong> <code>PCB/manifest.yaml</code>: a board is listed only once
+  it passes bring-up, with the commit it was made from, its fab order ID, and any rework it needed
+  (errata). A revision that fails bring-up is never listed.</li>
+<li>Each board keeps the semver in its KiCad title block and back-silk <code>REVISION x.y.z</code> text
+  (<a href="../../hardware/standards/">Hardware Standards</a>); it must match the manifest at the commit the
+  board was made from. Commits never bump a board — a revision is a human decision.</li>
+<li><strong>Release notes list each board and what changed in it</strong>: after release-please publishes the
+  release, a job adds a table of the boards (new / unchanged / moved) and, per board,
+  <a href="https://git-cliff.org">git-cliff</a>'s list of the commits that touched its folder. Mark a hardware
+  break — a pinout, harness, mounting or minimum-firmware change — with <code>!</code>: <code>feat(pcb)!: …</code>.
+  Hardware commits use the scope <code>pcb</code> (later <code>cad</code>).</li>
+<li><strong>Bumps while in 0.x:</strong> a break bumps the minor version, anything else the patch.</li>
+<li><strong>A release captures the whole repository</strong>, in-progress boards included. Each board folder
   carries a <code>README.md</code> stating its status (Released / In progress / Deprecated); the manifest is
   the authoritative list of what a release contains. CAD folders get the same READMEs once CAD
   joins the hardware release.</li>
+<li><strong>"Latest" on GitHub stays on firmware</strong> — the release job hands the badge back after a hardware
+  release.</li>
+<li>The first hardware release counts commits from <code>ff065bd4</code> (2026-07-10, release-please's
+  <code>bootstrap-sha</code>) — <code>main</code>'s history starts 2026-07-06, after the 0.1.0 boards were made.</li>
 </ul>
-<h3 id="cockpit-hardware">Cockpit hardware</h3>
-<ul>
-<li>One version for the <strong>whole cockpit</strong>, 0.x for a long time. Its release notes are a
-  <strong>manifest</strong>: every tagged board at its version, plus the minimum firmware version that
-  drives them.</li>
-<li>Cut <strong>after its boards are released</strong> — like a board tag, it says the items in it are ready.</li>
-<li><strong>Release notes list each board and what changed in it.</strong> <a href="https://git-cliff.org">git-cliff</a>
-  reads the same Conventional Commits as firmware, but selects them <strong>by path</strong> — the commits that
-  touched a board's folder since its previous tag — so a cross-layer PR shows up in every track it
-  touched. The commit <strong>type</strong> picks the section, the <strong>scope</strong> names the discipline (<code>pcb</code>, later
-  <code>cad</code>), and <strong><code>!</code></strong> marks a hardware break — a pinout, harness, mounting or minimum-firmware
-  change — listed first.</li>
-<li>Changelogs count from baseline tags <code>pcb/&lt;Board&gt;-v0.0.0</code> and <code>hardware-v0.0.0</code> (no Release), set
-  on <code>ff065bd4</code> (2026-07-10) — <code>main</code>'s history starts 2026-07-06, after the 0.1.0 boards were made.</li>
-<li><strong>Bumps while in 0.x:</strong> <em>minor</em> for a board revision that changes a connector pinout, harness,
-  mounting, or the minimum firmware, or for a new board joining the cockpit; <em>patch</em> for a
-  compatible fix (BOM, silkscreen, protection — same pinouts).</li>
-</ul>
-<p>The tagging standard and release checklist are in <a href="../../hardware/standards/#releases">Hardware Standards</a>; the per-board fab
-bundle is tracked in <a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/314">#314</a>.</p>
+<p>The release standard and checklist are in <a href="../../hardware/standards/#releases">Hardware Standards</a>;
+the per-board fab bundle is tracked in <a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/314">#314</a>.</p>
 <hr />
 <h2 id="related-reading">Related reading</h2>
 <ul>

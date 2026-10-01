@@ -4244,13 +4244,13 @@ everything else is fine on I²C-class. Key rules:</p>
 <code>docs/_source/hardware-standards.md</code> (Shift-Register I/O section). Harness pinouts:
 the <a href="../connectors/">Connector &amp; Harness Guide</a>.</p>
 <h2 id="releases">Releases</h2>
-<p>A board release means <strong>the board is ready</strong> — built, brought up, and verified. Each board is
-tagged <code>pcb/&lt;Board&gt;-vX.Y.Z</code> once it passes bring-up, and the whole cockpit gets a <code>hardware-vX.Y.Z</code>
-release once its boards are released; the release notes list each board and what changed in it.
-Every board folder's <code>README.md</code> says whether it is <strong>Released</strong>, <strong>In progress</strong>, or
-<strong>Deprecated</strong>. The model is <a href="../../architecture/design-decisions/#d10-versioning-one-repo-three-release-tracks">design decision D10</a>;
-the tagging standard and release checklist are in <code>docs/_source/hardware-standards.md</code>
-(<em>Releases</em>).</p>
+<p>Hardware releases work like firmware's: commits under <code>PCB/</code> keep a draft <strong>release hardware
+X.Y.Z</strong> pull request up to date, and <strong>merging it is the release</strong> (<code>hardware-vX.Y.Z</code>). A release
+means <strong>the boards in it are ready</strong> — built, brought up, and verified — and which boards those are
+is listed in <code>PCB/manifest.yaml</code>. The release notes list each board and what changed in it. Every
+board folder's <code>README.md</code> says whether it is <strong>Released</strong>, <strong>In progress</strong>, or <strong>Deprecated</strong>.
+The model is <a href="../../architecture/design-decisions/#d10-versioning-firmware-and-hardware-release-separately">design decision D10</a>;
+the standard and release checklist are in <code>docs/_source/hardware-standards.md</code> (<em>Releases</em>).</p>
 <h2 id="the-other-reference-pages">The other reference pages</h2>
 <ul>
 <li><strong><a href="../mechanical-standards/">Mechanical Standards</a></strong> — screws, gauges, switch sizes, panel dims</li>

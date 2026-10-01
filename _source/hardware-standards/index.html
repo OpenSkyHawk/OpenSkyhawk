@@ -4281,10 +4281,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#board-tag" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Board tag
+        How it works
       
     </span>
   </a>
@@ -4292,10 +4292,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cockpit-release" class="md-nav__link">
+  <a href="#the-manifest-pcbmanifestyaml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cockpit release
+        The manifest — PCB/manifest.yaml
       
     </span>
   </a>
@@ -5257,60 +5257,62 @@ previous revision's text is indistinguishable from the older batch on the bench.
 <li>No legend implemented via a footprint <code>Value</code> override</li>
 </ol>
 <h2 id="releases">Releases</h2>
-<p>A board release means <strong>this board is ready</strong> — built, brought up, and verified. A tag never
-records an order. The model and its reasons are design decision D10
-(<a href="../../architecture/design-decisions/">Design Decisions</a>).</p>
-<h3 id="board-tag">Board tag</h3>
-<p><code>pcb/&lt;Board&gt;-v&lt;x.y.z&gt;</code>, annotated. <code>&lt;Board&gt;</code> is the KiCad project folder name (<code>PanelGroup_Base</code>,
-<code>Gateway_Bridge</code>, <code>PDU</code>); the version is the board revision in its title block and back-silk.</p>
+<p>A hardware release means <strong>the boards in it are ready</strong> — built, brought up, and verified. It
+works like a firmware release: <strong>merging the release PR is the release</strong>. Tags are created only
+for releases, by release-please — never by hand, never per board. The model and its reasons are
+design decision D10 (<a href="../../architecture/design-decisions/">Design Decisions</a>).</p>
+<h3 id="how-it-works">How it works</h3>
 <ul>
-<li><strong>Only after bring-up passes.</strong> A revision that fails bring-up is never tagged — the next
-  revision supersedes it.</li>
-<li><strong>The tag message is the fab order ID</strong> (e.g. <code>JLC W2026093021050394</code>); it appears in the
-  release notes.</li>
-<li><strong>Passed only with rework</strong> (a cut trace, a bodge wire): tag it anyway and list the rework in the
-  tag message as errata. The next revision folds the fix in.</li>
-<li><strong>Placement — the tagged tree must be the board that was built.</strong> If the design files are
-  unchanged since the as-fabricated commit, tag <code>HEAD</code>; if the next revision is already under way,
-  tag the as-fabricated commit. The status <code>README.md</code> doesn't count as a design file:</li>
+<li>release-please watches <strong>commits under <code>PCB/</code></strong> and keeps a draft <strong><code>release hardware X.Y.Z</code></strong>
+  pull request up to date: the next version, <code>PCB/CHANGELOG.md</code>, and <code>release:</code> in
+  <code>PCB/manifest.yaml</code>. A commit that also touches <code>Firmware/</code> counts for both releases.</li>
+<li>The commit <strong>type</strong> decides the effect: <code>feat</code> → Features, <code>fix</code> → Bug Fixes, <strong><code>!</code></strong> → ⚠ Breaking
+  changes. Mark a hardware break with <code>!</code> — a connector pinout, harness, mounting, or minimum-firmware
+  change, e.g. <code>feat(pcb)!: move CAN to pins 3/4</code>. <code>docs</code>, <code>chore</code>, <code>ci</code>, <code>test</code> neither appear nor
+  bump. Before 1.0 a break bumps the minor version, anything else the patch.</li>
+<li>Merging the release PR tags <strong><code>hardware-vX.Y.Z</code></strong> and publishes the GitHub Release. A follow-up job
+  adds the <strong>boards</strong>: minimum firmware, a table of every board (new / unchanged / moved since the
+  previous release), and per board its order ID, errata, the commit it was made from, and what
+  changed in it.</li>
+<li>In-progress boards' commits appear in the changelog too; the board table says what is released.</li>
 </ul>
-<p><code>bash
-  git diff --quiet &lt;as-fabricated&gt; HEAD -- &lt;board folder&gt; ':!&lt;board folder&gt;/README.md' &amp;&amp; echo "tag HEAD"</code></p>
+<h3 id="the-manifest-pcbmanifestyaml">The manifest — <code>PCB/manifest.yaml</code></h3>
+<p>Lists the boards a release contains. release-please owns <code>release:</code>; the rest is edited by hand.
+A board is listed <strong>only once bring-up passes</strong>:</p>
+<pre><code class="language-yaml">min_firmware: firmware-v0.1.0
+boards:
+  - board: PanelGroup_Base            # KiCad project folder name
+    path: PCB/Base/PanelGroup_Base
+    version: 0.2.0                    # matches its title block at `fabricated`
+    fabricated: a4e75ff9              # commit the boards were made from
+    order: JLC W2026093021050394
+    errata: &quot;&quot;                        # rework needed to pass bring-up, if any
+</code></pre>
 <ul>
-<li>The release workflow refuses a tag whose title-block revision differs from the tag's version.</li>
-<li><strong>Notes write themselves from commits</strong> that touched the board folder since its previous tag
-  (git-cliff, <code>cliff.toml</code>): <code>feat</code>/<code>fix</code>/<code>refactor</code> pick the section, and <strong><code>!</code></strong> — use it for a
-  pinout, harness, mounting or minimum-firmware change, e.g. <code>feat(pcb)!: …</code> — lists the change
-  under <em>Breaking changes</em>. The tag message goes on top.</li>
-<li><strong>Baselines:</strong> <code>-v0.0.0</code> tags (no Release) are where changelogs start. The base boards and the
-  cockpit count from <code>ff065bd4</code> (2026-07-10).</li>
+<li><strong><code>fabricated</code></strong> is the commit whose files were sent to fab; the board's title-block revision there
+  must equal <code>version</code>, or the notes job fails. If the design has moved on since, the notes say so
+  and point to <code>fabricated</code> for this revision's files.</li>
+<li><strong>Passed only with rework</strong> (a cut trace, a bodge wire): list it anyway and describe the rework in
+  <code>errata</code>. The next revision folds the fix in.</li>
+<li>A revision that fails bring-up is never listed — the next revision supersedes it.</li>
 </ul>
-<h3 id="cockpit-release">Cockpit release</h3>
-<p><code>hardware-v&lt;x.y.z&gt;</code>, annotated, at <code>HEAD</code>, cut after every board in it is released. Its notes are
-<code>hardware/manifest.yaml</code> — each released board at its version, plus the minimum firmware — and,
-from the second release on, the changelog of <code>PCB/</code>.</p>
-<p>While in 0.x: <strong>minor</strong> for a board revision that changes a connector pinout, harness, mounting, or
-the minimum firmware, or for a new board joining; <strong>patch</strong> for a compatible fix.</p>
 <h3 id="board-status">Board status</h3>
-<p>Every board folder carries a short <code>README.md</code> stating its status: <strong>Released</strong>, <strong>In progress</strong>,
-or <strong>Deprecated</strong>. A release tag captures the whole repository, in-progress boards included, so the
-README is how a reader browsing a tag tells them apart; the manifest is the authoritative list of
-what a release contains. Name the status only, never a version — the README then changes only when
-the status does.</p>
+<p>Every board folder carries a short <code>README.md</code> stating its status: <strong>Released</strong>, <strong>In progress</strong>, or
+<strong>Deprecated</strong>. A release captures the whole repository, in-progress boards included, so the README
+is how a reader browsing a release tells them apart; the manifest is the authoritative list of what a
+release contains. Name the status only, never a version — the README then changes only when the
+status does.</p>
 <h3 id="release-checklist">Release checklist</h3>
 <ol>
-<li>Bring-up passes for every board in the release.</li>
-<li>One PR: add the boards to <code>hardware/manifest.yaml</code> (and set <code>min_firmware</code>), flip their READMEs
-   to <strong>Released</strong>. Merge it.</li>
-<li>Tag each board (placement rule above), then the cockpit at <code>HEAD</code>, and push:</li>
-</ol>
-<p><code>bash
-   git tag -a pcb/PanelGroup_Base-v0.2.0 -m "JLC W2026093021050394" &lt;commit&gt;
-   git tag -a hardware-v0.1.0 -m "Base boards 0.2.0"
-   git push origin pcb/PanelGroup_Base-v0.2.0 hardware-v0.1.0</code></p>
-<ol>
-<li>The <strong>Hardware Release</strong> workflow publishes one GitHub Release per tag. Check the notes, and
-   that <strong>Latest</strong> still points at the firmware release.</li>
+<li>Bring-up passes for every board going into the release.</li>
+<li>One PR: list the boards in <code>PCB/manifest.yaml</code> (and set <code>min_firmware</code>), flip their READMEs to
+   <strong>Released</strong>. Preview the notes with <code>python tools/hardware-release/release_notes.py --preview</code>.
+   Merge it.</li>
+<li>On the draft <strong><code>release hardware X.Y.Z</code></strong> PR: mark it ready, check the version and changelog,
+   merge it. The release publishes itself; the board table follows a minute later.</li>
+<li>Check the release notes, and that <strong>Latest</strong> still points at the firmware release.</li>
+<li><strong>After the first hardware release only:</strong> remove <code>"release-as": "0.1.0"</code> from the <code>PCB</code> package in
+   <code>release-please-config.json</code>, or every later release stays at 0.1.0.</li>
 </ol>
 <h2 id="switches-controls">Switches &amp; Controls</h2>
 <ul>
