@@ -82,10 +82,13 @@ them. See [Docs Workflow](docs-workflow.md).
 ## Commits and PR titles
 
 Use **[Conventional Commits](https://www.conventionalcommits.org/)** — `type(scope): summary` —
-for **both commit messages and PR titles**. The repo squash-merges, so the **PR title becomes the
-commit on `main`** that release-please reads for the firmware version bump and changelog. The
-**PR Title** check fails a pull request whose title isn't a Conventional Commit — otherwise the
-change would silently drop out of the release.
+for **both commit messages and PR titles**. The repo squash-merges with the **PR title as the whole
+commit on `main`** — that's what release-please reads for the version bump and changelog of both
+firmware and hardware. The **PR Title** check fails a pull request whose title isn't a
+Conventional Commit — otherwise the change would silently drop out of the release.
+
+The PR **description** isn't copied into the commit, so write it freely — code snippets included.
+It stays on the PR, one click from the `(#123)` in the commit title.
 
 - **Types:** `feat` (new capability), `fix`, `chore`, `test`, `docs`, `refactor`, `perf`, `build`, `ci`.
 - **Scope** (optional, encouraged) names the area: `feat(panelbridge): …`, `fix(pcb): …`. For
@@ -126,3 +129,19 @@ reasons are [design decision D10](../architecture/design-decisions.md#d10-versio
   `!`: `feat(pcb)!: move J_SR to pin header`. A commit touching both `Firmware/` and `PCB/` counts
   for both releases. Standard and checklist: `docs/_source/hardware-standards.md` (*Releases*).
 - **Tags are only for releases.** release-please creates them; never tag by hand.
+
+### Fixing a release entry
+
+If a merged PR is missing from a release PR, or its changelog line is wrong, don't edit the
+release PR — release-please rebuilds it. Instead, add this block to the **merged PR's
+description**, with the line you want:
+
+```text
+BEGIN_COMMIT_OVERRIDE
+feat(firmware): DrumDisplay takes a bus or a mux (#318)
+END_COMMIT_OVERRIDE
+```
+
+then re-run the **Release** workflow (Actions → Release → Run workflow). release-please reads the
+override instead of the commit, and the release PR updates. Several lines in the block become
+several changelog entries.
