@@ -101,13 +101,9 @@ Series ratings: **9 A / 300 V per circuit**, contact resistance ≤20 mΩ initia
 after ageing, 30 °C max temperature rise at rated current, **30 mating cycles**, −40 to
 +105 °C.
 
-Two things worth knowing before building a harness:
-
-- **The terminal is 20–28 AWG.** The series datasheet quotes "AWG #16~#28" for the family,
-  but the `-T` part actually sold is 20–28 and will not accept 18 AWG. Crimp pull-out by
-  gauge: 20 AWG ≥70 N, 22 AWG ≥50 N, 24 AWG ≥30 N.
-- **30 mating cycles is the connector's rated life**, genuine Molex included. The trunk is
-  not a frequently-demated interface; plan console teardowns accordingly.
+Worth knowing before building a harness: **30 mating cycles is the connector's rated
+life**, genuine Molex included. The trunk is not a frequently-demated interface; plan
+console teardowns accordingly.
 
 The crimp tool is the JRready ST6490-ACT (see the table at the top of this page).
 
