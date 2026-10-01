@@ -107,8 +107,10 @@ reasons are [design decision D10](../architecture/design-decisions.md#d10-versio
 
 - **Firmware** releases itself. On every push to `main`, release-please updates one open
   release PR (`chore(main): release firmware X.Y.Z`) with the next version, the
-  `Firmware/CHANGELOG.md` entry, and every `library.json` bumped together. **Merging that PR is
-  the release:** it tags `firmware-vX.Y.Z` and publishes the GitHub Release.
+  `Firmware/CHANGELOG.md` entry, and every `library.json` bumped together. The PR stays a
+  **draft** so it can't be merged by accident. **Marking it ready and merging it is the
+  release:** it tags `firmware-vX.Y.Z` and publishes the GitHub Release. Don't edit the release
+  PR — the next push to `main` rebuilds it; reword notes on the published GitHub Release instead.
 - Only `feat`, `fix`, `perf`, and breaking changes under `Firmware/` move the version and appear
   in the changelog; `docs`, `chore`, `test` and the rest don't, and neither do commits that touch
   only `Firmware/ScratchPad/`.
