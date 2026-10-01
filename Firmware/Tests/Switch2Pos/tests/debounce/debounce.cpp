@@ -78,26 +78,32 @@ void setup() {
     uint8_t baseCount = gEvtCount;
 
     // ── Phase A: clean transition, debounce timing ───────────────────────────
-    // Drive pin LOW (active). Confirm EVT does NOT fire before 20 ms,
-    // but DOES fire after >= 20 ms.
-    // Actual elapsed at each poll() includes ~2 ms per preceding flushDrain().
+    // Drive pin LOW (active). Confirm EVT does NOT fire before DEBOUNCE_MS, but does after.
+    //
+    // Elapsed time is MEASURED here, never assumed. A PASS line is ~50 characters, which at
+    // 115200 baud is ~4 ms of transmit the test does not control, and flushDrain() adds ~2 ms
+    // more. An earlier version budgeted only the flushDrain and polled at what it called "17 ms"
+    // — measured on hardware that poll landed at 22-26 ms, past the window, so the EVT fired
+    // correctly and the assertion failed. Reading millis() instead makes the test immune to
+    // however long the preceding output happens to be.
 
     digitalWrite(PIN_CTRL, LOW);
     delayMicroseconds(100);
 
-    gSw.poll();          // starts debounce timer T0
-    flushDrain();        // +2 ms
-    check("immediate poll() after state change: no EVT", gEvtCount == baseCount);
-
-    delay(15);           // ~17 ms elapsed since T0 (15 + flushDrain overhead) < 20 ms
+    const uint32_t t0 = millis();  // the poll below starts the debounce timer here
     gSw.poll();
-    flushDrain();        // +2 ms
-    check("poll() at ~17 ms: no EVT (debounce not expired)", gEvtCount == baseCount);
 
-    delay(10);           // ~29 ms elapsed since T0 >= 20 ms
+    // Inside the window: poll repeatedly, every one provably before DEBOUNCE_MS. No printing in
+    // the loop — that is what used to push the last poll past the edge.
+    while ((uint32_t)(millis() - t0) < OpenSkyhawk::Switch2Pos::DEBOUNCE_MS - 4) gSw.poll();
+    flushDrain();
+    check("inside debounce window: no EVT", gEvtCount == baseCount);
+
+    // Past the window: the next poll must confirm.
+    while ((uint32_t)(millis() - t0) < OpenSkyhawk::Switch2Pos::DEBOUNCE_MS + 4) { /* wait out the edge */ }
     gSw.poll();
     flushDrain();
-    check("poll() at ~29 ms: EVT fires (value 1)", gEvtCount == baseCount + 1 && gLastVal == 1);
+    check("past debounce window: EVT fires (value 1)", gEvtCount == baseCount + 1 && gLastVal == 1);
     baseCount = gEvtCount;
 
     // ── Phase B: bounce back to confirmed state — no EVT ─────────────────────
