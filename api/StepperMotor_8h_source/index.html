@@ -4004,6 +4004,8 @@ public:
     bool    debugStopped() const      { return _stopped; }
     bool    debugSensorAsserted() const { return sensorAsserted(false); }
     void    debugSetSensorOverride(int8_t level) { _sensorOverride = level; } 
+    void    debugSetCurrentStep(int32_t s) { _currentStep = s; }  
+    bool    debugCoilsOk() const { return _coilsOk; }             
 #endif
 
 private:
@@ -4027,13 +4029,17 @@ private:
 
     // auto-recal
     uint32_t     _lastRecalMs;    // millis() of last recal
+    uint32_t     _recalAssertMs;  // millis() when the sensor first read asserted (debounce latch)
+    bool         _recalPending;   // sensor currently asserted and being timed
     int8_t       _sensorOverride; // -1 = read pin; 0/1 = forced (test seam)
+    bool         _coilsOk;        // false = coils not on one MCP port; refuse to drive
 
     // helpers
     void     writeIO();                    // energise coils for _state
     void     stepOnce(bool up);            // one detent in a direction
     void     advance();                    // SwitecX25 accel/step kernel
     bool     sensorAsserted(bool live) const; // single read through activeLow; live=true → bypass cache
+    bool     coilsShareOnePort() const;    // all 4 coils direct GPIO, or one MCP chip+port
     bool     sensorConfirmed() const;      // sensorAsserted stable for debounceMs
     bool     seekHomeBlocking();           // step toward sensor until confirmed or maxSeekSteps
     void     runToStopBlocking();          // advance() + delay until stopped (homing/park moves)

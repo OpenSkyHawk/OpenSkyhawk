@@ -65,6 +65,10 @@ public:
 
     uint8_t gpioPin() const;
 
+    bool sameMcpPortAs(const PinRef& other) const;
+
+    bool isMcp() const;
+
 private:
     enum class Type : uint8_t {
         GPIO,  

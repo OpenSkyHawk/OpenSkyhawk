@@ -21,6 +21,7 @@
 
 ## b
 
+* **BAND\_EPS** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **bit** ([**PinRef**](classPinRef.md))
 * **bus** ([**PinRef**](classPinRef.md))
 
@@ -110,6 +111,7 @@
 * **magic** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
 * **MAX\_CELLS** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **mask** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
+* **mul** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **maxTravel** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **minTravel** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **maxSeekSteps** ([**OpenSkyhawk::HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md))
@@ -128,6 +130,11 @@
 * **nGlyphs** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **nSources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **NO\_POSITION** ([**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md))
+
+
+## o
+
+* **offset** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 
 
 ## p
@@ -150,6 +157,7 @@
 ## s
 
 * **stepThreshold** ([**OpenSkyhawk::AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md))
+* **steps** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **scroll** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **snapThreshold** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
@@ -208,6 +216,7 @@
 * **\_channel** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **\_colW** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **\_cy** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
+* **\_descriptorOk** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **\_dirty** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **\_fault** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **\_flagPos** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
@@ -278,6 +287,7 @@
 * **\_stage** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **\_cfg** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_coil** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
+* **\_coilsOk** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_currentStep** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_dir** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_homeSense** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
@@ -285,6 +295,8 @@
 * **\_lastRecalMs** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_maxVel** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_microDelay** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
+* **\_recalAssertMs** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
+* **\_recalPending** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_sensorOverride** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_sleepEn** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_state** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md), [**OpenSkyhawk::SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md))

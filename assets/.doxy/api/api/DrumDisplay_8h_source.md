@@ -44,6 +44,14 @@ struct DrumSource {
     uint16_t mask;      
     uint8_t  nDigits;   
     uint8_t  place;     
+
+    // ── band: how the exported 0..mask range divides into displayable positions ──
+    // DCS-BIOS does no segmentation of its own — Module.valueConvert() maps the gauge's declared
+    // arg range linearly onto 0..65535 and nothing more. The division into positions belongs to
+    // the gauge, so it is declared per source rather than assumed from nDigits.
+    uint16_t steps  = 0;   
+    uint8_t  mul    = 1;   
+    int16_t  offset = 0;   
 };
 
 struct DrumGlyph {
@@ -59,6 +67,7 @@ struct DrumFlag {
     const char* faces;        
     uint8_t     atVisualCol;  
     float       widthMm;      
+    uint16_t    steps = 0;    
 };
 
 struct DrumReadout {
@@ -131,6 +140,9 @@ public:
     void     debugForceProbe(int v)   { _probeOverride = v; }                   
     bool     debugReachable()          { return i2cReachable(); }               
     uint32_t debugProbeCount() const   { return _probeCount; }                  
+    bool     debugDescriptorOk() const { return _descriptorOk; }                
+    bool     debugClipFits();                                                   
+    void     debugDumpGeometry(Print& out);                                     
 #endif
 
 protected:
@@ -140,7 +152,10 @@ private:
     static constexpr uint8_t MAX_CELLS = 8;  // 6 digits + 1 glyph + 1 flag
 
     uint8_t oledAddr() const;        // OLED 7-bit address, read from the U8G2 object (for the probe)
+    bool    descriptorValid() const; // nDigits/cell/splice bounds — logs the offending field
+    bool    clipRectFor(uint8_t ci, int& x0, int& y0, int& x1, int& y1);  // panel-clamped clip rect
     Fault   _fault = Fault::None;    // which hop failed the last probe (mux vs device)
+    bool    _descriptorOk = true;    // false = descriptor out of bounds; render is a no-op
 #ifdef DRUMDISPLAY_TEST
     uint32_t _renderCount  = 0;      // sendBuffer() calls — render-skip assertion
     uint32_t _probeCount   = 0;      // i2cProbe() calls — back-off assertion
@@ -186,7 +201,8 @@ private:
     bool settled() const;                            // every |target/10^k − pos[k]| < epsilon
     uint8_t visibleDigits() const;                   // significant digit cells to draw (== nDigits unless suppressLeadingZero)
     const uint8_t* fontPtr() const;                  // ProFont face for _font
-    static long decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits);
+    static constexpr float BAND_EPS = 0.002f;
+    static long decodeDigits(uint16_t value, const DrumSource& s);
 };
 
 }  // namespace OpenSkyhawk

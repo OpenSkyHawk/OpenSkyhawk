@@ -4278,7 +4278,8 @@ the old <code>_A</code> suffix. See <a href="../dcsbios-integration/">DCS-BIOS I
 <p class="admonition-title">NeedleGauge drives gauge motors through a swappable backend</p>
 <p><code>NeedleGauge</code> does only the value→angle mapping. The drive lives in a reusable <strong>motor-driver layer</strong>
 (<code>Firmware/Libraries/PanelGroup/Drivers/</code>): a <code>MotorDriver</code> base with a <code>StepperMotor</code> backend today —
-non-blocking, driving four coils through <code>PinRef</code> (native GPIO <strong>or</strong> an MCP23017 expander). One
+non-blocking, driving four coils through <code>PinRef</code> (native GPIO <strong>or</strong> an MCP23017 expander, all
+four on one port so the coil pattern changes in one transaction). One
 air-core profile covers the X27.589 / VID-29 / BKA-30 family; homing is either a mechanical hard-stop
 or a digital home sensor (switch / reed / hall / opto). Drive the X27 at <strong>5 V</strong> through a DRV8833. A
 <code>ServoMotor</code> backend is planned (#132).</p>
@@ -4290,6 +4291,11 @@ driver only lands on nodes that actually use a display — add <code>file://../.
 to a sketch's <code>lib_deps</code> to use it. Each readout (its digit sources, geometry, and optional
 flag) is described by a <code>DrumReadout</code> defined in the sketch, like the <code>PinRef</code> wiring map.
 Many same-address OLEDs can share one bus behind a TCA9548A via the <code>I2cMux</code> helper.</p>
+<p>Each source also declares its <strong>band</strong> — how many positions the gauge divides its range into,
+and what each one displays. DCS-BIOS normalises a gauge's declared range to 16 bits and leaves
+the meaning to the client, and the A-4E-C gauges genuinely differ: an ordinary digit drum
+exports <code>digit/10</code>, the ARC-51 selectors export a position index, and the altimeter's inHg
+group runs over <code>{29, 30}</code>. A plain digit drum needs no extra fields.</p>
 </div>
 <h2 id="wiring-map-convention">Wiring map convention</h2>
 <p><code>PinRef</code> bit positions and mask values must be <strong>named constants</strong>, never inline literals.

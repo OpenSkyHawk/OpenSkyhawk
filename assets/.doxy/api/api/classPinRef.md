@@ -77,11 +77,13 @@ _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.
 |  void | [**configureAsOutput**](#function-configureasoutput) () <br>_Configure this pin as a digital output._  |
 |  uint8\_t | [**gpioPin**](#function-gpiopin) () const<br>_Return the raw Arduino pin number for GPIO PinRefs._  |
 |  bool | [**isGpio**](#function-isgpio) () const<br>_Returns true if this_ [_**PinRef**_](classPinRef.md) _wraps a direct STM32 GPIO pin._ |
+|  bool | [**isMcp**](#function-ismcp) () const<br>_True when this_ [_**PinRef**_](classPinRef.md) _wraps an MCP23017 expander bit._ |
 |  bool | [**isNC**](#function-isnc) () const<br>_Returns true if this is the NC (no-connect) sentinel._  |
 |  bool | [**isSampledSource**](#function-issampledsource) () const<br>_True when this pin's cached state is refreshed by a high-rate sampler that runs independently of_ [_**PanelGroup::loop()**_](namespacePanelGroup.md#function-loop) _(today: ShiftBus timer-ISR sampling)._ |
 |  bool | [**read**](#function-read) () const<br>_Digital read._  |
 |  uint16\_t | [**readAnalog**](#function-readanalog) () const<br>_Analog read, normalised to 16-bit (0–65535)._  |
 |  bool | [**readLive**](#function-readlive) () const<br>_Live digital read — bypasses any cache._  |
+|  bool | [**sameMcpPortAs**](#function-samemcpportas) (const [**PinRef**](classPinRef.md) & other) const<br>_True when both PinRefs are MCP23017 bits on the SAME chip and the SAME port._  |
 |  void | [**write**](#function-write) (bool value) <br>_Digital write._  |
 |  void | [**writeAnalog**](#function-writeanalog) (uint16\_t val) <br>_Analog write (PWM). GPIO only._  |
 |  void | [**writeDeferred**](#function-writedeferred) (bool value) <br>_Like_ [_**write()**_](classPinRef.md#function-write) _, but MCP writes only update the cache (no I2C) — the caller then invokes_[_**PanelGroup::flushExpanderWrites()**_](namespacePanelGroup.md#function-flushexpanderwrites) _to push each port in one writePort()._ |
@@ -545,6 +547,20 @@ Used by direct-only output classes (AnalogOutput, ServoOutput) to reject MCP2301
 
 
 
+### function isMcp 
+
+_True when this_ [_**PinRef**_](classPinRef.md) _wraps an MCP23017 expander bit._
+```C++
+bool PinRef::isMcp () const
+```
+
+
+
+
+<hr>
+
+
+
 ### function isNC 
 
 _Returns true if this is the NC (no-connect) sentinel._ 
@@ -664,6 +680,36 @@ true = HIGH, false = LOW.
 **Note:**
 
 For time-critical reads before [**PanelGroup::loop()**](namespacePanelGroup.md#function-loop) refreshes the cache — e.g. blocking homing on an MCP-backed sensor. Costs one I2C transaction per call on MCP pins. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function sameMcpPortAs 
+
+_True when both PinRefs are MCP23017 bits on the SAME chip and the SAME port._ 
+```C++
+bool PinRef::sameMcpPortAs (
+    const PinRef & other
+) const
+```
+
+
+
+For callers that depend on a group of pins flushing in ONE writePort() — the stepper coils, where a split across ports means two I2C transactions and therefore a non-atomic coil flip. Keeps the backend union private: the caller asks the question rather than reading chip/port out.
+
+
+
+
+**Returns:**
+
+false if either side is not an MCP23017 pin. 
 
 
 

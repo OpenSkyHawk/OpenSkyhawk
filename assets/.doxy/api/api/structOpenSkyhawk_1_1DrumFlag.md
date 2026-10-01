@@ -41,6 +41,7 @@ _Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode le
 |  bool | [**enabled**](#variable-enabled)  <br>_false ⇒ no flag tape rendered (default)_  |
 |  const char \* | [**faces**](#variable-faces)  <br>_face string, one char per state, e.g. "NS" / "EW" (nFaces = strlen)_  |
 |  uint16\_t | [**mask**](#variable-mask)  <br>_field mask (A\_4E\_C\_\*\_AM); 0xFFFF for whole-word_  |
+|  uint16\_t | [**steps**](#variable-steps)   = `0`<br>_positions across the range; 0 ⇒ nFaces−1 (a full-scale flag)_  |
 |  float | [**widthMm**](#variable-widthmm)  <br>_flag cell width, mm (wider than a digit so a broad 'W' fits)_  |
 
 
@@ -93,7 +94,14 @@ _Optional 2-state (or N-state) flag tape — hemisphere N/S · E/W, or a mode le
 
 **Note:**
 
-OFF by default (`enabled` = false). Position is configurable (not hardcoded rightmost). Populate `address` / `mask` from the A4EC constants. For a whole-word source (mask 0xFFFF) the value maps to a face by round(value/65535·(nFaces−1)); for a bit-packed source the masked value selects face 0 (zero) or the last face (non-zero). Bench-confirm the real encoding before trusting it. 
+OFF by default (`enabled` = false). Position is configurable (not hardcoded rightmost). Populate `address` / `mask` from the A4EC constants. The face is round(value/mask · steps), clamped to the face count. 
+
+
+
+
+**Note:**
+
+`steps` matters because the A-4E-C does not drive every flag over the same range: the ASN-41 hemisphere arrives at HALF scale (nav.lua sets 0.0 or 0.5 for N/S and E/W, so steps = 2), while MagVar and the BDHI DME flag use the full range (0 or 1, so steps = 1). A half-scale flag read as full scale never reaches its second face. 
 
 
 
@@ -166,6 +174,20 @@ const char* OpenSkyhawk::DrumFlag::faces;
 _field mask (A\_4E\_C\_\*\_AM); 0xFFFF for whole-word_ 
 ```C++
 uint16_t OpenSkyhawk::DrumFlag::mask;
+```
+
+
+
+
+<hr>
+
+
+
+### variable steps 
+
+_positions across the range; 0 ⇒ nFaces−1 (a full-scale flag)_ 
+```C++
+uint16_t OpenSkyhawk::DrumFlag::steps;
 ```
 
 

@@ -11,6 +11,7 @@
 
 
 * `#include <Drivers/StepperMotor/StepperMotor.h>`
+* `#include <STM32Board.h>`
 
 
 

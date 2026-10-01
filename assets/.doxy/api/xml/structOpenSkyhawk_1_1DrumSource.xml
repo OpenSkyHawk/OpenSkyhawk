@@ -64,6 +64,54 @@
         </inbodydescription>
         <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="84" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="84" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumSource_1a6b112e35a67f01f2eec6f4dd14b5954c" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::DrumSource::steps</definition>
+        <argsstring></argsstring>
+        <name>steps</name>
+        <qualifiedname>OpenSkyhawk::DrumSource::steps</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>positions across the range; 0 ⇒ 10^nDigits (a plain drum digit) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="90" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumSource_1a306cc812937be4f2051e2bccd9965a0c" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::DrumSource::mul</definition>
+        <argsstring></argsstring>
+        <name>mul</name>
+        <qualifiedname>OpenSkyhawk::DrumSource::mul</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+<para>displayed value per position (5 for the ARC-51 50 kHz drum) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="91" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structOpenSkyhawk_1_1DrumSource_1a1c3a657666a467194cbd1b3ed5a791e6" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::DrumSource::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <qualifiedname>OpenSkyhawk::DrumSource::offset</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>added after mul (22 for the ARC-51 10 MHz group, 29 for ALT_ADJ) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="92" column="14" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
 <para>One DCS-BIOS digit source feeding a <ref refid="structOpenSkyhawk_1_1DrumReadout" kindref="compound">DrumReadout</ref>. </para>
@@ -73,12 +121,15 @@
 </simplesect>
 </para>
     </detaileddescription>
-    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="80" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="80" bodyend="85"/>
+    <location file="Firmware/Libraries/DrumDisplay/DrumDisplay.h" line="80" column="1" bodyfile="Firmware/Libraries/DrumDisplay/DrumDisplay.h" bodystart="80" bodyend="93"/>
     <listofallmembers>
       <member refid="structOpenSkyhawk_1_1DrumSource_1a9cadaf8bef575f06ba037a05dbc03851" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>address</name></member>
       <member refid="structOpenSkyhawk_1_1DrumSource_1ae511fd77851f9e27ecd243c442eccf6e" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>mask</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumSource_1a306cc812937be4f2051e2bccd9965a0c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>mul</name></member>
       <member refid="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>nDigits</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumSource_1a1c3a657666a467194cbd1b3ed5a791e6" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>offset</name></member>
       <member refid="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>place</name></member>
+      <member refid="structOpenSkyhawk_1_1DrumSource_1a6b112e35a67f01f2eec6f4dd14b5954c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::DrumSource</scope><name>steps</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

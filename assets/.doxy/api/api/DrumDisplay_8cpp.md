@@ -11,6 +11,7 @@
 [More...](#detailed-description)
 
 * `#include "DrumDisplay.h"`
+* `#include <STM32Board.h>`
 * `#include <math.h>`
 * `#include <string.h>`
 

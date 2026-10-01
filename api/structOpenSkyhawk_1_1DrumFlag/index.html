@@ -3991,6 +3991,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-widthmm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4062,6 +4073,10 @@
 <td style="text-align: left;"><a href="#variable-mask"><strong>mask</strong></a>  <br><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#variable-steps"><strong>steps</strong></a>   = <code>0</code><br><em>positions across the range; 0 ⇒ nFaces−1 (a full-scale flag)</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">float</td>
 <td style="text-align: left;"><a href="#variable-widthmm"><strong>widthMm</strong></a>  <br><em>flag cell width, mm (wider than a digit so a broad 'W' fits)</em></td>
 </tr>
@@ -4069,7 +4084,9 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p><strong>Note:</strong></p>
-<p>OFF by default (<code>enabled</code> = false). Position is configurable (not hardcoded rightmost). Populate <code>address</code> / <code>mask</code> from the A4EC constants. For a whole-word source (mask 0xFFFF) the value maps to a face by round(value/65535·(nFaces−1)); for a bit-packed source the masked value selects face 0 (zero) or the last face (non-zero). Bench-confirm the real encoding before trusting it. </p>
+<p>OFF by default (<code>enabled</code> = false). Position is configurable (not hardcoded rightmost). Populate <code>address</code> / <code>mask</code> from the A4EC constants. The face is round(value/mask · steps), clamped to the face count. </p>
+<p><strong>Note:</strong></p>
+<p><code>steps</code> matters because the A-4E-C does not drive every flag over the same range: the ASN-41 hemisphere arrives at HALF scale (nav.lua sets 0.0 or 0.5 for N/S and E/W, so steps = 2), while MagVar and the BDHI DME flag use the full range (0 or 1, so steps = 1). A half-scale flag read as full scale never reaches its second face. </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 <h3 id="variable-address">variable address</h3>
 <p><em>DCS-BIOS address that drives the flag.</em> </p>
@@ -4098,6 +4115,12 @@
 <h3 id="variable-mask">variable mask</h3>
 <p><em>field mask (A_4E_C_*_AM); 0xFFFF for whole-word</em> </p>
 <pre><code class="language-C++">uint16_t OpenSkyhawk::DrumFlag::mask;
+</code></pre>
+<hr>
+
+<h3 id="variable-steps">variable steps</h3>
+<p><em>positions across the range; 0 ⇒ nFaces−1 (a full-scale flag)</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::DrumFlag::steps;
 </code></pre>
 <hr>
 

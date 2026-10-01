@@ -4195,6 +4195,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-ismcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function isMcp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-isnc" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4243,6 +4254,17 @@
     <span class="md-ellipsis">
       
         function readLive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-samemcpportas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function sameMcpPortAs
       
     </span>
   </a>
@@ -4419,6 +4441,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-ismcp"><strong>isMcp</strong></a> () const<br><em>True when this</em> <a href="./"><em><strong>PinRef</strong></em></a> <em>wraps an MCP23017 expander bit.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#function-isnc"><strong>isNC</strong></a> () const<br><em>Returns true if this is the NC (no-connect) sentinel.</em></td>
 </tr>
 <tr>
@@ -4436,6 +4462,10 @@
 <tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#function-readlive"><strong>readLive</strong></a> () const<br><em>Live digital read — bypasses any cache.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-samemcpportas"><strong>sameMcpPortAs</strong></a> (const <a href="./"><strong>PinRef</strong></a> &amp; other) const<br><em>True when both PinRefs are MCP23017 bits on the SAME chip and the SAME port.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -4622,6 +4652,12 @@
 <p>Used by direct-only output classes (AnalogOutput, ServoOutput) to reject MCP23017, <a href="../classADS1115/"><strong>ADS1115</strong></a>, and NC pins at construction time. </p>
 <hr>
 
+<h3 id="function-ismcp">function isMcp</h3>
+<p><em>True when this</em> <a href="./"><em><strong>PinRef</strong></em></a> <em>wraps an MCP23017 expander bit.</em></p>
+<pre><code class="language-C++">bool PinRef::isMcp () const
+</code></pre>
+<hr>
+
 <h3 id="function-isnc">function isNC</h3>
 <p><em>Returns true if this is the NC (no-connect) sentinel.</em> </p>
 <pre><code class="language-C++">bool PinRef::isNC () const
@@ -4664,6 +4700,17 @@
 <p>true = HIGH, false = LOW. </p>
 <p><strong>Note:</strong></p>
 <p>For time-critical reads before <a href="../namespacePanelGroup/#function-loop"><strong>PanelGroup::loop()</strong></a> refreshes the cache — e.g. blocking homing on an MCP-backed sensor. Costs one I2C transaction per call on MCP pins. </p>
+<hr>
+
+<h3 id="function-samemcpportas">function sameMcpPortAs</h3>
+<p><em>True when both PinRefs are MCP23017 bits on the SAME chip and the SAME port.</em> </p>
+<pre><code class="language-C++">bool PinRef::sameMcpPortAs (
+    const PinRef &amp; other
+) const
+</code></pre>
+<p>For callers that depend on a group of pins flushing in ONE writePort() — the stepper coils, where a split across ports means two I2C transactions and therefore a non-atomic coil flip. Keeps the backend union private: the caller asks the question rather than reading chip/port out.</p>
+<p><strong>Returns:</strong></p>
+<p>false if either side is not an MCP23017 pin. </p>
 <hr>
 
 <h3 id="function-write">function write</h3>

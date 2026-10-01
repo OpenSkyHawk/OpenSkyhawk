@@ -121,7 +121,9 @@
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66ab464e7ce32ef74e4dc12b182dcc6c16f" kind="enumvalue"><name>Mux</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a14043c6fbfd0a030ccb38eb9286d0e66ae0ac20adce6ffee48c7151b070aa5737" kind="enumvalue"><name>Device</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a8bb1b71baaa98e331bbc670ee5e43732" kind="variable"><name>MAX_CELLS</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a607572e90821eeeb62a0c1dfa232deaf" kind="variable"><name>BAND_EPS</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a509fc31e28b8a7fd651c9df5a9192fb5" kind="variable"><name>_fault</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a4d46fc9cfc70379a1a9e407bb4e569f0" kind="variable"><name>_descriptorOk</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a426c7e311441d324874b8843abfade58" kind="variable"><name>_oled</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a34fb43a079191d1fd07ef2199163e018" kind="variable"><name>_r</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1f5b68bc775592185cadf36ac66ffe46" kind="variable"><name>_mux</name></member>
@@ -158,13 +160,15 @@
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a6a5ea894d9fe758e1e1a69b3d0ea1499" kind="function"><name>faultDetail</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1acbdd7533aba2b23c5f2a20e43f315ec2" kind="function"><name>i2cProbe</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab2d9540e2aee62338fab97b1b794fe96" kind="function"><name>oledAddr</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a1dd62758743fa32578f935f9e8d38a79" kind="function"><name>descriptorValid</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a337a3a75f617dc75ce18ad0aa0a2ff08" kind="function"><name>clipRectFor</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a4b7ab58b82ec352abd2d91d5a87b4746" kind="function"><name>fitGeometry</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ae646eecafa86229cd454e58119a1900b" kind="function"><name>drawTape</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a686d20d40dc2c8c162da5acd2f46502d" kind="function"><name>drawFlag</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1aaadb3a8dc92f57f5857b3f12754700ee" kind="function"><name>settled</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1a0ff486b1aadd8e48ead0284c6b2c739c" kind="function"><name>visibleDigits</name></member>
     <member refid="classOpenSkyhawk_1_1DrumDisplay_1ab4eaa2748c51bffad63e511da23c9cbf" kind="function"><name>fontPtr</name></member>
-    <member refid="classOpenSkyhawk_1_1DrumDisplay_1a71110858c699caa5a8fc18d6c3204ff6" kind="function"><name>decodeDigits</name></member>
+    <member refid="classOpenSkyhawk_1_1DrumDisplay_1aecdc850887c41d7d10b5dae32eb2bfc0" kind="function"><name>decodeDigits</name></member>
   </compound>
   <compound refid="structOpenSkyhawk_1_1DrumFlag" kind="struct"><name>OpenSkyhawk::DrumFlag</name>
     <member refid="structOpenSkyhawk_1_1DrumFlag_1a1335597d48dc3c4feed4bf8078ad1c15" kind="variable"><name>enabled</name></member>
@@ -173,6 +177,7 @@
     <member refid="structOpenSkyhawk_1_1DrumFlag_1a343181be9f2742ce131d31862e0e63b8" kind="variable"><name>faces</name></member>
     <member refid="structOpenSkyhawk_1_1DrumFlag_1acd9ba5184fb1baf9019affff39f9a7c1" kind="variable"><name>atVisualCol</name></member>
     <member refid="structOpenSkyhawk_1_1DrumFlag_1a6b58a6a60500993eb14a29a8d12c9984" kind="variable"><name>widthMm</name></member>
+    <member refid="structOpenSkyhawk_1_1DrumFlag_1a00306357e215bf8acb7d684fab4b5328" kind="variable"><name>steps</name></member>
   </compound>
   <compound refid="structOpenSkyhawk_1_1DrumGlyph" kind="struct"><name>OpenSkyhawk::DrumGlyph</name>
     <member refid="structOpenSkyhawk_1_1DrumGlyph_1a939c37034cee0b9076d09160e32a7385" kind="variable"><name>ch</name></member>
@@ -200,6 +205,9 @@
     <member refid="structOpenSkyhawk_1_1DrumSource_1ae511fd77851f9e27ecd243c442eccf6e" kind="variable"><name>mask</name></member>
     <member refid="structOpenSkyhawk_1_1DrumSource_1a326610e70859b41dafe08f8298c918d2" kind="variable"><name>nDigits</name></member>
     <member refid="structOpenSkyhawk_1_1DrumSource_1ad138e1b0f6fde6ad9bfdab37b3beb10f" kind="variable"><name>place</name></member>
+    <member refid="structOpenSkyhawk_1_1DrumSource_1a6b112e35a67f01f2eec6f4dd14b5954c" kind="variable"><name>steps</name></member>
+    <member refid="structOpenSkyhawk_1_1DrumSource_1a306cc812937be4f2051e2bccd9965a0c" kind="variable"><name>mul</name></member>
+    <member refid="structOpenSkyhawk_1_1DrumSource_1a1c3a657666a467194cbd1b3ed5a791e6" kind="variable"><name>offset</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1FaultSource" kind="class"><name>OpenSkyhawk::FaultSource</name>
     <member refid="classOpenSkyhawk_1_1FaultSource_1ac37c96df64737beb9a6316ff95a018f7" kind="variable"><name>_head</name></member>
@@ -391,6 +399,8 @@
     <member refid="classPinRef_1ae6528461c2bb1e094fd7aa5e038705f6" kind="function"><name>isGpio</name></member>
     <member refid="classPinRef_1aa62a3dabcea18b586c55e4c5a0b23f33" kind="function"><name>isSampledSource</name></member>
     <member refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kind="function"><name>gpioPin</name></member>
+    <member refid="classPinRef_1a0215c72f121d82ab6a53094b7d75bfba" kind="function"><name>sameMcpPortAs</name></member>
+    <member refid="classPinRef_1a99a56f0aa76351dc3bae91299b5a132f" kind="function"><name>isMcp</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kind="class"><name>OpenSkyhawk::RotaryAcceleratedEncoder</name>
     <member refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a840e3e1e9ec531803173e7b0b343741c" kind="function"><name>RotaryAcceleratedEncoder</name></member>
@@ -510,7 +520,10 @@
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a9253e380d16ba27d474c5b31930a5c57" kind="variable"><name>_time0</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a9058402c1f606d91d5e7899e5f6615fc" kind="variable"><name>_homed</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a71ec7bcca39b4abb82699717bf07647b" kind="variable"><name>_lastRecalMs</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a6283fe1e2ffd0e65eeafe98b2e9ea9e9" kind="variable"><name>_recalAssertMs</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1aea819ab910b7113f85434a8c72253d4b" kind="variable"><name>_recalPending</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a6f0be45ac758c110d9d0d5235e3ae1b5" kind="variable"><name>_sensorOverride</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1a30b23354f5ec20a1eb32ec670901d193" kind="variable"><name>_coilsOk</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a8926f21a0e93d4b04946a75e6308a8d3" kind="function"><name>StepperMotor</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a88cc3e0f508c4783ba64a9d16e9ac724" kind="function"><name>configure</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a47ab20a55ad4d338a629405bb96bc94e" kind="function"><name>home</name></member>
@@ -522,6 +535,7 @@
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a8300a41b60a4a3acdc087db3aceff3bb" kind="function"><name>stepOnce</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a74b0667e763e7f9554b3993f2f3b0e89" kind="function"><name>advance</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a99364883684e3af8b47263b2d523ccb7" kind="function"><name>sensorAsserted</name></member>
+    <member refid="classOpenSkyhawk_1_1StepperMotor_1ab6c6f1f504b5c942ac2287004fd4cd2f" kind="function"><name>coilsShareOnePort</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a95384a220a51149f5b77744efcc0da65" kind="function"><name>sensorConfirmed</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1afddc4c72c4f9e640004e28d3e0b3c729" kind="function"><name>seekHomeBlocking</name></member>
     <member refid="classOpenSkyhawk_1_1StepperMotor_1a58773ee295c63067c92a0545df4ae961" kind="function"><name>runToStopBlocking</name></member>

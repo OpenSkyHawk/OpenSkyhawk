@@ -263,6 +263,13 @@ void PinRef::configureAsOutput() {
 // ── isNC / isGpio / gpioPin ───────────────────────────────────────────────────
 
 bool PinRef::isNC()   const { return _type == Type::NC; }
+bool PinRef::isMcp() const { return _type == Type::MCP; }
+
+bool PinRef::sameMcpPortAs(const PinRef& other) const {
+    if (_type != Type::MCP || other._type != Type::MCP) return false;
+    return _src.mcp.chip == other._src.mcp.chip && _src.mcp.port == other._src.mcp.port;
+}
+
 bool PinRef::isGpio() const { return _type == Type::GPIO; }
 
 bool PinRef::isSampledSource() const { return _type == Type::SR; }
