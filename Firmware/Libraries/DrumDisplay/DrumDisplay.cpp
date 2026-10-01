@@ -12,6 +12,7 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include "DrumDisplay.h"
+#include <STM32Board.h>   // log() — descriptor rejection (#137)
 #include <math.h>
 #include <string.h>
 
@@ -71,6 +72,8 @@ long DrumDisplay::decodeDigits(uint16_t value, uint16_t mask, uint8_t nDigits) {
 // ── onControlPacket — decode + splice + mark dirty; NEVER draws ────────────────
 
 void DrumDisplay::onControlPacket(uint16_t controlId, uint16_t value) {
+    if (!_descriptorOk) return;   // disabled readout: decode nothing, so there is nothing to draw
+
     // Flag source? (A source may be BOTH a digit and the flag — NAV hemisphere dual-role —
     // so this does not early-return; the digit loop below still runs for the same address.)
     if (_r->flag.enabled && controlId == _r->flag.address) {
@@ -134,7 +137,38 @@ uint8_t DrumDisplay::oledAddr() const {
 
 // ── configure — auto-fit geometry, blank ───────────────────────────────────────
 
+// The descriptor is a hand-authored constant, so these are mistakes made once at the bench rather
+// than runtime conditions — but the library only ever sees it by reference, so the check lives
+// here. A readout that fails is disabled rather than drawn: _pos[6]/_cellX[MAX_CELLS] are fixed
+// arrays, and a descriptor that overruns them writes past the end of the object.
+bool DrumDisplay::descriptorValid() const {
+    if (_r == nullptr) return false;
+
+    if (_r->nDigits < 1 || _r->nDigits > 6) {
+        STM32Board::log("[DRUM] nDigits out of range (1..6) — readout disabled");
+        return false;
+    }
+
+    const uint8_t cells = (uint8_t)(_r->nDigits + _r->nGlyphs + (_r->flag.enabled ? 1 : 0));
+    if (cells > MAX_CELLS) {
+        STM32Board::log("[DRUM] too many visual cells for MAX_CELLS — readout disabled");
+        return false;
+    }
+
+    for (uint8_t i = 0; i < _r->nSources; i++) {
+        const DrumSource& s = _r->sources[i];
+        if (s.nDigits < 1 || (uint16_t)(s.place + s.nDigits) > _r->nDigits) {
+            STM32Board::log("[DRUM] source place+nDigits exceeds the readout — readout disabled");
+            return false;
+        }
+    }
+    return true;
+}
+
 void DrumDisplay::configure() {
+    _descriptorOk = descriptorValid();
+    if (!_descriptorOk) return;      // nothing is laid out, so nothing may be drawn
+
     _oled->setFont(fontPtr());
     _oled->setFontPosCenter();
     fitGeometry();                       // geometry from the U8G2 buffer dims — no I2C
@@ -272,6 +306,7 @@ void DrumDisplay::drawFlag(int16_t cx, float p, int16_t w) {
 // ── update — frame gate + idle skip + ease/snap + render ───────────────────────
 
 void DrumDisplay::update() {
+    if (!_descriptorOk) return;                   // descriptor out of bounds → never lay out or draw
     if (!_hasState) return;                       // nothing received yet → stay blank
     uint32_t now = millis();
     if (now - _lastFrameMs < FRAME_MS) return;    // ~60 fps gate

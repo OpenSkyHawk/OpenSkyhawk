@@ -53,9 +53,19 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C oledLon  (U8G2_R0, U8X8_PIN_NONE);
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oledRadio(U8G2_R0, U8X8_PIN_NONE);
 I2cMux drumMux(0x70, Wire);
 
-// Current longitude — 6 digits + E/W hemisphere flag.
-// TODO(bench): the rightmost source carries the ones digit and/or the E/W hemisphere — confirm
-// against live DCS-BIOS; this node is the place to settle it.
+// Current longitude — XXX.YY plus an E/W hemisphere flag.
+//
+// Settled against the A-4E-C mod source (#137): the rightmost output is the hemisphere ONLY, never
+// a digit. Nav/nav.lua sets NAV_CURPOS_LON_nnnnnX to E_W (0.5 = East, 0.0 = West) and
+// NAV_CURPOS_LAT_nnnnX to N_S (0.0 = North, 0.5 = South); ASN41_MAGVAR_xxxxX is the same flag at
+// full scale (1 = East, 0 = West). So longitude is 5 digits + flag, latitude 4 + flag, MagVar
+// 4 + flag — and a hemisphere that arrives at half scale never reaches the second face through a
+// 0xFFFF mask.
+//
+// The descriptor below still reads six digits and still takes the flag at full scale, so it does
+// not yet match that. Correcting it needs a per-source scale first: every A-4E-C drum exports
+// digit/10 (utils.lua jumpwheel() returns B/10) while decodeDigits() assumes digit/9, which reads
+// a live 9 as an 8. Recorded in #137; the descriptors follow that change rather than lead it.
 static const DrumSource LON_SRC[] = {
     { A_4E_C_NAV_CURPOS_LON_X00000, A_4E_C_NAV_CURPOS_LON_X00000_AM, 1, 5 },
     { A_4E_C_NAV_CURPOS_LON_0X0000, A_4E_C_NAV_CURPOS_LON_0X0000_AM, 1, 4 },
@@ -70,8 +80,15 @@ static const DrumReadout LON_READOUT = {
     .flag = { .enabled = true, .address = A_4E_C_NAV_CURPOS_LON_00000X, .mask = A_4E_C_NAV_CURPOS_LON_00000X_AM, .faces = "EW", .atVisualCol = 6, .widthMm = 5.5f },
 };
 
-// ARC-51 UHF displayed frequency — 5 digits (2+1+2) + '.' (the value the MHz selector sets).
-// TODO(bench): confirm the grouped 00–99 encoding and the dot position against the real panel.
+// ARC-51 UHF displayed frequency — XXX.XX, so five digits with the dot after the third. The dot
+// position below is confirmed correct.
+//
+// Settled against the mod source (#137): these three outputs are selector POSITIONS, not a grouped
+// 00–99 value each. radio_controls2.lua drives ARC51_FREQ_XX000 from the 10 MHz selector (0.00–0.85
+// in 0.05 steps, 18 positions → displayed 22–39), ARC51_FREQ_00X00 from the 1 MHz digit (digit/10),
+// and ARC51_FREQ_000XX from the 50 kHz selector (0.00–0.95 in 0.05 steps → 00, 05 … 95). Only the
+// last is declared {0, 0.95} in DCS-BIOS, so only it normalises to full scale. Decoding all three
+// needs the same per-source scale noted on the longitude readout above.
 // (Raw manual-selector knobs live at A_4E_C_ARC51_FREQ_10MHZ/_1MHZ/_50KHZ, bit-packed — swap to
 //  those if you want the knob positions instead of the displayed frequency.)
 static const DrumSource ARC51_SRC[] = {

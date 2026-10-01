@@ -151,7 +151,7 @@ DRV8835 was considered but is only available in WSON-12 (fully bottom-terminated
 | MCP23017 @ 100 kHz | ~260 steps/s | ~87 | for long / loaded buses |
 
 - **STM32F103 I²C ceiling = 400 kHz** (no fast-mode-plus on the F1 peripheral).
-- **Batched port write:** `StepperMotor` writes all four coils in **one** `writePort()` per step (`PanelGroup::flushExpanderWrites()`), not four per-pin read-modify-writes — fewer I²C transactions, lower bus occupancy, and an **atomic coil transition** (no mixed-coil intermediate state). **Caveat: the batched write rewrites the whole 8-bit port from cache, so stepper coils must OWN their MCP23017 port** — do not place unrelated I/O on the other pins of that port.
+- **Batched port write:** `StepperMotor` writes all four coils in **one** `writePort()` per step (`PanelGroup::flushExpanderWrites()`), not four per-pin read-modify-writes — fewer I²C transactions, lower bus occupancy, and an **atomic coil transition** (no mixed-coil intermediate state). **Caveat: the batched write rewrites the whole 8-bit port from cache, so stepper coils must OWN their MCP23017 port** — do not place unrelated I/O on the other pins of that port. `StepperMotor::configure()` enforces the placement half of this: four coils split across two ports, or two chips, are refused and logged, and the motor stays idle rather than stepping on a half-applied pattern.
 - **Rule of thumb:** a gauge needing fast slews → coils on **native GPIO**; a slow / remote gauge → MCP expander (≈163 °/s, fine for gradual gauges like APN-153 DRIFT). The expander is a *reach* tool, not a speed tool.
 
 **12-inch remote I²C bus.** At ~12" the bus capacitance (cable + device pins, ~150–250 pF) limits speed:

@@ -46,6 +46,8 @@ No new 3rd-party dependency (own PinRef stepping) — so it stays inside PanelGr
 | `deadband`       | CI | sub-deadband target changes ignored |
 | `wrap`           | CI | continuous-rotation shortest signed path; `position()` wraps |
 | `step_pattern`   | CI | 6-state and 4-state both reach target |
+| `recal_guard`    | CI | auto-recal needs `homed()` **and** a sensor asserted continuously for `sensor.debounceMs`; a mid-window glitch restarts the wait |
+| `coil_port_check`| CI | coils split across MCP ports/chips are refused and stay inert; one port — or all direct GPIO — is accepted |
 | `bringup`        | bench | sweep a real X27 on 4 GPIO at 3.3 V |
 | `mcp23017`       | bench | coils on an MCP23017 expander |
 | `cal_steps_per_rev` | bench | empirical steps/rev via a zero sensor (AHN method) |
@@ -54,7 +56,8 @@ No new 3rd-party dependency (own PinRef stepping) — so it stays inside PanelGr
 
 CI scenarios are deterministic via `-DSTEPPERMOTOR_TEST` accessors (`debugAdvance()`,
 `debugCurrentStep()`, `debugVel()`, `debugMicroDelay()`, `debugStopped()`, `debugSensorAsserted()`,
-`debugSetSensorOverride()`) — driven with NC coils, no motor required.
+`debugSetSensorOverride()`, `debugSetCurrentStep()`, `debugCoilsOk()`) — driven with NC coils, no
+motor required.
 
 ---
 
@@ -145,17 +148,42 @@ settling exactly (`currentStep == targetStep && vel == 0`).
 
 ### Coil drive & MCP23017
 
-Each coil write is `PinRef::write()` → native `digitalWrite` or `PanelGroup::writeCachedPin` (one I2C
-transaction per coil). The expander path is ≈ 240 µs/step → smooth at moderate speed but caps fast
-sweeps; quantify per board with `accuracy_sweep`.
+`writeIO()` sets the four coils with `PinRef::writeDeferred()` — immediate for native GPIO,
+cache-only for MCP23017 — then calls `PanelGroup::flushExpanderWrites()`, which pushes **one
+`writePort()` per dirty port**. One step is therefore one I2C transaction (8 per-pin writes → 1)
+and the whole coil pattern changes at once: ≈ 490 steps/s on a 400 kHz bus. Quantify per board with
+`accuracy_sweep`.
+
+**Single-port coil contract (#137).** That atomicity only holds while all four coils sit on one MCP
+port. Split across two ports — or two chips — the flush becomes two transactions and the pattern is
+half-applied in between: shoot-through and lost steps. `configure()` checks the placement first,
+via `PinRef::isMcp()` / `PinRef::sameMcpPortAs()` (the backend union is private, so the comparison
+lives in `PinRef`):
+
+- no MCP coils at all — four direct GPIO, or NC in tests → **accepted**; a GPIO write is never
+  deferred, so it cannot split.
+- all four MCP on the same chip *and* the same port → **accepted**.
+- anything else — a mixed GPIO/MCP set, two ports, two chips → **refused**: logged on DiagSerial
+  (`[STEP] coils are not on one MCP23017 port — motor disabled`), coils are not configured as
+  outputs, and `update()` returns immediately so the motor stays inert instead of stepping
+  erratically. Same "log and disable" precedent as `Dimmer::configure()` — a silently erratic gauge
+  is worse than a dead one. `debugCoilsOk()` reads the verdict.
 
 ### Other
 
 - **moveTo** clamps to `[minPos, maxPos]` (or computes the shortest signed path when `wrap`), then
   applies `deadband` (ignore target changes within N steps of the current target — anti-jitter).
-- **auto-recal** — when `autoRecal` and the home sensor next asserts (≥ `recalDebounceMs` since the
-  last), re-zero `currentStep = homePosition`; the in-flight move continues, cancelling accumulated
-  step error.
+- **auto-recal** — when `autoRecal` is set, an asserted home sensor re-zeros
+  `currentStep = homePosition` mid-flight, cancelling accumulated step error; the in-flight move
+  continues. Three preconditions, all evaluated in `update()` and none of them blocking (#137):
+  1. **`homed()` is true.** An aborted home left the needle wherever it stopped — re-zeroing there
+     writes a phantom origin that every later move inherits.
+  2. **The sensor has read asserted continuously for `sensor.debounceMs`.** The first asserted
+     `read()` only latches the start of the window (`_recalAssertMs`); any clear read drops the
+     latch and the wait restarts, so a glitch cannot trigger a recal. `sensorConfirmed()` busy-waits
+     and so cannot be used from `update()`.
+  3. **`recalDebounceMs` has elapsed since the last recal** — spacing between recals, which on its
+     own filters nothing.
 - **`sleepEn`** (optional) is driven HIGH in `configure()` to enable a driver IC's `~SLEEP`/enable;
   NC for bare air-core drive at 3.3 V.
 

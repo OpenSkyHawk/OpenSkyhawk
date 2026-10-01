@@ -483,7 +483,9 @@ NeedleGauge(uint16_t controlId, uint16_t mask, MotorDriver& motor, const GaugeCa
 
 The backend is a **`MotorDriver`** the sketch builds and passes by reference (composition, like
 `DrumDisplay` taking a `U8G2&`) — *not* an enum inside the gauge. Today: **`StepperMotor`** (integer
-SwitecX25-style acceleration; drives four coils through `PinRef` — native GPIO **or** MCP23017;
+SwitecX25-style acceleration; drives four coils through `PinRef` — native GPIO **or** MCP23017,
+all four on **one** expander port, which `configure()` enforces because the single `writePort()`
+flush is what makes the coil transition atomic;
 homing by **mechanical STALL** or a **home sensor**; one air-core profile covers X27.589 / VID-29 /
 BKA-30, run at **5 V through a DRV8833**). A **`ServoMotor`** backend is planned (#132). See
 `08-hardware-firmware-contracts.md` for the DRV8833 `~SLEEP` contract.

@@ -256,6 +256,7 @@ public:
     void     debugForceProbe(int v)   { _probeOverride = v; }                   ///< test-only: -1 real / 0 fail / 1 ok
     bool     debugReachable()          { return i2cReachable(); }               ///< test-only: drive the breaker gate
     uint32_t debugProbeCount() const   { return _probeCount; }                  ///< test-only: i2cProbe() calls
+    bool     debugDescriptorOk() const { return _descriptorOk; }                ///< test-only: descriptor passed validation
 #endif
 
 protected:
@@ -265,7 +266,9 @@ private:
     static constexpr uint8_t MAX_CELLS = 8;  // 6 digits + 1 glyph + 1 flag
 
     uint8_t oledAddr() const;        // OLED 7-bit address, read from the U8G2 object (for the probe)
+    bool    descriptorValid() const; // nDigits/cell/splice bounds — logs the offending field
     Fault   _fault = Fault::None;    // which hop failed the last probe (mux vs device)
+    bool    _descriptorOk = true;    // false = descriptor out of bounds; render is a no-op
 #ifdef DRUMDISPLAY_TEST
     uint32_t _renderCount  = 0;      // sendBuffer() calls — render-skip assertion
     uint32_t _probeCount   = 0;      // i2cProbe() calls — back-off assertion

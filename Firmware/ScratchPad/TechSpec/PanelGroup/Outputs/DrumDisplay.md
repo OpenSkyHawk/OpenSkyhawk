@@ -67,12 +67,13 @@ Firmware/Tests/DrumDisplay/
     ├── arc51_manual/               — ARC-51 manual freq: two sources share one address (mask-split)
     ├── bdhi/                       — BDHI DME range: 3 digits + a dedicated 2-state flag source
     ├── font/                       — SMALL/LARGE + a 128x32 panel; runtime setFontSize() re-fit
-    └── mux/                        — two panels on one I2cMux; independent decoded state
+    ├── mux/                        — two panels on one I2cMux; independent decoded state
+    └── descriptor_guard/           — out-of-bounds descriptors rejected + inert; a valid one renders
 ```
 
 Compile-gated in CI on `genericSTM32F103C8`; logic asserts run via the `check()`→`diagSerial()`
 PASS/FAIL idiom (`-DDRUMDISPLAY_TEST` exposes `debugTarget()` / `debugCellCount()` /
-`debugRowWidth()` / `debugFlagTarget()`). The `bluepill_f103c8` env is flashed to a real SH1106
+`debugRowWidth()` / `debugFlagTarget()` / `debugDescriptorOk()`). The `bluepill_f103c8` env is flashed to a real SH1106
 for the on-hardware bench pass.
 
 ---
@@ -198,6 +199,22 @@ keep-low, then `_dirty` is set. The loop scans **all** sources (not just the fir
 two sources sharing one address both splice. The flag branch does **not** early-return, so an
 address that is *both* a digit and the hemisphere flag (NAV dual-role) updates both. Drawing is
 deferred to `update()` (full-buffer I²C is the expensive op — the `LED.cpp` store-only idiom).
+
+### configure() — descriptor validation (#137)
+
+`_pos[6]` and `_cellX[MAX_CELLS]` are fixed arrays and a `DrumReadout` is hand-authored, so
+`configure()` validates the descriptor before laying anything out:
+
+- `nDigits` within **1..6** — the depth of `_pos[]`;
+- total visual cells (digits + glyphs + the flag) ≤ `MAX_CELLS` (8);
+- every source fits the readout it splices into: `place + nDigits <= readout.nDigits`.
+  `decodeDigits()` already bounds a *source* to `10^nDigits − 1`; this bounds **where it lands**.
+
+A failing descriptor is **rejected, not clamped**: the offending field is logged on DiagSerial and
+the readout is disabled — no cells are laid out, and `onControlPacket()` / `update()` return
+immediately, so neither the decode state nor the ease loop can touch the arrays. The ease loop is
+why this matters at render time and not only at layout: it walks `_r->nDigits` entries of `_pos[]`,
+so an `nDigits` of 7 writes past the array on every frame. `debugDescriptorOk()` reads the verdict.
 
 ### fitGeometry() — descriptor-driven auto-fit (replaces the prototype's constants)
 
