@@ -88,7 +88,9 @@ commit on `main`** that release-please reads for the firmware version bump and c
 change would silently drop out of the release.
 
 - **Types:** `feat` (new capability), `fix`, `chore`, `test`, `docs`, `refactor`, `perf`, `build`, `ci`.
-- **Scope** (optional, encouraged) names the area: `feat(panelbridge): …`, `fix(pcb): …`.
+- **Scope** (optional, encouraged) names the area: `feat(panelbridge): …`, `fix(pcb): …`. For
+  hardware use the discipline — `pcb` (KiCad: schematic, layout, silkscreen, footprints), later
+  `cad` (panels, bezels, knobs).
 - **Breaking change:** `type(scope)!: …`, or a `BREAKING CHANGE:` footer.
 
 ```text
@@ -117,5 +119,9 @@ reasons are [design decision D10](../architecture/design-decisions.md#d10-versio
   only `Firmware/ScratchPad/`.
 - **Adding a firmware library?** Add its `library.json` to `extra-files` in
   `release-please-config.json`, so its version moves with the rest.
-- **Boards** are tagged by hand at order time, and the **cockpit** release is cut by hand after
-  bring-up — see D10.
+- **Boards and the cockpit** are released by hand, once they're ready: a board is tagged after it
+  has been built and verified, the cockpit after its boards are released. Their notes come from
+  the same commits, picked by the folders they touched — so mark a hardware break (a pinout,
+  harness, mounting or minimum-firmware change) with `!`: `feat(pcb)!: move J_SR to pin header`.
+  The tagging standard and release checklist are in `docs/_source/hardware-standards.md`
+  (*Releases*); the model is D10.

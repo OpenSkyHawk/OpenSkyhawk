@@ -1,0 +1,14 @@
+# Hardware release manifest — the boards a cockpit release (hardware-vX.Y.Z) contains.
+#
+# List only RELEASED boards: each entry must have a pcb/<board>-v<version> tag, and the
+# release workflow refuses a cockpit tag otherwise. Edit this file in the PR that comes
+# right before a hardware release, together with flipping those boards' README status to
+# Released. Standard: docs/_source/hardware-standards.md, "Releases"; model: design decision D10.
+#
+# Entry format:
+#   - board: PanelGroup_Base            # KiCad project folder name (= the tag's <Board>)
+#     path: PCB/Base/PanelGroup_Base    # board folder
+#     version: 0.2.0                    # released revision
+
+min_firmware: ""   # oldest firmware release the boards need, e.g. firmware-v0.1.0
+boards: []

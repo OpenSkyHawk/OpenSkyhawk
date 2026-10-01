@@ -256,8 +256,8 @@ released on their own clock from this one repository. Docs follow `main` and are
 | Track | Tag | Moves when |
 |---|---|---|
 | **Firmware** | `firmware-vX.Y.Z` | Automatically, from Conventional Commits under `Firmware/` |
-| **Board** | `pcb/<Board>-vX.Y.Z` | By hand, when that board is sent to fab |
-| **Cockpit hardware** | `hardware-vX.Y.Z` | By hand, when a set of boards has been brought up together |
+| **Board** | `pcb/<Board>-vX.Y.Z` | By hand, once that board has been built and verified |
+| **Cockpit hardware** | `hardware-vX.Y.Z` | By hand, once its boards are released |
 
 Why not the alternatives:
 
@@ -289,26 +289,37 @@ unfinished board is the version it is *aiming* for, not a release.
 
 - Each board keeps the semver already in its KiCad title block and its back-silk
   `REVISION x.y.z` text ([Hardware Standards](../hardware/standards.md)).
-- A board is tagged **when it is ordered**, on the as-fabricated commit, with the fab order ID
-  in the annotated tag message. The tag records a fact: *this* is what was built.
+- **A board tag means the board is ready** — built, brought up, and verified. It is created only
+  after bring-up passes; a revision that fails is never tagged. The fab order ID goes in the
+  annotated tag message, and rework a board needed to pass is listed there as errata.
+- **The tagged tree must be the board that was built.** It goes on `HEAD` when the board's design
+  files are unchanged since the as-fabricated commit, otherwise on that commit.
 - Commits never bump a board — a revision is a human decision, made when the board is re-fabbed.
+- **A release tag captures the whole repository**, in-progress boards included. Each board folder
+  carries a `README.md` stating its status (Released / In progress / Deprecated); the manifest is
+  the authoritative list of what a release contains. CAD folders get the same READMEs once CAD
+  joins the hardware release.
 
 ### Cockpit hardware
 
 - One version for the **whole cockpit**, 0.x for a long time. Its release notes are a
   **manifest**: every tagged board at its version, plus the minimum firmware version that
   drives them.
-- Cut **only after bring-up passes** — where a board tag records what was built, a cockpit
-  release claims that these boards work together.
-- Changelogs come from [git-cliff](https://git-cliff.org), filtered by path between tags
-  (`PCB/` for the cockpit, a board's own folder for its notes). The first cockpit release is the
-  baseline; its notes are the manifest alone.
+- Cut **after its boards are released** — like a board tag, it says the items in it are ready.
+- **Release notes list each board and what changed in it.** [git-cliff](https://git-cliff.org)
+  reads the same Conventional Commits as firmware, but selects them **by path** — the commits that
+  touched a board's folder since its previous tag — so a cross-layer PR shows up in every track it
+  touched. The commit **type** picks the section, the **scope** names the discipline (`pcb`, later
+  `cad`), and **`!`** marks a hardware break — a pinout, harness, mounting or minimum-firmware
+  change — listed first.
+- Changelogs count from baseline tags `pcb/<Board>-v0.0.0` and `hardware-v0.0.0` (no Release), set
+  on `ff065bd4` (2026-07-10) — `main`'s history starts 2026-07-06, after the 0.1.0 boards were made.
 - **Bumps while in 0.x:** *minor* for a board revision that changes a connector pinout, harness,
   mounting, or the minimum firmware, or for a new board joining the cockpit; *patch* for a
   compatible fix (BOM, silkscreen, protection — same pinouts).
 
-The hardware tooling (manifest, the git-cliff workflow, the per-board fab bundle) is tracked in
-[#305](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/305).
+The tagging standard and release checklist are in [Hardware Standards](../hardware/standards.md#releases); the per-board fab
+bundle is tracked in [#314](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/314).
 
 ---
 
