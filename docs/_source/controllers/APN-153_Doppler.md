@@ -29,7 +29,7 @@ AN/ASN-41 nav computer. No MCU of its own — routes to the ASN-41 host board ov
 
 | Display group | Identifiers | FW class | Drive |
 |---|---|---|---|
-| Drift needle | `APN153_DRIFT_GAUGE` (0x847C) | `NeedleGauge` | X27.589 stepper via DRV8833; ≈236° sweep (~708 steps full-scale). **MCP-driven → step-rate gated by [#190](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/190)** |
+| Drift needle | `APN153_DRIFT_GAUGE` (0x847C) | `NeedleGauge` | X27.589 stepper via DRV8833; ≈236° sweep (~708 steps full-scale). MCP-driven — a slow needle, well inside the ~490 steps/s measured on the MCP path |
 | Ground Speed | `APN153_SPEED_X00/_0X0/_00X` (0x847E/80/82) | `DrumDisplay` | OLED (I²C, SSD1306 0.91″ 128×32, PCB-mounted) — no motor; U8G2 ctor = SSD1306 128×32 |
 | Memory Light (yellow) | `APN153_MEMORYLIGHT` (0x8470) | `LED` | integrated in MEMORY pushbutton; driven solely by DCS-BIOS output |
 
@@ -81,5 +81,7 @@ LED power via the controller backlight rail. No MOSFET on this sub-panel — zon
 ## Prerequisites — all met
 
 `DrumDisplay` · `SwitchMultiPos` · `Switch2Pos` · `NeedleGauge` · `LED` all implemented and (gauges)
-bench-verified. No firmware/symbol blockers → B6 firmware parallelizable. Only open gate: the
-[#190](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/190) MCP23017 NeedleGauge step-rate bench validation, which gates B5 PCB layout.
+bench-verified. No firmware/symbol blockers → B6 firmware parallelizable. The MCP23017 step-rate
+question that gated B5 is closed ([#190](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/190)):
+the MCP path measured ~490 steps/s at 400 kHz, and the DRIFT needle is slow, so the backend stays
+MCP and B5 is unblocked.
