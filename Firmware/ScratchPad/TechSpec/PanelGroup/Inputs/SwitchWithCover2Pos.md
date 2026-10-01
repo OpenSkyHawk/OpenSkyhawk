@@ -94,6 +94,12 @@ protected:
 | `sync_reassert` | `forceReport()` re-sends the settled pair in order |
 | `switch2pos_unchanged` | the existing `Switch2Pos` envs pass with the hook in place |
 
+Every env opens with a **rig check**: it drives `PB0` both ways and confirms `PA0` follows, then
+prints `RIG FAULT: PB0->PA0 bridge not conducting` and stops if it doesn't. Three rig faults during
+the #293 bring-up (wrong pins, a ground left fitted, an open bridge) each surfaced as a puzzling
+frame-count failure that took an instrumented build to diagnose; the check turns that into one
+line. Verified by pulling the jumper — it fires, and with the jumper in all four envs still pass.
+
 ```cpp
 OpenSkyhawk::SwitchWithCover2Pos masterArm(DCSIN_EXAMPLE_SWITCH, DCSIN_EXAMPLE_COVER, PinRef(PB0));
 ```

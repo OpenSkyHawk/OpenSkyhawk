@@ -47,6 +47,20 @@ static void pump(uint32_t ms) {
     while (millis() - t0 < ms) { gSw.poll(); flushDrain(); }
 }
 
+// The whole suite is meaningless if the PB0->PA0 bridge is not conducting: every assertion below
+// depends on the switch level actually changing. Drive the pin both ways and confirm the input
+// follows, so a rig fault says so in one line instead of surfacing as a puzzling frame count.
+static bool rigOk() {
+    pinMode(PIN_SW, INPUT);
+    digitalWrite(PIN_CTRL, HIGH);
+    delay(2);
+    const bool followsHigh = digitalRead(PIN_SW) == HIGH;
+    digitalWrite(PIN_CTRL, LOW);
+    delay(2);
+    const bool followsLow = digitalRead(PIN_SW) == LOW;
+    return followsHigh && followsLow;
+}
+
 void setup() {
     STM32Board::setDebug(true);
     STM32Board::begin();
@@ -61,6 +75,12 @@ void setup() {
     };
 
     pinMode(PIN_CTRL, OUTPUT);
+    if (!rigOk()) {
+        STM32Board::diagSerial().println("RIG FAULT: PB0->PA0 bridge not conducting - check the jumper");
+        STM32Board::diagSerial().println("=== FAIL ===");
+        return;
+    }
+
     digitalWrite(PIN_CTRL, HIGH);   // inactive (active-LOW default)
     gSw.configure();
 
