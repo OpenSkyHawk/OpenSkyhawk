@@ -49,13 +49,13 @@ short version:
 - **Firmware releases itself.** Each merge to `main` keeps a draft *"release firmware X.Y.Z"* pull
   request up to date with the next version and its changelog. When a maintainer marks it ready
   and merges it, the release is tagged and published — nothing for you to do.
-- **Boards and the cockpit are released by hand, once they're ready.** A board gets a version tag
-  after it has been built and verified; the whole cockpit gets a release once its boards are
-  released. Each board folder's `README.md` says whether that board is Released, In progress, or
-  Deprecated.
+- **Hardware releases the same way.** Commits under `PCB/` keep a draft *"release hardware
+  X.Y.Z"* pull request up to date. A board joins a release once it has been built and verified —
+  it's then listed in `PCB/manifest.yaml` — and each board folder's `README.md` says whether it is
+  Released, In progress, or Deprecated.
 
 Want the details? See [Releases](conventions.md#releases) and
-[design decision D10](../architecture/design-decisions.md#d10-versioning-one-repo-three-release-tracks).
+[design decision D10](../architecture/design-decisions.md#d10-versioning-firmware-and-hardware-release-separately).
 
 ## In this section
 

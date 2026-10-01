@@ -1,33 +1,33 @@
 #!/usr/bin/env python3
-"""Write the GitHub Release notes for a hardware release tag.
+"""Write the board section of a hardware release's notes.
 
-Hardware release track: design decision D10; the standard is the "Releases" section of
-``docs/_source/hardware-standards.md``. Two kinds of tag:
+Hardware releases go through release-please, like firmware (design decision D10; the
+standard is the "Releases" section of ``docs/_source/hardware-standards.md``): merging the
+hardware release PR tags ``hardware-vX.Y.Z`` and publishes a GitHub Release whose notes are
+release-please's changelog of ``PCB/``. This script writes what that changelog can't —
+which boards the release contains, at which version, and what changed in each — from
+``PCB/manifest.yaml``:
 
-  * ``pcb/<Board>-vX.Y.Z`` — one board, released after bring-up. Notes = the tag message
-    (fab order ID, any errata) + git-cliff's list of commits that touched the board's
-    folder since the board's previous tag.
-  * ``hardware-vX.Y.Z`` — the cockpit. Notes = minimum firmware, a table of every board in
-    ``hardware/manifest.yaml`` (version, and what moved since the previous cockpit
-    release), then each board's notes.
+  * minimum firmware, and a table of every board: version, and whether it is new,
+    unchanged, or moved since the previous hardware release;
+  * per board: fab order ID, errata, the commit the boards were made from, and git-cliff's
+    list (``cliff.toml``) of the commits that touched the board folder up to that commit —
+    since the board's previous release, or since release-please's ``bootstrap-sha`` for a
+    board's first release.
 
-``-v0.0.0`` tags are baselines changelogs count from; they get no release.
-
-git-cliff does the commit parsing (``cliff.toml``). The range and version are passed to it
-explicitly, because a tag on a commit outside the board folder is invisible to a
-path-filtered git-cliff.
+Each board's title-block revision is checked at the commit it was made from.
 
 Usage::
 
-    release_notes.py TAG [--dry-run] [--notes FILE]
+    release_notes.py hardware-vX.Y.Z     # after the release: notes for that tag
+    release_notes.py --preview           # before it: notes for the manifest at HEAD
 
-Prints the release title on stdout and writes the notes to FILE (default: stdout after the
-title). ``--dry-run`` previews a tag that doesn't exist yet: the range ends at HEAD.
-Exit code 0 on success (or a baseline tag, which prints nothing), 1 on any problem.
+Prints the markdown on stdout. Exit code 0 on success, 1 on any problem.
 """
 from __future__ import annotations
 
 import argparse
+import json
 import pathlib
 import re
 import subprocess
@@ -36,8 +36,8 @@ import sys
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
-MANIFEST = "hardware/manifest.yaml"
-TAG_RE = re.compile(r"^(?:pcb/(?P<board>.+)|hardware)-v(?P<version>\d+\.\d+\.\d+)$")
+MANIFEST = "PCB/manifest.yaml"
+TAG_RE = re.compile(r"^hardware-v(\d+)\.(\d+)\.(\d+)$")
 
 
 class ReleaseError(Exception):
@@ -50,158 +50,131 @@ def git(*args: str) -> str:
     ).stdout
 
 
-def tag_exists(tag: str) -> bool:
-    return (
-        subprocess.run(
-            ["git", "rev-parse", "-q", "--verify", f"refs/tags/{tag}"],
-            cwd=ROOT, capture_output=True,
-        ).returncode
-        == 0
-    )
+def git_ok(*args: str) -> bool:
+    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True).returncode == 0
 
 
 def version_key(tag: str) -> tuple[int, ...]:
-    return tuple(int(part) for part in tag.rsplit("-v", 1)[1].split("."))
+    return tuple(int(part) for part in TAG_RE.match(tag).groups())
 
 
-def previous_tag(prefix: str, tag: str) -> str | None:
-    """The tag just below ``tag`` among the tags starting with ``prefix``."""
-    lower = [
-        t for t in git("tag", "-l", f"{prefix}*").split()
-        if TAG_RE.match(t) and version_key(t) < version_key(tag)
-    ]
-    return max(lower, key=version_key) if lower else None
+def previous_release(tag: str | None) -> str | None:
+    """The hardware release just below ``tag`` (or the newest one, for a preview)."""
+    tags = [t for t in git("tag", "-l", "hardware-v*").split() if TAG_RE.match(t)]
+    if tag:
+        tags = [t for t in tags if version_key(t) < version_key(tag)]
+    return max(tags, key=version_key) if tags else None
 
 
-def board_folder(board: str) -> pathlib.Path:
-    found = [
-        p for p in git("ls-files", "PCB").splitlines()
-        if p.endswith(f"/{board}/{board}.kicad_pro")
-    ]
-    if len(found) != 1:
-        raise ReleaseError(f"expected one KiCad project named {board} under PCB/, found {len(found)}")
-    return pathlib.PurePosixPath(found[0]).parent
+def bootstrap_sha() -> str:
+    config = json.loads((ROOT / "release-please-config.json").read_text(encoding="utf-8"))
+    return config["bootstrap-sha"]
 
 
-def check_revision(board: str, folder: pathlib.PurePosixPath, version: str) -> None:
-    """The tagged tree must be the board that was built: its title block carries the version."""
-    sch = ROOT / folder / f"{board}.kicad_sch"
-    if f'(rev "{version}")' not in sch.read_text(encoding="utf-8"):
-        raise ReleaseError(
-            f"{folder}/{board}.kicad_sch title-block revision is not {version} "
-            "— is the tag on the as-fabricated commit?"
-        )
+def load_manifest(ref: str) -> dict:
+    try:
+        return yaml.safe_load(git("show", f"{ref}:{MANIFEST}")) or {}
+    except subprocess.CalledProcessError:
+        return {}  # before the manifest existed
 
 
-def board_notes(board: str, folder: pathlib.PurePosixPath, tag: str) -> str:
-    parts = []
-    message = git("tag", "-l", "--format=%(contents)", tag).strip()
-    if message:
-        parts.append(message)
-    prev = previous_tag(f"pcb/{board}-v", tag)
-    if prev is None:
-        parts.append("Initial tagged revision.")
-    else:
-        end = tag if tag_exists(tag) else "HEAD"
-        changes = subprocess.run(
-            ["git-cliff", "--config", str(ROOT / "cliff.toml"), "--strip", "all",
-             "--include-path", f"{folder}/**", "--tag-pattern", f"^pcb/{board}-v",
-             "--tag", tag, f"{prev}..{end}"],
-            cwd=ROOT, check=True, capture_output=True, text=True,
-        ).stdout.strip()
-        parts.append(changes)
-    return "\n\n".join(parts)
+def short(sha: str) -> str:
+    return git("rev-parse", "--short", sha).strip()
 
 
-def manifest_boards(text: str) -> tuple[str, list[dict]]:
-    data = yaml.safe_load(text) or {}
-    return str(data.get("min_firmware") or ""), list(data.get("boards") or [])
+def board_section(entry: dict, before: dict | None, start: str, ref: str, release: str) -> str:
+    board, path, version = entry["board"], entry["path"], str(entry["version"])
+    fabricated = str(entry["fabricated"])
+    if not git_ok("cat-file", "-e", f"{fabricated}^{{commit}}"):
+        raise ReleaseError(f"{board}: fabricated commit {fabricated} doesn't exist")
+    sch = f"{path}/{board}.kicad_sch"
+    if f'(rev "{version}")' not in git("show", f"{fabricated}:{sch}"):
+        raise ReleaseError(f"{board}: title-block revision at {short(fabricated)} is not {version}")
+
+    lines = [f"## {board} {version}", ""]
+    facts = [f"Made from `{short(fabricated)}`"]
+    if entry.get("order"):
+        facts.insert(0, f"Order {entry['order']}")
+    lines.append(" · ".join(facts))
+    if entry.get("errata"):
+        lines += ["", f"**Errata:** {entry['errata']}"]
+    if not git_ok("diff", "--quiet", fabricated, ref, "--", path, f":!{path}/README.md"):
+        lines += ["", f"The design has moved on since; this revision's files are at `{short(fabricated)}`."]
+    lines.append("")
+
+    if before and str(before["version"]) == version:
+        lines.append("Unchanged since the previous hardware release.")
+        return "\n".join(lines)
+
+    since = str(before["fabricated"]) if before else start
+    changes = subprocess.run(
+        ["git-cliff", "--config", str(ROOT / "cliff.toml"), "--strip", "all",
+         "--include-path", f"{path}/**", "--tag-pattern", "^hardware-v",
+         "--tag", release, f"{since}..{fabricated}"],
+        cwd=ROOT, check=True, capture_output=True, text=True,
+    ).stdout.strip()
+    lines.append(changes)
+    return "\n".join(lines)
 
 
-def cockpit_notes(tag: str) -> str:
-    min_firmware, boards = manifest_boards((ROOT / MANIFEST).read_text(encoding="utf-8"))
+def notes(tag: str | None) -> str:
+    if tag and not git_ok("rev-parse", "-q", "--verify", f"refs/tags/{tag}"):
+        raise ReleaseError(f"{tag} does not exist (use --preview before a release)")
+    ref = tag or "HEAD"
+    # A preview reads the working copy, so uncommitted manifest edits show up.
+    manifest = load_manifest(ref) if tag else (
+        yaml.safe_load((ROOT / MANIFEST).read_text(encoding="utf-8")) or {})
+    boards = list(manifest.get("boards") or [])
     if not boards:
         raise ReleaseError(f"{MANIFEST} lists no boards")
 
-    prev_release = previous_tag("hardware-v", tag)
-    was: dict[str, str] = {}
-    if prev_release:
-        try:
-            _, prev_boards = manifest_boards(git("show", f"{prev_release}:{MANIFEST}"))
-            was = {b["board"]: str(b["version"]) for b in prev_boards}
-        except subprocess.CalledProcessError:
-            pass  # the previous release predates the manifest (a baseline)
+    prev = previous_release(tag)
+    before = {b["board"]: b for b in (load_manifest(prev).get("boards") or [])} if prev else {}
+    start = prev or bootstrap_sha()
+    release = tag or f"hardware-v{manifest.get('release', '?')}"
 
-    rows, sections = [], []
+    rows = []
     for entry in boards:
-        board, path, version = entry["board"], entry["path"], str(entry["version"])
-        board_tag = f"pcb/{board}-v{version}"
-        if not tag_exists(board_tag):
-            raise ReleaseError(f"{board} {version} has no {board_tag} tag — release the board first")
-        before = was.get(board)
-        if before is None:
+        was = before.get(entry["board"])
+        version = str(entry["version"])
+        if was is None:
             change = "new"
-        elif before == version:
+        elif str(was["version"]) == version:
             change = "unchanged"
         else:
-            change = f"{before} → {version}"
-        rows.append(f"| {board} | {version} | {change} |")
-        body = (
-            f"Unchanged since {prev_release}."
-            if before == version
-            else board_notes(board, pathlib.PurePosixPath(path), board_tag)
-        )
-        sections.append(f"## {board} {version}\n\n{body}")
+            change = f"{was['version']} → {version}"
+        rows.append(f"| {entry['board']} | {version} | {change} |")
 
-    header = [
-        f"**Minimum firmware:** {min_firmware or 'not set'}",
+    out = [
+        "## Boards",
+        "",
+        f"**Minimum firmware:** {manifest.get('min_firmware') or 'not set'}",
         "",
         "| Board | Version | Change |",
         "|---|---|---|",
         *rows,
     ]
-    return "\n".join(header) + "\n\n" + "\n\n".join(sections)
+    for entry in boards:
+        out += ["", board_section(entry, before.get(entry["board"]), start, ref, release)]
+    return "\n".join(out)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    parser.add_argument("tag")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="preview a tag that doesn't exist yet; the range ends at HEAD")
-    parser.add_argument("--notes", type=pathlib.Path, help="write the notes here instead of stdout")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("tag", nargs="?", help="a published hardware-vX.Y.Z tag")
+    group.add_argument("--preview", action="store_true",
+                       help="notes for the manifest at HEAD, before the release")
     args = parser.parse_args()
 
-    match = TAG_RE.match(args.tag)
-    if not match:
+    if args.tag and not TAG_RE.match(args.tag):
         print(f"error: {args.tag} is not a hardware release tag", file=sys.stderr)
         return 1
-    version = match["version"]
-    if version == "0.0.0":
-        print(f"{args.tag} is a baseline tag: no release.", file=sys.stderr)
-        return 0
-
     try:
-        if not args.dry_run:
-            if not tag_exists(args.tag):
-                raise ReleaseError(f"{args.tag} does not exist (use --dry-run to preview)")
-            if git("cat-file", "-t", f"refs/tags/{args.tag}").strip() != "tag":
-                raise ReleaseError(f"{args.tag} is a lightweight tag — release tags must be annotated (git tag -a)")
-        if match["board"]:
-            board = match["board"]
-            folder = board_folder(board)
-            check_revision(board, folder, version)
-            title, notes = f"{board} {version}", board_notes(board, folder, args.tag)
-        else:
-            title, notes = f"Hardware {version}", cockpit_notes(args.tag)
-    except ReleaseError as err:
+        print(notes(None if args.preview else args.tag))
+    except (ReleaseError, KeyError) as err:
         print(f"error: {err}", file=sys.stderr)
         return 1
-
-    print(title)
-    if args.notes:
-        args.notes.write_text(notes + "\n", encoding="utf-8")
-    else:
-        print(notes)
     return 0
 
 

@@ -81,13 +81,13 @@ the [Connector & Harness Guide](connectors.md).
 
 ## Releases
 
-A board release means **the board is ready** — built, brought up, and verified. Each board is
-tagged `pcb/<Board>-vX.Y.Z` once it passes bring-up, and the whole cockpit gets a `hardware-vX.Y.Z`
-release once its boards are released; the release notes list each board and what changed in it.
-Every board folder's `README.md` says whether it is **Released**, **In progress**, or
-**Deprecated**. The model is [design decision D10](../architecture/design-decisions.md#d10-versioning-one-repo-three-release-tracks);
-the tagging standard and release checklist are in `docs/_source/hardware-standards.md`
-(*Releases*).
+Hardware releases work like firmware's: commits under `PCB/` keep a draft **release hardware
+X.Y.Z** pull request up to date, and **merging it is the release** (`hardware-vX.Y.Z`). A release
+means **the boards in it are ready** — built, brought up, and verified — and which boards those are
+is listed in `PCB/manifest.yaml`. The release notes list each board and what changed in it. Every
+board folder's `README.md` says whether it is **Released**, **In progress**, or **Deprecated**.
+The model is [design decision D10](../architecture/design-decisions.md#d10-versioning-firmware-and-hardware-release-separately);
+the standard and release checklist are in `docs/_source/hardware-standards.md` (*Releases*).
 
 ## The other reference pages
 

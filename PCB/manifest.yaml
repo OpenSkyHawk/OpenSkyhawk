@@ -1,0 +1,20 @@
+# Hardware release manifest — what a hardware release (hardware-vX.Y.Z) contains.
+#
+# release-please owns `release`: it sets the next version in the hardware release PR.
+# Everything else is edited by hand. List a board only once it has passed bring-up, in a
+# PR that also flips its folder's README.md status to Released. Merging the hardware
+# release PR then publishes the release; a follow-up job adds a table of these boards and
+# what changed in each to the release notes.
+# Standard: docs/_source/hardware-standards.md, "Releases". Model: design decision D10.
+#
+# Board entry:
+#   - board: PanelGroup_Base            # KiCad project folder name
+#     path: PCB/Base/PanelGroup_Base    # board folder
+#     version: 0.2.0                    # released revision — matches its title block
+#     fabricated: a4e75ff9              # commit the boards were made from
+#     order: JLC W2026093021050394      # fab order ID
+#     errata: ""                        # rework needed to pass bring-up, if any
+
+release: "0.0.0" # x-release-please-version
+min_firmware: "" # oldest firmware release the boards need, e.g. firmware-v0.1.0
+boards: []
