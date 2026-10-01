@@ -1,6 +1,9 @@
 # AngleSensorInput — Technical Specification
 
-**Status:** Ready for implementation (#294, Firmware v0.1.0) — `AnalogInput` family member (D16)
+**Status:** Done (hardware-verified — **3/3 envs PASS 2026-09-30** on an STM32F103, CAN silent
+loopback, readings injected; the 8 `AnalogInput` envs re-run 8/8 as the refactor's regression gate.
+A real AS5600/MT6701 on a live DCS knob is part of the #291 smoke test). `AnalogInput` family
+member (D16)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md` (AngleSensorInput), `FirmwarePlan/00-decisions.md` (D16)
 **Depends on:** `AnalogInput.md`, `PinRef.md`
 
@@ -9,7 +12,8 @@
 ## Responsibility
 
 `AngleSensorInput : AnalogInput` — a magnetic angle sensor (AS5600 / MT6701) as an **absolute**
-knob or axis. No wiper wear and a full 360° mechanical range, where a pot stops at ~270°. Intended
+knob or axis. No wiper wear, and the sensor reads a full 360° where a pot stops at ~270° (usable
+travel is just under a turn — see the seam note below). Intended
 for absolute DCS-BIOS knobs such as `GUNSIGHT_KNB` (gunsight elevation) and `RADAR_RETICLE`.
 Flight-control axes use linear Hall sensors on plain `AnalogInput` (#278).
 
@@ -35,13 +39,32 @@ base call. `configure()` is inherited unchanged (`_pin.configureAsInput()`).
 ### The one base hook (added in the same PR as this class)
 
 - `AnalogInput` gains `protected: virtual uint16_t readRaw();` whose default returns
-  `_pin.readAnalog()`. `readScaled()` calls it instead of reading the pin itself. The members it
-  needs become `protected`.
+  `_pin.readAnalog()` (or the `ANALOGINPUT_TEST` injected value). `readScaled()` calls it instead of
+  reading the pin itself. **No base member becomes `protected`:** the subclass's `readRaw()` is
+  `AnalogInput::readRaw()` plus a re-centre, so it touches no base state — the smaller surface.
 - `AngleSensorInput::readRaw()` calls `AnalogInput::readRaw()` and **re-centres** the value so
-  `centerDeg` lands at mid-scale (32768). The 0°/360° seam then only matters for travel wider than
-  ±180°, which removes the old "rotate the magnet mount" constraint.
+  `centerDeg` lands at mid-scale (32768), which removes the old "rotate the magnet mount"
+  constraint — a travel straddling 0°/360° is contiguous like any other.
+- **The seam moves, it does not vanish.** A single-turn absolute sensor reads one angle at both
+  ends of a full turn, so the circle cannot map onto a line without a break; re-centring puts that
+  break opposite `centerDeg`, as far from the knob's centre as it goes. `travelDeg` is therefore
+  **(0, 360)** — up to just under a full turn. At exactly 360° both ends are the same sensor angle
+  and the output would jump full-scale at the break (the `halfSpanCounts()` 32767 cap keeps the
+  window just inside that). Continuous rotation needs other semantics — turn counting or a
+  relative mode — and is not this class.
 - The public `AnalogInput` constructor and behaviour are unchanged, so existing sketches and the
   eight `Firmware/Tests/AnalogInput` envs are unaffected. Cost: one virtual call per read.
+
+### Tests
+
+`Firmware/Tests/AngleSensorInput` — `test_mapping` (centre 180° / travel 150°: centre → mid-scale,
+±75° → the rails, beyond → clamped), `test_wrap` (centre 10° / travel 60° straddling 0°/360°:
+350°/30° symmetric about mid, 340°/40° the rails, 190° clamped not mid-travel) and `test_inherits`
+(the base still owns baseline, hysteresis and emission through the subclass). Seam-driven via
+`debugSetRaw()` / `forceReport()`, CAN in silent loopback — one bare board, no sensor.
+
+The eight `Firmware/Tests/AnalogInput` envs are the regression gate on the `readRaw()` refactor;
+they keep their assertions and moved to silent loopback so they run on the same bare board.
 
 ### Faults
 

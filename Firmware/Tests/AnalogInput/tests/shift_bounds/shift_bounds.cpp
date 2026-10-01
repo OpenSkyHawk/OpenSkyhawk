@@ -4,7 +4,9 @@
 // cannot overflow the int32 accumulator at full scale (65535 << 16 > INT32_MAX). An out-of-range
 // shift is clamped; a full-scale reading must still report 65535, not garbage from an overflow.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No jumpers / pot needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no pot). Do NOT run it
+// on a board wired to a live bus: a loopback node never ACKs, which drives the bridge
+// error-passive. PASS/FAIL comes from the input's own test seams, not from CAN.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -28,7 +30,7 @@ void setup() {
     };
 
     gAna.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
 
     // forceReport seeds _acc = scaled << ewmaShift — the overflow boundary. Clamped shift → 65535.
     gAna.debugSetRaw(65535); gAna.forceReport();

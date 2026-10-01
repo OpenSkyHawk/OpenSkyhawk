@@ -32,7 +32,9 @@
 // PinRef blocks ~8 ms per conversion and cannot sustain pollMs < 8 whatever this reports — see
 // TechSpec/PanelGroup/PinRef.md.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No jumpers / pot needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no pot). Do NOT run it
+// on a board wired to a live bus: a loopback node never ACKs, which drives the bridge
+// error-passive. PASS/FAIL comes from the input's own test seams, not from CAN.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -65,7 +67,7 @@ void setup() {
 
     gFast.configure();
     gSlow.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
 
     // Hold both inputs at a constant reading, then take the baseline. forceReport() sets
     // _initialized (poll() is a no-op before it) and seeds the EWMA to RAW_HELD, so the window

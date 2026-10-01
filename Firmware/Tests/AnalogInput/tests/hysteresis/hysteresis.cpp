@@ -4,7 +4,9 @@
 // that settles beyond it emits and the value tracks. debugStep() runs one EWMA step bypassing the
 // 8 ms throttle. Verified via emitCount()/value().
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No jumpers / pot needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no pot). Do NOT run it
+// on a board wired to a live bus: a loopback node never ACKs, which drives the bridge
+// error-passive. PASS/FAIL comes from the input's own test seams, not from CAN.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -27,7 +29,7 @@ void setup() {
     };
 
     gAna.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
 
     gAna.debugSetRaw(20000); gAna.forceReport();
     check("baseline: 1 EVT at 20000", gAna.emitCount() == 1 && gAna.value() == 20000);

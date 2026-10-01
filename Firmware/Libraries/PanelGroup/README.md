@@ -58,7 +58,7 @@ void loop() {
 | `RotaryEncoder` | `RotaryEncoder` | implemented — REL (`variable_step`) and DIR (`fixed_step`) modes |
 | `ActionButton` | `ActionButton` | implemented |
 | `RotaryAcceleratedEncoder` | `RotaryAcceleratedEncoder` | implemented (hardware-verified) — `RotaryEncoder` subclass: momentum filter + fast-detent step |
-| `AngleSensorInput` | — | planned (#294) — `AnalogInput` subclass |
+| `AngleSensorInput` | — | implemented (hardware-verified) — `AnalogInput` subclass: absolute angle sensor on a PinRef, 0°/360° wrap |
 | `SwitchWithCover2Pos` | `SwitchWithCover2Pos` | planned (#293) — `Switch2Pos` subclass |
 
 `RotarySwitch` is deliberately not ported: `RotaryEncoder` in DIR mode drives bounded selectors

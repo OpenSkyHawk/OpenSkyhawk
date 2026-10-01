@@ -2,7 +2,9 @@
 
 **Status:** Done (hardware-verified — **8/8 envs PASS 2026-08-14** on the assembled PanelGroup Rev 1,
 re-run in full after the `pollMs` constructor change (#261). `test_poll_rate` measured
-`fast(pollMs=2)=500` / `slow(pollMs=8)=125` reads in a 1000 ms window — nominal, ratio exactly 4.00)
+`fast(pollMs=2)=500` / `slow(pollMs=8)=125` reads in a 1000 ms window — nominal, ratio exactly 4.00.
+Re-run **8/8 2026-09-30** after #294 added the `readRaw()` hook; the envs moved to CAN silent
+loopback at the same time, so they run on one bare board.)
 **FirmwarePlan ref:** `FirmwarePlan/05-panelgroup-api.md#analoginput-new`
 **Depends on:** `PinRef.md`, `PanelGroup.md`
 
@@ -92,9 +94,12 @@ public:
     void forceReport() override;   // sample fresh, seed EWMA, emit baseline
     void configure() override;
 
+protected:
+    virtual uint16_t readRaw();    // the source value — the one hook a family member overrides
+                                   // (#294: AngleSensorInput re-centres it). Default: the PinRef.
 private:
     void     sample();             // one read + EWMA step + conditional emit
-    uint16_t readScaled();         // read ADC, clamp, map → 0..65535
+    uint16_t readScaled();         // readRaw(), clamp, map → 0..65535
     bool     shouldEmit(uint16_t v) const;
     void     emit(uint16_t v, bool init = false);
     // _pin, _reverse, _minRaw, _maxRaw, _hysteresis, _ewmaShift, _pollMs, _acc, _smoothed, ...
@@ -132,7 +137,7 @@ void loop()  { PanelGroup::loop(); }   // polls the input, drains CAN — nothin
 
 ```cpp
 uint16_t AnalogInput::readScaled() {
-    uint16_t raw = _pin.readAnalog();                    // 16-bit (STM32 ×16 / ADS1115 ×2)
+    uint16_t raw = readRaw();                            // 16-bit (STM32 ×16 / ADS1115 ×2); virtual
     if (raw < _minRaw) raw = _minRaw; else if (raw > _maxRaw) raw = _maxRaw;
     uint32_t span   = (uint32_t)_maxRaw - _minRaw;       // own scale, not Arduino map():
     uint16_t scaled = span ? (uint16_t)((uint32_t)(raw - _minRaw) * 65535u / span) : 0;

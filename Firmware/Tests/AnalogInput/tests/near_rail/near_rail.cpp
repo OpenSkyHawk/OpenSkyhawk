@@ -7,7 +7,9 @@
 // A stateless drive-the-rail check (the original test) would pass even if the rail clause regressed,
 // because the full swing also clears the hysteresis. The last two checks confirm a full sweep lands.
 //
-// Rig: this STM32 on the CAN bus with the PanelBridge (node ACKs). No jumpers / pot needed.
+// Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no pot). Do NOT run it
+// on a board wired to a live bus: a loopback node never ACKs, which drives the bridge
+// error-passive. PASS/FAIL comes from the input's own test seams, not from CAN.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -30,7 +32,7 @@ void setup() {
     };
 
     gAna.configure();
-    CANProtocol::start();
+    CANProtocol::startLoopback();
 
     // --- ISOLATION: a sub-hysteresis move INTO the top rail still emits (near-rail clause only) ---
     gAna.debugSetRaw(65500); gAna.forceReport();        // settle just below the top rail
