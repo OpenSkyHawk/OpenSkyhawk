@@ -132,7 +132,10 @@ the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
     driver only lands on nodes that actually use a display — add `file://../../Libraries/DrumDisplay`
     to a sketch's `lib_deps` to use it. Each readout (its digit sources, geometry, and optional
     flag) is described by a `DrumReadout` defined in the sketch, like the `PinRef` wiring map.
-    Many same-address OLEDs can share one bus behind a TCA9548A via the `I2cMux` helper.
+    Each panel takes one transport argument: an **I²C bus**, or an **`I2cMux`** when several
+    same-address OLEDs share a TCA9548A. Omit it and the default bus is used. A bare OLED may not
+    share a trunk with panels behind a mux — it is shadowed whenever a channel is open — so put
+    the mux on one trunk and a bare panel on the other.
 
     Each source also declares its **band** — how many positions the gauge divides its range into,
     and what each one displays. DCS-BIOS normalises a gauge's declared range to 16 bits and leaves
