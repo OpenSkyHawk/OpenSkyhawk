@@ -602,7 +602,7 @@ bool PinRef::read () const
 
 
 
-GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from [**PanelGroup**](namespacePanelGroup.md)'s last INTCAP or port read. No I2C. [**ADS1115**](classADS1115.md): true if [**readAnalog()**](classPinRef.md#function-readanalog) &gt; 32767 (half-scale threshold). ShiftBus: cached '165 frame bit (input) or last written '595 bit (output). No SPI. NC: always false.
+GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from [**PanelGroup**](namespacePanelGroup.md)'s last INTCAP or port read. No I2C. [**ADS1115**](classADS1115.md): true if [**readAnalog()**](classPinRef.md#function-readanalog) &gt; 32767 (half-scale threshold, ≈ 1.65V). ShiftBus: cached '165 frame bit (input) or last written '595 bit (output). No SPI. NC: always false.
 
 
 
@@ -630,7 +630,7 @@ uint16_t PinRef::readAnalog () const
 
 
 
-GPIO: analogRead(pin) × 16 → 0–65520 (12-bit ADC scaled to 16-bit). [**ADS1115**](classADS1115.md): readADC\_SingleEnded(channel) × 2 → 0–65534 (15-bit single-ended scaled). MCP23017: always 0; debug assertion fires if PINREF\_DEBUG is defined. NC: always 0.
+GPIO: analogRead(pin) × 16 → 0–65520 (12-bit ADC scaled to 16-bit). [**ADS1115**](classADS1115.md): readADC\_SingleEnded(channel), 0–3.3V mapped onto 0–65535, clamped at 65534 (0xFFFF is the ANALOG\_NC sentinel). The ADS has no 3.3V range (GAIN\_ONE = ±4.096V), so the factor comes from the gain setting — a 3.3V input reads full scale, like a board pin. The ADS measures absolute volts, so a rail a little under 3.3V tops out a little short; AnalogInput's maxRaw can trim it. MCP23017: always 0; debug assertion fires if PINREF\_DEBUG is defined. NC: always 0.
 
 
 

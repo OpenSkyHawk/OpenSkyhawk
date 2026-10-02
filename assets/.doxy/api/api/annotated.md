@@ -60,5 +60,6 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d10.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d53.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d55.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d59.md)     
 

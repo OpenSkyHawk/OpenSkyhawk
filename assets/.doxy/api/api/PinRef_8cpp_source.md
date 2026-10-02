@@ -38,6 +38,33 @@ namespace PanelGroup {
 
 const PinRef PIN_NC;
 
+// ── ADS1115 scaling ───────────────────────────────────────────────────────────
+
+namespace {
+
+// Rail the ADS1115 inputs swing to. The ADS has no 3.3V range, so readAnalog() stretches the
+// 0–3.3V part of its full-scale range onto 0–65535 — the same span the STM32 ADC gives (#325).
+constexpr uint32_t ADS_RAIL_MV = 3300;
+
+// Highest value readAnalog() returns on an ADS pin. One under 0xFFFF, which no analog source may
+// produce (ANALOG_NC sentinel, decision D8) — the same top the old ×2 scaling had.
+constexpr uint16_t ADS_MAX_OUT = 65534;
+
+// Full-scale range in mV for the ADS1115's PGA gain setting.
+uint32_t adsFullScaleMv(adsGain_t gain) {
+    switch (gain) {
+    case GAIN_TWOTHIRDS: return 6144;
+    case GAIN_ONE:       return 4096;
+    case GAIN_TWO:       return 2048;
+    case GAIN_FOUR:      return 1024;
+    case GAIN_EIGHT:     return 512;
+    case GAIN_SIXTEEN:   return 256;
+    default:             return 4096;
+    }
+}
+
+} // namespace
+
 // ── Constructors ──────────────────────────────────────────────────────────────
 
 PinRef::PinRef(uint8_t pin) : _type(Type::GPIO) {
@@ -108,10 +135,15 @@ uint16_t PinRef::readAnalog() const {
         // analogReadResolution(16) set in STM32Board::begin(); framework scales 12-bit → 16-bit
         return static_cast<uint16_t>(analogRead(_src.pin));
     case Type::ADS: {
-        // 15-bit single-ended × 2 → 0–65534; clamp negatives (should not occur)
+        // 15-bit single-ended; clamp negatives (should not occur). 32768 counts span the
+        // full-scale range, so the 3.3V rail sits at 32768 × 3300 / FSR (≈ 26400 at GAIN_ONE).
+        // Map 0–rail → 0–65535 in 32-bit math (raw ≤ 32767, × 65535 ≤ 2.15e9). Clamp at
+        // ADS_MAX_OUT so 0xFFFF stays unreachable — it is the ANALOG_NC sentinel (D8).
         int16_t raw = _src.ads.adc->readADC_SingleEnded(_src.ads.channel);
         if (raw < 0) raw = 0;
-        return static_cast<uint16_t>(raw) << 1;
+        uint32_t railCounts = 32768u * ADS_RAIL_MV / adsFullScaleMv(_src.ads.adc->getGain());
+        uint32_t scaled     = static_cast<uint32_t>(raw) * 65535u / railCounts;
+        return scaled > ADS_MAX_OUT ? ADS_MAX_OUT : static_cast<uint16_t>(scaled);
     }
     case Type::MCP:
 #ifdef PINREF_DEBUG
