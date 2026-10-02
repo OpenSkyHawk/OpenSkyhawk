@@ -130,11 +130,6 @@ It has four inputs, `A0` to `A3`, and you use them like any other pin:
 const PinRef FLOOD_KNOB_PIN = PinRef(adc1, 0);   // input A0
 ```
 
-One thing to know for now: a knob on the analog expander tops out at a reading of about 52800,
-not the full 65535 a board pin reaches. Tell the class where the top is, as described in
-[Setting the range](inputs/analoginput.md#setting-the-range), and the cockpit control will still
-reach its end.
-
 ??? info "Going further"
     **Using the second cable.** To put expanders on `J_I2C2`, declare the second bus above
     `setup()` with `TwoWire Wire1(PB11, PB10);`, call `Wire1.begin()` in `setup()`, and pass

@@ -58,10 +58,34 @@ common leg to nothing at all. It holds the last voltage steady for that instant,
 doesn't misread the knob as it moves. The top of the ladder must go to 3.3V, never 5V, which can
 damage the pin.
 
-Only some of the board's pins can measure a voltage: `PA0` to `PA5`, `PB0` and `PB1`. They are
-marked on the board, and any free one will do.
+Where the pin itself is depends on what you've plugged the ladder into. Pick the tab that matches
+your build — the wiring and the code look almost identical in each one.
 
-![A 20-position selector on a ladder of 1 kΩ resistors between 3.3V and GND, with its common leg on PA0 and a 100 nF capacitor from PA0 to GND](../../../assets/images/diagrams/controls/analogmultipos-board.svg)
+=== "On the board"
+
+    ![A 20-position selector on a ladder of 1 kΩ resistors between 3.3V and GND, with its common leg on PA0 and a 100 nF capacitor from PA0 to GND](../../../assets/images/diagrams/controls/analogmultipos-board.svg)
+
+    Only some of the board's pins can measure a voltage: `PA0` to `PA5`, `PB0` and `PB1`. They
+    are marked on the board, and any free one will do.
+
+    ```cpp
+    const PinRef MCL_CHANNEL_PIN = PinRef(PA0);
+    ```
+
+=== "On an analog expander"
+
+    ![The same ladder wired to input A0 of an analog expander](../../../assets/images/diagrams/controls/analogmultipos-expander.svg)
+
+    The wiring is exactly the same as on the board, on one of the expander's inputs `A0` to
+    `A3`.
+
+    ```cpp
+    const PinRef MCL_CHANNEL_PIN = PinRef(adc1, 0);   // input A0
+    ```
+
+    If this is your first analog expander, your sketch also needs a couple of lines to set it
+    up. [Setting up an analog expander](../expanders.md#analog-expander-ads1115) walks through
+    them.
 
 ## Custom positions
 
@@ -99,7 +123,8 @@ position, then put the selector's line back with your list.
 
 **The cockpit knob never moves, whatever position I pick.**
 The wire is on a pin that can't measure a voltage. Move it to one of `PA0` to `PA5`, `PB0` or
-`PB1`. Digital expanders and shift registers can't read a ladder at all.
+`PB1`, or to an analog expander. Digital expanders and shift registers can't read a ladder at
+all.
 
 **The cockpit knob turns the opposite way to mine.**
 The two ends of the ladder are swapped. Swap the wires going to 3.3V and GND at the ends of the

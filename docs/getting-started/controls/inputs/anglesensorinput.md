@@ -53,10 +53,33 @@ something, otherwise the direction can flip at random. Always power it from 3.3V
 the sensor's output would then go above 3.3 V and damage the board's analog pins. The magnet sits
 on the end of the knob's shaft, centred over the chip and a couple of millimetres above it.
 
-The sensor's output has to go to a pin that can measure a voltage: `PA0`, `PA1`, `PA2`, `PA3`,
-`PA4`, `PA5`, `PB0` or `PB1`. They're marked as analog on the board.
+Where the pin itself is depends on what you've plugged the sensor into. Pick the tab that matches
+your build — the wiring and the code look almost identical in each one.
 
-![An AS5600 sensor board with VCC on 3.3V, GND and DIR on GND, and OUT on pin PA0](../../../assets/images/diagrams/controls/anglesensorinput-board.svg)
+=== "On the board"
+
+    ![An AS5600 sensor board with VCC on 3.3V, GND and DIR on GND, and OUT on pin PA0](../../../assets/images/diagrams/controls/anglesensorinput-board.svg)
+
+    Only some of the board's pins can measure a voltage: `PA0`, `PA1`, `PA2`, `PA3`, `PA4`,
+    `PA5`, `PB0` and `PB1`. They're marked as analog on the board.
+
+    ```cpp
+    const PinRef GUNSIGHT_KNOB_PIN = PinRef(PA0);
+    ```
+
+=== "On an analog expander"
+
+    ![The same AS5600 wiring on input A0 of an analog expander](../../../assets/images/diagrams/controls/anglesensorinput-expander.svg)
+
+    The wiring is the same, on one of the expander's four inputs, `A0` to `A3`.
+
+    ```cpp
+    const PinRef GUNSIGHT_KNOB_PIN = PinRef(adc1, 0);   // input A0
+    ```
+
+    If this is your first analog expander, your sketch also needs a couple of lines to set it
+    up. [Setting up an analog expander](../expanders.md#analog-expander-ads1115) walks through
+    them.
 
 ## Finding your two numbers
 

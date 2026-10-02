@@ -62,6 +62,20 @@ your build — the wiring is the same in each one.
     const PinRef VOLUME_KNOB_PIN = PinRef(PA0);
     ```
 
+=== "On an analog expander"
+
+    ![The same potentiometer wiring on input A0 of an analog expander](../../../assets/images/diagrams/controls/analoginput-expander.svg)
+
+    The wiring is the same, on one of the expander's four inputs, `A0` to `A3`.
+
+    ```cpp
+    const PinRef VOLUME_KNOB_PIN = PinRef(adc1, 0);   // input A0
+    ```
+
+    If this is your first analog expander, your sketch also needs a couple of lines to set it
+    up. [Setting up an analog expander](../expanders.md#analog-expander-ads1115) walks through
+    them.
+
 === "As a joystick axis"
 
     The wiring is the same as in the first tab. What changes is the name: instead of a cockpit
