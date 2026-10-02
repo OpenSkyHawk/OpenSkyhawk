@@ -125,8 +125,8 @@ the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
 !!! note "NeedleGauge drives gauge motors through a swappable backend"
     `NeedleGauge` does only the value→angle mapping. The drive lives in a reusable **motor-driver layer**
     (`Firmware/Libraries/PanelGroup/Drivers/`): a `MotorDriver` base with a `StepperMotor` backend today —
-    non-blocking, driving four coils through `PinRef` (native GPIO **or** an MCP23017 expander, all
-    four on one port so the coil pattern changes in one transaction). One
+    non-blocking, driving four coils through `PinRef`: native GPIO, an MCP23017 expander (all four
+    on one port, so the coil pattern changes in one transaction), or a 74HC595 shift register. One
     air-core profile covers the X27.589 / VID-29 / BKA-30 family; homing is either a mechanical hard-stop
     or a digital home sensor (switch / reed / hall / opto). Drive the X27 at **5 V** through a DRV8833. A
     `ServoMotor` backend is planned (#132).

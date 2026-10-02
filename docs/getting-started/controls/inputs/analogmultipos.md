@@ -3,8 +3,9 @@
 `AnalogMultiPos` reads a rotary selector switch — a knob that clicks between positions, with a
 pointer showing which one is selected — through a single wire. Instead of giving every position
 its own pin, you fit a chain of resistors called a *resistor ladder* behind the switch, so each
-position puts a different voltage on one pin. That makes it the way to wire a selector with more
-positions than you have pins for, and the cockpit knob turns to the same position as yours.
+position puts a different voltage on one pin. That makes it the way to wire a selector when you
+don't have a pin to spare for every position, or when it has more than 12 positions, and the
+cockpit knob turns to the same position as yours.
 
 !!! tip "Not quite the right part?"
     - **12 positions or fewer, and pins to spare?** Use [SwitchMultiPos](switchmultipos.md),
@@ -21,25 +22,25 @@ positions than you have pins for, and the cockpit knob turns to the same positio
 ## In your sketch
 
 ```cpp
-const PinRef MCL_CHANNEL_PIN = PinRef(PA0);
+const PinRef WEAPON_SEL_PIN = PinRef(PA0);
 
-OpenSkyhawk::AnalogMultiPos mclChannel(DCSIN_MCL_CHAN_SEL, MCL_CHANNEL_PIN, 20);
+OpenSkyhawk::AnalogMultiPos weaponSel(DCSIN_ARM_FUNC_SEL, WEAPON_SEL_PIN, 7);
 ```
 
 These two lines go near the top of your sketch, above `setup()`. The first is the
 [pin address](../pin-addresses.md) of the one wire that carries the whole knob, here pin `PA0`
 on the board. It has to be a pin that can measure a voltage, not just tell on from off.
 
-The second line creates the selector. `mclChannel` is a name you choose, `DCSIN_MCL_CHAN_SEL` is
-the cockpit control it operates, the 20-channel MCL selector, and `20` is how many positions the
-knob has. Because the ladder spaces the positions in equal steps from 0 V to 3.3 V, that number
+The second line creates the selector. `weaponSel` is a name you choose, `DCSIN_ARM_FUNC_SEL` is
+the cockpit control it operates, the weapon function selector on the armament panel, and `7` is
+how many positions the knob has. Because the ladder spaces the positions in equal steps from 0 V to 3.3 V, that number
 is all the board needs to work out which position you've picked.
 
 ## Wiring
 
-For a knob with 20 positions, you need 19 identical resistors:
+For a knob with 7 positions, you need 6 identical resistors — always one fewer than the positions:
 
-1. Chain the **19 × 1 kΩ resistors** end to end, and connect one end of the chain to **3.3V** and
+1. Chain the **6 × 1 kΩ resistors** end to end, and connect one end of the chain to **3.3V** and
    the other to **GND**.
 2. Connect the switch's **position legs** to the chain in order: the first position to the GND
    end, each next position to the next joint between two resistors, and the last position to the
@@ -63,13 +64,13 @@ your build — the wiring and the code look almost identical in each one.
 
 === "On the board"
 
-    ![A 20-position selector on a ladder of 1 kΩ resistors between 3.3V and GND, with its common leg on PA0 and a 100 nF capacitor from PA0 to GND](../../../assets/images/diagrams/controls/analogmultipos-board.svg)
+    ![A 7-position selector on a ladder of 1 kΩ resistors between 3.3V and GND, with its common leg on PA0 and a 100 nF capacitor from PA0 to GND](../../../assets/images/diagrams/controls/analogmultipos-board.svg)
 
     Only some of the board's pins can measure a voltage: `PA0` to `PA5`, `PB0` and `PB1`. They
     are marked on the board, and any free one will do.
 
     ```cpp
-    const PinRef MCL_CHANNEL_PIN = PinRef(PA0);
+    const PinRef WEAPON_SEL_PIN = PinRef(PA0);
     ```
 
 === "On an analog expander"
@@ -80,7 +81,7 @@ your build — the wiring and the code look almost identical in each one.
     `A3`.
 
     ```cpp
-    const PinRef MCL_CHANNEL_PIN = PinRef(adc1, 0);   // input A0
+    const PinRef WEAPON_SEL_PIN = PinRef(adc1, 0);   // input A0
     ```
 
     If this is your first analog expander, your sketch also needs a couple of lines to set it
@@ -91,21 +92,20 @@ your build — the wiring and the code look almost identical in each one.
 
 The board measures the ladder as a number from 0 to 65535, from the GND end to the 3.3V end. With
 the short line at the top of this page, the class assumes the positions are evenly spaced across
-that range, which is exactly what a ladder of identical resistors gives. For 5 positions, it
-expects readings of about 0, 16384, 32768, 49151 and 65535.
+that range, which is exactly what a ladder of identical resistors gives. For this 7-position knob,
+it expects readings of about 0, 10923, 21845, 32768, 43690, 54613 and 65535.
 
 Sometimes the steps aren't even — a selector that came with its own resistors, a ladder built
 from whatever values you had, or a knob that skips some of the cockpit's positions. Then you give
 the class a list instead, with the reading you actually get at each position:
 
 ```cpp
-const uint16_t MCL_CHANNEL_READINGS[] = {
-        0,  3400,  6900, 10300, 13800, 17200, 20700, 24100, 27600, 31000,
-    34500, 37900, 41400, 44800, 48300, 51700, 55200, 58600, 62100, 65535,
+const uint16_t WEAPON_SEL_READINGS[] = {
+    0, 9800, 21000, 32700, 43900, 55200, 65535,
 };
 
-OpenSkyhawk::AnalogMultiPos mclChannel(DCSIN_MCL_CHAN_SEL, MCL_CHANNEL_PIN, 20,
-                                       MCL_CHANNEL_READINGS);
+OpenSkyhawk::AnalogMultiPos weaponSel(DCSIN_ARM_FUNC_SEL, WEAPON_SEL_PIN, 7,
+                                      WEAPON_SEL_READINGS);
 ```
 
 The list has one number per position, in order from the first position to the last, and the
@@ -114,9 +114,9 @@ the cockpit knob has no click of its own on yours, put `ANALOG_NC` in its place:
 reports it, and its neighbours share its space.
 
 To find your numbers, temporarily swap the selector's line for a plain knob,
-`OpenSkyhawk::AnalogInput probe(DCSIN_MCL_CHAN_SEL, MCL_CHANNEL_PIN);`, and turn on the
+`OpenSkyhawk::AnalogInput probe(DCSIN_ARM_FUNC_SEL, WEAPON_SEL_PIN);`, and turn on the
 [debug stream](../../../firmware/debugging.md#diagserial-the-debug-stream). Each time you click
-to a new position you'll see a line like `[ANA] 0x806C: 34512`. Note the number at each
+to a new position you'll see a line like `[ANA] 0x8019: 32700`. Note the number at each
 position, then put the selector's line back with your list and
 [turn the debug stream off again](../index.md#the-debug-stream).
 
