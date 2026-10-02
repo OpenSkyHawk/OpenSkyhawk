@@ -33,8 +33,11 @@ firmware class, wiring a schematic, or estimating a controller's budget. It answ
 - **Identifier prefix ≠ physical panel.** A control's panel/console comes from the **GitHub Project**
   (Console field), not from the identifier or `dcs_category`. Some controls sit on a different panel
   than their prefix implies (e.g. `BDHI_MODE`, `RADAR_PROFILE/RANGE` are on the Misc Switch Panel).
-- **Rotaries aren't locked to one class** — `fw_class` shows the default; >7 positions → resistor
-  ladder (`AnalogMultiPos`), ≤7 is a per-panel judgment call. The pick is made at schematic time.
+- **Rotaries aren't locked to one class** — `fw_class` shows the default; the pick is made at
+  schematic time by the selector rule in `hardware-standards.md`: a knob with a **marked position**
+  reports it absolutely (`SwitchMultiPos` up to 12 positions, resistor-ladder `AnalogMultiPos`
+  above); a knob with **no marked position** is a `RotaryEncoder`. Older `fw_class` hints such as
+  `AnalogMultiPos(>7)` predate that rule.
 - **Gauges are composites** — multi-element instruments (ADI, altimeter, nav drums) are several
   `SwitecX25Output` steppers grouped by identifier prefix.
 
