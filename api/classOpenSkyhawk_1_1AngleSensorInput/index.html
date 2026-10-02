@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4511,21 +4311,21 @@
 <p>Resolution note: the analog output is coarser than the chip's I²C register and picks up ADC noise — fine for a gunsight or reticle knob. The AS5600's ZPOS/MPOS can narrow its output span to the knob's travel to win some of that back. Reading the angle register over I²C belongs in a future <a href="../classPinRef/"><strong>PinRef</strong></a> backend, not here, so this class keeps taking a <a href="../classPinRef/"><strong>PinRef</strong></a>. </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-counts_per_deg">variable COUNTS_PER_DEG</h3>
-<p><em>Counts per degree: a full turn spans the 16-bit range (65536 / 360).</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AngleSensorInput</span><span class="o">::</span><span class="n">COUNTS_PER_DEG</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>Counts per degree: a full turn spans the 16-bit range (65536 / 360).</em> </p>
+<pre><code class="language-C++">constexpr float OpenSkyhawk::AngleSensorInput::COUNTS_PER_DEG;
+</code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-anglesensorinput">function AngleSensorInput</h3>
-<p><em>Construct an absolute angle input.</em> 
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AngleSensorInput</span><span class="o">::</span><span class="n">AngleSensorInput</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">centerDeg</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">travelDeg</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pollMs</span><span class="o">=</span><span class="n">DEFAULT_POLL_MS</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Construct an absolute angle input.</em> </p>
+<pre><code class="language-C++">OpenSkyhawk::AngleSensorInput::AngleSensorInput (
+    uint16_t controlId,
+    PinRef pin,
+    float centerDeg,
+    float travelDeg,
+    uint16_t pollMs=DEFAULT_POLL_MS
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
@@ -4537,9 +4337,9 @@
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-readraw">function readRaw</h3>
-<p><em>The base's reading, re-centred so centerDeg sits at mid-scale (0°/360° wraps).</em> 
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AngleSensorInput</span><span class="o">::</span><span class="n">readRaw</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>The base's reading, re-centred so centerDeg sits at mid-scale (0°/360° wraps).</em> </p>
+<pre><code class="language-C++">virtual uint16_t OpenSkyhawk::AngleSensorInput::readRaw () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1AnalogInput/#function-readraw"><em>OpenSkyhawk::AnalogInput::readRaw</em></a></p>
 <hr>
 

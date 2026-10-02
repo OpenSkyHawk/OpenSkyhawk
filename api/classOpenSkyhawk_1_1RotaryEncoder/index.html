@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4530,40 +4330,40 @@
 <p><strong>Family base (D16).</strong> <code>RotaryAcceleratedEncoder</code> is a thin subclass that switches on two extra behaviours through the protected constructor — a momentum filter and a fast-detent step — ported from <code>DcsBios::RotaryAcceleratedEncoder</code>. Both are off for a plain <code>RotaryEncoder</code>, whose decode, drain and emit paths are unchanged. </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-default_step">variable DEFAULT_STEP</h3>
-<p><em>REL per-detent magnitude (DCS suggested_step).</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">DEFAULT_STEP</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>REL per-detent magnitude (DCS suggested_step).</em> </p>
+<pre><code class="language-C++">constexpr int16_t OpenSkyhawk::RotaryEncoder::DEFAULT_STEP;
+</code></pre>
 <hr>
 
 <h3 id="variable-fast_threshold_ms">variable FAST_THRESHOLD_MS</h3>
-<p><em>A detent completing sooner than this after the previous one is "fast" (ms). DCS-BIOS value.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">FAST_THRESHOLD_MS</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>A detent completing sooner than this after the previous one is "fast" (ms). DCS-BIOS value.</em> </p>
+<pre><code class="language-C++">constexpr uint32_t OpenSkyhawk::RotaryEncoder::FAST_THRESHOLD_MS;
+</code></pre>
 <hr>
 
 <h3 id="variable-max_momentum">variable MAX_MOMENTUM</h3>
-<p><em>Momentum cap, in detents' worth of transitions (± MAX_MOMENTUM × stepsPerDetent). DCS-BIOS value.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">MAX_MOMENTUM</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>Momentum cap, in detents' worth of transitions (± MAX_MOMENTUM × stepsPerDetent). DCS-BIOS value.</em> </p>
+<pre><code class="language-C++">constexpr int8_t OpenSkyhawk::RotaryEncoder::MAX_MOMENTUM;
+</code></pre>
 <hr>
 
 <h3 id="variable-stopped_threshold_ms">variable STOPPED_THRESHOLD_MS</h3>
-<p><em>With no detent for this long, momentum resets to zero (ms). DCS-BIOS value.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">STOPPED_THRESHOLD_MS</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>With no detent for this long, momentum resets to zero (ms). DCS-BIOS value.</em> </p>
+<pre><code class="language-C++">constexpr uint32_t OpenSkyhawk::RotaryEncoder::STOPPED_THRESHOLD_MS;
+</code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-rotaryencoder-12">function RotaryEncoder [1/2]</h3>
-<p><em>Construct a quadrature encoder.</em> 
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
-<span class="w">    </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="o">=</span><span class="n">EncoderStepsPerDetent</span><span class="o">::</span><span class="n">One</span><span class="p">,</span>
-<span class="w">    </span><span class="n">EncoderMode</span><span class="w"> </span><span class="n">mode</span><span class="o">=</span><span class="n">EncoderMode</span><span class="o">::</span><span class="n">Rel</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">step</span><span class="o">=</span><span class="n">DEFAULT_STEP</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Construct a quadrature encoder.</em> </p>
+<pre><code class="language-C++">OpenSkyhawk::RotaryEncoder::RotaryEncoder (
+    uint16_t controlId,
+    PinRef pinA,
+    PinRef pinB,
+    EncoderStepsPerDetent stepsPerDetent=EncoderStepsPerDetent::One,
+    EncoderMode mode=EncoderMode::Rel,
+    int16_t step=DEFAULT_STEP
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
@@ -4576,46 +4376,46 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>Configure both pins as inputs. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em>
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Configure both pins as inputs. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em></p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::configure () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-configure"><em>OpenSkyhawk::InputBase::configure</em></a></p>
 <hr>
 
 <h3 id="function-forcereport">function forceReport</h3>
-<p><em>Resync the last state; emit nothing (relative control — no baseline).</em> 
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">forceReport</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Resync the last state; emit nothing (relative control — no baseline).</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::forceReport () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-forcereport"><em>OpenSkyhawk::InputBase::forceReport</em></a></p>
 <hr>
 
 <h3 id="function-poll">function poll</h3>
-<p><em>Decode at loop rate (unless a sampler ticks), then drain pending detents → EVTs.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">poll</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Decode at loop rate (unless a sampler ticks), then drain pending detents → EVTs.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::poll () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-poll"><em>OpenSkyhawk::InputBase::poll</em></a></p>
 <hr>
 
 <h3 id="function-sampletick">function sampleTick</h3>
-<p><em>ISR-safe quadrature decode of one sample → pending detents. No CAN.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">sampleTick</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>ISR-safe quadrature decode of one sample → pending detents. No CAN.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::RotaryEncoder::sampleTick () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1InputBase/#function-sampletick"><em>OpenSkyhawk::InputBase::sampleTick</em></a></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-rotaryencoder-22">function RotaryEncoder [2/2]</h3>
-<p><em>Family constructor — used by</em> <a href="../classOpenSkyhawk_1_1RotaryAcceleratedEncoder/"><em><strong>RotaryAcceleratedEncoder</strong></em></a> <em>(D16).</em>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
-<span class="w">    </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span>
-<span class="w">    </span><span class="n">EncoderMode</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">momentumFilter</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">fastStep</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Family constructor — used by</em> <a href="../classOpenSkyhawk_1_1RotaryAcceleratedEncoder/"><em><strong>RotaryAcceleratedEncoder</strong></em></a> <em>(D16).</em></p>
+<pre><code class="language-C++">OpenSkyhawk::RotaryEncoder::RotaryEncoder (
+    uint16_t controlId,
+    PinRef pinA,
+    PinRef pinB,
+    EncoderStepsPerDetent stepsPerDetent,
+    EncoderMode mode,
+    int16_t step,
+    bool momentumFilter,
+    int16_t fastStep
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>momentumFilter</code> true: drop transitions against the current momentum (<a href="../namespaceDcsBios/"><strong>DcsBios</strong></a> <a href="../classOpenSkyhawk_1_1RotaryAcceleratedEncoder/"><strong>RotaryAcceleratedEncoder</strong></a> behaviour — rejects noisy / faulty encoders). </li>
@@ -4624,9 +4424,9 @@
 <hr>
 
 <h3 id="function-readstate">function readState</h3>
-<p><em>(pinA &lt;&lt; 1) | pinB → 0..3.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryEncoder</span><span class="o">::</span><span class="n">readState</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>(pinA &lt;&lt; 1) | pinB → 0..3.</em> </p>
+<pre><code class="language-C++">uint8_t OpenSkyhawk::RotaryEncoder::readState () 
+</code></pre>
 <hr>
 
 <hr />

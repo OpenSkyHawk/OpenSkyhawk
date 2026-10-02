@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,44 +3916,45 @@
 <h1 id="file-i2chealthh">File I2cHealth.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_9e93d9a1721bcf27b2030ff612e0fc11/"><strong>Helpers</strong></a> <strong>&gt;</strong> <a href="../dir_741d33806df633606a48f25556e87791/"><strong>I2cHealth</strong></a> <strong>&gt;</strong> <a href="../I2cHealth_8h/"><strong>I2cHealth.h</strong></a></p>
 <p><a href="../I2cHealth_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
+#include &lt;Arduino.h&gt;
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">class</span><span class="w"> </span><span class="nc">I2cHealth</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">i2cHealthy</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_i2cHealthy</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+class I2cHealth {
+public:
+    bool i2cHealthy() const { return _i2cHealthy; }
 
-<span class="cp">#ifdef DRUMDISPLAY_TEST</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">debugExpireBackoff</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_i2cLastAttempt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">I2C_RETRY_MS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="cp">#endif</span>
+#ifdef DRUMDISPLAY_TEST
+    void debugExpireBackoff() { _i2cLastAttempt = millis() - I2C_RETRY_MS - 1; }
+#endif
 
-<span class="k">protected</span><span class="o">:</span>
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">i2cProbe</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+protected:
+    virtual bool i2cProbe() = 0;
 
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">i2cReachable</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_i2cHealthy</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_i2cLastAttempt</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">I2C_RETRY_MS</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">  </span><span class="c1">// tripped → back off</span>
-<span class="w">        </span><span class="n">_i2cLastAttempt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">_i2cHealthy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i2cProbe</span><span class="p">());</span>
-<span class="w">    </span><span class="p">}</span>
+    bool i2cReachable() {
+        const uint32_t now = millis();
+        if (!_i2cHealthy &amp;&amp; (now - _i2cLastAttempt) &lt; I2C_RETRY_MS) return false;  // tripped → back off
+        _i2cLastAttempt = now;
+        return (_i2cHealthy = i2cProbe());
+    }
 
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">I2C_RETRY_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000</span><span class="p">;</span>
+    static constexpr uint32_t I2C_RETRY_MS = 2000;
 
-<span class="w">    </span><span class="o">~</span><span class="n">I2cHealth</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w">  </span><span class="c1">// protected, non-virtual: a mixin, never deleted through this type</span>
+    ~I2cHealth() = default;  // protected, non-virtual: a mixin, never deleted through this type
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_i2cHealthy</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_i2cLastAttempt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="p">};</span>
+private:
+    bool     _i2cHealthy     = true;
+    uint32_t _i2cLastAttempt = 0;
+};
 
-<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
+}  // namespace OpenSkyhawk
 
-<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

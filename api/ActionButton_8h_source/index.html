@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,44 +3916,45 @@
 <h1 id="file-actionbuttonh">File ActionButton.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_480a13d53392c311de80938128d7c5e3/"><strong>ActionButton</strong></a> <strong>&gt;</strong> <a href="../ActionButton_8h/"><strong>ActionButton.h</strong></a></p>
 <p><a href="../ActionButton_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;PanelGroup.h&gt;</span><span class="w">  </span><span class="c1">// InputBase, PinRef</span>
+#include &lt;PanelGroup.h&gt;  // InputBase, PinRef
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">class</span><span class="w"> </span><span class="nc">ActionButton</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">InputBase</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">DEBOUNCE_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+class ActionButton : public InputBase {
+public:
+    static constexpr uint32_t DEBOUNCE_MS = 20;
 
-<span class="w">    </span><span class="n">ActionButton</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+    ActionButton(uint16_t controlId, PinRef pin, bool reverse = false);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">poll</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+    void poll() override;
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">forceReport</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+    void forceReport() override;
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+    void configure() override;
 
-<span class="w">    </span><span class="c1">// sampleTick() is deliberately not overridden. RotaryEncoder needs it because quadrature</span>
-<span class="w">    </span><span class="c1">// transitions can be lost between loop iterations; a button press lasts 50–100 ms, far longer</span>
-<span class="w">    </span><span class="c1">// than any loop period, so the cached read is always current enough.</span>
+    // sampleTick() is deliberately not overridden. RotaryEncoder needs it because quadrature
+    // transitions can be lost between loop iterations; a button press lasts 50–100 ms, far longer
+    // than any loop period, so the cached read is always current enough.
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">readPressed</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+private:
+    bool readPressed() const;
 
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_controlId</span><span class="p">;</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w">   </span><span class="n">_pin</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_reverse</span><span class="p">;</span><span class="w">        </span><span class="c1">// true = active-HIGH (external pull-down required)</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_lastPressed</span><span class="p">;</span><span class="w">    </span><span class="c1">// last observed level, in press-polarity</span>
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastFireMs</span><span class="p">;</span><span class="w">     </span><span class="c1">// millis() of the last emit — debounce reference</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_initialized</span><span class="p">;</span><span class="w">    </span><span class="c1">// false until forceReport() is called; poll() no-op before this</span>
-<span class="p">};</span>
+    uint16_t _controlId;
+    PinRef   _pin;
+    bool     _reverse;        // true = active-HIGH (external pull-down required)
+    bool     _lastPressed;    // last observed level, in press-polarity
+    uint32_t _lastFireMs;     // millis() of the last emit — debounce reference
+    bool     _initialized;    // false until forceReport() is called; poll() no-op before this
+};
 
-<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
+}  // namespace OpenSkyhawk
 
-<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

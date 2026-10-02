@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4426,16 +4226,16 @@
 <p>DIR mode gets the filter only: the DIR frame carries ±1 and <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> drops anything else, so there is no speed to add — the way DCS-BIOS users apply the class to INC/DEC controls. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-rotaryacceleratedencoder-12">function RotaryAcceleratedEncoder [1/2]</h3>
-<p><em>REL (variable_step) knob: momentum filter + speed-up.</em> 
-<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryAcceleratedEncoder</span><span class="o">::</span><span class="n">RotaryAcceleratedEncoder</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
-<span class="w">    </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">fastStep</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>REL (variable_step) knob: momentum filter + speed-up.</em> </p>
+<pre><code class="language-C++">inline OpenSkyhawk::RotaryAcceleratedEncoder::RotaryAcceleratedEncoder (
+    uint16_t controlId,
+    PinRef pinA,
+    PinRef pinB,
+    EncoderStepsPerDetent stepsPerDetent,
+    int16_t step,
+    int16_t fastStep
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
@@ -4448,15 +4248,15 @@
 <hr>
 
 <h3 id="function-rotaryacceleratedencoder-22">function RotaryAcceleratedEncoder [2/2]</h3>
-<p><em>Momentum filter only — for DIR (fixed_step) selectors.</em> 
-<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">RotaryAcceleratedEncoder</span><span class="o">::</span><span class="n">RotaryAcceleratedEncoder</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
-<span class="w">    </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span>
-<span class="w">    </span><span class="n">EncoderMode</span><span class="w"> </span><span class="n">mode</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Momentum filter only — for DIR (fixed_step) selectors.</em> </p>
+<pre><code class="language-C++">inline OpenSkyhawk::RotaryAcceleratedEncoder::RotaryAcceleratedEncoder (
+    uint16_t controlId,
+    PinRef pinA,
+    PinRef pinB,
+    EncoderStepsPerDetent stepsPerDetent,
+    EncoderMode mode
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>mode</code> EncoderMode::Dir. Passing EncoderMode::Rel here gives a REL knob with the filter and no speed-up (use the other constructor to set <code>fastStep</code>). </li>

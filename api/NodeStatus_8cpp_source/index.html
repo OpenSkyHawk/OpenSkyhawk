@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,34 +3916,34 @@
 <h1 id="file-nodestatuscpp">File NodeStatus.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_9111f7d39b5fc785aa55dffe02a55e74/"><strong>NodeStatus</strong></a> <strong>&gt;</strong> <a href="../NodeStatus_8cpp/"><strong>NodeStatus.cpp</strong></a></p>
 <p><a href="../NodeStatus_8cpp/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"NodeStatus.h"</span>
+<pre><code class="language-C++">#include &quot;NodeStatus.h&quot;
 
-<span class="c1">// FaultSource intrusive registry — same pattern as OutputBase/InputBase. Platform-agnostic</span>
-<span class="c1">// (pointers only); only STM32 nodes instantiate fault sources, but the list is harmless elsewhere.</span>
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+// FaultSource intrusive registry — same pattern as OutputBase/InputBase. Platform-agnostic
+// (pointers only); only STM32 nodes instantiate fault sources, but the list is harmless elsewhere.
+namespace OpenSkyhawk {
 
-<span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="n">FaultSource</span><span class="o">::</span><span class="n">_head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
-<span class="n">FaultSource</span><span class="o">::</span><span class="n">FaultSource</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_next</span><span class="p">(</span><span class="n">_head</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="nf">FaultSource::head</span><span class="p">()</span><span class="w">       </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_head</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="nf">FaultSource::next</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_next</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+FaultSource* FaultSource::_head = nullptr;
+FaultSource::FaultSource() : _next(_head) { _head = this; }
+FaultSource* FaultSource::head()       { return _head; }
+FaultSource* FaultSource::next() const { return _next; }
 
-<span class="n">NodeFaultCode</span><span class="w"> </span><span class="nf">aggregateFaults</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">detailOut</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">FaultSource</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FaultSource</span><span class="o">::</span><span class="n">head</span><span class="p">();</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">faultCode</span><span class="p">();</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">detailOut</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">faultDetail</span><span class="p">();</span>
-<span class="w">                </span><span class="o">*</span><span class="n">detailOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">""</span><span class="p">;</span><span class="w">  </span><span class="c1">// never hand back a null detail</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">code</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">detailOut</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="n">detailOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">;</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span><span class="p">;</span>
-<span class="p">}</span>
+NodeFaultCode aggregateFaults(const char** detailOut) {
+    for (const FaultSource* s = FaultSource::head(); s; s = s-&gt;next()) {
+        const NodeFaultCode code = s-&gt;faultCode();
+        if (code != NodeFaultCode::NONE) {
+            if (detailOut) {
+                const char* d = s-&gt;faultDetail();
+                *detailOut = d ? d : &quot;&quot;;  // never hand back a null detail
+            }
+            return code;
+        }
+    }
+    if (detailOut) *detailOut = &quot;&quot;;
+    return NodeFaultCode::NONE;
+}
 
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
-</code></pre></div>
+} // namespace OpenSkyhawk
+</code></pre>
 
 
 

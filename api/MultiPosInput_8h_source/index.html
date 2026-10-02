@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,52 +3916,53 @@
 <h1 id="file-multiposinputh">File MultiPosInput.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_2e07d2b82251b5bb8c3d5a17dd64c04b/"><strong>Inputs</strong></a> <strong>&gt;</strong> <a href="../dir_7bc1eaced50854697a5557e9b0a7cd3c/"><strong>MultiPosInput</strong></a> <strong>&gt;</strong> <a href="../MultiPosInput_8h/"><strong>MultiPosInput.h</strong></a></p>
 <p><a href="../MultiPosInput_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;PanelGroup.h&gt;</span><span class="w">  </span><span class="c1">// InputBase</span>
+#include &lt;PanelGroup.h&gt;  // InputBase
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">class</span><span class="w"> </span><span class="nc">MultiPosInput</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">InputBase</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">NO_POSITION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFFFF</span><span class="p">;</span>
+class MultiPosInput : public InputBase {
+public:
+    static constexpr uint16_t NO_POSITION = 0xFFFF;
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">poll</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+    void poll() override;
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">forceReport</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+    void forceReport() override;
 
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">position</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_lastPos</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+    uint16_t position() const { return _lastPos; }
 
-<span class="cp">#ifdef MULTIPOS_TEST</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">emitCount</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_emitCount</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="cp">#endif</span>
+#ifdef MULTIPOS_TEST
+    uint16_t emitCount() const { return _emitCount; }
+#endif
 
-<span class="k">protected</span><span class="o">:</span>
-<span class="w">    </span><span class="n">MultiPosInput</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">numPositions</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">debounceMs</span><span class="p">);</span>
+protected:
+    MultiPosInput(uint16_t controlId, uint8_t numPositions, uint16_t debounceMs);
 
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">readRaw</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+    virtual uint16_t readRaw() = 0;
 
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_controlId</span><span class="p">;</span><span class="w">     </span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">_numPositions</span><span class="p">;</span><span class="w">  </span>
+    uint16_t _controlId;     
+    uint8_t  _numPositions;  
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">emit</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">init</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span><span class="w">  </span>
+private:
+    void emit(uint16_t pos, bool init = false);  
 
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_debounceMs</span><span class="p">;</span><span class="w">       </span><span class="c1">// stability window (ms); 0 = confirm next poll</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_lastPos</span><span class="p">;</span><span class="w">          </span><span class="c1">// last confirmed / emitted index</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_pendingPos</span><span class="p">;</span><span class="w">       </span><span class="c1">// last raw reading (pre-confirm)</span>
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_debounceStartMs</span><span class="p">;</span><span class="w">  </span><span class="c1">// millis() when _pendingPos last changed</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_initialized</span><span class="p">;</span><span class="w">      </span><span class="c1">// false until forceReport(); poll() no-op before this</span>
-<span class="cp">#ifdef MULTIPOS_TEST</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_emitCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="c1">// test-only EVT counter</span>
-<span class="cp">#endif</span>
-<span class="p">};</span>
+    uint16_t _debounceMs;       // stability window (ms); 0 = confirm next poll
+    uint16_t _lastPos;          // last confirmed / emitted index
+    uint16_t _pendingPos;       // last raw reading (pre-confirm)
+    uint32_t _debounceStartMs;  // millis() when _pendingPos last changed
+    bool     _initialized;      // false until forceReport(); poll() no-op before this
+#ifdef MULTIPOS_TEST
+    uint16_t _emitCount = 0;    // test-only EVT counter
+#endif
+};
 
-<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
+}  // namespace OpenSkyhawk
 
-<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

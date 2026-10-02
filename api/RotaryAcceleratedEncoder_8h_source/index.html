@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,30 +3916,31 @@
 <h1 id="file-rotaryacceleratedencoderh">File RotaryAcceleratedEncoder.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../dir_2e07d2b82251b5bb8c3d5a17dd64c04b/"><strong>Inputs</strong></a> <strong>&gt;</strong> <a href="../dir_d67d57cd87e8f385bd5b0c09cadb634b/"><strong>RotaryAcceleratedEncoder</strong></a> <strong>&gt;</strong> <a href="../RotaryAcceleratedEncoder_8h/"><strong>RotaryAcceleratedEncoder.h</strong></a></p>
 <p><a href="../RotaryAcceleratedEncoder_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Inputs/RotaryEncoder/RotaryEncoder.h&gt;</span>
+#include &lt;Inputs/RotaryEncoder/RotaryEncoder.h&gt;
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">class</span><span class="w"> </span><span class="nc">RotaryAcceleratedEncoder</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">RotaryAcceleratedEncoder</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
-<span class="w">                             </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">step</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">fastStep</span><span class="p">)</span>
-<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span><span class="w"> </span><span class="n">EncoderMode</span><span class="o">::</span><span class="n">Rel</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
-<span class="w">                        </span><span class="cm">/*momentumFilter*/</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">fastStep</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+class RotaryAcceleratedEncoder : public RotaryEncoder {
+public:
+    RotaryAcceleratedEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
+                             EncoderStepsPerDetent stepsPerDetent, int16_t step, int16_t fastStep)
+        : RotaryEncoder(controlId, pinA, pinB, stepsPerDetent, EncoderMode::Rel, step,
+                        /*momentumFilter*/ true, fastStep) {}
 
-<span class="w">    </span><span class="n">RotaryAcceleratedEncoder</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span>
-<span class="w">                             </span><span class="n">EncoderStepsPerDetent</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span><span class="w"> </span><span class="n">EncoderMode</span><span class="w"> </span><span class="n">mode</span><span class="p">)</span>
-<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">RotaryEncoder</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pinA</span><span class="p">,</span><span class="w"> </span><span class="n">pinB</span><span class="p">,</span><span class="w"> </span><span class="n">stepsPerDetent</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="n">DEFAULT_STEP</span><span class="p">,</span>
-<span class="w">                        </span><span class="cm">/*momentumFilter*/</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="cm">/*fastStep*/</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-<span class="p">};</span>
+    RotaryAcceleratedEncoder(uint16_t controlId, PinRef pinA, PinRef pinB,
+                             EncoderStepsPerDetent stepsPerDetent, EncoderMode mode)
+        : RotaryEncoder(controlId, pinA, pinB, stepsPerDetent, mode, DEFAULT_STEP,
+                        /*momentumFilter*/ true, /*fastStep*/ 0) {}
+};
 
-<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
+}  // namespace OpenSkyhawk
 
-<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

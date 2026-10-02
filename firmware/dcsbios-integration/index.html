@@ -755,206 +755,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4280,9 +4080,9 @@ PanelBridge looks the ID up in its input map and calls <code>sendDcsBiosMessage(
 <p>A CAN frame carries only 8 data bytes — far too little for a DCS-BIOS ASCII command like
 <code>"ARM_MASTER 1\n"</code>. So inputs send a compact <strong><code>DCSIN_*</code></strong> constant instead, generated
 sequentially from <code>0x8001</code>. PanelBridge maps it back to the real command string.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// PanelGroup sketch — fire a compact ID, not a string:</span>
-<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch2Pos</span><span class="w"> </span><span class="nf">masterArm</span><span class="p">(</span><span class="n">DCSIN_ARM_MASTER</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB5</span><span class="p">));</span>
-</code></pre></div>
+<pre><code class="language-cpp">// PanelGroup sketch — fire a compact ID, not a string:
+OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, PinRef(PB5));
+</code></pre>
 <p><code>DCSIN_*</code> constants are <strong>transport aliases</strong>, not device IDs. Multiple controls may share one
 <code>DCSIN_*</code> if they trigger the same DCS command — PanelBridge doesn't track which node sent it.</p>
 <h2 id="output-addresses-a_4e_c_">Output addresses — A_4E_C_*</h2>
@@ -4293,8 +4093,8 @@ headers:</p>
 <li><code>A_4E_C_&lt;NAME&gt;</code> — the 16-bit DCS-BIOS output address</li>
 <li><code>A_4E_C_&lt;NAME&gt;_AM</code> — the bitmask for the relevant bits</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="w"> </span><span class="nf">gearLight</span><span class="p">(</span><span class="n">A_4E_C_GEAR_LIGHT</span><span class="p">,</span><span class="w"> </span><span class="n">A_4E_C_GEAR_LIGHT_AM</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB0</span><span class="p">));</span>
-</code></pre></div>
+<pre><code class="language-cpp">OpenSkyhawk::LED gearLight(A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PinRef(PB0));
+</code></pre>
 <div class="admonition warning">
 <p class="admonition-title">No <code>_A</code> suffix</p>
 <p>DCS-BIOS's own <code>Addresses.h</code> uses an <code>_A</code> suffix for these. The generated <code>A4EC</code> headers

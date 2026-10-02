@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,34 +3916,35 @@
 <h1 id="file-analogoutputh">File AnalogOutput.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_7be86be934beb3a22c91bb10ef55a8df/"><strong>AnalogOutput</strong></a> <strong>&gt;</strong> <a href="../AnalogOutput_8h/"><strong>AnalogOutput.h</strong></a></p>
 <p><a href="../AnalogOutput_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;PanelGroup.h&gt;</span><span class="w">  </span><span class="c1">// OutputBase</span>
+#include &lt;PanelGroup.h&gt;  // OutputBase
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">class</span><span class="w"> </span><span class="nc">AnalogOutput</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">OutputBase</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onControlPacket</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">final</span><span class="p">;</span>
+class AnalogOutput : public OutputBase {
+public:
+    void onControlPacket(uint16_t controlId, uint16_t value) final;
 
-<span class="k">protected</span><span class="o">:</span>
-<span class="w">    </span><span class="n">AnalogOutput</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFFFF</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">shift</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+protected:
+    AnalogOutput(uint16_t controlId, uint16_t mask = 0xFFFF, uint8_t shift = 0);
 
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+    virtual void apply(uint16_t value) = 0;
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_controlId</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_mask</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">_shift</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_lastValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">      </span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">_hasValue</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">  </span>
-<span class="p">};</span>
+private:
+    uint16_t _controlId;
+    uint16_t _mask;
+    uint8_t  _shift;
+    uint16_t _lastValue = 0;      
+    bool     _hasValue  = false;  
+};
 
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
+} // namespace OpenSkyhawk
 
-<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

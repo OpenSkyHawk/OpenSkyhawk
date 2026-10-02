@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4371,46 +4171,46 @@
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 <h3 id="enum-nodefaultcode">enum NodeFaultCode</h3>
-<p><em>HEALTH_n</em> <code>faultId</code> <em>dictionary (#163) — cross-node fault codes.</em>
-<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">NodeFaultCode</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">NONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
-<span class="w">    </span><span class="n">I2C_PERIPHERAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
-<span class="w">    </span><span class="n">OVER_VOLTAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
-<span class="w">    </span><span class="n">UNDER_VOLTAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span>
-<span class="w">    </span><span class="n">SHORT_CIRCUIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
-<span class="w">    </span><span class="n">HOST_LINK_LOST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span>
-<span class="p">};</span>
-</code></pre></div></p>
+<p><em>HEALTH_n</em> <code>faultId</code> <em>dictionary (#163) — cross-node fault codes.</em></p>
+<pre><code class="language-C++">enum NodeFaultCode {
+    NONE = 0x00,
+    I2C_PERIPHERAL = 0x01,
+    OVER_VOLTAGE = 0x02,
+    UNDER_VOLTAGE = 0x03,
+    SHORT_CIRCUIT = 0x04,
+    HOST_LINK_LOST = 0x05
+};
+</code></pre>
 <p>Coarse, one active at a time on the wire; the exact device is logged locally on DiagSerial, not the frame. The client maps id → human label (SkyHawkClient#40). Each node type contributes the codes relevant to its fault sources; append as new sources appear. </p>
 <hr>
 
 <h3 id="enum-nodehealthflag">enum NodeHealthFlag</h3>
-<p><em>HEALTH_n</em> <code>flags</code> <em>bits — node-level health conditions (maps to NodeHealthPayload.flags).</em>
-<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">NodeHealthFlag</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">OVERHEAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
-<span class="w">    </span><span class="n">DEGRADED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span>
-<span class="p">};</span>
-</code></pre></div></p>
+<p><em>HEALTH_n</em> <code>flags</code> <em>bits — node-level health conditions (maps to NodeHealthPayload.flags).</em></p>
+<pre><code class="language-C++">enum NodeHealthFlag {
+    OVERHEAT = 0x01,
+    DEGRADED = 0x02
+};
+</code></pre>
 <hr>
 <h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
 <h3 id="define-node_status_end_msg_name">define NODE_STATUS_END_MSG_NAME</h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_END_MSG_NAME `"_NODE_STATUS_END"`</span>
-</code></pre></div>
+<pre><code class="language-C++">#define NODE_STATUS_END_MSG_NAME `&quot;_NODE_STATUS_END&quot;`
+</code></pre>
 <hr>
 
 <h3 id="define-node_status_msg_name">define NODE_STATUS_MSG_NAME</h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_MSG_NAME `"_NODE_STATUS"`</span>
-</code></pre></div>
+<pre><code class="language-C++">#define NODE_STATUS_MSG_NAME `&quot;_NODE_STATUS&quot;`
+</code></pre>
 <hr>
 
 <h3 id="define-node_status_proto_version">define NODE_STATUS_PROTO_VERSION</h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_PROTO_VERSION `2`</span>
-</code></pre></div>
+<pre><code class="language-C++">#define NODE_STATUS_PROTO_VERSION `2`
+</code></pre>
 <hr>
 
 <h3 id="define-node_status_req_addr">define NODE_STATUS_REQ_ADDR</h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_REQ_ADDR `0x86FE`</span>
-</code></pre></div>
+<pre><code class="language-C++">#define NODE_STATUS_REQ_ADDR `0x86FE`
+</code></pre>
 <hr>
 
 <hr />

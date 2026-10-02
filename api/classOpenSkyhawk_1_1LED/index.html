@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4324,14 +4124,14 @@
 <p>Works with GPIO and MCP23017 PinRefs. <a href="../classADS1115/"><strong>ADS1115</strong></a> PinRefs are input-only — do not assign one to an <a href="./"><strong>LED</strong></a>. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-led">function LED</h3>
-<p><em>Construct and register an</em> <a href="./"><em><strong>LED</strong></em></a> <em>output.</em>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="o">::</span><span class="n">LED</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">reverse</span><span class="o">=</span><span class="nb">false</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Construct and register an</em> <a href="./"><em><strong>LED</strong></em></a> <em>output.</em></p>
+<pre><code class="language-C++">OpenSkyhawk::LED::LED (
+    uint16_t controlId,
+    uint16_t mask,
+    PinRef pin,
+    bool reverse=false
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCS-BIOS output address (A_4E_C_* from <a href="../A4EC__OutputIds_8h/"><strong>A4EC_OutputIds.h</strong></a>). </li>
@@ -4342,20 +4142,20 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>Configure pin as output and drive it to the off state.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Configure pin as output and drive it to the off state.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::LED::configure () override
+</code></pre>
 <p>Called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip.init(). Sets OUTPUT mode on GPIO pins; sets IODIR=0 and GPPU=0 on MCP23017 pins. Drives off immediately: LOW when reverse = false, HIGH when reverse = true. </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><em>OpenSkyhawk::OutputBase::configure</em></a></p>
 <hr>
 
 <h3 id="function-oncontrolpacket">function onControlPacket</h3>
-<p><em>Update</em> <a href="./"><em><strong>LED</strong></em></a> <em>state from a CTRL_BCAST ControlPacket.</em>
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="o">::</span><span class="n">onControlPacket</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span>
-<span class="p">)</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Update</em> <a href="./"><em><strong>LED</strong></em></a> <em>state from a CTRL_BCAST ControlPacket.</em></p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::LED::onControlPacket (
+    uint16_t controlId,
+    uint16_t value
+) override
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> Incoming packet controlId. Ignored if != _controlId. </li>

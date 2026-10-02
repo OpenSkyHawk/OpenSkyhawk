@@ -755,206 +755,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1414,6 +1214,17 @@
     <span class="md-ellipsis">
       
         Dzus rail mounting — MIL-F-25173A
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-the-stud-rows-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the stud rows go
       
     </span>
   </a>
@@ -4299,6 +4110,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#where-the-stud-rows-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the stud rows go
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#per-panel-cutouts-bezels-light-rings" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4429,15 +4251,19 @@ panel-level dimensions are still being worked out and are marked TBD — don't i
 </tr>
 <tr>
 <td><strong>Mounting-stud centers</strong>, left ↔ right</td>
-<td><strong>136.5 mm</strong> (5⅜″) — 4.76 mm (3⁄16″) inboard of each edge</td>
+<td><strong>136.525 mm</strong> (5⅜″) — 4.7625 mm (3⁄16″) inboard of each edge</td>
 </tr>
 <tr>
 <td><strong>Vertical fastener pitch</strong> (rail receptacle grid)</td>
-<td><strong>9.525 mm</strong> (3⁄8″); ≥ 2 studs/side, snapped to the grid</td>
+<td><strong>9.525 mm</strong> (3⁄8″); ≥ 2 studs/side</td>
 </tr>
 <tr>
 <td><strong>Panel height</strong></td>
 <td>N × 9.525 mm ("Dzus units"), per panel</td>
+</tr>
+<tr>
+<td><strong>Stud rows</strong>, from the panel's own top edge</td>
+<td>outermost at <strong>1.5 × pitch</strong>; every row at a <strong>half-integer</strong> multiple</td>
 </tr>
 <tr>
 <td><strong>Panel thickness</strong></td>
@@ -4445,6 +4271,21 @@ panel-level dimensions are still being worked out and are marked TBD — don't i
 </tr>
 </tbody>
 </table>
+<p>Work from the exact inch fractions, not the rounded millimetres: the inset is exactly half a
+pitch, so the stud span is <code>panel width − pitch</code> = 146.05 − 9.525 = <strong>136.525 mm</strong>. Rounding the
+inset to 4.76 does not close against a 146.05 panel.</p>
+<h3 id="where-the-stud-rows-go">Where the stud rows go</h3>
+<p>The outermost stud sits <strong>1.5 pitch units</strong> from each end of the panel (<code>e = 1.5</code>) — the
+convention these panels are built to, verified against the A-4's Doppler panel, which has an
+independent height. So a panel of N units carries its outer studs <code>(N − 3) × 9.525 mm</code> apart.</p>
+<p>Because <code>e</code> is a half-integer and panel heights are whole units, <strong>every stud in a stack lands at
+<code>(k + 0.5) × 9.525 mm</code> from the top of the stack</strong>. Any additional row must therefore also be at a
+half-integer position (2.5, 4.5, 6.5 …); a row at a whole unit misses the rail by half a pitch.
+Across a joint the spacing is always <code>(N − 1.5) → (N + 1.5)</code> = <strong>3 pitch = 28.575 mm</strong>, whatever
+the two panels' heights, and panels butt with no gap.</p>
+<p>Worked example — a 6-unit panel (57.15 mm): rows at 1.5 and 4.5, i.e. <strong>14.2875</strong> and
+<strong>42.8625 mm</strong> from the top edge, both rails at x = <strong>4.7625</strong> and <strong>141.2875 mm</strong>. That is the
+<code>136.525 × 28.575 mm</code> pattern the APN-153 panel uses.</p>
 <p><strong>Fastener</strong> — quarter-turn stud + receptacle strip:</p>
 <ul>
 <li><strong>Stud:</strong> head Ø <strong>.375″ (9.53 mm)</strong> · body Ø <strong>.257″ (6.53 mm)</strong> · panel hole <strong>~.26″ (6.6 mm)</strong> ·

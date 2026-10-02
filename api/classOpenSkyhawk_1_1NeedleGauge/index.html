@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4322,14 +4122,14 @@
 </table>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-needlegauge">function NeedleGauge</h3>
-<p><em>Construct and register a pointer gauge.</em> 
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">NeedleGauge</span><span class="o">::</span><span class="n">NeedleGauge</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span>
-<span class="w">    </span><span class="n">MotorDriver</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">motor</span><span class="p">,</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">GaugeCal</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">cal</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Construct and register a pointer gauge.</em> </p>
+<pre><code class="language-C++">OpenSkyhawk::NeedleGauge::NeedleGauge (
+    uint16_t controlId,
+    uint16_t mask,
+    MotorDriver &amp; motor,
+    const GaugeCal &amp; cal
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> DCS-BIOS output address (A_4E_C_* from <a href="../A4EC__OutputIds_8h/"><strong>A4EC_OutputIds.h</strong></a>). </li>
@@ -4340,19 +4140,19 @@
 <hr>
 
 <h3 id="function-configure">function configure</h3>
-<p><em>Configure and home the motor (</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>).</em>
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">NeedleGauge</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Configure and home the motor (</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>).</em></p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::NeedleGauge::configure () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><em>OpenSkyhawk::OutputBase::configure</em></a></p>
 <hr>
 
 <h3 id="function-oncontrolpacket">function onControlPacket</h3>
-<p><em>Retarget the motor from a CTRL_BCAST packet. Stores only — never steps here.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">NeedleGauge</span><span class="o">::</span><span class="n">onControlPacket</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span>
-<span class="p">)</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Retarget the motor from a CTRL_BCAST packet. Stores only — never steps here.</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::NeedleGauge::onControlPacket (
+    uint16_t controlId,
+    uint16_t value
+) override
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>controlId</code> Incoming packet controlId. Ignored if != _controlId. </li>
@@ -4362,9 +4162,9 @@
 <hr>
 
 <h3 id="function-update">function update</h3>
-<p><em>Advance the motor toward its target (non-blocking).</em> 
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">NeedleGauge</span><span class="o">::</span><span class="n">update</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Advance the motor toward its target (non-blocking).</em> </p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::NeedleGauge::update () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-update"><em>OpenSkyhawk::OutputBase::update</em></a></p>
 <hr>
 

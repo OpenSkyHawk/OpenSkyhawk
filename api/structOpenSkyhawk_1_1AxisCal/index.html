@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4241,27 +4041,27 @@
 <p><code>centre</code> is always <em>provided</em> data, never derived — the client captures it, and neither the device nor the client substitutes <code>(min + max) / 2</code>. Raw midpoint is not physical midpoint whenever the transfer is nonlinear, and for a rotating-magnet hall axis it is nonlinear by construction (the normal field component goes as sin θ). An offset centre is the normal case and is exactly what the second segment exists to absorb. </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 <h3 id="variable-centre">variable centre</h3>
-<p><em>Raw value at rest. Captured, never computed.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AxisCal</span><span class="o">::</span><span class="n">centre</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>Raw value at rest. Captured, never computed.</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::AxisCal::centre;
+</code></pre>
 <hr>
 
 <h3 id="variable-deadzone">variable deadzone</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AxisCal</span><span class="o">::</span><span class="n">deadzone</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::AxisCal::deadzone;
+</code></pre>
 <p>Reserved, always 0 in blob version 1. The field exists only so that adding a deadzone later needs no CAL_VERSION bump; nothing reads it, and the wire protocol rejects a non-zero value. <a href="../classOpenSkyhawk_1_1AnalogInput/"><strong>AnalogInput</strong></a>'s 128-count output hysteresis already hides return scatter, and if scatter ever exceeds that the fix is that axis's <code>hysteresis</code> argument, not a user-facing control. </p>
 <hr>
 
 <h3 id="variable-max">variable max</h3>
-<p><em>Raw value at the axis's high mechanical stop.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AxisCal</span><span class="o">::</span><span class="n">max</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>Raw value at the axis's high mechanical stop.</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::AxisCal::max;
+</code></pre>
 <hr>
 
 <h3 id="variable-min">variable min</h3>
-<p><em>Raw value at the axis's low mechanical stop.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">AxisCal</span><span class="o">::</span><span class="n">min</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>Raw value at the axis's low mechanical stop.</em> </p>
+<pre><code class="language-C++">uint16_t OpenSkyhawk::AxisCal::min;
+</code></pre>
 <hr>
 
 <hr />

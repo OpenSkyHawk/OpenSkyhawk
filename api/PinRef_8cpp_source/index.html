@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,282 +3916,282 @@
 <h1 id="file-pinrefcpp">File PinRef.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_54a06c409a6161127d200302d3061b3f/"><strong>PanelGroup</strong></a> <strong>&gt;</strong> <a href="../PinRef_8cpp/"><strong>PinRef.cpp</strong></a></p>
 <p><a href="../PinRef_8cpp/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"PinRef.h"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"ADS1115.h"</span><span class="w">                       </span><span class="c1">// full ADS1115 type for readSingleEnded()</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MCP23017.h&gt;</span><span class="w">                      </span><span class="c1">// full MCP23017 type for reference binding</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Helpers/ShiftBus/ShiftBus.h"</span><span class="w">     </span><span class="c1">// full ShiftBus type for the SR dispatch</span>
+#include &quot;PinRef.h&quot;
+#include &quot;ADS1115.h&quot;                       // full ADS1115 type for readSingleEnded()
+#include &lt;MCP23017.h&gt;                      // full MCP23017 type for reference binding
+#include &quot;Helpers/ShiftBus/ShiftBus.h&quot;     // full ShiftBus type for the SR dispatch
 
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;STM32Board.h&gt;</span>
-<span class="cp">#endif</span>
+#ifdef PINREF_DEBUG
+#include &lt;STM32Board.h&gt;
+#endif
 
-<span class="c1">// ── PanelGroup package-internal functions ─────────────────────────────────────</span>
-<span class="c1">//</span>
-<span class="c1">// Declared here so PinRef.cpp can call them without including PanelGroup.h.</span>
-<span class="c1">// Defined in PanelGroup.cpp when PanelGroup is fully implemented.</span>
-<span class="c1">// PinRef tests (GPIO and NC paths) do not exercise the MCP path, so the linker</span>
-<span class="c1">// does not require these definitions during test builds.</span>
+// ── PanelGroup package-internal functions ─────────────────────────────────────
+//
+// Declared here so PinRef.cpp can call them without including PanelGroup.h.
+// Defined in PanelGroup.cpp when PanelGroup is fully implemented.
+// PinRef tests (GPIO and NC paths) do not exercise the MCP path, so the linker
+// does not require these definitions during test builds.
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">PanelGroup</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readCachedPin</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">writeCachedPin</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">writeCachedPinDeferred</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readLivePin</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">noteShiftBus</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bus</span><span class="p">);</span><span class="w">  </span><span class="c1">// configure-time bus auto-collection</span>
-<span class="p">}</span>
+namespace PanelGroup {
+    bool readCachedPin(const MCP23017&amp; chip, uint8_t port, uint8_t bit);
+    void writeCachedPin(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
+    void writeCachedPinDeferred(MCP23017&amp; chip, uint8_t port, uint8_t bit, bool value);
+    bool readLivePin(MCP23017&amp; chip, uint8_t port, uint8_t bit);
+    void noteShiftBus(OpenSkyhawk::ShiftBus&amp; bus);  // configure-time bus auto-collection
+}
 
-<span class="c1">// ── PIN_NC definition ─────────────────────────────────────────────────────────</span>
+// ── PIN_NC definition ─────────────────────────────────────────────────────────
 
-<span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">PIN_NC</span><span class="p">;</span>
+const PinRef PIN_NC;
 
-<span class="c1">// ── Constructors ──────────────────────────────────────────────────────────────</span>
+// ── Constructors ──────────────────────────────────────────────────────────────
 
-<span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">pin</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_type</span><span class="p">(</span><span class="n">Type</span><span class="o">::</span><span class="n">GPIO</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pin</span><span class="p">;</span>
-<span class="p">}</span>
+PinRef::PinRef(uint8_t pin) : _type(Type::GPIO) {
+    _src.pin = pin;
+}
 
-<span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="p">(</span><span class="n">MCP23017</span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_type</span><span class="p">(</span><span class="n">Type</span><span class="o">::</span><span class="n">MCP</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">&amp;</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="p">};</span>
-<span class="p">}</span>
+PinRef::PinRef(MCP23017&amp; chip, uint8_t port, uint8_t bit) : _type(Type::MCP) {
+    _src.mcp = { &amp;chip, port, bit };
+}
 
-<span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="p">(</span><span class="n">ADS1115</span><span class="o">&amp;</span><span class="w"> </span><span class="n">adc</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">channel</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_type</span><span class="p">(</span><span class="n">Type</span><span class="o">::</span><span class="n">ADS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">_src</span><span class="p">.</span><span class="n">ads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">&amp;</span><span class="n">adc</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="p">};</span>
-<span class="w">    </span><span class="n">adc</span><span class="p">.</span><span class="n">setGain</span><span class="p">(</span><span class="n">GAIN_ONE</span><span class="p">);</span><span class="w"> </span><span class="c1">// ±4.096V FSR — best resolution for 0–3.3V inputs</span>
-<span class="p">}</span>
+PinRef::PinRef(ADS1115&amp; adc, uint8_t channel) : _type(Type::ADS) {
+    _src.ads = { &amp;adc, channel };
+    adc.setGain(GAIN_ONE); // ±4.096V FSR — best resolution for 0–3.3V inputs
+}
 
-<span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="p">(</span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bus</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">_type</span><span class="p">(</span><span class="n">Type</span><span class="o">::</span><span class="n">SR</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// Direction is unknown until configureAsInput()/configureAsOutput(); default to input</span>
-<span class="w">    </span><span class="c1">// so a read before configure() hits the (all-zero) '165 cache instead of the out frame.</span>
-<span class="w">    </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bus</span><span class="p">,</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="cm">/*isOut=*/</span><span class="nb">false</span><span class="w"> </span><span class="p">};</span>
-<span class="p">}</span>
+PinRef::PinRef(OpenSkyhawk::ShiftBus&amp; bus, uint8_t chip, uint8_t bit) : _type(Type::SR) {
+    // Direction is unknown until configureAsInput()/configureAsOutput(); default to input
+    // so a read before configure() hits the (all-zero) '165 cache instead of the out frame.
+    _src.sr = { &amp;bus, chip, bit, /*isOut=*/false };
+}
 
-<span class="c1">// Default no-connect ctor is constexpr, defined inline in PinRef.h (constant-initialized</span>
-<span class="c1">// so PIN_NC is safe in global array initialisers — no static-init-order hazard).</span>
+// Default no-connect ctor is constexpr, defined inline in PinRef.h (constant-initialized
+// so PIN_NC is safe in global array initialisers — no static-init-order hazard).
 
-<span class="c1">// ── read ──────────────────────────────────────────────────────────────────────</span>
+// ── read ──────────────────────────────────────────────────────────────────────
 
-<span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">read</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">HIGH</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">readCachedPin</span><span class="p">(</span><span class="o">*</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">bit</span><span class="p">);</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">readAnalog</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">32767u</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">isOut</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">readOutBit</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bit</span><span class="p">)</span>
-<span class="w">                             </span><span class="o">:</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">readBit</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bit</span><span class="p">);</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+bool PinRef::read() const {
+    switch (_type) {
+    case Type::GPIO:
+        return digitalRead(_src.pin) == HIGH;
+    case Type::MCP:
+        return PanelGroup::readCachedPin(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit);
+    case Type::ADS:
+        return readAnalog() &gt; 32767u;
+    case Type::SR:
+        return _src.sr.isOut ? _src.sr.bus-&gt;readOutBit(_src.sr.chip, _src.sr.bit)
+                             : _src.sr.bus-&gt;readBit(_src.sr.chip, _src.sr.bit);
+    case Type::NC:
+    default:
+        return false;
+    }
+}
 
-<span class="c1">// ── readLive ──────────────────────────────────────────────────────────────────</span>
+// ── readLive ──────────────────────────────────────────────────────────────────
 
-<span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">readLive</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">HIGH</span><span class="p">;</span><span class="w">          </span><span class="c1">// already live</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">readLivePin</span><span class="p">(</span><span class="o">*</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">bit</span><span class="p">);</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">readAnalog</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">32767u</span><span class="p">;</span><span class="w">                  </span><span class="c1">// already live</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">isOut</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">readOutBit</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bit</span><span class="p">)</span>
-<span class="w">                             </span><span class="o">:</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">readLiveBit</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bit</span><span class="p">);</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+bool PinRef::readLive() const {
+    switch (_type) {
+    case Type::GPIO:
+        return digitalRead(_src.pin) == HIGH;          // already live
+    case Type::MCP:
+        return PanelGroup::readLivePin(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit);
+    case Type::ADS:
+        return readAnalog() &gt; 32767u;                  // already live
+    case Type::SR:
+        return _src.sr.isOut ? _src.sr.bus-&gt;readOutBit(_src.sr.chip, _src.sr.bit)
+                             : _src.sr.bus-&gt;readLiveBit(_src.sr.chip, _src.sr.bit);
+    case Type::NC:
+    default:
+        return false;
+    }
+}
 
-<span class="c1">// ── readAnalog ────────────────────────────────────────────────────────────────</span>
+// ── readAnalog ────────────────────────────────────────────────────────────────
 
-<span class="kt">uint16_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">readAnalog</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="c1">// analogReadResolution(16) set in STM32Board::begin(); framework scales 12-bit → 16-bit</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">analogRead</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">));</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="c1">// 15-bit single-ended × 2 → 0–65534; clamp negatives (should not occur)</span>
-<span class="w">        </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">ads</span><span class="p">.</span><span class="n">adc</span><span class="o">-&gt;</span><span class="n">readADC_SingleEnded</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">ads</span><span class="p">.</span><span class="n">channel</span><span class="p">);</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">raw</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] readAnalog on MCP23017 pin — not supported, returns 0"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] readAnalog on ShiftBus pin — digital only, returns 0"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+uint16_t PinRef::readAnalog() const {
+    switch (_type) {
+    case Type::GPIO:
+        // analogReadResolution(16) set in STM32Board::begin(); framework scales 12-bit → 16-bit
+        return static_cast&lt;uint16_t&gt;(analogRead(_src.pin));
+    case Type::ADS: {
+        // 15-bit single-ended × 2 → 0–65534; clamp negatives (should not occur)
+        int16_t raw = _src.ads.adc-&gt;readADC_SingleEnded(_src.ads.channel);
+        if (raw &lt; 0) raw = 0;
+        return static_cast&lt;uint16_t&gt;(raw) &lt;&lt; 1;
+    }
+    case Type::MCP:
+#ifdef PINREF_DEBUG
+        STM32Board::log(&quot;[PinRef] readAnalog on MCP23017 pin — not supported, returns 0&quot;);
+#endif
+        return 0;
+    case Type::SR:
+#ifdef PINREF_DEBUG
+        STM32Board::log(&quot;[PinRef] readAnalog on ShiftBus pin — digital only, returns 0&quot;);
+#endif
+        return 0;
+    case Type::NC:
+    default:
+        return 0;
+    }
+}
 
-<span class="c1">// ── write ─────────────────────────────────────────────────────────────────────</span>
+// ── write ─────────────────────────────────────────────────────────────────────
 
-<span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HIGH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="w">        </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">writeCachedPin</span><span class="p">(</span><span class="o">*</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] write on ADS1115 pin — input-only, no-op"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">isOut</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">// SR writes are inherently deferred: set the frame bit; the next transfer()</span>
-<span class="w">            </span><span class="c1">// (loop step, ISR tick, or flushExpanderWrites) publishes it.</span>
-<span class="w">            </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">writeBit</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] write on ShiftBus input ('165) pin — no-op"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+void PinRef::write(bool value) {
+    switch (_type) {
+    case Type::GPIO:
+        digitalWrite(_src.pin, value ? HIGH : LOW);
+        break;
+    case Type::MCP:
+        PanelGroup::writeCachedPin(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit, value);
+        break;
+    case Type::ADS:
+#ifdef PINREF_DEBUG
+        STM32Board::log(&quot;[PinRef] write on ADS1115 pin — input-only, no-op&quot;);
+#endif
+        break;
+    case Type::SR:
+        if (_src.sr.isOut) {
+            // SR writes are inherently deferred: set the frame bit; the next transfer()
+            // (loop step, ISR tick, or flushExpanderWrites) publishes it.
+            _src.sr.bus-&gt;writeBit(_src.sr.chip, _src.sr.bit, value);
+        }
+#ifdef PINREF_DEBUG
+        else STM32Board::log(&quot;[PinRef] write on ShiftBus input ('165) pin — no-op&quot;);
+#endif
+        break;
+    case Type::NC:
+    default:
+        break;
+    }
+}
 
-<span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">writeDeferred</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HIGH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w">   </span><span class="c1">// native GPIO is already immediate</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="w">        </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">writeCachedPinDeferred</span><span class="p">(</span><span class="o">*</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="w">        </span><span class="n">write</span><span class="p">(</span><span class="n">value</span><span class="p">);</span><span class="w">   </span><span class="c1">// SR writes are already deferred — same path</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+void PinRef::writeDeferred(bool value) {
+    switch (_type) {
+    case Type::GPIO:
+        digitalWrite(_src.pin, value ? HIGH : LOW);   // native GPIO is already immediate
+        break;
+    case Type::MCP:
+        PanelGroup::writeCachedPinDeferred(*_src.mcp.chip, _src.mcp.port, _src.mcp.bit, value);
+        break;
+    case Type::SR:
+        write(value);   // SR writes are already deferred — same path
+        break;
+    case Type::ADS:
+    case Type::NC:
+    default:
+        break;
+    }
+}
 
-<span class="c1">// ── writeAnalog ───────────────────────────────────────────────────────────────</span>
+// ── writeAnalog ───────────────────────────────────────────────────────────────
 
-<span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">writeAnalog</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="c1">// 16-bit → 8-bit duty cycle (upper byte)</span>
-<span class="w">        </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] writeAnalog on MCP23017 pin — no PWM, no-op"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] writeAnalog on ShiftBus pin — no PWM, no-op"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] writeAnalog on ADS1115 pin — input-only, no-op"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+void PinRef::writeAnalog(uint16_t val) {
+    switch (_type) {
+    case Type::GPIO:
+        // 16-bit → 8-bit duty cycle (upper byte)
+        analogWrite(_src.pin, val &gt;&gt; 8);
+        break;
+    case Type::MCP:
+#ifdef PINREF_DEBUG
+        STM32Board::log(&quot;[PinRef] writeAnalog on MCP23017 pin — no PWM, no-op&quot;);
+#endif
+        break;
+    case Type::SR:
+#ifdef PINREF_DEBUG
+        STM32Board::log(&quot;[PinRef] writeAnalog on ShiftBus pin — no PWM, no-op&quot;);
+#endif
+        break;
+    case Type::ADS:
+#ifdef PINREF_DEBUG
+        STM32Board::log(&quot;[PinRef] writeAnalog on ADS1115 pin — input-only, no-op&quot;);
+#endif
+        break;
+    case Type::NC:
+    default:
+        break;
+    }
+}
 
-<span class="c1">// ── configureAsInput ──────────────────────────────────────────────────────────</span>
+// ── configureAsInput ──────────────────────────────────────────────────────────
 
-<span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">configureAsInput</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="n">pinMode</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="w">        </span><span class="c1">// Flat pin: 0-7 = PORT A, 8-15 = PORT B. INPUT sets IODIR=1, GPPU=0.</span>
-<span class="w">        </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="o">-&gt;</span><span class="n">pinMode</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="w">        </span><span class="c1">// Bind to the '165 chain (the MCP IODIR pattern: direction set here, not in the</span>
-<span class="w">        </span><span class="c1">// constructor). Also grows the chain length + collects the bus for begin().</span>
-<span class="w">        </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">isOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">        </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">noteInput</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">chip</span><span class="p">);</span>
-<span class="w">        </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">noteShiftBus</span><span class="p">(</span><span class="o">*</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+void PinRef::configureAsInput() {
+    switch (_type) {
+    case Type::GPIO:
+        pinMode(_src.pin, INPUT);
+        break;
+    case Type::MCP:
+        // Flat pin: 0-7 = PORT A, 8-15 = PORT B. INPUT sets IODIR=1, GPPU=0.
+        _src.mcp.chip-&gt;pinMode(_src.mcp.port * 8 + _src.mcp.bit, INPUT);
+        break;
+    case Type::SR:
+        // Bind to the '165 chain (the MCP IODIR pattern: direction set here, not in the
+        // constructor). Also grows the chain length + collects the bus for begin().
+        _src.sr.isOut = false;
+        _src.sr.bus-&gt;noteInput(_src.sr.chip);
+        PanelGroup::noteShiftBus(*_src.sr.bus);
+        break;
+    case Type::ADS:
+    case Type::NC:
+    default:
+        break;
+    }
+}
 
-<span class="c1">// ── configureAsOutput ─────────────────────────────────────────────────────────</span>
+// ── configureAsOutput ─────────────────────────────────────────────────────────
 
-<span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">configureAsOutput</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">GPIO</span><span class="p">:</span>
-<span class="w">        </span><span class="n">pinMode</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">MCP</span><span class="p">:</span>
-<span class="w">        </span><span class="c1">// Flat pin: 0-7 = PORT A, 8-15 = PORT B. OUTPUT sets IODIR=0, GPPU=0.</span>
-<span class="w">        </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="o">-&gt;</span><span class="n">pinMode</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">bit</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">SR</span><span class="p">:</span>
-<span class="w">        </span><span class="c1">// Bind to the '595 chain.</span>
-<span class="w">        </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">isOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">        </span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="o">-&gt;</span><span class="n">noteOutput</span><span class="p">(</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">chip</span><span class="p">);</span>
-<span class="w">        </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">noteShiftBus</span><span class="p">(</span><span class="o">*</span><span class="n">_src</span><span class="p">.</span><span class="n">sr</span><span class="p">.</span><span class="n">bus</span><span class="p">);</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">ADS</span><span class="p">:</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] configureAsOutput on ADS1115 pin — input-only, no-op"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">Type</span><span class="o">::</span><span class="no">NC</span><span class="p">:</span>
-<span class="w">    </span><span class="k">default</span><span class="o">:</span>
-<span class="w">        </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+void PinRef::configureAsOutput() {
+    switch (_type) {
+    case Type::GPIO:
+        pinMode(_src.pin, OUTPUT);
+        break;
+    case Type::MCP:
+        // Flat pin: 0-7 = PORT A, 8-15 = PORT B. OUTPUT sets IODIR=0, GPPU=0.
+        _src.mcp.chip-&gt;pinMode(_src.mcp.port * 8 + _src.mcp.bit, OUTPUT);
+        break;
+    case Type::SR:
+        // Bind to the '595 chain.
+        _src.sr.isOut = true;
+        _src.sr.bus-&gt;noteOutput(_src.sr.chip);
+        PanelGroup::noteShiftBus(*_src.sr.bus);
+        break;
+    case Type::ADS:
+#ifdef PINREF_DEBUG
+        STM32Board::log(&quot;[PinRef] configureAsOutput on ADS1115 pin — input-only, no-op&quot;);
+#endif
+        break;
+    case Type::NC:
+    default:
+        break;
+    }
+}
 
-<span class="c1">// ── isNC / isGpio / gpioPin ───────────────────────────────────────────────────</span>
+// ── isNC / isGpio / gpioPin ───────────────────────────────────────────────────
 
-<span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isNC</span><span class="p">()</span><span class="w">   </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">NC</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isMcp</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">MCP</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+bool PinRef::isNC()   const { return _type == Type::NC; }
+bool PinRef::isMcp() const { return _type == Type::MCP; }
 
-<span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">sameMcpPortAs</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">MCP</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">_type</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">MCP</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">chip</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">_src</span><span class="p">.</span><span class="n">mcp</span><span class="p">.</span><span class="n">port</span><span class="p">;</span>
-<span class="p">}</span>
+bool PinRef::sameMcpPortAs(const PinRef&amp; other) const {
+    if (_type != Type::MCP || other._type != Type::MCP) return false;
+    return _src.mcp.chip == other._src.mcp.chip &amp;&amp; _src.mcp.port == other._src.mcp.port;
+}
 
-<span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isGpio</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">GPIO</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+bool PinRef::isGpio() const { return _type == Type::GPIO; }
 
-<span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isSampledSource</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">SR</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+bool PinRef::isSampledSource() const { return _type == Type::SR; }
 
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">gpioPin</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">GPIO</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_src</span><span class="p">.</span><span class="n">pin</span><span class="p">;</span>
-<span class="cp">#ifdef PINREF_DEBUG</span>
-<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[PinRef] gpioPin called on non-GPIO pin — returns 0"</span><span class="p">);</span>
-<span class="cp">#endif</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
+uint8_t PinRef::gpioPin() const {
+    if (_type == Type::GPIO) return _src.pin;
+#ifdef PINREF_DEBUG
+    STM32Board::log(&quot;[PinRef] gpioPin called on non-GPIO pin — returns 0&quot;);
+#endif
+    return 0;
+}
 
-<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

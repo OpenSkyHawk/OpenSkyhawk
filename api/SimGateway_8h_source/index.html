@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,194 +3916,195 @@
 <h1 id="file-simgatewayh">File SimGateway.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_a54aa0246e1c520ae49dfef506a428ca/"><strong>SimGateway</strong></a> <strong>&gt;</strong> <a href="../SimGateway_8h/"><strong>SimGateway.h</strong></a></p>
 <p><a href="../SimGateway_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_RP2040</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_RP2040
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;HIDControls.h&gt;</span>
+#include &lt;Arduino.h&gt;
+#include &lt;HIDControls.h&gt;
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"AxisCal.h"</span>
+#include &quot;AxisCal.h&quot;
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">class</span><span class="w"> </span><span class="nc">HIDAxis</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">HIDAxis</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">axisIndex</span><span class="p">);</span>
+class HIDAxis {
+public:
+    HIDAxis(uint16_t controlId, uint8_t axisIndex);
 
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HIDAxis</span><span class="o">*</span><span class="w"> </span><span class="nf">head</span><span class="p">();</span><span class="w">       </span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">controlId</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">   </span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="nf">axisIndex</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">   </span>
-<span class="w">    </span><span class="kt">void</span><span class="w">     </span><span class="nf">dispatch</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="n">HIDAxis</span><span class="o">*</span><span class="w"> </span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w">        </span>
+    static HIDAxis* head();       
+    uint16_t controlId() const;   
+    uint8_t  axisIndex() const;   
+    void     dispatch(uint16_t value);
+    HIDAxis* next() const;        
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HIDAxis</span><span class="o">*</span><span class="w"> </span><span class="n">_head</span><span class="p">;</span>
-<span class="w">    </span><span class="n">HIDAxis</span><span class="o">*</span><span class="w">        </span><span class="n">_next</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w">        </span><span class="n">_controlId</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">         </span><span class="n">_axisIndex</span><span class="p">;</span>
-<span class="p">};</span>
+private:
+    static HIDAxis* _head;
+    HIDAxis*        _next;
+    uint16_t        _controlId;
+    uint8_t         _axisIndex;
+};
 
-<span class="k">class</span><span class="w"> </span><span class="nc">HIDButton</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">HIDButton</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buttonIndex</span><span class="p">);</span>
+class HIDButton {
+public:
+    HIDButton(uint16_t controlId, uint8_t buttonIndex);
 
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HIDButton</span><span class="o">*</span><span class="w"> </span><span class="nf">head</span><span class="p">();</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">controlId</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">void</span><span class="w">      </span><span class="nf">dispatch</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="n">HIDButton</span><span class="o">*</span><span class="w"> </span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+    static HIDButton* head();
+    uint16_t controlId() const;
+    void      dispatch(uint16_t value);
+    HIDButton* next() const;
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HIDButton</span><span class="o">*</span><span class="w"> </span><span class="n">_head</span><span class="p">;</span>
-<span class="w">    </span><span class="n">HIDButton</span><span class="o">*</span><span class="w">        </span><span class="n">_next</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w">          </span><span class="n">_controlId</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">           </span><span class="n">_buttonIndex</span><span class="p">;</span>
-<span class="p">};</span>
+private:
+    static HIDButton* _head;
+    HIDButton*        _next;
+    uint16_t          _controlId;
+    uint8_t           _buttonIndex;
+};
 
-<span class="k">class</span><span class="w"> </span><span class="nc">HIDHatSwitch</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">HIDHatSwitch</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">hatIndex</span><span class="p">);</span>
+class HIDHatSwitch {
+public:
+    HIDHatSwitch(uint16_t controlId, uint8_t hatIndex);
 
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HIDHatSwitch</span><span class="o">*</span><span class="w"> </span><span class="nf">head</span><span class="p">();</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">controlId</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">void</span><span class="w">          </span><span class="nf">dispatch</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="n">HIDHatSwitch</span><span class="o">*</span><span class="w"> </span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+    static HIDHatSwitch* head();
+    uint16_t controlId() const;
+    void          dispatch(uint16_t value);
+    HIDHatSwitch* next() const;
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HIDHatSwitch</span><span class="o">*</span><span class="w"> </span><span class="n">_head</span><span class="p">;</span>
-<span class="w">    </span><span class="n">HIDHatSwitch</span><span class="o">*</span><span class="w">        </span><span class="n">_next</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w">             </span><span class="n">_controlId</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">              </span><span class="n">_hatIndex</span><span class="p">;</span>
-<span class="p">};</span>
+private:
+    static HIDHatSwitch* _head;
+    HIDHatSwitch*        _next;
+    uint16_t             _controlId;
+    uint8_t              _hatIndex;
+};
 
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
+} // namespace OpenSkyhawk
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">SimGateway</span><span class="w"> </span><span class="p">{</span>
+namespace SimGateway {
 
-<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DEFAULT_UART_TX_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
-<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">DEFAULT_UART_RX_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
+static constexpr uint8_t DEFAULT_UART_TX_PIN = 0; 
+static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; 
 
-<span class="c1">// Firmware version reported in the calibration protocol's HELLO_ACK, so the client can show</span>
-<span class="c1">// which build a device is running. Keep in step with library.json.</span>
-<span class="cp">#define SIMGATEWAY_FW_MAJOR 0</span>
-<span class="cp">#define SIMGATEWAY_FW_MINOR 1</span>
-<span class="cp">#define SIMGATEWAY_FW_PATCH 0</span>
+// Firmware version reported in the calibration protocol's HELLO_ACK, so the client can show
+// which build a device is running. Keep in step with library.json.
+#define SIMGATEWAY_FW_MAJOR 0
+#define SIMGATEWAY_FW_MINOR 1
+#define SIMGATEWAY_FW_PATCH 0
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">SerialUART</span><span class="o">&amp;</span><span class="w"> </span><span class="n">uart</span><span class="p">,</span>
-<span class="w">           </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">txPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_UART_TX_PIN</span><span class="p">,</span>
-<span class="w">           </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rxPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_UART_RX_PIN</span><span class="p">);</span>
+void setup(SerialUART&amp; uart,
+           uint8_t txPin = DEFAULT_UART_TX_PIN,
+           uint8_t rxPin = DEFAULT_UART_RX_PIN);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">();</span>
+void loop();
 
-<span class="k">const</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CalBlob</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">calibration</span><span class="p">();</span>
+const OpenSkyhawk::CalBlob&amp; calibration();
 
-<span class="c1">// ── Status LEDs (Gateway_Bridge board) ────────────────────────────────────────</span>
-<span class="c1">//</span>
-<span class="c1">// Two board-mounted status LEDs report the gateway's USB / data / fault state at a</span>
-<span class="c1">// glance: RED = GP3, GREEN = GP2, board-mounted 0805, active-high (HIGH = on). The</span>
-<span class="c1">// animator is non-blocking (millis(), never delay()) and is ticked from loop(), so</span>
-<span class="c1">// sketches need no LED code. The RP2040 module's onboard WS2812 is not used.</span>
-<span class="c1">// See docs/architecture/sim-gateway.md for the user-facing table.</span>
+// ── Status LEDs (Gateway_Bridge board) ────────────────────────────────────────
+//
+// Two board-mounted status LEDs report the gateway's USB / data / fault state at a
+// glance: RED = GP3, GREEN = GP2, board-mounted 0805, active-high (HIGH = on). The
+// animator is non-blocking (millis(), never delay()) and is ticked from loop(), so
+// sketches need no LED code. The RP2040 module's onboard WS2812 is not used.
+// See docs/architecture/sim-gateway.md for the user-facing table.
 
-<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">LedState</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">FAULT</span><span class="p">,</span><span class="w">     </span>
-<span class="w">    </span><span class="n">NO_HOST</span><span class="p">,</span><span class="w">   </span>
-<span class="w">    </span><span class="n">STREAMING</span><span class="p">,</span><span class="w"> </span>
-<span class="w">    </span><span class="n">USB_IDLE</span><span class="p">,</span><span class="w">  </span>
-<span class="w">    </span><span class="n">INIT</span><span class="p">,</span><span class="w">      </span>
-<span class="p">};</span>
+enum class LedState : uint8_t {
+    FAULT,     
+    NO_HOST,   
+    STREAMING, 
+    USB_IDLE,  
+    INIT,      
+};
 
-<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Anim</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">OFF</span><span class="p">,</span><span class="w">   </span>
-<span class="w">    </span><span class="n">SOLID</span><span class="p">,</span><span class="w"> </span>
-<span class="w">    </span><span class="n">SLOW</span><span class="p">,</span><span class="w">  </span>
-<span class="w">    </span><span class="n">FAST</span><span class="p">,</span><span class="w">  </span>
-<span class="w">    </span><span class="n">ALT</span><span class="p">,</span><span class="w">   </span>
-<span class="w">    </span><span class="n">PULSE</span><span class="p">,</span><span class="w"> </span>
-<span class="p">};</span>
+enum class Anim : uint8_t {
+    OFF,   
+    SOLID, 
+    SLOW,  
+    FAST,  
+    ALT,   
+    PULSE, 
+};
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">statusLedBegin</span><span class="p">();</span>
+void statusLedBegin();
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">statusTick</span><span class="p">();</span>
+void statusTick();
 
-<span class="cp">#ifdef SIMGATEWAY_TEST</span>
-<span class="kt">bool</span><span class="w"> </span><span class="nf">feedByte</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+#ifdef SIMGATEWAY_TEST
+bool feedByte(uint8_t b);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">resetParser</span><span class="p">();</span>
+void resetParser();
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">resetCdcCapture</span><span class="p">();</span>
+void resetCdcCapture();
 
-<span class="kt">size_t</span><span class="w"> </span><span class="nf">cdcCaptureCount</span><span class="p">();</span>
+size_t cdcCaptureCount();
 
-<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">cdcCaptureByte</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="p">);</span>
+uint8_t cdcCaptureByte(size_t index);
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">cdcCaptureOverflow</span><span class="p">();</span>
+bool cdcCaptureOverflow();
 
-<span class="c1">// ── Axis calibration test hooks (test builds only) ────────────────────────────</span>
-<span class="c1">// The transform itself is tested by calling OpenSkyhawk::axisCalApply() directly. These</span>
-<span class="c1">// hooks exist to cover something that function-level test cannot: that HIDAxis::dispatch()</span>
-<span class="c1">// actually *applies* it. That path is doubly hidden in test builds — the HID setters are</span>
-<span class="c1">// no-op stubs, and the flash load is stubbed to a RAM clear so no calibration can be</span>
-<span class="c1">// installed. Without both a writer and a reader, deleting the transform from dispatch()</span>
-<span class="c1">// would leave every assertion passing.</span>
+// ── Axis calibration test hooks (test builds only) ────────────────────────────
+// The transform itself is tested by calling OpenSkyhawk::axisCalApply() directly. These
+// hooks exist to cover something that function-level test cannot: that HIDAxis::dispatch()
+// actually *applies* it. That path is doubly hidden in test builds — the HID setters are
+// no-op stubs, and the flash load is stubbed to a RAM clear so no calibration can be
+// installed. Without both a writer and a reader, deleting the transform from dispatch()
+// would leave every assertion passing.
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">calSetForTest</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CalBlob</span><span class="o">&amp;</span><span class="w"> </span><span class="n">blob</span><span class="p">);</span>
+void calSetForTest(const OpenSkyhawk::CalBlob&amp; blob);
 
-<span class="kt">int16_t</span><span class="w"> </span><span class="nf">lastAxisValue</span><span class="p">();</span>
+int16_t lastAxisValue();
 
-<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">lastAxisIndex</span><span class="p">();</span>
+uint8_t lastAxisIndex();
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">resetAxisCapture</span><span class="p">();</span>
+void resetAxisCapture();
 
-<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">hidSendCount</span><span class="p">();</span>
+uint8_t hidSendCount();
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">resetHidSendCount</span><span class="p">();</span>
+void resetHidSendCount();
 
-<span class="c1">// ── Calibration transport test hooks (test builds only) ───────────────────────</span>
-<span class="c1">// The transport's safety property is that a rejected candidate is handed back to the relay</span>
-<span class="c1">// byte-for-byte. Asserting that needs a capture on the UART side, which had no test seam.</span>
+// ── Calibration transport test hooks (test builds only) ───────────────────────
+// The transport's safety property is that a rejected candidate is handed back to the relay
+// byte-for-byte. Asserting that needs a capture on the UART side, which had no test seam.
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">feedCdcByte</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+bool feedCdcByte(uint8_t b);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">resetUartCapture</span><span class="p">();</span>
+void resetUartCapture();
 
-<span class="kt">size_t</span><span class="w"> </span><span class="nf">uartCaptureCount</span><span class="p">();</span>
+size_t uartCaptureCount();
 
-<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">uartCaptureByte</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="p">);</span>
+uint8_t uartCaptureByte(size_t index);
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">uartCaptureOverflow</span><span class="p">();</span>
+bool uartCaptureOverflow();
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">calResetForTest</span><span class="p">();</span>
+void calResetForTest();
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">calSessionOpen</span><span class="p">();</span>
+bool calSessionOpen();
 
-<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">calStreamAxis</span><span class="p">();</span>
+uint8_t calStreamAxis();
 
-<span class="c1">// ── Status-LED test hooks (test builds only) ──────────────────────────────────</span>
-<span class="c1">// The pure state-selection + animation logic is exercised without GPIO, TinyUSB,</span>
-<span class="c1">// or PL011 register reads by injecting inputs and reading back the resolved state /</span>
-<span class="c1">// captured pin levels. Mirrors the feedByte/cdcCapture pattern above.</span>
+// ── Status-LED test hooks (test builds only) ──────────────────────────────────
+// The pure state-selection + animation logic is exercised without GPIO, TinyUSB,
+// or PL011 register reads by injecting inputs and reading back the resolved state /
+// captured pin levels. Mirrors the feedByte/cdcCapture pattern above.
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">statusInject</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">mounted</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">lastCdcRxMs</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">faultActive</span><span class="p">);</span>
+void statusInject(uint32_t now, bool mounted, uint32_t lastCdcRxMs, bool faultActive);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">statusResolve</span><span class="p">();</span>
+void statusResolve();
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">statusFaultStep</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">rsrError</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">uartRxMoved</span><span class="p">);</span>
+bool statusFaultStep(uint32_t now, bool rsrError, bool uartRxMoved);
 
-<span class="n">LedState</span><span class="w"> </span><span class="nf">statusState</span><span class="p">();</span>
+LedState statusState();
 
-<span class="n">Anim</span><span class="w"> </span><span class="nf">statusAnim</span><span class="p">();</span>
+Anim statusAnim();
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">statusRedLevel</span><span class="p">();</span>
+bool statusRedLevel();
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">statusGreenLevel</span><span class="p">();</span>
+bool statusGreenLevel();
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">statusResetForTest</span><span class="p">();</span>
-<span class="cp">#endif</span>
+void statusResetForTest();
+#endif
 
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace SimGateway</span>
+} // namespace SimGateway
 
-<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_RP2040</span>
-</code></pre></div>
+#endif // ARDUINO_ARCH_RP2040
+</code></pre>
 
 
 

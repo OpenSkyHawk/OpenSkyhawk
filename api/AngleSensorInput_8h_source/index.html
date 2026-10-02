@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,31 +3916,32 @@
 <h1 id="file-anglesensorinputh">File AngleSensorInput.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_204c2e67ee983494592248b9f39f712d/"><strong>AngleSensorInput</strong></a> <strong>&gt;</strong> <a href="../AngleSensorInput_8h/"><strong>AngleSensorInput.h</strong></a></p>
 <p><a href="../AngleSensorInput_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Inputs/AnalogInput/AnalogInput.h&gt;</span><span class="w">  </span><span class="c1">// family base (InputBase, PinRef via PanelGroup.h)</span>
+#include &lt;Inputs/AnalogInput/AnalogInput.h&gt;  // family base (InputBase, PinRef via PanelGroup.h)
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">class</span><span class="w"> </span><span class="nc">AngleSensorInput</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">AnalogInput</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">COUNTS_PER_DEG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">65536.0f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">;</span>
+class AngleSensorInput : public AnalogInput {
+public:
+    static constexpr float COUNTS_PER_DEG = 65536.0f / 360.0f;
 
-<span class="w">    </span><span class="n">AngleSensorInput</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">centerDeg</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">travelDeg</span><span class="p">,</span>
-<span class="w">                     </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pollMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_POLL_MS</span><span class="p">);</span>
+    AngleSensorInput(uint16_t controlId, PinRef pin, float centerDeg, float travelDeg,
+                     uint16_t pollMs = DEFAULT_POLL_MS);
 
-<span class="k">protected</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">readRaw</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+protected:
+    uint16_t readRaw() override;
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_centerRaw</span><span class="p">;</span><span class="w">   </span>
-<span class="p">};</span>
+private:
+    uint16_t _centerRaw;   
+};
 
-<span class="p">}</span><span class="w">  </span><span class="c1">// namespace OpenSkyhawk</span>
+}  // namespace OpenSkyhawk
 
-<span class="cp">#endif  </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif  // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

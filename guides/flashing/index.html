@@ -755,206 +755,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4285,9 +4085,9 @@ PlatformIO drives both.</p>
 <h2 id="stm32-panelbridge-panelgroup-st-link-over-swd">STM32 (PanelBridge, PanelGroup) — ST-Link over SWD</h2>
 <p>Every custom STM32 board exposes a 5-pin SWD header (PA13/PA14/NRST/GND/3.3 V). Connect an
 ST-Link and:</p>
-<div class="highlight"><pre><span></span><code>pio<span class="w"> </span>run<span class="w"> </span>-t<span class="w"> </span>upload<span class="w">          </span><span class="c1"># build + flash the default env</span>
-pio<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>PanelGroup<span class="w"> </span>-t<span class="w"> </span>upload<span class="w">   </span><span class="c1"># a specific env</span>
-</code></pre></div>
+<pre><code class="language-bash">pio run -t upload          # build + flash the default env
+pio run -e PanelGroup -t upload   # a specific env
+</code></pre>
 <p><code>upload_protocol = stlink</code> is already set in the templates. No separate flasher GUI is needed —
 PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 <a href="../../firmware/platformio-setup/">PlatformIO Setup</a>.</p>
@@ -4305,10 +4105,10 @@ as soon as it opens.</p>
 <p class="admonition-title">Clone reports 'tap not found'?</p>
 <p>Many Blue Pill clones use JTAG ID <code>0x2ba01477</code> (standard is <code>0x1ba01477</code>) and ST-Link
 refuses to connect. Uncomment the override in <code>platformio.ini</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="na">upload_flags</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="na">-c</span>
-<span class="w">    </span><span class="na">set CPUTAPID 0</span>
-</code></pre></div>
+<p><code>ini
+upload_flags =
+    -c
+    set CPUTAPID 0</code></p>
 <p>Use <code>0</code>, not the clone's actual ID. <code>0</code> disables the ID check outright. Setting it to
 <code>0x2ba01477</code> gets past the initial check but has been observed to fail part-way through
 the write — the projects under <code>Firmware/Tests/</code> all use <code>0</code> for this reason.</p>

@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4475,28 +4275,28 @@
 <p>Constructor stores parameters only — no SPI, no GPIO, no cross-global calls (static-init safe; the PIN_NC lesson). All hardware work happens in <a href="./#function-begin"><strong>begin()</strong></a>, called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> for buses that have at least one configured SR pin. </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-max_chain">variable MAX_CHAIN</h3>
-<p><em>chips per direction (64 in + 64 out)</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">MAX_CHAIN</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>chips per direction (64 in + 64 out)</em> </p>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::ShiftBus::MAX_CHAIN;
+</code></pre>
 <hr>
 
 <h3 id="variable-max_isr_consumers">variable MAX_ISR_CONSUMERS</h3>
-<p><em>sampled encoders per bus</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">MAX_ISR_CONSUMERS</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>sampled encoders per bus</em> </p>
+<pre><code class="language-C++">constexpr uint8_t OpenSkyhawk::ShiftBus::MAX_ISR_CONSUMERS;
+</code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-shiftbus">function ShiftBus</h3>
-<p><em>Construct a bus. No hardware activity —</em> <a href="./#function-begin"><em><strong>begin()</strong></em></a> <em>runs in</em><a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">ShiftBus</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">SPIClass</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">spi</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sckPin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">misoPin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mosiPin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">loadPin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">latchPin</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Construct a bus. No hardware activity —</em> <a href="./#function-begin"><em><strong>begin()</strong></em></a> <em>runs in</em><a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>.</em></p>
+<pre><code class="language-C++">OpenSkyhawk::ShiftBus::ShiftBus (
+    SPIClass &amp; spi,
+    uint8_t sckPin,
+    uint8_t misoPin,
+    uint8_t mosiPin,
+    uint8_t loadPin,
+    uint8_t latchPin
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>spi</code> SPI peripheral. Dedicated to this bus — the '165 QH output is never tristated, so MISO cannot be shared with another SPI reader. </li>
@@ -4509,35 +4309,35 @@
 <hr>
 
 <h3 id="function-active">function active</h3>
-<p><em>Any SR pin configured on this bus? Dormant buses skip</em> <a href="./#function-begin"><em><strong>begin()</strong></em></a> <em>entirely.</em>
-<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">active</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Any SR pin configured on this bus? Dormant buses skip</em> <a href="./#function-begin"><em><strong>begin()</strong></em></a> <em>entirely.</em></p>
+<pre><code class="language-C++">inline bool OpenSkyhawk::ShiftBus::active () const
+</code></pre>
 <hr>
 
 <h3 id="function-addisrconsumer">function addIsrConsumer</h3>
-<p><em>Register a hook called from the sampling ISR after each</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>. Used by</em><a href="../classOpenSkyhawk_1_1RotaryEncoder/#function-configure"><em><strong>RotaryEncoder::configure()</strong></em></a> <em>to auto-attach SR-pinned encoders.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">addIsrConsumer</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="n">hook</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Register a hook called from the sampling ISR after each</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>. Used by</em><a href="../classOpenSkyhawk_1_1RotaryEncoder/#function-configure"><em><strong>RotaryEncoder::configure()</strong></em></a> <em>to auto-attach SR-pinned encoders.</em></p>
+<pre><code class="language-C++">void OpenSkyhawk::ShiftBus::addIsrConsumer (
+    void(*)(void *ctx) hook,
+    void * ctx
+) 
+</code></pre>
 <hr>
 
 <h3 id="function-begin">function begin</h3>
-<p><em>Claim pins + start SPI. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>for active buses only.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">begin</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Claim pins + start SPI. Called by</em> <a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>for active buses only.</em></p>
+<pre><code class="language-C++">void OpenSkyhawk::ShiftBus::begin () 
+</code></pre>
 <p>Releases JTAG (SWJ → SWD-only; PB3/PB4 are JTDO/NJTRST) so the SPI1-remap pins are usable, configures LOAD/LATCH strobes, starts SPI, shifts an all-zeros output frame
 * latch (defined '595 state as early as possible), then runs one <a href="./#function-transfer"><strong>transfer()</strong></a> to prime the input cache before the forceReport() boot burst reads it. </p>
 <hr>
 
 <h3 id="function-beginisrsampling">function beginIsrSampling</h3>
-<p><em>Start a hardware timer that runs</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>+ all registered consumer hooks every tick. Called by</em><a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>when SHIFTBUS_ISR_HZ is defined.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">beginIsrSampling</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">TIM_TypeDef</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tim</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sampleHz</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Start a hardware timer that runs</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>+ all registered consumer hooks every tick. Called by</em><a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>when SHIFTBUS_ISR_HZ is defined.</em></p>
+<pre><code class="language-C++">void OpenSkyhawk::ShiftBus::beginIsrSampling (
+    TIM_TypeDef * tim,
+    uint16_t sampleHz
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>tim</code> Timer instance (TIM2 by default — TIM3 is backlight PWM). </li>
@@ -4548,83 +4348,83 @@
 <hr>
 
 <h3 id="function-dirty">function dirty</h3>
-<p><em>Pending output changes not yet shifted?</em> 
-<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">dirty</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Pending output changes not yet shifted?</em> </p>
+<pre><code class="language-C++">inline bool OpenSkyhawk::ShiftBus::dirty () const
+</code></pre>
 <hr>
 
 <h3 id="function-flushnow">function flushNow</h3>
-<p><a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>immediately —</em><a href="../classOpenSkyhawk_1_1StepperMotor/"><em><strong>StepperMotor</strong></em></a> <em>'s per-step flush path.</em>
-<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">flushNow</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
-</code></pre></div></p>
+<p><a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>immediately —</em><a href="../classOpenSkyhawk_1_1StepperMotor/"><em><strong>StepperMotor</strong></em></a> <em>'s per-step flush path.</em></p>
+<pre><code class="language-C++">inline void OpenSkyhawk::ShiftBus::flushNow () 
+</code></pre>
 <hr>
 
 <h3 id="function-isractive">function isrActive</h3>
-<p><em>True once</em> <a href="./#function-beginisrsampling"><em><strong>beginIsrSampling()</strong></em></a> <em>has started the timer.</em>
-<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">isrActive</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>True once</em> <a href="./#function-beginisrsampling"><em><strong>beginIsrSampling()</strong></em></a> <em>has started the timer.</em></p>
+<pre><code class="language-C++">inline bool OpenSkyhawk::ShiftBus::isrActive () const
+</code></pre>
 <hr>
 
 <h3 id="function-noteinput">function noteInput</h3>
-<p><em>configureAsInput() hook: mark active, grow the '165 chain to cover</em> <code>chip</code> <em>.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">noteInput</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>configureAsInput() hook: mark active, grow the '165 chain to cover</em> <code>chip</code> <em>.</em></p>
+<pre><code class="language-C++">void OpenSkyhawk::ShiftBus::noteInput (
+    uint8_t chip
+) 
+</code></pre>
 <hr>
 
 <h3 id="function-noteoutput">function noteOutput</h3>
-<p><em>configureAsOutput() hook: mark active, grow the '595 chain to cover</em> <code>chip</code> <em>.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">noteOutput</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>configureAsOutput() hook: mark active, grow the '595 chain to cover</em> <code>chip</code> <em>.</em></p>
+<pre><code class="language-C++">void OpenSkyhawk::ShiftBus::noteOutput (
+    uint8_t chip
+) 
+</code></pre>
 <hr>
 
 <h3 id="function-readbit">function readBit</h3>
-<p><em>Cached '165 input bit — no bus traffic.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">readBit</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span>
-<span class="p">)</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Cached '165 input bit — no bus traffic.</em> </p>
+<pre><code class="language-C++">bool OpenSkyhawk::ShiftBus::readBit (
+    uint8_t chip,
+    uint8_t bit
+) const
+</code></pre>
 <p><strong>Note:</strong></p>
 <p>With ISR sampling active, a multi-bit consumer reading bit-by-bit can see two sample instants mixed within one poll (the ISR replaces the whole frame between reads). Debounced/hold-last consumers (<a href="../classOpenSkyhawk_1_1MultiPosInput/"><strong>MultiPosInput</strong></a>) absorb this; do not add an unfiltered multi-bit consumer without considering it. </p>
 <hr>
 
 <h3 id="function-readlivebit">function readLiveBit</h3>
-<p><em>Live '165 read — one</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>, then the cached bit.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">readLiveBit</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Live '165 read — one</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>, then the cached bit.</em></p>
+<pre><code class="language-C++">bool OpenSkyhawk::ShiftBus::readLiveBit (
+    uint8_t chip,
+    uint8_t bit
+) 
+</code></pre>
 <hr>
 
 <h3 id="function-readoutbit">function readOutBit</h3>
-<p><em>Last written '595 output bit (</em> <a href="../classPinRef/#function-read"><em><strong>PinRef::read()</strong></em></a> <em>on an output pin).</em>
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">readOutBit</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span>
-<span class="p">)</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Last written '595 output bit (</em> <a href="../classPinRef/#function-read"><em><strong>PinRef::read()</strong></em></a> <em>on an output pin).</em></p>
+<pre><code class="language-C++">bool OpenSkyhawk::ShiftBus::readOutBit (
+    uint8_t chip,
+    uint8_t bit
+) const
+</code></pre>
 <hr>
 
 <h3 id="function-transfer">function transfer</h3>
-<p><em>One bus transaction: LOAD pulse → full-duplex SPI of the auto-sized frame (outputs written, inputs captured) → LATCH pulse. Clears the dirty flag.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">transfer</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>One bus transaction: LOAD pulse → full-duplex SPI of the auto-sized frame (outputs written, inputs captured) → LATCH pulse. Clears the dirty flag.</em> </p>
+<pre><code class="language-C++">void OpenSkyhawk::ShiftBus::transfer () 
+</code></pre>
 <p>When ISR sampling is active, loop-context callers are wrapped in a short interrupt-masked critical section so the frame buffers stay single-owner. </p>
 <hr>
 
 <h3 id="function-writebit">function writeBit</h3>
-<p><em>Set a '595 stage bit + mark the stage dirty. Published by the next loop-context</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>/flushNow() (commit), never mid-group by the sampling ISR.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">writeBit</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">v</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Set a '595 stage bit + mark the stage dirty. Published by the next loop-context</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>/flushNow() (commit), never mid-group by the sampling ISR.</em></p>
+<pre><code class="language-C++">void OpenSkyhawk::ShiftBus::writeBit (
+    uint8_t chip,
+    uint8_t bit,
+    bool v
+) 
+</code></pre>
 <p>Writes land in a loop-owned stage frame; the ISR ships only the last committed frame. A multi-pin group (<a href="../classOpenSkyhawk_1_1StepperMotor/"><strong>StepperMotor</strong></a>'s four coils) therefore always reaches the '595 outputs as one atomic pattern, regardless of ISR timing between the writes. </p>
 <hr>
 

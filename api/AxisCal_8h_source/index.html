@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,113 +3916,114 @@
 <h1 id="file-axiscalh">File AxisCal.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_a54aa0246e1c520ae49dfef506a428ca/"><strong>SimGateway</strong></a> <strong>&gt;</strong> <a href="../AxisCal_8h/"><strong>AxisCal.h</strong></a></p>
 <p><a href="../AxisCal_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+<pre><code class="language-C++">
+#pragma once
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stddef.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+#include &lt;stddef.h&gt;
+#include &lt;stdint.h&gt;
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+namespace OpenSkyhawk {
 
-<span class="k">struct</span><span class="w"> </span><span class="nc">AxisCal</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">min</span><span class="p">;</span><span class="w">       </span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">centre</span><span class="p">;</span><span class="w">    </span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">max</span><span class="p">;</span><span class="w">       </span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">deadzone</span><span class="p">;</span>
-<span class="p">};</span>
+struct AxisCal {
+    uint16_t min;       
+    uint16_t centre;    
+    uint16_t max;       
+    uint16_t deadzone;
+};
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">AXIS_CAL_SLOTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+constexpr uint8_t AXIS_CAL_SLOTS = 8;
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CAL_MAGIC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="sc">'O'</span><span class="p">)</span>
-<span class="w">                             </span><span class="o">|</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="sc">'S'</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w">  </span><span class="mi">8</span><span class="p">)</span>
-<span class="w">                             </span><span class="o">|</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="sc">'K'</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span>
-<span class="w">                             </span><span class="o">|</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="sc">'C'</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">24</span><span class="p">);</span>
+constexpr uint32_t CAL_MAGIC = ((uint32_t)'O')
+                             | ((uint32_t)'S' &lt;&lt;  8)
+                             | ((uint32_t)'K' &lt;&lt; 16)
+                             | ((uint32_t)'C' &lt;&lt; 24);
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CAL_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+constexpr uint16_t CAL_VERSION = 1;
 
-<span class="k">struct</span><span class="w"> </span><span class="nc">CalBlob</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">magic</span><span class="p">;</span><span class="w">                  </span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">version</span><span class="p">;</span><span class="w">                </span>
-<span class="w">    </span><span class="n">AxisCal</span><span class="w">  </span><span class="n">axes</span><span class="p">[</span><span class="n">AXIS_CAL_SLOTS</span><span class="p">];</span><span class="w">   </span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">crc</span><span class="p">;</span><span class="w">                    </span>
-<span class="p">};</span>
+struct CalBlob {
+    uint32_t magic;                  
+    uint16_t version;                
+    AxisCal  axes[AXIS_CAL_SLOTS];   
+    uint16_t crc;                    
+};
 
-<span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">AxisCal</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">  </span><span class="s">"AxisCal layout changed — bump CAL_VERSION"</span><span class="p">);</span>
-<span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">CalBlob</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">72</span><span class="p">,</span><span class="w"> </span><span class="s">"CalBlob layout changed — bump CAL_VERSION"</span><span class="p">);</span>
-<span class="k">static_assert</span><span class="p">(</span><span class="n">offsetof</span><span class="p">(</span><span class="n">CalBlob</span><span class="p">,</span><span class="w"> </span><span class="n">crc</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span><span class="w"> </span><span class="s">"CRC coverage is offsetof(crc); layout changed"</span><span class="p">);</span>
+static_assert(sizeof(AxisCal) == 8,  &quot;AxisCal layout changed — bump CAL_VERSION&quot;);
+static_assert(sizeof(CalBlob) == 72, &quot;CalBlob layout changed — bump CAL_VERSION&quot;);
+static_assert(offsetof(CalBlob, crc) == 70, &quot;CRC coverage is offsetof(crc); layout changed&quot;);
 
-<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">calCrc16</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+uint16_t calCrc16(const uint8_t* data, size_t len);
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">axisCalValid</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">AxisCal</span><span class="o">&amp;</span><span class="w"> </span><span class="n">cal</span><span class="p">);</span>
+bool axisCalValid(const AxisCal&amp; cal);
 
-<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">axisCalApply</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">AxisCal</span><span class="o">&amp;</span><span class="w"> </span><span class="n">cal</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw</span><span class="p">);</span>
+uint16_t axisCalApply(const AxisCal&amp; cal, uint16_t raw);
 
-<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">calBlobCrc</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CalBlob</span><span class="o">&amp;</span><span class="w"> </span><span class="n">blob</span><span class="p">);</span>
+uint16_t calBlobCrc(const CalBlob&amp; blob);
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">calBlobValid</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CalBlob</span><span class="o">&amp;</span><span class="w"> </span><span class="n">blob</span><span class="p">);</span>
+bool calBlobValid(const CalBlob&amp; blob);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">calBlobClear</span><span class="p">(</span><span class="n">CalBlob</span><span class="o">&amp;</span><span class="w"> </span><span class="n">blob</span><span class="p">);</span>
+void calBlobClear(CalBlob&amp; blob);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">calBlobSeal</span><span class="p">(</span><span class="n">CalBlob</span><span class="o">&amp;</span><span class="w"> </span><span class="n">blob</span><span class="p">);</span>
+void calBlobSeal(CalBlob&amp; blob);
 
-<span class="c1">// ── Calibration wire protocol ─────────────────────────────────────────────────</span>
-<span class="c1">//</span>
-<span class="c1">// The USB CDC protocol between SimGateway and SkyHawkClient. Specified in</span>
-<span class="c1">// FirmwarePlan/03-uart-usb-hid-protocol.md § Calibration Protocol (USB CDC), which is</span>
-<span class="c1">// authoritative — if this header disagrees with that page, the page wins.</span>
-<span class="c1">//</span>
-<span class="c1">// Only the pure parts live here: the length table, the frame builder, and whole-frame</span>
-<span class="c1">// validation. The byte-at-a-time receive state machine belongs to SimGateway.cpp because</span>
-<span class="c1">// it has to re-emit rejected bytes into the relay.</span>
+// ── Calibration wire protocol ─────────────────────────────────────────────────
+//
+// The USB CDC protocol between SimGateway and SkyHawkClient. Specified in
+// FirmwarePlan/03-uart-usb-hid-protocol.md § Calibration Protocol (USB CDC), which is
+// authoritative — if this header disagrees with that page, the page wins.
+//
+// Only the pure parts live here: the length table, the frame builder, and whole-frame
+// validation. The byte-at-a-time receive state machine belongs to SimGateway.cpp because
+// it has to re-emit rejected bytes into the relay.
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CAL_PROTO_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+constexpr uint8_t CAL_PROTO_VERSION = 1;
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CAL_FRAME_MAGIC</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xAA</span><span class="p">,</span><span class="w"> </span><span class="mh">0x53</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4B</span><span class="p">,</span><span class="w"> </span><span class="mh">0x43</span><span class="w"> </span><span class="p">};</span><span class="w">   </span><span class="c1">// "\xAA S K C"</span>
+constexpr uint8_t CAL_FRAME_MAGIC[4] = { 0xAA, 0x53, 0x4B, 0x43 };   // &quot;\xAA S K C&quot;
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CAL_ENVELOPE_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">   </span>
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CAL_MAX_PAYLOAD</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">82</span><span class="p">;</span><span class="w">   </span>
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CAL_MAX_FRAME</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">CAL_ENVELOPE_BYTES</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">CAL_MAX_PAYLOAD</span><span class="p">;</span><span class="w">  </span><span class="c1">// 92</span>
+constexpr uint16_t CAL_ENVELOPE_BYTES = 10;   
+constexpr uint16_t CAL_MAX_PAYLOAD    = 82;   
+constexpr uint16_t CAL_MAX_FRAME      = CAL_ENVELOPE_BYTES + CAL_MAX_PAYLOAD;  // 92
 
-<span class="k">enum</span><span class="w"> </span><span class="nc">CalType</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">CAL_T_HELLO</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_GET_CAL</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_SESSION_OPEN</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_SESSION_CLOSE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_COMMIT</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_RESET</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_KEEPALIVE</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_STREAM_SELECT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span>
+enum CalType : uint8_t {
+    CAL_T_HELLO         = 0x01,
+    CAL_T_GET_CAL       = 0x02,
+    CAL_T_SESSION_OPEN  = 0x03,
+    CAL_T_SESSION_CLOSE = 0x04,
+    CAL_T_COMMIT        = 0x05,
+    CAL_T_RESET         = 0x06,
+    CAL_T_KEEPALIVE     = 0x07,
+    CAL_T_STREAM_SELECT = 0x08,
 
-<span class="w">    </span><span class="n">CAL_T_HELLO_ACK</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x81</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_CAL_DATA</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x82</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_SESSION_ACK</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x83</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_ACK</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mh">0x84</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_NACK</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mh">0x85</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_T_RAW</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mh">0x86</span><span class="p">,</span>
-<span class="p">};</span>
+    CAL_T_HELLO_ACK     = 0x81,
+    CAL_T_CAL_DATA      = 0x82,
+    CAL_T_SESSION_ACK   = 0x83,
+    CAL_T_ACK           = 0x84,
+    CAL_T_NACK          = 0x85,
+    CAL_T_RAW           = 0x86,
+};
 
-<span class="k">enum</span><span class="w"> </span><span class="nc">CalNackReason</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">CAL_NACK_BAD_CRC</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_NACK_BAD_LENGTH</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_NACK_BAD_TYPE</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_NACK_BAD_INDEX</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_NACK_BAD_ORDER</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_NACK_NO_SESSION</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_NACK_NO_STORAGE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
-<span class="w">    </span><span class="n">CAL_NACK_BAD_DEADZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span>
-<span class="p">};</span>
+enum CalNackReason : uint8_t {
+    CAL_NACK_BAD_CRC      = 0x01,
+    CAL_NACK_BAD_LENGTH   = 0x02,
+    CAL_NACK_BAD_TYPE     = 0x03,
+    CAL_NACK_BAD_INDEX    = 0x04,
+    CAL_NACK_BAD_ORDER    = 0x05,
+    CAL_NACK_NO_SESSION   = 0x06,
+    CAL_NACK_NO_STORAGE   = 0x07,
+    CAL_NACK_BAD_DEADZONE = 0x08,
+};
 
-<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CAL_AXIS_NONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span>
+constexpr uint8_t CAL_AXIS_NONE = 0xFF;
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">calLenValidForType</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+bool calLenValidForType(uint8_t type, uint16_t len);
 
-<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">calBuildFrame</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">outCap</span><span class="p">,</span>
-<span class="w">                       </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span>
-<span class="w">                       </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">payload</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+uint16_t calBuildFrame(uint8_t* out, uint16_t outCap,
+                       uint8_t type, uint8_t seq,
+                       const uint8_t* payload, uint16_t len);
 
-<span class="kt">bool</span><span class="w"> </span><span class="nf">calFrameCrcOk</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+bool calFrameCrcOk(const uint8_t* frame, uint16_t n);
 
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
-</code></pre></div>
+} // namespace OpenSkyhawk
+</code></pre>
 
 
 

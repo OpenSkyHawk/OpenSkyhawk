@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4207,31 +4007,31 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Provides the <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> namespace (expander registration, setup, loop, MCP cache bridge) and the <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> base classes that input and output objects inherit from. All input/output objects are declared at global scope in a sketch so their constructors self-register before setup() runs.</p>
-<p>Sketch pattern: 
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;MCP23017.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;PanelGroup.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Outputs/LED/LED.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;A4EC_OutputIds.h&gt;</span>
+<p>Sketch pattern: </p>
+<pre><code class="language-C++">#include &lt;Wire.h&gt;
+#include &lt;MCP23017.h&gt;
+#include &lt;PanelGroup.h&gt;
+#include &lt;Outputs/LED/LED.h&gt;
+#include &lt;A4EC_OutputIds.h&gt;
 
-<span class="n">MCP23017</span><span class="w"> </span><span class="nf">exp1</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span><span class="w"> </span><span class="n">Wire</span><span class="p">);</span>
-<span class="n">ADS1115</span><span class="w">  </span><span class="n">adc1</span><span class="p">;</span>
+MCP23017 exp1(0x20, Wire);
+ADS1115  adc1;
 
-<span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">PIN_MASTER_ARM</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">exp1</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_A</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
-<span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">PIN_CAUTION_LED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB0</span><span class="p">);</span>
+const PinRef PIN_MASTER_ARM  = PinRef(exp1, PORT_A, 3);
+const PinRef PIN_CAUTION_LED = PinRef(PB0);
 
-<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="w"> </span><span class="nf">masterCaution</span><span class="p">(</span><span class="n">A_4E_C_MASTER_CAUTION</span><span class="p">,</span><span class="w"> </span><span class="n">A_4E_C_MASTER_CAUTION_AM</span><span class="p">,</span>
-<span class="w">                               </span><span class="n">PIN_CAUTION_LED</span><span class="p">);</span>
+OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM,
+                               PIN_CAUTION_LED);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
-<span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerExpander</span><span class="p">(</span><span class="n">exp1</span><span class="p">,</span><span class="w"> </span><span class="n">PB12</span><span class="p">,</span><span class="w"> </span><span class="n">PB13</span><span class="p">);</span><span class="w">  </span><span class="c1">// INTA→PB12, INTB→PB13</span>
-<span class="w">    </span><span class="c1">// (PB3–PB5/PB8/PB9 belong to ShiftBus1 on a node that also uses shift registers)</span>
-<span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerADC</span><span class="p">(</span><span class="n">adc1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x48</span><span class="p">,</span><span class="w"> </span><span class="n">Wire</span><span class="p">);</span>
-<span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
-<span class="p">}</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">loop</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div></p>
+void setup() {
+    Wire.begin();
+    PanelGroup::registerExpander(exp1, PB12, PB13);  // INTA→PB12, INTB→PB13
+    // (PB3–PB5/PB8/PB9 belong to ShiftBus1 on a node that also uses shift registers)
+    PanelGroup::registerADC(adc1, 0x48, Wire);
+    PanelGroup::setup();
+}
+void loop() { PanelGroup::loop(); }
+</code></pre>
 <p><strong>Version:</strong></p>
 <p>0.3.0 </p>
 <p><strong>Copyright:</strong></p>

@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4685,75 +4485,75 @@
 <p>Provides read, write, readAnalog, and writeAnalog behind a uniform interface regardless of whether the backing pin is a direct STM32 GPIO, an MCP23017 expander bit, or an <a href="../classADS1115/"><strong>ADS1115</strong></a> ADC channel. Size: ~12 bytes (1-byte type tag + largest union member). </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 <h3 id="variable-adc">variable adc</h3>
-<div class="highlight"><pre><span></span><code><span class="n">ADS1115</span><span class="o">*</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">adc</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">ADS1115* PinRef::adc;
+</code></pre>
 <hr>
 
 <h3 id="variable-ads">variable ads</h3>
-<p><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>source.</em>
-<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">PinRef</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">ads</span><span class="p">;</span>
-</code></pre></div></p>
+<p><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>source.</em></p>
+<pre><code class="language-C++">struct PinRef PinRef::ads;
+</code></pre>
 <hr>
 
 <h3 id="variable-bit">variable bit</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">bit</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">uint8_t PinRef::bit;
+</code></pre>
 <hr>
 
 <h3 id="variable-bus">variable bus</h3>
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">*</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">bus</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">OpenSkyhawk::ShiftBus* PinRef::bus;
+</code></pre>
 <hr>
 
 <h3 id="variable-channel">variable channel</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">channel</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">uint8_t PinRef::channel;
+</code></pre>
 <hr>
 
 <h3 id="variable-chip-12">variable chip [1/2]</h3>
-<div class="highlight"><pre><span></span><code><span class="n">MCP23017</span><span class="o">*</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">chip</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">MCP23017* PinRef::chip;
+</code></pre>
 <hr>
 
 <h3 id="variable-chip-22">variable chip [2/2]</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">chip</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">uint8_t PinRef::chip;
+</code></pre>
 <hr>
 
 <h3 id="variable-isout">variable isOut</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isOut</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">bool PinRef::isOut;
+</code></pre>
 <hr>
 
 <h3 id="variable-mcp">variable mcp</h3>
-<p><em>MCP23017 source.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">PinRef</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">mcp</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>MCP23017 source.</em> </p>
+<pre><code class="language-C++">struct PinRef PinRef::mcp;
+</code></pre>
 <hr>
 
 <h3 id="variable-pin">variable pin</h3>
-<p><em>GPIO pin number.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">pin</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>GPIO pin number.</em> </p>
+<pre><code class="language-C++">uint8_t PinRef::pin;
+</code></pre>
 <hr>
 
 <h3 id="variable-port">variable port</h3>
-<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">port</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-C++">uint8_t PinRef::port;
+</code></pre>
 <hr>
 
 <h3 id="variable-sr">variable sr</h3>
-<p><em>ShiftBus source.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">PinRef</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">sr</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>ShiftBus source.</em> </p>
+<pre><code class="language-C++">struct PinRef PinRef::sr;
+</code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-pinref-15">function PinRef [1/5]</h3>
-<p><em>Direct STM32 GPIO pin.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">explicit</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">pin</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Direct STM32 GPIO pin.</em> </p>
+<pre><code class="language-C++">explicit PinRef::PinRef (
+    uint8_t pin
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>pin</code> Arduino pin number (e.g. PA0, PB5). </li>
@@ -4761,13 +4561,13 @@
 <hr>
 
 <h3 id="function-pinref-25">function PinRef [2/5]</h3>
-<p><em>MCP23017 expander GPIO.</em> 
-<div class="highlight"><pre><span></span><code><span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">MCP23017</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">port</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>MCP23017 expander GPIO.</em> </p>
+<pre><code class="language-C++">PinRef::PinRef (
+    MCP23017 &amp; chip,
+    uint8_t port,
+    uint8_t bit
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>chip</code> Reference to the registered MCP23017 instance. </li>
@@ -4777,12 +4577,12 @@
 <hr>
 
 <h3 id="function-pinref-35">function PinRef [3/5]</h3>
-<p><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC channel.</em>
-<div class="highlight"><pre><span></span><code><span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">ADS1115</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">adc</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">channel</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><a href="../classADS1115/"><em><strong>ADS1115</strong></em></a> <em>ADC channel.</em></p>
+<pre><code class="language-C++">PinRef::PinRef (
+    ADS1115 &amp; adc,
+    uint8_t channel
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>adc</code> Reference to the <a href="../classADS1115/"><strong>ADS1115</strong></a> instance. </li>
@@ -4791,13 +4591,13 @@
 <hr>
 
 <h3 id="function-pinref-45">function PinRef [4/5]</h3>
-<p><em>Shift-register bus bit ('165 input or '595 output).</em> 
-<div class="highlight"><pre><span></span><code><span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">bus</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">chip</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">bit</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Shift-register bus bit ('165 input or '595 output).</em> </p>
+<pre><code class="language-C++">PinRef::PinRef (
+    OpenSkyhawk::ShiftBus &amp; bus,
+    uint8_t chip,
+    uint8_t bit
+) 
+</code></pre>
 <p>Direction is set at configure time by the consuming class — <a href="./#function-configureasinput"><strong>configureAsInput()</strong></a> binds the pin to the '165 chain, <a href="./#function-configureasoutput"><strong>configureAsOutput()</strong></a> to the '595 chain (the MCP IODIR pattern). <code>chip</code> means "position within that chain".</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4808,36 +4608,36 @@
 <hr>
 
 <h3 id="function-pinref-55">function PinRef [5/5]</h3>
-<p><em>No-connect sentinel — represents a position with no physical pin.</em> 
-<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">PinRef</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>No-connect sentinel — represents a position with no physical pin.</em> </p>
+<pre><code class="language-C++">inline constexpr PinRef::PinRef () 
+</code></pre>
 <p>All reads return false / 0. All writes are no-ops. Equivalent to PIN_NC. Provided for use in array initialisers.</p>
 <p><strong>Note:</strong></p>
 <p>constexpr so <code>PIN_NC</code> — and any default-constructed NC <a href="./"><strong>PinRef</strong></a> — is constant-initialized. This makes it safe to place in a global wiring-map array without the static-initialization-order hazard a dynamically-initialized global would have. </p>
 <hr>
 
 <h3 id="function-configureasinput">function configureAsInput</h3>
-<p><em>Configure this pin as a digital input.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">configureAsInput</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Configure this pin as a digital input.</em> </p>
+<pre><code class="language-C++">void PinRef::configureAsInput () 
+</code></pre>
 <p>GPIO: calls pinMode(pin, INPUT). Bias is provided by board wiring. MCP23017: sets IODIR bit to 1 (input) and GPPU bit to 0 (pull-up disabled) for this pin only via <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s expander management path. <a href="../classADS1115/"><strong>ADS1115</strong></a>: no-op — always an analog input. NC: no-op.</p>
 <p><strong>Note:</strong></p>
 <p>Must be called after chip.begin() — i.e. from an InputBase::configure() override called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a>, not from a constructor. </p>
 <hr>
 
 <h3 id="function-configureasoutput">function configureAsOutput</h3>
-<p><em>Configure this pin as a digital output.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">configureAsOutput</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Configure this pin as a digital output.</em> </p>
+<pre><code class="language-C++">void PinRef::configureAsOutput () 
+</code></pre>
 <p>GPIO: calls pinMode(pin, OUTPUT). MCP23017: sets IODIR bit to 0 (output) and GPPU bit to 0 (pull-up disabled) for this pin only via <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s expander management path. <a href="../classADS1115/"><strong>ADS1115</strong></a>: no-op; debug assertion fires if PINREF_DEBUG is defined. NC: no-op.</p>
 <p><strong>Note:</strong></p>
 <p>Must be called after chip.begin() — i.e. from an OutputBase::configure() override called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a>, not from a constructor. </p>
 <hr>
 
 <h3 id="function-gpiopin">function gpioPin</h3>
-<p><em>Return the raw Arduino pin number for GPIO PinRefs.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">gpioPin</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Return the raw Arduino pin number for GPIO PinRefs.</em> </p>
+<pre><code class="language-C++">uint8_t PinRef::gpioPin () const
+</code></pre>
 <p>Used by output classes that must call APIs requiring a raw pin number, such as Servo::attach().</p>
 <p><strong>Returns:</strong></p>
 <p>Arduino pin number (e.g. PA0, PB9), or 0 for non-GPIO PinRefs. </p>
@@ -4846,44 +4646,44 @@
 <hr>
 
 <h3 id="function-isgpio">function isGpio</h3>
-<p><em>Returns true if this</em> <a href="./"><em><strong>PinRef</strong></em></a> <em>wraps a direct STM32 GPIO pin.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isGpio</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Returns true if this</em> <a href="./"><em><strong>PinRef</strong></em></a> <em>wraps a direct STM32 GPIO pin.</em></p>
+<pre><code class="language-C++">bool PinRef::isGpio () const
+</code></pre>
 <p>Used by direct-only output classes (AnalogOutput, ServoOutput) to reject MCP23017, <a href="../classADS1115/"><strong>ADS1115</strong></a>, and NC pins at construction time. </p>
 <hr>
 
 <h3 id="function-ismcp">function isMcp</h3>
-<p><em>True when this</em> <a href="./"><em><strong>PinRef</strong></em></a> <em>wraps an MCP23017 expander bit.</em>
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isMcp</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>True when this</em> <a href="./"><em><strong>PinRef</strong></em></a> <em>wraps an MCP23017 expander bit.</em></p>
+<pre><code class="language-C++">bool PinRef::isMcp () const
+</code></pre>
 <hr>
 
 <h3 id="function-isnc">function isNC</h3>
-<p><em>Returns true if this is the NC (no-connect) sentinel.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isNC</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Returns true if this is the NC (no-connect) sentinel.</em> </p>
+<pre><code class="language-C++">bool PinRef::isNC () const
+</code></pre>
 <hr>
 
 <h3 id="function-issampledsource">function isSampledSource</h3>
-<p><em>True when this pin's cached state is refreshed by a high-rate sampler that runs independently of</em> <a href="../namespacePanelGroup/#function-loop"><em><strong>PanelGroup::loop()</strong></em></a> <em>(today: ShiftBus timer-ISR sampling).</em>
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">isSampledSource</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>True when this pin's cached state is refreshed by a high-rate sampler that runs independently of</em> <a href="../namespacePanelGroup/#function-loop"><em><strong>PanelGroup::loop()</strong></em></a> <em>(today: ShiftBus timer-ISR sampling).</em></p>
+<pre><code class="language-C++">bool PinRef::isSampledSource () const
+</code></pre>
 <p>Lets an input class decide whether InputBase::sampleTick() should own its decode: a pin whose cache only refreshes at loop rate (GPIO/MCP/ADS) gains nothing from sampler ownership and keeps its loop-rate path. The class never needs to know which sampler exists — only what its own pin promises. </p>
 <hr>
 
 <h3 id="function-read">function read</h3>
-<p><em>Digital read.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">read</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Digital read.</em> </p>
+<pre><code class="language-C++">bool PinRef::read () const
+</code></pre>
 <p>GPIO: digitalRead(pin) — true when the pin is HIGH. MCP23017: cached bit from <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s last INTCAP or port read. No I2C. <a href="../classADS1115/"><strong>ADS1115</strong></a>: true if <a href="./#function-readanalog"><strong>readAnalog()</strong></a> &gt; 32767 (half-scale threshold). ShiftBus: cached '165 frame bit (input) or last written '595 bit (output). No SPI. NC: always false.</p>
 <p><strong>Returns:</strong></p>
 <p>true = HIGH, false = LOW. </p>
 <hr>
 
 <h3 id="function-readanalog">function readAnalog</h3>
-<p><em>Analog read, normalised to 16-bit (0–65535).</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">readAnalog</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Analog read, normalised to 16-bit (0–65535).</em> </p>
+<pre><code class="language-C++">uint16_t PinRef::readAnalog () const
+</code></pre>
 <p>GPIO: analogRead(pin) × 16 → 0–65520 (12-bit ADC scaled to 16-bit). <a href="../classADS1115/"><strong>ADS1115</strong></a>: readADC_SingleEnded(channel) × 2 → 0–65534 (15-bit single-ended scaled). MCP23017: always 0; debug assertion fires if PINREF_DEBUG is defined. NC: always 0.</p>
 <p><strong>Returns:</strong></p>
 <p>Normalised 16-bit ADC value. </p>
@@ -4892,9 +4692,9 @@
 <hr>
 
 <h3 id="function-readlive">function readLive</h3>
-<p><em>Live digital read — bypasses any cache.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">readLive</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>Live digital read — bypasses any cache.</em> </p>
+<pre><code class="language-C++">bool PinRef::readLive () const
+</code></pre>
 <p>GPIO: digitalRead(pin) (already live). MCP23017: a fresh readPort() over I2C, also refreshing <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s cache. <a href="../classADS1115/"><strong>ADS1115</strong></a>: live <a href="./#function-readanalog"><strong>readAnalog()</strong></a> &gt; half-scale. NC: false.</p>
 <p><strong>Returns:</strong></p>
 <p>true = HIGH, false = LOW. </p>
@@ -4903,22 +4703,22 @@
 <hr>
 
 <h3 id="function-samemcpportas">function sameMcpPortAs</h3>
-<p><em>True when both PinRefs are MCP23017 bits on the SAME chip and the SAME port.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">sameMcpPortAs</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span>
-<span class="p">)</span><span class="w"> </span><span class="k">const</span>
-</code></pre></div></p>
+<p><em>True when both PinRefs are MCP23017 bits on the SAME chip and the SAME port.</em> </p>
+<pre><code class="language-C++">bool PinRef::sameMcpPortAs (
+    const PinRef &amp; other
+) const
+</code></pre>
 <p>For callers that depend on a group of pins flushing in ONE writePort() — the stepper coils, where a split across ports means two I2C transactions and therefore a non-atomic coil flip. Keeps the backend union private: the caller asks the question rather than reading chip/port out.</p>
 <p><strong>Returns:</strong></p>
 <p>false if either side is not an MCP23017 pin. </p>
 <hr>
 
 <h3 id="function-write">function write</h3>
-<p><em>Digital write.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">write</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Digital write.</em> </p>
+<pre><code class="language-C++">void PinRef::write (
+    bool value
+) 
+</code></pre>
 <p>GPIO: digitalWrite(pin, value ? HIGH : LOW). MCP23017: sets the output bit via <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>'s expander write path and cache. <a href="../classADS1115/"><strong>ADS1115</strong></a>: no-op; debug assertion fires if PINREF_DEBUG is defined. NC: no-op.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4927,11 +4727,11 @@
 <hr>
 
 <h3 id="function-writeanalog">function writeAnalog</h3>
-<p><em>Analog write (PWM). GPIO only.</em> 
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">writeAnalog</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">val</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Analog write (PWM). GPIO only.</em> </p>
+<pre><code class="language-C++">void PinRef::writeAnalog (
+    uint16_t val
+) 
+</code></pre>
 <p>GPIO: analogWrite(pin, val &gt;&gt; 8) — maps 16-bit value to 8-bit duty cycle. MCP23017: no-op; debug assertion fires if PINREF_DEBUG is defined. <a href="../classADS1115/"><strong>ADS1115</strong></a>: no-op; debug assertion fires if PINREF_DEBUG is defined. NC: no-op.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
@@ -4942,11 +4742,11 @@
 <hr>
 
 <h3 id="function-writedeferred">function writeDeferred</h3>
-<p><em>Like</em> <a href="./#function-write"><em><strong>write()</strong></em></a> <em>, but MCP writes only update the cache (no I2C) — the caller then invokes</em><a href="../namespacePanelGroup/#function-flushexpanderwrites"><em><strong>PanelGroup::flushExpanderWrites()</strong></em></a> <em>to push each port in one writePort().</em>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">PinRef</span><span class="o">::</span><span class="n">writeDeferred</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Like</em> <a href="./#function-write"><em><strong>write()</strong></em></a> <em>, but MCP writes only update the cache (no I2C) — the caller then invokes</em><a href="../namespacePanelGroup/#function-flushexpanderwrites"><em><strong>PanelGroup::flushExpanderWrites()</strong></em></a> <em>to push each port in one writePort().</em></p>
+<pre><code class="language-C++">void PinRef::writeDeferred (
+    bool value
+) 
+</code></pre>
 <p>GPIO writes stay immediate (already cheap). Lets a multi-pin output batch its expander writes: one I2C transaction per port instead of one read-modify-write per pin.</p>
 <p><strong>Parameters:</strong></p>
 <ul>

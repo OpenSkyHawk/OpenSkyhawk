@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,611 +3916,611 @@
 <h1 id="file-panelbridgecpp">File PanelBridge.cpp</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_f592a3c441b32532ba8eb6b28add2a90/"><strong>PanelBridge</strong></a> <strong>&gt;</strong> <a href="../PanelBridge_8cpp/"><strong>PanelBridge.cpp</strong></a></p>
 <p><a href="../PanelBridge_8cpp/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="c1">// DcsBios.h defines tryToSendDcsBiosMessage only under DCSBIOS_DEFAULT_SERIAL.</span>
-<span class="c1">// Pre-declare it so the inline sendDcsBiosMessage() in DcsBios.h compiles without the flag.</span>
-<span class="c1">// The definition is provided by the sketch TU (compiled with -DDCSBIOS_DEFAULT_SERIAL).</span>
-<span class="k">namespace</span><span class="w"> </span><span class="nn">DcsBios</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">tryToSendDcsBiosMessage</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="c1">// Include DcsBios.h WITHOUT DCSBIOS_DEFAULT_SERIAL to avoid ODR violations.</span>
-<span class="c1">// The sketch TU owns ProtocolParser, DcsBios::setup(), DcsBios::loop(), and the definition</span>
-<span class="c1">// of tryToSendDcsBiosMessage(). This TU only needs the types and constants.</span>
-<span class="cp">#ifdef DCSBIOS_DEFAULT_SERIAL</span>
-<span class="cp">#  undef DCSBIOS_DEFAULT_SERIAL</span>
-<span class="cp">#  define _PBRIDGE_RESTORE_DCSBIOS</span>
-<span class="cp">#endif</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;DcsBios.h&gt;</span>
-<span class="cp">#ifdef _PBRIDGE_RESTORE_DCSBIOS</span>
-<span class="cp">#  define DCSBIOS_DEFAULT_SERIAL</span>
-<span class="cp">#  undef _PBRIDGE_RESTORE_DCSBIOS</span>
-<span class="cp">#endif</span>
-
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
-
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"PanelBridge.h"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;CANProtocol.h&gt;</span><span class="w">   </span><span class="c1">// CAN types + NodeHealthPayload</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;NodeStatus.h&gt;</span><span class="w">    </span><span class="c1">// NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;STM32Board.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;A4EC_InputMap.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
-
-<span class="k">namespace</span><span class="w"> </span><span class="p">{</span>
-
-<span class="c1">// ── Node tracking ─────────────────────────────────────────────────────────────</span>
-
-<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">MAX_NODE_ID</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">63</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">HB_TIMEOUT_MS</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">MASTER_HB_PERIOD_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span><span class="w">   </span><span class="c1">// HB_0 master heartbeat cadence</span>
-
-<span class="k">struct</span><span class="w"> </span><span class="nc">NodeState</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">alive</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">     </span><span class="n">everSeen</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">lastSeenMs</span><span class="p">;</span>
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">    </span><span class="n">HeartbeatPayload</span><span class="w"> </span><span class="n">last</span><span class="p">;</span><span class="w">          </span><span class="c1">// last HB payload, surfaced to the host (#86)</span>
-<span class="w">    </span><span class="c1">// Cached NodeHealthPayload fields from the node's last HEALTH_n frame (#221 contract):</span>
-<span class="w">    </span><span class="kt">int8_t</span><span class="w">   </span><span class="n">dieTempC</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">INT8_MIN</span><span class="p">;</span><span class="w"> </span><span class="c1">// internal die temp °C (INT8_MIN = unseen) — #213</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">healthFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// overheat (#213) / degraded (#163) bits</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">faultMask</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// fault source/domain bitmap — reserved #163</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">faultId</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// NodeFaultCode (NodeStatus.h) — #163</span>
-<span class="cp">#endif</span>
-<span class="p">};</span>
-
-<span class="k">static</span><span class="w"> </span><span class="n">NodeState</span><span class="w">      </span><span class="n">_nodes</span><span class="p">[</span><span class="n">MAX_NODE_ID</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span><span class="w">   </span><span class="c1">// index = nodeId - 1</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">_cbAlive</span><span class="p">)(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">_cbDead</span><span class="p">)(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">        </span><span class="n">_deadCount</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="c1">// tracked nodes currently timed-out (drives WARNING)</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w">       </span><span class="n">_lastMasterHbMs</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="c1">// millis() of last HB_0 transmit</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w">       </span><span class="n">_lastHealthMs</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="c1">// millis() of last HEALTH_0 transmit (#213)</span>
-
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="c1">// ── Node-status reporting (#86) ──────────────────────────────────────────────</span>
-<span class="c1">// Surface node presence + health to the host (OpenSkyhawk Client) as DCS-BIOS</span>
-<span class="c1">// command messages on a reserved control name. Owned entirely by PanelBridge;</span>
-<span class="c1">// SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.</span>
-
-<span class="c1">// Emit one node's status (proto v2, 26 hex chars):</span>
-<span class="c1">//   _NODE_STATUS &lt;nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId&gt;</span>
-<span class="c1">// The last four come from the node's HEALTH_n frame (#221 contract). dieTempC 80 = not-yet-seen;</span>
-<span class="c1">// hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163); faultMask stays 0</span>
-<span class="c1">// (reserved for future fault-domain bits).</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">emitNode</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">present</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">NodeState</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_nodes</span><span class="p">[</span><span class="n">nodeId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">HeartbeatPayload</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ns</span><span class="p">.</span><span class="n">last</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">hex</span><span class="p">[</span><span class="mi">27</span><span class="p">];</span>
-<span class="w">    </span><span class="n">snprintf</span><span class="p">(</span><span class="n">hex</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">hex</span><span class="p">),</span><span class="w"> </span><span class="s">"%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X"</span><span class="p">,</span>
-<span class="w">             </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="n">present</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">1u</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0u</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">hb</span><span class="p">.</span><span class="n">flags</span><span class="p">,</span>
-<span class="w">             </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">hb</span><span class="p">.</span><span class="n">uptime</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">hb</span><span class="p">.</span><span class="n">rxCount</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">hb</span><span class="p">.</span><span class="n">esr</span><span class="p">,</span>
-<span class="w">             </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">ns</span><span class="p">.</span><span class="n">dieTempC</span><span class="p">,</span>
-<span class="w">             </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">ns</span><span class="p">.</span><span class="n">healthFlags</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">ns</span><span class="p">.</span><span class="n">faultMask</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">ns</span><span class="p">.</span><span class="n">faultId</span><span class="p">);</span>
-<span class="w">    </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">sendDcsBiosMessage</span><span class="p">(</span><span class="n">NODE_STATUS_MSG_NAME</span><span class="p">,</span><span class="w"> </span><span class="n">hex</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="c1">// Emit the full roster (request response / boot seed): one _NODE_STATUS per alive</span>
-<span class="c1">// node, then _NODE_STATUS_END &lt;count&gt; so the host knows the burst is complete and</span>
-<span class="c1">// can reconcile (prune nodes absent from it). count=0 = no panels connected.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">emitAllNodes</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_NODE_ID</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">alive</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">emitNode</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span><span class="w"> </span><span class="n">count</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">arg</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
-<span class="w">    </span><span class="n">snprintf</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span><span class="w"> </span><span class="s">"%u"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">count</span><span class="p">);</span>
-<span class="w">    </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">sendDcsBiosMessage</span><span class="p">(</span><span class="n">NODE_STATUS_END_MSG_NAME</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="cp">#endif </span><span class="c1">// PANELBRIDGE_NODE_STATUS</span>
-
-<span class="c1">// ── TEST_SEQ state ─────────────────────────────────────────────────────────────</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_testSeqNum</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_testSeqSentMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="c1">// ── DCS session change ─────────────────────────────────────────────────────────</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">_lastModelTimeSec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w">  </span><span class="c1">// -1 = unseeded</span>
-
-<span class="c1">// ── Helpers ────────────────────────────────────────────────────────────────────</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">broadcastSyncReq</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">empty</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">CAN_ID_SYNC_REQ</span><span class="p">,</span><span class="w"> </span><span class="n">empty</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
-<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[BRIDGE] SYNC_REQ broadcast"</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">sendHidFrame</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">frame</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="mh">0xAA</span><span class="p">,</span><span class="w"> </span><span class="mh">0x55</span><span class="p">,</span>
-<span class="w">        </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">controlId</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">controlId</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">),</span>
-<span class="w">        </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">value</span><span class="w">     </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">value</span><span class="w">     </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span>
-<span class="w">    </span><span class="p">};</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="c1">// Internal helper called by BridgeExportListener — separated for testability.</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">handleDcsBiosExport</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">    </span><span class="c1">// Reserved: the host's node-status request — handled by NodeStatusReqListener,</span>
-<span class="w">    </span><span class="c1">// never broadcast onto CAN.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">address</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NODE_STATUS_REQ_ADDR</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="cp">#endif</span>
-<span class="w">    </span><span class="c1">// A real DCS-BIOS export → data is flowing → CONNECTED (green solid). The reserved</span>
-<span class="w">    </span><span class="c1">// node-status poll above is excluded so it does not masquerade as live DCS data.</span>
-<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setLinkActive</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ControlPacket</span><span class="w"> </span><span class="n">pkt</span><span class="p">;</span>
-<span class="w">    </span><span class="n">pkt</span><span class="p">.</span><span class="n">controlId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">address</span><span class="p">;</span>
-<span class="w">    </span><span class="n">pkt</span><span class="p">.</span><span class="n">value</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">sendBatched</span><span class="p">(</span><span class="n">CAN_ID_CTRL_BCAST</span><span class="p">,</span><span class="w"> </span><span class="n">pkt</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="c1">// Binary search A4EC_INPUT_MAP (sorted ascending by cmdId) -&gt; entry, or nullptr.</span>
-<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">DcsBiosInputEntry</span><span class="o">*</span><span class="w"> </span><span class="nf">lookupDcsEntry</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">lo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">hi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">A4EC_INPUT_MAP_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">lo</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">hi</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">lo</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hi</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-<span class="w">        </span><span class="k">if</span><span class="w">      </span><span class="p">(</span><span class="n">A4EC_INPUT_MAP</span><span class="p">[</span><span class="n">mid</span><span class="p">].</span><span class="n">cmdId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">controlId</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">A4EC_INPUT_MAP</span><span class="p">[</span><span class="n">mid</span><span class="p">];</span>
-<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">A4EC_INPUT_MAP</span><span class="p">[</span><span class="n">mid</span><span class="p">].</span><span class="n">cmdId</span><span class="w"> </span><span class="o">&lt;</span><span class="w">  </span><span class="n">controlId</span><span class="p">)</span><span class="w">   </span><span class="n">lo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">        </span><span class="k">else</span><span class="w">                                                </span><span class="n">hi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cp">#ifdef PANELBRIDGE_TEST</span>
-<span class="c1">// Counts DCS-BIOS commands actually put on the wire — not drops, not unknown-controlId. A test</span>
-<span class="c1">// that only inspects the diag log cannot tell "routed" from "logged and discarded"; this lets one</span>
-<span class="c1">// assert the command was emitted.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_testDcsSends</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="cp">#endif</span>
-
-<span class="c1">// Resolve controlId -&gt; DCS-BIOS name and send it with the given arg string. The dispatch FORM</span>
-<span class="c1">// (the arg) is decided by the caller from the CAN frame the value arrived on (#147); the map</span>
-<span class="c1">// carries only the name.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">sendDcs</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">arg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DcsBiosInputEntry</span><span class="o">*</span><span class="w"> </span><span class="n">entry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lookupDcsEntry</span><span class="p">(</span><span class="n">controlId</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">entry</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] unknown DCS ctrl=0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">sendDcsBiosMessage</span><span class="p">(</span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
-<span class="cp">#ifdef PANELBRIDGE_TEST</span>
-<span class="w">    </span><span class="o">++</span><span class="n">_testDcsSends</span><span class="p">;</span>
-<span class="cp">#endif</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] DCS -&gt; </span><span class="se">\"</span><span class="s">"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"</span><span class="se">\"</span><span class="s"> </span><span class="se">\"</span><span class="s">"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="sc">'"'</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// ABS frame (canIdEvt): value is an absolute uint16 -&gt; set_state. Switches, selectors, pots.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchDcsInput</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span><span class="w">                                        </span><span class="c1">// "65535\0" + guard</span>
-<span class="w">    </span><span class="n">snprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span><span class="w"> </span><span class="s">"%u"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="n">sendDcs</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="c1">// REL frame (canIdEvtRel): value is a signed +-step -&gt; variable_step (e.g. "+3200").</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchDcsRel</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w">                                        </span><span class="c1">// "-32768\0" + guard</span>
-<span class="w">    </span><span class="n">snprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span><span class="w"> </span><span class="s">"%+d"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="kt">int16_t</span><span class="p">)</span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="n">sendDcs</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="c1">// DIR frame (canIdEvtDir): value is strictly +-1 -&gt; fixed_step (INC / DEC). Anything else is a</span>
-<span class="c1">// malformed slot -&gt; drop + log, so a corrupt value never turns into a real cockpit step.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchDcsDir</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int16_t</span><span class="p">)</span><span class="n">value</span><span class="p">;</span>
-<span class="w">    </span><span class="k">if</span><span class="w">      </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w">  </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">sendDcs</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="s">"INC"</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="n">sendDcs</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="s">"DEC"</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] bad dir ctrl=0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" val="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// ACTION frame (canIdEvtAction): value is a selector, not a magnitude -&gt; action (TOGGLE).</span>
-<span class="c1">// 0 is the only defined selector; anything else is a malformed slot -&gt; drop + log, so a corrupt</span>
-<span class="c1">// value never flips a real cockpit switch.</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchDcsAction</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">sendDcs</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="s">"TOGGLE"</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] bad action ctrl=0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" val="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchEvtSlot</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span><span class="w">                                            </span><span class="k">return</span><span class="p">;</span><span class="w">  </span><span class="c1">// null sentinel</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MIN</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">controlId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MAX</span><span class="p">)</span>
-<span class="w">        </span><span class="n">dispatchDcsInput</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MIN</span><span class="p">)</span>
-<span class="w">        </span><span class="n">sendHidFrame</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] drop ctrl=0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// Relative (canIdEvtRel) slot — DCS-routed only; value reinterpreted signed -&gt; %+d (variable_step).</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchRelSlot</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">                                    </span><span class="c1">// null sentinel</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MIN</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">controlId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MAX</span><span class="p">)</span>
-<span class="w">        </span><span class="n">dispatchDcsRel</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] drop rel ctrl=0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// Directional (canIdEvtDir) slot — DCS-routed only; value +-1 -&gt; INC/DEC (fixed_step).</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchDirSlot</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">                                    </span><span class="c1">// null sentinel</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MIN</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">controlId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MAX</span><span class="p">)</span>
-<span class="w">        </span><span class="n">dispatchDcsDir</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] drop dir ctrl=0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// Action (canIdEvtAction) slot — DCS-routed only; value 0 -&gt; TOGGLE (action).</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">dispatchActionSlot</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">                                    </span><span class="c1">// null sentinel</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">controlId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MIN</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">controlId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">CTRL_ID_DCS_MAX</span><span class="p">)</span>
-<span class="w">        </span><span class="n">dispatchDcsAction</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] drop action ctrl=0x"</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">HEX</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// Update liveness state and fire alive callback on dead/unseen → alive transition.</span>
-<span class="c1">// Returns true if this call caused a transition (caller responsible for SYNC_REQ).</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">markNodeAlive</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">idx</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">nodeId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">wasAlive</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">alive</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">wasDead</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">everSeen</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">alive</span><span class="p">;</span><span class="w">  </span><span class="c1">// timed-out, not just unseen</span>
-<span class="w">    </span><span class="n">_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">alive</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="n">_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">everSeen</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="n">_nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">lastSeenMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">wasAlive</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] node="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">nodeId</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" alive"</span><span class="p">));</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="c1">// A previously-dead node recovered — clear WARNING once none remain dead.</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">wasDead</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_deadCount</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">--</span><span class="n">_deadCount</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-<span class="w">            </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setWarning</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_cbAlive</span><span class="p">)</span><span class="w"> </span><span class="n">_cbAlive</span><span class="p">(</span><span class="n">nodeId</span><span class="p">);</span>
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">        </span><span class="n">emitNode</span><span class="p">(</span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span><span class="w">   </span><span class="c1">// push presence on dead/unseen → alive (#86)</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCanRx</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
-
-<span class="w">    </span><span class="c1">// HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdHb</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdHb</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">canId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">canIdHb</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">_nodes</span><span class="p">[</span><span class="n">nodeId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">].</span><span class="n">last</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span><span class="w">  </span><span class="c1">// cache health for #86 reporting</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">markNodeAlive</span><span class="p">(</span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">))</span><span class="w"> </span><span class="n">broadcastSyncReq</span><span class="p">();</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// HEALTH_1 – HEALTH_63: cache internal die temp + health/fault fields for host reporting (#213).</span>
-<span class="w">    </span><span class="c1">// Cache only — HB owns liveness/SYNC, so a health frame never triggers markNodeAlive.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdHealth</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdHealth</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">NodeHealthPayload</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">canId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">canIdHealth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
-<span class="w">            </span><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
-<span class="w">            </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">h</span><span class="p">));</span>
-<span class="w">            </span><span class="n">NodeState</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_nodes</span><span class="p">[</span><span class="n">nodeId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
-<span class="w">            </span><span class="n">ns</span><span class="p">.</span><span class="n">dieTempC</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">.</span><span class="n">dieTempC</span><span class="p">;</span>
-<span class="w">            </span><span class="n">ns</span><span class="p">.</span><span class="n">healthFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">.</span><span class="n">flags</span><span class="p">;</span>
-<span class="w">            </span><span class="n">ns</span><span class="p">.</span><span class="n">faultMask</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">.</span><span class="n">faultMask</span><span class="p">;</span>
-<span class="w">            </span><span class="n">ns</span><span class="p">.</span><span class="n">faultId</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">.</span><span class="n">faultId</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// EVT_1 – EVT_63: 8-byte ControlPacketPair, dispatch each non-null slot</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdEvt</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdEvt</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="n">ControlPacketPair</span><span class="w"> </span><span class="n">pair</span><span class="p">;</span>
-<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pair</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
-<span class="w">        </span><span class="n">dispatchEvtSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span>
-<span class="w">            </span><span class="n">dispatchEvtSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// EVT_REL_1 – EVT_REL_63: 8-byte ControlPacketPair; value reinterpreted signed -&gt; %+d (variable_step)</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdEvtRel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdEvtRel</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="n">ControlPacketPair</span><span class="w"> </span><span class="n">pair</span><span class="p">;</span>
-<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pair</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
-<span class="w">        </span><span class="n">dispatchRelSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span>
-<span class="w">            </span><span class="n">dispatchRelSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// EVT_DIR_1 – EVT_DIR_63: 8-byte ControlPacketPair; value +-1 -&gt; INC/DEC (fixed_step)</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdEvtDir</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdEvtDir</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="n">ControlPacketPair</span><span class="w"> </span><span class="n">pair</span><span class="p">;</span>
-<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pair</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
-<span class="w">        </span><span class="n">dispatchDirSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span>
-<span class="w">            </span><span class="n">dispatchDirSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// EVT_ACTION_1 – EVT_ACTION_63: 8-byte ControlPacketPair; value 0 -&gt; TOGGLE (action)</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdEvtAction</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdEvtAction</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="n">ControlPacketPair</span><span class="w"> </span><span class="n">pair</span><span class="p">;</span>
-<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pair</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
-<span class="w">        </span><span class="n">dispatchActionSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0x0000</span><span class="p">)</span>
-<span class="w">            </span><span class="n">dispatchActionSlot</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// ECHO_1 – ECHO_63: consume TEST_SEQ RTT response, log locally</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdEcho</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdEcho</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">seq</span><span class="p">;</span><span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">seq</span><span class="p">,</span><span class="w">    </span><span class="n">data</span><span class="p">,</span><span class="w">     </span><span class="mi">2</span><span class="p">);</span>
-<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">sentMs</span><span class="p">;</span><span class="w"> </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sentMs</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
-<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">rtt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sentMs</span><span class="p">;</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] ECHO node="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">canId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">canIdEcho</span><span class="p">(</span><span class="mi">0</span><span class="p">)));</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" seq="</span><span class="p">));</span><span class="w">              </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">seq</span><span class="p">);</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" rtt="</span><span class="p">));</span><span class="w">              </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">rtt</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"ms"</span><span class="p">));</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// READY_1 – READY_63: node boot-complete — mark alive, always broadcast SYNC_REQ.</span>
-<span class="w">    </span><span class="c1">// SYNC_REQ is unconditional: READY signals a fresh boot regardless of prior state.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">canIdReady</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">canId</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">canIdReady</span><span class="p">(</span><span class="n">MAX_NODE_ID</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">canId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">canIdReady</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">            </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] READY node="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">nodeId</span><span class="p">);</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="n">markNodeAlive</span><span class="p">(</span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="n">now</span><span class="p">);</span>
-<span class="w">        </span><span class="n">broadcastSyncReq</span><span class="p">();</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="c1">// All other IDs discarded silently</span>
-<span class="p">}</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkNodeTimeouts</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_NODE_ID</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">alive</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
-<span class="w">        </span><span class="c1">// Signed elapsed: if `now` is (slightly) behind lastSeenMs — e.g. a millisecond ticked</span>
-<span class="w">        </span><span class="c1">// between sampling `now` and onCanRx stamping lastSeenMs during the same loop — the unsigned</span>
-<span class="w">        </span><span class="c1">// difference would wrap to ~4.29e9 and trip a false timeout. Cast to signed so a small</span>
-<span class="w">        </span><span class="c1">// negative reads as "not yet elapsed", not "long overdue" (#225).</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="kt">int32_t</span><span class="p">)(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">lastSeenMs</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)</span><span class="n">HB_TIMEOUT_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">alive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">            </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">                </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] node="</span><span class="p">));</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">nodeId</span><span class="p">);</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">" dead"</span><span class="p">));</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">_deadCount</span><span class="o">++</span><span class="p">;</span><span class="w">                   </span><span class="c1">// a tracked node died → WARNING (amber)</span>
-<span class="w">            </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setWarning</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_cbDead</span><span class="p">)</span><span class="w"> </span><span class="n">_cbDead</span><span class="p">(</span><span class="n">nodeId</span><span class="p">);</span>
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">            </span><span class="n">emitNode</span><span class="p">(</span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span><span class="w">   </span><span class="c1">// push removal on alive → dead (#86)</span>
-<span class="cp">#endif</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onModelTimeChange</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">'.'</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="sc">'0'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="sc">'9'</span><span class="p">)</span>
-<span class="w">            </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">'0'</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_lastModelTimeSec</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">_lastModelTimeSec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span><span class="p">;</span><span class="w">  </span><span class="c1">// seed — no SYNC_REQ on first value</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sec</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">_lastModelTimeSec</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">"[BRIDGE] DCS session change — SYNC_REQ"</span><span class="p">);</span>
-<span class="w">        </span><span class="n">broadcastSyncReq</span><span class="p">();</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="n">_lastModelTimeSec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c1">// DCS-BIOS export listener — intercepts 0x8000–0x86FF and batches to CTRL_BCAST.</span>
-<span class="c1">// ExportStreamListener::firstExportStreamListener (Protocol.cpp) is zero-initialized</span>
-<span class="c1">// before any constructors run, so file-scope registration is safe.</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">BridgeExportListener</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">ExportStreamListener</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">BridgeExportListener</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">ExportStreamListener</span><span class="p">(</span><span class="mh">0x8000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x86FF</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onDcsBiosWrite</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">handleDcsBiosExport</span><span class="p">((</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">data</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">};</span>
-
-<span class="k">static</span><span class="w"> </span><span class="n">BridgeExportListener</span><span class="w">     </span><span class="n">_exportListener</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">StringBuffer</span><span class="o">&lt;</span><span class="mi">5</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_modelTimeBuf</span><span class="p">(</span><span class="n">CommonData_MOD_TIME_A</span><span class="p">,</span><span class="w"> </span><span class="n">onModelTimeChange</span><span class="p">);</span>
-
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="c1">// Host roster request (#86): the client writes NODE_STATUS_REQ_ADDR on the DCS-BIOS</span>
-<span class="c1">// export stream; PanelBridge replies with the full roster. handleDcsBiosExport()</span>
-<span class="c1">// drops this address so it is never broadcast onto CAN.</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">NodeStatusReqListener</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">ExportStreamListener</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">NodeStatusReqListener</span><span class="p">()</span>
-<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">DcsBios</span><span class="o">::</span><span class="n">ExportStreamListener</span><span class="p">(</span><span class="n">NODE_STATUS_REQ_ADDR</span><span class="p">,</span><span class="w"> </span><span class="n">NODE_STATUS_REQ_ADDR</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onDcsBiosWrite</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">emitAllNodes</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
-<span class="p">};</span>
-<span class="k">static</span><span class="w"> </span><span class="n">NodeStatusReqListener</span><span class="w"> </span><span class="n">_nodeStatusReqListener</span><span class="p">;</span>
-<span class="cp">#endif</span>
-
-<span class="p">}</span><span class="w"> </span><span class="c1">// anonymous namespace</span>
-
-<span class="k">namespace</span><span class="w"> </span><span class="nn">PanelBridge</span><span class="w"> </span><span class="p">{</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">onNodeAlive</span><span class="p">(</span><span class="n">NodeCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_cbAlive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cb</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">onNodeDead</span><span class="p">(</span><span class="n">NodeCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">)</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">_cbDead</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">cb</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">begin</span><span class="p">();</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"=============================="</span><span class="p">));</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"  PanelBridge  NODE_ID=0"</span><span class="p">));</span>
-<span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"=============================="</span><span class="p">));</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">250000</span><span class="p">);</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onStatusChange</span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">onCanStatus</span><span class="p">);</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">filterAcceptAll</span><span class="p">();</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onReceive</span><span class="p">(</span><span class="n">onCanRx</span><span class="p">);</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">start</span><span class="p">();</span>
-<span class="w">    </span><span class="n">broadcastSyncReq</span><span class="p">();</span>
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">    </span><span class="n">emitAllNodes</span><span class="p">();</span><span class="w">   </span><span class="c1">// seed the host with the current roster (empty at cold boot) (#86)</span>
-<span class="cp">#endif</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">tick</span><span class="p">();</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">drain</span><span class="p">();</span>
-<span class="w">    </span><span class="c1">// Sample `now` AFTER draining CAN RX. onCanRx (called from drain) stamps each node's</span>
-<span class="w">    </span><span class="c1">// lastSeenMs with its own millis(); if `now` were sampled before drain, a millisecond ticking</span>
-<span class="w">    </span><span class="c1">// over during drain leaves now &lt; lastSeenMs, and the unsigned `now - lastSeenMs` in</span>
-<span class="w">    </span><span class="c1">// checkNodeTimeouts underflows to ~4.29e9 &gt; HB_TIMEOUT_MS — a false one-loop "dead" flap on a</span>
-<span class="w">    </span><span class="c1">// node that is transmitting normally (#225).</span>
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
-<span class="w">    </span><span class="n">checkNodeTimeouts</span><span class="p">(</span><span class="n">now</span><span class="p">);</span>
-
-<span class="w">    </span><span class="c1">// Master heartbeat (HB_0) every 500 ms. Unlike CTRL_BCAST (which only moves when a</span>
-<span class="w">    </span><span class="c1">// DCS export changes), this is an unconditional liveness beacon so PanelGroup nodes</span>
-<span class="w">    </span><span class="c1">// can detect master loss even when the sim is idle/paused.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_lastMasterHbMs</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MASTER_HB_PERIOD_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">_lastMasterHbMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
-<span class="w">        </span><span class="n">HeartbeatPayload</span><span class="w"> </span><span class="n">hb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeHeartbeatPayload</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
-<span class="w">        </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">canIdHb</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hb</span><span class="p">),</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">hb</span><span class="p">));</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal die temp</span>
-<span class="w">    </span><span class="c1">// + aggregated node fault alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0).</span>
-<span class="w">    </span><span class="c1">// The bridge is a node too; its own FaultSources (e.g. a future host-link watchdog) roll up here.</span>
-<span class="cp">#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_lastHealthMs</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">_lastHealthMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
-<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">faultDetail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span><span class="w">   </span><span class="c1">// never null after aggregateFaults()</span>
-<span class="w">        </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">fault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">aggregateFaults</span><span class="p">(</span><span class="o">&amp;</span><span class="n">faultDetail</span><span class="p">);</span>
-<span class="w">        </span><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeNodeHealthPayload</span><span class="p">(</span>
-<span class="w">            </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">readDieTempC</span><span class="p">(),</span><span class="w"> </span><span class="n">fault</span><span class="p">);</span>
-<span class="w">        </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">canIdHealth</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">h</span><span class="p">));</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">logNodeFaultEdge</span><span class="p">(</span><span class="s">"BRIDGE"</span><span class="p">,</span><span class="w"> </span><span class="n">fault</span><span class="p">,</span><span class="w"> </span><span class="n">faultDetail</span><span class="p">);</span><span class="w">  </span><span class="c1">// edge-log, DiagSerial only (#163)</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="cp">#endif</span>
-
-<span class="w">    </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">diag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">diagSerial</span><span class="p">();</span>
-<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">diag</span><span class="p">.</span><span class="n">available</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="n">diag</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'T'</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
-<span class="w">        </span><span class="n">_testSeqNum</span><span class="o">++</span><span class="p">;</span>
-<span class="w">        </span><span class="n">_testSeqSentMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
-<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">payload</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
-<span class="w">        </span><span class="n">payload</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">_testSeqNum</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">);</span>
-<span class="w">        </span><span class="n">payload</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">_testSeqNum</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
-<span class="w">        </span><span class="n">payload</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">_testSeqSentMs</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">);</span>
-<span class="w">        </span><span class="n">payload</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)((</span><span class="n">_testSeqSentMs</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w">  </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">);</span>
-<span class="w">        </span><span class="n">payload</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)((</span><span class="n">_testSeqSentMs</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">);</span>
-<span class="w">        </span><span class="n">payload</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)((</span><span class="n">_testSeqSentMs</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">);</span>
-<span class="w">        </span><span class="c1">// payload[6..7] = reserved = 0</span>
-<span class="w">        </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">CAN_ID_TEST_SEQ</span><span class="p">,</span><span class="w"> </span><span class="n">payload</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STM32Board</span><span class="o">::</span><span class="n">isDebug</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">diag</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">"[BRIDGE] TEST_SEQ seq="</span><span class="p">));</span><span class="w"> </span><span class="n">diag</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">_testSeqNum</span><span class="p">);</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace PanelBridge</span>
-
-<span class="cp">#ifdef PANELBRIDGE_TEST</span>
-<span class="k">namespace</span><span class="w"> </span><span class="nn">PanelBridge</span><span class="w"> </span><span class="p">{</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchEvt</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">dispatchEvtSlot</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchRel</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">dispatchRelSlot</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchDir</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">dispatchDirSlot</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchAction</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">dispatchActionSlot</span><span class="p">(</span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testFeedCanFrame</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">onCanRx</span><span class="p">(</span><span class="n">canId</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">testDcsSendCount</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">_testDcsSends</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testHandleExport</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">handleDcsBiosExport</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">testFeedHeartbeat</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uptime</span><span class="p">,</span>
-<span class="w">                       </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">rxCount</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">esr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">HeartbeatPayload</span><span class="w"> </span><span class="n">hb</span><span class="p">{</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="n">uptime</span><span class="p">,</span><span class="w"> </span><span class="n">rxCount</span><span class="p">,</span><span class="w"> </span><span class="n">esr</span><span class="w"> </span><span class="p">};</span>
-<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">_nodes</span><span class="p">[</span><span class="n">nodeId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">].</span><span class="n">last</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">hb</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">hb</span><span class="p">));</span>
-<span class="w">    </span><span class="n">markNodeAlive</span><span class="p">(</span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="n">millis</span><span class="p">());</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testFeedHealth</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">dieTempC</span><span class="p">,</span>
-<span class="w">                    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">hFlags</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">faultMask</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">faultId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// Mirrors the HEALTH_n branch of onCanRx: cache only, no liveness change.</span>
-<span class="w">    </span><span class="n">NodeState</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_nodes</span><span class="p">[</span><span class="n">nodeId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
-<span class="w">    </span><span class="n">ns</span><span class="p">.</span><span class="n">dieTempC</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">dieTempC</span><span class="p">;</span>
-<span class="w">    </span><span class="n">ns</span><span class="p">.</span><span class="n">healthFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hFlags</span><span class="p">;</span>
-<span class="w">    </span><span class="n">ns</span><span class="p">.</span><span class="n">faultMask</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">faultMask</span><span class="p">;</span>
-<span class="w">    </span><span class="n">ns</span><span class="p">.</span><span class="n">faultId</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">faultId</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testRequestNodeStatus</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">emitAllNodes</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">testCheckTimeouts</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">checkNodeTimeouts</span><span class="p">(</span><span class="n">now</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
-<span class="cp">#endif </span><span class="c1">// PANELBRIDGE_NODE_STATUS</span>
-
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace PanelBridge</span>
-<span class="cp">#endif </span><span class="c1">// PANELBRIDGE_TEST</span>
-
-<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+<pre><code class="language-C++">// DcsBios.h defines tryToSendDcsBiosMessage only under DCSBIOS_DEFAULT_SERIAL.
+// Pre-declare it so the inline sendDcsBiosMessage() in DcsBios.h compiles without the flag.
+// The definition is provided by the sketch TU (compiled with -DDCSBIOS_DEFAULT_SERIAL).
+namespace DcsBios {
+    bool tryToSendDcsBiosMessage(const char* msg, const char* arg);
+}
+
+// Include DcsBios.h WITHOUT DCSBIOS_DEFAULT_SERIAL to avoid ODR violations.
+// The sketch TU owns ProtocolParser, DcsBios::setup(), DcsBios::loop(), and the definition
+// of tryToSendDcsBiosMessage(). This TU only needs the types and constants.
+#ifdef DCSBIOS_DEFAULT_SERIAL
+#  undef DCSBIOS_DEFAULT_SERIAL
+#  define _PBRIDGE_RESTORE_DCSBIOS
+#endif
+#include &lt;DcsBios.h&gt;
+#ifdef _PBRIDGE_RESTORE_DCSBIOS
+#  define DCSBIOS_DEFAULT_SERIAL
+#  undef _PBRIDGE_RESTORE_DCSBIOS
+#endif
+
+#ifdef ARDUINO_ARCH_STM32
+
+#include &quot;PanelBridge.h&quot;
+#include &lt;CANProtocol.h&gt;   // CAN types + NodeHealthPayload
+#include &lt;NodeStatus.h&gt;    // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
+#include &lt;STM32Board.h&gt;
+#include &lt;A4EC_InputMap.h&gt;
+#include &lt;string.h&gt;
+
+namespace {
+
+// ── Node tracking ─────────────────────────────────────────────────────────────
+
+static constexpr uint8_t  MAX_NODE_ID         = 63;
+static constexpr uint32_t HB_TIMEOUT_MS       = 3000;
+static constexpr uint32_t MASTER_HB_PERIOD_MS = 500;   // HB_0 master heartbeat cadence
+
+struct NodeState {
+    bool     alive;
+    bool     everSeen;
+    uint32_t lastSeenMs;
+#ifdef PANELBRIDGE_NODE_STATUS
+    HeartbeatPayload last;          // last HB payload, surfaced to the host (#86)
+    // Cached NodeHealthPayload fields from the node's last HEALTH_n frame (#221 contract):
+    int8_t   dieTempC    = INT8_MIN; // internal die temp °C (INT8_MIN = unseen) — #213
+    uint8_t  healthFlags = 0;        // overheat (#213) / degraded (#163) bits
+    uint8_t  faultMask   = 0;        // fault source/domain bitmap — reserved #163
+    uint8_t  faultId     = 0;        // NodeFaultCode (NodeStatus.h) — #163
+#endif
+};
+
+static NodeState      _nodes[MAX_NODE_ID] = {};   // index = nodeId - 1
+static void (*_cbAlive)(uint8_t)          = nullptr;
+static void (*_cbDead)(uint8_t)           = nullptr;
+static uint8_t        _deadCount          = 0;    // tracked nodes currently timed-out (drives WARNING)
+static uint32_t       _lastMasterHbMs     = 0;    // millis() of last HB_0 transmit
+static uint32_t       _lastHealthMs       = 0;    // millis() of last HEALTH_0 transmit (#213)
+
+#ifdef PANELBRIDGE_NODE_STATUS
+// ── Node-status reporting (#86) ──────────────────────────────────────────────
+// Surface node presence + health to the host (OpenSkyhawk Client) as DCS-BIOS
+// command messages on a reserved control name. Owned entirely by PanelBridge;
+// SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.
+
+// Emit one node's status (proto v2, 26 hex chars):
+//   _NODE_STATUS &lt;nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId&gt;
+// The last four come from the node's HEALTH_n frame (#221 contract). dieTempC 80 = not-yet-seen;
+// hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163); faultMask stays 0
+// (reserved for future fault-domain bits).
+static void emitNode(uint8_t nodeId, bool present) {
+    const NodeState&amp; ns = _nodes[nodeId - 1];
+    const HeartbeatPayload&amp; hb = ns.last;
+    char hex[27];
+    snprintf(hex, sizeof(hex), &quot;%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X&quot;,
+             (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
+             (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr,
+             (unsigned)(uint8_t)ns.dieTempC,
+             (unsigned)ns.healthFlags, (unsigned)ns.faultMask, (unsigned)ns.faultId);
+    DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
+}
+
+// Emit the full roster (request response / boot seed): one _NODE_STATUS per alive
+// node, then _NODE_STATUS_END &lt;count&gt; so the host knows the burst is complete and
+// can reconcile (prune nodes absent from it). count=0 = no panels connected.
+static void emitAllNodes() {
+    uint8_t count = 0;
+    for (uint8_t i = 0; i &lt; MAX_NODE_ID; i++)
+        if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
+    char arg[4];
+    snprintf(arg, sizeof(arg), &quot;%u&quot;, (unsigned)count);
+    DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
+}
+#endif // PANELBRIDGE_NODE_STATUS
+
+// ── TEST_SEQ state ─────────────────────────────────────────────────────────────
+
+static uint16_t _testSeqNum    = 0;
+static uint32_t _testSeqSentMs = 0;
+
+// ── DCS session change ─────────────────────────────────────────────────────────
+
+static int32_t _lastModelTimeSec = -1;  // -1 = unseeded
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+static void broadcastSyncReq() {
+    static const uint8_t empty[1] = {};
+    CANProtocol::send(CAN_ID_SYNC_REQ, empty, 0);
+    STM32Board::log(&quot;[BRIDGE] SYNC_REQ broadcast&quot;);
+}
+
+static void sendHidFrame(uint16_t controlId, uint16_t value) {
+    uint8_t frame[6] = {
+        0xAA, 0x55,
+        (uint8_t)(controlId &amp; 0xFF), (uint8_t)(controlId &gt;&gt; 8),
+        (uint8_t)(value     &amp; 0xFF), (uint8_t)(value     &gt;&gt; 8)
+    };
+    Serial.write(frame, 6);
+}
+
+// Internal helper called by BridgeExportListener — separated for testability.
+void handleDcsBiosExport(uint16_t address, uint16_t value) {
+#ifdef PANELBRIDGE_NODE_STATUS
+    // Reserved: the host's node-status request — handled by NodeStatusReqListener,
+    // never broadcast onto CAN.
+    if (address == NODE_STATUS_REQ_ADDR) return;
+#endif
+    // A real DCS-BIOS export → data is flowing → CONNECTED (green solid). The reserved
+    // node-status poll above is excluded so it does not masquerade as live DCS data.
+    STM32Board::setLinkActive(true);
+    ControlPacket pkt;
+    pkt.controlId = address;
+    pkt.value     = value;
+    CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, pkt);
+}
+
+// Binary search A4EC_INPUT_MAP (sorted ascending by cmdId) -&gt; entry, or nullptr.
+static const DcsBiosInputEntry* lookupDcsEntry(uint16_t controlId) {
+    int lo = 0, hi = (int)A4EC_INPUT_MAP_SIZE - 1;
+    while (lo &lt;= hi) {
+        int mid = (lo + hi) / 2;
+        if      (A4EC_INPUT_MAP[mid].cmdId == controlId) return &amp;A4EC_INPUT_MAP[mid];
+        else if (A4EC_INPUT_MAP[mid].cmdId &lt;  controlId)   lo = mid + 1;
+        else                                                hi = mid - 1;
+    }
+    return nullptr;
+}
+
+#ifdef PANELBRIDGE_TEST
+// Counts DCS-BIOS commands actually put on the wire — not drops, not unknown-controlId. A test
+// that only inspects the diag log cannot tell &quot;routed&quot; from &quot;logged and discarded&quot;; this lets one
+// assert the command was emitted.
+static uint32_t _testDcsSends = 0;
+#endif
+
+// Resolve controlId -&gt; DCS-BIOS name and send it with the given arg string. The dispatch FORM
+// (the arg) is decided by the caller from the CAN frame the value arrived on (#147); the map
+// carries only the name.
+static void sendDcs(uint16_t controlId, const char* arg) {
+    const DcsBiosInputEntry* entry = lookupDcsEntry(controlId);
+    if (!entry) {
+        if (STM32Board::isDebug()) {
+            auto&amp; d = STM32Board::diagSerial();
+            d.print(F(&quot;[BRIDGE] unknown DCS ctrl=0x&quot;)); d.println(controlId, HEX);
+        }
+        return;
+    }
+    DcsBios::sendDcsBiosMessage(entry-&gt;name, arg);
+#ifdef PANELBRIDGE_TEST
+    ++_testDcsSends;
+#endif
+    if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] DCS -&gt; \&quot;&quot;)); d.print(entry-&gt;name);
+        d.print(F(&quot;\&quot; \&quot;&quot;)); d.print(arg); d.println('&quot;');
+    }
+}
+
+// ABS frame (canIdEvt): value is an absolute uint16 -&gt; set_state. Switches, selectors, pots.
+static void dispatchDcsInput(uint16_t controlId, uint16_t value) {
+    char buf[7];                                        // &quot;65535\0&quot; + guard
+    snprintf(buf, sizeof(buf), &quot;%u&quot;, (unsigned)value);
+    sendDcs(controlId, buf);
+}
+
+// REL frame (canIdEvtRel): value is a signed +-step -&gt; variable_step (e.g. &quot;+3200&quot;).
+static void dispatchDcsRel(uint16_t controlId, uint16_t value) {
+    char buf[8];                                        // &quot;-32768\0&quot; + guard
+    snprintf(buf, sizeof(buf), &quot;%+d&quot;, (int)(int16_t)value);
+    sendDcs(controlId, buf);
+}
+
+// DIR frame (canIdEvtDir): value is strictly +-1 -&gt; fixed_step (INC / DEC). Anything else is a
+// malformed slot -&gt; drop + log, so a corrupt value never turns into a real cockpit step.
+static void dispatchDcsDir(uint16_t controlId, uint16_t value) {
+    const int16_t v = (int16_t)value;
+    if      (v ==  1) sendDcs(controlId, &quot;INC&quot;);
+    else if (v == -1) sendDcs(controlId, &quot;DEC&quot;);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] bad dir ctrl=0x&quot;)); d.print(controlId, HEX);
+        d.print(F(&quot; val=&quot;)); d.println(v);
+    }
+}
+
+// ACTION frame (canIdEvtAction): value is a selector, not a magnitude -&gt; action (TOGGLE).
+// 0 is the only defined selector; anything else is a malformed slot -&gt; drop + log, so a corrupt
+// value never flips a real cockpit switch.
+static void dispatchDcsAction(uint16_t controlId, uint16_t value) {
+    if (value == 0) sendDcs(controlId, &quot;TOGGLE&quot;);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] bad action ctrl=0x&quot;)); d.print(controlId, HEX);
+        d.print(F(&quot; val=&quot;)); d.println(value);
+    }
+}
+
+static void dispatchEvtSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000)                                            return;  // null sentinel
+    if (controlId &gt;= CTRL_ID_DCS_MIN &amp;&amp; controlId &lt;= CTRL_ID_DCS_MAX)
+        dispatchDcsInput(controlId, value);
+    else if (controlId &lt; CTRL_ID_DCS_MIN)
+        sendHidFrame(controlId, value);
+    else {
+        if (STM32Board::isDebug()) {
+            auto&amp; d = STM32Board::diagSerial();
+            d.print(F(&quot;[BRIDGE] drop ctrl=0x&quot;)); d.println(controlId, HEX);
+        }
+    }
+}
+
+// Relative (canIdEvtRel) slot — DCS-routed only; value reinterpreted signed -&gt; %+d (variable_step).
+static void dispatchRelSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId &gt;= CTRL_ID_DCS_MIN &amp;&amp; controlId &lt;= CTRL_ID_DCS_MAX)
+        dispatchDcsRel(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] drop rel ctrl=0x&quot;)); d.println(controlId, HEX);
+    }
+}
+
+// Directional (canIdEvtDir) slot — DCS-routed only; value +-1 -&gt; INC/DEC (fixed_step).
+static void dispatchDirSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId &gt;= CTRL_ID_DCS_MIN &amp;&amp; controlId &lt;= CTRL_ID_DCS_MAX)
+        dispatchDcsDir(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] drop dir ctrl=0x&quot;)); d.println(controlId, HEX);
+    }
+}
+
+// Action (canIdEvtAction) slot — DCS-routed only; value 0 -&gt; TOGGLE (action).
+static void dispatchActionSlot(uint16_t controlId, uint16_t value) {
+    if (controlId == 0x0000) return;                                    // null sentinel
+    if (controlId &gt;= CTRL_ID_DCS_MIN &amp;&amp; controlId &lt;= CTRL_ID_DCS_MAX)
+        dispatchDcsAction(controlId, value);
+    else if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] drop action ctrl=0x&quot;)); d.println(controlId, HEX);
+    }
+}
+
+// Update liveness state and fire alive callback on dead/unseen → alive transition.
+// Returns true if this call caused a transition (caller responsible for SYNC_REQ).
+static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
+    uint8_t idx     = nodeId - 1;
+    bool wasAlive   = _nodes[idx].alive;
+    bool wasDead    = _nodes[idx].everSeen &amp;&amp; !_nodes[idx].alive;  // timed-out, not just unseen
+    _nodes[idx].alive      = true;
+    _nodes[idx].everSeen   = true;
+    _nodes[idx].lastSeenMs = now;
+    if (!wasAlive) {
+        if (STM32Board::isDebug()) {
+            auto&amp; d = STM32Board::diagSerial();
+            d.print(F(&quot;[BRIDGE] node=&quot;)); d.print(nodeId); d.println(F(&quot; alive&quot;));
+        }
+        // A previously-dead node recovered — clear WARNING once none remain dead.
+        if (wasDead &amp;&amp; _deadCount &gt; 0 &amp;&amp; --_deadCount == 0)
+            STM32Board::setWarning(false);
+        if (_cbAlive) _cbAlive(nodeId);
+#ifdef PANELBRIDGE_NODE_STATUS
+        emitNode(nodeId, true);   // push presence on dead/unseen → alive (#86)
+#endif
+        return true;
+    }
+    return false;
+}
+
+static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
+    uint32_t now = millis();
+
+    // HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition
+    if (canId &gt;= canIdHb(1) &amp;&amp; canId &lt;= canIdHb(MAX_NODE_ID)) {
+        uint8_t nodeId = (uint8_t)(canId - canIdHb(0));
+#ifdef PANELBRIDGE_NODE_STATUS
+        if (len &gt;= 8) memcpy(&amp;_nodes[nodeId - 1].last, data, 8);  // cache health for #86 reporting
+#endif
+        if (markNodeAlive(nodeId, now)) broadcastSyncReq();
+        return;
+    }
+
+    // HEALTH_1 – HEALTH_63: cache internal die temp + health/fault fields for host reporting (#213).
+    // Cache only — HB owns liveness/SYNC, so a health frame never triggers markNodeAlive.
+    if (canId &gt;= canIdHealth(1) &amp;&amp; canId &lt;= canIdHealth(MAX_NODE_ID)) {
+#ifdef PANELBRIDGE_NODE_STATUS
+        if (len &gt;= sizeof(NodeHealthPayload)) {
+            uint8_t nodeId = (uint8_t)(canId - canIdHealth(0));
+            NodeHealthPayload h;
+            memcpy(&amp;h, data, sizeof(h));
+            NodeState&amp; ns = _nodes[nodeId - 1];
+            ns.dieTempC    = h.dieTempC;
+            ns.healthFlags = h.flags;
+            ns.faultMask   = h.faultMask;
+            ns.faultId     = h.faultId;
+        }
+#endif
+        return;
+    }
+
+    // EVT_1 – EVT_63: 8-byte ControlPacketPair, dispatch each non-null slot
+    if (canId &gt;= canIdEvt(1) &amp;&amp; canId &lt;= canIdEvt(MAX_NODE_ID)) {
+        if (len &lt; 8) return;
+        ControlPacketPair pair;
+        memcpy(&amp;pair, data, 8);
+        dispatchEvtSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchEvtSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_REL_1 – EVT_REL_63: 8-byte ControlPacketPair; value reinterpreted signed -&gt; %+d (variable_step)
+    if (canId &gt;= canIdEvtRel(1) &amp;&amp; canId &lt;= canIdEvtRel(MAX_NODE_ID)) {
+        if (len &lt; 8) return;
+        ControlPacketPair pair;
+        memcpy(&amp;pair, data, 8);
+        dispatchRelSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchRelSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_DIR_1 – EVT_DIR_63: 8-byte ControlPacketPair; value +-1 -&gt; INC/DEC (fixed_step)
+    if (canId &gt;= canIdEvtDir(1) &amp;&amp; canId &lt;= canIdEvtDir(MAX_NODE_ID)) {
+        if (len &lt; 8) return;
+        ControlPacketPair pair;
+        memcpy(&amp;pair, data, 8);
+        dispatchDirSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchDirSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // EVT_ACTION_1 – EVT_ACTION_63: 8-byte ControlPacketPair; value 0 -&gt; TOGGLE (action)
+    if (canId &gt;= canIdEvtAction(1) &amp;&amp; canId &lt;= canIdEvtAction(MAX_NODE_ID)) {
+        if (len &lt; 8) return;
+        ControlPacketPair pair;
+        memcpy(&amp;pair, data, 8);
+        dispatchActionSlot(pair.a.controlId, pair.a.value);
+        if (pair.b.controlId != 0x0000)
+            dispatchActionSlot(pair.b.controlId, pair.b.value);
+        return;
+    }
+
+    // ECHO_1 – ECHO_63: consume TEST_SEQ RTT response, log locally
+    if (canId &gt;= canIdEcho(1) &amp;&amp; canId &lt;= canIdEcho(MAX_NODE_ID)) {
+        if (!STM32Board::isDebug() || len &lt; 8) return;
+        uint16_t seq;    memcpy(&amp;seq,    data,     2);
+        uint32_t sentMs; memcpy(&amp;sentMs, data + 2, 4);
+        uint32_t rtt = now - sentMs;
+        auto&amp; d = STM32Board::diagSerial();
+        d.print(F(&quot;[BRIDGE] ECHO node=&quot;)); d.print((uint8_t)(canId - canIdEcho(0)));
+        d.print(F(&quot; seq=&quot;));              d.print(seq);
+        d.print(F(&quot; rtt=&quot;));              d.print(rtt); d.println(F(&quot;ms&quot;));
+        return;
+    }
+
+    // READY_1 – READY_63: node boot-complete — mark alive, always broadcast SYNC_REQ.
+    // SYNC_REQ is unconditional: READY signals a fresh boot regardless of prior state.
+    if (canId &gt;= canIdReady(1) &amp;&amp; canId &lt;= canIdReady(MAX_NODE_ID)) {
+        uint8_t nodeId = (uint8_t)(canId - canIdReady(0));
+        if (STM32Board::isDebug()) {
+            auto&amp; d = STM32Board::diagSerial();
+            d.print(F(&quot;[BRIDGE] READY node=&quot;)); d.println(nodeId);
+        }
+        markNodeAlive(nodeId, now);
+        broadcastSyncReq();
+        return;
+    }
+    // All other IDs discarded silently
+}
+
+static void checkNodeTimeouts(uint32_t now) {
+    for (uint8_t i = 0; i &lt; MAX_NODE_ID; i++) {
+        if (!_nodes[i].alive) continue;
+        // Signed elapsed: if `now` is (slightly) behind lastSeenMs — e.g. a millisecond ticked
+        // between sampling `now` and onCanRx stamping lastSeenMs during the same loop — the unsigned
+        // difference would wrap to ~4.29e9 and trip a false timeout. Cast to signed so a small
+        // negative reads as &quot;not yet elapsed&quot;, not &quot;long overdue&quot; (#225).
+        if ((int32_t)(now - _nodes[i].lastSeenMs) &gt; (int32_t)HB_TIMEOUT_MS) {
+            _nodes[i].alive = false;
+            uint8_t nodeId  = i + 1;
+            if (STM32Board::isDebug()) {
+                auto&amp; d = STM32Board::diagSerial();
+                d.print(F(&quot;[BRIDGE] node=&quot;)); d.print(nodeId); d.println(F(&quot; dead&quot;));
+            }
+            _deadCount++;                   // a tracked node died → WARNING (amber)
+            STM32Board::setWarning(true);
+            if (_cbDead) _cbDead(nodeId);
+#ifdef PANELBRIDGE_NODE_STATUS
+            emitNode(nodeId, false);   // push removal on alive → dead (#86)
+#endif
+        }
+    }
+}
+
+static void onModelTimeChange(char* value) {
+    int32_t sec = 0;
+    for (uint8_t i = 0; i &lt; 5 &amp;&amp; value[i] != '\0'; i++) {
+        if (value[i] == '.') break;
+        if (value[i] &gt;= '0' &amp;&amp; value[i] &lt;= '9')
+            sec = sec * 10 + (value[i] - '0');
+    }
+    if (_lastModelTimeSec &lt; 0) {
+        _lastModelTimeSec = sec;  // seed — no SYNC_REQ on first value
+        return;
+    }
+    if (sec &lt; _lastModelTimeSec) {
+        STM32Board::log(&quot;[BRIDGE] DCS session change — SYNC_REQ&quot;);
+        broadcastSyncReq();
+    }
+    _lastModelTimeSec = sec;
+}
+
+// DCS-BIOS export listener — intercepts 0x8000–0x86FF and batches to CTRL_BCAST.
+// ExportStreamListener::firstExportStreamListener (Protocol.cpp) is zero-initialized
+// before any constructors run, so file-scope registration is safe.
+class BridgeExportListener : public DcsBios::ExportStreamListener {
+public:
+    BridgeExportListener() : DcsBios::ExportStreamListener(0x8000, 0x86FF) {}
+    void onDcsBiosWrite(unsigned int address, unsigned int data) override {
+        handleDcsBiosExport((uint16_t)address, (uint16_t)data);
+    }
+};
+
+static BridgeExportListener     _exportListener;
+static DcsBios::StringBuffer&lt;5&gt; _modelTimeBuf(CommonData_MOD_TIME_A, onModelTimeChange);
+
+#ifdef PANELBRIDGE_NODE_STATUS
+// Host roster request (#86): the client writes NODE_STATUS_REQ_ADDR on the DCS-BIOS
+// export stream; PanelBridge replies with the full roster. handleDcsBiosExport()
+// drops this address so it is never broadcast onto CAN.
+class NodeStatusReqListener : public DcsBios::ExportStreamListener {
+public:
+    NodeStatusReqListener()
+        : DcsBios::ExportStreamListener(NODE_STATUS_REQ_ADDR, NODE_STATUS_REQ_ADDR) {}
+    void onDcsBiosWrite(unsigned int, unsigned int) override { emitAllNodes(); }
+};
+static NodeStatusReqListener _nodeStatusReqListener;
+#endif
+
+} // anonymous namespace
+
+namespace PanelBridge {
+
+void onNodeAlive(NodeCallback cb) { _cbAlive = cb; }
+void onNodeDead(NodeCallback cb)  { _cbDead  = cb; }
+
+void setup() {
+    STM32Board::begin();
+    if (STM32Board::isDebug()) {
+        auto&amp; d = STM32Board::diagSerial();
+        d.println(F(&quot;==============================&quot;));
+        d.println(F(&quot;  PanelBridge  NODE_ID=0&quot;));
+        d.println(F(&quot;==============================&quot;));
+    }
+    Serial.begin(250000);
+    CANProtocol::onStatusChange(STM32Board::onCanStatus);
+    CANProtocol::filterAcceptAll();
+    CANProtocol::onReceive(onCanRx);
+    CANProtocol::start();
+    broadcastSyncReq();
+#ifdef PANELBRIDGE_NODE_STATUS
+    emitAllNodes();   // seed the host with the current roster (empty at cold boot) (#86)
+#endif
+}
+
+void loop() {
+    STM32Board::tick();
+    CANProtocol::drain();
+    // Sample `now` AFTER draining CAN RX. onCanRx (called from drain) stamps each node's
+    // lastSeenMs with its own millis(); if `now` were sampled before drain, a millisecond ticking
+    // over during drain leaves now &lt; lastSeenMs, and the unsigned `now - lastSeenMs` in
+    // checkNodeTimeouts underflows to ~4.29e9 &gt; HB_TIMEOUT_MS — a false one-loop &quot;dead&quot; flap on a
+    // node that is transmitting normally (#225).
+    uint32_t now = millis();
+    checkNodeTimeouts(now);
+
+    // Master heartbeat (HB_0) every 500 ms. Unlike CTRL_BCAST (which only moves when a
+    // DCS export changes), this is an unconditional liveness beacon so PanelGroup nodes
+    // can detect master loss even when the sim is idle/paused.
+    if (now - _lastMasterHbMs &gt;= MASTER_HB_PERIOD_MS) {
+        _lastMasterHbMs = now;
+        HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(0, 0);
+        CANProtocol::send(canIdHb(0), reinterpret_cast&lt;const uint8_t*&gt;(&amp;hb), sizeof(hb));
+    }
+
+    // Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal die temp
+    // + aggregated node fault alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0).
+    // The bridge is a node too; its own FaultSources (e.g. a future host-link watchdog) roll up here.
+#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
+    if (now - _lastHealthMs &gt;= 1000) {
+        _lastHealthMs = now;
+        const char* faultDetail = nullptr;   // never null after aggregateFaults()
+        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&amp;faultDetail);
+        NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
+            0, STM32Board::readDieTempC(), fault);
+        CANProtocol::send(canIdHealth(0), reinterpret_cast&lt;const uint8_t*&gt;(&amp;h), sizeof(h));
+        STM32Board::logNodeFaultEdge(&quot;BRIDGE&quot;, fault, faultDetail);  // edge-log, DiagSerial only (#163)
+    }
+#endif
+
+    auto&amp; diag = STM32Board::diagSerial();
+    while (diag.available()) {
+        char c = (char)diag.read();
+        if (c != 'T') continue;
+        _testSeqNum++;
+        _testSeqSentMs = millis();
+        uint8_t payload[8] = {};
+        payload[0] = (uint8_t)(_testSeqNum &amp; 0xFF);
+        payload[1] = (uint8_t)(_testSeqNum &gt;&gt; 8);
+        payload[2] = (uint8_t)(_testSeqSentMs &amp; 0xFF);
+        payload[3] = (uint8_t)((_testSeqSentMs &gt;&gt;  8) &amp; 0xFF);
+        payload[4] = (uint8_t)((_testSeqSentMs &gt;&gt; 16) &amp; 0xFF);
+        payload[5] = (uint8_t)((_testSeqSentMs &gt;&gt; 24) &amp; 0xFF);
+        // payload[6..7] = reserved = 0
+        CANProtocol::send(CAN_ID_TEST_SEQ, payload, 8);
+        if (STM32Board::isDebug()) {
+            diag.print(F(&quot;[BRIDGE] TEST_SEQ seq=&quot;)); diag.println(_testSeqNum);
+        }
+    }
+}
+
+} // namespace PanelBridge
+
+#ifdef PANELBRIDGE_TEST
+namespace PanelBridge {
+
+void testDispatchEvt(uint16_t controlId, uint16_t value) {
+    dispatchEvtSlot(controlId, value);
+}
+
+void testDispatchRel(uint16_t controlId, uint16_t value) {
+    dispatchRelSlot(controlId, value);
+}
+
+void testDispatchDir(uint16_t controlId, uint16_t value) {
+    dispatchDirSlot(controlId, value);
+}
+
+void testDispatchAction(uint16_t controlId, uint16_t value) {
+    dispatchActionSlot(controlId, value);
+}
+
+void testFeedCanFrame(uint32_t canId, const uint8_t* data, uint8_t len) {
+    onCanRx(canId, data, len);
+}
+
+uint32_t testDcsSendCount() {
+    return _testDcsSends;
+}
+
+void testHandleExport(uint16_t address, uint16_t value) {
+    handleDcsBiosExport(address, value);
+}
+
+#ifdef PANELBRIDGE_NODE_STATUS
+void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
+                       uint16_t rxCount, uint16_t esr) {
+    HeartbeatPayload hb{ nodeId, flags, uptime, rxCount, esr };
+    memcpy(&amp;_nodes[nodeId - 1].last, &amp;hb, sizeof(hb));
+    markNodeAlive(nodeId, millis());
+}
+
+void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
+                    uint8_t hFlags, uint8_t faultMask, uint8_t faultId) {
+    // Mirrors the HEALTH_n branch of onCanRx: cache only, no liveness change.
+    NodeState&amp; ns = _nodes[nodeId - 1];
+    ns.dieTempC    = dieTempC;
+    ns.healthFlags = hFlags;
+    ns.faultMask   = faultMask;
+    ns.faultId     = faultId;
+}
+
+void testRequestNodeStatus() { emitAllNodes(); }
+
+void testCheckTimeouts(uint32_t now) { checkNodeTimeouts(now); }
+#endif // PANELBRIDGE_NODE_STATUS
+
+} // namespace PanelBridge
+#endif // PANELBRIDGE_TEST
+
+#endif // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

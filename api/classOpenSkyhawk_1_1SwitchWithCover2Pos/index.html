@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4577,20 +4377,20 @@
 <p>Does <strong>not</strong> read a cover microswitch: a builder with a sensed cover wires it as its own <a href="../classOpenSkyhawk_1_1Switch2Pos/"><strong>Switch2Pos</strong></a> on the cover's control. Does <strong>not</strong> cover 3-position guarded switches — the DCS-BIOS class is 2-position only, and the A-4E-C's one cover guards a 3-position switch the mod does not gate, so the A-4 build uses <a href="../classOpenSkyhawk_1_1Switch3Pos/"><strong>Switch3Pos</strong></a> there. This class is for DCS-BIOS parity and other aircraft. </p>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
 <h3 id="variable-cover_delay_ms">variable COVER_DELAY_MS</h3>
-<p><em>Minimum gap between the cover frame and the switch frame, ms.</em> 
-<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">SwitchWithCover2Pos</span><span class="o">::</span><span class="n">COVER_DELAY_MS</span><span class="p">;</span>
-</code></pre></div></p>
+<p><em>Minimum gap between the cover frame and the switch frame, ms.</em> </p>
+<pre><code class="language-C++">constexpr uint16_t OpenSkyhawk::SwitchWithCover2Pos::COVER_DELAY_MS;
+</code></pre>
 <hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-switchwithcover2pos">function SwitchWithCover2Pos</h3>
-<p><em>Construct a guarded 2-position switch.</em> 
-<div class="highlight"><pre><span></span><code><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">SwitchWithCover2Pos</span><span class="o">::</span><span class="n">SwitchWithCover2Pos</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">switchId</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">coverId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">PinRef</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">reverse</span><span class="o">=</span><span class="nb">false</span>
-<span class="p">)</span><span class="w"> </span>
-</code></pre></div></p>
+<p><em>Construct a guarded 2-position switch.</em> </p>
+<pre><code class="language-C++">OpenSkyhawk::SwitchWithCover2Pos::SwitchWithCover2Pos (
+    uint16_t switchId,
+    uint16_t coverId,
+    PinRef pin,
+    bool reverse=false
+) 
+</code></pre>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>switchId</code> DCSIN_* constant for the switch under the cover. </li>
@@ -4601,19 +4401,19 @@
 <hr>
 
 <h3 id="function-poll">function poll</h3>
-<p><em>Debounce through</em> <a href="../classOpenSkyhawk_1_1Switch2Pos/"><em><strong>Switch2Pos</strong></em></a> <em>, then advance the cover/switch sequence.</em>
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">SwitchWithCover2Pos</span><span class="o">::</span><span class="n">poll</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Debounce through</em> <a href="../classOpenSkyhawk_1_1Switch2Pos/"><em><strong>Switch2Pos</strong></em></a> <em>, then advance the cover/switch sequence.</em></p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::SwitchWithCover2Pos::poll () override
+</code></pre>
 <p>Implements <a href="../classOpenSkyhawk_1_1Switch2Pos/#function-poll"><em>OpenSkyhawk::Switch2Pos::poll</em></a></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
 <h3 id="function-emit">function emit</h3>
-<p><em>Set the sequence target instead of sending. Called by</em> <a href="../classOpenSkyhawk_1_1Switch2Pos/"><em><strong>Switch2Pos</strong></em></a> <em>on a confirmed change, and with init = true for the boot / SYNC_REQ baseline.</em>
-<div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">SwitchWithCover2Pos</span><span class="o">::</span><span class="n">emit</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">active</span><span class="p">,</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">init</span>
-<span class="p">)</span><span class="w"> </span><span class="k">override</span>
-</code></pre></div></p>
+<p><em>Set the sequence target instead of sending. Called by</em> <a href="../classOpenSkyhawk_1_1Switch2Pos/"><em><strong>Switch2Pos</strong></em></a> <em>on a confirmed change, and with init = true for the boot / SYNC_REQ baseline.</em></p>
+<pre><code class="language-C++">virtual void OpenSkyhawk::SwitchWithCover2Pos::emit (
+    bool active,
+    bool init
+) override
+</code></pre>
 <p>On init the machine is seeded at the opposite end of the travel so the sequencer re-asserts both frames in the correct order rather than only the one that changed. </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1Switch2Pos/#function-emit"><em>OpenSkyhawk::Switch2Pos::emit</em></a></p>
 <hr>

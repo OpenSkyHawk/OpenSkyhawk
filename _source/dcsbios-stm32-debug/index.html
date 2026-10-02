@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4262,8 +4062,8 @@ Center_Armament.</p>
 <h2 id="architecture-context">Architecture Context</h2>
 <p>Panel nodes (e.g. Center_Armament) are CAN-only. They never touch DCS-BIOS
 directly. The data flow is:</p>
-<div class="highlight"><pre><span></span><code>PC ──USB CDC── RP2040 (gateway) ──UART── STM32 CAN master ──CAN bus── panel nodes
-</code></pre></div>
+<pre><code>PC ──USB CDC── RP2040 (gateway) ──UART── STM32 CAN master ──CAN bus── panel nodes
+</code></pre>
 <p>During prototyping, a Tiny2040 stood in for the RP2040 gateway and a Blue Pill
 stood in for the STM32 CAN master. The bridge firmware (<code>DCS_BIOS_Bridge</code>) was
 removed in the prototype cleanup — see git history if needed.</p>
@@ -4272,10 +4072,10 @@ removed in the prototype cleanup — see git history if needed.</p>
 <p>Standard STM32 JTAG ID: <code>0x1ba01477</code><br />
 Chinese Blue Pill clone: <code>0x2ba01477</code></p>
 <p>ST-Link refuses to connect without overriding the ID. Add to <code>platformio.ini</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="na">upload_flags</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="na">-c</span>
-<span class="w">    </span><span class="na">set CPUTAPID 0</span>
-</code></pre></div>
+<pre><code class="language-ini">upload_flags =
+    -c
+    set CPUTAPID 0
+</code></pre>
 <p>Use <code>0</code>, not the clone's ID: <code>0</code> disables the check outright, while <code>0x2ba01477</code> has been
 observed to fail part-way through the write.</p>
 <p>Flag ordering matters — the <code>-c set CPUTAPID</code> pair must appear before the
@@ -4312,9 +4112,9 @@ failures depending on the STM32duino version in use.</p>
 </tbody>
 </table>
 <p>Required defines before <code>#include &lt;DCSBIOS.h&gt;</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#define DCSBIOS_FOR_STM32</span>
-<span class="cp">#define DCSBIOS_DEFAULT_SERIAL</span>
-</code></pre></div>
+<pre><code class="language-cpp">#define DCSBIOS_FOR_STM32
+#define DCSBIOS_DEFAULT_SERIAL
+</code></pre>
 <p>Baud rate: <strong>250000</strong> (fixed by DCS-BIOS protocol).</p>
 <h3 id="arduino-mega-2560-bridge-wiring-used-in-this-session">Arduino Mega 2560 bridge wiring (used in this session)</h3>
 <p>STM32 UART2 connects to Mega UART1. Mega relays traffic between UART1 and
@@ -4354,9 +4154,9 @@ for anything beyond a one-off proto session.</p>
 no level shifter needed.</p>
 <h3 id="pc13-onboard-led">PC13 onboard LED</h3>
 <p>Active-low on Blue Pill:</p>
-<div class="highlight"><pre><span></span><code><span class="n">digitalWrite</span><span class="p">(</span><span class="n">PC13</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w">   </span><span class="c1">// on</span>
-<span class="n">digitalWrite</span><span class="p">(</span><span class="n">PC13</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span><span class="w">  </span><span class="c1">// off</span>
-</code></pre></div>
+<pre><code class="language-cpp">digitalWrite(PC13, LOW);   // on
+digitalWrite(PC13, HIGH);  // off
+</code></pre>
 <h2 id="dcs-bios-verified-addresses">DCS-BIOS Verified Addresses</h2>
 <table>
 <thead>

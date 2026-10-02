@@ -755,206 +755,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4273,23 +4073,23 @@ minimal, working PanelGroup sketch — <strong>one LED and one switch</strong>, 
 IDs. Get this blinking and you understand the whole input/output path.</p>
 <h2 id="what-it-does">What it does</h2>
 <p>The example lives at <code>Firmware/Examples/E2E_DCS_Test/PanelGroup/</code>. The entire sketch:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;OpenSkyhawk.h&gt;</span>
+<pre><code class="language-cpp">#include &lt;OpenSkyhawk.h&gt;
 
-<span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="nf">PIN_LED</span><span class="p">(</span><span class="n">PC13</span><span class="p">);</span><span class="w">   </span><span class="c1">// dev-board built-in LED (active-LOW) — use an external LED in production</span>
-<span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="nf">PIN_BTN</span><span class="p">(</span><span class="n">PB0</span><span class="p">);</span><span class="w">    </span><span class="c1">// pushbutton to GND; 10 kΩ pull-up to 3.3V</span>
+const PinRef PIN_LED(PC13);   // dev-board built-in LED (active-LOW) — use an external LED in production
+const PinRef PIN_BTN(PB0);    // pushbutton to GND; 10 kΩ pull-up to 3.3V
 
-<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="w">        </span><span class="nf">gearLight</span><span class="w"> </span><span class="p">(</span><span class="n">A_4E_C_GEAR_LIGHT</span><span class="p">,</span><span class="w"> </span><span class="n">A_4E_C_GEAR_LIGHT_AM</span><span class="p">,</span><span class="w"> </span><span class="n">PIN_LED</span><span class="p">,</span><span class="w"> </span><span class="cm">/*reverse=*/</span><span class="nb">true</span><span class="p">);</span>
-<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Switch2Pos</span><span class="w"> </span><span class="nf">masterTest</span><span class="p">(</span><span class="n">DCSIN_MASTER_TEST</span><span class="p">,</span><span class="w"> </span><span class="n">PIN_BTN</span><span class="p">);</span>
+OpenSkyhawk::LED        gearLight (A_4E_C_GEAR_LIGHT, A_4E_C_GEAR_LIGHT_AM, PIN_LED, /*reverse=*/true);
+OpenSkyhawk::Switch2Pos masterTest(DCSIN_MASTER_TEST, PIN_BTN);
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setDebug</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
-<span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
-<span class="p">}</span>
+void setup() {
+    STM32Board::setDebug(true);
+    PanelGroup::setup();
+}
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">loop</span><span class="p">();</span>
-<span class="p">}</span>
-</code></pre></div>
+void loop() {
+    PanelGroup::loop();
+}
+</code></pre>
 <p>Two control objects, declared at global scope (they self-register), and a two-line
 <code>setup()</code>/<code>loop()</code>. That's a panel.</p>
 <ul>

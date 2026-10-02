@@ -749,206 +749,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4116,62 +3916,63 @@
 <h1 id="file-panelbridgeh">File PanelBridge.h</h1>
 <p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_f592a3c441b32532ba8eb6b28add2a90/"><strong>PanelBridge</strong></a> <strong>&gt;</strong> <a href="../PanelBridge_8h/"><strong>PanelBridge.h</strong></a></p>
 <p><a href="../PanelBridge_8h/">Go to the documentation of this file</a></p>
-<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
-<span class="cp">#ifdef ARDUINO_ARCH_STM32</span>
+<pre><code class="language-C++">
+#pragma once
+#ifdef ARDUINO_ARCH_STM32
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+#include &lt;stdint.h&gt;
 
-<span class="k">namespace</span><span class="w"> </span><span class="nn">PanelBridge</span><span class="w"> </span><span class="p">{</span>
+namespace PanelBridge {
 
-<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">NodeCallback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">);</span>
+    using NodeCallback = void(*)(uint8_t nodeId);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onNodeAlive</span><span class="p">(</span><span class="n">NodeCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+    void onNodeAlive(NodeCallback cb);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onNodeDead</span><span class="p">(</span><span class="n">NodeCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+    void onNodeDead(NodeCallback cb);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">();</span>
+    void setup();
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">();</span>
+    void loop();
 
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace PanelBridge</span>
+} // namespace PanelBridge
 
-<span class="c1">// ── Test hooks (PANELBRIDGE_TEST builds only) ─────────────────────────────────</span>
-<span class="c1">// Analogous to SimGateway::feedByte(). Allow unit tests to exercise dispatch logic</span>
-<span class="c1">// without a physical CAN bus or a live DCS-BIOS connection.</span>
-<span class="cp">#ifdef PANELBRIDGE_TEST</span>
-<span class="k">namespace</span><span class="w"> </span><span class="nn">PanelBridge</span><span class="w"> </span><span class="p">{</span>
+// ── Test hooks (PANELBRIDGE_TEST builds only) ─────────────────────────────────
+// Analogous to SimGateway::feedByte(). Allow unit tests to exercise dispatch logic
+// without a physical CAN bus or a live DCS-BIOS connection.
+#ifdef PANELBRIDGE_TEST
+namespace PanelBridge {
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchEvt</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+    void testDispatchEvt(uint16_t controlId, uint16_t value);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchRel</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+    void testDispatchRel(uint16_t controlId, uint16_t value);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchDir</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+    void testDispatchDir(uint16_t controlId, uint16_t value);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testDispatchAction</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">controlId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+    void testDispatchAction(uint16_t controlId, uint16_t value);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testFeedCanFrame</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+    void testFeedCanFrame(uint32_t canId, const uint8_t* data, uint8_t len);
 
-<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">testDcsSendCount</span><span class="p">();</span>
+    uint32_t testDcsSendCount();
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testHandleExport</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+    void testHandleExport(uint16_t address, uint16_t value);
 
-<span class="cp">#ifdef PANELBRIDGE_NODE_STATUS</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testFeedHeartbeat</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uptime</span><span class="p">,</span>
-<span class="w">                           </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">rxCount</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">esr</span><span class="p">);</span>
+#ifdef PANELBRIDGE_NODE_STATUS
+    void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
+                           uint16_t rxCount, uint16_t esr);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testFeedHealth</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">dieTempC</span><span class="p">,</span>
-<span class="w">                        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">hFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">faultMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">faultId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+    void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
+                        uint8_t hFlags = 0, uint8_t faultMask = 0, uint8_t faultId = 0);
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testRequestNodeStatus</span><span class="p">();</span>
+    void testRequestNodeStatus();
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">testCheckTimeouts</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">now</span><span class="p">);</span>
-<span class="cp">#endif </span><span class="c1">// PANELBRIDGE_NODE_STATUS</span>
+    void testCheckTimeouts(uint32_t now);
+#endif // PANELBRIDGE_NODE_STATUS
 
-<span class="p">}</span><span class="w"> </span><span class="c1">// namespace PanelBridge</span>
-<span class="cp">#endif </span><span class="c1">// PANELBRIDGE_TEST</span>
+} // namespace PanelBridge
+#endif // PANELBRIDGE_TEST
 
-<span class="cp">#endif </span><span class="c1">// ARDUINO_ARCH_STM32</span>
-</code></pre></div>
+#endif // ARDUINO_ARCH_STM32
+</code></pre>
 
 
 

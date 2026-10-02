@@ -755,206 +755,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Controls
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Controls
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pin Addresses
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Expanders
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inputs
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_6_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inputs
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Switch2Pos
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -4276,32 +4076,32 @@ project. Start from the templates in <code>Firmware/Templates/</code> — <stron
 <code>SimGateway/</code>. Copy the one you need into place (a PanelGroup goes under
 <code>Firmware/Panels/&lt;YourPanel&gt;/</code>) and edit its <code>platformio.ini</code>.</p>
 <h2 id="a-panelgroup-platformioini-annotated">A PanelGroup platformio.ini, annotated</h2>
-<div class="highlight"><pre><span></span><code><span class="k">[env:PanelGroup]</span>
-<span class="na">platform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ststm32@^20.0.0</span><span class="w">        </span><span class="c1">; major held on purpose — see note below</span>
-<span class="na">board</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">genericSTM32F103C8</span><span class="w">        </span><span class="c1">; STM32F103C8 for nodes (see board note below)</span>
-<span class="na">framework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">arduino</span>
-<span class="na">board_build.f_cpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">72000000L</span>
+<pre><code class="language-ini">[env:PanelGroup]
+platform = ststm32@^20.0.0        ; major held on purpose — see note below
+board = genericSTM32F103C8        ; STM32F103C8 for nodes (see board note below)
+framework = arduino
+board_build.f_cpu = 72000000L
 
-<span class="na">build_flags</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="na">-DNODE_ID</span><span class="o">=</span><span class="s">1</span><span class="w">                   </span><span class="c1">; unique per board, 1–63 — set this!</span>
-<span class="w">    </span><span class="na">-DHAL_CAN_MODULE_ENABLED      ; enable the bxCAN peripheral</span>
-<span class="w">    </span><span class="na">-DUSB_NONE                    ; inert — USB is off because USBCON is never defined</span>
-<span class="w">    </span><span class="na">-DHSE_VALUE</span><span class="o">=</span><span class="s">8000000</span><span class="w">           </span><span class="c1">; external 8 MHz crystal, required for CAN timing</span>
+build_flags =
+    -DNODE_ID=1                   ; unique per board, 1–63 — set this!
+    -DHAL_CAN_MODULE_ENABLED      ; enable the bxCAN peripheral
+    -DUSB_NONE                    ; inert — USB is off because USBCON is never defined
+    -DHSE_VALUE=8000000           ; external 8 MHz crystal, required for CAN timing
 
-<span class="na">lib_extra_dirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">${PROJECT_DIR}/../../Libraries</span>
-<span class="na">lib_ldf_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">deep+</span><span class="w">              </span><span class="c1">; needed so Adafruit BusIO finds framework headers</span>
-<span class="na">lib_deps</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="na">HIDControls</span>
-<span class="w">    </span><span class="na">STM32Board</span>
-<span class="w">    </span><span class="na">PanelGroup</span>
-<span class="w">    </span><span class="na">CANProtocol</span>
-<span class="w">    </span><span class="na">A4EC</span>
-<span class="w">    </span><span class="na">blemasle/MCP23017@^2.0.0</span>
-<span class="w">    </span><span class="na">adafruit/Adafruit ADS1X15@^2.0.0</span>
+lib_extra_dirs = ${PROJECT_DIR}/../../Libraries
+lib_ldf_mode = deep+              ; needed so Adafruit BusIO finds framework headers
+lib_deps =
+    HIDControls
+    STM32Board
+    PanelGroup
+    CANProtocol
+    A4EC
+    blemasle/MCP23017@^2.0.0
+    adafruit/Adafruit ADS1X15@^2.0.0
 
-<span class="na">upload_protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">stlink</span>
-<span class="na">monitor_speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">115200</span>
-</code></pre></div>
+upload_protocol = stlink
+monitor_speed = 115200
+</code></pre>
 <p>The two build flags people forget: <strong><code>-DNODE_ID</code></strong> (every board needs a unique value — see
 <a href="../node-id/">NODE_ID &amp; CAN Addressing</a>) and <strong><code>-DHSE_VALUE=8000000</code></strong> (declares the 8 MHz
 crystal frequency to HAL — needed for correct CAN timing, since the internal RC oscillator
