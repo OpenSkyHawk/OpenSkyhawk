@@ -27,7 +27,8 @@ OpenSkyhawk::IntegerOutput fuelReadout(A_4E_C_D_FUEL, showFuel);
 This goes near the top of your sketch, above `setup()`. The first part is your own function:
 here it simply prints the value on the board's [debug port](../../../firmware/debugging.md), which
 is a good way to watch a value before you build anything to show it. The `if` line means it only
-prints while debugging is turned on, with `STM32Board::setDebug(true);` in `setup()`.
+prints while debugging is turned on, with `STM32Board::setDebug(true);` in `setup()` — handy
+while you build, but [turn it off again](../index.md#the-debug-stream) once your display works.
 
 The last line connects the two. `fuelReadout` is a name you choose, `A_4E_C_D_FUEL` is the cockpit
 value to follow (the fuel gauge), and `showFuel` is the function to hand it to. The function has to

@@ -118,7 +118,8 @@ To find your two numbers, turn on the
 [debug stream](../../../firmware/debugging.md#diagserial-the-debug-stream) with the plain
 two-part line from the top of this page. Each time the knob moves, you'll see a line like
 `[ANA] 0x8015: 5124`. Turn the knob fully down and note the number, then fully up and note that
-one, and put them in as the bottom and top.
+one, and put them in as the bottom and top. Then
+[turn the debug stream off again](../index.md#the-debug-stream).
 
 ## Troubleshooting
 

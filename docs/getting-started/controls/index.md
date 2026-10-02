@@ -53,6 +53,19 @@ Find the part you're holding in the left column.
 `Dimmer` and `IntegerOutput` belong to one family; [AnalogOutput](outputs/analogoutput.md)
 explains what they share.
 
+## The debug stream
+
+While you're getting a panel working, the board can print what it's doing — every switch flip and
+every knob reading — to a serial monitor on your computer. You turn it on with
+`STM32Board::setDebug(true);` in `setup()`, and [Debugging](../../firmware/debugging.md) explains
+how to connect. It's the easiest way to check your wiring and to measure the numbers some pages
+ask you for.
+
+Turn it off again once your panel works, by deleting that line. Each printed line takes the board
+a moment to send, and while lots is happening it holds everything else up. Switches don't notice,
+and knobs barely do, but a joystick axis loses the quick response it's tuned for, and a busy
+board can fall behind.
+
 ??? info "Coming from DCS-BIOS?"
     The class names follow the DCS-BIOS Arduino library wherever it has an equivalent, so a
     DCS-BIOS sketch translates almost line for line. The one deliberate gap is `RotarySwitch`:

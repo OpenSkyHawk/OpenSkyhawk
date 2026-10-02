@@ -117,7 +117,8 @@ To find your numbers, temporarily swap the selector's line for a plain knob,
 `OpenSkyhawk::AnalogInput probe(DCSIN_MCL_CHAN_SEL, MCL_CHANNEL_PIN);`, and turn on the
 [debug stream](../../../firmware/debugging.md#diagserial-the-debug-stream). Each time you click
 to a new position you'll see a line like `[ANA] 0x806C: 34512`. Note the number at each
-position, then put the selector's line back with your list.
+position, then put the selector's line back with your list and
+[turn the debug stream off again](../index.md#the-debug-stream).
 
 ## Troubleshooting
 

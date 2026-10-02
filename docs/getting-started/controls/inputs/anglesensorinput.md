@@ -113,7 +113,8 @@ reads. It takes five minutes, and you only do it once per knob.
 For example, if the stops read `10920` and `38220`, that's 60° and 210°. The travel is
 210 − 60 = 150, and the centre is halfway between, 135. Put those two numbers into the
 `AngleSensorInput` line, change it back from `AnalogInput`, and you're done. You can leave the
-debug stream on while you test, but turn it off again before you fly.
+debug stream on while you test, but [turn it off again](../index.md#the-debug-stream) before you
+fly.
 
 ## Troubleshooting
 
