@@ -5,6 +5,10 @@ LED, or gauge. Inputs read hardware and fire CAN events; outputs receive DCS sta
 hardware. This page is the catalogue, with honest status: every input and output the
 A-4E-C needs is implemented; two more input classes land before the first release.
 
+!!! tip "Wiring a control for the first time?"
+    Each control has a beginner page — the part it's for, the line to type, wiring diagrams and
+    troubleshooting — under [Getting Started → Controls](../getting-started/controls/index.md).
+
 !!! warning "What's built and what isn't"
     Implemented today: **Switch2Pos**, **Switch3Pos**, **SwitchMultiPos**, **AnalogMultiPos**,
     **AnalogInput**, **RotaryEncoder**, **RotaryAcceleratedEncoder** and **ActionButton** (inputs);
@@ -121,16 +125,16 @@ the old `_A` suffix. See [DCS-BIOS Integration](dcsbios-integration.md).
 !!! note "NeedleGauge drives gauge motors through a swappable backend"
     `NeedleGauge` does only the value→angle mapping. The drive lives in a reusable **motor-driver layer**
     (`Firmware/Libraries/PanelGroup/Drivers/`): a `MotorDriver` base with a `StepperMotor` backend today —
-    non-blocking, driving four coils through `PinRef` (native GPIO **or** an MCP23017 expander, all
-    four on one port so the coil pattern changes in one transaction). One
+    non-blocking, driving four coils through `PinRef`: native GPIO, an MCP23017 expander (all four
+    on one port, so the coil pattern changes in one transaction), or a 74HC595 shift register. One
     air-core profile covers the X27.589 / VID-29 / BKA-30 family; homing is either a mechanical hard-stop
     or a digital home sensor (switch / reed / hall / opto). Drive the X27 at **5 V** through a DRV8833. A
     `ServoMotor` backend is planned (#132).
 
 !!! note "DrumDisplay is a separate, opt-in library"
     `DrumDisplay` lives in `Firmware/Libraries/DrumDisplay/` (not PanelGroup) so the U8g2 OLED
-    driver only lands on nodes that actually use a display — add `file://../../Libraries/DrumDisplay`
-    to a sketch's `lib_deps` to use it. Each readout (its digit sources, geometry, and optional
+    driver only lands on nodes that actually use a display — add `DrumDisplay` and
+    `olikraus/U8g2@^2.35` to a sketch's `lib_deps` to use it. Each readout (its digit sources, geometry, and optional
     flag) is described by a `DrumReadout` defined in the sketch, like the `PinRef` wiring map.
     Each panel takes one transport argument: an **I²C bus**, or an **`I2cMux`** when several
     same-address OLEDs share a TCA9548A. Omit it and the default bus is used. A bare OLED may not

@@ -21,6 +21,9 @@ theme:
 extra_css:
   - assets/css/extra.css
 
+extra_javascript:
+  - assets/js/sidebar-fit.js
+
 nav:
   - Home: index.md
 
@@ -30,6 +33,28 @@ nav:
     - What You'll Need: getting-started/prerequisites.md
     - OpenSkyhawk Client: getting-started/client-app.md
     - Repo Layout: getting-started/repo-layout.md
+    - Controls:
+      - Overview: getting-started/controls/index.md
+      - Pin Addresses: getting-started/controls/pin-addresses.md
+      - Expanders: getting-started/controls/expanders.md
+      - Inputs:
+        - Switch2Pos: getting-started/controls/inputs/switch2pos.md
+        - Switch3Pos: getting-started/controls/inputs/switch3pos.md
+        - SwitchMultiPos: getting-started/controls/inputs/switchmultipos.md
+        - AnalogMultiPos: getting-started/controls/inputs/analogmultipos.md
+        - ActionButton: getting-started/controls/inputs/actionbutton.md
+        - SwitchWithCover2Pos: getting-started/controls/inputs/switchwithcover2pos.md
+        - RotaryEncoder: getting-started/controls/inputs/rotaryencoder.md
+        - RotaryAcceleratedEncoder: getting-started/controls/inputs/rotaryacceleratedencoder.md
+        - AnalogInput: getting-started/controls/inputs/analoginput.md
+        - AngleSensorInput: getting-started/controls/inputs/anglesensorinput.md
+      - Outputs:
+        - LED: getting-started/controls/outputs/led.md
+        - Dimmer: getting-started/controls/outputs/dimmer.md
+        - NeedleGauge: getting-started/controls/outputs/needlegauge.md
+        - DrumDisplay: getting-started/controls/outputs/drumdisplay.md
+        - IntegerOutput: getting-started/controls/outputs/integeroutput.md
+        - AnalogOutput: getting-started/controls/outputs/analogoutput.md
 
   - Architecture:
     - Overview: architecture/index.md
@@ -147,6 +172,12 @@ not_in_nav: |
   api/struct_*.md
   api/links.md
 
+# Warn (not just log at INFO) when a link or #anchor doesn't resolve — a link to a page
+# that isn't generated is otherwise published as a raw .md path.
+validation:
+  unrecognized_links: warn
+  anchors: warn
+
 exclude_docs: |
   mkdocs.yml
   Doxyfile
@@ -175,11 +206,17 @@ plugins:
             QUIET: YES
             WARNINGS: YES
             WARN_IF_UNDOCUMENTED: NO
+            # Pin file naming so macOS (case-insensitive) builds match CI/Linux URLs
+            CASE_SENSE_NAMES: YES
 
 markdown_extensions:
   - attr_list
   - md_in_html
   - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.snippets:
       base_path: ["."]
       check_paths: true

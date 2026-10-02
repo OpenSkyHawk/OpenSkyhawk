@@ -53,8 +53,9 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 !!! warning "Not yet implemented"
     - **After v1.0** — the `ServoMotor` gauge backend.
     - **Phase 6** — the Right_Navigation PanelGroup sketch and end-to-end integration.
-    - `RotarySwitch` is **not** planned: `RotaryEncoder` in DIR mode drives bounded selectors
-      without losing track of the sim's position at boot.
+    - `RotarySwitch` is **not** planned: `RotaryEncoder` in DIR mode drives selectors that have
+      no marked position, without losing track of the sim's position at boot. Selectors with a
+      pointer use `SwitchMultiPos` or `AnalogMultiPos`.
 
 ## In this section
 
