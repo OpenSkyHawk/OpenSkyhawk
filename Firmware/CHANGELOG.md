@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/firmware-v0.1.0...firmware-v0.2.0) (2026-10-02)
+
+
+### Features
+
+* **firmware:** DrumDisplay takes a bus or a mux ([#318](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/318)) ([c37f475](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/c37f475b9f1885bef96f5ca9d15f4e4da00075cf))
+
+
+### Bug Fixes
+
+* **firmware:** ADS1115 analog reads span the full 16-bit range ([#325](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/325)) ([#330](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/330)) ([0b325fd](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/0b325fd0d03175b21ca6339e5feaaf80140ec8fb))
+
 ## [0.1.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/625e581f...firmware-v0.1.0) (2026-10-01)
 
 
