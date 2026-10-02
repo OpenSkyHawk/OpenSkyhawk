@@ -1,0 +1,44 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 270" font-family='"Saira", "Saira Variable", ui-sans-serif, system-ui, sans-serif'>
+  <title>AngleSensorInput: centerDeg is the middle of the knob's travel, travelDeg is how far it turns</title>
+  <style>
+    .card  { fill:#0d1626; stroke:rgba(59,139,235,0.22); stroke-width:1.5; }
+    .ring  { fill:none; stroke:#64748b; stroke-width:2; }
+    .tick  { stroke:#64748b; stroke-width:2; }
+    .travel { fill:none; stroke:#3b8beb; stroke-width:7; stroke-linecap:round; }
+    .center { stroke:#4ade80; stroke-width:2.5; stroke-dasharray:6 4; }
+    .jump  { stroke:#fbbf24; stroke-width:3; stroke-linecap:round; }
+    .ltr   { font-size:13px; font-weight:700; fill:#7db4f5; }
+    .lc    { font-size:13px; font-weight:700; fill:#4ade80; }
+    .lj    { font-size:13px; font-weight:700; fill:#fbbf24; }
+    .note  { font-size:11.5px; fill:#9ca8bc; font-style:italic; }
+    .hub   { fill:#c7d0e0; }
+  </style>
+  <rect class="card" x="1" y="1" width="598" height="268" rx="12"/>
+
+  <circle class="ring" cx="270" cy="122" r="78"/>
+  <line class="tick" x1="270.0" y1="50.0" x2="270.0" y2="38.0"/>
+  <text class="note" x="270.0" y="22.0" text-anchor="middle">0°</text>
+  <line class="tick" x1="342.0" y1="122.0" x2="354.0" y2="122.0"/>
+  <text class="note" x="370.0" y="126.0" text-anchor="start">90°</text>
+  <line class="tick" x1="270.0" y1="194.0" x2="270.0" y2="206.0"/>
+  <text class="note" x="270.0" y="232.0" text-anchor="middle">180°</text>
+  <line class="tick" x1="198.0" y1="122.0" x2="186.0" y2="122.0"/>
+  <text class="note" x="170.0" y="126.0" text-anchor="end">270°</text>
+
+  <!-- travel: 60° → 210°, clockwise -->
+  <path class="travel" d="M 337.5 83.0 A 78 78 0 0 1 231.0 189.5"/>
+  <!-- centre of travel: 135° -->
+  <line class="center" x1="270" y1="122" x2="346.4" y2="198.4"/>
+  <circle class="hub" cx="270" cy="122" r="4"/>
+  <!-- jump point, opposite the centre: 315° -->
+  <line class="jump" x1="223.3" y1="75.3" x2="206.4" y2="58.4"/>
+
+  <text class="lc"  x="352.4" y="204.4">centerDeg = 135</text>
+  <text class="note" x="352.4" y="219.4">the middle of the travel</text>
+  <text class="ltr" x="372" y="70">travelDeg = 150</text>
+  <text class="note" x="372" y="86">from one stop (60°) to the other (210°)</text>
+  <text class="lj"  x="192.5" y="42.5" text-anchor="end">jump point</text>
+  <text class="note" x="192.5" y="57.5" text-anchor="end">opposite the centre</text>
+
+  <text class="note" x="300" y="254" text-anchor="middle">One turn of the sensor, counted clockwise from 0° at the top</text>
+</svg>

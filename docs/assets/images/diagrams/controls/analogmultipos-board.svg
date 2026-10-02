@@ -1,0 +1,105 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" font-family='"Saira", "Saira Variable", ui-sans-serif, system-ui, sans-serif'>
+  <title>AnalogMultiPos: a 20-position selector on a resistor ladder, read by pin PA0 on the PanelGroup board</title>
+  <style>
+    .card  { fill:#0d1626; stroke:rgba(59,139,235,0.22); stroke-width:1.5; }
+    .board { fill:#111827; stroke:#3b8beb; stroke-width:2; }
+    .title { font-size:13px; font-weight:700; fill:#e8ecf4; }
+    .pin   { font-size:13px; font-weight:700; font-family:"SF Mono",Consolas,monospace; }
+    .label { font-size:12.5px; fill:#c7d0e0; }
+    .small { font-size:11.5px; fill:#c7d0e0; }
+    .note  { font-size:11.5px; fill:#9ca8bc; font-style:italic; }
+    .w     { fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .v33 { stroke:#4ade80; } .t33 { fill:#4ade80; }
+    .gnd { stroke:#64748b; } .tgnd { fill:#9ca8bc; }
+    .sig { stroke:#3b8beb; } .tsig { fill:#7db4f5; }
+    .lad { stroke:#c7d0e0; }
+    .ladd { fill:none; stroke:#c7d0e0; stroke-width:2; stroke-dasharray:3 4; }
+    .pad { fill:#0a0e1a; stroke-width:2.5; }
+    .res { fill:#1e293b; stroke:#c7d0e0; stroke-width:2; }
+    .dot { fill:#7db4f5; } .ldot { fill:#c7d0e0; } .gdot { fill:#64748b; }
+    .cap { stroke:#c7d0e0; stroke-width:3; stroke-linecap:round; }
+    .sw  { fill:none; stroke:#e8ecf4; stroke-width:2.5; stroke-linecap:round; }
+    .swc { fill:#0d1626; stroke:#e8ecf4; stroke-width:2; }
+  </style>
+  <rect class="card" x="1" y="1" width="598" height="358" rx="12"/>
+
+  <!-- board -->
+  <rect class="board" x="24" y="40" width="176" height="276" rx="6"/>
+  <text class="title" x="112" y="30" text-anchor="middle">PanelGroup board</text>
+  <text class="pin t33"  x="182" y="65"  text-anchor="end">3.3V</text>
+  <text class="pin tsig" x="182" y="183" text-anchor="end">PA0</text>
+  <text class="pin tgnd" x="182" y="300" text-anchor="end">GND</text>
+  <circle class="pad v33" cx="200" cy="60"  r="7"/>
+  <circle class="pad sig" cx="200" cy="178" r="7"/>
+  <circle class="pad gnd" cx="200" cy="295" r="7"/>
+
+  <!-- 3.3V → top of the ladder -->
+  <polyline class="w v33" points="207,60 540,60 540,80"/>
+
+  <!-- the ladder: equal resistors from 3.3V down to GND, one rung per position -->
+  <line class="w lad" x1="540" y1="80"  x2="540" y2="86"/>
+  <rect class="res" x="532" y="86"  width="16" height="23" rx="3"/>
+  <line class="w lad" x1="540" y1="109" x2="540" y2="121"/>
+  <rect class="res" x="532" y="121" width="16" height="23" rx="3"/>
+  <line class="w lad" x1="540" y1="144" x2="540" y2="150"/>
+  <line class="ladd" x1="540" y1="150" x2="540" y2="210"/>
+  <line class="w lad" x1="540" y1="210" x2="540" y2="216"/>
+  <rect class="res" x="532" y="216" width="16" height="23" rx="3"/>
+  <line class="w lad" x1="540" y1="239" x2="540" y2="251"/>
+  <rect class="res" x="532" y="251" width="16" height="23" rx="3"/>
+  <line class="w lad" x1="540" y1="274" x2="540" y2="280"/>
+  <polyline class="w gnd" points="540,280 540,295 207,295"/>
+  <text class="small" x="500" y="102" text-anchor="middle">1 kΩ</text>
+  <text class="small" x="500" y="137" text-anchor="middle">1 kΩ</text>
+  <text class="small" x="500" y="232" text-anchor="middle">1 kΩ</text>
+  <text class="small" x="500" y="267" text-anchor="middle">1 kΩ</text>
+
+  <!-- rungs: each position leg of the selector joins the ladder -->
+  <line class="w lad" x1="464" y1="80"  x2="540" y2="80"/>
+  <line class="w lad" x1="464" y1="115" x2="540" y2="115"/>
+  <line class="w lad" x1="464" y1="150" x2="540" y2="150"/>
+  <line class="w lad" x1="464" y1="210" x2="540" y2="210"/>
+  <line class="w lad" x1="464" y1="245" x2="540" y2="245"/>
+  <line class="w lad" x1="464" y1="280" x2="540" y2="280"/>
+  <circle class="ldot" cx="540" cy="115" r="4"/>
+  <circle class="ldot" cx="540" cy="150" r="4"/>
+  <circle class="ldot" cx="540" cy="210" r="4"/>
+  <circle class="ldot" cx="540" cy="245" r="4"/>
+  <text class="note" x="500" y="184" text-anchor="middle">14 more</text>
+
+  <!-- position numbers -->
+  <text class="small" x="556" y="84">19</text>
+  <text class="small" x="556" y="119">18</text>
+  <text class="small" x="556" y="154">17</text>
+  <text class="small" x="556" y="184">⋮</text>
+  <text class="small" x="556" y="214">2</text>
+  <text class="small" x="556" y="249">1</text>
+  <text class="small" x="556" y="284">0</text>
+
+  <!-- selector: position legs + common leg (wiper) -->
+  <circle class="swc" cx="460" cy="80"  r="4"/>
+  <circle class="swc" cx="460" cy="115" r="4"/>
+  <circle class="swc" cx="460" cy="150" r="4"/>
+  <text class="small" x="460" y="186" text-anchor="middle">⋮</text>
+  <circle class="swc" cx="460" cy="210" r="4"/>
+  <circle class="swc" cx="460" cy="245" r="4"/>
+  <circle class="swc" cx="460" cy="280" r="4"/>
+  <circle class="swc" cx="380" cy="178" r="5"/>
+  <line class="sw" x1="384" y1="175" x2="455" y2="152"/>
+  <text class="label" x="405" y="136" text-anchor="middle">selector switch</text>
+  <text class="note"  x="380" y="200" text-anchor="middle">common</text>
+
+  <!-- PA0 → common leg -->
+  <line class="w sig" x1="207" y1="178" x2="375" y2="178"/>
+
+  <!-- 100 nF capacitor from PA0 to GND -->
+  <line class="w sig" x1="270" y1="178" x2="270" y2="228"/>
+  <line class="cap" x1="258" y1="228" x2="282" y2="228"/>
+  <line class="cap" x1="258" y1="237" x2="282" y2="237"/>
+  <line class="w gnd" x1="270" y1="237" x2="270" y2="295"/>
+  <circle class="dot"  cx="270" cy="178" r="4.5"/>
+  <circle class="gdot" cx="270" cy="295" r="4.5"/>
+  <text class="label" x="292" y="237">100 nF</text>
+
+  <text class="note" x="300" y="340" text-anchor="middle">Each click joins PA0 to the next rung: 0 V at position 0, up to 3.3 V at position 19</text>
+</svg>

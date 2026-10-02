@@ -1,0 +1,87 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 290" font-family='"Saira", "Saira Variable", ui-sans-serif, system-ui, sans-serif'>
+  <title>DrumDisplay: two SSD1306 OLEDs on channels 0 and 1 of a TCA9548A mux on the J_I2C1 cable</title>
+  <style>
+    .card  { fill:#0d1626; stroke:rgba(59,139,235,0.22); stroke-width:1.5; }
+    .board { fill:#111827; stroke:#3b8beb; stroke-width:2; }
+    .mod   { fill:#111827; stroke:#9ca8bc; stroke-width:2; }
+    .title { font-size:13px; font-weight:700; fill:#e8ecf4; }
+    .pin   { font-size:13px; font-weight:700; font-family:"SF Mono",Consolas,monospace; }
+    .note  { font-size:11.5px; fill:#9ca8bc; font-style:italic; }
+    .w     { fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .v33 { stroke:#4ade80; } .t33 { fill:#4ade80; }
+    .gnd { stroke:#64748b; } .tgnd { fill:#9ca8bc; }
+    .sig { stroke:#3b8beb; } .tsig { fill:#7db4f5; }
+    .pad { fill:#0a0e1a; stroke-width:2.5; }
+    .screen { fill:#020617; stroke:#3b8beb; stroke-width:1.5; }
+    .digits { font-size:24px; font-weight:700; font-family:"SF Mono",Consolas,monospace; fill:#e8ecf4; letter-spacing:3px; }
+  </style>
+  <rect class="card" x="1" y="1" width="598" height="288" rx="12"/>
+
+  <!-- board, J_I2C1 -->
+  <rect class="board" x="20" y="44" width="120" height="166" rx="6"/>
+  <text class="title" x="80" y="34" text-anchor="middle">PanelGroup board</text>
+  <text class="note"  x="24" y="228">J_I2C1 cable</text>
+  <text class="pin tsig" x="126" y="75"  text-anchor="end">SDA</text>
+  <text class="pin tsig" x="126" y="105" text-anchor="end">SCL</text>
+  <text class="pin t33"  x="126" y="145" text-anchor="end">3.3V</text>
+  <text class="pin tgnd" x="126" y="185" text-anchor="end">GND</text>
+  <circle class="pad sig" cx="140" cy="70"  r="7"/>
+  <circle class="pad sig" cx="140" cy="100" r="7"/>
+  <circle class="pad v33" cx="140" cy="140" r="7"/>
+  <circle class="pad gnd" cx="140" cy="180" r="7"/>
+
+  <!-- board → mux -->
+  <line class="w sig" x1="147" y1="70"  x2="213" y2="70"/>
+  <line class="w sig" x1="147" y1="100" x2="213" y2="100"/>
+  <line class="w v33" x1="147" y1="140" x2="213" y2="140"/>
+  <line class="w gnd" x1="147" y1="180" x2="213" y2="180"/>
+
+  <!-- mux -->
+  <rect class="mod" x="220" y="44" width="140" height="166" rx="6"/>
+  <text class="title" x="290" y="34" text-anchor="middle">TCA9548A mux</text>
+  <text class="note"  x="224" y="228">address 0x70</text>
+  <text class="pin tsig" x="234" y="75">SDA</text>
+  <text class="pin tsig" x="234" y="105">SCL</text>
+  <text class="pin t33"  x="234" y="145">VIN</text>
+  <text class="pin tgnd" x="234" y="185">GND</text>
+  <circle class="pad sig" cx="220" cy="70"  r="7"/>
+  <circle class="pad sig" cx="220" cy="100" r="7"/>
+  <circle class="pad v33" cx="220" cy="140" r="7"/>
+  <circle class="pad gnd" cx="220" cy="180" r="7"/>
+  <text class="pin tsig" x="346" y="75"  text-anchor="end">SD0</text>
+  <text class="pin tsig" x="346" y="105" text-anchor="end">SC0</text>
+  <text class="pin tsig" x="346" y="155" text-anchor="end">SD1</text>
+  <text class="pin tsig" x="346" y="185" text-anchor="end">SC1</text>
+  <circle class="pad sig" cx="360" cy="70"  r="7"/>
+  <circle class="pad sig" cx="360" cy="100" r="7"/>
+  <circle class="pad sig" cx="360" cy="150" r="7"/>
+  <circle class="pad sig" cx="360" cy="180" r="7"/>
+
+  <!-- mux channels → screens -->
+  <line class="w sig" x1="367" y1="70"  x2="433" y2="70"/>
+  <line class="w sig" x1="367" y1="100" x2="433" y2="100"/>
+  <line class="w sig" x1="367" y1="150" x2="433" y2="150"/>
+  <line class="w sig" x1="367" y1="180" x2="433" y2="180"/>
+
+  <!-- screen on channel 0 -->
+  <text class="title" x="510" y="34" text-anchor="middle">Two OLEDs, both 0x3C</text>
+  <rect class="mod" x="440" y="48" width="140" height="70" rx="6"/>
+  <text class="pin tsig" x="454" y="75">SDA</text>
+  <text class="pin tsig" x="454" y="105">SCL</text>
+  <circle class="pad sig" cx="440" cy="70"  r="7"/>
+  <circle class="pad sig" cx="440" cy="100" r="7"/>
+  <rect class="screen" x="494" y="62" width="76" height="44" rx="3"/>
+  <text class="digits" x="532" y="93" text-anchor="middle">045</text>
+
+  <!-- screen on channel 1 -->
+  <rect class="mod" x="440" y="128" width="140" height="70" rx="6"/>
+  <text class="pin tsig" x="454" y="155">SDA</text>
+  <text class="pin tsig" x="454" y="185">SCL</text>
+  <circle class="pad sig" cx="440" cy="150" r="7"/>
+  <circle class="pad sig" cx="440" cy="180" r="7"/>
+  <rect class="screen" x="494" y="142" width="76" height="44" rx="3"/>
+  <text class="digits" x="532" y="173" text-anchor="middle">270</text>
+
+  <text class="note" x="300" y="256" text-anchor="middle">Each screen gets its own channel, so the matching addresses never meet</text>
+  <text class="note" x="300" y="274" text-anchor="middle">Every screen also needs 3.3V and GND from the cable (not drawn)</text>
+</svg>

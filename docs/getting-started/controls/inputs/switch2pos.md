@@ -7,19 +7,19 @@ for as long as you hold yours down.
 
 !!! tip "Not quite the right part?"
     - **Three positions** (ON–OFF–ON)? Use
-      [Switch3Pos](../../../firmware/control-types.md#input-classes).
+      [Switch3Pos](switch3pos.md).
     - **A push-button, but the cockpit has a switch that stays put?** Use
-      [ActionButton](../../../firmware/control-types.md#input-classes). Each press flips the
+      [ActionButton](actionbutton.md). Each press flips the
       switch, and it stays.
     - **A switch with a flip-up guard?** Use
-      [SwitchWithCover2Pos](../../../firmware/control-types.md#input-classes).
+      [SwitchWithCover2Pos](switchwithcover2pos.md).
 
 ## In your sketch
 
 ```cpp
 const PinRef MASTER_ARM_PIN = PinRef(PA0);
 
-Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
+OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
 ```
 
 These two lines go near the top of your sketch, above `setup()`, and they are all the code a
@@ -82,8 +82,6 @@ your build — the wiring and the code look almost identical in each one.
     fitted, so the switch just goes between the input and GND.
 
     ```cpp
-    #include <Helpers/ShiftBus/ShiftBus.h>   // once, at the top of the sketch
-
     const PinRef MASTER_ARM_PIN = PinRef(ShiftBus1, 0, 0);   // first chip, pin 0
     ```
 
@@ -99,9 +97,11 @@ your build — the wiring and the code look almost identical in each one.
     ```cpp
     const PinRef TRIGGER_PIN = PinRef(PA1);
 
-    Switch2Pos trigger(CTRL_TRIGGER, TRIGGER_PIN);
+    OpenSkyhawk::Switch2Pos trigger(CTRL_TRIGGER, TRIGGER_PIN);
     ```
 
+    The gateway's sketch needs a matching line too, which
+    [HID Controls](../../../firmware/hid-controls.md#how-hid-controls-are-declared) shows.
     [DCS-BIOS vs HID](../../../architecture/dcsbios-vs-hid.md) explains when a joystick button
     is the better choice.
 
@@ -116,7 +116,7 @@ Your switch is mounted or wired the other way round. Rather than rewiring it, ad
 end of the line and the board will flip it for you:
 
 ```cpp
-Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN, true);
+OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN, true);
 ```
 
 ??? info "Going further"

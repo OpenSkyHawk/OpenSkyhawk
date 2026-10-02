@@ -482,7 +482,15 @@ status does.
 - Wire as `SwitchMultiPos`: **one GPIO per used position**, common → **GND** (MCP23017 or STM32 breakout).
   Prefer this over a resistor-ladder (`AnalogMultiPos`) when GPIO is plentiful — no ladder tolerance or
   ADC-threshold calibration; reserve the ladder for when GPIO/ADC-routing is tight.
-- High-count or freely-spinning knobs (>12 positions, continuous) use a **`RotaryEncoder`** instead.
+- **Selector vs encoder is decided by whether the knob has a marked position**, not by its count. A
+  selector with a pointer reports its absolute position, so the sim syncs to it at startup:
+  `SwitchMultiPos` up to 12 positions, a resistor-ladder **`AnalogMultiPos`** on one analog pin above
+  that. A knob with no marked position can only report up/down steps — nothing to sync at startup —
+  so it uses a **`RotaryEncoder`** (DIR mode).
+- **Resistor-ladder wiring (`AnalogMultiPos`):** equal **1 kΩ 1 %** resistors between adjacent position
+  contacts, ladder ends to 3V3 and GND, wiper (common) to one analog pin, plus a **100 nF** capacitor
+  from that pin to GND — the wiper connects nothing for an instant between detents, and the cap holds
+  the reading steady across the gap (the base board has no ADC filter).
 
 ### Rotary encoders (EC11 / bare quadrature)
 

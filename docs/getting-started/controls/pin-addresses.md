@@ -37,21 +37,21 @@ that only the address changes — the `Switch2Pos` line is identical every time.
 
     ```cpp
     const PinRef MASTER_ARM_PIN = PinRef(PA0);
-    Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
+    OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
     ```
 
 === "On a digital expander"
 
     ```cpp
     const PinRef MASTER_ARM_PIN = PinRef(expander1, PORT_A, 0);
-    Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
+    OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
     ```
 
 === "On a shift register"
 
     ```cpp
     const PinRef MASTER_ARM_PIN = PinRef(ShiftBus1, 0, 0);
-    Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
+    OpenSkyhawk::Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN);
     ```
 
 ## Name your addresses at the top
@@ -77,13 +77,13 @@ your wiring list when you come to build the harness.
 | Rotary encoders | ✅ | ✅ | ✅ best | — |
 | Knobs and sliders | ✅ analog pins | — | — | ✅ |
 | Lights | ✅ | ✅ | ✅ | — |
-| Gauge needles | ✅ | ✅ | ✅ fastest | — |
+| Gauge needles | ✅ | ✅ slower | ✅ | — |
 | Dimmable backlights | ✅ PWM pins | — | — | — |
 
 The gaps come down to what each kind of pin can actually sense. An analog expander measures how
 far something is turned, so it can't reliably read a switch that is simply on or off. A digital
 expander or a shift register is the opposite: it only sees on or off, so it can't tell where a
-knob is pointing. Dimming a light needs a pin that can switch thousands of times a second, and
+knob is pointing. Dimming a light needs a pin that can switch about a thousand times a second, and
 only some of the board's own pins can do that — they're marked on the board.
 
 ??? note "Which controls are in each row?"

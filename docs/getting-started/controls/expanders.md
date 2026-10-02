@@ -36,7 +36,9 @@ There are three kinds of expander, and each is good at something different.
 | Board version | any | 0.2.0 or later | any |
 
 If you're not sure which to pick, a simple rule works for almost every panel. Rotary encoders and
-fast-moving gauge needles go on **shift registers**, because they need to be read quickly. Knobs
+fast-moving gauge needles fit best on **shift registers**, because a spinning encoder has to be
+read quickly and a fast needle has to be stepped quickly. A digital expander can still read an
+encoder as long as its interrupt wires are connected, but it moves a needle more slowly. Knobs
 that turn a potentiometer go on an **analog expander**, because they need a position rather than
 on or off. Everything else goes on a **digital expander**.
 
@@ -80,19 +82,16 @@ const PinRef GEAR_HANDLE_PIN = PinRef(expander1, PORT_B, 2);   // GPB2
 
 !!! warning "GPA7 and GPB7 can't read switches"
     Because of a fault in the chip itself, these two pins only work as outputs. Use them for
-    lights, which leaves 14 pins on each expander for switches.
-
-Switches on an expander still need their 10 kΩ pull-up resistor, exactly as on the board — the
-expander doesn't add one for you.
+    lights, which leaves 14 pins on each expander for switches. Those switches still need their
+    10 kΩ pull-up resistor, exactly as on the board — the expander doesn't add one for you.
 
 ## Shift-register chain (74HC165 / 74HC595)
 
-Shift registers are the easiest kind to use, because there's nothing to set up. Add one line at
-the top of your sketch, and then just write pin addresses:
+Shift registers are the easiest kind to use, because there's nothing to set up at all — no name,
+no introduction to the board. You just write pin addresses, using the chain's built-in name
+`ShiftBus1`:
 
 ```cpp
-#include <Helpers/ShiftBus/ShiftBus.h>
-
 const PinRef MASTER_ARM_PIN  = PinRef(ShiftBus1, 0, 3);   // input chip 0, pin 3
 const PinRef CAUTION_LED_PIN = PinRef(ShiftBus1, 0, 3);   // output chip 0, pin 3
 ```
@@ -120,7 +119,7 @@ to `0x4B`, set by the chip's `ADDR` pin, so up to four can share one cable:
 ```cpp
 void setup() {
     Wire.begin();
-    PanelGroup::registerADC(adc1, 0x48);
+    PanelGroup::registerADC(adc1, 0x48, Wire);
     PanelGroup::setup();
 }
 ```
@@ -130,6 +129,11 @@ It has four inputs, `A0` to `A3`, and you use them like any other pin:
 ```cpp
 const PinRef FLOOD_KNOB_PIN = PinRef(adc1, 0);   // input A0
 ```
+
+One thing to know for now: a knob on the analog expander tops out at a reading of about 52800,
+not the full 65535 a board pin reaches. Tell the class where the top is, as described in
+[Setting the range](inputs/analoginput.md#setting-the-range), and the cockpit control will still
+reach its end.
 
 ??? info "Going further"
     **Using the second cable.** To put expanders on `J_I2C2`, declare the second bus above
