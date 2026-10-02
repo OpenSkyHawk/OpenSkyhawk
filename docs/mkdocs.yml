@@ -152,6 +152,12 @@ not_in_nav: |
   api/struct_*.md
   api/links.md
 
+# Warn (not just log at INFO) when a link or #anchor doesn't resolve — a link to a page
+# that isn't generated is otherwise published as a raw .md path.
+validation:
+  unrecognized_links: warn
+  anchors: warn
+
 exclude_docs: |
   mkdocs.yml
   Doxyfile
@@ -180,6 +186,8 @@ plugins:
             QUIET: YES
             WARNINGS: YES
             WARN_IF_UNDOCUMENTED: NO
+            # Pin file naming so macOS (case-insensitive) builds match CI/Linux URLs
+            CASE_SENSE_NAMES: YES
 
 markdown_extensions:
   - attr_list

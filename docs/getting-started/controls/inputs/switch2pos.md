@@ -128,4 +128,4 @@ Switch2Pos masterArm(DCSIN_ARM_MASTER, MASTER_ARM_PIN, true);
     it connects.
 
     Every detail of the class is in the
-    [API reference](../../../api/class_open_skyhawk_1_1_switch2_pos.md).
+    [API reference](../../../api/classOpenSkyhawk_1_1Switch2Pos.md).

@@ -106,4 +106,4 @@ only some of the board's own pins can do that — they're marked on the board.
     pin, for example, prints a message on the debug port and stays off, rather than half-working
     and leaving you guessing.
 
-    Everything a `PinRef` can do is in the [API reference](../../api/class_pin_ref.md).
+    Everything a `PinRef` can do is in the [API reference](../../api/classPinRef.md).
