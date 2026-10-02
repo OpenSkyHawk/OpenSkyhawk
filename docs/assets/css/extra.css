@@ -242,6 +242,24 @@ body {
   padding-top: 1.15rem;
 }
 
+/* The tall header scrolls away (position: relative above), but Material's sidebar script pins
+   both sidebars at `top: <header height>` as if the header stayed fixed — leaving a header-sized
+   gap above them once you scroll. Stick them just below the top of the window instead. Desktop
+   widths only: below these breakpoints the primary sidebar is the slide-out drawer and the
+   secondary one is hidden. !important beats the script's inline style; it still manages the
+   height, so the sidebars keep clear of the footer. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    top: 1rem !important;
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .md-sidebar--secondary {
+    top: 1rem !important;
+  }
+}
+
 .md-sidebar__scrollwrap {
   background: transparent;
   border: 0;
