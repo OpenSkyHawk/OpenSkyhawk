@@ -2,7 +2,7 @@
 //
 // Verifies:
 //   PinRef(adc, channel).readAnalog() calls readADC_SingleEnded() and returns
-//   a 16-bit value (raw 15-bit single-ended × 2 → 0–65534).
+//   a 16-bit value (0–3.3 V mapped onto 0–65534, like a board pin — #325).
 //   read() returns true when readAnalog() > 32767 (above half-scale).
 //   write() is a no-op on ADS1115 — pin state unchanged.
 //   isGpio() == false for an ADS1115 PinRef.
@@ -10,7 +10,7 @@
 // Hardware: ADS1115 dev board on I2C1 remap (J_I2C2: PB10=SCL, PB11=SDA), addr 0x48 (ADDR→GND).
 //   A0 connected to ~1.65 V mid-rail (10 kΩ + 10 kΩ voltage divider, 3.3 V → GND).
 //   Expected readAnalog() ≈ 32768 ± wide tolerance (~16000–48000 at mid-rail).
-//   Connect A0 to 3.3 V for a high reading (≥ 52000). Connect to GND for near-zero.
+//   Connect A0 to 3.3 V for a high reading (≈ 65534). Connect to GND for near-zero.
 //
 // Serial output shows raw readAnalog() value for cross-check.
 
@@ -71,14 +71,14 @@ void setup() {
     check("isGpio() == false", !pin.isGpio());
     check("isNC()   == false", !pin.isNC());
 
-    // readAnalog() — ADS1115 15-bit single-ended × 2 → 0–65534
+    // readAnalog() — ADS1115 15-bit single-ended, 0–3.3 V → 0–65534 (0xFFFF = ANALOG_NC, never returned)
     uint16_t val = pin.readAnalog();
     STM32Board::diagSerial().print("readAnalog() = ");
     STM32Board::diagSerial().println(val);
 
     check("readAnalog() > 0       ", val > 0);
     check("readAnalog() <= 65534  ", val <= 65534u);
-    // Mid-rail ~1.65 V → raw ~16384 ADC counts → scaled ~32768; wide tolerance for divider variance
+    // Mid-rail ~1.65 V → raw ~13200 ADC counts (GAIN_ONE) → scaled ~32768; wide tolerance for divider variance
     check("readAnalog() in [8000, 56000] (mid-rail)", val >= 8000 && val <= 56000);
 
     // read() threshold: true when > 32767
