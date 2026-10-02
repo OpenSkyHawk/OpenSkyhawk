@@ -23,11 +23,10 @@ namespace OpenSkyhawk {
  * 16-bit value is the control *position*, not an index.
  *
  * Read path (ports DcsBios `PotentiometerEWMA`): read the ADC (already 16-bit — STM32 ×16, or
- * ADS1115 with 0–3.3V stretched to 0–65534), clamp to `[minRaw, maxRaw]`, map to 0..65535
- * (reverse-aware), then apply an integer EWMA low-pass filter (α = 1/2^`ewmaShift`). A new value
- * is emitted only when the smoothed value moves more than `hysteresis` counts from the last sent
- * value, or when it reaches a rail (0 / 65535) moving toward it — so a settled pot is silent and
- * the endpoints are always reached.
+ * ADS1115 0–3.3V → 0–65534), clamp to `[minRaw, maxRaw]`, map to 0..65535 (reverse-aware), then
+ * apply an integer EWMA low-pass filter (α = 1/2^`ewmaShift`). A new value is emitted only when the
+ * smoothed value moves more than `hysteresis` counts from the last sent value, or when it reaches a
+ * rail (0 / 65535) moving toward it — a settled pot is silent, the endpoints always reached.
  *
  * The ADC is re-read at most every `pollMs` — a constructor parameter, default `DEFAULT_POLL_MS`
  * (8 ms). It is **per instance, not per node**: two AnalogInputs on one board may read at different
