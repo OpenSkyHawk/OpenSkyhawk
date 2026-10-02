@@ -102,19 +102,29 @@ reads. It takes five minutes, and you only do it once per knob.
 
 2. Upload the sketch and open the debug stream. Every time the knob moves, you'll see a line
    like `[ANA] 0x8055: 10920`.
-3. Turn the knob slowly from one stop to the other, watching the number. It should change
-   smoothly the whole way. If it suddenly jumps from a big number to a small one (or the other
-   way), the sensor's zero is inside your knob's travel. Turn the magnet part of the way round
-   on the shaft (half a turn is a good start) and try again, until the number changes smoothly
-   from stop to stop.
-4. Note the number at each stop, and divide each one by **182** to turn it into degrees.
-5. The **travel** is the difference between the two, and the **centre** is halfway between them.
+3. Turn the knob to its **bottom** stop — the end where the cockpit control should be at its
+   lowest — and note the number. Then turn it slowly to the **top** stop and note that one. The
+   number should go up as you turn; if it goes down instead, flip the sensor's direction (see
+   [Troubleshooting](#troubleshooting)) and start this step again. If the number jumps from a
+   big value to a small one partway through, that's just the sensor passing its own zero, and
+   it's fine.
+4. Divide each number by **182** to turn it into degrees: these are your *bottom* and *top*
+   angles.
+5. Work out the two numbers the class needs:
+    - **Travel** = top − bottom. If that comes out negative, add 360.
+    - **Centre** = bottom + half the travel. If that comes out over 360, take 360 away.
 
 For example, if the stops read `10920` and `38220`, that's 60° and 210°. The travel is
-210 − 60 = 150, and the centre is halfway between, 135. Put those two numbers into the
-`AngleSensorInput` line, change it back from `AnalogInput`, and you're done. You can leave the
-debug stream on while you test, but [turn it off again](../index.md#the-debug-stream) before you
-fly.
+210 − 60 = 150, and the centre is 60 + 75 = 135.
+
+The second rule is for a knob whose travel passes the sensor's zero. Say the stops read `61880`
+and `7280` — that's 340° and 40°. Then 40 − 340 = −300, so the travel is −300 + 360 = **60**,
+and the centre is 340 + 30 = 370, which is **10** once you take 360 away. The knob turns 60°
+centred on 10°, not 300° centred on 190°, and the class handles the zero crossing for you.
+
+Put your two numbers into the `AngleSensorInput` line, change it back from `AnalogInput`, and
+you're done. You can leave the debug stream on while you test, but
+[turn it off again](../index.md#the-debug-stream) before you fly.
 
 ## Troubleshooting
 
@@ -127,9 +137,9 @@ The travel or the centre doesn't match your knob. Measure them again as above, a
 magnet is glued or pinned firmly, so it can't slip on the shaft.
 
 **The cockpit knob jumps from one end to the other partway through the turn.**
-The sensor's zero has ended up inside your knob's travel, usually because the magnet slipped.
-Fix it as in step 3 of [Finding your two numbers](#finding-your-two-numbers), then measure your
-two numbers again.
+The centre no longer matches your knob, usually because the magnet slipped on the shaft. Fix the
+magnet firmly in place, then measure your two numbers again as in
+[Finding your two numbers](#finding-your-two-numbers).
 
 **The number in the debug stream wobbles all over the place, or barely changes.**
 The magnet is too far from the chip, or not centred over it. Bring it to a couple of millimetres
