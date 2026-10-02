@@ -19,7 +19,7 @@ only because DCS-BIOS `set_state` has no separate "continuous" dispatch; the val
 position, not an index.
 
 Handles:
-- **normalise** — read the ADC (already 16-bit: STM32 ×16 or ADS1115 ×2), clamp to `[minRaw,
+- **normalise** — read the ADC (already 16-bit: STM32 ×16, or ADS1115 0–3.3V → 0–65534), clamp to `[minRaw,
   maxRaw]`, map to 0..65535 (reverse-aware);
 - **EWMA smoothing** — an integer exponential low-pass (α = 1/2^`ewmaShift`) averages ADC noise,
   which the ×16 STM32 scaling amplifies; a shift, not a divide, so no software-float on the F103;
@@ -137,7 +137,7 @@ void loop()  { PanelGroup::loop(); }   // polls the input, drains CAN — nothin
 
 ```cpp
 uint16_t AnalogInput::readScaled() {
-    uint16_t raw = readRaw();                            // 16-bit (STM32 ×16 / ADS1115 ×2); virtual
+    uint16_t raw = readRaw();                            // 16-bit (STM32 ×16 / ADS1115 0–3.3V stretched); virtual
     if (raw < _minRaw) raw = _minRaw; else if (raw > _maxRaw) raw = _maxRaw;
     uint32_t span   = (uint32_t)_maxRaw - _minRaw;       // own scale, not Arduino map():
     uint16_t scaled = span ? (uint16_t)((uint32_t)(raw - _minRaw) * 65535u / span) : 0;
@@ -225,7 +225,7 @@ framework left-shifts the reading (×16) to fill the `uint16_t`. A GPIO input th
 *format* with 12-bit *real* resolution and tops at **65520** (low 4 bits always 0). The near-rail
 force-send still reaches the rail (65520 > 65535 − `hysteresis`); for an exact 0–65535 span set
 `maxRaw = 65520`. 12-bit is ample for the pot inputs this class serves (ARC-51 VOL). (ADS1115 channels
-are a true 15-bit single-ended read ×2 → 0–65534.)
+map 0–3.3V onto 0–65534 — the same span, so the same pot reads the same on either source; #325.)
 
 **ADC acquisition time — the source-impedance budget (#263):** the framework samples GPIO channels
 for 13.5 ADCCLK cycles, which at the configured **12 MHz ADCCLK** is **1.125 µs** (it was 375 ns

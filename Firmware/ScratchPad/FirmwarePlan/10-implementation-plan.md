@@ -149,7 +149,8 @@ items marked **Ready for implementation** in TechSpec are in scope for this phas
 | test_interrupt_dispatch | STM32 + MCP23017 @ 0x20 (I2C1 remap PB8/9), switch on GPA0 | PASS |
 
 **Key implementation decisions recorded during Phase 3:**
-- ADS1115 gain: `GAIN_ONE` (±4.096V FSR) set in PinRef constructor — 3.3V → ~52800/65534.
+- ADS1115 gain: `GAIN_ONE` (±4.096V FSR) set in PinRef constructor. `readAnalog()` maps 0–3.3V
+  onto 0–65534 (#325; originally ×2, which left 3.3V at ~52800).
 - GPIO ADC resolution: `STM32Board::begin()` calls `analogReadResolution(16)`; framework
   scales 12-bit → 0–65520 internally. PinRef does no shifting.
 - MCP23017 GPA7/GPB7 silicon erratum: GPINTEN masked to 0x7F on both ports during setup.

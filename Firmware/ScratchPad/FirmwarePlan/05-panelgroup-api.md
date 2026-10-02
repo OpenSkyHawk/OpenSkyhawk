@@ -221,7 +221,7 @@ position. VALUE: position index 0 to N-1 (same as `SwitchMultiPos`). Both send a
 
 `ANALOG_NC = 0xFFFF` (65535) marks positions with no physical detent. Physically unreachable:
 STM32 ADC tops at 65520 (`analogReadResolution(16)`, framework scales 12-bit → 16-bit);
-ADS1115 tops at 65534 (15-bit single-ended × 2; GAIN_ONE ±4.096V FSR, 3.3V → ~52800).
+ADS1115 tops at 65534 (0–3.3V stretched onto the 16-bit range and clamped one under `0xFFFF` — #325).
 
 ```cpp
 // 5-position selector. Position 2 has no detent:
@@ -345,7 +345,7 @@ Continuous or stepped analog input. All sources normalised to **16-bit (0–6553
 | Source | Raw resolution | Conversion | Notes |
 |--------|---------------|------------|-------|
 | STM32 ADC | 12-bit (0–4095) | `analogReadResolution(16)` — framework scales → 0–65520 | Set in `STM32Board::begin()` |
-| ADS1115 | 15-bit single-ended (0–32767) | ×2 → 16-bit (0–65534) | GAIN_ONE (±4.096V FSR); 3.3V → ~52800 |
+| ADS1115 | 15-bit single-ended (0–32767) | 0–3.3V → 0–65534, factor from the gain (#325) | GAIN_ONE (±4.096V FSR); 3.3V ≈ 26400 raw → 65534 — same span as a board pin |
 
 Configurable `[minRaw, maxRaw]` input range; values outside clamped to 0 or 65535. Read throttle:
 **per instance** — `pollMs`, default `DEFAULT_POLL_MS` = 8 ms, so a HID flight axis and a cockpit

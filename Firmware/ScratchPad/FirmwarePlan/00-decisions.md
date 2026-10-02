@@ -146,8 +146,9 @@ if drops occur in normal traffic, the diagnostic counter exposes a bus/load prob
 **Decision:** `AnalogMultiPos` uses `0xFFFF` as the sentinel for positions with no physical
 detent.
 
-**Rationale:** STM32 ADC tops at 65520 after ×16 scaling; ADS1115 tops at 65534 after ×2
-scaling. `0xFFFF` (65535) is physically unreachable on both hardware paths. No separate
+**Rationale:** STM32 ADC tops at 65520 after ×16 scaling; ADS1115 tops at 65534 (its 0–3.3V
+span is stretched onto the 16-bit range and clamped one under `0xFFFF` — #325). `0xFFFF` (65535)
+is unreachable on both hardware paths. No separate
 boolean is needed in the position array.
 
 **Affects:** `05-panelgroup-api.md`.

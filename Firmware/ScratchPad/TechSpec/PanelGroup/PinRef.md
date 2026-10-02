@@ -60,8 +60,8 @@ Firmware/Tests/PinRef/
     │                         STM32Board::begin() sets analogReadResolution(16) so the
     │                         framework scales 12-bit hardware → 0–65520 internally;
     │                         verified against known mid-rail voltage
-    ├── ads1115_analog.cpp  — PinRef(adc, channel) readAnalog() returns 15-bit×2 scaled
-    │                         value (GAIN_ONE, ±4.096V FSR, 3.3V→~52800); read() threshold
+    ├── ads1115_analog.cpp  — PinRef(adc, channel) readAnalog() returns a 16-bit value
+    │                         (0–3.3V → 0–65534, GAIN_ONE ±4.096V FSR); read() threshold
     │                         at 32767; write() is no-op; isGpio() == false.
     │                         Hardware: ADS1115 @ 0x48 on I2C1.
     └── i2c_scan/           — Diagnostic utility: scans I2C1 (PB6/7), I2C1-remap (PB8/9),
@@ -201,10 +201,11 @@ public:
      *
      * GPIO: analogRead(pin) → 0–65520 (12-bit hardware, framework-scaled to 16-bit via
      *        analogReadResolution(16) set in STM32Board::begin(); PinRef does no shifting).
-     * ADS1115: readADC_SingleEnded(channel) × 2 → 0–65534. GAIN_ONE (±4.096V FSR) is set
-     *        at PinRef construction — best resolution for 0–3.3V inputs. Returns the true
-     *        16-bit ADC range; callers (DCS-BIOS output classes, HID layer) normalize to
-     *        their own domain. 3.3V input ≈ 52800; 0V = 0.
+     * ADS1115: readADC_SingleEnded(channel), 0–3.3V mapped onto 0–65535, clamped at 65534
+     *        (0xFFFF is the ANALOG_NC sentinel, D8). GAIN_ONE (±4.096V FSR) is set at PinRef
+     *        construction — best resolution for 0–3.3V inputs. The ADS has no 3.3V range, so
+     *        the factor comes from the gain setting; a 3.3V input reads full scale, like a
+     *        board pin. 0V = 0.
      * MCP23017: always returns 0 — MCP23017 has no ADC. Debug-mode assertion fires.
      * NC: always returns 0.
      *
@@ -418,8 +419,29 @@ output on that node queues behind it. Keep an ADS1115-backed `AnalogInput` at `D
 or higher. (That a slow ADS knob already delays a fast axis sharing the node is a known defect —
 #269.) Do not call `readAnalog()` on an ADS1115 PinRef from an ISR.
 
-Raw single-ended result: 0–32767 (15-bit). Multiplied by 2 → 0–65534. At 3.3V input,
-returns ≈ 52800. Callers (DCS-BIOS output classes, HID layer) normalize to their domain.
+Raw single-ended result: 0–32767 (15-bit), where 32768 counts span the full-scale range. The ADS
+has no 3.3V range, so at `GAIN_ONE` a 3.3V input lands at ≈ 26400 — only ~80% of the scale. To
+give callers the same 0–65535 span a board pin gives (#325), `readAnalog()` maps 0–3.3V onto
+0–65535 in 32-bit math and clamps at 65534:
+
+```
+railCounts = 32768 × 3300 / FSR_mV        // 26400 at GAIN_ONE (FSR 4096 mV)
+result     = min(65534, raw × 65535 / railCounts)
+```
+
+The clamp is 65534, not 65535: `0xFFFF` is `ANALOG_NC`, which decision D8 keeps unreachable on
+every analog path (the old ×2 scaling topped out at 65534 too).
+
+The factor is derived from `getGain()`, not hard-coded, so it stays correct if the gain changes.
+The same pot therefore reads the same on a board pin and on an ADS channel, and `AnalogInput`,
+`AnalogMultiPos` (equal-spacing form) and `AngleSensorInput` work on either without a range
+workaround. `read()`/`readLive()`'s `> 32767` threshold is now ≈ 1.65V — true mid-rail.
+
+The ADS1115 measures **absolute** volts, while the STM32 ADC is ratiometric to its supply. A rail
+slightly off 3.3V (AMS1117 tolerance ≈ ±1.5%) therefore tops out a little short of full scale, or
+reaches it a little before the end stop. That is not noticeable on a knob, and `AnalogInput`'s
+`maxRaw` can trim it. Measuring the real rail (e.g. on a spare ADS channel) was considered and
+not taken — the gain is not worth a channel and the wiring.
 
 ### MCP23017 read path
 

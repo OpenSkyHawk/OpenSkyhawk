@@ -119,7 +119,7 @@ for MCP23017 interrupt lines.
 - I²C addresses: 0x48–0x4B (ADDR pin to GND, VDD, SDA, SCL respectively)
 - 4 channels per chip, up to 4 chips per I²C bus (16 channels/bus)
 - STM32F103 has two I²C buses (`Wire` I2C1 PB6/PB7; `Wire1` I2C2 PB10/PB11)
-- Raw single-ended reading: 0–32767 (15-bit). Firmware multiplies ×2 → 16-bit (0–65534)
+- Raw single-ended reading: 0–32767 (15-bit). At `GAIN_ONE` 3.3V ≈ 26400; firmware maps 0–3.3V → 0–65534 (#325)
 - Input filter required per channel: 1 kΩ series + 100 nF to GND (specified in `hardware-standards.md`)
 
 ---
