@@ -14,7 +14,7 @@ for as long as you hold yours down.
     - **A switch with a flip-up guard?** Use
       [SwitchWithCover2Pos](../../../firmware/control-types.md#input-classes).
 
-## The short version
+## In your sketch
 
 ```cpp
 const PinRef MASTER_ARM_PIN = PinRef(PA0);
