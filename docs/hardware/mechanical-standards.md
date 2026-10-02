@@ -34,10 +34,31 @@ Left/right console panels mount on standard **Dzus rails** (MIL-F-25173A — see
 | Dimension | Value |
 |-----------|-------|
 | **Panel width** — global default for L/R console panels | **146.05 mm** (5¾″) |
-| **Mounting-stud centers**, left ↔ right | **136.5 mm** (5⅜″) — 4.76 mm (3⁄16″) inboard of each edge |
-| **Vertical fastener pitch** (rail receptacle grid) | **9.525 mm** (3⁄8″); ≥ 2 studs/side, snapped to the grid |
+| **Mounting-stud centers**, left ↔ right | **136.525 mm** (5⅜″) — 4.7625 mm (3⁄16″) inboard of each edge |
+| **Vertical fastener pitch** (rail receptacle grid) | **9.525 mm** (3⁄8″); ≥ 2 studs/side |
 | **Panel height** | N × 9.525 mm ("Dzus units"), per panel |
+| **Stud rows**, from the panel's own top edge | outermost at **1.5 × pitch**; every row at a **half-integer** multiple |
 | **Panel thickness** | 1.59 mm (1⁄16″) aluminum |
+
+Work from the exact inch fractions, not the rounded millimetres: the inset is exactly half a
+pitch, so the stud span is `panel width − pitch` = 146.05 − 9.525 = **136.525 mm**. Rounding the
+inset to 4.76 does not close against a 146.05 panel.
+
+### Where the stud rows go
+
+The outermost stud sits **1.5 pitch units** from each end of the panel (`e = 1.5`) — the
+convention these panels are built to, verified against the A-4's Doppler panel, which has an
+independent height. So a panel of N units carries its outer studs `(N − 3) × 9.525 mm` apart.
+
+Because `e` is a half-integer and panel heights are whole units, **every stud in a stack lands at
+`(k + 0.5) × 9.525 mm` from the top of the stack**. Any additional row must therefore also be at a
+half-integer position (2.5, 4.5, 6.5 …); a row at a whole unit misses the rail by half a pitch.
+Across a joint the spacing is always `(N − 1.5) → (N + 1.5)` = **3 pitch = 28.575 mm**, whatever
+the two panels' heights, and panels butt with no gap.
+
+Worked example — a 6-unit panel (57.15 mm): rows at 1.5 and 4.5, i.e. **14.2875** and
+**42.8625 mm** from the top edge, both rails at x = **4.7625** and **141.2875 mm**. That is the
+`136.525 × 28.575 mm` pattern the APN-153 panel uses.
 
 **Fastener** — quarter-turn stud + receptacle strip:
 
