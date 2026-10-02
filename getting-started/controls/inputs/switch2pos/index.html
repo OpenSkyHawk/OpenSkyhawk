@@ -4250,9 +4250,10 @@
 
 
 <h1 id="switch2pos-two-position-switch">Switch2Pos — two-position switch</h1>
-<p>Use <code>Switch2Pos</code> for anything with two states: a toggle switch, a slide switch, or a push-button.</p>
-<p>The cockpit control <strong>copies yours</strong>. While your switch is on, the sim's is on. Turn yours off,
-and the sim's goes off.</p>
+<p><code>Switch2Pos</code> is for any part with two states: a toggle switch, a slide switch, or a push-button.
+The cockpit control copies yours exactly, so when you flip your switch on, the sim's goes on, and
+when you flip it off, the sim's goes off too. With a push-button, the sim's button stays pressed
+for as long as you hold yours down.</p>
 <div class="admonition tip">
 <p class="admonition-title">Not quite the right part?</p>
 <ul>
@@ -4270,16 +4271,15 @@ and the sim's goes off.</p>
 
 <span class="n">Switch2Pos</span><span class="w"> </span><span class="nf">masterArm</span><span class="p">(</span><span class="n">DCSIN_ARM_MASTER</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_ARM_PIN</span><span class="p">);</span>
 </code></pre></div>
-<p>Put these two lines near the top of your sketch, above <code>setup()</code>.</p>
-<p>That's all the code a switch needs. The board watches it and tells DCS every time it moves.</p>
-<p><strong>What each part means:</strong></p>
-<ul>
-<li><strong><code>masterArm</code></strong> — a name for this switch. Pick anything you like.</li>
-<li><strong><code>DCSIN_ARM_MASTER</code></strong> — which cockpit control it operates. Every DCS-BIOS control has a name
-  like this. See <a href="../../../../firmware/dcsbios-integration/">DCS-BIOS Integration</a>.</li>
-<li><strong><code>MASTER_ARM_PIN</code></strong> — where the switch is wired. This is a
-  <a href="../../pin-addresses/">pin address</a>.</li>
-</ul>
+<p>These two lines go near the top of your sketch, above <code>setup()</code>, and they are all the code a
+switch needs. From then on the board watches the switch for you and tells DCS every time it
+moves.</p>
+<p>The first line says where the switch is wired — here, pin <code>PA0</code> on the board. This is called a
+<a href="../../pin-addresses/">pin address</a>, and it is the only part that changes if you plug the switch
+in somewhere else. The second line creates the switch itself. <code>masterArm</code> is a name you choose,
+and <code>DCSIN_ARM_MASTER</code> is the cockpit control it operates. Every DCS-BIOS control has a name like
+this; <a href="../../../../firmware/dcsbios-integration/">DCS-BIOS Integration</a> explains where to find
+them.</p>
 <h2 id="wiring">Wiring</h2>
 <p>Every switch is wired the same way:</p>
 <ol>
@@ -4287,63 +4287,72 @@ and the sim's goes off.</p>
 <li>The other leg to <strong>GND</strong>.</li>
 <li>A <strong>10 kΩ resistor</strong> from the pin to <strong>3.3V</strong>.</li>
 </ol>
-<p>The resistor is called a <em>pull-up</em>. It holds the pin steady while the switch is open. The board
-does not add one for you.</p>
-<p>Pick the tab for where your switch is plugged in.</p>
+<p>The resistor is called a <em>pull-up</em>. While the switch is open, nothing else connects the pin to
+anything, so without the resistor it picks up electrical noise and flickers on and off at random.
+The board doesn't add one for you, so every switch needs its own.</p>
+<p>Where the pin itself is depends on what you've plugged the switch into. Pick the tab that matches
+your build — the wiring and the code look almost identical in each one.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">On the board</label><label for="__tabbed_1_2">On a digital expander</label><label for="__tabbed_1_3">On a shift register</label><label for="__tabbed_1_4">As a joystick button</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><img alt="A switch between pin PA0 and GND, with a 10 kΩ resistor from PA0 to 3.3V" src="../../../../assets/images/diagrams/controls/switch2pos-board.svg" /></p>
-<p>Use any free pin. Its name (<code>PA0</code>, <code>PB1</code>, …) is printed next to it on the board.</p>
+<p>You can use any free pin on the board. Each one has its name (<code>PA0</code>, <code>PB1</code>, and so on)
+printed next to it, and that name is what goes in the pin address.</p>
 <div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">MASTER_ARM_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PA0</span><span class="p">);</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <p><img alt="The same switch wiring on expander pin GPA0" src="../../../../assets/images/diagrams/controls/switch2pos-expander.svg" /></p>
-<p>Any pin except <code>GPA7</code> and <code>GPB7</code>.</p>
+<p>The wiring is exactly the same as on the board, just on one of the expander's pins. Any pin
+works except <code>GPA7</code> and <code>GPB7</code>, which can't read switches because of a fault in the chip.</p>
 <div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">MASTER_ARM_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">expander1</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_A</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">   </span><span class="c1">// GPA0</span>
 </code></pre></div>
-<p>New to expanders? <a href="../../expanders/#digital-expander-mcp23017">Setting up a digital expander →</a></p>
+<p>If this is your first expander, your sketch also needs a couple of lines to set it up.
+<a href="../../expanders/#digital-expander-mcp23017">Setting up a digital expander</a> walks through
+them.</p>
 </div>
 <div class="tabbed-block">
 <p><img alt="The switch wired to input D0 of the first shift-register chip, with no extra resistor" src="../../../../assets/images/diagrams/controls/switch2pos-shiftreg.svg" /></p>
-<p>Only two wires here. The resistor is already on the shift-register board.</p>
+<p>Here you only need two wires. Shift-register boards come with the pull-up resistors already
+fitted, so the switch just goes between the input and GND.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Helpers/ShiftBus/ShiftBus.h&gt;</span><span class="w">   </span><span class="c1">// once, at the top of the sketch</span>
 
 <span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">MASTER_ARM_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">ShiftBus1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">   </span><span class="c1">// first chip, pin 0</span>
 </code></pre></div>
-<p>New to shift registers? <a href="../../expanders/#shift-register-chain-74hc165-74hc595">Setting up a shift-register chain →</a></p>
+<p><a href="../../expanders/#shift-register-chain-74hc165-74hc595">Setting up a shift-register chain</a>
+explains how the chips are numbered.</p>
 </div>
 <div class="tabbed-block">
-<p>Wire it exactly like the first tab.</p>
-<p>Then use a <strong>joystick button ID</strong> instead of a cockpit control. Windows sees a
-game-controller button, which you can bind to anything in DCS's controls menu.</p>
+<p>The wiring is the same as in the first tab. What changes is the name: instead of a cockpit
+control, you give it a <strong>joystick button ID</strong>. Windows then sees an ordinary game-controller
+button, and you can bind it to anything you like in DCS's controls menu.</p>
 <div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">TRIGGER_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PA1</span><span class="p">);</span>
 
 <span class="n">Switch2Pos</span><span class="w"> </span><span class="nf">trigger</span><span class="p">(</span><span class="n">CTRL_TRIGGER</span><span class="p">,</span><span class="w"> </span><span class="n">TRIGGER_PIN</span><span class="p">);</span>
 </code></pre></div>
-<p>Not sure which to use? See <a href="../../../../architecture/dcsbios-vs-hid/">DCS-BIOS vs HID</a>.</p>
+<p><a href="../../../../architecture/dcsbios-vs-hid/">DCS-BIOS vs HID</a> explains when a joystick button
+is the better choice.</p>
 </div>
 </div>
 </div>
-<p>In every tab, only the pin address changes. The <code>Switch2Pos</code> line stays exactly the same.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p><strong>The switch flickers, or DCS never sees it change.</strong>
-The pull-up resistor is missing. Add the 10 kΩ resistor from the pin to 3.3V.</p>
+This is almost always a missing pull-up resistor. Check that there is a 10 kΩ resistor between
+the switch's pin and 3.3V.</p>
 <p><strong>The cockpit shows ON when my switch is OFF.</strong>
-Add <code>true</code> at the end of the line:</p>
+Your switch is mounted or wired the other way round. Rather than rewiring it, add <code>true</code> at the
+end of the line and the board will flip it for you:</p>
 <div class="highlight"><pre><span></span><code><span class="n">Switch2Pos</span><span class="w"> </span><span class="nf">masterArm</span><span class="p">(</span><span class="n">DCSIN_ARM_MASTER</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_ARM_PIN</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
 </code></pre></div>
 <details class="info">
 <summary>Going further</summary>
-<ul>
-<li>A change only counts once the switch has stayed put for <strong>20 ms</strong>. This filters out the
-  tiny bounces every switch makes as it closes.</li>
-<li>When the board starts, and whenever DCS asks, every switch reports where it is. A switch
-  you moved while DCS was off catches up on its own.</li>
-<li>Every detail is in the
-  <a href="../../../api/class_open_skyhawk_1_1_switch2_pos.md">API reference</a>.</li>
-</ul>
+<p>Every mechanical switch bounces for a few thousandths of a second as its contacts close. To
+filter that out, a change only counts once the switch has stayed put for <strong>20 ms</strong>.</p>
+<p>When the board starts up, and whenever DCS asks for it, every switch reports its current
+position. So if you moved a switch while DCS wasn't running, the sim catches up as soon as
+it connects.</p>
+<p>Every detail of the class is in the
+<a href="../../../api/class_open_skyhawk_1_1_switch2_pos.md">API reference</a>.</p>
 </details>
 
 

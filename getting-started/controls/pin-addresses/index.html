@@ -4292,19 +4292,17 @@
 
 
 <h1 id="pin-addresses-pinref">Pin addresses (<code>PinRef</code>)</h1>
-<p>Every switch, knob and light in your sketch needs to know <strong>where its wire is plugged in</strong>.
-You tell it with a <strong>pin address</strong>, written <code>PinRef(...)</code>. You will write one for every wire,
-so it is worth five minutes here before anything else.</p>
+<p>Every switch, knob and light in your sketch needs to know where its wire is plugged in. You tell
+it with a <strong>pin address</strong>, written <code>PinRef(...)</code>. You'll write one for every wire on your panel,
+so it's worth a few minutes to understand how they work before anything else.</p>
 <h2 id="its-an-address">It's an address</h2>
-<p>Think of a postal address.</p>
-<ul>
-<li>A wire on the <strong>board itself</strong> is like a house — one name, one place: <code>PinRef(PA0)</code></li>
-<li>A wire on an <strong>expander</strong> is like an apartment — building, floor, door:
-  <code>PinRef(expander1, PORT_A, 0)</code></li>
-</ul>
-<p>The switch is the mail carrier. It delivers to whatever address you give it, and it does not
-care whether that is a house or an apartment. That is why every control works the same way no
-matter where it is plugged in.</p>
+<p>The easiest way to think of a pin address is as a postal address. A wire on the board itself is
+like a house: it has one name and one place, so its address is short — <code>PinRef(PA0)</code>. A wire on
+an <a href="../expanders/">expander</a> is more like an apartment, where you need the building, the floor and
+the door — <code>PinRef(expander1, PORT_A, 0)</code>.</p>
+<p>The control is the mail carrier. It delivers to whatever address you give it, and it doesn't care
+whether that address is a house or an apartment. That's why every switch, knob and light works
+the same way no matter where you plug it in: you only ever change the address.</p>
 <h2 id="every-kind-of-address">Every kind of address</h2>
 <table>
 <thead>
@@ -4318,28 +4316,31 @@ matter where it is plugged in.</p>
 <tr>
 <td>A pin on the board</td>
 <td><code>PinRef(pin name)</code></td>
-<td><code>PinRef(PA0)</code> — the name printed next to the pin</td>
+<td><code>PinRef(PA0)</code></td>
 </tr>
 <tr>
 <td>A <a href="../expanders/#digital-expander-mcp23017">digital expander</a></td>
 <td><code>PinRef(expander, port, pin)</code></td>
-<td><code>PinRef(expander1, PORT_B, 2)</code> — pin <code>GPB2</code></td>
+<td><code>PinRef(expander1, PORT_B, 2)</code></td>
 </tr>
 <tr>
 <td>A <a href="../expanders/#shift-register-chain-74hc165-74hc595">shift-register chain</a></td>
 <td><code>PinRef(ShiftBus1, chip, pin)</code></td>
-<td><code>PinRef(ShiftBus1, 0, 3)</code> — first chip, pin 3</td>
+<td><code>PinRef(ShiftBus1, 0, 3)</code></td>
 </tr>
 <tr>
 <td>An <a href="../expanders/#analog-expander-ads1115">analog expander</a></td>
 <td><code>PinRef(adc, input)</code></td>
-<td><code>PinRef(adc1, 0)</code> — input <code>A0</code></td>
+<td><code>PinRef(adc1, 0)</code></td>
 </tr>
 </tbody>
 </table>
+<p>For a pin on the board, use the name printed next to it, such as <code>PA0</code>. On an expander, the
+numbers count from 0, so <code>PinRef(expander1, PORT_B, 2)</code> is the expander's pin <code>GPB2</code>, and
+<code>PinRef(ShiftBus1, 0, 3)</code> is pin 3 on the first chip in the chain.</p>
 <h2 id="moving-a-wire-change-one-line">Moving a wire? Change one line</h2>
-<p>Here is the same switch, plugged in three different places. Only the address changes — the
-<code>Switch2Pos</code> line is identical every time.</p>
+<p>Here's the same switch plugged in three different places. Click through the tabs and you'll see
+that only the address changes — the <code>Switch2Pos</code> line is identical every time.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">On the board</label><label for="__tabbed_1_2">On a digital expander</label><label for="__tabbed_1_3">On a shift register</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -4360,15 +4361,15 @@ matter where it is plugged in.</p>
 </div>
 </div>
 <h2 id="name-your-addresses-at-the-top">Name your addresses at the top</h2>
-<p>Give every address a name, and put them all together at the top of your sketch — one line per
-wire, named after what is on the end of it:</p>
+<p>It's a good habit to give every address a name and keep them all together at the top of your
+sketch, one line per wire, named after whatever is on the end of it:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// ── Where everything is wired ──────────────────────────────</span>
 <span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">MASTER_ARM_PIN</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PA0</span><span class="p">);</span>
 <span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">GEAR_HANDLE_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">expander1</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_A</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
 <span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">CAUTION_LED_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">ShiftBus1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
 </code></pre></div>
-<p>If a wire moves, you fix one line. And the block doubles as your wiring list when you build the
-harness.</p>
+<p>That way, if you ever move a wire, there's exactly one line to fix. The block also doubles as
+your wiring list when you come to build the harness.</p>
 <h2 id="which-controls-work-where">Which controls work where</h2>
 <table>
 <thead>
@@ -4425,13 +4426,11 @@ harness.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Why the gaps?</strong></p>
-<ul>
-<li>An analog expander measures <em>how far</em> something is turned. It can't read an on/off switch.</li>
-<li>A digital expander or shift register only sees on or off. It can't tell where a knob points.</li>
-<li>Dimming a light needs a pin that switches thousands of times a second. Only some of the
-  board's own pins can, and they are marked on the board.</li>
-</ul>
+<p>The gaps come down to what each kind of pin can actually sense. An analog expander measures how
+far something is turned, so it can't reliably read a switch that is simply on or off. A digital
+expander or a shift register is the opposite: it only sees on or off, so it can't tell where a
+knob is pointing. Dimming a light needs a pin that can switch thousands of times a second, and
+only some of the board's own pins can do that — they're marked on the board.</p>
 <details class="note">
 <summary>Which controls are in each row?</summary>
 <ul>
@@ -4448,13 +4447,12 @@ cable, and <code>IntegerOutput</code> hands its value to your own code.</p>
 </details>
 <details class="info">
 <summary>Going further</summary>
-<ul>
-<li><code>PIN_NC</code> means "nothing connected". Use it for an optional pin you are not using, such as
-  a gauge's home sensor.</li>
-<li>Some controls check their address when the board starts. A <code>Dimmer</code> given an expander
-  pin prints a message on the debug port and stays off, rather than half-working.</li>
-<li>Everything a <code>PinRef</code> can do is in the <a href="../../api/class_pin_ref.md">API reference</a>.</li>
-</ul>
+<p><code>PIN_NC</code> means "nothing connected". You'll use it for an optional pin you don't need, such
+as a gauge's home sensor.</p>
+<p>Some controls check their address when the board starts up. A <code>Dimmer</code> given an expander
+pin, for example, prints a message on the debug port and stays off, rather than half-working
+and leaving you guessing.</p>
+<p>Everything a <code>PinRef</code> can do is in the <a href="../../api/class_pin_ref.md">API reference</a>.</p>
 </details>
 
 

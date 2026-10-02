@@ -4293,23 +4293,23 @@
 
 <h1 id="expanders-more-pins">Expanders — more pins</h1>
 <h2 id="why-you-need-them">Why you need them</h2>
-<p>Your PanelGroup board has <strong>10 free pins</strong> for controls. A real cockpit panel needs more than
-that — the armament panel alone has over 30 switches, knobs and lights.</p>
-<p>An <strong>expander</strong> is a small chip that adds more pins. Think of a power strip: the wall has one
-socket, and the strip turns it into six.</p>
+<p>Your PanelGroup board has 10 free pins for controls, which is plenty for a first experiment but
+not for a real panel — the armament panel alone has more than 30 switches, knobs and lights. An
+<strong>expander</strong> solves this. It's a small chip that adds more pins, a bit like a power strip that
+turns one wall socket into six.</p>
 <div class="highlight"><pre><span></span><code> PanelGroup board ══ one cable ══▶ expander ──┬── switch
                                               ├── switch
                                               ├── switch
                                               └── … and more
 </code></pre></div>
-<ul>
-<li>The expander usually sits on the panel's own circuit board, right behind the switches. For
-  experimenting on your desk, a cheap ready-made module works too.</li>
-<li>The board talks to it over <strong>one cable</strong>, instead of one wire per switch.</li>
-<li>You wire a switch to an expander <strong>exactly</strong> like you wire it to the board.</li>
-<li>In your sketch, only the switch's <a href="../pin-addresses/">pin address</a> changes.</li>
-</ul>
+<p>The expander usually sits on the panel's own circuit board, right behind the switches, and
+connects back to the PanelGroup board with a single cable. For experimenting on your desk, a
+cheap ready-made module works just as well.</p>
+<p>The good news is that very little changes for you. You wire a switch to an expander exactly the
+way you'd wire it to the board, and in your sketch only its <a href="../pin-addresses/">pin address</a>
+changes.</p>
 <h2 id="which-kind">Which kind?</h2>
+<p>There are three kinds of expander, and each is good at something different.</p>
 <table>
 <thead>
 <tr>
@@ -4335,8 +4335,8 @@ socket, and the strip turns it into six.</p>
 <tr>
 <td>Best for</td>
 <td>switches, buttons, lights</td>
-<td><strong>rotary encoders</strong>, fast gauge needles, lots of switches or lights</td>
-<td><strong>knobs and sliders</strong> (potentiometers), angle sensors</td>
+<td>encoders, fast needles</td>
+<td>knobs and sliders</td>
 </tr>
 <tr>
 <td>Pins per chip</td>
@@ -4346,92 +4346,95 @@ socket, and the strip turns it into six.</p>
 </tr>
 <tr>
 <td>How many</td>
-<td>up to 8 per board</td>
-<td>up to 8 input chips and 8 output chips</td>
-<td>up to 4 per cable, 8 per board</td>
+<td>8 per board</td>
+<td>8 in + 8 out</td>
+<td>4 per cable, 8 per board</td>
 </tr>
 <tr>
 <td>Board version</td>
 <td>any</td>
-<td><strong>0.2.0 or later</strong></td>
+<td>0.2.0 or later</td>
 <td>any</td>
 </tr>
 </tbody>
 </table>
-<p><strong>The quick rule:</strong> rotary encoders or fast-moving needles → shift registers. Knobs that turn a
-potentiometer → analog expander. Everything else → digital expander.</p>
-<p>You can mix them freely. One sketch can use the board's own pins, two digital expanders and a
-shift-register chain all at once.</p>
+<p>If you're not sure which to pick, a simple rule works for almost every panel. Rotary encoders and
+fast-moving gauge needles go on <strong>shift registers</strong>, because they need to be read quickly. Knobs
+that turn a potentiometer go on an <strong>analog expander</strong>, because they need a position rather than
+on or off. Everything else goes on a <strong>digital expander</strong>.</p>
+<p>You can also mix them freely. One sketch can use the board's own pins, two digital expanders and
+a shift-register chain all at the same time.</p>
 <h2 id="digital-expander-mcp23017">Digital expander (MCP23017)</h2>
-<p><strong>1. Name it, with its address.</strong> Up to 8 can share one cable, and each needs its own address,
-from <code>0x20</code> to <code>0x27</code>. You set it with the chip's three address pins (<code>A0</code>–<code>A2</code>); with all three
-tied to GND it is <code>0x20</code>. Put this above <code>setup()</code>:</p>
+<p>A digital expander needs three things in your sketch: a name, an introduction to the board, and
+then pin addresses for each wire.</p>
+<p><strong>Give it a name.</strong> Up to eight can share one cable, so each one needs its own address between
+<code>0x20</code> and <code>0x27</code>. You set it with the chip's three address pins, <code>A0</code> to <code>A2</code>; with all three
+connected to GND, the address is <code>0x20</code>. Put this line above <code>setup()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">MCP23017</span><span class="w"> </span><span class="nf">expander1</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span><span class="w"> </span><span class="n">Wire</span><span class="p">);</span>
 </code></pre></div>
-<p><strong>2. Introduce it to the board</strong>, inside <code>setup()</code>:</p>
+<p><strong>Introduce it to the board</strong> inside <code>setup()</code>. This tells the board the expander exists and
+which two wires it uses to signal a change:</p>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
 <span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerExpander</span><span class="p">(</span><span class="n">expander1</span><span class="p">,</span><span class="w"> </span><span class="n">PB12</span><span class="p">,</span><span class="w"> </span><span class="n">PB13</span><span class="p">);</span>
 <span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div>
-<p><code>PB12</code> and <code>PB13</code> are the expander's two <strong>interrupt</strong> wires — pins 6 and 7 of <code>J_I2C1</code>. The
-expander uses them to tap the board on the shoulder the moment a switch changes. Several
-expanders on the same cable can share them.</p>
-<p><strong>3. Use its pins.</strong> They are named <code>GPA0</code>–<code>GPA7</code> (port A) and <code>GPB0</code>–<code>GPB7</code> (port B):</p>
+<p><code>PB12</code> and <code>PB13</code> are the expander's <strong>interrupt</strong> wires, on pins 6 and 7 of <code>J_I2C1</code>. The
+expander uses them to tap the board on the shoulder the moment a switch changes, so the board
+doesn't have to keep asking. Several expanders on the same cable can share the same two wires.</p>
+<p><strong>Use its pins.</strong> The expander's pins are named <code>GPA0</code> to <code>GPA7</code> (port A) and <code>GPB0</code> to <code>GPB7</code>
+(port B), and you write them like this:</p>
 <div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">GEAR_HANDLE_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">expander1</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_B</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w">   </span><span class="c1">// GPB2</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">GPA7 and GPB7 can't read switches</p>
-<p>A fault in the chip itself means these two pins only work as outputs. Use them for lights.
-That leaves 14 pins per expander for switches.</p>
+<p>Because of a fault in the chip itself, these two pins only work as outputs. Use them for
+lights, which leaves 14 pins on each expander for switches.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Switches still need their pull-up resistor</p>
-<p>The expander doesn't add one. Every switch needs its 10 kΩ resistor from the pin to 3.3V,
-just like on the board.</p>
-</div>
+<p>Switches on an expander still need their 10 kΩ pull-up resistor, exactly as on the board — the
+expander doesn't add one for you.</p>
 <h2 id="shift-register-chain-74hc165-74hc595">Shift-register chain (74HC165 / 74HC595)</h2>
-<p><strong>There is nothing to set up.</strong> Add one line at the top of your sketch, then write addresses:</p>
+<p>Shift registers are the easiest kind to use, because there's nothing to set up. Add one line at
+the top of your sketch, and then just write pin addresses:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Helpers/ShiftBus/ShiftBus.h&gt;</span>
 
 <span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">MASTER_ARM_PIN</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">ShiftBus1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w">   </span><span class="c1">// input chip 0, pin 3</span>
 <span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">CAUTION_LED_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">ShiftBus1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w">   </span><span class="c1">// output chip 0, pin 3</span>
 </code></pre></div>
-<ul>
-<li><strong>Count chips from the board outward</strong>, starting at 0. Each chip has pins 0–7.</li>
-<li><strong>Input chips (74HC165) and output chips (74HC595) are counted separately.</strong> The same numbers
-  mean a different pin depending on whether a switch or a light uses them — the two lines above
-  are two different wires.</li>
-<li><strong>No resistors to add.</strong> Shift-register boards built to our standard already have the
-  pull-up on every input.</li>
-</ul>
+<p>The chips are numbered from the board outward, starting at 0, and each chip has pins 0 to 7.
+There are two kinds of chip — 74HC165s read switches and 74HC595s drive lights — and each kind is
+counted separately. That's why the two lines above can use the same numbers: one is pin 3 on the
+first input chip, the other is pin 3 on the first output chip, and they're two different wires.</p>
+<p>You also don't need to add any resistors. Shift-register boards built to our standard already
+have a pull-up on every input.</p>
 <h2 id="analog-expander-ads1115">Analog expander (ADS1115)</h2>
-<p><strong>1. Name it</strong> above <code>setup()</code>:</p>
+<p>An analog expander follows the same pattern as a digital one. First give it a name above
+<code>setup()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">ADS1115</span><span class="w"> </span><span class="n">adc1</span><span class="p">;</span>
 </code></pre></div>
-<p><strong>2. Introduce it to the board</strong> inside <code>setup()</code>, with its address — <code>0x48</code> to <code>0x4B</code>, set by
-its <code>ADDR</code> pin, so up to 4 per cable:</p>
+<p>Then introduce it to the board inside <code>setup()</code>, along with its address. The address is <code>0x48</code>
+to <code>0x4B</code>, set by the chip's <code>ADDR</code> pin, so up to four can share one cable:</p>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
 <span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">registerADC</span><span class="p">(</span><span class="n">adc1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x48</span><span class="p">);</span>
 <span class="w">    </span><span class="n">PanelGroup</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div>
-<p><strong>3. Use its inputs</strong>, <code>A0</code>–<code>A3</code>:</p>
+<p>It has four inputs, <code>A0</code> to <code>A3</code>, and you use them like any other pin:</p>
 <div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">FLOOD_KNOB_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">adc1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">   </span><span class="c1">// input A0</span>
 </code></pre></div>
 <details class="info">
 <summary>Going further</summary>
-<ul>
-<li><strong>Using the second cable (<code>J_I2C2</code>).</strong> Declare the second bus above <code>setup()</code> —
-  <code>TwoWire Wire1(PB11, PB10);</code> — call <code>Wire1.begin()</code> in <code>setup()</code>, and pass <code>Wire1</code>
-  where the examples above say <code>Wire</code>. Its interrupt wires are <code>PA8</code> and <code>PA15</code> on board
-  0.2.0, and <code>PB8</code> and <code>PB9</code> on board 0.1.0.</li>
-<li><strong>No interrupt wires?</strong> <code>PanelGroup::registerExpander(expander1);</code> on its own still works.
-  The board then checks the expander every 20 ms instead of hearing about changes instantly.</li>
-<li>The limits above are per <strong>board</strong>, not per cable — using both cables doesn't double them.</li>
-</ul>
+<p><strong>Using the second cable.</strong> To put expanders on <code>J_I2C2</code>, declare the second bus above
+<code>setup()</code> with <code>TwoWire Wire1(PB11, PB10);</code>, call <code>Wire1.begin()</code> in <code>setup()</code>, and pass
+<code>Wire1</code> wherever the examples above say <code>Wire</code>. Its interrupt wires are <code>PA8</code> and <code>PA15</code> on
+board 0.2.0, and <code>PB8</code> and <code>PB9</code> on board 0.1.0.</p>
+<p><strong>No interrupt wires?</strong> Calling <code>PanelGroup::registerExpander(expander1);</code> on its own still
+works. The board then checks the expander every 20 ms instead of hearing about changes
+straight away.</p>
+<p><strong>The limits are per board.</strong> Using both cables doesn't double them — a board can still have
+at most eight digital and eight analog expanders in total.</p>
 </details>
 
 
