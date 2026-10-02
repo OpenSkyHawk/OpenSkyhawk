@@ -1,0 +1,47 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" font-family='"Saira", "Saira Variable", ui-sans-serif, system-ui, sans-serif'>
+  <title>AnalogInput: a potentiometer wired to input A0 on an analog expander</title>
+  <style>
+    .card  { fill:#0d1626; stroke:rgba(59,139,235,0.22); stroke-width:1.5; }
+    .board { fill:#111827; stroke:#3b8beb; stroke-width:2; }
+    .title { font-size:13px; font-weight:700; fill:#e8ecf4; }
+    .pin   { font-size:13px; font-weight:700; font-family:"SF Mono",Consolas,monospace; }
+    .label { font-size:12.5px; fill:#c7d0e0; }
+    .note  { font-size:11.5px; fill:#9ca8bc; font-style:italic; }
+    .w     { fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .v33 { stroke:#4ade80; } .t33 { fill:#4ade80; }
+    .gnd { stroke:#64748b; } .tgnd { fill:#9ca8bc; }
+    .sig { stroke:#3b8beb; } .tsig { fill:#7db4f5; }
+    .pad { fill:#0a0e1a; stroke-width:2.5; }
+    .res { fill:#1e293b; stroke:#c7d0e0; stroke-width:2; }
+    .arrow { fill:#7db4f5; }
+  </style>
+  <rect class="card" x="1" y="1" width="598" height="248" rx="12"/>
+
+  <!-- board / expander -->
+  <rect class="board" x="24" y="40" width="176" height="160" rx="6"/>
+  <text class="title" x="112" y="30" text-anchor="middle">Analog expander</text>
+  <text class="note"  x="38" y="190">ADS1115 · cable to J_I2C1</text>
+  <text class="pin t33"  x="182" y="75"  text-anchor="end">3.3V</text>
+  <text class="pin tsig" x="182" y="125" text-anchor="end">A0</text>
+  <text class="pin tgnd" x="182" y="175" text-anchor="end">GND</text>
+  <circle class="pad v33" cx="200" cy="70"  r="7"/>
+  <circle class="pad sig" cx="200" cy="120" r="7"/>
+  <circle class="pad gnd" cx="200" cy="170" r="7"/>
+
+  <!-- 3.3V → top outer leg -->
+  <polyline class="w v33" points="207,70 440,70 440,85"/>
+  <!-- potentiometer body -->
+  <rect class="res" x="430" y="85" width="20" height="70" rx="3"/>
+  <!-- bottom outer leg → GND -->
+  <polyline class="w gnd" points="440,155 440,170 207,170"/>
+  <!-- middle leg (wiper) → signal pin -->
+  <line class="w sig" x1="207" y1="120" x2="418" y2="120"/>
+  <polygon class="arrow" points="429,120 416,113 416,127"/>
+
+  <text class="label" x="440" y="54" text-anchor="middle">potentiometer</text>
+  <text class="note"  x="464" y="96">outer leg</text>
+  <text class="note"  x="464" y="124">middle leg (wiper)</text>
+  <text class="note"  x="464" y="152">outer leg</text>
+
+  <text class="note" x="300" y="228" text-anchor="middle">Same wiring as on the board, just on the expander&#8217;s input</text>
+</svg>

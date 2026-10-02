@@ -1,0 +1,76 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 290" font-family='"Saira", "Saira Variable", ui-sans-serif, system-ui, sans-serif'>
+  <title>RotaryEncoder wired to pins PA0 and PA1 on the PanelGroup board</title>
+  <style>
+    .card  { fill:#0d1626; stroke:rgba(59,139,235,0.22); stroke-width:1.5; }
+    .board { fill:#111827; stroke:#3b8beb; stroke-width:2; }
+    .title { font-size:13px; font-weight:700; fill:#e8ecf4; }
+    .pin   { font-size:13px; font-weight:700; font-family:"SF Mono",Consolas,monospace; }
+    .label { font-size:12.5px; fill:#c7d0e0; }
+    .note  { font-size:11.5px; fill:#9ca8bc; font-style:italic; }
+    .w     { fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .v33 { stroke:#4ade80; } .t33 { fill:#4ade80; }
+    .gnd { stroke:#64748b; } .tgnd { fill:#9ca8bc; }
+    .sig { stroke:#3b8beb; } .tsig { fill:#7db4f5; }
+    .pad { fill:#0a0e1a; stroke-width:2.5; }
+    .res { fill:#1e293b; stroke:#c7d0e0; stroke-width:2; }
+    .dot { fill:#7db4f5; }
+    .enc  { fill:#111827; stroke:#e8ecf4; stroke-width:2; }
+    .knob { fill:#1e293b; stroke:#e8ecf4; stroke-width:2; }
+    .tick { fill:none; stroke:#e8ecf4; stroke-width:2.5; stroke-linecap:round; }
+    .swc  { fill:#0d1626; stroke:#e8ecf4; stroke-width:2; }
+    .epin { font-size:13px; font-weight:700; fill:#e8ecf4; font-family:"SF Mono",Consolas,monospace; }
+  </style>
+  <rect class="card" x="1" y="1" width="598" height="288" rx="12"/>
+
+  <!-- board -->
+  <rect class="board" x="24" y="40" width="176" height="210" rx="6"/>
+  <text class="title" x="112" y="30" text-anchor="middle">PanelGroup board</text>
+  <text class="pin tsig" x="182" y="75"  text-anchor="end">PA0</text>
+  <text class="pin t33"  x="182" y="125" text-anchor="end">3.3V</text>
+  <text class="pin tsig" x="182" y="175" text-anchor="end">PA1</text>
+  <text class="pin tgnd" x="182" y="220" text-anchor="end">GND</text>
+  <circle class="pad sig" cx="200" cy="70"  r="7"/>
+  <circle class="pad v33" cx="200" cy="120" r="7"/>
+  <circle class="pad sig" cx="200" cy="170" r="7"/>
+  <circle class="pad gnd" cx="200" cy="215" r="7"/>
+
+  <!-- 3.3V feeds both pull-ups -->
+  <line class="w v33" x1="207" y1="120" x2="360" y2="120"/>
+
+  <!-- pull-up for A: 3.3V up to PA0 -->
+  <line class="w v33" x1="280" y1="120" x2="280" y2="110"/>
+  <rect class="res" x="270" y="80" width="20" height="30" rx="3"/>
+  <line class="w sig" x1="280" y1="80" x2="280" y2="70"/>
+  <text class="label" x="296" y="92">10 kΩ</text>
+  <text class="note"  x="296" y="106">pull-up</text>
+
+  <!-- pull-up for B: 3.3V down to PA1 -->
+  <line class="w v33" x1="360" y1="120" x2="360" y2="130"/>
+  <rect class="res" x="350" y="130" width="20" height="30" rx="3"/>
+  <line class="w sig" x1="360" y1="160" x2="360" y2="170"/>
+  <text class="label" x="376" y="142">10 kΩ</text>
+  <text class="note"  x="376" y="156">pull-up</text>
+
+  <!-- PA0 → A, PA1 → B -->
+  <line class="w sig" x1="207" y1="70"  x2="446" y2="70"/>
+  <line class="w sig" x1="207" y1="170" x2="446" y2="170"/>
+  <circle class="dot" cx="280" cy="70"  r="4.5"/>
+  <circle class="dot" cx="360" cy="170" r="4.5"/>
+
+  <!-- encoder -->
+  <text class="title" x="510" y="40" text-anchor="middle">Rotary encoder</text>
+  <rect class="enc" x="450" y="50" width="120" height="140" rx="8"/>
+  <circle class="knob" cx="518" cy="120" r="28"/>
+  <line class="tick" x1="518" y1="120" x2="518" y2="98"/>
+  <circle class="swc" cx="450" cy="70"  r="4"/>
+  <circle class="swc" cx="450" cy="170" r="4"/>
+  <circle class="swc" cx="510" cy="190" r="4"/>
+  <text class="epin" x="462" y="75">A</text>
+  <text class="epin" x="462" y="175">B</text>
+  <text class="epin" x="510" y="180" text-anchor="middle">C</text>
+
+  <!-- GND → C -->
+  <polyline class="w gnd" points="207,215 510,215 510,194"/>
+
+  <text class="note" x="300" y="274" text-anchor="middle">C (the middle pin) goes to GND · A and B each get a 10 kΩ pull-up to 3.3V</text>
+</svg>

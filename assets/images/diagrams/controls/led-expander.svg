@@ -1,0 +1,56 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" font-family='"Saira", "Saira Variable", ui-sans-serif, system-ui, sans-serif'>
+  <title>LED wired to pin GPA7 on a digital expander through a 330 ohm resistor</title>
+  <style>
+    .card  { fill:#0d1626; stroke:rgba(59,139,235,0.22); stroke-width:1.5; }
+    .board { fill:#111827; stroke:#3b8beb; stroke-width:2; }
+    .title { font-size:13px; font-weight:700; fill:#e8ecf4; }
+    .pin   { font-size:13px; font-weight:700; font-family:"SF Mono",Consolas,monospace; }
+    .label { font-size:12.5px; fill:#c7d0e0; }
+    .note  { font-size:11.5px; fill:#9ca8bc; font-style:italic; }
+    .w     { fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .wi    { fill:none; stroke-width:1.6; stroke-dasharray:4 3; }
+    .v33 { stroke:#4ade80; } .t33 { fill:#4ade80; }
+    .v12 { stroke:#f59e0b; } .t12 { fill:#f59e0b; }
+    .gnd { stroke:#64748b; } .tgnd { fill:#9ca8bc; }
+    .sig { stroke:#3b8beb; } .tsig { fill:#7db4f5; }
+    .pad { fill:#0a0e1a; stroke-width:2.5; }
+    .res { fill:#1e293b; stroke:#c7d0e0; stroke-width:2; }
+    .led { fill:#f87171; stroke:#e8ecf4; stroke-width:1.5; stroke-linejoin:round; }
+    .bar { stroke:#e8ecf4; stroke-width:2.5; stroke-linecap:round; }
+    .ray { stroke:#fca5a5; stroke-width:1.6; stroke-linecap:round; fill:none; }
+    .rayh { fill:#fca5a5; }
+    .box { fill:none; stroke:#9ca8bc; stroke-width:1.6; stroke-dasharray:4 3; }
+  </style>
+  <rect class="card" x="1" y="1" width="598" height="248" rx="12"/>
+
+  <!-- expander -->
+  <rect class="board" x="24" y="40" width="176" height="160" rx="6"/>
+  <text class="title" x="112" y="30" text-anchor="middle">Digital expander</text>
+  <text class="note"  x="38" y="190">MCP23017 · cable to J_I2C1</text>
+  <text class="pin tsig" x="182" y="125" text-anchor="end">GPA7</text>
+  <text class="pin tgnd" x="182" y="175" text-anchor="end">GND</text>
+  <circle class="pad sig" cx="200" cy="120" r="7"/>
+  <circle class="pad gnd" cx="200" cy="170" r="7"/>
+
+  <!-- pin → series resistor → LED -->
+  <line class="w sig" x1="207" y1="120" x2="330" y2="120"/>
+  <rect class="res" x="330" y="111" width="44" height="18" rx="3"/>
+  <text class="label" x="352" y="102" text-anchor="middle">330 Ω</text>
+  <polyline class="w sig" points="374,120 500,120 500,130"/>
+
+  <!-- LED, pointing down to GND -->
+  <polygon class="led" points="487,130 513,130 500,152"/>
+  <line class="bar" x1="487" y1="153" x2="513" y2="153"/>
+  <line class="ray" x1="518" y1="140" x2="530" y2="130"/>
+  <polygon class="rayh" points="533,127 525,129 529,134"/>
+  <line class="ray" x1="520" y1="150" x2="532" y2="140"/>
+  <polygon class="rayh" points="535,137 527,139 531,144"/>
+  <text class="label" x="542" y="138">LED</text>
+  <text class="note"  x="522" y="168">short leg</text>
+  <line class="w gnd" x1="500" y1="154" x2="500" y2="170"/>
+
+  <!-- GND return -->
+  <line class="w gnd" x1="500" y1="170" x2="207" y2="170"/>
+
+  <text class="note" x="300" y="228" text-anchor="middle">GPA7 and GPB7 can't read switches, but they're ideal for lights</text>
+</svg>
