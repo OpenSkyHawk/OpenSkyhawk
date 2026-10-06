@@ -1919,6 +1919,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#silkscreen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Silkscreen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#releases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4830,6 +4841,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#silkscreen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Silkscreen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#releases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4959,6 +4981,23 @@ everything else is fine on I²C-class. Key rules:</p>
 <p>Full rules, the measured numbers, and chip-placement guidance:
 <code>docs/_source/hardware-standards.md</code> (Shift-Register I/O section). Harness pinouts:
 the <a href="../connectors/">Connector &amp; Harness Guide</a>.</p>
+<h2 id="silkscreen">Silkscreen</h2>
+<p>Checked on every board <strong>before gerber export</strong> — a silk error is only found after fab. Key rules:</p>
+<ul>
+<li><strong>Every power and bus connector pin is labelled with its signal</strong> — <code>12V</code>, <code>5V</code>, <code>CANH</code>,
+  <code>CANL</code>, <code>GND</code> beside each pad of the Mini-Fit Jr bus connectors. A reversed harness destroys
+  the board, so here silk is a safety feature. Off-board headers (I²C, ShiftBus, SWD) get the
+  same treatment.</li>
+<li><strong>Label the signal, not the net</strong> — a pin behind a series resistor is <code>SDA</code>, not its
+  auto-generated <code>Net-(J2-Pin_1)</code> name.</li>
+<li><strong>Legends are free silk text, never a footprint <code>Value</code> override</strong> — an override breaks
+  schematic parity and is silently deleted by the next <em>Update PCB from Schematic</em>.</li>
+<li><strong>Revision line on the back silk:</strong> <code>REVISION 0.2.0 | BOARD NAME</code>, bumped in the same change
+  as the board revision. Identify a board revision as <code>0.2.0</code> everywhere — "Rev 2" names a round
+  of work, never the hardware.</li>
+</ul>
+<p>Full rules, the text format, and the four-point pre-gerber gate:
+<code>docs/_source/hardware-standards.md</code> (<em>Silkscreen</em>).</p>
 <h2 id="releases">Releases</h2>
 <p>Hardware releases work like firmware's: commits under <code>PCB/</code> keep a draft <strong>release hardware
 X.Y.Z</strong> pull request up to date, and <strong>merging it is the release</strong> (<code>hardware-vX.Y.Z</code>). A release

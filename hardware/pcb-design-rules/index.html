@@ -5022,8 +5022,9 @@ from the predefined widths when routing those traces.</p>
 <li>PTH parts extend through to the front — keep silk and copper clear of LED pads.</li>
 </ul>
 <h2 id="layer-stackup">Layer stackup</h2>
-<p>Standard 2-layer: F.Cu / B.Cu, F/B.Paste, F.Silkscreen (B.Silkscreen kept clear for
-inspection), F/B.Courtyard, Edge.Cuts at 0.05 mm.</p>
+<p>Standard 2-layer: F.Cu / B.Cu, F/B.Paste, F.Silkscreen, F/B.Courtyard, Edge.Cuts at 0.05 mm.
+B.Silkscreen carries only the revision line (<code>REVISION x.y.z | BOARD NAME</code>) and is otherwise
+kept clear for inspection — see <a href="../standards/#silkscreen">Silkscreen</a>.</p>
 <h2 id="board-power-budget">Board power budget</h2>
 <p>Logic + LED boards target <strong>≤ 500 mA at 12 V input</strong>. Full breakdown, plus the actuator-board
 caveat, is on the <a href="../../architecture/power/">Power Architecture</a> page.</p>
