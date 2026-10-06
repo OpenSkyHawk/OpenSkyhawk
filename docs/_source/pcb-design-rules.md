@@ -96,7 +96,7 @@ Standard 2-layer assignment:
 | F.Paste | Front solder paste (SMD) |
 | B.Paste | Back solder paste (SMD) |
 | F.Silkscreen | Component labels, reference designators |
-| B.Silkscreen | (optional, keep clear for inspection) |
+| B.Silkscreen | Revision line only (`REVISION x.y.z \| BOARD NAME` — `hardware-standards.md`, *Silkscreen*); otherwise keep clear for inspection |
 | F.Courtyard | Component keep-out areas |
 | B.Courtyard | Component keep-out areas (back) |
 | Edge.Cuts | Board outline — 0.05mm line width |

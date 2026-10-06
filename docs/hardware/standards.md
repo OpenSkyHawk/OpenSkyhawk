@@ -79,6 +79,25 @@ Full rules, the measured numbers, and chip-placement guidance:
 `docs/_source/hardware-standards.md` (Shift-Register I/O section). Harness pinouts:
 the [Connector & Harness Guide](connectors.md).
 
+## Silkscreen
+
+Checked on every board **before gerber export** — a silk error is only found after fab. Key rules:
+
+- **Every power and bus connector pin is labelled with its signal** — `12V`, `5V`, `CANH`,
+  `CANL`, `GND` beside each pad of the Mini-Fit Jr bus connectors. A reversed harness destroys
+  the board, so here silk is a safety feature. Off-board headers (I²C, ShiftBus, SWD) get the
+  same treatment.
+- **Label the signal, not the net** — a pin behind a series resistor is `SDA`, not its
+  auto-generated `Net-(J2-Pin_1)` name.
+- **Legends are free silk text, never a footprint `Value` override** — an override breaks
+  schematic parity and is silently deleted by the next *Update PCB from Schematic*.
+- **Revision line on the back silk:** `REVISION 0.2.0 | BOARD NAME`, bumped in the same change
+  as the board revision. Identify a board revision as `0.2.0` everywhere — "Rev 2" names a round
+  of work, never the hardware.
+
+Full rules, the text format, and the four-point pre-gerber gate:
+`docs/_source/hardware-standards.md` (*Silkscreen*).
+
 ## Releases
 
 Hardware releases work like firmware's: commits under `PCB/` keep a draft **release hardware
