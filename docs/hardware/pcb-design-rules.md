@@ -56,8 +56,9 @@ from the predefined widths when routing those traces.
 
 ## Layer stackup
 
-Standard 2-layer: F.Cu / B.Cu, F/B.Paste, F.Silkscreen (B.Silkscreen kept clear for
-inspection), F/B.Courtyard, Edge.Cuts at 0.05 mm.
+Standard 2-layer: F.Cu / B.Cu, F/B.Paste, F.Silkscreen, F/B.Courtyard, Edge.Cuts at 0.05 mm.
+B.Silkscreen carries only the revision line (`REVISION x.y.z | BOARD NAME`) and is otherwise
+kept clear for inspection — see [Silkscreen](standards.md#silkscreen).
 
 ## Board power budget
 
