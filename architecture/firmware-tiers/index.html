@@ -4919,8 +4919,8 @@ can show connected panels without any SimGateway change
   state. Multiple controls may map to the same DCS command.</li>
 <li>It does <strong>not</strong> drive panel hardware decisions; nodes own their own I/O.</li>
 </ul>
-<p><code>NODE_ID</code> is always <strong>0</strong> for PanelBridge — reserved, and never transmitted as a heartbeat on
-the bus.</p>
+<p><code>NODE_ID</code> is always <strong>0</strong> for PanelBridge — reserved for it, and its heartbeat <code>HB_0</code> is the
+master beacon every other node watches.</p>
 <h2 id="panelgroup-stm32f103">PanelGroup (STM32F103)</h2>
 <p>One per panel group. Each node drives its panel hardware directly — GPIO, or MCP23017
 (digital I/O) and ADS1115 (analog) breakouts over I²C — and carries a unique <code>NODE_ID</code> (1–63)

@@ -4618,6 +4618,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#public-static-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#public-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4625,6 +4636,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Static Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-master_timeout_ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable MASTER_TIMEOUT_MS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4784,6 +4823,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-servicenodestatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function serviceNodeStatus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-start" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4854,6 +4904,21 @@
 
 <h1 id="namespace-canprotocol">Namespace CANProtocol</h1>
 <p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>CANProtocol</strong></a></p>
+<h2 id="public-static-attributes">Public Static Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-master_timeout_ms"><strong>MASTER_TIMEOUT_MS</strong></a>   = <code>1500</code><br><em>Master-loss timeout: 3× the 500 ms</em> <code>HB_0</code> <em>cadence, matching</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>'s own node timeout ratio (3000 ms / 500 ms).</em></td>
+</tr>
+</tbody>
+</table>
 <h2 id="public-functions">Public Functions</h2>
 <table>
 <thead>
@@ -4917,6 +4982,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-servicenodestatus"><strong>serviceNodeStatus</strong></a> (uint16_t rxCount=0) <br><em>Run the node-generic status duties. Call once per loop(), after</em> <a href="./#function-drain"><em><strong>drain()</strong></em></a> <em>.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-start"><strong>start</strong></a> () <br><em>Start the CAN peripheral and apply registered filters.</em></td>
 </tr>
 <tr>
@@ -4933,6 +5002,12 @@
 </tr>
 </tbody>
 </table>
+<h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-master_timeout_ms">variable MASTER_TIMEOUT_MS</h3>
+<p><em>Master-loss timeout: 3× the 500 ms</em> <code>HB_0</code> <em>cadence, matching</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>'s own node timeout ratio (3000 ms / 500 ms).</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">MASTER_TIMEOUT_MS</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-busoff">function busOff</h3>
 <p><em>Return true if the CAN controller is in bus-off state.</em> 
@@ -4947,6 +5022,7 @@
 <p>Drains all frames received since the last call:
 * SYNC_REQ: fires <a href="./#function-onsyncreq"><strong>onSyncReq()</strong></a>, not forwarded to <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
 * TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
+* HB_0 on a non-bridge node: stamped for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s watchdog, then <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
 * All other frames: fires <a href="./#function-onreceive"><strong>onReceive()</strong></a>.</p>
 <p>Also services <a href="./#function-sendbatched"><strong>sendBatched()</strong></a> deadlines: a half-full ControlPacketPair that has waited two <a href="./#function-drain"><strong>drain()</strong></a> calls is flushed with slot B set to the null sentinel. </p>
 <hr>
@@ -5098,12 +5174,33 @@
 </ul>
 <hr>
 
+<h3 id="function-servicenodestatus">function serviceNodeStatus</h3>
+<p><em>Run the node-generic status duties. Call once per loop(), after</em> <a href="./#function-drain"><em><strong>drain()</strong></em></a> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">serviceNodeStatus</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">rxCount</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<p>Every node on the bus owes the same status traffic, whatever else it does (#340):
+* <code>HB_NODE_ID</code> every 500 ms (makeHeartbeatPayload), carrying <code>rxCount</code>.
+* <code>HEALTH_NODE_ID</code> every 1000 ms (makeNodeHealthPayload) with the internal die temp and the aggregated node fault, plus the DiagSerial fault edge log (tag <code>BRIDGE</code> on NODE_ID 0, <code>NODE</code> otherwise). Compiled out with <code>-DNODE_HEALTH_TELEM=0</code>.
+* Master-loss watchdog, on every node except <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (NODE_ID 0): once a master heartbeat (<code>HB_0</code>) has been seen, master loss is set after MASTER_TIMEOUT_MS of silence and cleared by the next <code>HB_0</code>.
+* WARNING on a non-bridge node = master loss OR overheat (overheat only when a build defines <code>NODE_OVERHEAT_C</code>). The service tracks the two causes separately and writes the shared latch only when their OR changes, so a returning master never clears a live overheat, and overheat clears once the die cools. On <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> an overheat is raise-only, because its latch also carries <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>'s dead-node WARNING.</p>
+<p>The first call arms the HB/HEALTH timers — the first loop() after setup(), i.e. boot complete — so the first HB goes out ~500 ms and the first HEALTH ~1000 ms after it.</p>
+<p><code>HB_0</code> arrival is recorded by <a href="./#function-drain"><strong>drain()</strong></a>, which still passes the frame to <a href="./#function-onreceive"><strong>onReceive()</strong></a>. <a href="./#function-start"><strong>start()</strong></a> adds <code>HB_0</code> to the hardware filter on non-bridge nodes, so callers never register it by hand.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>rxCount</code> Caller-owned accepted RX count for the heartbeat (<a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>: accepted CTRL_BCAST frames). Pass 0 when the node keeps no count.</li>
+</ul>
+<p><strong>Note:</strong></p>
+<p>Samples millis() itself, after <a href="./#function-drain"><strong>drain()</strong></a> has stamped any <code>HB_0</code>, and compares elapsed time signed — so a millisecond ticking during <a href="./#function-drain"><strong>drain()</strong></a> cannot read as a timeout (#225). </p>
+<hr>
+
 <h3 id="function-start">function start</h3>
 <p><em>Start the CAN peripheral and apply registered filters.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">start</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Must be called after <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded.</p>
-<p>Fires the onStatusChange callback with NORMAL on success. </p>
+<p>Must be called after <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB_0 on every node except <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (NODE_ID 0), for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s master-loss watchdog.</p>
+<p>Resets the <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a> timers, which arm on its first call. Fires the onStatusChange callback with NORMAL on success. </p>
 <hr>
 
 <h3 id="function-startloopback">function startLoopback</h3>

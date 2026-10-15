@@ -4843,7 +4843,7 @@ a glance:</p>
 <p>The state machine is shared (<code>STM32Board</code>); only the triggers differ per role. <strong>Green solid
 (connected)</strong> appears while data is actively flowing and decays back to green-blinking after
 ~½ s of quiet. <strong>Amber (warning)</strong> means a tracked PanelGroup node died (PanelBridge), the
-master heartbeat was lost (PanelGroup), or the board's <strong>clock failed to lock</strong> (any STM32
+master heartbeat was lost (any node other than PanelBridge), or the board's <strong>clock failed to lock</strong> (any STM32
 node — see below).</p>
 <p>CAN faults are driven from the <code>CanStatus</code> callback. For non-CAN faults (dead node, lost
 master, SYNC timeout, I²C hang), the firmware calls <code>STM32Board::setWarning(true)</code> and clears

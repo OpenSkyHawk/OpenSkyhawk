@@ -5252,7 +5252,7 @@
 <p>8-byte payload carried by HB_n heartbeat frames.</p>
 <p>Two ControlPackets packed into one 8-byte input/output CAN frame.</p>
 <p>Used by CTRL_BCAST and EVT_n only. Slot B controlId == 0x0000 signals an empty/padding slot.</p>
-<p>Sent every 500 ms by <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> nodes. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reads HB_1–HB_63 to track <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> health and populate diagnostics. HB_0 is reserved but not transmitted.</p>
+<p>Sent every 500 ms by every node through serviceNodeStatus() (#340). <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reads HB_1–HB_63 to track node health and populate diagnostics; its own HB_0 is the master liveness beacon every other node watches (#93).</p>
 <p>Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:
 * Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal temperature sensor (ADC ch16); no external parts, no PCB change.
 * Degraded state (#163): flags bit1 + faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode (<a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a>). aggregateFaults() picks the primary faultId, makeNodeHealthPayload derives DEGRADED. faultMask stays 0 (reserved, see below). <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> caches HEALTH_1–HEALTH_63 per node and forwards them in _NODE_STATUS.</p>

@@ -99,6 +99,7 @@
 
 * **send** ([**CANProtocol**](namespaceCANProtocol.md))
 * **sendBatched** ([**CANProtocol**](namespaceCANProtocol.md))
+* **serviceNodeStatus** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
 * **setup** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**SimGateway**](namespaceSimGateway.md))

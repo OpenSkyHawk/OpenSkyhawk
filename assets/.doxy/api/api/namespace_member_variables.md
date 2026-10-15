@@ -47,6 +47,11 @@
 * **kSwitecDefaultAccelN** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
+## m
+
+* **MASTER\_TIMEOUT\_MS** ([**CANProtocol**](namespaceCANProtocol.md))
+
+
 ## p
 
 * **PX\_PER\_MM** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))

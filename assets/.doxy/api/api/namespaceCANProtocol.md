@@ -33,6 +33,11 @@
 
 
 
+## Public Static Attributes
+
+| Type | Name |
+| ---: | :--- |
+|  constexpr uint32\_t | [**MASTER\_TIMEOUT\_MS**](#variable-master_timeout_ms)   = `1500`<br>_Master-loss timeout: 3× the 500 ms_ `HB_0` _cadence, matching_[_**PanelBridge**_](namespacePanelBridge.md) _'s own node timeout ratio (3000 ms / 500 ms)._ |
 
 
 
@@ -64,6 +69,7 @@
 |  uint8\_t | [**rec**](#function-rec) () <br>_Return the CAN Receive Error Counter (0-255) from ESR._  |
 |  void | [**send**](#function-send) (uint32\_t canId, const uint8\_t \* data, uint8\_t len) <br>_Send a CAN frame._  |
 |  void | [**sendBatched**](#function-sendbatched) (uint32\_t canId, const ControlPacket & pkt) <br>_Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch._  |
+|  void | [**serviceNodeStatus**](#function-servicenodestatus) (uint16\_t rxCount=0) <br>_Run the node-generic status duties. Call once per loop(), after_ [_**drain()**_](namespaceCANProtocol.md#function-drain) _._ |
 |  void | [**start**](#function-start) () <br>_Start the CAN peripheral and apply registered filters._  |
 |  void | [**startLoopback**](#function-startloopback) () <br>_Start in silent loopback mode — for bench testing only._  |
 |  uint8\_t | [**tec**](#function-tec) () <br>_Return the CAN Transmit Error Counter (0-255) from ESR._  |
@@ -96,6 +102,22 @@
 
 
 
+## Public Static Attributes Documentation
+
+
+
+
+### variable MASTER\_TIMEOUT\_MS 
+
+_Master-loss timeout: 3× the 500 ms_ `HB_0` _cadence, matching_[_**PanelBridge**_](namespacePanelBridge.md) _'s own node timeout ratio (3000 ms / 500 ms)._
+```C++
+constexpr uint32_t CANProtocol::MASTER_TIMEOUT_MS;
+```
+
+
+
+
+<hr>
 ## Public Functions Documentation
 
 
@@ -127,6 +149,7 @@ void CANProtocol::drain ()
 Drains all frames received since the last call:
 * SYNC\_REQ: fires [**onSyncReq()**](namespaceCANProtocol.md#function-onsyncreq), not forwarded to [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 * TEST\_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
+* HB\_0 on a non-bridge node: stamped for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s watchdog, then [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 * All other frames: fires [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 
 
@@ -472,6 +495,55 @@ A frame ID with no batch slot is **silently discarded** — adding a batched fra
 
 
 
+### function serviceNodeStatus 
+
+_Run the node-generic status duties. Call once per loop(), after_ [_**drain()**_](namespaceCANProtocol.md#function-drain) _._
+```C++
+void CANProtocol::serviceNodeStatus (
+    uint16_t rxCount=0
+) 
+```
+
+
+
+Every node on the bus owes the same status traffic, whatever else it does (#340):
+* `HB_NODE_ID` every 500 ms (makeHeartbeatPayload), carrying `rxCount`.
+* `HEALTH_NODE_ID` every 1000 ms (makeNodeHealthPayload) with the internal die temp and the aggregated node fault, plus the DiagSerial fault edge log (tag `BRIDGE` on NODE\_ID 0, `NODE` otherwise). Compiled out with `-DNODE_HEALTH_TELEM=0`.
+* Master-loss watchdog, on every node except [**PanelBridge**](namespacePanelBridge.md) (NODE\_ID 0): once a master heartbeat (`HB_0`) has been seen, master loss is set after MASTER\_TIMEOUT\_MS of silence and cleared by the next `HB_0`.
+* WARNING on a non-bridge node = master loss OR overheat (overheat only when a build defines `NODE_OVERHEAT_C`). The service tracks the two causes separately and writes the shared latch only when their OR changes, so a returning master never clears a live overheat, and overheat clears once the die cools. On [**PanelBridge**](namespacePanelBridge.md) an overheat is raise-only, because its latch also carries [**PanelBridge**](namespacePanelBridge.md)'s dead-node WARNING.
+
+
+
+
+The first call arms the HB/HEALTH timers — the first loop() after setup(), i.e. boot complete — so the first HB goes out ~500 ms and the first HEALTH ~1000 ms after it.
+
+
+`HB_0` arrival is recorded by [**drain()**](namespaceCANProtocol.md#function-drain), which still passes the frame to [**onReceive()**](namespaceCANProtocol.md#function-onreceive). [**start()**](namespaceCANProtocol.md#function-start) adds `HB_0` to the hardware filter on non-bridge nodes, so callers never register it by hand.
+
+
+
+
+**Parameters:**
+
+
+* `rxCount` Caller-owned accepted RX count for the heartbeat ([**PanelGroup**](namespacePanelGroup.md): accepted CTRL\_BCAST frames). Pass 0 when the node keeps no count.
+
+
+
+**Note:**
+
+Samples millis() itself, after [**drain()**](namespaceCANProtocol.md#function-drain) has stamped any `HB_0`, and compares elapsed time signed — so a millisecond ticking during [**drain()**](namespaceCANProtocol.md#function-drain) cannot read as a timeout (#225). 
+
+
+
+
+
+        
+
+<hr>
+
+
+
 ### function start 
 
 _Start the CAN peripheral and apply registered filters._ 
@@ -481,10 +553,10 @@ void CANProtocol::start ()
 
 
 
-Must be called after [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin) and after all filter and callback registrations. Always adds CTRL\_BCAST, TEST\_SEQ, and SYNC\_REQ to the active filter — mandatory for all nodes, cannot be excluded.
+Must be called after [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin) and after all filter and callback registrations. Always adds CTRL\_BCAST, TEST\_SEQ, and SYNC\_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB\_0 on every node except [**PanelBridge**](namespacePanelBridge.md) (NODE\_ID 0), for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s master-loss watchdog.
 
 
-Fires the onStatusChange callback with NORMAL on success. 
+Resets the [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) timers, which arm on its first call. Fires the onStatusChange callback with NORMAL on success. 
 
 
         

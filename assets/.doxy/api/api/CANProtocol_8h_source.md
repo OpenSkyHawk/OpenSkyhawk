@@ -151,6 +151,12 @@ namespace CANProtocol {
 
     uint32_t txDropCount();
 
+    // ── Node status service (every node) ──────────────────────────────────────
+
+    void serviceNodeStatus(uint16_t rxCount = 0);
+
+    static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
+
 } // namespace CANProtocol
 
 #endif // ARDUINO_ARCH_STM32

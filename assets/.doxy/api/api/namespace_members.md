@@ -102,6 +102,7 @@
 
 ## m
 
+* **MASTER\_TIMEOUT\_MS** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeHeartbeatPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeNodeHealthPayload** ([**CANProtocol**](namespaceCANProtocol.md))
 * **makeX27Config** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -147,6 +148,7 @@
 
 * **send** ([**CANProtocol**](namespaceCANProtocol.md))
 * **sendBatched** ([**CANProtocol**](namespaceCANProtocol.md))
+* **serviceNodeStatus** ([**CANProtocol**](namespaceCANProtocol.md))
 * **start** ([**CANProtocol**](namespaceCANProtocol.md))
 * **startLoopback** ([**CANProtocol**](namespaceCANProtocol.md))
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))

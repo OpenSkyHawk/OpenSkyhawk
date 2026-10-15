@@ -617,6 +617,7 @@
     <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
+    <member refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" kind="variable"><name>MASTER_TIMEOUT_MS</name></member>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
     <member refid="namespaceCANProtocol_1a4a1066c652bf5a9d6dafb6838f1d900d" kind="function"><name>filterAcceptId</name></member>
     <member refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kind="function"><name>start</name></member>
@@ -634,6 +635,7 @@
     <member refid="namespaceCANProtocol_1af5d7ba8e24001ec0c58625e0b7094161" kind="function"><name>makeHeartbeatPayload</name></member>
     <member refid="namespaceCANProtocol_1a1b3df3a100c42b658b0145c597019556" kind="function"><name>makeNodeHealthPayload</name></member>
     <member refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kind="function"><name>txDropCount</name></member>
+    <member refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kind="function"><name>serviceNodeStatus</name></member>
   </compound>
   <compound refid="namespaceDcsBios" kind="namespace"><name>DcsBios</name>
     <member refid="namespaceDcsBios_1aceb852413f44b4ba8587677ac29c9196" kind="function"><name>tryToSendDcsBiosMessage</name></member>
@@ -1589,6 +1591,17 @@
     <member refid="CANProtocol_8cpp_1ae8c240afe214af73dd1351beece0963f" kind="variable"><name>_filterIds</name></member>
     <member refid="CANProtocol_8cpp_1a5bbc64960a0df91680d4505a61fbf9f2" kind="variable"><name>_filterCount</name></member>
     <member refid="CANProtocol_8cpp_1a77aeda5d9cc96272ba093a0085276014" kind="variable"><name>_filterPassAll</name></member>
+    <member refid="CANProtocol_8cpp_1a8ce9da869d86fce132156606c4d16918" kind="variable"><name>HB_PERIOD_MS</name></member>
+    <member refid="CANProtocol_8cpp_1ad64b817dc82764a51d9a3cc0815a11f0" kind="variable"><name>HEALTH_PERIOD_MS</name></member>
+    <member refid="CANProtocol_8cpp_1a17847f2ce84802f42c9056a0119775b1" kind="variable"><name>_lastHbMs</name></member>
+    <member refid="CANProtocol_8cpp_1a454c81ccde05f31b139d729db3a61dee" kind="variable"><name>_lastHealthMs</name></member>
+    <member refid="CANProtocol_8cpp_1a7d341f7da7dc42641857b8c7b9c7aa6d" kind="variable"><name>_statusArmed</name></member>
+    <member refid="CANProtocol_8cpp_1aa6fc585510c8eb06363c61e2158a2839" kind="variable"><name>_lastMasterMs</name></member>
+    <member refid="CANProtocol_8cpp_1a9a659f5bee266ccbddd9d392e9dd6786" kind="variable"><name>_everSawMaster</name></member>
+    <member refid="CANProtocol_8cpp_1a57cff88da6f5717a20c86b72299e1b6a" kind="variable"><name>_masterHbPending</name></member>
+    <member refid="CANProtocol_8cpp_1ab44a9b74458c9a816c486906bd45d464" kind="variable"><name>_masterLost</name></member>
+    <member refid="CANProtocol_8cpp_1a4c2f97832c733a91d99942c28516b8e8" kind="variable"><name>_overheat</name></member>
+    <member refid="CANProtocol_8cpp_1a1bd482fa65534513bc6553ba5ce68e57" kind="variable"><name>_warnAsserted</name></member>
     <member refid="CANProtocol_8cpp_1a30f93eb192e2bcc94a7223591c4d4554" kind="function"><name>_drainTxQueue</name></member>
     <member refid="CANProtocol_8cpp_1a4b15c6d1739fcc2f6611c7fe635b4019" kind="function"><name>_applyFilters</name></member>
     <member refid="CANProtocol_8cpp_1a8c31ad45b7e95614b7871c4965e594cf" kind="function"><name>_updateStatus</name></member>

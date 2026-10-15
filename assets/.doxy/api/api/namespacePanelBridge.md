@@ -118,7 +118,7 @@ void PanelBridge::loop ()
 
 
 
-Drains [**CANProtocol**](namespaceCANProtocol.md) RX, dispatches EVT packets, services [**CANProtocol**](namespaceCANProtocol.md) batching deadlines, checks node heartbeat timeouts (3 s), and handles DiagSerial 'T' bytes for TEST\_SEQ.
+Drains [**CANProtocol**](namespaceCANProtocol.md) RX, dispatches EVT packets, services [**CANProtocol**](namespaceCANProtocol.md) batching deadlines, checks node heartbeat timeouts (3 s), sends its own HB\_0 / HEALTH\_0 through [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) (#340), and handles DiagSerial 'T' bytes for TEST\_SEQ.
 
 
 

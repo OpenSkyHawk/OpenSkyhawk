@@ -4856,7 +4856,7 @@
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
-<p>Manages MCP23017 expander registration and cache, <a href="../classADS1115/"><strong>ADS1115</strong></a> registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL_BCAST dispatch, SYNC_REQ response, and the 500 ms HB_n heartbeat. </p>
+<p>Manages MCP23017 expander registration and cache, <a href="../classADS1115/"><strong>ADS1115</strong></a> registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL_BCAST dispatch, and SYNC_REQ response. The node-generic HB_n / HEALTH_n traffic and master-loss watchdog run through <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a> (#340). </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-flushexpanderwrites">function flushExpanderWrites</h3>
 <p><em>Push every port dirtied by</em> <a href="./#function-writecachedpindeferred"><em><strong>writeCachedPinDeferred()</strong></em></a> <em>— one writePort() each.</em>
@@ -4876,7 +4876,7 @@
 * poll() on all InputBase objects.
 * <a href="../namespaceCANProtocol/#function-drain"><strong>CANProtocol::drain()</strong></a> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
 * update() on all OutputBase objects.
-* Heartbeat: send HB_n every 500 ms. </p>
+* <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a>: HB_n every 500 ms, HEALTH_n every 1 s, master-loss watchdog. </p>
 <hr>
 
 <h3 id="function-noteshiftbus">function noteShiftBus</h3>
@@ -4995,7 +4995,7 @@
 * <a href="../namespaceCANProtocol/#function-start"><strong>CANProtocol::start()</strong></a>.
 * forceReport() burst — one EVT per registered input.
 * flushBatched(canIdEvt(NODE_ID)).
-* READY_n frame (canIdReady(NODE_ID), DLC=0). Arm heartbeat timer.</p>
+* READY_n frame (canIdReady(NODE_ID), DLC=0). (Heartbeat/HEALTH timers arm on the first <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a> call in <a href="./#function-loop"><strong>loop()</strong></a>.)</p>
 <p><strong>Note:</strong></p>
 <p>Wire.begin() must be called by the sketch before this function. <a href="./"><strong>PanelGroup</strong></a> never calls Wire.begin() — only start buses in use. </p>
 <hr>

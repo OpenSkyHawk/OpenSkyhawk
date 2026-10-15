@@ -378,7 +378,7 @@ Two ControlPackets packed into one 8-byte input/output CAN frame.
 Used by CTRL\_BCAST and EVT\_n only. Slot B controlId == 0x0000 signals an empty/padding slot.
 
 
-Sent every 500 ms by [**PanelGroup**](namespacePanelGroup.md) nodes. [**PanelBridge**](namespacePanelBridge.md) reads HB\_1–HB\_63 to track [**PanelGroup**](namespacePanelGroup.md) health and populate diagnostics. HB\_0 is reserved but not transmitted.
+Sent every 500 ms by every node through serviceNodeStatus() (#340). [**PanelBridge**](namespacePanelBridge.md) reads HB\_1–HB\_63 to track node health and populate diagnostics; its own HB\_0 is the master liveness beacon every other node watches (#93).
 
 
 Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:

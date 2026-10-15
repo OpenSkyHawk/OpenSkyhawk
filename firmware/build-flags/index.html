@@ -5069,25 +5069,25 @@ actually does.</p>
 <td><code>NODE_ID</code></td>
 <td>none — omitting it fails to compile</td>
 <td>every STM32 env that links our libraries; <code>WiringCheck</code> omits it deliberately</td>
-<td><code>CANProtocol.cpp:200</code>, <code>PanelGroup.cpp:391</code>, <code>STM32Board.h:29</code></td>
+<td><code>CANProtocol.cpp:217</code>, <code>PanelGroup.cpp:300</code>, <code>STM32Board.h:29</code></td>
 </tr>
 <tr>
 <td><code>PANELBRIDGE_NODE_STATUS</code></td>
 <td>off</td>
 <td>on in <code>Templates/PanelBridge</code></td>
-<td><code>PanelBridge.cpp:42</code> + ~10 more</td>
+<td><code>PanelBridge.cpp:41</code> + ~10 more</td>
 </tr>
 <tr>
 <td><code>NODE_HEALTH_TELEM</code></td>
 <td><strong>on</strong></td>
 <td>never set</td>
-<td><code>PanelBridge.cpp:510</code>, <code>PanelGroup.cpp:399</code></td>
+<td><code>CANProtocol.cpp:464</code> (<code>serviceNodeStatus</code>, every node)</td>
 </tr>
 <tr>
 <td><code>NODE_OVERHEAT_C</code></td>
 <td><strong>unset — by design</strong></td>
 <td>bench envs only</td>
-<td><code>CANProtocol.cpp:400</code>, <code>PanelGroup.cpp:409</code></td>
+<td><code>CANProtocol.cpp:428</code>, <code>CANProtocol.cpp:472</code></td>
 </tr>
 <tr>
 <td><code>FORCE_CLOCK_FALLBACK</code></td>
@@ -5135,13 +5135,13 @@ actually does.</p>
 <td><code>SHIFTBUS_ISR_HZ</code></td>
 <td>unset → polled sampling</td>
 <td><code>Tests/ShiftBus</code>, <code>=1000</code></td>
-<td><code>PanelGroup.cpp:125,240</code></td>
+<td><code>PanelGroup.cpp:112,227</code></td>
 </tr>
 <tr>
 <td><code>SHIFTBUS_ISR_TIM</code></td>
 <td><code>TIM2</code></td>
 <td>never set</td>
-<td><code>PanelGroup.cpp:241</code></td>
+<td><code>PanelGroup.cpp:228</code></td>
 </tr>
 </tbody>
 </table>
@@ -5338,7 +5338,7 @@ is set only by its own <code>Firmware/Tests/&lt;Library&gt;/platformio.ini</code
 <tr>
 <td><code>PANELBRIDGE_TEST</code></td>
 <td>PanelBridge</td>
-<td><code>PanelBridge/PanelBridge.h:84</code></td>
+<td><code>PanelBridge/PanelBridge.h:85</code></td>
 </tr>
 <tr>
 <td><code>ROTARYENCODER_TEST</code></td>

@@ -31,6 +31,12 @@
 * **DIAG\_RTT** ([**CANProtocol.h**](CANProtocol_8h.md))
 
 
+## h
+
+* **HB\_PERIOD\_MS** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **HEALTH\_PERIOD\_MS** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+
+
 ## l
 
 * **LINK\_DECAY\_MS** ([**STM32Board.cpp**](STM32Board_8cpp.md))
@@ -74,20 +80,29 @@
 ## _
 
 * **\_batches** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_everSawMaster** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_filterCount** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_filterIds** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_filterPassAll** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_lastHbMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_lastHealthMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_lastMasterMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_masterHbPending** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_masterLost** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_overheat** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxCb** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxHead** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxRing** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxTail** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_status** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_statusArmed** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_statusCb** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_syncReqCb** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_txDrops** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_txHead** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_txRing** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_txTail** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_warnAsserted** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_begun** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_blinkPhase** ([**STM32Board.cpp**](STM32Board_8cpp.md))
 * **\_canStatus** ([**STM32Board.cpp**](STM32Board_8cpp.md))

@@ -4681,16 +4681,9 @@
 <span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">          </span><span class="n">_intPinCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="k">static</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="kt">bool</span><span class="w">    </span><span class="n">_intFlags</span><span class="p">[</span><span class="n">MAX_INT_PINS</span><span class="p">];</span>
 
-<span class="c1">// Master-loss watchdog: HB_0 (PanelBridge master heartbeat) timeout → WARNING.</span>
-<span class="c1">// 3× the 500 ms HB_0 cadence, matching the Bridge's own HB_TIMEOUT/HB ratio (3000/500).</span>
-<span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">MASTER_TIMEOUT_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1500</span><span class="p">;</span>
-
-<span class="c1">// Timers</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastHeartbeatMs</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastHealthMs</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// node-health/thermal telemetry cadence (1 s)</span>
+<span class="c1">// Timers. Heartbeat, HEALTH and the master-loss watchdog live in CANProtocol::serviceNodeStatus()</span>
+<span class="c1">// (#340) — every node owes them, not just PanelGroup.</span>
 <span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastFallbackMs</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastMasterMs</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">     </span><span class="c1">// millis() of last HB_0 seen</span>
-<span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w">     </span><span class="n">_everSawMaster</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="c1">// arm the timeout only after the first HB_0</span>
 <span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">_rxCount</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// diagnostic only; wraps at 65535 (~131 s at full bus load)</span>
 
 <span class="c1">// ── ISR functions — one static function per interrupt-pin slot ───────────────</span>
@@ -4726,14 +4719,8 @@
 <span class="c1">// ── CAN callbacks ─────────────────────────────────────────────────────────────</span>
 
 <span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCanReceive</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canId</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// HB_0 — PanelBridge master heartbeat. An unconditional liveness beacon (independent</span>
-<span class="w">    </span><span class="c1">// of DCS data flow): refresh the master watchdog and clear any no-master WARNING.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">canIdHb</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">_lastMasterMs</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
-<span class="w">        </span><span class="n">_everSawMaster</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setWarning</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// HB_0 (master heartbeat) also arrives here; CANProtocol has already fed it to the master-loss</span>
+<span class="w">    </span><span class="c1">// watchdog in serviceNodeStatus(), so PanelGroup only cares about CTRL_BCAST.</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canId</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CAN_ID_CTRL_BCAST</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">ControlPacketPair</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="c1">// malformed — discard</span>
 <span class="w">    </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setLinkActive</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w">  </span><span class="c1">// valid CTRL_BCAST → data flowing → CONNECTED (green solid)</span>
@@ -4938,8 +4925,7 @@
 <span class="w">    </span><span class="c1">// Step 4/5 — CAN callbacks and start</span>
 <span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onReceive</span><span class="p">(</span><span class="n">onCanReceive</span><span class="p">);</span>
 <span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">onSyncReq</span><span class="p">(</span><span class="n">onSyncReq</span><span class="p">);</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">filterAcceptId</span><span class="p">(</span><span class="n">canIdHb</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="w">  </span><span class="c1">// accept the master heartbeat (HB_0)</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">start</span><span class="p">();</span>
+<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">start</span><span class="p">();</span><span class="w">  </span><span class="c1">// also accepts HB_0 (master heartbeat) on every non-bridge node</span>
 
 <span class="w">    </span><span class="c1">// Step 6 — boot EVT burst</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">InputBase</span><span class="o">::</span><span class="n">head</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">())</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">forceReport</span><span class="p">();</span>
@@ -4947,10 +4933,9 @@
 <span class="w">    </span><span class="c1">// Step 7 — flush trailing batch</span>
 <span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">flushBatched</span><span class="p">(</span><span class="n">canIdEvt</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">));</span>
 
-<span class="w">    </span><span class="c1">// Step 8 — READY frame + arm heartbeat / master-watchdog timers</span>
+<span class="w">    </span><span class="c1">// Step 8 — READY frame. The heartbeat/HEALTH timers arm on the first serviceNodeStatus() call</span>
+<span class="w">    </span><span class="c1">// in loop(); the master-loss watchdog stays disarmed until the first HB_0 is seen.</span>
 <span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">canIdReady</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">),</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
-<span class="w">    </span><span class="n">_lastHeartbeatMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
-<span class="w">    </span><span class="n">_lastMasterMs</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span><span class="w">  </span><span class="c1">// seed; timeout stays disarmed until first HB_0 seen</span>
 <span class="p">}</span>
 
 <span class="c1">// ── PanelGroup::loop ──────────────────────────────────────────────────────────</span>
@@ -5019,39 +5004,9 @@
 <span class="w">    </span><span class="c1">// 5. Update all outputs (steppers, PWM)</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">OutputBase</span><span class="o">::</span><span class="n">head</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">())</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
 
-<span class="w">    </span><span class="c1">// 6. Heartbeat every 500 ms</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_lastHeartbeatMs</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">_lastHeartbeatMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
-<span class="w">        </span><span class="n">HeartbeatPayload</span><span class="w"> </span><span class="n">hb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeHeartbeatPayload</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">,</span><span class="w"> </span><span class="n">_rxCount</span><span class="p">);</span>
-<span class="w">        </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">canIdHb</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">),</span>
-<span class="w">                          </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hb</span><span class="p">),</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">hb</span><span class="p">));</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="c1">// 6b. Node-health telemetry every 1000 ms — internal die temp + aggregated node fault (default-on;</span>
-<span class="w">    </span><span class="c1">// build with -DNODE_HEALTH_TELEM=0 to disable). Half the heartbeat rate: trend data.</span>
-<span class="w">    </span><span class="c1">// NodeFaultCode / aggregateFaults come via CANProtocol.h -&gt; NodeStatus.h (#163).</span>
-<span class="cp">#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_lastHealthMs</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">_lastHealthMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
-<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">faultDetail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span><span class="w">   </span><span class="c1">// never null after aggregateFaults()</span>
-<span class="w">        </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">fault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">aggregateFaults</span><span class="p">(</span><span class="o">&amp;</span><span class="n">faultDetail</span><span class="p">);</span>
-<span class="w">        </span><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeNodeHealthPayload</span><span class="p">(</span>
-<span class="w">            </span><span class="n">NODE_ID</span><span class="p">,</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">readDieTempC</span><span class="p">(),</span><span class="w"> </span><span class="n">fault</span><span class="p">);</span>
-<span class="w">        </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">send</span><span class="p">(</span><span class="n">canIdHealth</span><span class="p">(</span><span class="n">NODE_ID</span><span class="p">),</span>
-<span class="w">                          </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h</span><span class="p">),</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">h</span><span class="p">));</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">logNodeFaultEdge</span><span class="p">(</span><span class="s">"NODE"</span><span class="p">,</span><span class="w"> </span><span class="n">fault</span><span class="p">,</span><span class="w"> </span><span class="n">faultDetail</span><span class="p">);</span><span class="w">  </span><span class="c1">// edge-log, DiagSerial only (#163)</span>
-<span class="cp">#ifdef NODE_OVERHEAT_C</span>
-<span class="w">        </span><span class="c1">// Raise-only: don't clear here or we'd stomp the master-loss WARNING latch.</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">NodeHealthFlag</span><span class="o">::</span><span class="n">OVERHEAT</span><span class="p">)</span><span class="w"> </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setWarning</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w">  </span><span class="c1">// overheat → WARNING</span>
-<span class="cp">#endif</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="cp">#endif</span>
-
-<span class="w">    </span><span class="c1">// 7. Master-loss watchdog: once a master has been seen, raise WARNING if HB_0 stops.</span>
-<span class="w">    </span><span class="c1">// Cleared in onCanReceive() when the next HB_0 arrives.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_everSawMaster</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_lastMasterMs</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MASTER_TIMEOUT_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">STM32Board</span><span class="o">::</span><span class="n">setWarning</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// 6. Node status: HB_n every 500 ms, HEALTH_n every 1 s, master-loss watchdog (#340).</span>
+<span class="w">    </span><span class="c1">// _rxCount = accepted CTRL_BCAST frames, carried in the heartbeat.</span>
+<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">serviceNodeStatus</span><span class="p">(</span><span class="n">_rxCount</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// ── MCP cache bridge ──────────────────────────────────────────────────────────</span>

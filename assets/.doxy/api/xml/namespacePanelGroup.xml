@@ -62,7 +62,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="155" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="155" bodyend="164" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="205" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="142" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="142" bodyend="151" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="205" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a94edaa385234b8678e9dab702db44eb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -120,7 +120,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="166" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="166" bodyend="178" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="226" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="153" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="153" bodyend="165" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="226" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a71d0e62897c1db5e39ce932ea8455ca6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -150,7 +150,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="180" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="180" bodyend="182" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="236" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="167" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="167" bodyend="169" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="236" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -170,7 +170,7 @@
 </listitem><listitem><para><ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start()</ref>.</para>
 </listitem><listitem><para>forceReport() burst — one EVT per registered input.</para>
 </listitem><listitem><para>flushBatched(canIdEvt(NODE_ID)).</para>
-</listitem><listitem><para>READY_n frame (canIdReady(NODE_ID), DLC=0). Arm heartbeat timer.</para>
+</listitem><listitem><para>READY_n frame (canIdReady(NODE_ID), DLC=0). (Heartbeat/HEALTH timers arm on the first <ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">CANProtocol::serviceNodeStatus()</ref> call in <ref refid="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" kindref="member">loop()</ref>.)</para>
 </listitem></orderedlist>
 </para>
 <para><simplesect kind="note"><para>Wire.begin() must be called by the sketch before this function. <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> never calls Wire.begin() — only start buses in use. </para>
@@ -179,7 +179,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="186" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="186" bodyend="320" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="256" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="173" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="173" bodyend="305" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="257" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1ab31c183f1fe58194e9c6e512fd9a0371" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -197,13 +197,13 @@
 </listitem><listitem><para>poll() on all InputBase objects.</para>
 </listitem><listitem><para><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">CANProtocol::drain()</ref> — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.</para>
 </listitem><listitem><para>update() on all OutputBase objects.</para>
-</listitem><listitem><para>Heartbeat: send HB_n every 500 ms. </para>
+</listitem><listitem><para><ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">CANProtocol::serviceNodeStatus()</ref>: HB_n every 500 ms, HEALTH_n every 1 s, master-loss watchdog. </para>
 </listitem></orderedlist>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="324" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="324" bodyend="421" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="269" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="309" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="309" bodyend="376" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="271" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1ae901405cd77bc1596e8894df9cd3e662" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -258,7 +258,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="425" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="425" bodyend="434" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="20" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="380" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="380" bodyend="389" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="20" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1ae8692730dbfd3bce4ea3c7dcff6e8141" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -323,7 +323,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="436" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="436" bodyend="446" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="21" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="391" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="391" bodyend="401" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="21" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1af2310707319e7fc952ed42f012e4a5d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -357,7 +357,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="452" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="452" bodyend="463" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="22" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="407" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="407" bodyend="418" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="22" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a6fd20dab9d69da52144a1e8d24ac6b56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -375,7 +375,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="469" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="469" bodyend="478" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="311" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="424" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="424" bodyend="433" declfile="Firmware/Libraries/PanelGroup/PanelGroup.h" declline="313" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1a311ffdd9e1637bdc133ec29760716eeb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -395,7 +395,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="480" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="480" bodyend="488" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="24" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="435" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="435" bodyend="443" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="24" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespacePanelGroup_1aae9c2ee79d4f68b5e0882d14972e1685" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -452,15 +452,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="490" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="490" bodyend="499" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="23" declcolumn="10"/>
+        <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="445" column="6" bodyfile="Firmware/Libraries/PanelGroup/PanelGroup.cpp" bodystart="445" bodyend="454" declfile="Firmware/Libraries/PanelGroup/PinRef.cpp" declline="23" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Static singleton for CAN sub-node (<ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>) firmware. </para>
     </briefdescription>
     <detaileddescription>
-<para>Manages MCP23017 expander registration and cache, <ref refid="classADS1115" kindref="compound">ADS1115</ref> registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL_BCAST dispatch, SYNC_REQ response, and the 500 ms HB_n heartbeat. </para>
+<para>Manages MCP23017 expander registration and cache, <ref refid="classADS1115" kindref="compound">ADS1115</ref> registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL_BCAST dispatch, and SYNC_REQ response. The node-generic HB_n / HEALTH_n traffic and master-loss watchdog run through <ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">CANProtocol::serviceNodeStatus()</ref> (#340). </para>
     </detaileddescription>
-    <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="153" column="1"/>
+    <location file="Firmware/Libraries/PanelGroup/PanelGroup.cpp" line="140" column="1"/>
   </compounddef>
 </doxygen>

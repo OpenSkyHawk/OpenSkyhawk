@@ -53,25 +53,36 @@
 
 | Type | Name |
 | ---: | :--- |
+|  constexpr uint32\_t | [**HB\_PERIOD\_MS**](#variable-hb_period_ms)   = `500`<br> |
+|  constexpr uint32\_t | [**HEALTH\_PERIOD\_MS**](#variable-health_period_ms)   = `1000`<br> |
 |  constexpr uint8\_t | [**MAX\_FILTER\_IDS**](#variable-max_filter_ids)   = `16`<br> |
 |  constexpr uint8\_t | [**MAX\_TX\_ATTEMPTS**](#variable-max_tx_attempts)   = `3`<br> |
 |  constexpr uint8\_t | [**RX\_RING\_SIZE**](#variable-rx_ring_size)   = `8`<br> |
 |  constexpr uint8\_t | [**TX\_RING\_SIZE**](#variable-tx_ring_size)   = `16`<br> |
 |  [**BatchState**](structBatchState.md) | [**\_batches**](#variable-_batches)  <br> |
+|  bool | [**\_everSawMaster**](#variable-_eversawmaster)   = `false`<br> |
 |  uint8\_t | [**\_filterCount**](#variable-_filtercount)   = `0`<br> |
 |  uint32\_t | [**\_filterIds**](#variable-_filterids)  <br> |
 |  bool | [**\_filterPassAll**](#variable-_filterpassall)   = `false`<br> |
+|  uint32\_t | [**\_lastHbMs**](#variable-_lasthbms)   = `0`<br> |
+|  uint32\_t | [**\_lastHealthMs**](#variable-_lasthealthms)   = `0`<br> |
+|  uint32\_t | [**\_lastMasterMs**](#variable-_lastmasterms)   = `0`<br> |
+|  bool | [**\_masterHbPending**](#variable-_masterhbpending)   = `false`<br> |
+|  bool | [**\_masterLost**](#variable-_masterlost)   = `false`<br> |
+|  bool | [**\_overheat**](#variable-_overheat)   = `false`<br> |
 |  [**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) | [**\_rxCb**](#variable-_rxcb)   = `nullptr`<br> |
 |  volatile uint8\_t | [**\_rxHead**](#variable-_rxhead)   = `0`<br> |
 |  [**RxQueueEntry**](structRxQueueEntry.md) | [**\_rxRing**](#variable-_rxring)  <br> |
 |  volatile uint8\_t | [**\_rxTail**](#variable-_rxtail)   = `0`<br> |
 |  [**CanStatus**](CANProtocol_8h.md#enum-canstatus) | [**\_status**](#variable-_status)   = `CanStatus::STARTING`<br> |
+|  bool | [**\_statusArmed**](#variable-_statusarmed)   = `false`<br> |
 |  [**CanStatusCallback**](CANProtocol_8h.md#typedef-canstatuscallback) | [**\_statusCb**](#variable-_statuscb)   = `nullptr`<br> |
 |  [**CanSyncReqCallback**](CANProtocol_8h.md#typedef-cansyncreqcallback) | [**\_syncReqCb**](#variable-_syncreqcb)   = `nullptr`<br> |
 |  uint32\_t | [**\_txDrops**](#variable-_txdrops)   = `0`<br> |
 |  volatile uint8\_t | [**\_txHead**](#variable-_txhead)   = `0`<br> |
 |  [**TxQueueEntry**](structTxQueueEntry.md) | [**\_txRing**](#variable-_txring)  <br> |
 |  volatile uint8\_t | [**\_txTail**](#variable-_txtail)   = `0`<br> |
+|  bool | [**\_warnAsserted**](#variable-_warnasserted)   = `false`<br> |
 
 
 
@@ -135,6 +146,32 @@
 
 ## Public Static Attributes Documentation
 
+
+
+
+### variable HB\_PERIOD\_MS 
+
+```C++
+constexpr uint32_t HB_PERIOD_MS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable HEALTH\_PERIOD\_MS 
+
+```C++
+constexpr uint32_t HEALTH_PERIOD_MS;
+```
+
+
+
+
+<hr>
 
 
 
@@ -203,6 +240,19 @@ BatchState _batches[5];
 
 
 
+### variable \_everSawMaster 
+
+```C++
+bool _everSawMaster;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_filterCount 
 
 ```C++
@@ -233,6 +283,84 @@ uint32_t _filterIds[MAX_FILTER_IDS];
 
 ```C++
 bool _filterPassAll;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_lastHbMs 
+
+```C++
+uint32_t _lastHbMs;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_lastHealthMs 
+
+```C++
+uint32_t _lastHealthMs;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_lastMasterMs 
+
+```C++
+uint32_t _lastMasterMs;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_masterHbPending 
+
+```C++
+bool _masterHbPending;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_masterLost 
+
+```C++
+bool _masterLost;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_overheat 
+
+```C++
+bool _overheat;
 ```
 
 
@@ -298,6 +426,19 @@ volatile uint8_t _rxTail;
 
 ```C++
 CanStatus _status;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_statusArmed 
+
+```C++
+bool _statusArmed;
 ```
 
 
@@ -376,6 +517,19 @@ TxQueueEntry _txRing[TX_RING_SIZE];
 
 ```C++
 volatile uint8_t _txTail;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_warnAsserted 
+
+```C++
+bool _warnAsserted;
 ```
 
 

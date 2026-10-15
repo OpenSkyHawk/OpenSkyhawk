@@ -93,7 +93,7 @@ _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md)
 ## Detailed Description
 
 
-Manages MCP23017 expander registration and cache, [**ADS1115**](classADS1115.md) registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL\_BCAST dispatch, SYNC\_REQ response, and the 500 ms HB\_n heartbeat. 
+Manages MCP23017 expander registration and cache, [**ADS1115**](classADS1115.md) registration, the 8-step boot sequence, per-loop interrupt dispatch and polling fallback, CAN EVT batching, CTRL\_BCAST dispatch, and SYNC\_REQ response. The node-generic HB\_n / HEALTH\_n traffic and master-loss watchdog run through [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) (#340). 
 
 
     
@@ -142,7 +142,7 @@ Each call:
 * poll() on all InputBase objects.
 * [**CANProtocol::drain()**](namespaceCANProtocol.md#function-drain) — dispatches CTRL\_BCAST, SYNC\_REQ, TEST\_SEQ echo.
 * update() on all OutputBase objects.
-* Heartbeat: send HB\_n every 500 ms. 
+* [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus): HB\_n every 500 ms, HEALTH\_n every 1 s, master-loss watchdog. 
 
 
 
@@ -399,7 +399,7 @@ Performs the 8-step boot sequence:
 * [**CANProtocol::start()**](namespaceCANProtocol.md#function-start).
 * forceReport() burst — one EVT per registered input.
 * flushBatched(canIdEvt(NODE\_ID)).
-* READY\_n frame (canIdReady(NODE\_ID), DLC=0). Arm heartbeat timer.
+* READY\_n frame (canIdReady(NODE\_ID), DLC=0). (Heartbeat/HEALTH timers arm on the first [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) call in [**loop()**](namespacePanelGroup.md#function-loop).)
 
 
 

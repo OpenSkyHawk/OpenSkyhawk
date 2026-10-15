@@ -4770,7 +4770,7 @@ at compile time. Get it right once and it never changes.</p>
 <li><strong>Set at compile time</strong> via <code>build_flags = -DNODE_ID=N</code> in <code>platformio.ini</code> — <strong>not</strong> a
   <code>#define</code> in <code>main.cpp</code>.</li>
 <li><strong>Range 0–63.</strong></li>
-<li><strong>0</strong> — PanelBridge (the CAN master). Reserved; its heartbeat <code>HB_0</code> is never transmitted.</li>
+<li><strong>0</strong> — PanelBridge (the CAN master). Reserved; its heartbeat <code>HB_0</code> is the master beacon every other node watches.</li>
 <li><strong>1–63</strong> — PanelGroup nodes, assigned incrementally, <strong>permanent once assigned</strong>.</li>
 <li><strong>SimGateway has no NODE_ID</strong> — it's not on the CAN bus.</li>
 </ul>
