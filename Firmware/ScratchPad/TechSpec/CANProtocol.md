@@ -564,9 +564,10 @@ namespace CANProtocol {
      * - HB_NODE_ID every 500 ms (makeHeartbeatPayload), carrying rxCount.
      * - HEALTH_NODE_ID every 1000 ms (makeNodeHealthPayload) + the DiagSerial fault edge log
      *   (tag BRIDGE on NODE_ID 0, NODE otherwise). Compiled out with -DNODE_HEALTH_TELEM=0.
-     *   With NODE_OVERHEAT_C defined, an overheat raises WARNING (raise-only).
      * - Master-loss watchdog on every node except PanelBridge (NODE_ID 0): once HB_0 has been
-     *   seen, WARNING rises after MASTER_TIMEOUT_MS of silence and clears on the next HB_0.
+     *   seen, master loss is set after MASTER_TIMEOUT_MS of silence and cleared by the next HB_0.
+     * - WARNING on a non-bridge node = master loss OR overheat (NODE_OVERHEAT_C builds only),
+     *   written only when that OR changes. On PanelBridge an overheat is raise-only.
      *
      * Timers are armed by start(), so the first HB/HEALTH go out one period after boot.
      *
@@ -592,14 +593,21 @@ dependency.
 |------|---------|-----|
 | `HB_n` (`makeHeartbeatPayload`) | 500 ms | every node; PanelBridge's is `HB_0` |
 | `HEALTH_n` (`makeNodeHealthPayload`) + fault edge log | 1000 ms | every node, unless `-DNODE_HEALTH_TELEM=0` |
-| Master-loss watchdog → `STM32Board::setWarning()` | checked every call | every node except NODE_ID 0 |
+| Master-loss watchdog + overheat → `STM32Board::setWarning()` | checked every call | every node except NODE_ID 0 (bridge: overheat raise-only) |
 
 - **`HB_0` intake.** On a non-bridge node `start()` adds `canIdHb(0)` to the hardware filter list
   (no-op under `filterAcceptAll()`), and `drain()` stamps each `HB_0` for the watchdog *before*
   passing it to `onReceive()` as usual — node code may still observe it.
-- **WARNING rules.** Raised when `HB_0` has been silent for more than `MASTER_TIMEOUT_MS` after a
-  master was first seen (a cold start before the bridge never warns); cleared on the next service
-  call after an `HB_0` arrives. Overheat (opt-in `NODE_OVERHEAT_C`) is raise-only.
+- **WARNING rules.** The LED has one shared WARNING latch, so on a non-bridge node the service keeps
+  its two causes apart and drives the latch from their OR, writing it only when the OR changes:
+  - *master loss* — set when `HB_0` has been silent for more than `MASTER_TIMEOUT_MS` after a master
+    was first seen (a cold start before the bridge never warns); cleared by the next `HB_0`;
+  - *overheat* — the `HEALTH_n` overheat flag, only in builds that define `NODE_OVERHEAT_C`; set and
+    cleared with each 1 s HEALTH sample.
+
+  A returning master therefore never clears an overheat that is still true (PR #342 review — before
+  #340 every `HB_0` cleared the latch, overheat included). On PanelBridge the latch also carries its
+  dead-node WARNING, which the service cannot see, so there an overheat is raise-only.
 - **Timing.** `start()` arms both timers, so the first `HB_n` goes out ~500 ms after boot completes
   (FirmwarePlan 09 step 8). The service samples `millis()` itself after `drain()`, and the
   watchdog compares elapsed time signed, so an `HB_0` stamped a millisecond after the caller's own

@@ -21,6 +21,14 @@
 //   no WARNING while HB_0 flows:    PASS
 //   WARNING after HB_0 stops:       PASS
 //   WARNING cleared on HB_0 return: PASS
+//
+// Overheat build (env test_node_status_overheat, -DNODE_OVERHEAT_C=0 → every HEALTH sample is
+// "overheat"): WARNING has two causes, and a returning master must not clear the overheat one
+// (PR #342 review P1). Same probes, overheat expectations:
+//   no WARNING before first HEALTH:  PASS   (t=250, nothing sampled yet)
+//   WARNING held while HB_0 flows:   PASS   (overheat since the 1 s HEALTH)
+//   WARNING after HB_0 stops:        PASS
+//   WARNING held on HB_0 return:     PASS   (master back, overheat still true)
 
 #include <STM32Board.h>
 #include <CANProtocol.h>
@@ -114,9 +122,16 @@ void loop() {
         pass(F("HB_1 period 500 ms:             "), periodOk(_hbStamps, _hbCount, 500));
         pass(F("first HEALTH_1 at ~1000 ms:     "), _healthCount > 0 && near(_healthStamps[0], 1000));
         pass(F("HEALTH_1 period 1000 ms:        "), periodOk(_healthStamps, _healthCount, 1000));
+#ifdef NODE_OVERHEAT_C
+        pass(F("no WARNING before first HEALTH: "), !warnBeforeMaster);
+        pass(F("WARNING held while HB_0 flows:  "), warnWhileFlowing);
+        pass(F("WARNING after HB_0 stops:       "), warnAfterStop);
+        pass(F("WARNING held on HB_0 return:    "), warnAfterReturn);
+#else
         pass(F("no WARNING before master seen:  "), !warnBeforeMaster);
         pass(F("no WARNING while HB_0 flows:    "), !warnWhileFlowing);
         pass(F("WARNING after HB_0 stops:       "), warnAfterStop);
         pass(F("WARNING cleared on HB_0 return: "), !warnAfterReturn);
+#endif
     }
 }

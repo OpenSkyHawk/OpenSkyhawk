@@ -356,11 +356,15 @@ namespace CANProtocol {
      * - `HB_NODE_ID` every 500 ms (makeHeartbeatPayload), carrying `rxCount`.
      * - `HEALTH_NODE_ID` every 1000 ms (makeNodeHealthPayload) with the internal die temp and the
      *   aggregated node fault, plus the DiagSerial fault edge log (tag `BRIDGE` on NODE_ID 0,
-     *   `NODE` otherwise). Compiled out with `-DNODE_HEALTH_TELEM=0`. When a build defines
-     *   `NODE_OVERHEAT_C`, an overheat raises WARNING (raise-only).
+     *   `NODE` otherwise). Compiled out with `-DNODE_HEALTH_TELEM=0`.
      * - Master-loss watchdog, on every node except PanelBridge (NODE_ID 0): once a master
-     *   heartbeat (`HB_0`) has been seen, WARNING rises after MASTER_TIMEOUT_MS of silence and
-     *   clears on the next `HB_0`.
+     *   heartbeat (`HB_0`) has been seen, master loss is set after MASTER_TIMEOUT_MS of silence and
+     *   cleared by the next `HB_0`.
+     * - WARNING on a non-bridge node = master loss OR overheat (overheat only when a build defines
+     *   `NODE_OVERHEAT_C`). The service tracks the two causes separately and writes the shared
+     *   latch only when their OR changes, so a returning master never clears a live overheat, and
+     *   overheat clears once the die cools. On PanelBridge an overheat is raise-only, because its
+     *   latch also carries PanelBridge's dead-node WARNING.
      *
      * `HB_0` arrival is recorded by drain(), which still passes the frame to onReceive().
      * start() adds `HB_0` to the hardware filter on non-bridge nodes, so callers never

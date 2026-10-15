@@ -65,6 +65,12 @@ static uint32_t           _lastHealthMs    = 0;
 static uint32_t           _lastMasterMs    = 0;      // millis() of the last HB_0 seen
 static bool               _everSawMaster   = false;  // arm the timeout only after the first HB_0
 static bool               _masterHbPending = false;  // HB_0 arrived since the last service call
+// WARNING causes this service owns on a non-bridge node. The LED has one shared latch, so the service
+// keeps its causes apart and only writes the latch when their OR changes — a returning master clears
+// master loss, never an overheat that is still true.
+static bool               _masterLost      = false;
+static bool               _overheat        = false;
+static bool               _warnAsserted    = false;  // what this service last wrote to the latch
 
 // ── Private helpers ───────────────────────────────────────────────────────────
 
@@ -456,21 +462,30 @@ void serviceNodeStatus(uint16_t rxCount) {
         send(canIdHealth(NODE_ID), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
         STM32Board::logNodeFaultEdge(NODE_ID == 0 ? "BRIDGE" : "NODE", fault, faultDetail);
 #ifdef NODE_OVERHEAT_C
-        // Raise-only: don't clear here or we'd stomp another WARNING owner (master loss, dead node).
-        if (h.flags & static_cast<uint8_t>(NodeHealthFlag::OVERHEAT)) STM32Board::setWarning(true);
+        _overheat = (h.flags & static_cast<uint8_t>(NodeHealthFlag::OVERHEAT)) != 0;
+        // The bridge's latch is also PanelBridge's dead-node WARNING, which this service can't see —
+        // so on the bridge overheat stays raise-only rather than risk clearing that.
+        if (NODE_ID == 0 && _overheat) STM32Board::setWarning(true);
 #endif
     }
 #endif
 
-    // Master-loss watchdog — PanelBridge is the master, so it has none.
-    if (NODE_ID != 0) {
-        if (_masterHbPending) {
-            _masterHbPending = false;
-            STM32Board::setWarning(false);
-        }
-        // Signed elapsed so a stamp a hair ahead of `now` reads as fresh, never as overdue (#225).
-        if (_everSawMaster && (int32_t)(now - _lastMasterMs) > (int32_t)MASTER_TIMEOUT_MS)
-            STM32Board::setWarning(true);
+    if (NODE_ID == 0) return;  // PanelBridge is the master: no master-loss watchdog
+
+    // Master-loss watchdog. Signed elapsed so a stamp a hair ahead of `now` reads as fresh, never as
+    // overdue (#225).
+    if (_masterHbPending) {
+        _masterHbPending = false;
+        _masterLost      = false;
+    }
+    if (_everSawMaster && (int32_t)(now - _lastMasterMs) > (int32_t)MASTER_TIMEOUT_MS)
+        _masterLost = true;
+
+    // Write the latch only when the OR of this service's causes changes (master loss | overheat).
+    const bool want = _masterLost || _overheat;
+    if (want != _warnAsserted) {
+        _warnAsserted = want;
+        STM32Board::setWarning(want);
     }
 }
 
