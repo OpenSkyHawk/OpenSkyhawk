@@ -21,8 +21,10 @@
  *       connected) · `CAL CLEAR` · `RAW` (live readings + scan rate).
  *     Stored per board in the reserved flash page (PduCalStore).
  *
- * The status LED follows every other node: CAN / link state plus the master-loss WARNING; rail
- * faults show on the client and the board's D3/D4 rail LEDs, not the MCU LED (FirmwarePlan D14).
+ * Rail faults are reported to the host only (TELEM_n flags + HEALTH_n.faultId). The status LEDs
+ * follow every other node — CAN / link state plus the master-loss WARNING — and don't change for
+ * rail faults (FirmwarePlan D14). The board's power LEDs (D3 12 V / D4 5 V / D5 3V3) are passive,
+ * wired to their rails, and show rail presence only — this firmware never drives them.
  *
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */

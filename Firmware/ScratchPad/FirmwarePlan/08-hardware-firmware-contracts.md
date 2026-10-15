@@ -181,8 +181,11 @@ netlist; overridable as `PDU_PIN_*`:
   `board_upload.maximum_size = 64512`, so the build fails before code can grow into the page, and an
   OpenOCD upload erases only the sectors it writes — a reflash keeps the calibration. A full-chip
   erase (e.g. STM32CubeProgrammer) wipes it; re-run the calibration afterwards.
-- **Status LED** behaves as on every node (CAN / link + master-loss WARNING); rail faults show on the
-  host and the board's D3/D4 rail LEDs, not the MCU LED.
+- **LEDs.** Rail faults are reported to the host only (`TELEM_n` flags + `HEALTH_n.faultId`). The
+  MCU status LEDs (D6 red / D7 green on PB14 / PB15) behave as on every node — CAN / link + the
+  master-loss WARNING — and don't change for rail faults (D14). The power LEDs D3 (+12 V), D4 (+5 V)
+  and D5 (+3V3) are passive, resistor-fed from their rails and not firmware-driven: they show rail
+  presence only — dark on a dead rail or blown fuse, lit through OV / OC / overheat.
 
 ---
 

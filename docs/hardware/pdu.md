@@ -25,13 +25,16 @@ out over CAN to the host app about once a second, and at once when something goe
 - **Raises the alarm** — a rail sagging below or rising above its limits, a current near the fuse
   rating, a blown 12 V fuse, or the board running hot. A fault turns the node amber in the host
   app's node list and is reported straight away, not on the next poll.
-- **Shows rail state without the microcontroller** — a green LED per rail lights whenever that rail
-  is present, even if the firmware isn't running.
+- **Shows its rails without the microcontroller** — three green power LEDs, one each for 12 V, 5 V
+  and 3.3 V, are wired straight to their rails and light whenever that rail is present, even if
+  the firmware isn't running.
 
-!!! note "Status LED"
-    The red/green status LED works exactly as on every other board — CAN link and bus health (see
-    [Debugging](../firmware/debugging.md)). Rail faults are reported to the host app and shown on
-    the rail LEDs, not on the status LED.
+!!! note "What the LEDs do and don't show"
+    Rail faults are reported to the host app only. The red/green **status LEDs** work exactly as on
+    every other board — CAN link and bus health (see [Debugging](../firmware/debugging.md)) — and
+    don't change for a rail fault. The green **power LEDs** only show that a rail is present: one
+    goes out on a dead rail or a blown fuse, but all stay lit through an over-voltage,
+    over-current or overheat.
 
 ## Where it sits
 
