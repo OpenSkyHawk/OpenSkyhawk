@@ -32,12 +32,23 @@
 //   J_I2C1  (PB6/PB7)       MCP23017 @0x20 (X27 coils on port B) + TCA9548A @0x70
 //                           + 2× SSD1306 @0x3C behind the mux
 //   J_I2C2  (PB10/PB11)     1× SSD1306 @0x3C direct — bare 0x3C may not share the mux's trunk
-//   J_SR    (PB3/4/5/8/9)   '165: encoder, ON-OFF-ON, stepper home switch
-//                           '595: 4 caution LEDs + X27 coils
+//   J_SR    (PB3/4/5/8/9)   '165 chip 0: encoder, stepper home switch
+//                           '165 chip 1: ON-OFF-ON
+//                           '595 chip 0: X27 coils + 2 caution LEDs
+//                           '595 chip 1: 2 caution LEDs
 //
 // ShiftBus needs no setup code at all: declaring an SR-backed PinRef is the whole opt-in, and
 // PanelGroup::setup() begin()s the bus. '165 inputs and '595 outputs are indexed separately, so
 // chip 0 bit 4 as an input (home switch) and chip 0 bit 4 as an output (a coil) are different pins.
+//
+// BOTH chains are TWO chips deep. The chain auto-sizes: configureAsInput()/configureAsOutput()
+// call noteInput(chip)/noteOutput(chip), which grow _nIn/_nOut to cover the highest chip declared
+// (MAX_CHAIN = 8 per direction). Declaring a chip-1 PinRef is the entire opt-in — there is no
+// chain length to configure.
+//
+// Both chips in each chain carry live bits on purpose, so a dead cascade hop cannot pass as
+// healthy: a QH'->DS ('595) or QH->SER ('165) fault that silently drops the far chip would show
+// up as two dark lamps and a dead toggle, not as a rig that merely looks quiet.
 
 #include <Wire.h>
 #include <MCP23017.h>
@@ -120,16 +131,26 @@ RotaryAcceleratedEncoder destLat(DCSIN_DEST_LAT_KNB, PinRef(ShiftBus1, 0, 0),
 
 // ON-OFF-ON → navigation lights. LIGHT_EXT_NAV's 2-bit mask (0x00c0) is a genuine 3-state
 // switch, so this is a real class fit rather than a position left unused. Confirm in F2.
-Switch3Pos navLights(DCSIN_LIGHT_EXT_NAV, PinRef(ShiftBus1, 0, 2), PinRef(ShiftBus1, 0, 3));
+//
+// On '165 CHIP 1 — the far side of the cascade hop. The ON-OFF-ON rather than the home
+// microswitch, because this one is polled every loop and can be thrown at any time: a cascade
+// fault shows immediately. The home switch is read only during the boot homing seek, so a chip-1
+// fault there would hide until the next reset.
+Switch3Pos navLights(DCSIN_LIGHT_EXT_NAV, PinRef(ShiftBus1, 1, 0), PinRef(ShiftBus1, 1, 1));
 
 // ── J_SR '595 — outputs ───────────────────────────────────────────────────────
 // The caution ladder is ONE word at 0x845c with a mask per lamp, so board A's master-test press
 // lights all four of these together with its own GPIO and MCP LEDs — multi-mask fan-out from a
 // single broadcast, which nothing else on the rig does.
+//
+// Split ACROSS the cascade — two lamps per chip. The coils stay together on chip 0 so a step is
+// still one atomic four-bit flip. Splitting the LADDER is the point: all four lamps come from the
+// same broadcast word, so one MASTER_TEST press has to fan out to bits on both chips within a
+// single transfer. A clean chip-per-function split would not test that.
 LED srUtilHyd (A_4E_C_D_UTILHYD_CAUTION,  A_4E_C_D_UTILHYD_CAUTION_AM,  PinRef(ShiftBus1, 0, 0));
 LED srContHyd (A_4E_C_D_CONTHYD_CAUTION,  A_4E_C_D_CONTHYD_CAUTION_AM,  PinRef(ShiftBus1, 0, 1));
-LED srFuelBst (A_4E_C_D_FUELBOOST_CAUTION,A_4E_C_D_FUELBOOST_CAUTION_AM,PinRef(ShiftBus1, 0, 2));
-LED srRadarWarn(A_4E_C_D_RADAR_WARN,      A_4E_C_D_RADAR_WARN_AM,       PinRef(ShiftBus1, 0, 3));
+LED srFuelBst (A_4E_C_D_FUELBOOST_CAUTION,A_4E_C_D_FUELBOOST_CAUTION_AM,PinRef(ShiftBus1, 1, 0));
+LED srRadarWarn(A_4E_C_D_RADAR_WARN,      A_4E_C_D_RADAR_WARN_AM,       PinRef(ShiftBus1, 1, 1));
 
 // ── J_BL1 — PWM backlight zone (sync pair with board A) ───────────────────────
 // Bound to the SAME value board A's pot drives. Both nodes receive that broadcast independently

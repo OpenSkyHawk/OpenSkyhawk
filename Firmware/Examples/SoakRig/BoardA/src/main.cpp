@@ -19,9 +19,13 @@
 //   * Analog RC (1 kΩ + 100 nF) at the connector end of each pot/ladder leg.
 //   * MCP23017 GPA7/GPB7 are output-only (silicon erratum) → the LED lives on GPB7.
 //
-//   J11 (6 of 10 GPIO)      PA0 pot · PA1 resistor ladder · PA2/PA3 encoder · PA4 momentary
-//                           PB0 LED  (timer-capable on purpose: this station can be reflashed
-//                                     as a Dimmer without rewiring)
+//   J11 (6 of 10 GPIO)      PA0 pot · PA1 resistor ladder · PA2/PA3 encoder
+//                           PA4 + PB0 = ONE R16-503 illuminated pushbutton (SW-PUSH-R16503-*):
+//                                     PA4 the momentary, PB0 its built-in LED. One 16 mm hole,
+//                                     but still two independent stations — the lamp is driven
+//                                     separately and is not wired to the contacts.
+//                                     PB0 is timer-capable on purpose: that station can be
+//                                     reflashed as a Dimmer without rewiring.
 //   J_BL1                   PA6 = PWM_BL1 → Q2 → 12 V LED string
 //   J_I2C1  (PB6/PB7)       MCP23017 @0x20, INT_A→PB12  INT_B→PB13
 //   J_I2C2  (PB11/PB10)     ADS1115 @0x48 — the second trunk; see setup()
@@ -58,6 +62,7 @@ RotaryEncoder  brightKnob(DCSIN_LIGHT_INT_BRIGHT, PinRef(PA2), PinRef(PA3),
                           EncoderStepsPerDetent::Four, EncoderMode::Dir);
 
 // Momentary → master test. One sim toggle per press, nothing on release (#116).
+// The contact half of the R16-503 illuminated pushbutton; its lamp is spoilerCaution below.
 ActionButton   masterTest(DCSIN_MASTER_TEST, PinRef(PA4));
 
 #if 0
@@ -82,6 +87,10 @@ Switch2Pos     masterTestHold(DCSIN_MASTER_TEST, PinRef(PA4));
 // LED → one lamp of the caution ladder. The whole ladder is a single word at 0x845c with a mask
 // per lamp, so pressing the master-test button lights this LED, the MCP LED below, and board B's
 // '595 LEDs together — and exercises multi-mask fan-out from one broadcast.
+//
+// This is the LED inside the same R16-503 as masterTest above. It is driven from the sim, NOT
+// from the button contacts, so the round trip is visible in one part: press, out over CAN to DCS,
+// and the lamp in the button you just pressed lights from the returning broadcast.
 LED            spoilerCaution(A_4E_C_D_SPOILER_CAUTION, A_4E_C_D_SPOILER_CAUTION_AM, PinRef(PB0));
 
 // ── J_BL1 — PWM backlight zone ────────────────────────────────────────────────

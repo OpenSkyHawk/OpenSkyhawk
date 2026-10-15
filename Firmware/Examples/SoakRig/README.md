@@ -119,3 +119,30 @@ station list live on #291.
 
 `ShiftBus1` needs no setup code: declaring an SR-backed `PinRef` is the whole opt-in, and
 `PanelGroup::setup()` begins the bus.
+
+**Both ShiftBus chains are two chips deep**, and both chips in each chain carry live bits. The
+chain auto-sizes — `configureAsInput()` / `configureAsOutput()` call `noteInput(chip)` /
+`noteOutput(chip)`, which grow the chain to cover the highest chip declared (`MAX_CHAIN` = 8 per
+direction) — so a chip-1 `PinRef` is the entire opt-in.
+
+| | chip 0 | chip 1 |
+|---|---|---|
+| `'165` | encoder, stepper home switch | ON-OFF-ON |
+| `'595` | X27 coils, 2 caution LEDs | 2 caution LEDs |
+
+The caution ladder is split deliberately. All four lamps come from one broadcast word, so a single
+`MASTER_TEST` press has to fan out across the cascade hop inside one transfer; a tidy
+chip-per-function split would not test that. The coils stay together on chip 0 so a step is still
+one atomic four-bit flip. The ON-OFF-ON rather than the home microswitch goes on the far chip
+because it is polled every loop — a dead `QH->SER` hop shows up at once, whereas the home switch
+is only read during the boot seek and a fault there would hide until the next reset.
+
+Note this is *not* the first exercise of the cascade: `Firmware/Tests/ShiftBus` already has
+`bench_probe595` and `bench_probe165`, both two-chip walking-bit probes, and `frame_map` spans
+chips 0 and 1. What is new here is the cascade carrying **live control classes under the soak**
+rather than a standalone probe sketch.
+
+Board A's momentary and its J11 LED are **one R16-503 illuminated pushbutton**
+(`SW-PUSH-R16503-*`) — a single 16 mm hole, but still two independent stations, since the lamp is
+driven from the sim rather than from the button contacts. Pressing it and watching its own lamp
+light from the returning broadcast is the whole round trip in one part.
