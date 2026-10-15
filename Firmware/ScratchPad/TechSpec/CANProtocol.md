@@ -79,10 +79,14 @@ Firmware/Tests/CANProtocol/
     │                             faultMask/reserved stay 0; on-target readDieTempC()/readVddMv() range (#213)
     ├── health_flags.cpp        — overheat+degraded coexistence: -DNODE_OVERHEAT_C=0, asserts a faulted
     │                             hot payload sets BOTH flag bits (|= never clobbers overheat) (#163)
-    └── node_status_service.cpp — serviceNodeStatus() (#340), loopback: start() auto-accepts HB_0 and
-                                  drain() still forwards it; HB_n every 500 ms (first ~500 ms after
-                                  start); HEALTH_n every 1000 ms; master-loss WARNING absent before a
-                                  master is seen, raised after HB_0 stops > 1500 ms, cleared on return
+    ├── node_status_service.cpp — serviceNodeStatus() (#340), loopback: start() auto-accepts HB_0 and
+    │                             drain() still forwards it; HB_n every 500 ms (first ~500 ms after
+    │                             start); HEALTH_n every 1000 ms; master-loss WARNING absent before a
+    │                             master is seen, raised after HB_0 stops > 1500 ms, cleared on return
+    └── node_status_bus.cpp     — the same service on a physical bus against a master (PanelBridge or
+                                  a USB-CAN adapter sending HB_0 every 500 ms): DiagSerial logs every
+                                  LED state change + a 10 s summary (warnRaises / hb0Seen / TEC / REC)
+                                  for watchdog timing, flapping-master and link-drop runs, and soaks
 ```
 
 All runtime scenarios use `startLoopback()` — single board, no second node or physical bus
