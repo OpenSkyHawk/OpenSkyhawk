@@ -4950,14 +4950,14 @@ bus passes straight through. See <a href="#mini-fit-jr-parts">Mini-Fit Jr parts<
 <p><em>Pass-through pair on every host: <code>J_BUS_IN</code> ↔ <code>J_BUS_OUT</code>. 18 AWG, ≈8 A/pin all-loaded;
 carries the per-console power feed. CANH/CANL share a row for clean differential routing.
 View: into the cable-housing mating face, latch up; numbering per the Molex 5557 drawing.
-</em><em>The housing and header number mirror each other</em><em> — build one harness and buzz it out end to
+<strong>The housing and header number mirror each other</strong> — build one harness and buzz it out end to
 end before crimping the rest.</em></p>
 <h2 id="backlight-single-zone-j_bl">Backlight single-zone — <code>J_BL</code></h2>
 <p>Molex Mini-Fit Jr 1×2 (<code>5566-02A2</code>), one per lighting zone, never mixed into a signal
 harness.</p>
 <p><img alt="Backlight single-zone connector pinout" src="../../assets/images/diagrams/connectors/connector-bl-single.svg" /></p>
 <p><em>Low-side dimming: +12 V → LED string → <code>SW_RETURN</code> → zone MOSFET on the host. The return
-is a </em><em>switched line, not a ground</em><em>. View: into the cable-housing mating face, latch up.</em></p>
+is a <strong>switched line, not a ground</strong>. View: into the cable-housing mating face, latch up.</em></p>
 <h2 id="backlight-dual-zone-utility-5-v-gauge-panels">Backlight dual-zone + utility 5 V — gauge panels</h2>
 <p>Molex Mini-Fit Jr 2×2. Gauge-bearing panels carry <strong>two dimming zones</strong> — legend/panel
 markings and in-gauge instrument lighting — mirroring the aircraft's separate console and
@@ -4965,8 +4965,8 @@ instrument dimmer circuits. Low-side switching makes each return supply-agnostic
 string may hang on 12 V (legend strips) or 5 V (in-gauge LEDs).</p>
 <p><img alt="Backlight dual-zone connector pinout" src="../../assets/images/diagrams/connectors/connector-bl-dual.svg" /></p>
 <p><em>BL1 = legend zone, BL2 = gauge zone; both returns are switched lines to the host MOSFETs.
-The +5 V is a </em><em>utility feed for small loads only</em><em> (≲50 mA — driver logic, in-gauge LEDs);
-its return rides the panel's signal-cable GND. </em><em>Servos never use it</em><em> — servo panels buck
+The +5 V is a <strong>utility feed for small loads only</strong> (≲50 mA — driver logic, in-gauge LEDs);
+its return rides the panel's signal-cable GND. <strong>Servos never use it</strong> — servo panels buck
 locally from 12 V. View: into the cable-housing mating face, latch up; pin order is the
 proposed standard — verify against the Molex 5557 drawing before first crimp.</em></p>
 <h2 id="mini-fit-jr-parts">Mini-Fit Jr parts</h2>
@@ -4981,7 +4981,7 @@ the rated life — the trunk is not a frequently-demated interface.</p>
 panel-local mux when several share an address), ADS1115 analog — internals are the panel's
 business.</p>
 <p><img alt="I2C leg connector pinout" src="../../assets/images/diagrams/connectors/connector-j-i2c.svg" /></p>
-<p><em>SDA/SCL run through 33 Ω series resistors at the host. </em><em>Pins 6–8 are a flex block:</em><em> pins
+<p><em>SDA/SCL run through 33 Ω series resistors at the host. <strong>Pins 6–8 are a flex block:</strong> pins
 1–5 are fixed (SDA · SCL · GND · GND · +3V3); the last three default to INT_A / INT_B / spare
 but carry whatever a module needs — +5 V (e.g. a stepper driver's motor supply), an analog
 line, or an extra signal. View: into the cable-housing mating face, pin 1 marked.</em></p>
