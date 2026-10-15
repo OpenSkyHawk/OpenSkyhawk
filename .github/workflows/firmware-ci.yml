@@ -9,6 +9,8 @@ on:
     paths:
       - "Firmware/**"
       - "tools/check_node_ids.py"
+      - ".github/firmware-platformio-impact.json"
+      - ".github/scripts/**"
       - ".github/workflows/firmware-ci.yml"
 
 permissions:
@@ -27,6 +29,11 @@ jobs:
           python-version: "3.12"
       - name: Check NODE_ID assignments
         run: python3 tools/check_node_ids.py
+      # library_dependents in the impact map is derived from the firmware tree,
+      # so a PR that adds a project or changes a lib_deps must regenerate it.
+      # Pure Python, so this stays on PRs even though the build job does not.
+      - name: Check PlatformIO impact map is up to date
+        run: python3 .github/scripts/gen-platformio-impact-map.py --check
 
   firmware:
     name: Build supported PlatformIO projects
