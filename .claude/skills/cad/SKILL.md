@@ -27,7 +27,7 @@ and `docs/hardware/cad-workflow.md`. Update this skill once D8 is resolved.
 - switch centre-to-centre spacings (measured in CAD once the panel body exists).
 - the control inventory (what cutouts/mounts the panel needs).
 
-## Cutout library (FreeCAD spike, #335)
+## Cutout library
 
 Reusable panel cutouts live in `CAD/Shared/Cutouts/` and are placed via ControlPoints →
 one LCS per control → a Sub-Shape Binder per plate layer → Pocket. Full recipe,
