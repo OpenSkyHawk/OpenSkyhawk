@@ -151,7 +151,20 @@ def build_dependents(root: Path) -> dict[str, list[str]]:
 
 
 def render(root: Path) -> str:
-    existing = json.loads(map_path(root).read_text(encoding="utf-8"))
+    target = map_path(root)
+    try:
+        existing = json.loads(target.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        # Most likely an unresolved merge conflict: two branches both touched the
+        # map, and full_build_paths is hand-maintained so it has to be read from
+        # somewhere. Pick a side, then regenerate over the top of it.
+        raise SystemExit(
+            f"{target.relative_to(root)} is not valid JSON ({exc}).\n"
+            "If this is a merge conflict, take either side and re-run:\n"
+            f"    git checkout --ours {target.relative_to(root)}\n"
+            "    python3 .github/scripts/gen-platformio-impact-map.py --write"
+        ) from exc
+
     document = {
         "_generated": GENERATED_NOTE,
         "full_build_paths": existing.get("full_build_paths", []),
