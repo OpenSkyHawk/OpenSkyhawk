@@ -212,7 +212,7 @@ namespace STM32Board {
      * @brief Raise or clear the WARNING condition — red/green alternating at 500 ms.
      *
      * Call for any non-CAN fault: dead PanelGroup node (PanelBridge), lost master
-     * heartbeat (PanelGroup), SYNC timeout, I²C bus hang. CanStatus has no WARNING value —
+     * heartbeat (every non-bridge node, via CANProtocol::serviceNodeStatus()), SYNC timeout, I²C bus hang. CanStatus has no WARNING value —
      * this is the only public entry point for that state. WARNING is a clearable latch:
      * call setWarning(false) once the condition recovers. It outranks CONNECTED/NORMAL but
      * is masked by any CAN fault (CAN_ERROR/BUS_OFF).

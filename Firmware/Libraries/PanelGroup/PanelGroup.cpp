@@ -47,16 +47,9 @@ static uint8_t          _intPins[MAX_INT_PINS];
 static uint8_t          _intPinCount = 0;
 static volatile bool    _intFlags[MAX_INT_PINS];
 
-// Master-loss watchdog: HB_0 (PanelBridge master heartbeat) timeout → WARNING.
-// 3× the 500 ms HB_0 cadence, matching the Bridge's own HB_TIMEOUT/HB ratio (3000/500).
-static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
-
-// Timers
-static uint32_t _lastHeartbeatMs  = 0;
-static uint32_t _lastHealthMs     = 0;  // node-health/thermal telemetry cadence (1 s)
+// Timers. Heartbeat, HEALTH and the master-loss watchdog live in CANProtocol::serviceNodeStatus()
+// (#340) — every node owes them, not just PanelGroup.
 static uint32_t _lastFallbackMs   = 0;
-static uint32_t _lastMasterMs     = 0;     // millis() of last HB_0 seen
-static bool     _everSawMaster    = false; // arm the timeout only after the first HB_0
 static uint16_t _rxCount          = 0; // diagnostic only; wraps at 65535 (~131 s at full bus load)
 
 // ── ISR functions — one static function per interrupt-pin slot ───────────────
@@ -92,14 +85,8 @@ static uint8_t findOrAddIntPin(uint8_t pin) {
 // ── CAN callbacks ─────────────────────────────────────────────────────────────
 
 static void onCanReceive(uint32_t canId, const uint8_t* data, uint8_t len) {
-    // HB_0 — PanelBridge master heartbeat. An unconditional liveness beacon (independent
-    // of DCS data flow): refresh the master watchdog and clear any no-master WARNING.
-    if (canId == canIdHb(0)) {
-        _lastMasterMs  = millis();
-        _everSawMaster = true;
-        STM32Board::setWarning(false);
-        return;
-    }
+    // HB_0 (master heartbeat) also arrives here; CANProtocol has already fed it to the master-loss
+    // watchdog in serviceNodeStatus(), so PanelGroup only cares about CTRL_BCAST.
     if (canId != CAN_ID_CTRL_BCAST) return;
     if (len != sizeof(ControlPacketPair)) return; // malformed — discard
     STM32Board::setLinkActive(true);  // valid CTRL_BCAST → data flowing → CONNECTED (green solid)
@@ -304,8 +291,7 @@ void setup() {
     // Step 4/5 — CAN callbacks and start
     CANProtocol::onReceive(onCanReceive);
     CANProtocol::onSyncReq(onSyncReq);
-    CANProtocol::filterAcceptId(canIdHb(0));  // accept the master heartbeat (HB_0)
-    CANProtocol::start();
+    CANProtocol::start();  // also accepts HB_0 (master heartbeat) on every non-bridge node
 
     // Step 6 — boot EVT burst
     for (auto* p = OpenSkyhawk::InputBase::head(); p; p = p->next()) p->forceReport();
@@ -313,10 +299,9 @@ void setup() {
     // Step 7 — flush trailing batch
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
 
-    // Step 8 — READY frame + arm heartbeat / master-watchdog timers
+    // Step 8 — READY frame. The heartbeat/HEALTH timers arm on the first serviceNodeStatus() call
+    // in loop(); the master-loss watchdog stays disarmed until the first HB_0 is seen.
     CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
-    _lastHeartbeatMs = millis();
-    _lastMasterMs    = millis();  // seed; timeout stays disarmed until first HB_0 seen
 }
 
 // ── PanelGroup::loop ──────────────────────────────────────────────────────────
@@ -385,39 +370,9 @@ void loop() {
     // 5. Update all outputs (steppers, PWM)
     for (auto* p = OpenSkyhawk::OutputBase::head(); p; p = p->next()) p->update();
 
-    // 6. Heartbeat every 500 ms
-    if (now - _lastHeartbeatMs >= 500) {
-        _lastHeartbeatMs = now;
-        HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(NODE_ID, _rxCount);
-        CANProtocol::send(canIdHb(NODE_ID),
-                          reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
-    }
-
-    // 6b. Node-health telemetry every 1000 ms — internal die temp + aggregated node fault (default-on;
-    // build with -DNODE_HEALTH_TELEM=0 to disable). Half the heartbeat rate: trend data.
-    // NodeFaultCode / aggregateFaults come via CANProtocol.h -> NodeStatus.h (#163).
-#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
-    if (now - _lastHealthMs >= 1000) {
-        _lastHealthMs = now;
-        const char* faultDetail = nullptr;   // never null after aggregateFaults()
-        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
-        NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
-            NODE_ID, STM32Board::readDieTempC(), fault);
-        CANProtocol::send(canIdHealth(NODE_ID),
-                          reinterpret_cast<const uint8_t*>(&h), sizeof(h));
-        STM32Board::logNodeFaultEdge("NODE", fault, faultDetail);  // edge-log, DiagSerial only (#163)
-#ifdef NODE_OVERHEAT_C
-        // Raise-only: don't clear here or we'd stomp the master-loss WARNING latch.
-        if (h.flags & (uint8_t)NodeHealthFlag::OVERHEAT) STM32Board::setWarning(true);  // overheat → WARNING
-#endif
-    }
-#endif
-
-    // 7. Master-loss watchdog: once a master has been seen, raise WARNING if HB_0 stops.
-    // Cleared in onCanReceive() when the next HB_0 arrives.
-    if (_everSawMaster && now - _lastMasterMs > MASTER_TIMEOUT_MS) {
-        STM32Board::setWarning(true);
-    }
+    // 6. Node status: HB_n every 500 ms, HEALTH_n every 1 s, master-loss watchdog (#340).
+    // _rxCount = accepted CTRL_BCAST frames, carried in the heartbeat.
+    CANProtocol::serviceNodeStatus(_rxCount);
 }
 
 // ── MCP cache bridge ──────────────────────────────────────────────────────────

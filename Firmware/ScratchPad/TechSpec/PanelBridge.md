@@ -227,7 +227,8 @@ namespace PanelBridge {
      * @brief Run PanelBridge work that is not owned by DcsBios::loop().
      *
      * Drains CANProtocol RX, dispatches EVT packets, services CANProtocol batching deadlines,
-     * checks node heartbeat timeouts, and handles DiagSerial TEST_SEQ trigger bytes.
+     * checks node heartbeat timeouts, sends its own HB_0 / HEALTH_0 through
+     * CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial TEST_SEQ trigger bytes.
      */
     void loop();
 
@@ -353,8 +354,9 @@ The sketch then calls `DcsBios::setup()`.
 
 PanelBridge uses a pass-all CAN filter because the valid receive ranges cannot be expressed
 as one STM32 CAN mask. The heartbeat address family is still `canIdHb(n) = 0x100 + n`;
-`HB_0` at `0x100` is reserved but not transmitted, and `HB_1`-`HB_63` are child-node
-liveness frames. The RX handler validates IDs in software:
+`HB_0` at `0x100` is PanelBridge's own master heartbeat (sent every 500 ms through
+`CANProtocol::serviceNodeStatus()`, watched by every other node — #93/#340), and `HB_1`-`HB_63`
+are child-node liveness frames. The RX handler validates IDs in software:
 
 | Range | Accepted by PanelBridge | Action |
 |-------|--------------------------|--------|
@@ -363,8 +365,8 @@ liveness frames. The RX handler validates IDs in software:
 | `0x301`-`0x33F` | `ECHO_1`-`ECHO_63` | Consume TEST_SEQ RTT diagnostic response |
 | `0x401`-`0x43F` | `READY_1`-`READY_63` | Mark node ready and broadcast `SYNC_REQ` |
 
-All other IDs are discarded silently. `HB_0` (`0x100`) is not accepted as a child-node
-heartbeat and is not transmitted by PanelBridge.
+All other IDs are discarded silently. `HB_0` (`0x100`) is PanelBridge's own transmission, never
+a child-node heartbeat.
 
 ### READY and Recovery SYNC_REQ
 

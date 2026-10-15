@@ -9,7 +9,7 @@ at compile time. Get it right once and it never changes.
 - **Set at compile time** via `build_flags = -DNODE_ID=N` in `platformio.ini` — **not** a
   `#define` in `main.cpp`.
 - **Range 0–63.**
-  - **0** — PanelBridge (the CAN master). Reserved; its heartbeat `HB_0` is never transmitted.
+  - **0** — PanelBridge (the CAN master). Reserved; its heartbeat `HB_0` is the master beacon every other node watches.
   - **1–63** — PanelGroup nodes, assigned incrementally, **permanent once assigned**.
 - **SimGateway has no NODE_ID** — it's not on the CAN bus.
 

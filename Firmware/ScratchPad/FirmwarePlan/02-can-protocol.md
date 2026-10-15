@@ -84,8 +84,8 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels |
 | `TEST_SEQ` | `0x011` | PanelBridge → All | 8 | CAN throughput / RTT test — 8-byte payload echoed back unchanged by sub-nodes |
 | `SYNC_REQ` | `0x012` | PanelBridge → All | 0 | Request all nodes to re-poll inputs and emit EVTs. Sent on cold boot, on `model_time` backward, in response to `READY`, and when a node transitions from dead/unseen to alive. |
-| Reserved | `0x100` | — | — | `canIdHb(0)` / PanelBridge slot. Reserved by formula, not transmitted in normal firmware. |
-| `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | PanelGroup heartbeat every 500 ms for n=1-63 — see HB payload below |
+| `HB_0` | `0x100` | PanelBridge → All | 8 | Master liveness beacon every 500 ms; every other node runs a master-loss watchdog on it (#93) |
+| `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | Node heartbeat every 500 ms for n=1-63 — see HB payload below |
 | `HEALTH_n` | `0x140+n` | Node_n → PanelBridge | 8 | Internal die-temp + node-health telemetry every 1000 ms (n=0-63, incl. PanelBridge itself) — see HEALTH payload below (#213/#221) |
 | `EVT_n` | `0x200+n` | Node_n → PanelBridge | 8 | Absolute input events (switches, selectors, pots) — `ControlPacketPair`, value `%u` → `set_state` |
 | `ECHO_n` | `0x300+n` | Node_n → PanelBridge | 8 | TEST_SEQ echo — 8-byte payload mirrored unchanged |
@@ -101,11 +101,15 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 
 ## Heartbeat Payload
 
-`HB_n` frames carry 8 bytes of node health data. PanelBridge reads PanelGroup heartbeats
-(`HB_1`–`HB_63`) to track node liveness and diagnostic state. `HB_0` is reserved by the ID
-formula but is not transmitted in normal firmware.
-CANProtocol owns the helper that fills this payload so higher layers do not read HAL CAN
-registers directly.
+`HB_n` frames carry 8 bytes of node health data. PanelBridge reads node heartbeats
+(`HB_1`–`HB_63`) to track node liveness and diagnostic state; its own `HB_0` is the master
+liveness beacon the other nodes watch (#93).
+CANProtocol owns both the helper that fills this payload, so higher layers do not read HAL CAN
+registers directly, and — since #340 — the sending itself: every node calls
+`CANProtocol::serviceNodeStatus()` once per loop, which sends `HB_n` every 500 ms and `HEALTH_n`
+every 1000 ms and, on every node except PanelBridge, runs the master-loss watchdog (WARNING after
+1500 ms without `HB_0`, once a master has been seen). On those nodes `start()` adds `HB_0` to the
+hardware filter automatically.
 
 ```cpp
 struct __attribute__((packed)) HeartbeatPayload {
@@ -248,7 +252,7 @@ unpacked C++ struct, because natural alignment can pad this layout beyond 8 byte
 ## PanelBridge Receive Filter
 
 The heartbeat address family is `canIdHb(n) = 0x100 + n`, so the full HB range is
-`0x100`-`0x13F` with `HB_0` reserved for PanelBridge but unused. For child-node liveness, PanelBridge
+`0x100`-`0x13F` with `HB_0` PanelBridge's own master beacon. For child-node liveness, PanelBridge
 accepts PanelGroup frames across five inbound ranges: HB_1-HB_63 (`0x101`-`0x13F`),
 HEALTH_1-HEALTH_63 (`0x141`-`0x17F`), EVT_1-EVT_63 (`0x201`-`0x23F`), ECHO_1-ECHO_63
 (`0x301`-`0x33F`), and READY_1-READY_63 (`0x401`-`0x43F`). These cannot be expressed as a
@@ -256,7 +260,7 @@ single CAN mask filter.
 
 **Strategy:** use a **pass-all mask filter** (accepts every ID) with software-side validation
 inside the CAN RX interrupt handler. Frames whose ID does not fall in one of the accepted ranges
-are silently discarded. `HB_0` (`0x100`) is not a PanelGroup liveness frame. This is safe
+are silently discarded. `HB_0` (`0x100`) is PanelBridge's own transmission, not a child-node liveness frame. This is safe
 because PanelGroup nodes never transmit outside their assigned ranges.
 
 ---

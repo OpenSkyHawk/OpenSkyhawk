@@ -57,6 +57,22 @@ static uint32_t           _filterIds[MAX_FILTER_IDS];
 static uint8_t            _filterCount    = 0;
 static bool               _filterPassAll  = false;
 
+// Node status service (serviceNodeStatus) — #340
+static constexpr uint32_t HB_PERIOD_MS     = 500;
+static constexpr uint32_t HEALTH_PERIOD_MS = 1000;
+static uint32_t           _lastHbMs        = 0;
+static uint32_t           _lastHealthMs    = 0;
+static bool               _statusArmed     = false;  // timers armed on the first service call
+static uint32_t           _lastMasterMs    = 0;      // millis() of the last HB_0 seen
+static bool               _everSawMaster   = false;  // arm the timeout only after the first HB_0
+static bool               _masterHbPending = false;  // HB_0 arrived since the last service call
+// WARNING causes this service owns on a non-bridge node. The LED has one shared latch, so the service
+// keeps its causes apart and only writes the latch when their OR changes — a returning master clears
+// master loss, never an overheat that is still true.
+static bool               _masterLost      = false;
+static bool               _overheat        = false;
+static bool               _warnAsserted    = false;  // what this service last wrote to the latch
+
 // ── Private helpers ───────────────────────────────────────────────────────────
 
 // Called from TX-complete ISR — drains the TX ring into available mailboxes.
@@ -104,11 +120,12 @@ static void _applyFilters() {
     }
 
     // Build combined ID list: mandatory + caller-registered
-    uint32_t ids[MAX_FILTER_IDS + 3];
+    uint32_t ids[MAX_FILTER_IDS + 4];
     uint8_t  count = 0;
     ids[count++] = CAN_ID_CTRL_BCAST;
     ids[count++] = CAN_ID_TEST_SEQ;
     ids[count++] = CAN_ID_SYNC_REQ;
+    if (NODE_ID != 0) ids[count++] = canIdHb(0);  // master heartbeat → serviceNodeStatus watchdog
     for (uint8_t i = 0; i < _filterCount; i++) {
         ids[count++] = _filterIds[i];
     }
@@ -202,6 +219,10 @@ static void _startInternal(uint32_t mode) {
     _batches[3] = { canIdEvtDir(NODE_ID), false, {0, 0}, 0 };  // RotaryEncoder DIR
     _batches[4] = { canIdEvtAction(NODE_ID), false, {0, 0}, 0 };  // ActionButton TOGGLE
 
+    // serviceNodeStatus() arms its HB/HEALTH timers on its first call — the first loop() after
+    // setup returns — so a restart re-arms them there too (FirmwarePlan 09 step 8).
+    _statusArmed = false;
+
     _status = CanStatus::NORMAL;
     if (_statusCb) _statusCb(_status);
 }
@@ -260,6 +281,13 @@ void drain() {
         } else if (frame.canId == CAN_ID_TEST_SEQ) {
             send(canIdEcho(NODE_ID), frame.data, frame.len);
         } else {
+            if (NODE_ID != 0 && frame.canId == canIdHb(0)) {
+                // Master heartbeat: stamp it for serviceNodeStatus()'s watchdog, then still hand it
+                // to the node's own handler like any other frame.
+                _lastMasterMs    = millis();
+                _everSawMaster   = true;
+                _masterHbPending = true;
+            }
             if (_rxCb) _rxCb(frame.canId, frame.data, frame.len);
         }
     }
@@ -413,6 +441,61 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC, NodeFau
 }
 
 uint32_t txDropCount() { return _txDrops; }
+
+void serviceNodeStatus(uint16_t rxCount) {
+    const uint32_t now = millis();  // after drain(): HB_0 stamps can't be ahead of `now` (#225)
+
+    // Arm on the first call: that is the first loop() after setup() returned, i.e. boot complete
+    // (READY_n already sent), whatever a node does between start() and the end of its setup().
+    if (!_statusArmed) {
+        _statusArmed  = true;
+        _lastHbMs     = now;
+        _lastHealthMs = now;
+    }
+
+    if (now - _lastHbMs >= HB_PERIOD_MS) {
+        _lastHbMs = now;
+        HeartbeatPayload hb = makeHeartbeatPayload(NODE_ID, rxCount);
+        send(canIdHb(NODE_ID), reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
+    }
+
+    // HEALTH: half the heartbeat rate — trend data. NodeFaultCode / aggregateFaults come via
+    // NodeStatus.h (included by CANProtocol.h) (#163).
+#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
+    if (now - _lastHealthMs >= HEALTH_PERIOD_MS) {
+        _lastHealthMs = now;
+        const char* faultDetail = nullptr;   // never null after aggregateFaults()
+        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
+        NodeHealthPayload h = makeNodeHealthPayload(NODE_ID, STM32Board::readDieTempC(), fault);
+        send(canIdHealth(NODE_ID), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
+        STM32Board::logNodeFaultEdge(NODE_ID == 0 ? "BRIDGE" : "NODE", fault, faultDetail);
+#ifdef NODE_OVERHEAT_C
+        _overheat = (h.flags & static_cast<uint8_t>(NodeHealthFlag::OVERHEAT)) != 0;
+        // The bridge's latch is also PanelBridge's dead-node WARNING, which this service can't see —
+        // so on the bridge overheat stays raise-only rather than risk clearing that.
+        if (NODE_ID == 0 && _overheat) STM32Board::setWarning(true);
+#endif
+    }
+#endif
+
+    if (NODE_ID == 0) return;  // PanelBridge is the master: no master-loss watchdog
+
+    // Master-loss watchdog. Signed elapsed so a stamp a hair ahead of `now` reads as fresh, never as
+    // overdue (#225).
+    if (_masterHbPending) {
+        _masterHbPending = false;
+        _masterLost      = false;
+    }
+    if (_everSawMaster && (int32_t)(now - _lastMasterMs) > (int32_t)MASTER_TIMEOUT_MS)
+        _masterLost = true;
+
+    // Write the latch only when the OR of this service's causes changes (master loss | overheat).
+    const bool want = _masterLost || _overheat;
+    if (want != _warnAsserted) {
+        _warnAsserted = want;
+        STM32Board::setWarning(want);
+    }
+}
 
 } // namespace CANProtocol
 
