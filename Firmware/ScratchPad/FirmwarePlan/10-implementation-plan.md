@@ -84,7 +84,7 @@
       add software range validation in CAN RX handler (valid child-node frames: HB_1-HB_63
       0x101–0x13F, EVT 0x201–0x23F, ECHO 0x301–0x33F, READY 0x401–0x43F — discard else).
 - [x] Broadcast `SYNC_REQ` on READY and when heartbeat tracking observes a node transition
-      from dead/unseen to alive. PanelBridge does not publish `HB_0`; `canIdHb(0)` is reserved.
+      from dead/unseen to alive. *(PanelBridge later began publishing `HB_0` as a master beacon — #93.)*
 - [x] Implement TEST_SEQ trigger on PanelBridge: a single command byte (e.g. `'T'`) received
       on DiagSerial causes PanelBridge to broadcast TEST_SEQ (0x011) and collect ECHO responses
       for RTT measurement. SimGateway is not involved.

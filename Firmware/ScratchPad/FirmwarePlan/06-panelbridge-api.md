@@ -17,8 +17,8 @@ PanelBridge is the single STM32F103 CAN master that:
 3. Receives CAN EVTs from PanelGroup nodes and routes them:
    - `0x8000 <= controlId <= 0x86FF` → binary search in generated input map → `sendDcsBiosMessage()`
    - `controlId < 0x8000` → wrap in HID frame → UART → SimGateway
-4. Tracks PanelGroup liveness from `HB_1`-`HB_63`. PanelBridge does not publish `HB_0`;
-   `canIdHb(0)` is reserved by the ID formula but unused.
+4. Tracks node liveness from `HB_1`-`HB_63`, and sends its own `HB_0` master beacon and
+   `HEALTH_0` through `CANProtocol::serviceNodeStatus()` like every node (#93/#340).
 
 ---
 

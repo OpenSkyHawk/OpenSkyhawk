@@ -60,10 +60,10 @@ actually does.
 
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
-| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:200`, `PanelGroup.cpp:391`, `STM32Board.h:29` |
-| `PANELBRIDGE_NODE_STATUS` | off | on in `Templates/PanelBridge` | `PanelBridge.cpp:42` + ~10 more |
-| `NODE_HEALTH_TELEM` | **on** | never set | `PanelBridge.cpp:510`, `PanelGroup.cpp:399` |
-| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:400`, `PanelGroup.cpp:409` |
+| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:210`, `PanelGroup.cpp:300`, `STM32Board.h:29` |
+| `PANELBRIDGE_NODE_STATUS` | off | on in `Templates/PanelBridge` | `PanelBridge.cpp:41` + ~10 more |
+| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:450` (`serviceNodeStatus`, every node) |
+| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:422`, `CANProtocol.cpp:458` |
 | `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:179` |
 | `PINREF_DEBUG` | off | never set | `PinRef.cpp:8` + ~9 more |
 | `SHIFTBUS_SCK` | `PB3` | never set | `ShiftBus.cpp:13` |
@@ -71,8 +71,8 @@ actually does.
 | `SHIFTBUS_MOSI` | `PB5` | never set | `ShiftBus.cpp:19` |
 | `SHIFTBUS_LOAD` | `PB8` | never set | `ShiftBus.cpp:22` |
 | `SHIFTBUS_LATCH` | `PB9` | never set | `ShiftBus.cpp:25` |
-| `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:125,240` |
-| `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:241` |
+| `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:112,227` |
+| `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:228` |
 
 **What they do, briefly.** `NODE_ID` is the board's CAN address — see
 [NODE_ID & CAN Addressing](node-id.md). `PANELBRIDGE_NODE_STATUS` makes PanelBridge report which
@@ -195,7 +195,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 | `LED_TEST` | LED | `Outputs/LED/LED.h:68` |
 | `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:60` |
 | `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:78` |
-| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:84` |
+| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:85` |
 | `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:108` |
 | `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
 | `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:11` (no-op HID stubs) |

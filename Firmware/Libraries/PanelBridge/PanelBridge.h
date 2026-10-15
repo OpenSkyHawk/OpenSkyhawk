@@ -70,7 +70,8 @@ namespace PanelBridge {
      * @brief Run PanelBridge work not owned by DcsBios::loop().
      *
      * Drains CANProtocol RX, dispatches EVT packets, services CANProtocol batching deadlines,
-     * checks node heartbeat timeouts (3 s), and handles DiagSerial 'T' bytes for TEST_SEQ.
+     * checks node heartbeat timeouts (3 s), sends its own HB_0 / HEALTH_0 through
+     * CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial 'T' bytes for TEST_SEQ.
      *
      * @note Call after DcsBios::loop() each iteration.
      */

@@ -29,7 +29,8 @@ assignments (→ 08), HID frame format (→ 03).
 7. Send `READY` frame (`canIdReady(NODE_ID)` = `0x400 + NODE_ID`) — signals PanelBridge
    that the initial input poll and EVT burst are complete, and that this node is ready to
    answer a full-state `SYNC_REQ`.
-8. Begin heartbeat timer (first HB sent 500 ms after boot).
+8. Heartbeat begins — `CANProtocol::start()` (step 4) armed the `serviceNodeStatus()` timers, so
+   the first HB goes out ~500 ms after boot (#340).
 
 ---
 

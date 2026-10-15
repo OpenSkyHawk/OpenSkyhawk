@@ -43,8 +43,9 @@ struct __attribute__((packed)) ControlPacketPair {
 /**
  * @brief 8-byte payload carried by HB_n heartbeat frames.
  *
- * Sent every 500 ms by PanelGroup nodes. PanelBridge reads HB_1–HB_63 to track
- * PanelGroup health and populate diagnostics. HB_0 is reserved but not transmitted.
+ * Sent every 500 ms by every node through serviceNodeStatus() (#340). PanelBridge reads
+ * HB_1–HB_63 to track node health and populate diagnostics; its own HB_0 is the master
+ * liveness beacon every other node watches (#93).
  */
 struct __attribute__((packed)) HeartbeatPayload {
     uint8_t  nodeId;   ///< Node ID — redundant with CAN ID, aids logging
@@ -195,9 +196,11 @@ namespace CANProtocol {
      *
      * Must be called after STM32Board::begin() and after all filter and callback
      * registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active
-     * filter — mandatory for all nodes, cannot be excluded.
+     * filter — mandatory for all nodes, cannot be excluded — plus HB_0 on every node except
+     * PanelBridge (NODE_ID 0), for serviceNodeStatus()'s master-loss watchdog.
      *
-     * Fires the onStatusChange callback with NORMAL on success.
+     * Arms the serviceNodeStatus() HB/HEALTH timers. Fires the onStatusChange callback with
+     * NORMAL on success.
      */
     void start();
 
@@ -217,6 +220,7 @@ namespace CANProtocol {
      * Drains all frames received since the last call:
      * - SYNC_REQ: fires onSyncReq(), not forwarded to onReceive().
      * - TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
+     * - HB_0 on a non-bridge node: stamped for serviceNodeStatus()'s watchdog, then onReceive().
      * - All other frames: fires onReceive().
      *
      * Also services sendBatched() deadlines: a half-full ControlPacketPair that has
@@ -342,6 +346,37 @@ namespace CANProtocol {
 
     /** @brief Return the cumulative TX queue drop count since startup. */
     uint32_t txDropCount();
+
+    // ── Node status service (every node) ──────────────────────────────────────
+
+    /**
+     * @brief Run the node-generic status duties. Call once per loop(), after drain().
+     *
+     * Every node on the bus owes the same status traffic, whatever else it does (#340):
+     * - `HB_NODE_ID` every 500 ms (makeHeartbeatPayload), carrying `rxCount`.
+     * - `HEALTH_NODE_ID` every 1000 ms (makeNodeHealthPayload) with the internal die temp and the
+     *   aggregated node fault, plus the DiagSerial fault edge log (tag `BRIDGE` on NODE_ID 0,
+     *   `NODE` otherwise). Compiled out with `-DNODE_HEALTH_TELEM=0`. When a build defines
+     *   `NODE_OVERHEAT_C`, an overheat raises WARNING (raise-only).
+     * - Master-loss watchdog, on every node except PanelBridge (NODE_ID 0): once a master
+     *   heartbeat (`HB_0`) has been seen, WARNING rises after MASTER_TIMEOUT_MS of silence and
+     *   clears on the next `HB_0`.
+     *
+     * `HB_0` arrival is recorded by drain(), which still passes the frame to onReceive().
+     * start() adds `HB_0` to the hardware filter on non-bridge nodes, so callers never
+     * register it by hand.
+     *
+     * @param rxCount Caller-owned accepted RX count for the heartbeat (PanelGroup: accepted
+     *                CTRL_BCAST frames). Pass 0 when the node keeps no count.
+     *
+     * @note Samples millis() itself, after drain() has stamped any `HB_0`, and compares elapsed
+     *       time signed — so a millisecond ticking during drain() cannot read as a timeout (#225).
+     */
+    void serviceNodeStatus(uint16_t rxCount = 0);
+
+    /** @brief Master-loss timeout: 3× the 500 ms `HB_0` cadence, matching PanelBridge's own
+     *         node timeout ratio (3000 ms / 500 ms). */
+    static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
 
 } // namespace CANProtocol
 

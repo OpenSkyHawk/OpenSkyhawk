@@ -42,6 +42,8 @@ helper functions — **never hard-code these values**, always use the helper.
 - `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node.
 - `EVT_n` carries input events from a node back up to PanelBridge.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
+  Every node — PanelBridge included, as `HB_0` — sends `HB_n` and `HEALTH_n` from one shared
+  CANProtocol routine, which also runs each node's watch on the master heartbeat.
 - `HEALTH_n` carries `NodeHealthPayload` — internal die temperature, and node
   degraded/fault state as that lands.
 - `TEST_SEQ` / `ECHO_n` are a round-trip latency test: PanelBridge sends `TEST_SEQ`, a node
@@ -49,9 +51,10 @@ helper functions — **never hard-code these values**, always use the helper.
 - `SYNC_REQ` / `READY_n` are the boot/resync handshake (below).
 
 !!! note "canIdHb(1) = 0x101, not 0x100"
-    `canIdHb(0)` (`0x100`) is reserved for PanelBridge and **is never transmitted** — the
-    master has no consumer for its own heartbeat. Real nodes start at `canIdHb(1) = 0x101`.
-    The old `CAN_ID_HB_1 = 0x100` constant is deprecated; use the `canIdHb(n)` helper.
+    `canIdHb(0)` (`0x100`) belongs to PanelBridge: it is the master heartbeat, sent every
+    500 ms, and every other node raises its WARNING light if it stops. Real nodes start at
+    `canIdHb(1) = 0x101`. The old `CAN_ID_HB_1 = 0x100` constant is deprecated; use the
+    `canIdHb(n)` helper.
 
 ### Why there are four event frames, not one
 

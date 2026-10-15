@@ -33,7 +33,6 @@ namespace {
 
 static constexpr uint8_t  MAX_NODE_ID         = 63;
 static constexpr uint32_t HB_TIMEOUT_MS       = 3000;
-static constexpr uint32_t MASTER_HB_PERIOD_MS = 500;   // HB_0 master heartbeat cadence
 
 struct NodeState {
     bool     alive;
@@ -53,8 +52,6 @@ static NodeState      _nodes[MAX_NODE_ID] = {};   // index = nodeId - 1
 static void (*_cbAlive)(uint8_t)          = nullptr;
 static void (*_cbDead)(uint8_t)           = nullptr;
 static uint8_t        _deadCount          = 0;    // tracked nodes currently timed-out (drives WARNING)
-static uint32_t       _lastMasterHbMs     = 0;    // millis() of last HB_0 transmit
-static uint32_t       _lastHealthMs       = 0;    // millis() of last HEALTH_0 transmit (#213)
 
 #ifdef PANELBRIDGE_NODE_STATUS
 // ── Node-status reporting (#86) ──────────────────────────────────────────────
@@ -497,29 +494,12 @@ void loop() {
     uint32_t now = millis();
     checkNodeTimeouts(now);
 
-    // Master heartbeat (HB_0) every 500 ms. Unlike CTRL_BCAST (which only moves when a
-    // DCS export changes), this is an unconditional liveness beacon so PanelGroup nodes
-    // can detect master loss even when the sim is idle/paused.
-    if (now - _lastMasterHbMs >= MASTER_HB_PERIOD_MS) {
-        _lastMasterHbMs = now;
-        HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(0, 0);
-        CANProtocol::send(canIdHb(0), reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
-    }
-
-    // Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal die temp
-    // + aggregated node fault alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0).
-    // The bridge is a node too; its own FaultSources (e.g. a future host-link watchdog) roll up here.
-#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
-    if (now - _lastHealthMs >= 1000) {
-        _lastHealthMs = now;
-        const char* faultDetail = nullptr;   // never null after aggregateFaults()
-        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
-        NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
-            0, STM32Board::readDieTempC(), fault);
-        CANProtocol::send(canIdHealth(0), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
-        STM32Board::logNodeFaultEdge("BRIDGE", fault, faultDetail);  // edge-log, DiagSerial only (#163)
-    }
-#endif
+    // Node status (#340): HB_0 every 500 ms and HEALTH_0 every 1 s. HB_0 is an unconditional
+    // liveness beacon — unlike CTRL_BCAST, which only moves when a DCS export changes — so nodes
+    // detect master loss even when the sim is idle/paused. The bridge is a node too: its own
+    // FaultSources (e.g. a future host-link watchdog) roll up into HEALTH_0. No master watchdog
+    // runs here (NODE_ID 0 is the master); the bridge keeps no RX count for its heartbeat.
+    CANProtocol::serviceNodeStatus();
 
     auto& diag = STM32Board::diagSerial();
     while (diag.available()) {

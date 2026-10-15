@@ -41,7 +41,7 @@ a glance:
 The state machine is shared (`STM32Board`); only the triggers differ per role. **Green solid
 (connected)** appears while data is actively flowing and decays back to green-blinking after
 ~½ s of quiet. **Amber (warning)** means a tracked PanelGroup node died (PanelBridge), the
-master heartbeat was lost (PanelGroup), or the board's **clock failed to lock** (any STM32
+master heartbeat was lost (any node other than PanelBridge), or the board's **clock failed to lock** (any STM32
 node — see below).
 
 CAN faults are driven from the `CanStatus` callback. For non-CAN faults (dead node, lost

@@ -217,6 +217,11 @@ event that may not arrive.
 
 ## D12 — HB_0 is reserved but not transmitted
 
+> **Superseded by #93 (2026-06-17).** PanelBridge now transmits `HB_0` every 500 ms as an
+> unconditional master-liveness beacon, and every other node raises WARNING when it stops — see
+> `08-hardware-firmware-contracts.md`. Since #340 the sending and the watchdog both live in
+> `CANProtocol::serviceNodeStatus()`. The text below is kept as the original record.
+
 **Decision:** `canIdHb(0)` (`0x100`) remains reserved by the CAN ID formula for PanelBridge,
 but PanelBridge does not transmit a master heartbeat in normal firmware.
 
@@ -377,3 +382,36 @@ INC/DEC for exactly those knobs.
 **Affects:** `05-panelgroup-api.md`, `10-implementation-plan.md`, TechSpec
 (`RotaryAcceleratedEncoder`, `AngleSensor`, `AngleSensorInput`, `AnalogOutput`, `Dimmer`,
 `IntegerOutput`, `SwitchWithCover2Pos`; `RotarySwitch` removed), `docs/firmware/control-types.md`.
+
+---
+
+## D17 — Node status traffic is owned by CANProtocol, not by each node library (#340)
+
+**Decision:** The duties every node owes the bus — `HB_n` every 500 ms, `HEALTH_n` every 1000 ms
+(with the fault edge log and the opt-in overheat WARNING), and the master-loss watchdog on `HB_0` —
+run in one place, `CANProtocol::serviceNodeStatus()`, which each node calls once per `loop()`.
+PanelGroup and PanelBridge no longer carry their own copies.
+
+**Rationale:**
+- *They were copies, not choices.* Searching the history found no recorded reason for the heartbeat
+  living in PanelGroup / PanelBridge: it came with the 2026-05-21 library split of the prototype loop,
+  `HEALTH_n` (#213) was added beside it in both places, and the `HB_0` watchdog (#93) went into
+  PanelGroup because PanelGroup was then its only consumer.
+- *A third node type made the cost real.* The PDU monitoring node (#216) has no inputs or outputs.
+  It needs exactly this plumbing and nothing else from PanelGroup; a third copy, or a dependency on
+  the panel library, would both be wrong.
+- *CANProtocol is the lowest layer that can host it.* STM32Board sits below CANProtocol
+  (`CANProtocol` calls `STM32Board::canHandle()`), so STM32Board cannot send frames without a
+  circular dependency. CANProtocol already builds both payloads and already handles the other
+  node-generic frames in `drain()` (`SYNC_REQ`, the `TEST_SEQ` echo).
+- *Behaviour is preserved, timing included.* `start()` arms the timers so the first `HB_n` still goes
+  out ~500 ms after boot (09 step 8); `HB_0` is still passed to `onReceive()` after the watchdog
+  stamps it. The move also removes a latent #225-pattern false timeout in the old PanelGroup
+  watchdog, which compared a `now` sampled *before* `drain()` against an `HB_0` stamped *during* it.
+
+**Not moved:** node-domain work stays where it is — PanelGroup's `rxCount` (accepted `CTRL_BCAST`),
+`READY_n`, input/output dispatch and `SYNC_REQ` handling; PanelBridge's node tracking.
+
+**Affects:** `02-can-protocol.md`, `06-panelbridge-api.md`, `08-hardware-firmware-contracts.md`,
+`09-startup-resync-diagnostics.md`, `11-open-issues.md`, TechSpec (`CANProtocol`, `PanelGroup`,
+`PanelBridge`, `STM32Board`), `docs/architecture/can-bus.md`.

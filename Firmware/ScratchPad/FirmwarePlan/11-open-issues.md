@@ -19,7 +19,7 @@ accident during later review passes.
 
 | Item | Resolution | Owner |
 |------|------------|-------|
-| PanelBridge heartbeat on CAN | **Implemented in #93.** PanelBridge transmits `HB_0` / `canIdHb(0)` every 500 ms as a master-liveness beacon; PanelGroup accepts it (`filterAcceptId(canIdHb(0))`) and raises WARNING if it stops for > 1500 ms after a master has been seen. | `02-can-protocol.md`, `06-panelbridge-api.md`, `08-hardware-firmware-contracts.md` |
+| PanelBridge heartbeat on CAN | **Implemented in #93.** PanelBridge transmits `HB_0` / `canIdHb(0)` every 500 ms as a master-liveness beacon; every other node accepts it and raises WARNING if it stops for > 1500 ms after a master has been seen — since #340 both sides live in `CANProtocol::serviceNodeStatus()`. | `02-can-protocol.md`, `06-panelbridge-api.md`, `08-hardware-firmware-contracts.md` |
 | `ERROR_PASSIVE` status | No separate public `CanStatus` for now. `TX_ERROR` maps to STM32Board `CAN_ERROR`; `BUS_OFF` maps to `BUS_OFF`. EPVF remains available in heartbeat flags. (Re-confirmed #93 — deferred again.) | `02-can-protocol.md`, `STM32Board TechSpec` |
 | CAN batching | `ControlPacketPair` batching is part of CANProtocol, not a conditional optimization. PanelBridge and PanelGroup submit individual `ControlPacket`s; single-packet frames use slot B `controlId = 0x0000` as the null sentinel. | `02-can-protocol.md`, `06-panelbridge-api.md` |
 | New node state request | READY and dead/unseen → alive recovery both trigger a `SYNC_REQ` broadcast so the node re-polls and sends its current input state. | `06-panelbridge-api.md`, `09-startup-resync-diagnostics.md` |

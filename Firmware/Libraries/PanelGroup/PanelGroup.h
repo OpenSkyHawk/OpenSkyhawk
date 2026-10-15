@@ -179,8 +179,8 @@ private:
  *
  * @details Manages MCP23017 expander registration and cache, ADS1115 registration,
  * the 8-step boot sequence, per-loop interrupt dispatch and polling fallback,
- * CAN EVT batching, CTRL_BCAST dispatch, SYNC_REQ response, and the 500 ms
- * HB_n heartbeat.
+ * CAN EVT batching, CTRL_BCAST dispatch, and SYNC_REQ response. The node-generic HB_n /
+ * HEALTH_n traffic and master-loss watchdog run through CANProtocol::serviceNodeStatus() (#340).
  */
 namespace PanelGroup {
 
@@ -248,7 +248,8 @@ namespace PanelGroup {
      *   5. CANProtocol::start().
      *   6. forceReport() burst — one EVT per registered input.
      *   7. flushBatched(canIdEvt(NODE_ID)).
-     *   8. READY_n frame (canIdReady(NODE_ID), DLC=0). Arm heartbeat timer.
+     *   8. READY_n frame (canIdReady(NODE_ID), DLC=0). (CANProtocol::start() armed the
+     *      heartbeat/HEALTH timers.)
      *
      * @note Wire.begin() must be called by the sketch before this function.
      *       PanelGroup never calls Wire.begin() — only start buses in use.
@@ -264,7 +265,8 @@ namespace PanelGroup {
      *   3. poll() on all InputBase objects.
      *   4. CANProtocol::drain() — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
      *   5. update() on all OutputBase objects.
-     *   6. Heartbeat: send HB_n every 500 ms.
+     *   6. CANProtocol::serviceNodeStatus(): HB_n every 500 ms, HEALTH_n every 1 s,
+     *      master-loss watchdog.
      */
     void loop();
 

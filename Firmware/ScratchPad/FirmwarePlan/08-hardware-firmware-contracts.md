@@ -186,8 +186,9 @@ back to NORMAL (green slow) after ~500 ms with no further data. CONNECTED shows 
 bus is healthy — a CAN fault masks it and it re-engages automatically on recovery.
 
 **Master heartbeat (`HB_0`):** PanelBridge transmits an unconditional liveness beacon on
-`canIdHb(0)` every 500 ms. PanelGroup accepts it (`filterAcceptId(canIdHb(0))`) and, once it
-has seen a master, raises WARNING if `HB_0` stops for > 1500 ms. This is independent of
+`canIdHb(0)` every 500 ms. Every other node accepts it (CANProtocol adds it to the filter) and,
+once it has seen a master, raises WARNING if `HB_0` stops for > 1500 ms — both sides run in
+`CANProtocol::serviceNodeStatus()` (#340). This is independent of
 `CTRL_BCAST` (which only moves when DCS export values change), so an idle/paused sim does not
 trigger a false no-master warning.
 

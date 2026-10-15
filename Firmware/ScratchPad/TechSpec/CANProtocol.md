@@ -77,8 +77,12 @@ Firmware/Tests/CANProtocol/
     │                             and ESR-derived TEC/REC without callers touching HAL registers
     ├── health_payload.cpp      — makeNodeHealthPayload() packs nodeId/dieTempC + faultId/DEGRADED,
     │                             faultMask/reserved stay 0; on-target readDieTempC()/readVddMv() range (#213)
-    └── health_flags.cpp        — overheat+degraded coexistence: -DNODE_OVERHEAT_C=0, asserts a faulted
-                                  hot payload sets BOTH flag bits (|= never clobbers overheat) (#163)
+    ├── health_flags.cpp        — overheat+degraded coexistence: -DNODE_OVERHEAT_C=0, asserts a faulted
+    │                             hot payload sets BOTH flag bits (|= never clobbers overheat) (#163)
+    └── node_status_service.cpp — serviceNodeStatus() (#340), loopback: start() auto-accepts HB_0 and
+                                  drain() still forwards it; HB_n every 500 ms (first ~500 ms after
+                                  start); HEALTH_n every 1000 ms; master-loss WARNING absent before a
+                                  master is seen, raised after HB_0 stops > 1500 ms, cleared on return
 ```
 
 All runtime scenarios use `startLoopback()` — single board, no second node or physical bus
@@ -238,8 +242,9 @@ struct __attribute__((packed)) ControlPacketPair {
 /**
  * @brief 8-byte payload carried by HB_n heartbeat frames.
  *
- * Sent every 500 ms by PanelGroup nodes. PanelBridge reads HB_1–HB_63 to track
- * PanelGroup health and populate diagnostics. HB_0 is reserved but not transmitted.
+ * Sent every 500 ms by every node through serviceNodeStatus() (#340). PanelBridge reads
+ * HB_1–HB_63 to track node health and populate diagnostics; its own HB_0 is the master
+ * liveness beacon every other node watches (#93).
  */
 struct __attribute__((packed)) HeartbeatPayload {
     uint8_t  nodeId;   ///< Node ID — redundant with CAN ID, aids logging
@@ -366,9 +371,11 @@ namespace CANProtocol {
      * Must be called after STM32Board::begin() and after all filter and callback
      * registrations. Always adds CTRL_BCAST (0x010), TEST_SEQ (0x011), and
      * SYNC_REQ (0x012) to the active filter — these are mandatory for all nodes
-     * and cannot be excluded.
+     * and cannot be excluded. On every node except PanelBridge (NODE_ID 0) it also adds
+     * HB_0 (0x100) for the serviceNodeStatus() master-loss watchdog (#340).
      *
-     * Sets CanStatus to NORMAL on success and fires the onStatusChange callback.
+     * Arms the serviceNodeStatus() HB/HEALTH timers. Sets CanStatus to NORMAL on success
+     * and fires the onStatusChange callback.
      */
     void start();
 
@@ -390,7 +397,8 @@ namespace CANProtocol {
      * Call once per loop() iteration. Drains all frames received since the last
      * call. For each frame: fires onSyncReq() for SYNC_REQ, auto-replies with
      * ECHO carrying the same 8-byte payload for TEST_SEQ, fires onReceive() for
-     * all other frames.
+     * all other frames. On a non-bridge node an HB_0 is first stamped for the
+     * serviceNodeStatus() watchdog, then still passed to onReceive().
      *
      * Also services sendBatched() deadlines: any half-full ControlPacketPair
      * that has waited two owning firmware loop iterations is flushed with
@@ -544,8 +552,54 @@ namespace CANProtocol {
      */
     uint32_t txDropCount();
 
+    // ── Node status service (every node) ──────────────────────────────────────
+
+    /**
+     * @brief Run the node-generic status duties. Call once per loop(), after drain() (#340).
+     *
+     * - HB_NODE_ID every 500 ms (makeHeartbeatPayload), carrying rxCount.
+     * - HEALTH_NODE_ID every 1000 ms (makeNodeHealthPayload) + the DiagSerial fault edge log
+     *   (tag BRIDGE on NODE_ID 0, NODE otherwise). Compiled out with -DNODE_HEALTH_TELEM=0.
+     *   With NODE_OVERHEAT_C defined, an overheat raises WARNING (raise-only).
+     * - Master-loss watchdog on every node except PanelBridge (NODE_ID 0): once HB_0 has been
+     *   seen, WARNING rises after MASTER_TIMEOUT_MS of silence and clears on the next HB_0.
+     *
+     * Timers are armed by start(), so the first HB/HEALTH go out one period after boot.
+     *
+     * @param rxCount Caller-owned accepted RX count for the heartbeat; 0 if the node keeps none.
+     * @note Samples millis() after drain() and compares signed (#225).
+     */
+    void serviceNodeStatus(uint16_t rxCount = 0);
+
+    /** @brief Master-loss timeout — 3× the 500 ms HB_0 cadence. */
+    static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
+
 } // namespace CANProtocol
 ```
+
+### Node status service
+
+Every node owes the same status traffic whatever else it does, so CANProtocol owns it rather than
+each node library (#340 — PanelGroup and PanelBridge each carried a copy before). It is the lowest
+layer that can: STM32Board sits below CANProtocol, so it cannot send frames without a circular
+dependency.
+
+| Duty | Cadence | Who |
+|------|---------|-----|
+| `HB_n` (`makeHeartbeatPayload`) | 500 ms | every node; PanelBridge's is `HB_0` |
+| `HEALTH_n` (`makeNodeHealthPayload`) + fault edge log | 1000 ms | every node, unless `-DNODE_HEALTH_TELEM=0` |
+| Master-loss watchdog → `STM32Board::setWarning()` | checked every call | every node except NODE_ID 0 |
+
+- **`HB_0` intake.** On a non-bridge node `start()` adds `canIdHb(0)` to the hardware filter list
+  (no-op under `filterAcceptAll()`), and `drain()` stamps each `HB_0` for the watchdog *before*
+  passing it to `onReceive()` as usual — node code may still observe it.
+- **WARNING rules.** Raised when `HB_0` has been silent for more than `MASTER_TIMEOUT_MS` after a
+  master was first seen (a cold start before the bridge never warns); cleared on the next service
+  call after an `HB_0` arrives. Overheat (opt-in `NODE_OVERHEAT_C`) is raise-only.
+- **Timing.** `start()` arms both timers, so the first `HB_n` goes out ~500 ms after boot completes
+  (FirmwarePlan 09 step 8). The service samples `millis()` itself after `drain()`, and the
+  watchdog compares elapsed time signed, so an `HB_0` stamped a millisecond after the caller's own
+  `now` cannot read as overdue — the #225 pattern.
 
 ---
 

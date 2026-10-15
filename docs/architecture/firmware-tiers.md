@@ -83,8 +83,8 @@ can show connected panels without any SimGateway change
   state. Multiple controls may map to the same DCS command.
 - It does **not** drive panel hardware decisions; nodes own their own I/O.
 
-`NODE_ID` is always **0** for PanelBridge — reserved, and never transmitted as a heartbeat on
-the bus.
+`NODE_ID` is always **0** for PanelBridge — reserved for it, and its heartbeat `HB_0` is the
+master beacon every other node watches.
 
 ## PanelGroup (STM32F103)
 

@@ -12,7 +12,10 @@ STM32 firmware library for all cockpit panel nodes. Owns: MCP23017 expander regi
 management (interrupt configuration, INTCAP reads, port state cache, polling fallback); CAN EVT
 dispatch of input events via `CANProtocol::sendBatched()`; reception and distribution of
 `CTRL_BCAST` output packets to registered output objects; `SYNC_REQ` response (re-poll all
-inputs); `READY_n` frame on boot completion; and the 500 ms `HB_n` heartbeat timer.
+inputs); and the `READY_n` frame on boot completion. The node-generic status traffic — the
+500 ms `HB_n` heartbeat, the 1 s `HEALTH_n` frame and the master-loss watchdog — is not
+PanelGroup's: PanelGroup calls `CANProtocol::serviceNodeStatus()` once per loop and passes its
+accepted-`CTRL_BCAST` count for the heartbeat (#340).
 `TEST_SEQ` echo is owned by `CANProtocol::drain()` and is not forwarded to PanelGroup
 callbacks.
 
@@ -330,7 +333,8 @@ namespace PanelGroup {
      *   6. CANProtocol::flushBatched(canIdEvt(NODE_ID)) — flush any trailing odd packet
      *      before READY.
      *   7. Send READY_n frame (canIdReady(NODE_ID), DLC=0).
-     *   8. Arm heartbeat timer (first HB_n 500 ms after boot).
+     *   8. (Heartbeat/HEALTH timers were armed by CANProtocol::start() in step 4 — first
+     *      HB_n ~500 ms after boot.)
      *
      * @note Wire.begin() / Wire1.begin() must be called by the sketch before setup().
      *       PanelGroup never calls begin() on any I2C bus. Only start buses in use.
@@ -368,9 +372,12 @@ namespace PanelGroup {
      *                            flushBatched(canIdEvt(NODE_ID)).
      *        0x011 TEST_SEQ   → handled internally by CANProtocol::drain(); PanelGroup
      *                            does not receive this callback.
+     *        0x100 HB_0       → stamped for the master-loss watchdog by CANProtocol::drain(),
+     *                            then ignored by PanelGroup's receive callback.
      *        anything else    → ignored by PanelGroup's receive callback.
      *   5. Call update() on all OutputBase objects.
-     *   6. Check heartbeat timer; send HB_n (canIdHb(NODE_ID)) every 500 ms.
+     *   6. CANProtocol::serviceNodeStatus(rxCount) — HB_n every 500 ms, HEALTH_n every
+     *      1 s, master-loss watchdog (#340).
      */
     void loop();
 
@@ -626,14 +633,15 @@ Sent once during `setup()`, after the initial EVT burst and `flushBatched()`. DL
 payload. CAN ID = `canIdReady(NODE_ID)`. PanelBridge marks the node online and broadcasts
 `SYNC_REQ` on receipt.
 
-### Heartbeat Timer
+### Heartbeat, HEALTH and master watchdog
 
-`HB_n` is sent every 500 ms using `millis()` comparison. First heartbeat is sent 500 ms after
-`setup()` completes (the `_lastHeartbeatMs` is set to `millis()` at the end of `setup()`).
-The heartbeat payload is constructed by `CANProtocol::makeHeartbeatPayload(NODE_ID, rxCount)` —
-PanelGroup does not read HAL CAN registers directly. `rxCount` is `uint16_t`; it wraps at
-65535 (~131 s at full bus load). Rollover is intentional — the counter is a diagnostic liveliness
-indicator, not an exact packet counter.
+Owned by `CANProtocol::serviceNodeStatus()` (see the CANProtocol TechSpec, *Node status
+service*), which PanelGroup calls at the end of every `loop()` (#340). PanelGroup's only input is
+`rxCount` — accepted `CTRL_BCAST` frames, `uint16_t`, wrapping at 65535 (~131 s at full bus
+load). Rollover is intentional — the counter is a diagnostic liveliness indicator, not an exact
+packet counter. The first heartbeat goes out ~500 ms after `CANProtocol::start()`, i.e. after
+boot completes; the master-loss WARNING (1500 ms without `HB_0`, after one has been seen) is
+raised and cleared by the same call.
 
 ### EVT Batching
 
@@ -704,8 +712,7 @@ CANProtocol::flushBatched(canIdEvt(NODE_ID));
 // 7. READY frame
 CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
 
-// 8. Arm heartbeat timer
-_lastHeartbeatMs = millis();
+// (HB/HEALTH timers were armed by CANProtocol::start() in step 4.)
 ```
 
 ---
@@ -714,7 +721,7 @@ _lastHeartbeatMs = millis();
 
 | Dependency | Source | Notes |
 |---|---|---|
-| CANProtocol | `Firmware/Libraries/CANProtocol` | Frame IDs, sendBatched, flushBatched, drain, send, makeHeartbeatPayload, onReceive, onSyncReq, filterAcceptId, start |
+| CANProtocol | `Firmware/Libraries/CANProtocol` | Frame IDs, sendBatched, flushBatched, drain, send, serviceNodeStatus, onReceive, onSyncReq, start |
 | STM32Board | `Firmware/Libraries/STM32Board` | STM32Board::begin(), DiagSerial, status LED, CAN HAL init |
 | blemasle/MCP23017 | PlatformIO registry | `^2.0.0`; `init()`, `readPort(MCP23017Port)`, `writePort()`, `interruptedBy()`, `clearInterrupts()`, `writeRegister()` |
 | adafruit/Adafruit ADS1X15 | PlatformIO registry | via `ADS1115.h` wrapper; `begin()`, `readADC_SingleEnded()` |
