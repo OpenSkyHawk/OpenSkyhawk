@@ -33,7 +33,7 @@ The authoritative record lives in `Firmware/NODE_IDS.md` at the repo root. Curre
 IDs are permanent — **never reuse one**, even if a panel is retired (mark it Retired instead).
 When you start a new panel group:
 
-1. Open `Firmware/NODE_IDS.md` and take the **next available** number (currently **2**).
+1. Open `Firmware/NODE_IDS.md` and take the **next available** number (currently **6**).
 2. Add a row with your panel group, console, and status.
 3. Set `build_flags = -DNODE_ID=N` in your board's `platformio.ini`.
 4. Commit the registry change **in the same PR** that creates the panel sketch.

@@ -32,6 +32,7 @@ helper functions — **never hard-code these values**, always use the helper.
 | `SYNC_REQ` | `0x012` | `CAN_ID_SYNC_REQ` | PanelBridge → All | 0 |
 | `HB_n` | `0x100 + n` | `canIdHb(n)` | Node *n* → PanelBridge | 8 |
 | `HEALTH_n` | `0x140 + n` | `canIdHealth(n)` | Node *n* → PanelBridge | 8 |
+| `TELEM_n` | `0x180 + n` | `canIdTelem(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_n` | `0x200 + n` | `canIdEvt(n)` | Node *n* → PanelBridge | 8 |
 | `ECHO_n` | `0x300 + n` | `canIdEcho(n)` | Node *n* → PanelBridge | 8 |
 | `READY_n` | `0x400 + n` | `canIdReady(n)` | Node *n* → PanelBridge | 0 |
@@ -46,6 +47,10 @@ helper functions — **never hard-code these values**, always use the helper.
   CANProtocol routine, which also runs each node's watch on the master heartbeat.
 - `HEALTH_n` carries `NodeHealthPayload` — internal die temperature, and node
   degraded/fault state as that lands.
+- `TELEM_n` carries paged telemetry: byte 0 says which page the other seven bytes are. The
+  power-distribution node uses it for per-rail voltage and current and its board temperature, one
+  frame a second plus an immediate frame whenever a rail condition changes. PanelBridge passes every
+  `TELEM_n` frame to the host app unread, so a new kind of page needs no bridge change.
 - `TEST_SEQ` / `ECHO_n` are a round-trip latency test: PanelBridge sends `TEST_SEQ`, a node
   echoes on `ECHO_n`.
 - `SYNC_REQ` / `READY_n` are the boot/resync handshake (below).

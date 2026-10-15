@@ -258,6 +258,19 @@ struct __attribute__((packed)) HeartbeatPayload {
     uint16_t esr;      ///< (CAN1->ESR >> 16): low byte=TEC, high byte=REC
 };
 
+/**
+ * @brief 8-byte payload carried by TELEM_n frames — paged node telemetry (#216).
+ *
+ * Byte 0 is a TelemPage (NodeStatus.h) naming the layout of bytes 1–7; page ids are global and
+ * append-only. Multi-byte page fields are little-endian. Layouts: FirmwarePlan/02-can-protocol.md
+ * (Node Telemetry Payload).
+ */
+struct __attribute__((packed)) TelemPayload {
+    uint8_t page;     ///< 0: TelemPage; 0x00 invalid
+    uint8_t body[7];  ///< 1-7: page-defined
+};
+static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
+
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
     STARTING,   ///< Peripheral configured, not yet started
@@ -279,6 +292,10 @@ constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 
 /** @brief Node-health/thermal telemetry frame ID for node n. Range 0x140–0x17F; n=0 is PanelBridge. */
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
+
+/** @brief Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181–0x1BF.
+ *         PanelBridge forwards it to the host unread as `_NODE_TELEM`. */
+constexpr uint32_t canIdTelem(uint8_t n)  { return 0x180 + n; }
 
 /** @brief Input event frame ID for node n. Range 0x201–0x23F. */
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }

@@ -22,6 +22,11 @@ Owns:
 - **`NodeFaultCode`** — the compact `faultId` dictionary (cross-node: I2C_PERIPHERAL, OVER_VOLTAGE,
   UNDER_VOLTAGE, SHORT_CIRCUIT, HOST_LINK_LOST, …). Client maps id → label (SkyHawkClient#40).
 - **`FaultSource`** — the interface a fault-producing object implements + a self-registering list.
+- **`NODE_TELEM_*` + the TELEM_n page vocabulary (#216)** — `NODE_TELEM_MSG_NAME` (`_NODE_TELEM`) and
+  `NODE_TELEM_PROTO_VERSION` (1, independent of `_NODE_STATUS`); `TelemPage` (global, append-only
+  page ids — PDU_RAIL_12V / PDU_RAIL_5V / PDU_STATUS); `PduRailFlag` and `PduStatusFlag` (the page
+  flag bytes). Here, not in a PDU header, so the client's `sync-a4ec.ts` generates them from the same
+  contract file (SkyHawkClient#61).
 
 `NodeHealthPayload` (the CAN HEALTH_n frame struct) stays in `CANProtocol.h`. Fault **detail
 strings** stay local (DiagSerial) and never go on the wire or into any shared/HID header.
@@ -46,12 +51,15 @@ Firmware/Libraries/NodeStatus/
 #define NODE_STATUS_REQ_ADDR      0x86FE
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
+#define NODE_TELEM_PROTO_VERSION  1      // bump on a _NODE_TELEM framing / existing-page layout change
+#define NODE_TELEM_MSG_NAME       "_NODE_TELEM"
 
 enum class NodeHealthFlag : uint8_t { OVERHEAT = 0x01, DEGRADED = 0x02 };
 
 enum class NodeFaultCode : uint8_t {
     NONE = 0, I2C_PERIPHERAL = 1, OVER_VOLTAGE = 2, UNDER_VOLTAGE = 3,
-    SHORT_CIRCUIT = 4, HOST_LINK_LOST = 5,  // 0x06+ reserved
+    SHORT_CIRCUIT = 4, HOST_LINK_LOST = 5,
+    FUSE_OPEN = 6, OVER_TEMPERATURE = 7, SENSOR_FAULT = 8,  // PDU (#216); 0x09+ reserved
 };
 
 namespace OpenSkyhawk {
@@ -93,6 +101,9 @@ DiagSerial only, on change). **Degraded drives no status-LED** — frame + DiagS
 are others. Implementers report **cached** state only (cheap/const, no blocking I/O) — the aggregator
 runs on the periodic health path. **Adding a fault code:** append a `NodeFaultCode` value + mirror
 the client label. **Changing the `_NODE_STATUS` wire shape:** bump `NODE_STATUS_PROTO_VERSION`.
+**Adding a TELEM page:** append a `TelemPage` value (never renumber) and document its layout in
+FirmwarePlan 02 — additive, no bump; changing an existing page's layout bumps
+`NODE_TELEM_PROTO_VERSION`.
 
 ---
 
@@ -104,7 +115,9 @@ its detail, null `faultDetail()` normalized to `""`, `nullptr` detailOut accepte
 indirectly: `DrumDisplay` breaker test asserts `faultCode()`/`faultDetail()` via the `FaultSource`
 override; `CANProtocol` `health_payload`/`health_flags` tests assert the faultId/DEGRADED packing
 (incl. overheat+degraded coexistence); `PanelBridge` node_status test exercises the `_NODE_STATUS`
-emission; the client `reference.test.ts` asserts the proto-version contract.
+emission; `PanelBridge` node_telem test exercises `_NODE_TELEM` forwarding; `PowerMonitor` tests
+cover the PDU fault sources and page flags; the client `reference.test.ts` asserts the proto-version
+contract.
 
 ---
 

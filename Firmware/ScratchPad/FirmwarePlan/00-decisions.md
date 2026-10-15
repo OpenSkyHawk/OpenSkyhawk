@@ -240,7 +240,7 @@ CAN/DCS traffic.
 ch17 internally to reference the reading to Vdd) and reports `dieTempC` on a **new dedicated
 `HEALTH_n` frame** (`0x140+n`, 1000 ms, default-on). It is **not** folded into `HB_n`. Vdd is
 measured but **not transmitted** — per-node rail voltage is weak signal on a regulated bus and is
-covered properly by the PDU's INA226 power telemetry (#202). The overheat flag / status-LED
+covered properly by the PDU's power telemetry (`TELEM_n`, #216; INA180A2 current sense, #202). The overheat flag / status-LED
 WARNING is computed only when a build defines `NODE_OVERHEAT_C`; the default build ships pure
 telemetry with no trip point. The frame is the shared node-health contract (#221): temperature
 (#213) and degraded-state (#163) each own their own fields within the fixed 8 bytes.
@@ -416,3 +416,36 @@ PanelGroup and PanelBridge no longer carry their own copies.
 **Affects:** `02-can-protocol.md`, `06-panelbridge-api.md`, `08-hardware-firmware-contracts.md`,
 `09-startup-resync-diagnostics.md`, `11-open-issues.md`, TechSpec (`CANProtocol`, `PanelGroup`,
 `PanelBridge`, `STM32Board`), `docs/architecture/can-bus.md`.
+
+---
+
+## D18 — PDU telemetry on a paged TELEM_n frame, forwarded unread (#216)
+
+**Decision:** node telemetry beyond generic health travels on one new per-node frame family,
+`TELEM_n = 0x180 + n`, whose byte 0 is a global, append-only `TelemPage` naming the layout of the
+other seven bytes. PanelBridge forwards every `TELEM_n` frame to the host **unread** as
+`_NODE_TELEM <nodeId><8 bytes>`, versioned on its own (`NODE_TELEM_PROTO_VERSION`) so `_NODE_STATUS`
+stays at v2. The first pages belong to the PDU monitoring node: `PDU_RAIL_12V`, `PDU_RAIL_5V`,
+`PDU_STATUS`, sent one frame per second in rotation plus rate-limited edges on any flag change.
+
+**Rationale:**
+- *Layer on HEALTH_n, don't duplicate it.* `HEALTH_n` already is the generic all-node health frame
+  (die temp, degraded, faultId). PDU rail faults reach it through the FaultSource registry (D14) like
+  any fault; only the rail values and their detail flags need a new frame.
+- *A page byte, not fixed IDs.* Per-node ID blocks cost 64 IDs each, and the original proposal's
+  `0x700 + n` had meanwhile gone to `EVT_ACTION_n` (#116). One family with a page byte keeps the ID
+  map small and lets the bridge stay ignorant of layouts — a new page needs no bridge change.
+- *Engineering units on the node.* The PDU holds its own per-board calibration, so it sends mV / mA /
+  0.1 °C; the bridge forwards bytes and the client needs no per-board knowledge. Raw ADC counts stay
+  on DiagSerial for bring-up.
+- *One frame per second.* Matching the `HEALTH_n` rate keeps `_NODE_TELEM` traffic to the host — and
+  the DCS relay, which receives every device line — low (about 3 messages/s for three PDUs), and the
+  CAN load negligible (~0.08 %). Edge sends make faults immediate anyway, where the 5 s roster poll
+  would delay them.
+- *VDDA: nominal until anchored.* The F103's Vrefint is untrimmed (1.16–1.24 V, ±~3 %), a worse
+  reference than the AMS1117's ±1–2 % nominal, so an uncalibrated PDU assumes 3300 mV; a one-time
+  `CAL VDDA <mV>` (DMM on the 3V3 rail) stores this chip's Vrefint, after which VDDA tracks it.
+
+**Affects:** `02-can-protocol.md`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`,
+`08-hardware-firmware-contracts.md`, `10-implementation-plan.md`, TechSpec (`CANProtocol`,
+`NodeStatus`, `PanelBridge`, `PowerMonitor`), `docs/architecture/can-bus.md`, `docs/architecture/power.md`.

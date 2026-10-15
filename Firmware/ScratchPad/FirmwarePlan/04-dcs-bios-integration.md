@@ -67,6 +67,29 @@ serial in Monitor/Replay). Reserved constants + the wire format live in `NodeSta
 canonical contract source the client syncs against; `NODE_STATUS_PROTO_VERSION` bumps on any wire
 change). The whole feature is gated behind `-DPANELBRIDGE_NODE_STATUS` (default off).
 
+### Node telemetry — `_NODE_TELEM` (#216)
+
+Same transport, separate contract (`NODE_TELEM_*` in `NodeStatus.h`, `NODE_TELEM_PROTO_VERSION` 1 —
+independent of `_NODE_STATUS`, which stays v2). PanelBridge forwards **every** `TELEM_n` CAN frame
+(`0x181`–`0x1BF`, see `02-can-protocol.md`) to the host **unread**, one DCS-BIOS command message per
+frame:
+
+```
+_NODE_TELEM <hex>      18 hex chars: nodeId(2) + the 8 TELEM frame bytes (16), in wire order
+```
+
+- **Pushed as frames arrive** — no request, no cache, no terminator. The host keeps the latest value
+  per `(nodeId, page)` and treats a page as stale after a few periods (PDU: one frame per second,
+  rotating three pages, so each page every 3 s).
+- **Byte 2 of the hex payload is the `TelemPage`;** the host decodes by page. Unlike `_NODE_STATUS`,
+  the 8 bytes are raw frame bytes, so multi-byte page fields are **little-endian**.
+- PanelBridge drops a frame whose page byte is `0x00` or whose length is not 8; a `TELEM_n` frame
+  never changes liveness (`HB_n` owns that).
+- Bridge mode only, gated by the same `-DPANELBRIDGE_NODE_STATUS` flag. Like `_NODE_STATUS`, a copy
+  that reaches DCS through the client's byte-for-byte relay is ignored as an unknown command.
+
+Client side: OpenSkyhawk/SkyHawkClient#61.
+
 ---
 
 ## DCSIN_* — Compact Transport Aliases

@@ -22,6 +22,7 @@ source** for any constant or API. When a doc and a header disagree, the header w
 | `HIDControls` | shared | HID `controlId` allocations (`CTRL_*`), shared between SimGateway and CANProtocol |
 | `PanelGroup` | STM32 | CAN sub-node: `PinRef`, MCP23017 management, input and output control classes |
 | `PanelBridge` | STM32 | CAN master + DCS-BIOS processor |
+| `PowerMonitor` | STM32 | The power-distribution (PDU) node: rail voltage/current + board temperature, `TELEM_n` telemetry, per-board calibration |
 | `SimGateway` | RP2040 | USB byte relay + HID (`HIDAxis`, `HIDButton`, `HIDHatSwitch`) |
 | `A4EC` | shared | Generated A-4E-C DCS-BIOS headers (`DCSIN_*` command IDs, `A_4E_C_*` output addresses) |
 
@@ -49,6 +50,9 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
       `RotaryEncoder` (REL/DIR), `RotaryAcceleratedEncoder`, `ActionButton`
     - **Five output classes** — `LED`, `DrumDisplay`, `NeedleGauge`, `Dimmer` (PWM backlight)
       and `IntegerOutput` (your own callback), the last two over the `AnalogOutput` family base
+    - **Power-distribution node** (`PowerMonitor`, one per console) — per-rail voltage and current,
+      board temperature, fault flags and calibration, reported on the `TELEM_n` frame; awaiting
+      bench tuning on the PDU boards
 
 !!! warning "Not yet implemented"
     - **After v1.0** — the `ServoMotor` gauge backend.

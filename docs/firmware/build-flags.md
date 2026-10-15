@@ -129,6 +129,30 @@ them:
     things.) The client half is already released, which is why the default flipped in the
     template rather than in the library.
 
+## PDU node thresholds (`PDU_*`)
+
+The power-distribution node (`PowerMonitor` library, `Panels/PDU_*`) takes every limit as a
+`PDU_*` macro with a default in `Firmware/Libraries/PowerMonitor/PduConfig.h`. The defaults are
+starting points to tune on the bench against the real load; override one per build, e.g.
+`-DPDU_12V_UV_MV=11200`, with no code change.
+
+| Flag | Default | What it sets |
+|---|---|---|
+| `PDU_12V_UV_MV` / `PDU_12V_OV_MV` | 11400 / 13200 | 12 V under / over-voltage |
+| `PDU_5V_UV_MV` / `PDU_5V_OV_MV` | 4750 / 5500 | 5 V under / over-voltage |
+| `PDU_12V_OC_MA` / `PDU_5V_OC_MA` | 4500 / 1800 | over-current, 90 % of the 5 A / 2 A fuse |
+| `PDU_FUSE_OPEN_MV` | 1000 | 12 V below this while the node runs → fuse open |
+| `PDU_V_HYST_MV` | 100 | voltage hysteresis |
+| `PDU_V_SET_MS` / `PDU_OC_SET_MS` / `PDU_CLEAR_MS` | 50 / 100 / 500 | how long a condition must hold to set / clear |
+| `PDU_TEMP_WARN_DC` / `PDU_TEMP_CRIT_DC` / `PDU_TEMP_HYST_DC` | 600 / 750 / 30 | board temperature, tenths of °C |
+| `PDU_BOOT_BLANK_MS` | 500 | faults ignored after power-up (rail ramp, inrush) |
+| `PDU_SAMPLE_US` | 1000 | rail scan period (1 kHz) |
+| `PDU_ZERO_GUARD_12V_MA` / `PDU_ZERO_GUARD_5V_MA` | 75 / 120 | `CAL ZERO` refuses above this — load still connected |
+| `PDU_CAL_PAGE_ADDR` | `0x0800FC00` | calibration flash page; the PDU builds cap the image at 63 KB (`board_upload.maximum_size`) to keep code out of it |
+
+`PANELBRIDGE_NODE_STATUS` (above) also gates the bridge's `_NODE_TELEM` forwarding of these
+readings to the host.
+
 ## Third-party, set by us (7)
 
 These belong to **STM32duino**, **arduino-pico**, and the **DCS-BIOS** library. We only set them —
