@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PduCalStore_8h" kind="file" language="C++">
+    <compoundname>PduCalStore.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes refid="PduConfig_8h" local="yes">PduConfig.h</includes>
+    <includes refid="PduMath_8h" local="yes">PduMath.h</includes>
+    <includedby refid="PduCalStore_8cpp" local="yes">Firmware/Libraries/PowerMonitor/PduCalStore.cpp</includedby>
+    <includedby refid="PduNode_8h" local="yes">Firmware/Libraries/PowerMonitor/PduNode.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduCalStore.h</label>
+        <link refid="PduCalStore_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PduMath.h</label>
+        <link refid="PduMath_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>stddef.h</label>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PowerMonitor/PduCalStore.cpp</label>
+        <link refid="PduCalStore_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduCalStore.h</label>
+        <link refid="PduCalStore_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1Pdu_1_1CalStore" prot="public">OpenSkyhawk::Pdu::CalStore</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <briefdescription>
+<para>PDU per-board calibration in a reserved flash page — append-only log, newest valid wins (#216). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The F103 has no EEPROM, so calibration lives in the last 1 KB flash page (PDU_CAL_PAGE_ADDR), outside the firmware image: the PDU builds set <computeroutput>board_upload.maximum_size = 64512</computeroutput> so the build fails before code can grow into it, and an OpenOCD upload erases only the sectors it writes, so a reflash keeps the calibration.</para>
+<para>The page holds up to 32 fixed 32-byte records. save() writes the next empty slot; load() returns the last slot whose magic and CRC check out. The page is erased only when it is full, so a power cut can lose at most the record being written — never the previous good one — except during the rare full-page erase.</para>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1" refid="namespaceOpenSkyhawk_1_1Pdu_1a0f35f2f382fc0b6ea6a7e8e2360092b3" refkind="member"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduConfig_8h" kindref="compound">PduConfig.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduMath_8h" kindref="compound">PduMath.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220" kindref="member">CalFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="28" refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220ac78855cbdf91e14c067b03a1fb147a78" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220ac78855cbdf91e14c067b03a1fb147a78" kindref="member">CAL_VDDA</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight></codeline>
+<codeline lineno="29" refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a00d55612142da8348b7626ea01535c57" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a00d55612142da8348b7626ea01535c57" kindref="member">CAL_ZERO</ref><sp/>=<sp/>0x02,<sp/><sp/></highlight></codeline>
+<codeline lineno="30" refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220add60f847ae0bbb2897ffd66b39d8945f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220add60f847ae0bbb2897ffd66b39d8945f" kindref="member">CAL_GAIN</ref><sp/>=<sp/>0x04,<sp/><sp/></highlight></codeline>
+<codeline lineno="31" refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a5a98d6a0a41118af06540da20ef987d8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a5a98d6a0a41118af06540da20ef987d8" kindref="member">CAL_NTC</ref><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a0f35f2f382fc0b6ea6a7e8e2360092b3" kindref="member">__attribute__</ref>((packed))<sp/>CalRecord<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>magic;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>version;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>calFlags;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>vrefintMv;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/>zero12DmA;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/>zero5DmA;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>iGain12;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>iGain5;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>vGain12;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>vGain5;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>int16_t<sp/><sp/>ntcOffsetDC;<sp/><sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>rsvd;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>seq;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>crc;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(CalRecord)<sp/>==<sp/>32,<sp/></highlight><highlight class="stringliteral">&quot;CalRecord<sp/>must<sp/>be<sp/>32<sp/>bytes&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="namespaceOpenSkyhawk_1_1Pdu_1a1cd793325c86115608c569d5ad227441" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a1cd793325c86115608c569d5ad227441" kindref="member">CAL_MAGIC</ref><sp/><sp/><sp/>=<sp/>0x4C414350;<sp/><sp/></highlight></codeline>
+<codeline lineno="54" refid="namespaceOpenSkyhawk_1_1Pdu_1ade9868c326909a7c38af61e18603e73b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ade9868c326909a7c38af61e18603e73b" kindref="member">CAL_VERSION</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="55" refid="namespaceOpenSkyhawk_1_1Pdu_1a419899fda3791410f2c043926fd26112" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a419899fda3791410f2c043926fd26112" kindref="member">CAL_PAGE_SIZE</ref><sp/>=<sp/>1024;</highlight></codeline>
+<codeline lineno="56" refid="namespaceOpenSkyhawk_1_1Pdu_1ab662df2566338cb50098e0838cc0c816" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ab662df2566338cb50098e0838cc0c816" kindref="member">CAL_SLOTS</ref><sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a419899fda3791410f2c043926fd26112" kindref="member">CAL_PAGE_SIZE</ref><sp/>/<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(CalRecord);<sp/><sp/></highlight><highlight class="comment">//<sp/>32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal">CalRecord<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6ca3d88774257f5dc3b8985a7fd15600" kindref="member">calDefaults</ref>();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af6fe875ae914dd090c862aac07dd5020" kindref="member">calSeal</ref>(CalRecord&amp;<sp/>rec);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a314173e9358821d2ce791b6f7c129865" kindref="member">calValid</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalRecord&amp;<sp/>rec);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues" kindref="compound">CalValues</ref><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ace649d6674f5b1a07b0cc61eb496ad06" kindref="member">calValues</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalRecord&amp;<sp/>rec);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="classOpenSkyhawk_1_1Pdu_1_1CalStore" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore" kindref="compound">CalStore</ref><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="70" refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ac4c4a9d018c2dd1aae23d86f4d3ee39a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ac4c4a9d018c2dd1aae23d86f4d3ee39a" kindref="member">CalStore</ref>(uint32_t<sp/>pageAddr<sp/>=<sp/><ref refid="PduConfig_8h_1a905044c724d00f008d7cdb4183d3bdf0" kindref="member">PDU_CAL_PAGE_ADDR</ref>)<sp/>:<sp/>_page(pageAddr)<sp/>{}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1a85e4d8c23b72383c520c2a073680d1c3" kindref="member">load</ref>(CalRecord&amp;<sp/>out)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ab4abbb9e946ed2791424d27a55ccd1fb" kindref="member">save</ref>(CalRecord&amp;<sp/>rec);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ae789f859a6e89affa7204eb0e33dfcd0" kindref="member">erase</ref>();</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1af6a1fbf86f2ac16b32cc366525a56cfd" kindref="member">usedSlots</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>_page;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalRecord*<sp/>slot(uint8_t<sp/>i)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keyword">const<sp/></highlight><highlight class="normal">CalRecord*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_page<sp/>+<sp/>(uint32_t)i<sp/>*<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(CalRecord));</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/PduCalStore.h"/>
+  </compounddef>
+</doxygen>

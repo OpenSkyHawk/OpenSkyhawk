@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PduMath_8cpp" kind="file" language="C++">
+    <compoundname>PduMath.cpp</compoundname>
+    <includes refid="PduMath_8h" local="yes">PduMath.h</includes>
+    <includes refid="PduConfig_8h" local="yes">PduConfig.h</includes>
+    <includes local="no">math.h</includes>
+    <incdepgraph>
+      <node id="5">
+        <label>PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduMath.cpp</label>
+        <link refid="PduMath_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PduMath.h</label>
+        <link refid="PduMath_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>math.h</label>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduMath_8h" kindref="compound">PduMath.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduConfig_8h" kindref="compound">PduConfig.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;math.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal">int16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af06e011b9fb936c22a5531ad5dd13809" kindref="member">clampI16</ref>(int32_t<sp/>v)<sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(v<sp/>&gt;<sp/>INT16_MAX)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>INT16_MAX;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(v<sp/>&lt;<sp/>INT16_MIN)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>INT16_MIN;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(int16_t)v;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a09159a721291e8c1046ad0de6bc93eb3" kindref="member">clampU16</ref>(int32_t<sp/>v)<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(v<sp/>&lt;<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(v<sp/>&gt;<sp/>UINT16_MAX)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>UINT16_MAX;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)v;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ad4a2739ab5a82d99893f0a1bb0280701" kindref="member">vddaMv</ref>(uint16_t<sp/>vrefintRaw,<sp/>uint16_t<sp/>vrefintMv)<sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(vrefintMv<sp/>==<sp/>0<sp/>||<sp/>vrefintRaw<sp/>==<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a2e5177068bb221299732d5ee4310b3d0" kindref="member">VDDA_NOMINAL_MV</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a09159a721291e8c1046ad0de6bc93eb3" kindref="member">clampU16</ref>((int32_t)((uint32_t)vrefintMv<sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref><sp/>/<sp/>vrefintRaw));</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal">uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kindref="member">countsToMv</ref>(uint16_t<sp/>counts,<sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ad4a2739ab5a82d99893f0a1bb0280701" kindref="member">vddaMv</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint32_t)counts<sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ad4a2739ab5a82d99893f0a1bb0280701" kindref="member">vddaMv</ref><sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1abe92e890ae159b21648f59a43d4c611b" kindref="member">trimmed</ref>(uint32_t<sp/>mv,<sp/>uint16_t<sp/>gain)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a09159a721291e8c1046ad0de6bc93eb3" kindref="member">clampU16</ref>((int32_t)(mv<sp/>*<sp/>gain<sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae8f0ec244359b3ee128086bcf2cfcafd" kindref="member">GAIN_UNITY</ref>));</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a2f92d83ff8984a0a6bb9d9433abe20ba" kindref="member">rail12Mv</ref>(uint32_t<sp/>adcMv,<sp/>uint16_t<sp/>vGain)<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1abe92e890ae159b21648f59a43d4c611b" kindref="member">trimmed</ref>(adcMv<sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a73f37d4efdc53fa4ec985012262366b8" kindref="member">V12_DIV_NUM</ref><sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a89f83025b7ea1670c47a8236ed2b8a12" kindref="member">V12_DIV_DEN</ref>,<sp/>vGain);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a07a1dfa44d53c83776c149356a8269c5" kindref="member">rail5Mv</ref>(uint32_t<sp/>adcMv,<sp/>uint16_t<sp/>vGain)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1abe92e890ae159b21648f59a43d4c611b" kindref="member">trimmed</ref>(adcMv<sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a5286428d87473c6c9996964837874452" kindref="member">V5_DIV_NUM</ref><sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af4d816a46ca5719dcf16174ef5664600" kindref="member">V5_DIV_DEN</ref>,<sp/>vGain);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">int32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a486ab4db963f727a0a6ee4d1dfc0f0fe" kindref="member">rawCurrentDmA</ref>(uint32_t<sp/>adcMv)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(int32_t)(adcMv<sp/>*<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a4b964aa2e1c4e6c109bfac48355181c6" kindref="member">I_MA_PER_MV</ref><sp/>*<sp/>10);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">int32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a719f7069e4205f9d1614af001ed29d35" kindref="member">currentMa</ref>(uint32_t<sp/>adcMv,<sp/>int16_t<sp/>zeroDmA,<sp/>uint16_t<sp/>iGain)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Zero<sp/>first<sp/>(it<sp/>was<sp/>measured<sp/>at<sp/>unity<sp/>gain),<sp/>then<sp/>the<sp/>gain<sp/>trim;<sp/>round<sp/>to<sp/>nearest<sp/>mA.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int32_t<sp/>dmA<sp/>=<sp/>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a486ab4db963f727a0a6ee4d1dfc0f0fe" kindref="member">rawCurrentDmA</ref>(adcMv)<sp/>-<sp/>zeroDmA)<sp/>*<sp/>(int32_t)iGain<sp/>/<sp/>(int32_t)<ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae8f0ec244359b3ee128086bcf2cfcafd" kindref="member">GAIN_UNITY</ref>;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dmA<sp/>&gt;=<sp/>0<sp/>?<sp/>(dmA<sp/>+<sp/>5)<sp/>/<sp/>10<sp/>:<sp/>(dmA<sp/>-<sp/>5)<sp/>/<sp/>10;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a32f416b945841ee453968164ceb8f2ee" kindref="member">railed</ref>(uint16_t<sp/>counts)<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>counts<sp/>&gt;=<sp/>(uint16_t)(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref><sp/>*<sp/>995<sp/>/<sp/>1000);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">int16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a2b251a5db1217f1f69e8c6b3fe6a69a1" kindref="member">ntcTempDC</ref>(uint16_t<sp/>counts,<sp/>int16_t<sp/>offsetDC,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">&amp;<sp/>fault)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Open<sp/>NTC<sp/>→<sp/>node<sp/>pulled<sp/>to<sp/>+3V3<sp/>(top);<sp/>shorted<sp/>→<sp/>0.<sp/>Either<sp/>way<sp/>the<sp/>reading<sp/>means<sp/>nothing.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>fault<sp/>=<sp/>counts<sp/>&lt;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref><sp/>*<sp/>2<sp/>/<sp/>100<sp/>||<sp/>counts<sp/>&gt;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref><sp/>*<sp/>98<sp/>/<sp/>100;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fault)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>INT16_MIN;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>x<sp/>=<sp/>(float)counts<sp/>/<sp/>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal">)<ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>node<sp/>/<sp/>VDDA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>rNtc<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6da5afd24c804a6c4b14acd3fa1ba74d" kindref="member">NTC_BIAS_OHM</ref><sp/>*<sp/>x<sp/>/<sp/>(1.0f<sp/>-<sp/>x);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NTC<sp/>is<sp/>the<sp/>low<sp/>side</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>invT<sp/>=<sp/>1.0f<sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6380fa00e6e09cde078ea827d5f7a16c" kindref="member">NTC_T0_K</ref><sp/>+<sp/>logf(rNtc<sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a80870d6e07bdb3ce3df3c9a2705f62b8" kindref="member">NTC_R0_OHM</ref>)<sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a36357ac0fef4d056c35ecd3f66e0b803" kindref="member">NTC_BETA_K</ref>;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>dc<sp/>=<sp/>(1.0f<sp/>/<sp/>invT<sp/>-<sp/>273.15f)<sp/>*<sp/>10.0f;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af06e011b9fb936c22a5531ad5dd13809" kindref="member">clampI16</ref>((int32_t)lroundf(dc)<sp/>+<sp/>offsetDC);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6f4ea85f06d1cfb44afed3a4dd48bc01" kindref="member">crc32</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>crc<sp/>=<sp/>0xFFFFFFFFu;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>len;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>crc<sp/>^=<sp/>data[i];</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>b<sp/>=<sp/>0;<sp/>b<sp/>&lt;<sp/>8;<sp/>b++)<sp/>crc<sp/>=<sp/>(crc<sp/>&gt;&gt;<sp/>1)<sp/>^<sp/>(0xEDB88320u<sp/>&amp;<sp/>(0u<sp/>-<sp/>(crc<sp/>&amp;<sp/>1u)));</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>~crc;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/PduMath.cpp"/>
+  </compounddef>
+</doxygen>

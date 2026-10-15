@@ -2026,6 +2026,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../hardware/components/" class="md-nav__link">
         
   
@@ -4808,6 +4836,11 @@ source</strong> for any constant or API. When a doc and a header disagree, the h
 <td>CAN master + DCS-BIOS processor</td>
 </tr>
 <tr>
+<td><code>PowerMonitor</code></td>
+<td>STM32</td>
+<td>The power-distribution (PDU) node: rail voltage/current + board temperature, <code>TELEM_n</code> telemetry, per-board calibration</td>
+</tr>
+<tr>
 <td><code>SimGateway</code></td>
 <td>RP2040</td>
 <td>USB byte relay + HID (<code>HIDAxis</code>, <code>HIDButton</code>, <code>HIDHatSwitch</code>)</td>
@@ -4842,6 +4875,9 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
   <code>RotaryEncoder</code> (REL/DIR), <code>RotaryAcceleratedEncoder</code>, <code>ActionButton</code></li>
 <li><strong>Five output classes</strong> — <code>LED</code>, <code>DrumDisplay</code>, <code>NeedleGauge</code>, <code>Dimmer</code> (PWM backlight)
   and <code>IntegerOutput</code> (your own callback), the last two over the <code>AnalogOutput</code> family base</li>
+<li><strong>Power-distribution node</strong> (<code>PowerMonitor</code>, one per console) — per-rail voltage and current,
+  board temperature, fault flags and calibration, reported on the <code>TELEM_n</code> frame; awaiting
+  bench tuning on the PDU boards</li>
 </ul>
 </div>
 <div class="admonition warning">

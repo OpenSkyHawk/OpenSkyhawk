@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespace_0d59/">
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/PduMath_8cpp_source/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp} - OpenSkyhawk</title>
+        <title>File PduMath.cpp - OpenSkyhawk</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp" class="md-skip">
+        <a href="#file-pdumathcpp" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}
+              File PduMath.cpp
             
           </span>
         </div>
@@ -2000,6 +2000,34 @@
     
   
     Base Boards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
   
 
     
@@ -4611,64 +4639,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#public-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#public-types-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public Types Documentation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Public Types Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enum-ledcolor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum LedColor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enum-parserstate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enum ParserState
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -4687,48 +4657,86 @@
   
 
 
-<h1 id="namespace-anonymous-namespacefirmwarelibrariessimgatewaysimgatewaycpp">Namespace anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</h1>
-<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="./"><strong>anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}</strong></a></p>
-<h2 id="public-types">Public Types</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: right;">Type</th>
-<th style="text-align: left;">Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-ledcolor"><strong>LedColor</strong></a>  <br></td>
-</tr>
-<tr>
-<td style="text-align: right;">enum uint8_t</td>
-<td style="text-align: left;"><a href="#enum-parserstate"><strong>ParserState</strong></a>  <br></td>
-</tr>
-</tbody>
-</table>
-<h2 id="public-types-documentation">Public Types Documentation</h2>
-<h3 id="enum-ledcolor">enum LedColor</h3>
-<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">anonymous</span><span class="w"> </span><span class="k">namespace</span><span class="p">{</span><span class="n">Firmware</span><span class="o">/</span><span class="n">Libraries</span><span class="o">/</span><span class="n">SimGateway</span><span class="o">/</span><span class="n">SimGateway</span><span class="p">.</span><span class="n">cpp</span><span class="p">}</span><span class="o">::</span><span class="n">LedColor</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">NONE</span><span class="p">,</span>
-<span class="w">    </span><span class="n">RED</span><span class="p">,</span>
-<span class="w">    </span><span class="n">GREEN</span>
-<span class="p">};</span>
-</code></pre></div>
-<hr>
+<h1 id="file-pdumathcpp">File PduMath.cpp</h1>
+<p><a href="../files/"><strong>File List</strong></a> <strong>&gt;</strong> <a href="../dir_74b6a3b63f61c160c0f14b7a283a4c9b/"><strong>Firmware</strong></a> <strong>&gt;</strong> <a href="../dir_3540c00680c2664f9f7e8f48ca1cab09/"><strong>Libraries</strong></a> <strong>&gt;</strong> <a href="../dir_8872fbf3a1c0d8f3f8e90f9314489a2d/"><strong>PowerMonitor</strong></a> <strong>&gt;</strong> <a href="../PduMath_8cpp/"><strong>PduMath.cpp</strong></a></p>
+<p><a href="../PduMath_8cpp/">Go to the documentation of this file</a></p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"PduMath.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"PduConfig.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span>
 
-<h3 id="enum-parserstate">enum ParserState</h3>
-<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">anonymous</span><span class="w"> </span><span class="k">namespace</span><span class="p">{</span><span class="n">Firmware</span><span class="o">/</span><span class="n">Libraries</span><span class="o">/</span><span class="n">SimGateway</span><span class="o">/</span><span class="n">SimGateway</span><span class="p">.</span><span class="n">cpp</span><span class="p">}</span><span class="o">::</span><span class="n">ParserState</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">IDLE</span><span class="p">,</span>
-<span class="w">    </span><span class="n">GOT_AA</span><span class="p">,</span>
-<span class="w">    </span><span class="n">IN_FRAME</span>
-<span class="p">};</span>
-</code></pre></div>
-<hr>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">Pdu</span><span class="w"> </span><span class="p">{</span>
 
-<hr />
-<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/SimGateway/SimGateway.cpp</code></p>
+<span class="kt">int16_t</span><span class="w"> </span><span class="nf">clampI16</span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">INT16_MAX</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">INT16_MAX</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">INT16_MIN</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">INT16_MIN</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int16_t</span><span class="p">)</span><span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">clampU16</span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">UINT16_MAX</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">UINT16_MAX</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">vddaMv</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vrefintRaw</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vrefintMv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vrefintMv</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">vrefintRaw</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">VDDA_NOMINAL_MV</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">clampU16</span><span class="p">((</span><span class="kt">int32_t</span><span class="p">)((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">vrefintMv</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ADC_FULL</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">vrefintRaw</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">countsToMv</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">counts</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vddaMv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">counts</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">vddaMv</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">ADC_FULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">trimmed</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">mv</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">gain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">clampU16</span><span class="p">((</span><span class="kt">int32_t</span><span class="p">)(</span><span class="n">mv</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">gain</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">GAIN_UNITY</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">rail12Mv</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vGain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">trimmed</span><span class="p">(</span><span class="n">adcMv</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V12_DIV_NUM</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">V12_DIV_DEN</span><span class="p">,</span><span class="w"> </span><span class="n">vGain</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">rail5Mv</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vGain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">trimmed</span><span class="p">(</span><span class="n">adcMv</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">V5_DIV_NUM</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">V5_DIV_DEN</span><span class="p">,</span><span class="w"> </span><span class="n">vGain</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">rawCurrentDmA</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)(</span><span class="n">adcMv</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">I_MA_PER_MV</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">currentMa</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">zeroDmA</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">iGain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Zero first (it was measured at unity gain), then the gain trim; round to nearest mA.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">dmA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">rawCurrentDmA</span><span class="p">(</span><span class="n">adcMv</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">zeroDmA</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)</span><span class="n">iGain</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">int32_t</span><span class="p">)</span><span class="n">GAIN_UNITY</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dmA</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="n">dmA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="n">dmA</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">railed</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">counts</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="n">ADC_FULL</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">995</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int16_t</span><span class="w"> </span><span class="nf">ntcTempDC</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">counts</span><span class="p">,</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">offsetDC</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&amp;</span><span class="w"> </span><span class="n">fault</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Open NTC → node pulled to +3V3 (top); shorted → 0. Either way the reading means nothing.</span>
+<span class="w">    </span><span class="n">fault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ADC_FULL</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">ADC_FULL</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">98</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fault</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">INT16_MIN</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">counts</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">ADC_FULL</span><span class="p">;</span><span class="w">               </span><span class="c1">// node / VDDA</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">rNtc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NTC_BIAS_OHM</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0f</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w">              </span><span class="c1">// NTC is the low side</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">invT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">NTC_T0_K</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">logf</span><span class="p">(</span><span class="n">rNtc</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">NTC_R0_OHM</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">NTC_BETA_K</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">dc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">invT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">273.15f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">10.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">clampI16</span><span class="p">((</span><span class="kt">int32_t</span><span class="p">)</span><span class="n">lroundf</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offsetDC</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">crc32</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFFFFFFFFu</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">crc</span><span class="w"> </span><span class="o">^=</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">crc</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="p">(</span><span class="mh">0xEDB88320u</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="mi">0u</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">crc</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mi">1u</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">~</span><span class="n">crc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace Pdu</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace OpenSkyhawk</span>
+</code></pre></div>
 
 
 

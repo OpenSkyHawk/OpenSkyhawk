@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PduNode_8h" kind="file" language="C++">
+    <compoundname>PduNode.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes refid="STM32Board_8h" local="no">STM32Board.h</includes>
+    <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
+    <includes refid="RailMonitor_8h" local="yes">RailMonitor.h</includes>
+    <includes refid="BoardThermal_8h" local="yes">BoardThermal.h</includes>
+    <includes refid="PduCalStore_8h" local="yes">PduCalStore.h</includes>
+    <includedby refid="PduNode_8cpp" local="yes">Firmware/Libraries/PowerMonitor/PduNode.cpp</includedby>
+    <incdepgraph>
+      <node id="7">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="6">
+        <label>NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>BoardThermal.h</label>
+        <link refid="BoardThermal_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>PduCalStore.h</label>
+        <link refid="PduCalStore_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>PduMath.h</label>
+        <link refid="PduMath_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Arduino.h</label>
+      </node>
+      <node id="14">
+        <label>stddef.h</label>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+      <node id="5">
+        <label>stm32f1xx_hal_can.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacePduNode">PduNode</innernamespace>
+    <briefdescription>
+<para>PDU monitoring node — the whole node in two calls (#216). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A PDU sketch is just: <programlisting><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="PduNode_8h" kindref="compound">PduNode.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" kindref="member">setup</ref>()<sp/>{<sp/><ref refid="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" kindref="member">STM32Board::setDebug</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/><ref refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kindref="member">PduNode::setup</ref>();<sp/>}</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/><sp/>{<sp/><ref refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kindref="member">PduNode::loop</ref>();<sp/>}</highlight></codeline>
+</programlisting> with <computeroutput>-DNODE_ID=N</computeroutput> in platformio.ini. What runs:<itemizedlist>
+<listitem><para><bold>Node status</bold> — HB_n / HEALTH_n / master-loss watchdog via <ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">CANProtocol::serviceNodeStatus()</ref>. Rail and thermal faults reach HEALTH_n.faultId through the FaultSource registry.</para>
+</listitem><listitem><para><bold>Sampling</bold> — the four rail channels every PDU_SAMPLE_US (1 kHz target); the NTC and Vrefint every 100 ms. Faults are held clear for PDU_BOOT_BLANK_MS after boot.</para>
+</listitem><listitem><para><bold>Telemetry</bold> — one TELEM_n frame per second, rotating PDU_RAIL_12V → PDU_RAIL_5V → PDU_STATUS; a page whose flags change goes out at once (≤ 1 per 100 ms per page); SYNC_REQ sends all three pages immediately.</para>
+</listitem><listitem><para><bold>Calibration</bold> — DiagSerial (115200) commands, one per line: <computeroutput>CAL SHOW</computeroutput> · <computeroutput>CAL VDDA &lt;mV&gt;</computeroutput> (DMM reading of the 3V3 rail) · <computeroutput>CAL ZERO</computeroutput> (no load connected) · <computeroutput>CAL CLEAR</computeroutput> · <computeroutput>RAW</computeroutput> (live readings + scan rate). Stored per board in the reserved flash page (PduCalStore).</para>
+</listitem></itemizedlist>
+</para>
+<para>Rail faults are reported to the host only (TELEM_n flags + HEALTH_n.faultId). The status LEDs follow every other node — CAN / link state plus the master-loss WARNING — and don&apos;t change for rail faults (FirmwarePlan D14). The board&apos;s power LEDs (D3 12 V / D4 5 V / D5 3V3) are passive, wired to their rails, and show rail presence only — this firmware never drives them.</para>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="RailMonitor_8h" kindref="compound">RailMonitor.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="BoardThermal_8h" kindref="compound">BoardThermal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduCalStore_8h" kindref="compound">PduCalStore.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePduNode" kindref="compound">PduNode</ref><sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kindref="member">setup</ref>();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">uint16_t<sp/><ref refid="namespacePduNode_1a5e1eabd3e74f9c3ef2e4d04b5ba63738" kindref="member">scanRateHz</ref>();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">OpenSkyhawk::RailMonitor</ref>&amp;<sp/><ref refid="namespacePduNode_1adc86f791ff0d9a226fd0d96c994fbd41" kindref="member">rail12</ref>();</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">OpenSkyhawk::RailMonitor</ref>&amp;<sp/><ref refid="namespacePduNode_1a6e1df22c6aef3a714e1361ae0a442661" kindref="member">rail5</ref>();</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1BoardThermal" kindref="compound">OpenSkyhawk::BoardThermal</ref>&amp;<sp/><ref refid="namespacePduNode_1aeaec51f1fddc568e77c8c9653ba25e39" kindref="member">thermal</ref>();</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PduNode</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/PduNode.h"/>
+  </compounddef>
+</doxygen>

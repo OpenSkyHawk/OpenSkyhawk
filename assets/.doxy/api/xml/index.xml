@@ -94,11 +94,50 @@
     <member refid="structBatchState_1a0a13960dfe76dd7a9d9acb0d08de3759" kind="variable"><name>a</name></member>
     <member refid="structBatchState_1a00971116092e610b778f923f94de1fd7" kind="variable"><name>loopsWaited</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1BoardThermal" kind="class"><name>OpenSkyhawk::BoardThermal</name>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a7a6e59bd5348f73735d774040b99910b" kind="variable"><name>_tempDC</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1aa71c6e19c6e4730caf011c3a8341c5f4" kind="variable"><name>_warn</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a1e0620a366894ab050442dbca57423b0" kind="variable"><name>_crit</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a5e0f1329772ef6692f5e51e922a9a52b" kind="variable"><name>_ntcFault</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a29010a8a27b4b539086458e04e1e6d7a" kind="function"><name>BoardThermal</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a82309f7b616854bc879a9fbbaed9bff3" kind="function"><name>sample</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1af15858b09e59bf0c838bf78c37bd5e4b" kind="function"><name>flags</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" kind="function"><name>tempDC</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a649e5f47720ac4dbbf7947c342649fca" kind="function"><name>faultCode</name></member>
+    <member refid="classOpenSkyhawk_1_1BoardThermal_1a88e9ee1143dcb7f2daa124223c314457" kind="function"><name>faultDetail</name></member>
+  </compound>
   <compound refid="structOpenSkyhawk_1_1CalBlob" kind="struct"><name>OpenSkyhawk::CalBlob</name>
     <member refid="structOpenSkyhawk_1_1CalBlob_1a31cc97f957a4c36be4dfc0c94d06c435" kind="variable"><name>magic</name></member>
     <member refid="structOpenSkyhawk_1_1CalBlob_1af40adb0e124469ab452c4cf9aa11ac2f" kind="variable"><name>version</name></member>
     <member refid="structOpenSkyhawk_1_1CalBlob_1ae4bdf2604334395b811a4b7e83780e2a" kind="variable"><name>axes</name></member>
     <member refid="structOpenSkyhawk_1_1CalBlob_1aaf0f67cdc6ab8f35d08b9560f9ddad7c" kind="variable"><name>crc</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1Pdu_1_1CalStore" kind="class"><name>OpenSkyhawk::Pdu::CalStore</name>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1a78b8d9368ec7864008e4ddf8a16c30aa" kind="variable"><name>_page</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ac4c4a9d018c2dd1aae23d86f4d3ee39a" kind="function"><name>CalStore</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1a85e4d8c23b72383c520c2a073680d1c3" kind="function"><name>load</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ab4abbb9e946ed2791424d27a55ccd1fb" kind="function"><name>save</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ae789f859a6e89affa7204eb0e33dfcd0" kind="function"><name>erase</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1af6a1fbf86f2ac16b32cc366525a56cfd" kind="function"><name>usedSlots</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1a5c2b3010f914a5b3fcab9c84ec9b593a" kind="function"><name>slot</name></member>
+  </compound>
+  <compound refid="structOpenSkyhawk_1_1Pdu_1_1CalValues" kind="struct"><name>OpenSkyhawk::Pdu::CalValues</name>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a287f2d657834dca4feb079b5f6825c5c" kind="variable"><name>vrefintMv</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a917f23aa1da89504b2e9b877672444f9" kind="variable"><name>zero12DmA</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a819be60069f26438a2ed9d0994ad21d2" kind="variable"><name>zero5DmA</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1af583d5c41249da9d6f64a556dc6c2a95" kind="variable"><name>iGain12</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a9e2f6a234ad993baf98650c41cd28b1b" kind="variable"><name>iGain5</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a58016eb231a0ee15dbf28594fd94d085" kind="variable"><name>vGain12</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a5469449710d31f46084e733c60d066ff" kind="variable"><name>vGain5</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a4b66ec3250a32170286b2fcc9661d3e2" kind="variable"><name>ntcOffsetDC</name></member>
+  </compound>
+  <compound refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" kind="struct"><name>OpenSkyhawk::RailMonitor::Config</name>
+    <member refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1aef66ab6face1996b48c50a5b4076686d" kind="variable"><name>page</name></member>
+    <member refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a43f133894078f34b5133fa15408af928" kind="variable"><name>name</name></member>
+    <member refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a71781d1cc7658f2d0bc65c3ef95ed6cc" kind="variable"><name>uvMv</name></member>
+    <member refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a29634b503d3668167f2b778c87214fd9" kind="variable"><name>ovMv</name></member>
+    <member refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a6de75823b87247d447ff5f92d00348f5" kind="variable"><name>ocMa</name></member>
+    <member refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a6bf78b207a5fb57a9c827a15b621fb64" kind="variable"><name>fuseOpenCheck</name></member>
   </compound>
   <compound refid="structDcsBiosInputEntry" kind="struct"><name>DcsBiosInputEntry</name>
     <member refid="structDcsBiosInputEntry_1ab076abc3d8f2c904d45a44dac3a79044" kind="variable"><name>cmdId</name></member>
@@ -308,6 +347,13 @@
     <member refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer_1a6662c7beec7a3f2f395b5ea96c5f50f4" kind="variable"><name>hook</name></member>
     <member refid="structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer_1a9cc737b2a0afbaddc63ab01583424fa0" kind="variable"><name>ctx</name></member>
   </compound>
+  <compound refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kind="struct"><name>OpenSkyhawk::Pdu::Latch</name>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" kind="variable"><name>on</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" kind="variable"><name>pending</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1abfec0dae3356ceb5920b245212f916ba" kind="variable"><name>since</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a91ac2a32348b50ef725f6f412bad0d42" kind="function"><name>update</name></member>
+    <member refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a835a9089f83b774d0a553d3c3a711bd6" kind="function"><name>reset</name></member>
+  </compound>
   <compound refid="classOpenSkyhawk_1_1LED" kind="class"><name>OpenSkyhawk::LED</name>
     <member refid="classOpenSkyhawk_1_1LED_1ad57a3ff5da6e6065366eac585b12d244" kind="variable"><name>_controlId</name></member>
     <member refid="classOpenSkyhawk_1_1LED_1a37ce6acc263068946c51c1b2e01d66ee" kind="variable"><name>_mask</name></member>
@@ -404,6 +450,32 @@
     <member refid="classPinRef_1a406129046366bd4362c3c7bdb72c900c" kind="function"><name>gpioPin</name></member>
     <member refid="classPinRef_1a0215c72f121d82ab6a53094b7d75bfba" kind="function"><name>sameMcpPortAs</name></member>
     <member refid="classPinRef_1a99a56f0aa76351dc3bae91299b5a132f" kind="function"><name>isMcp</name></member>
+  </compound>
+  <compound refid="classOpenSkyhawk_1_1RailMonitor" kind="class"><name>OpenSkyhawk::RailMonitor</name>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1aa565d1017ad0f42fcd2c147243a48152" kind="variable"><name>_cfg</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1ae9ac1f0aed859cdfbe9499ca014c7698" kind="variable"><name>_uv</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a50ed336eb786080566a3666cbdc2468b" kind="variable"><name>_ov</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a98b19c49a15986e143d9513820c3decc" kind="variable"><name>_oc</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a1542a5ca883d3ca3c4238444f951754e" kind="variable"><name>_fuse</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a60a3019750755f8b28c049c6d82c49b4" kind="variable"><name>_sensor</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a0e3b390e4854a5aeb8e25d32befb6166" kind="variable"><name>_sumMv</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a977bf0301c5d4105538f1cfd5619c5a7" kind="variable"><name>_sumMa</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a8ed2ce9f7d91d108a2f0c77c7364a56d" kind="variable"><name>_n</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a18ef66da8b41a1207f4e21d1876928bd" kind="variable"><name>_minMv</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a267adea3588f88535a63895b0872beec" kind="variable"><name>_peakMa</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1aa423cebf153641851613856c5e5ae99b" kind="variable"><name>_lastMv</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a688c1648912260087d8f697789a2e074" kind="variable"><name>_lastMa</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a03d0df7f9efb3c260daedf7f89cc92a8" kind="variable"><name>_detail</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a26b021524f8d2b535622d0babbaa9a1c" kind="function"><name>RailMonitor</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1aa04f2c8f43eede0fa4205e9909ee4893" kind="function"><name>sample</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1ade70529ef884dfe93fd72560f20e0b35" kind="function"><name>flags</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a90c6d7d3d9b0a11af66b28799da65c0d" kind="function"><name>buildPage</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1ad8437df8b36aec34580218b0c7f12c73" kind="function"><name>peakMa</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1ade3a15779e40705bd233ea42d439e653" kind="function"><name>resetPeak</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1abc685d0e79113ab72ed97df2f62ddca8" kind="function"><name>lastMv</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1ae4754ebd22006d9ac41f5891a4d4d5bc" kind="function"><name>lastMa</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1aebc1f3b0af484e6f551fff107984b65b" kind="function"><name>faultCode</name></member>
+    <member refid="classOpenSkyhawk_1_1RailMonitor_1a41c488ea3cdbd17f934f97c08fb81b13" kind="function"><name>faultDetail</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder" kind="class"><name>OpenSkyhawk::RotaryAcceleratedEncoder</name>
     <member refid="classOpenSkyhawk_1_1RotaryAcceleratedEncoder_1a840e3e1e9ec531803173e7b0b343741c" kind="function"><name>RotaryAcceleratedEncoder</name></member>
@@ -594,6 +666,18 @@
     <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1ab12e3c86f2dd4db77899752c3aba80e0" kind="function"><name>sendCover</name></member>
     <member refid="classOpenSkyhawk_1_1SwitchWithCover2Pos_1a76d2778c0ca0af1dc58665fc9cf38243" kind="function"><name>sendSwitch</name></member>
   </compound>
+  <compound refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule" kind="class"><name>OpenSkyhawk::Pdu::TelemSchedule</name>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kind="variable"><name>PAGES</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" kind="variable"><name>TELEM_PERIOD_MS</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a6c0ce229a2289b08d45c449d6eee7629" kind="variable"><name>EDGE_MIN_MS</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1adc5ec8b76ac534cf017ea95bdac8391b" kind="variable"><name>_lastPeriodic</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a985ede54fa4859ec311e8fb93ebed975" kind="variable"><name>_rr</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a71e7265fc45c82c7e07c28cafefb3767" kind="variable"><name>_lastSent</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a5ae0e1111d25629ec269dadd9b7df45f" kind="variable"><name>_lastFlags</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1aec3d7b41aac11699c7e8a5e8408ddbff" kind="function"><name>start</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a38aa6e5e8168e952b28bd3d0dd83a1e1" kind="function"><name>next</name></member>
+    <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ab010de1024a30ec48163f250f0b6c85b" kind="function"><name>sent</name></member>
+  </compound>
   <compound refid="structTxQueueEntry" kind="struct"><name>TxQueueEntry</name>
     <member refid="structTxQueueEntry_1aa218a9b070cfc094584bbfcf398b6f29" kind="variable"><name>canId</name></member>
     <member refid="structTxQueueEntry_1ac97d64f73e4b53529f3cb74ecf432d47" kind="variable"><name>len</name></member>
@@ -606,15 +690,17 @@
   </compound>
   <compound refid="namespace_0d55" kind="namespace"><name>@55</name>
   </compound>
-  <compound refid="namespace_0d59" kind="namespace"><name>@59</name>
-    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343ae" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343aeaa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343aea1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d59_1a8d72374619cf3f351fc1ab3bd56343aea03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d59_1af68bfeaace559de578f82608cc5f7be6a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d64" kind="namespace"><name>@64</name>
+  </compound>
+  <compound refid="namespace_0d72" kind="namespace"><name>@72</name>
+    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120c" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120caa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120ca1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120ca03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" kind="variable"><name>MASTER_TIMEOUT_MS</name></member>
@@ -727,6 +813,48 @@
   </compound>
   <compound refid="namespaceOpenSkyhawk_1_1_0d27" kind="namespace"><name>OpenSkyhawk::@27</name>
   </compound>
+  <compound refid="namespaceOpenSkyhawk_1_1Pdu" kind="namespace"><name>OpenSkyhawk::Pdu</name>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220" kind="enum"><name>CalFlag</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220ac78855cbdf91e14c067b03a1fb147a78" kind="enumvalue"><name>CAL_VDDA</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a00d55612142da8348b7626ea01535c57" kind="enumvalue"><name>CAL_ZERO</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220add60f847ae0bbb2897ffd66b39d8945f" kind="enumvalue"><name>CAL_GAIN</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a5a98d6a0a41118af06540da20ef987d8" kind="enumvalue"><name>CAL_NTC</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a1cd793325c86115608c569d5ad227441" kind="variable"><name>CAL_MAGIC</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ade9868c326909a7c38af61e18603e73b" kind="variable"><name>CAL_VERSION</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a419899fda3791410f2c043926fd26112" kind="variable"><name>CAL_PAGE_SIZE</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ab662df2566338cb50098e0838cc0c816" kind="variable"><name>CAL_SLOTS</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kind="variable"><name>ADC_FULL</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a2e5177068bb221299732d5ee4310b3d0" kind="variable"><name>VDDA_NOMINAL_MV</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a3053a40f97e8ea01a8fdfb75441a3679" kind="variable"><name>VREFINT_TYP_MV</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a73f37d4efdc53fa4ec985012262366b8" kind="variable"><name>V12_DIV_NUM</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a89f83025b7ea1670c47a8236ed2b8a12" kind="variable"><name>V12_DIV_DEN</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a5286428d87473c6c9996964837874452" kind="variable"><name>V5_DIV_NUM</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1af4d816a46ca5719dcf16174ef5664600" kind="variable"><name>V5_DIV_DEN</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a4b964aa2e1c4e6c109bfac48355181c6" kind="variable"><name>I_MA_PER_MV</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a80870d6e07bdb3ce3df3c9a2705f62b8" kind="variable"><name>NTC_R0_OHM</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a36357ac0fef4d056c35ecd3f66e0b803" kind="variable"><name>NTC_BETA_K</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a6380fa00e6e09cde078ea827d5f7a16c" kind="variable"><name>NTC_T0_K</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a6da5afd24c804a6c4b14acd3fa1ba74d" kind="variable"><name>NTC_BIAS_OHM</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ae8f0ec244359b3ee128086bcf2cfcafd" kind="variable"><name>GAIN_UNITY</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a6ca3d88774257f5dc3b8985a7fd15600" kind="function"><name>calDefaults</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1af6fe875ae914dd090c862aac07dd5020" kind="function"><name>calSeal</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a314173e9358821d2ce791b6f7c129865" kind="function"><name>calValid</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ace649d6674f5b1a07b0cc61eb496ad06" kind="function"><name>calValues</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a7e0c54bc2bad78aaef385ffeff4188bb" kind="function"><name>slotEmpty</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a0f35f2f382fc0b6ea6a7e8e2360092b3" kind="function"><name>__attribute__</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1af06e011b9fb936c22a5531ad5dd13809" kind="function"><name>clampI16</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a09159a721291e8c1046ad0de6bc93eb3" kind="function"><name>clampU16</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1ad4a2739ab5a82d99893f0a1bb0280701" kind="function"><name>vddaMv</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kind="function"><name>countsToMv</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1abe92e890ae159b21648f59a43d4c611b" kind="function"><name>trimmed</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a2f92d83ff8984a0a6bb9d9433abe20ba" kind="function"><name>rail12Mv</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a07a1dfa44d53c83776c149356a8269c5" kind="function"><name>rail5Mv</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a486ab4db963f727a0a6ee4d1dfc0f0fe" kind="function"><name>rawCurrentDmA</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a719f7069e4205f9d1614af001ed29d35" kind="function"><name>currentMa</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a32f416b945841ee453968164ceb8f2ee" kind="function"><name>railed</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a2b251a5db1217f1f69e8c6b3fe6a69a1" kind="function"><name>ntcTempDC</name></member>
+    <member refid="namespaceOpenSkyhawk_1_1Pdu_1a6f4ea85f06d1cfb44afed3a4dd48bc01" kind="function"><name>crc32</name></member>
+  </compound>
   <compound refid="namespacePanelBridge" kind="namespace"><name>PanelBridge</name>
     <member refid="namespacePanelBridge_1aa4d303af811bcf25628d8086b6087a4e" kind="typedef"><name>NodeCallback</name></member>
     <member refid="namespacePanelBridge_1af631fc44c480752ac8e151b39eaea23b" kind="function"><name>onNodeAlive</name></member>
@@ -746,6 +874,14 @@
     <member refid="namespacePanelGroup_1a6fd20dab9d69da52144a1e8d24ac6b56" kind="function"><name>flushExpanderWrites</name></member>
     <member refid="namespacePanelGroup_1a311ffdd9e1637bdc133ec29760716eeb" kind="function"><name>noteShiftBus</name></member>
     <member refid="namespacePanelGroup_1aae9c2ee79d4f68b5e0882d14972e1685" kind="function"><name>readLivePin</name></member>
+  </compound>
+  <compound refid="namespacePduNode" kind="namespace"><name>PduNode</name>
+    <member refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kind="function"><name>setup</name></member>
+    <member refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kind="function"><name>loop</name></member>
+    <member refid="namespacePduNode_1a5e1eabd3e74f9c3ef2e4d04b5ba63738" kind="function"><name>scanRateHz</name></member>
+    <member refid="namespacePduNode_1adc86f791ff0d9a226fd0d96c994fbd41" kind="function"><name>rail12</name></member>
+    <member refid="namespacePduNode_1a6e1df22c6aef3a714e1361ae0a442661" kind="function"><name>rail5</name></member>
+    <member refid="namespacePduNode_1aeaec51f1fddc568e77c8c9653ba25e39" kind="function"><name>thermal</name></member>
   </compound>
   <compound refid="namespaceSimGateway" kind="namespace"><name>SimGateway</name>
     <member refid="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bd" kind="enum"><name>LedState</name></member>
@@ -1636,6 +1772,7 @@
     <member refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kind="function"><name>__attribute__</name></member>
     <member refid="CANProtocol_8h_1a3688e2363e1deaa57d248e523f9ef44c" kind="function"><name>canIdHb</name></member>
     <member refid="CANProtocol_8h_1a6f3dc603bbc005fa009f4280d01e98a1" kind="function"><name>canIdHealth</name></member>
+    <member refid="CANProtocol_8h_1a1fe7f9f0046af6cdd5eed5525f3e8b11" kind="function"><name>canIdTelem</name></member>
     <member refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" kind="function"><name>canIdEvt</name></member>
     <member refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" kind="function"><name>canIdEvtRel</name></member>
     <member refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" kind="function"><name>canIdEvtDir</name></member>
@@ -1667,6 +1804,8 @@
     <member refid="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" kind="define"><name>NODE_STATUS_REQ_ADDR</name></member>
     <member refid="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" kind="define"><name>NODE_STATUS_MSG_NAME</name></member>
     <member refid="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" kind="define"><name>NODE_STATUS_END_MSG_NAME</name></member>
+    <member refid="NodeStatus_8h_1ac198ac3b630e24985d2b5554f09c62e9" kind="define"><name>NODE_TELEM_PROTO_VERSION</name></member>
+    <member refid="NodeStatus_8h_1a7b15f66d7f1068f2333ec305a3e756f0" kind="define"><name>NODE_TELEM_MSG_NAME</name></member>
     <member refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" kind="enum"><name>NodeHealthFlag</name></member>
     <member refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" kind="enumvalue"><name>OVERHEAT</name></member>
     <member refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" kind="enumvalue"><name>DEGRADED</name></member>
@@ -1677,6 +1816,26 @@
     <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kind="enumvalue"><name>UNDER_VOLTAGE</name></member>
     <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kind="enumvalue"><name>SHORT_CIRCUIT</name></member>
     <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" kind="enumvalue"><name>HOST_LINK_LOST</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kind="enumvalue"><name>FUSE_OPEN</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a4717f519dbaabd32e525ceeeb1fcbfe8" kind="enumvalue"><name>OVER_TEMPERATURE</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kind="enumvalue"><name>SENSOR_FAULT</name></member>
+    <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" kind="enum"><name>TelemPage</name></member>
+    <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3accc0377a8afbf50e7094f5c23a8af223" kind="enumvalue"><name>INVALID</name></member>
+    <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3a165ed5369aa99a5c7e797c5308efce72" kind="enumvalue"><name>PDU_RAIL_12V</name></member>
+    <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3aa96ee866de12de7a409934e74e884538" kind="enumvalue"><name>PDU_RAIL_5V</name></member>
+    <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3afb17b5da7b62bafdf353114795cac8c4" kind="enumvalue"><name>PDU_STATUS</name></member>
+    <member refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" kind="enum"><name>PduRailFlag</name></member>
+    <member refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da32e239067503fc565bd3f109c9f64630" kind="enumvalue"><name>UNDER_V</name></member>
+    <member refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da619adf38f4188f442316a710589522dd" kind="enumvalue"><name>OVER_V</name></member>
+    <member refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539dae93c8fb651c20c17bc96472c9b2cecd5" kind="enumvalue"><name>OVER_CURRENT</name></member>
+    <member refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da2e52d1548833ba298c1349658dcfacd2" kind="enumvalue"><name>FUSE_OPEN</name></member>
+    <member refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da96e7947c42906e9f77c32a50cc98247c" kind="enumvalue"><name>SENSOR_FAULT</name></member>
+    <member refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" kind="enum"><name>PduStatusFlag</name></member>
+    <member refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a0a8cdc5957f14bbc41ebad0a515ee66c" kind="enumvalue"><name>UNCAL_VDDA</name></member>
+    <member refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a96b2f238cf6c6b1ea1c9f39372ae0fcd" kind="enumvalue"><name>UNCAL_ZERO</name></member>
+    <member refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210acc61615b7afa09504aea2f798fc0a813" kind="enumvalue"><name>TEMP_WARN</name></member>
+    <member refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a3fd48b6f2a7c1ad772e72a420a28f6dd" kind="enumvalue"><name>TEMP_CRIT</name></member>
+    <member refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210aa5815f7f666654e6b01ee83de5b280f7" kind="enumvalue"><name>NTC_FAULT</name></member>
   </compound>
   <compound refid="PanelBridge_8cpp" kind="file"><name>PanelBridge.cpp</name>
   </compound>
@@ -1784,6 +1943,56 @@
     <member refid="PinRef_8h_1a05881a688581f29cb7e03b33f7617342" kind="variable"><name>PORT_B</name></member>
     <member refid="PinRef_8h_1a2fe7a10b1d2145cd6d6b70153dc266be" kind="variable"><name>PIN_NC</name></member>
   </compound>
+  <compound refid="BoardThermal_8cpp" kind="file"><name>BoardThermal.cpp</name>
+  </compound>
+  <compound refid="BoardThermal_8h" kind="file"><name>BoardThermal.h</name>
+  </compound>
+  <compound refid="PduCalStore_8cpp" kind="file"><name>PduCalStore.cpp</name>
+  </compound>
+  <compound refid="PduCalStore_8h" kind="file"><name>PduCalStore.h</name>
+  </compound>
+  <compound refid="PduConfig_8h" kind="file"><name>PduConfig.h</name>
+    <member refid="PduConfig_8h_1a790f0703d32e4fcc07442501c0919a45" kind="define"><name>PDU_PIN_V12</name></member>
+    <member refid="PduConfig_8h_1aca6d55a46727dd23ca2a29fe750be917" kind="define"><name>PDU_PIN_V5</name></member>
+    <member refid="PduConfig_8h_1aefb0af7dde93ed43c613e3dc24aff2d1" kind="define"><name>PDU_PIN_I12</name></member>
+    <member refid="PduConfig_8h_1a4f739d88e9024ad1c25a4c953eae80e9" kind="define"><name>PDU_PIN_I5</name></member>
+    <member refid="PduConfig_8h_1a31a4ad8f966a1060498ee86b3159d1b0" kind="define"><name>PDU_PIN_NTC</name></member>
+    <member refid="PduConfig_8h_1af28969c05ca13dda2f1456f945082236" kind="define"><name>PDU_12V_UV_MV</name></member>
+    <member refid="PduConfig_8h_1a2b332f0e0e0634d615b1245d150786e9" kind="define"><name>PDU_12V_OV_MV</name></member>
+    <member refid="PduConfig_8h_1a8e91907dbf05f94b0955165b2ea11489" kind="define"><name>PDU_5V_UV_MV</name></member>
+    <member refid="PduConfig_8h_1aab9784ea81b25f685f31fc9c5b176b40" kind="define"><name>PDU_5V_OV_MV</name></member>
+    <member refid="PduConfig_8h_1ac1bd170405676751122a1e3c1752199b" kind="define"><name>PDU_12V_OC_MA</name></member>
+    <member refid="PduConfig_8h_1a705ad0e9652257e882a404dd9cb03cc6" kind="define"><name>PDU_5V_OC_MA</name></member>
+    <member refid="PduConfig_8h_1a3f13767053a53824afc181f0924e03dc" kind="define"><name>PDU_FUSE_OPEN_MV</name></member>
+    <member refid="PduConfig_8h_1a39cd4c1f8087369c932c3622fdf4268b" kind="define"><name>PDU_V_HYST_MV</name></member>
+    <member refid="PduConfig_8h_1a15a506b0074b1abf1d0a901120641fe6" kind="define"><name>PDU_V_SET_MS</name></member>
+    <member refid="PduConfig_8h_1aa20eb7e5d9ca7cc2fced278c3dc5d768" kind="define"><name>PDU_OC_SET_MS</name></member>
+    <member refid="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" kind="define"><name>PDU_CLEAR_MS</name></member>
+    <member refid="PduConfig_8h_1ae1a00cda7170a007c267677a344ef7c8" kind="define"><name>PDU_TEMP_WARN_DC</name></member>
+    <member refid="PduConfig_8h_1a171537d3b73e021f0887fcb35a631d2e" kind="define"><name>PDU_TEMP_CRIT_DC</name></member>
+    <member refid="PduConfig_8h_1a60d6c239e26367bf6b4f512324e31849" kind="define"><name>PDU_TEMP_HYST_DC</name></member>
+    <member refid="PduConfig_8h_1aaf54bd918a0faede5caba39ad6044195" kind="define"><name>PDU_BOOT_BLANK_MS</name></member>
+    <member refid="PduConfig_8h_1aad60ff2d437081d1d48ec3b29fe43211" kind="define"><name>PDU_SAMPLE_US</name></member>
+    <member refid="PduConfig_8h_1a68421f895fb1e13a7c769c454df6d6ec" kind="define"><name>PDU_ZERO_GUARD_12V_MA</name></member>
+    <member refid="PduConfig_8h_1a1a8486ef6dfca9c737b1e70a1e05ecca" kind="define"><name>PDU_ZERO_GUARD_5V_MA</name></member>
+    <member refid="PduConfig_8h_1a905044c724d00f008d7cdb4183d3bdf0" kind="define"><name>PDU_CAL_PAGE_ADDR</name></member>
+  </compound>
+  <compound refid="PduMath_8cpp" kind="file"><name>PduMath.cpp</name>
+  </compound>
+  <compound refid="PduMath_8h" kind="file"><name>PduMath.h</name>
+  </compound>
+  <compound refid="PduNode_8cpp" kind="file"><name>PduNode.cpp</name>
+  </compound>
+  <compound refid="PduNode_8h" kind="file"><name>PduNode.h</name>
+  </compound>
+  <compound refid="RailMonitor_8cpp" kind="file"><name>RailMonitor.cpp</name>
+  </compound>
+  <compound refid="RailMonitor_8h" kind="file"><name>RailMonitor.h</name>
+  </compound>
+  <compound refid="TelemSchedule_8cpp" kind="file"><name>TelemSchedule.cpp</name>
+  </compound>
+  <compound refid="TelemSchedule_8h" kind="file"><name>TelemSchedule.h</name>
+  </compound>
   <compound refid="AxisCal_8cpp" kind="file"><name>AxisCal.cpp</name>
   </compound>
   <compound refid="AxisCal_8h" kind="file"><name>AxisCal.h</name>
@@ -1877,6 +2086,8 @@
   <compound refid="dir_f592a3c441b32532ba8eb6b28add2a90" kind="dir"><name>Firmware/Libraries/PanelBridge</name>
   </compound>
   <compound refid="dir_54a06c409a6161127d200302d3061b3f" kind="dir"><name>Firmware/Libraries/PanelGroup</name>
+  </compound>
+  <compound refid="dir_8872fbf3a1c0d8f3f8e90f9314489a2d" kind="dir"><name>Firmware/Libraries/PowerMonitor</name>
   </compound>
   <compound refid="dir_d67d57cd87e8f385bd5b0c09cadb634b" kind="dir"><name>Firmware/Libraries/PanelGroup/Inputs/RotaryAcceleratedEncoder</name>
   </compound>

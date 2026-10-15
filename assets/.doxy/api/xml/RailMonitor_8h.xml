@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="RailMonitor_8h" kind="file" language="C++">
+    <compoundname>RailMonitor.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes refid="NodeStatus_8h" local="no">NodeStatus.h</includes>
+    <includes refid="CANProtocol_8h" local="no">CANProtocol.h</includes>
+    <includedby refid="PduNode_8h" local="yes">Firmware/Libraries/PowerMonitor/PduNode.h</includedby>
+    <includedby refid="RailMonitor_8cpp" local="yes">Firmware/Libraries/PowerMonitor/RailMonitor.cpp</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="3">
+        <label>NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
+      <node id="2">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.cpp</label>
+        <link refid="RailMonitor_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structOpenSkyhawk_1_1Pdu_1_1Latch" prot="public">OpenSkyhawk::Pdu::Latch</innerclass>
+    <innerclass refid="classOpenSkyhawk_1_1RailMonitor" prot="public">OpenSkyhawk::RailMonitor</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" prot="public">OpenSkyhawk::RailMonitor::Config</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <briefdescription>
+<para>PDU monitoring node — one supply rail: condition flags, window statistics, page packing (#216). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Fed one converted sample per scan (rail mV, current mA). Keeps:<itemizedlist>
+<listitem><para>condition flags (PduRailFlag) with set persistence, clear persistence and hysteresis, so a brief blip neither raises nor drops a flag;</para>
+</listitem><listitem><para>window statistics for its PDU_RAIL_* page — average + minimum voltage, average current — reset each time the page is sent periodically;</para>
+</listitem><listitem><para>the peak current for the PDU_STATUS page, reset each time that page is sent periodically. It is a FaultSource, so its worst condition reaches HEALTH_n.faultId through aggregateFaults().</para>
+</listitem></itemizedlist>
+</para>
+<para>Hardware-free: the caller converts ADC counts (PduMath) and supplies the clock, so the logic is tested with injected values.</para>
+<para><simplesect kind="note"><para>Static lifetime only (FaultSource registry rule) — construct as a global. </para>
+</simplesect>
+<simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TelemPayload</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="structOpenSkyhawk_1_1Pdu_1_1Latch" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kindref="compound">Latch</ref><sp/>{</highlight></codeline>
+<codeline lineno="30" refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" kindref="member">on</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="31" refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" kindref="member">pending</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="32" refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1abfec0dae3356ceb5920b245212f916ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1abfec0dae3356ceb5920b245212f916ba" kindref="member">since</ref><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a91ac2a32348b50ef725f6f412bad0d42" kindref="member">update</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>cond,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>clear,<sp/>uint32_t<sp/>setMs,<sp/>uint32_t<sp/>clearMs,<sp/>uint32_t<sp/>nowMs);</highlight></codeline>
+<codeline lineno="35" refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a835a9089f83b774d0a553d3c3a711bd6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a835a9089f83b774d0a553d3c3a711bd6" kindref="member">reset</ref>()<sp/>{<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" kindref="member">on</ref><sp/>=<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" kindref="member">pending</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="classOpenSkyhawk_1_1RailMonitor" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref><sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="43" refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" kindref="compound">Config</ref><sp/>{</highlight></codeline>
+<codeline lineno="44" refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1aef66ab6face1996b48c50a5b4076686d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" kindref="member">TelemPage</ref><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1aef66ab6face1996b48c50a5b4076686d" kindref="member">page</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="45" refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a43f133894078f34b5133fa15408af928" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a43f133894078f34b5133fa15408af928" kindref="member">name</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="46" refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a71781d1cc7658f2d0bc65c3ef95ed6cc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a71781d1cc7658f2d0bc65c3ef95ed6cc" kindref="member">uvMv</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="47" refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a29634b503d3668167f2b778c87214fd9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a29634b503d3668167f2b778c87214fd9" kindref="member">ovMv</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="48" refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a6de75823b87247d447ff5f92d00348f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a6de75823b87247d447ff5f92d00348f5" kindref="member">ocMa</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="49" refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a6bf78b207a5fb57a9c827a15b621fb64" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config_1a6bf78b207a5fb57a9c827a15b621fb64" kindref="member">fuseOpenCheck</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" kindref="compound">Config</ref>&amp;<sp/>cfg);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1aa04f2c8f43eede0fa4205e9909ee4893" kindref="member">sample</ref>(uint16_t<sp/>vMv,<sp/>int32_t<sp/>iMa,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>vRailed,<sp/>uint32_t<sp/>nowMs,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>armed);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1ade70529ef884dfe93fd72560f20e0b35" kindref="member">flags</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>TelemPayload<sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1a90c6d7d3d9b0a11af66b28799da65c0d" kindref="member">buildPage</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>resetWindow);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="classOpenSkyhawk_1_1RailMonitor_1ad8437df8b36aec34580218b0c7f12c73" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1ad8437df8b36aec34580218b0c7f12c73" kindref="member">peakMa</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_peakMa;<sp/>}</highlight></codeline>
+<codeline lineno="77" refid="classOpenSkyhawk_1_1RailMonitor_1ade3a15779e40705bd233ea42d439e653" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1ade3a15779e40705bd233ea42d439e653" kindref="member">resetPeak</ref>()<sp/>{<sp/>_peakMa<sp/>=<sp/>0;<sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="classOpenSkyhawk_1_1RailMonitor_1abc685d0e79113ab72ed97df2f62ddca8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1abc685d0e79113ab72ed97df2f62ddca8" kindref="member">lastMv</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_lastMv;<sp/>}</highlight></codeline>
+<codeline lineno="82" refid="classOpenSkyhawk_1_1RailMonitor_1ae4754ebd22006d9ac41f5891a4d4d5bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1ae4754ebd22006d9ac41f5891a4d4d5bc" kindref="member">lastMa</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_lastMa;<sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1aebc1f3b0af484e6f551fff107984b65b" kindref="member">faultCode</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor_1a41c488ea3cdbd17f934f97c08fb81b13" kindref="member">faultDetail</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>Config<sp/><sp/><sp/><sp/><sp/><sp/>_cfg;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kindref="compound">Pdu::Latch</ref><sp/><sp/>_uv,<sp/>_ov,<sp/>_oc,<sp/>_fuse,<sp/>_sensor;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/>_sumMv<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/><sp/><sp/><sp/><sp/>_sumMa<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/>_n<sp/><sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/>_minMv<sp/>=<sp/>UINT16_MAX;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/>_peakMa<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><sp/><sp/><sp/>_lastMv<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/><sp/><sp/><sp/><sp/>_lastMa<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>_detail[32];<sp/><sp/></highlight><highlight class="comment">//<sp/>faultDetail()<sp/>formats<sp/>here<sp/>(const,<sp/>slow<sp/>health<sp/>path)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h"/>
+  </compounddef>
+</doxygen>

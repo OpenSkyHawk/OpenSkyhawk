@@ -7,6 +7,8 @@
     <includedby refid="DrumDisplay_8h" local="no">Firmware/Libraries/DrumDisplay/DrumDisplay.h</includedby>
     <includedby refid="NodeStatus_8cpp" local="yes">Firmware/Libraries/NodeStatus/NodeStatus.cpp</includedby>
     <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
+    <includedby refid="BoardThermal_8h" local="no">Firmware/Libraries/PowerMonitor/BoardThermal.h</includedby>
+    <includedby refid="RailMonitor_8h" local="no">Firmware/Libraries/PowerMonitor/RailMonitor.h</includedby>
     <includedby refid="STM32Board_8h" local="no">Firmware/Libraries/STM32Board/STM32Board.h</includedby>
     <incdepgraph>
       <node id="1">
@@ -47,6 +49,10 @@
         </childnode>
         <childnode refid="43" relation="include">
         </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
       </node>
       <node id="13">
         <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
@@ -58,7 +64,7 @@
         <childnode refid="13" relation="include">
         </childnode>
       </node>
-      <node id="44">
+      <node id="48">
         <label>Firmware/Libraries/NodeStatus/NodeStatus.cpp</label>
         <link refid="NodeStatus_8cpp"/>
       </node>
@@ -69,11 +75,15 @@
         </childnode>
         <childnode refid="12" relation="include">
         </childnode>
-        <childnode refid="44" relation="include">
+        <childnode refid="48" relation="include">
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
         <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -92,7 +102,7 @@
         <childnode refid="16" relation="include">
         </childnode>
       </node>
-      <node id="46">
+      <node id="52">
         <label>Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp</label>
         <link refid="ShiftBus_8cpp"/>
       </node>
@@ -338,11 +348,45 @@
         <childnode refid="42" relation="include">
         </childnode>
       </node>
+      <node id="50">
+        <label>Firmware/Libraries/PowerMonitor/BoardThermal.cpp</label>
+        <link refid="BoardThermal_8cpp"/>
+      </node>
+      <node id="49">
+        <label>Firmware/Libraries/PowerMonitor/BoardThermal.h</label>
+        <link refid="BoardThermal_8h"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
       <node id="43">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.cpp</label>
+        <link refid="RailMonitor_8cpp"/>
+      </node>
+      <node id="45">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>
-      <node id="45">
+      <node id="51">
         <label>Firmware/Libraries/STM32Board/STM32Board.h</label>
         <link refid="STM32Board_8h"/>
         <childnode refid="3" relation="include">
@@ -353,7 +397,7 @@
         </childnode>
         <childnode refid="15" relation="include">
         </childnode>
-        <childnode refid="46" relation="include">
+        <childnode refid="52" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
@@ -379,6 +423,8 @@
         </childnode>
         <childnode refid="43" relation="include">
         </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
       </node>
     </invincdepgraph>
     <innerclass refid="classOpenSkyhawk_1_1FaultSource" prot="public">OpenSkyhawk::FaultSource</innerclass>
@@ -393,7 +439,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="29" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="29" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="31" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="31" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" prot="public" static="no">
         <name>NODE_STATUS_REQ_ADDR</name>
@@ -404,7 +450,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="30" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="30" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="32" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="32" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" prot="public" static="no">
         <name>NODE_STATUS_MSG_NAME</name>
@@ -415,7 +461,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="31" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="31" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="33" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="33" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" prot="public" static="no">
         <name>NODE_STATUS_END_MSG_NAME</name>
@@ -426,7 +472,29 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="32" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="32" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="34" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="NodeStatus_8h_1ac198ac3b630e24985d2b5554f09c62e9" prot="public" static="no">
+        <name>NODE_TELEM_PROTO_VERSION</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="42" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="NodeStatus_8h_1a7b15f66d7f1068f2333ec305a3e756f0" prot="public" static="no">
+        <name>NODE_TELEM_MSG_NAME</name>
+        <initializer>&quot;_NODE_TELEM&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="43" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="43" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="enum">
@@ -456,7 +524,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="35" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="35" bodyend="38"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="46" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="46" bodyend="49"/>
       </memberdef>
       <memberdef kind="enum" id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -509,6 +577,30 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" prot="public">
+          <name>FUSE_OPEN</name>
+          <initializer>= 0x06</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a4717f519dbaabd32e525ceeeb1fcbfe8" prot="public">
+          <name>OVER_TEMPERATURE</name>
+          <initializer>= 0x07</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" prot="public">
+          <name>SENSOR_FAULT</name>
+          <initializer>= 0x08</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
 <para>HEALTH_n <computeroutput>faultId</computeroutput> dictionary (#163) — cross-node fault codes. </para>
         </briefdescription>
@@ -517,7 +609,156 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="47" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="47" bodyend="55"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="58" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="58" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>TelemPage</name>
+        <enumvalue id="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3accc0377a8afbf50e7094f5c23a8af223" prot="public">
+          <name>INVALID</name>
+          <initializer>= 0x00</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3a165ed5369aa99a5c7e797c5308efce72" prot="public">
+          <name>PDU_RAIL_12V</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3aa96ee866de12de7a409934e74e884538" prot="public">
+          <name>PDU_RAIL_5V</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3afb17b5da7b62bafdf353114795cac8c4" prot="public">
+          <name>PDU_STATUS</name>
+          <initializer>= 0x03</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>TELEM_n page ids (#216) — byte 0 of TelemPayload, naming the layout of bytes 1-7. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Global and append-only: a page id means the same layout whichever node sends it, so the client decodes by page, not by node type. 0x00 is invalid. Layouts (little-endian): PDU_RAIL_12V / PDU_RAIL_5V: [1] PduRailFlag bits · [2-3] vAvgMv u16 · [4-5] vMinMv u16 · [6-7] iAvgMa int16 PDU_STATUS: [1] PduStatusFlag bits · [2-3] ntcTempDC int16 (0.1 °C, INT16_MIN = unavailable) · [4-5] i12PeakMa u16 · [6-7] i5PeakMa u16 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="81" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="81" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>PduRailFlag</name>
+        <enumvalue id="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da32e239067503fc565bd3f109c9f64630" prot="public">
+          <name>UNDER_V</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da619adf38f4188f442316a710589522dd" prot="public">
+          <name>OVER_V</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539dae93c8fb651c20c17bc96472c9b2cecd5" prot="public">
+          <name>OVER_CURRENT</name>
+          <initializer>= 0x04</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da2e52d1548833ba298c1349658dcfacd2" prot="public">
+          <name>FUSE_OPEN</name>
+          <initializer>= 0x08</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da96e7947c42906e9f77c32a50cc98247c" prot="public">
+          <name>SENSOR_FAULT</name>
+          <initializer>= 0x10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>PDU_RAIL_* page byte 1 — per-rail condition bits (all zero = healthy). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="89" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="89" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>PduStatusFlag</name>
+        <enumvalue id="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a0a8cdc5957f14bbc41ebad0a515ee66c" prot="public">
+          <name>UNCAL_VDDA</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a96b2f238cf6c6b1ea1c9f39372ae0fcd" prot="public">
+          <name>UNCAL_ZERO</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210acc61615b7afa09504aea2f798fc0a813" prot="public">
+          <name>TEMP_WARN</name>
+          <initializer>= 0x04</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a3fd48b6f2a7c1ad772e72a420a28f6dd" prot="public">
+          <name>TEMP_CRIT</name>
+          <initializer>= 0x08</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210aa5815f7f666654e6b01ee83de5b280f7" prot="public">
+          <name>NTC_FAULT</name>
+          <initializer>= 0x10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>PDU_STATUS page byte 1 — board condition bits (all zero = healthy, calibrated). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="98" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="98" bodyend="104"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -527,6 +768,7 @@
 <para>Owns the cross-node <bold>status API</bold> — not just health:<itemizedlist>
 <listitem><para>the <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS host-reporting contract (proto version, request address, message names) — <bold>the canonical source the client&apos;s <computeroutput>sync-a4ec.ts</computeroutput> parses</bold>;</para>
 </listitem><listitem><para><computeroutput>NodeHealthFlag</computeroutput> (HEALTH_n flag bits) and <computeroutput>NodeFaultCode</computeroutput> (the compact wire faultId dictionary the client maps to labels);</para>
+</listitem><listitem><para>the <computeroutput>_NODE_TELEM</computeroutput> host contract and the TELEM_n page vocabulary (<computeroutput>TelemPage</computeroutput>, <computeroutput>PduRailFlag</computeroutput>, <computeroutput>PduStatusFlag</computeroutput>) — #216;</para>
 </listitem><listitem><para><computeroutput>FaultSource</computeroutput> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <computeroutput>FaultSource</computeroutput> is <emphasis>one piece</emphasis> of node status, not the whole story.</para>
 </listitem></itemizedlist>
 </para>
@@ -539,56 +781,91 @@
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
-<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="24"><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_STATUS<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#86)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>reports<sp/>connected<sp/>nodes<sp/>+<sp/>health<sp/>to<sp/>the<sp/>host<sp/>over<sp/>DCS-BIOS.<sp/>Bump</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>NODE_STATUS_PROTO_VERSION<sp/>on<sp/>any<sp/>_NODE_STATUS<sp/>wire<sp/>change<sp/>so<sp/>the<sp/>client&apos;s<sp/>sync<sp/>fails<sp/>loudly.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Full<sp/>26-hex<sp/>field<sp/>decode:<sp/>FirmwarePlan/04-dcs-bios-integration.md.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29" refid="NodeStatus_8h_1a82b54ce9fac2a1c2716554b3294d7afd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_PROTO_VERSION<sp/>2</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30" refid="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_REQ_ADDR<sp/><sp/><sp/><sp/><sp/><sp/>0x86FE<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>host→device<sp/>roster-request<sp/>export<sp/>address</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31" refid="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_STATUS&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="32" refid="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_END_MSG_NAME<sp/><sp/>&quot;_NODE_STATUS_END&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="35" refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" kindref="member">NodeHealthFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" kindref="member">OVERHEAT</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>die<sp/>temp<sp/>&gt;=<sp/>NODE_OVERHEAT_C<sp/>(opt-in,<sp/>#213)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" kindref="member">DEGRADED</ref><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>FaultSource<sp/>reports<sp/>faultCode()<sp/>!=<sp/>NodeFaultCode::NONE<sp/>(#163)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="47" refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NONE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1ff9b4b08e327a30d2cfd75c03c1c437" kindref="member">I2C_PERIPHERAL</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>an<sp/>I2C<sp/>device<sp/>(OLED/mux/expander)<sp/>tripped<sp/>its<sp/>I2cHealth<sp/>breaker</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" kindref="member">OVER_VOLTAGE</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>over-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kindref="member">UNDER_VOLTAGE</ref><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>under-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kindref="member">SHORT_CIRCUIT</ref><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>short<sp/>/<sp/>over-current<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" kindref="member">HOST_LINK_LOST</ref><sp/>=<sp/>0x05,<sp/><sp/></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>lost<sp/>the<sp/>host<sp/>serial<sp/>link</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x06–0xFF<sp/>reserved<sp/>for<sp/>future<sp/>fault<sp/>sources</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"></highlight></codeline>
-<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"></highlight></codeline>
-<codeline lineno="73" refid="classOpenSkyhawk_1_1FaultSource" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref><sp/>{</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="76" refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" kindref="member">faultCode</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>;<sp/>}</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight></codeline>
-<codeline lineno="79" refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" kindref="member">faultDetail</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kindref="member">head</ref>();</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" kindref="member">FaultSource</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="88" refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" kindref="member">~FaultSource</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
-<codeline lineno="89"><highlight class="normal"></highlight></codeline>
-<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_head;</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_next;</highlight></codeline>
-<codeline lineno="93"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="94"><highlight class="normal"></highlight></codeline>
-<codeline lineno="111"><highlight class="normal"><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" kindref="member">aggregateFaults</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">**<sp/>detailOut<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="112"><highlight class="normal"></highlight></codeline>
-<codeline lineno="113"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_STATUS<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#86)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>reports<sp/>connected<sp/>nodes<sp/>+<sp/>health<sp/>to<sp/>the<sp/>host<sp/>over<sp/>DCS-BIOS.<sp/>Bump</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>NODE_STATUS_PROTO_VERSION<sp/>on<sp/>any<sp/>_NODE_STATUS<sp/>wire<sp/>change<sp/>so<sp/>the<sp/>client&apos;s<sp/>sync<sp/>fails<sp/>loudly.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Full<sp/>26-hex<sp/>field<sp/>decode:<sp/>FirmwarePlan/04-dcs-bios-integration.md.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="NodeStatus_8h_1a82b54ce9fac2a1c2716554b3294d7afd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_PROTO_VERSION<sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_REQ_ADDR<sp/><sp/><sp/><sp/><sp/><sp/>0x86FE<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>host→device<sp/>roster-request<sp/>export<sp/>address</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_STATUS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_END_MSG_NAME<sp/><sp/>&quot;_NODE_STATUS_END&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_TELEM<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#216)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>forwards<sp/>every<sp/>TELEM_n<sp/>CAN<sp/>frame<sp/>to<sp/>the<sp/>host<sp/>unread,<sp/>as<sp/>one<sp/>DCS-BIOS<sp/>message<sp/>per</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//<sp/>frame:<sp/>`_NODE_TELEM<sp/>&lt;nodeId(2<sp/>hex)&gt;&lt;8<sp/>frame<sp/>bytes<sp/>as<sp/>16<sp/>hex,<sp/>wire<sp/>order&gt;`<sp/>(18<sp/>hex<sp/>chars).<sp/>Pushed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//<sp/>as<sp/>frames<sp/>arrive<sp/>—<sp/>no<sp/>request,<sp/>no<sp/>cache,<sp/>no<sp/>end<sp/>marker.<sp/>Versioned<sp/>separately<sp/>from</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">//<sp/>_NODE_STATUS:<sp/>a<sp/>new<sp/>TelemPage<sp/>is<sp/>additive<sp/>and<sp/>needs<sp/>no<sp/>bump;<sp/>bump<sp/>on<sp/>a<sp/>change<sp/>to<sp/>the<sp/>message</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">//<sp/>framing<sp/>or<sp/>to<sp/>an<sp/>existing<sp/>page&apos;s<sp/>layout.<sp/>Full<sp/>page<sp/>layouts:<sp/>FirmwarePlan/02-can-protocol.md.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="NodeStatus_8h_1ac198ac3b630e24985d2b5554f09c62e9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_TELEM_PROTO_VERSION<sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="NodeStatus_8h_1a7b15f66d7f1068f2333ec305a3e756f0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_TELEM_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_TELEM&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" kindref="member">NodeHealthFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" kindref="member">OVERHEAT</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>die<sp/>temp<sp/>&gt;=<sp/>NODE_OVERHEAT_C<sp/>(opt-in,<sp/>#213)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" kindref="member">DEGRADED</ref><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>FaultSource<sp/>reports<sp/>faultCode()<sp/>!=<sp/>NodeFaultCode::NONE<sp/>(#163)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NONE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1ff9b4b08e327a30d2cfd75c03c1c437" kindref="member">I2C_PERIPHERAL</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>an<sp/>I2C<sp/>device<sp/>(OLED/mux/expander)<sp/>tripped<sp/>its<sp/>I2cHealth<sp/>breaker</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" kindref="member">OVER_VOLTAGE</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>over-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kindref="member">UNDER_VOLTAGE</ref><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>under-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kindref="member">SHORT_CIRCUIT</ref><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>short<sp/>/<sp/>over-current<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" kindref="member">HOST_LINK_LOST</ref><sp/>=<sp/>0x05,<sp/><sp/></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>lost<sp/>the<sp/>host<sp/>serial<sp/>link</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kindref="member">FUSE_OPEN</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x06,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>fuse<sp/>blown<sp/>—<sp/>rail<sp/>read<sp/>~0<sp/>V<sp/>while<sp/>the<sp/>node<sp/>is<sp/>powered<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a4717f519dbaabd32e525ceeeb1fcbfe8" kindref="member">OVER_TEMPERATURE</ref><sp/>=<sp/>0x07,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>critical<sp/>threshold<sp/>(PDU<sp/>NTC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">SENSOR_FAULT</ref><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>measurement<sp/>channel<sp/>reads<sp/>implausibly<sp/>(railed<sp/>/<sp/>open<sp/>/<sp/>shorted)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x09–0xFF<sp/>reserved<sp/>for<sp/>future<sp/>fault<sp/>sources</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" kindref="member">TelemPage</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3accc0377a8afbf50e7094f5c23a8af223" kindref="member">INVALID</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,<sp/><sp/></highlight><highlight class="comment">//<sp/>never<sp/>sent</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3a165ed5369aa99a5c7e797c5308efce72" kindref="member">PDU_RAIL_12V</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>12<sp/>V<sp/>rail:<sp/>flags,<sp/>avg<sp/>+<sp/>min<sp/>voltage,<sp/>avg<sp/>current</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3aa96ee866de12de7a409934e74e884538" kindref="member">PDU_RAIL_5V</ref><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>5<sp/>V<sp/>rail:<sp/>flags,<sp/>avg<sp/>+<sp/>min<sp/>voltage,<sp/>avg<sp/>current</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3afb17b5da7b62bafdf353114795cac8c4" kindref="member">PDU_STATUS</ref><sp/><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>board:<sp/>flags,<sp/>NTC<sp/>temperature,<sp/>per-rail<sp/>peak<sp/>current</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" kindref="member">PduRailFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da32e239067503fc565bd3f109c9f64630" kindref="member">UNDER_V</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>below<sp/>its<sp/>under-voltage<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da619adf38f4188f442316a710589522dd" kindref="member">OVER_V</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>above<sp/>its<sp/>over-voltage<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539dae93c8fb651c20c17bc96472c9b2cecd5" kindref="member">OVER_CURRENT</ref><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>sustained<sp/>current<sp/>above<sp/>the<sp/>over-current<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kindref="member">FUSE_OPEN</ref><sp/><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>read<sp/>~0<sp/>V<sp/>while<sp/>the<sp/>node<sp/>is<sp/>powered<sp/>—<sp/>fuse<sp/>blown</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">SENSOR_FAULT</ref><sp/>=<sp/>0x10,<sp/><sp/></highlight><highlight class="comment">//<sp/>voltage<sp/>or<sp/>current<sp/>channel<sp/>reads<sp/>implausibly<sp/>(railed)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" kindref="member">PduStatusFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a0a8cdc5957f14bbc41ebad0a515ee66c" kindref="member">UNCAL_VDDA</ref><sp/><sp/><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>VDDA<sp/>calibration<sp/>stored<sp/>—<sp/>readings<sp/>assume<sp/>a<sp/>nominal<sp/>3.3<sp/>V</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a96b2f238cf6c6b1ea1c9f39372ae0fcd" kindref="member">UNCAL_ZERO</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>current<sp/>zero-offset<sp/>calibration<sp/>stored</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210acc61615b7afa09504aea2f798fc0a813" kindref="member">TEMP_WARN</ref><sp/><sp/><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>warning<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a3fd48b6f2a7c1ad772e72a420a28f6dd" kindref="member">TEMP_CRIT</ref><sp/><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>critical<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210aa5815f7f666654e6b01ee83de5b280f7" kindref="member">NTC_FAULT</ref><sp/><sp/><sp/><sp/>=<sp/>0x10,<sp/><sp/></highlight><highlight class="comment">//<sp/>NTC<sp/>channel<sp/>open<sp/>or<sp/>shorted</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122" refid="classOpenSkyhawk_1_1FaultSource" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref><sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="125" refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" kindref="member">faultCode</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" kindref="member">faultDetail</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" kindref="member">FaultSource</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="137" refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" kindref="member">~FaultSource</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_next;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" kindref="member">aggregateFaults</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">**<sp/>detailOut<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/NodeStatus/NodeStatus.h"/>
   </compounddef>

@@ -95,6 +95,20 @@ Here is a list of all files with brief descriptions:
             * **file** [**PanelGroup.h**](PanelGroup_8h.md) _CAN sub-node domain layer for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel boards._    
             * **file** [**PinRef.cpp**](PinRef_8cpp.md)     
             * **file** [**PinRef.h**](PinRef_8h.md) _Hardware pin abstraction for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _panel controls._    
+        * **dir** [**PowerMonitor**](dir_8872fbf3a1c0d8f3f8e90f9314489a2d.md)     
+            * **file** [**BoardThermal.cpp**](BoardThermal_8cpp.md)     
+            * **file** [**BoardThermal.h**](BoardThermal_8h.md) _PDU monitoring node — board temperature from the NTC: warn / critical / sensor fault (#216)._     
+            * **file** [**PduCalStore.cpp**](PduCalStore_8cpp.md)     
+            * **file** [**PduCalStore.h**](PduCalStore_8h.md) _PDU per-board calibration in a reserved flash page — append-only log, newest valid wins (#216)._     
+            * **file** [**PduConfig.h**](PduConfig_8h.md) _PDU monitoring node — hardware constants and tunable thresholds (#216)._     
+            * **file** [**PduMath.cpp**](PduMath_8cpp.md)     
+            * **file** [**PduMath.h**](PduMath_8h.md) _PDU monitoring node — pure conversions, no hardware access (#216)._     
+            * **file** [**PduNode.cpp**](PduNode_8cpp.md)     
+            * **file** [**PduNode.h**](PduNode_8h.md) _PDU monitoring node — the whole node in two calls (#216)._     
+            * **file** [**RailMonitor.cpp**](RailMonitor_8cpp.md)     
+            * **file** [**RailMonitor.h**](RailMonitor_8h.md) _PDU monitoring node — one supply rail: condition flags, window statistics, page packing (#216)._     
+            * **file** [**TelemSchedule.cpp**](TelemSchedule_8cpp.md)     
+            * **file** [**TelemSchedule.h**](TelemSchedule_8h.md) _When to send which TELEM\_n page — periodic rotation plus rate-limited edge sends (#216)._     
         * **dir** [**STM32Board**](dir_aa1816754c0645981f9c7af905857f7d.md)     
             * **file** [**STM32Board.cpp**](STM32Board_8cpp.md)     
             * **file** [**STM32Board.h**](STM32Board_8h.md) _Shared STM32F103 hardware initialisation for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _avionics nodes._    

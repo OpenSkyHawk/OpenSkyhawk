@@ -13,6 +13,7 @@
 * **canIdHb** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **canIdHealth** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **canIdReady** ([**CANProtocol.h**](CANProtocol_8h.md))
+* **canIdTelem** ([**CANProtocol.h**](CANProtocol_8h.md))
 
 
 ## h

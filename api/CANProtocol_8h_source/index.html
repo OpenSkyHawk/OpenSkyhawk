@@ -2020,6 +2020,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/components/" class="md-nav__link">
         
   
@@ -4666,6 +4694,12 @@
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">rsvd</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w">    </span>
 <span class="p">};</span>
 
+<span class="k">struct</span><span class="w"> </span><span class="nc">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">TelemPayload</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">page</span><span class="p">;</span><span class="w">     </span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">body</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span><span class="w">  </span>
+<span class="p">};</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">TelemPayload</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s">"TelemPayload must fill one classic CAN frame"</span><span class="p">);</span>
+
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CanStatus</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">STARTING</span><span class="p">,</span><span class="w">   </span>
 <span class="w">    </span><span class="n">NORMAL</span><span class="p">,</span><span class="w">     </span>
@@ -4684,6 +4718,8 @@
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">canIdHb</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mh">0x100</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">canIdHealth</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mh">0x140</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">canIdTelem</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mh">0x180</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">canIdEvt</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mh">0x200</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 

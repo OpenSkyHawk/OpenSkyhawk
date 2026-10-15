@@ -1829,6 +1829,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#monitoring-the-pdu-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitoring — the PDU node
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cross-tier-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2141,6 +2152,34 @@
     
   
     Base Boards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
   
 
     
@@ -4820,6 +4859,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#monitoring-the-pdu-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitoring — the PDU node
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cross-tier-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4981,13 +5031,39 @@ the rest of the cockpit and its harness.</p>
 <li><strong>The PSU's own OCP protects the PSU, not your harness</strong> — a single-rail ATX only trips at tens
   of amps, long after a thin lead would cook. The per-zone fuse is what actually protects the
   wiring.</li>
-<li>A planned <strong>power-distribution CAN node</strong> adds live per-console current telemetry and active
-  eFuse breaking <strong>on top of</strong> — not instead of — these baseline fuses.</li>
+<li>The <strong>power-distribution node (PDU)</strong> sits at each console's injection point, holds that
+  console's fuses, and reports live telemetry <strong>on top of</strong> them — it monitors, it doesn't break
+  the circuit. See <em>Monitoring — the PDU node</em> below.</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Exact values live in the hardware source</p>
 <p>Fuse ratings, trace widths, and injection copper are specified in the base-boards hardware
 source; this page is the overview.</p>
+</div>
+<h2 id="monitoring-the-pdu-node">Monitoring — the PDU node</h2>
+<p>Each console's PDU measures what it feeds: the 12 V and 5 V rail voltage, the current through each
+fuse, and the board temperature. It reports them over CAN about once a second, and at once when
+something changes — a rail sagging below or rising above its limits, a current near the fuse
+rating, a blown 12 V fuse, or the board running hot. Those faults also turn the node amber in the
+host app's node list. Logging a console through idle, startup, full lighting and its peaks shows
+its real load, so fuse ratings can be sized from data rather than estimates.</p>
+<p>Each PDU is calibrated once at bring-up, over its debug serial port, with a multimeter reading of
+its 3.3 V rail and the load disconnected. The calibration is stored on the board and survives
+firmware updates. The board itself, its fuses and the bring-up steps are on
+<a href="../../hardware/pdu/">Power Distribution Unit</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Wiring assumptions the PDU relies on</p>
+<ul>
+<li><strong>Power never chains past a PDU.</strong> A console's downstream harness must not feed another
+  PDU's console. A blown fuse then leaves that console's rail dead, which is how the PDU
+  detects it — back-feed from a neighbour would hide the blown fuse and split the current
+  readings.</li>
+<li><strong>A blown 5 V fuse takes its own PDU offline</strong>, because the PDU runs from the fused 5 V. The
+  host app shows that node going offline, not a fuse alert.</li>
+<li><strong>The Gateway/Bridge head node is powered from one of the PDUs.</strong> If its PDU loses 5 V, the
+  head node goes down with it and every node appears offline at once. When the whole cockpit
+  drops off, check the PDU fuses first.</li>
+</ul>
 </div>
 <h2 id="cross-tier-notes">Cross-tier notes</h2>
 <ul>

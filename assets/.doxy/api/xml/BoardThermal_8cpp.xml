@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="BoardThermal_8cpp" kind="file" language="C++">
+    <compoundname>BoardThermal.cpp</compoundname>
+    <includes refid="BoardThermal_8h" local="yes">BoardThermal.h</includes>
+    <includes refid="PduConfig_8h" local="yes">PduConfig.h</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/BoardThermal.cpp</label>
+        <link refid="BoardThermal_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>BoardThermal.h</label>
+        <link refid="BoardThermal_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="BoardThermal_8h" kindref="compound">BoardThermal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduConfig_8h" kindref="compound">PduConfig.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a82309f7b616854bc879a9fbbaed9bff3" kindref="member">BoardThermal::sample</ref>(int16_t<sp/>tempDC,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ntcFault,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>armed)<sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>_tempDC<sp/>=<sp/>ntcFault<sp/>?<sp/>INT16_MIN<sp/>:<sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" kindref="member">tempDC</ref>;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!armed)<sp/>{<sp/>_warn<sp/>=<sp/>_crit<sp/>=<sp/>_ntcFault<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>_ntcFault<sp/>=<sp/>ntcFault;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ntcFault)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>keep<sp/>warn/crit<sp/>as<sp/>they<sp/>were<sp/>—<sp/>no<sp/>reading<sp/>to<sp/>change<sp/>them<sp/>with</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/>h<sp/>=<sp/><ref refid="PduConfig_8h_1a60d6c239e26367bf6b4f512324e31849" kindref="member">PDU_TEMP_HYST_DC</ref>;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>_warn<sp/>=<sp/>_warn<sp/>?<sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" kindref="member">tempDC</ref><sp/>&gt;<sp/><ref refid="PduConfig_8h_1ae1a00cda7170a007c267677a344ef7c8" kindref="member">PDU_TEMP_WARN_DC</ref><sp/>-<sp/>h<sp/>:<sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" kindref="member">tempDC</ref><sp/>&gt;=<sp/><ref refid="PduConfig_8h_1ae1a00cda7170a007c267677a344ef7c8" kindref="member">PDU_TEMP_WARN_DC</ref>;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>_crit<sp/>=<sp/>_crit<sp/>?<sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" kindref="member">tempDC</ref><sp/>&gt;<sp/><ref refid="PduConfig_8h_1a171537d3b73e021f0887fcb35a631d2e" kindref="member">PDU_TEMP_CRIT_DC</ref><sp/>-<sp/>h<sp/>:<sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" kindref="member">tempDC</ref><sp/>&gt;=<sp/><ref refid="PduConfig_8h_1a171537d3b73e021f0887fcb35a631d2e" kindref="member">PDU_TEMP_CRIT_DC</ref>;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">uint8_t<sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1af15858b09e59bf0c838bf78c37bd5e4b" kindref="member">BoardThermal::flags</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>f<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_warn)<sp/><sp/><sp/><sp/><sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210acc61615b7afa09504aea2f798fc0a813" kindref="member">PduStatusFlag::TEMP_WARN</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_crit)<sp/><sp/><sp/><sp/><sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a3fd48b6f2a7c1ad772e72a420a28f6dd" kindref="member">PduStatusFlag::TEMP_CRIT</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_ntcFault)<sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210aa5815f7f666654e6b01ee83de5b280f7" kindref="member">PduStatusFlag::NTC_FAULT</ref>;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a649e5f47720ac4dbbf7947c342649fca" kindref="member">BoardThermal::faultCode</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_crit)<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a4717f519dbaabd32e525ceeeb1fcbfe8" kindref="member">NodeFaultCode::OVER_TEMPERATURE</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_ntcFault)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">NodeFaultCode::SENSOR_FAULT</ref>;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="classOpenSkyhawk_1_1BoardThermal_1a88e9ee1143dcb7f2daa124223c314457" kindref="member">BoardThermal::faultDetail</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_crit)<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;board<sp/>temperature<sp/>critical&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_ntcFault)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;NTC<sp/>open<sp/>or<sp/>shorted&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/BoardThermal.cpp"/>
+  </compounddef>
+</doxygen>

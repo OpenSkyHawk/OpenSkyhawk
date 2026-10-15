@@ -2020,6 +2020,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/components/" class="md-nav__link">
         
   
@@ -4706,6 +4734,39 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#enum-pdurailflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum PduRailFlag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-pdustatusflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum PduStatusFlag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-telempage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum TelemPage
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4761,6 +4822,28 @@
     <span class="md-ellipsis">
       
         define NODE_STATUS_REQ_ADDR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-node_telem_msg_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define NODE_TELEM_MSG_NAME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-node_telem_proto_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        define NODE_TELEM_PROTO_VERSION
       
     </span>
   </a>
@@ -4846,6 +4929,18 @@
 <td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-nodehealthflag"><strong>NodeHealthFlag</strong></a>  <br><em>HEALTH_n</em> <code>flags</code> <em>bits — node-level health conditions (maps to NodeHealthPayload.flags).</em></td>
 </tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-pdurailflag"><strong>PduRailFlag</strong></a>  <br><em>PDU_RAIL_* page byte 1 — per-rail condition bits (all zero = healthy).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-pdustatusflag"><strong>PduStatusFlag</strong></a>  <br><em>PDU_STATUS page byte 1 — board condition bits (all zero = healthy, calibrated).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-telempage"><strong>TelemPage</strong></a>  <br><em>TELEM_n page ids (#216) — byte 0 of TelemPayload, naming the layout of bytes 1-7.</em></td>
+</tr>
 </tbody>
 </table>
 <h2 id="macros">Macros</h2>
@@ -4873,12 +4968,21 @@
 <td style="text-align: right;">define</td>
 <td style="text-align: left;"><a href="./#define-node_status_req_addr"><strong>NODE_STATUS_REQ_ADDR</strong></a>  <code>0x86FE</code><br></td>
 </tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-node_telem_msg_name"><strong>NODE_TELEM_MSG_NAME</strong></a>  <code>"\_NODE\_TELEM"</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">define</td>
+<td style="text-align: left;"><a href="./#define-node_telem_proto_version"><strong>NODE_TELEM_PROTO_VERSION</strong></a>  <code>1</code><br></td>
+</tr>
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Owns the cross-node <strong>status API</strong> — not just health:
 * the <code>_NODE_STATUS</code> DCS-BIOS host-reporting contract (proto version, request address, message names) — <strong>the canonical source the client's <code>sync-a4ec.ts</code> parses</strong>;
 * <code>NodeHealthFlag</code> (HEALTH_n flag bits) and <code>NodeFaultCode</code> (the compact wire faultId dictionary the client maps to labels);
+* the <code>_NODE_TELEM</code> host contract and the TELEM_n page vocabulary (<code>TelemPage</code>, <code>PduRailFlag</code>, <code>PduStatusFlag</code>) — #216;
 * <code>FaultSource</code> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <code>FaultSource</code> is <em>one piece</em> of node status, not the whole story.</p>
 <p>This is the neutral home for node-status vocabulary so it isn't shaped around any one node flavour (PanelGroup/OutputBase) or the HID namespace. <code>NodeHealthPayload</code> (the CAN HEALTH_n frame struct) stays in <code>CANProtocol.h</code>; the fault <em>detail</em> strings stay local (DiagSerial), never on the wire. Header-only contract + a tiny <code>FaultSource</code> registry (<code>NodeStatus.cpp</code>).</p>
 <p><strong>Version:</strong></p>
@@ -4894,7 +4998,10 @@
 <span class="w">    </span><span class="n">OVER_VOLTAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
 <span class="w">    </span><span class="n">UNDER_VOLTAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span>
 <span class="w">    </span><span class="n">SHORT_CIRCUIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
-<span class="w">    </span><span class="n">HOST_LINK_LOST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span>
+<span class="w">    </span><span class="n">HOST_LINK_LOST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FUSE_OPEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span>
+<span class="w">    </span><span class="n">OVER_TEMPERATURE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SENSOR_FAULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span>
 <span class="p">};</span>
 </code></pre></div></p>
 <p>Coarse, one active at a time on the wire; the exact device is logged locally on DiagSerial, not the frame. The client maps id → human label (SkyHawkClient#40). Each node type contributes the codes relevant to its fault sources; append as new sources appear. </p>
@@ -4907,6 +5014,42 @@
 <span class="w">    </span><span class="n">DEGRADED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span>
 <span class="p">};</span>
 </code></pre></div></p>
+<hr>
+
+<h3 id="enum-pdurailflag">enum PduRailFlag</h3>
+<p><em>PDU_RAIL_* page byte 1 — per-rail condition bits (all zero = healthy).</em> 
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">PduRailFlag</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">UNDER_V</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="w">    </span><span class="n">OVER_V</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
+<span class="w">    </span><span class="n">OVER_CURRENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FUSE_OPEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SENSOR_FAULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-pdustatusflag">enum PduStatusFlag</h3>
+<p><em>PDU_STATUS page byte 1 — board condition bits (all zero = healthy, calibrated).</em> 
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">PduStatusFlag</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">UNCAL_VDDA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="w">    </span><span class="n">UNCAL_ZERO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TEMP_WARN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TEMP_CRIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span>
+<span class="w">    </span><span class="n">NTC_FAULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-telempage">enum TelemPage</h3>
+<p><em>TELEM_n page ids (#216) — byte 0 of TelemPayload, naming the layout of bytes 1-7.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">TelemPage</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">INVALID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PDU_RAIL_12V</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PDU_RAIL_5V</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PDU_STATUS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<p>Global and append-only: a page id means the same layout whichever node sends it, so the client decodes by page, not by node type. 0x00 is invalid. Layouts (little-endian): PDU_RAIL_12V / PDU_RAIL_5V: [1] PduRailFlag bits · [2-3] vAvgMv u16 · [4-5] vMinMv u16 · [6-7] iAvgMa int16 PDU_STATUS: [1] PduStatusFlag bits · [2-3] ntcTempDC int16 (0.1 °C, INT16_MIN = unavailable) · [4-5] i12PeakMa u16 · [6-7] i5PeakMa u16 </p>
 <hr>
 <h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
 <h3 id="define-node_status_end_msg_name">define NODE_STATUS_END_MSG_NAME</h3>
@@ -4926,6 +5069,16 @@
 
 <h3 id="define-node_status_req_addr">define NODE_STATUS_REQ_ADDR</h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_REQ_ADDR `0x86FE`</span>
+</code></pre></div>
+<hr>
+
+<h3 id="define-node_telem_msg_name">define NODE_TELEM_MSG_NAME</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_TELEM_MSG_NAME `"_NODE_TELEM"`</span>
+</code></pre></div>
+<hr>
+
+<h3 id="define-node_telem_proto_version">define NODE_TELEM_PROTO_VERSION</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_TELEM_PROTO_VERSION `1`</span>
 </code></pre></div>
 <hr>
 

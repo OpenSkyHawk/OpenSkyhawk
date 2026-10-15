@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="TelemSchedule_8h" kind="file" language="C++">
+    <compoundname>TelemSchedule.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="PduNode_8cpp" local="yes">Firmware/Libraries/PowerMonitor/PduNode.cpp</includedby>
+    <includedby refid="TelemSchedule_8cpp" local="yes">Firmware/Libraries/PowerMonitor/TelemSchedule.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/TelemSchedule.h</label>
+        <link refid="TelemSchedule_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PowerMonitor/TelemSchedule.cpp</label>
+        <link refid="TelemSchedule_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/TelemSchedule.h</label>
+        <link refid="TelemSchedule_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule" prot="public">OpenSkyhawk::Pdu::TelemSchedule</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <briefdescription>
+<para>When to send which TELEM_n page — periodic rotation plus rate-limited edge sends (#216). </para>
+    </briefdescription>
+    <detaileddescription>
+<para><itemizedlist>
+<listitem><para>Periodic: one frame per TELEM_PERIOD_MS (the HEALTH_n rate), rotating through the pages, so each page refreshes every PAGES × period. A periodic send is the one that restarts that page&apos;s statistics window.</para>
+</listitem><listitem><para>Edge: when a page&apos;s flag byte differs from what was last sent for it, send that page now — at most once per EDGE_MIN_MS per page; a change inside the hold-off goes out when it ends. An edge send does not restart the window. Every page starts from an all-clear baseline (0), so a condition present at boot goes out promptly instead of waiting for its periodic slot.</para>
+</listitem></itemizedlist>
+</para>
+<para>Hardware-free — the caller supplies the clock and the current flag bytes.</para>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule" kindref="compound">TelemSchedule</ref><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="26" refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>3;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="27" refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" kindref="member">TELEM_PERIOD_MS</ref><sp/>=<sp/>1000;<sp/><sp/></highlight></codeline>
+<codeline lineno="28" refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a6c0ce229a2289b08d45c449d6eee7629" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a6c0ce229a2289b08d45c449d6eee7629" kindref="member">EDGE_MIN_MS</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>100;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1aec3d7b41aac11699c7e8a5e8408ddbff" kindref="member">start</ref>(uint32_t<sp/>nowMs);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>int8_t<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a38aa6e5e8168e952b28bd3d0dd83a1e1" kindref="member">next</ref>(uint32_t<sp/>nowMs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>flags[<ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref>],<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">&amp;<sp/>periodic);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ab010de1024a30ec48163f250f0b6c85b" kindref="member">sent</ref>(uint8_t<sp/>slot,<sp/>uint8_t<sp/>flags,<sp/>uint32_t<sp/>nowMs);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>_lastPeriodic<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>_rr<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>_lastSent[<ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref>]<sp/><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>_lastFlags[<ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref>]<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h"/>
+  </compounddef>
+</doxygen>

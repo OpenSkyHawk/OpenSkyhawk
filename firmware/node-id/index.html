@@ -2026,6 +2026,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/components/" class="md-nav__link">
         
   
@@ -4813,13 +4841,31 @@ injects it as a compiler flag visible to <strong>every</strong> translation unit
 <td>Right</td>
 <td>Active</td>
 </tr>
+<tr>
+<td>3</td>
+<td>PDU_Left</td>
+<td>Left</td>
+<td>Active — power distribution + monitoring (#216)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>PDU_Right</td>
+<td>Right</td>
+<td>Active — power distribution + monitoring (#216)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>PDU_Center</td>
+<td>Center</td>
+<td>Active — power distribution + monitoring (#216)</td>
+</tr>
 </tbody>
 </table>
 <h2 id="how-to-claim-a-new-node_id">How to claim a new NODE_ID</h2>
 <p>IDs are permanent — <strong>never reuse one</strong>, even if a panel is retired (mark it Retired instead).
 When you start a new panel group:</p>
 <ol>
-<li>Open <code>Firmware/NODE_IDS.md</code> and take the <strong>next available</strong> number (currently <strong>2</strong>).</li>
+<li>Open <code>Firmware/NODE_IDS.md</code> and take the <strong>next available</strong> number (currently <strong>6</strong>).</li>
 <li>Add a row with your panel group, console, and status.</li>
 <li>Set <code>build_flags = -DNODE_ID=N</code> in your board's <code>platformio.ini</code>.</li>
 <li>Commit the registry change <strong>in the same PR</strong> that creates the panel sketch.</li>

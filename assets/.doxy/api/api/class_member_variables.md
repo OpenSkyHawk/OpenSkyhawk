@@ -63,12 +63,14 @@
 ## e
 
 * **enabled** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
+* **EDGE\_MIN\_MS** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
 
 
 ## f
 
 * **faces** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md))
 * **flag** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **fuseOpenCheck** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
 * **FAST\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 
 
@@ -93,6 +95,8 @@
 
 * **interDigitGapMm** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **I2C\_RETRY\_MS** ([**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md))
+* **iGain12** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
+* **iGain5** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
 * **isOut** ([**PinRef**](classPinRef.md))
 
 
@@ -125,22 +129,29 @@
 
 ## n
 
-* **name** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md))
+* **name** ([**DcsBiosInputEntry**](structDcsBiosInputEntry.md), [**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
 * **nDigits** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md), [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
 * **nGlyphs** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **nSources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **NO\_POSITION** ([**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md))
+* **ntcOffsetDC** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
 
 
 ## o
 
 * **offset** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
+* **on** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
+* **ocMa** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
+* **ovMv** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
 
 
 ## p
 
 * **POLL\_MS** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **place** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
+* **pending** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
+* **PAGES** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
+* **page** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
 * **parkPosition** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **pattern** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **pin** ([**PinRef**](classPinRef.md))
@@ -161,21 +172,41 @@
 * **scroll** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **snapThreshold** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **since** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
 * **STOPPED\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **sensor** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **stepsPerRev** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **sr** ([**PinRef**](classPinRef.md))
 
 
+## t
+
+* **TELEM\_PERIOD\_MS** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
+
+
+## u
+
+* **uvMv** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
+
+
 ## v
 
 * **version** ([**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md))
+* **vGain12** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
+* **vGain5** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
+* **vrefintMv** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
 
 
 ## w
 
 * **widthMm** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md))
 * **wrap** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
+
+
+## z
+
+* **zero12DmA** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
+* **zero5DmA** ([**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md))
 
 
 ## _
@@ -190,7 +221,7 @@
 * **\_ewmaShift** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **\_hysteresis** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **\_lastReadMs** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
-* **\_lastSent** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
+* **\_lastSent** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md), [**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
 * **\_maxRaw** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **\_minRaw** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
 * **\_pollMs** ([**OpenSkyhawk::AnalogInput**](classOpenSkyhawk_1_1AnalogInput.md))
@@ -204,6 +235,10 @@
 * **\_mask** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **\_shift** ([**OpenSkyhawk::AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md))
 * **\_centerRaw** ([**OpenSkyhawk::AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md))
+* **\_crit** ([**OpenSkyhawk::BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md))
+* **\_ntcFault** ([**OpenSkyhawk::BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md))
+* **\_tempDC** ([**OpenSkyhawk::BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md))
+* **\_warn** ([**OpenSkyhawk::BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md))
 * **\_enabled** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))
 * **\_hasState** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md), [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md))
 * **\_lastDuty** ([**OpenSkyhawk::Dimmer**](classOpenSkyhawk_1_1Dimmer.md))
@@ -253,6 +288,24 @@
 * **\_pendingPos** ([**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md))
 * **\_cal** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
 * **\_motor** ([**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md))
+* **\_page** ([**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md))
+* **\_lastFlags** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
+* **\_lastPeriodic** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
+* **\_rr** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
+* **\_cfg** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
+* **\_detail** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_fuse** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_lastMa** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_lastMv** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_minMv** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_n** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_oc** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_ov** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_peakMa** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_sensor** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_sumMa** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_sumMv** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
+* **\_uv** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
 * **\_delta** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **\_fastStep** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **\_filter** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
@@ -285,7 +338,6 @@
 * **\_sckPin** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **\_spi** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **\_stage** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
-* **\_cfg** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_coil** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_coilsOk** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **\_currentStep** ([**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))

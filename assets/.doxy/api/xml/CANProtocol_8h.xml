@@ -14,6 +14,8 @@
     <includedby refid="Switch2Pos_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/Switch2Pos/Switch2Pos.cpp</includedby>
     <includedby refid="SwitchWithCover2Pos_8cpp" local="no">Firmware/Libraries/PanelGroup/Inputs/SwitchWithCover2Pos/SwitchWithCover2Pos.cpp</includedby>
     <includedby refid="PanelGroup_8h" local="no">Firmware/Libraries/PanelGroup/PanelGroup.h</includedby>
+    <includedby refid="PduNode_8h" local="no">Firmware/Libraries/PowerMonitor/PduNode.h</includedby>
+    <includedby refid="RailMonitor_8h" local="no">Firmware/Libraries/PowerMonitor/RailMonitor.h</includedby>
     <includedby refid="STM32Board_8cpp" local="no">Firmware/Libraries/STM32Board/STM32Board.cpp</includedby>
     <incdepgraph>
       <node id="1">
@@ -67,6 +69,10 @@
         <childnode refid="10" relation="include">
         </childnode>
         <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
         </childnode>
       </node>
       <node id="12">
@@ -337,7 +343,29 @@
         <childnode refid="41" relation="include">
         </childnode>
       </node>
+      <node id="43">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
       <node id="42">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.cpp</label>
+        <link refid="RailMonitor_8cpp"/>
+      </node>
+      <node id="44">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>
@@ -386,7 +414,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="86" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="86" bodyend="91"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="104" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="104" bodyend="109"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="typedef">
@@ -402,7 +430,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="157" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="157" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="180" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="180" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" prot="public" static="no">
         <type>void(*)(uint32_t canId, const uint8_t *data, uint8_t len)</type>
@@ -416,7 +444,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="160" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="160" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="183" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="183" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" prot="public" static="no">
         <type>void(*)()</type>
@@ -430,7 +458,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="163" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="163" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="186" column="1" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="186" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -447,7 +475,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="95" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="95" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="113" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="113" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint32_t</type>
@@ -462,7 +490,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="96" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="96" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="114" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="114" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1ad1f85ba093dec9722550d305be836227" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint32_t</type>
@@ -477,7 +505,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="97" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="97" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="115" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="115" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -492,7 +520,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="142" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="142" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="165" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="165" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1a641852573b3979285d256589876be93b" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint16_t</type>
@@ -507,7 +535,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="143" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="143" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="166" column="27" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="166" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1af903c55bd4ae0b54a10b3c8e5311760e" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -522,7 +550,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="148" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="148" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="171" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="171" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1ab71918f3191f6a3a791f5685d23dcada" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -537,7 +565,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="149" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="149" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="172" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="172" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1ab8eb2dfcb3c349b622c9467d44988eaa" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -552,7 +580,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="150" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="150" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="173" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="173" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1a5feebc3a11850d3e77023b90161424d8" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -567,7 +595,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="151" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="151" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="174" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="174" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="CANProtocol_8h_1a532a40e4a608edef869dfbc131a1d1f3" prot="public" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -582,7 +610,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="152" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="152" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="175" column="26" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="175" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -598,6 +626,7 @@
 <para>Primary input/output routing packet. 4 bytes; two are batched for CTRL_BCAST/EVT_n. </para>
         </briefdescription>
         <detaileddescription>
+<para>8-byte payload carried by TELEM_n frames — paged node telemetry (#216).</para>
 <para>8-byte payload carried by HEALTH_n frames — per-node health telemetry.</para>
 <para>8-byte payload carried by HB_n heartbeat frames.</para>
 <para>Two ControlPackets packed into one 8-byte input/output CAN frame.</para>
@@ -610,9 +639,10 @@
 </para>
 <para><simplesect kind="note"><para>The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute, measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend and per-node overheat flagging, not precise ambient measurement. </para>
 </simplesect>
-<simplesect kind="note"><para>Rail voltage/current is intentionally NOT here — that is the PDU&apos;s dedicated power telemetry (#202, real INA226 sensors), not generic per-node health. </para>
+<simplesect kind="note"><para>Rail voltage/current is intentionally NOT here — that is the PDU&apos;s dedicated power telemetry (TELEM_n / TelemPayload, #216; INA180A2 current sense on #202), not generic per-node health.</para>
 </simplesect>
-</para>
+Byte 0 is a TelemPage (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>) naming the layout of the other seven bytes; page ids are global and append-only, so a page means the same thing whichever node sends it. Multi-byte fields inside a page are little-endian. <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> forwards every TELEM_n frame to the host unread (<computeroutput>_NODE_TELEM</computeroutput>), so a new page type needs no bridge change — the client owns the decode.</para>
+<para>First user: the PDU monitoring node — pages PDU_RAIL_12V / PDU_RAIL_5V / PDU_STATUS. Generic node health (die temp, fault id) stays in HEALTH_n and is never repeated here. </para>
         </detaileddescription>
         <inbodydescription>
 <para>&lt; Payload routing key; not a CAN arbitration ID</para>
@@ -629,6 +659,8 @@
 <para>&lt; 3: fault source/domain bitmap — reserved for future domain bits (0)</para>
 <para>&lt; 4: NodeFaultCode (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>): 0 = no fault, else primary fault — #163</para>
 <para>&lt; 5-7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)</para>
+<para>&lt; 0: TelemPage (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>); 0x00 is invalid</para>
+<para>&lt; 1-7: page-defined, little-endian multi-byte fields</para>
         </inbodydescription>
         <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="1" column="0" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="28" bodyend="31"/>
       </memberdef>
@@ -648,7 +680,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="102" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="102" bodyend="102"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="120" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="120" bodyend="120"/>
       </memberdef>
       <memberdef kind="function" id="CANProtocol_8h_1a6f3dc603bbc005fa009f4280d01e98a1" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>constexpr uint32_t</type>
@@ -666,7 +698,25 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="106" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="106" bodyend="106"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="124" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="124" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="CANProtocol_8h_1a1fe7f9f0046af6cdd5eed5525f3e8b11" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t canIdTelem</definition>
+        <argsstring>(uint8_t n)</argsstring>
+        <name>canIdTelem</name>
+        <param>
+          <type>uint8_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181-0x1BF. Sits with HB (0x100) and HEALTH (0x140) in the node-status block; <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> forwards it to the host unread as <computeroutput>_NODE_TELEM</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="129" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="129" bodyend="129"/>
       </memberdef>
       <memberdef kind="function" id="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>constexpr uint32_t</type>
@@ -684,7 +734,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="109" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="109" bodyend="109"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="132" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="132" bodyend="132"/>
       </memberdef>
       <memberdef kind="function" id="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>constexpr uint32_t</type>
@@ -702,7 +752,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="114" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="114" bodyend="114"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="137" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="137" bodyend="137"/>
       </memberdef>
       <memberdef kind="function" id="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>constexpr uint32_t</type>
@@ -720,7 +770,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="119" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="119" bodyend="119"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="142" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="142" bodyend="142"/>
       </memberdef>
       <memberdef kind="function" id="CANProtocol_8h_1a88e44f90215eba42c8b0fe28a5092fc0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>constexpr uint32_t</type>
@@ -739,7 +789,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="128" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="128" bodyend="128"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="151" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="151" bodyend="151"/>
       </memberdef>
       <memberdef kind="function" id="CANProtocol_8h_1a6a9b896bfe9298c8fd1d2d7e80c140ba" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>constexpr uint32_t</type>
@@ -757,7 +807,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="131" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="131" bodyend="131"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="154" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="154" bodyend="154"/>
       </memberdef>
       <memberdef kind="function" id="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>constexpr uint32_t</type>
@@ -775,7 +825,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="134" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="134" bodyend="134"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="157" column="20" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="157" bodyend="157"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -817,132 +867,140 @@
 <codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/>esr;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="56"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kindref="member">__attribute__</ref>((packed))<sp/>NodeHealthPayload<sp/>{</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>nodeId;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>int8_t<sp/><sp/><sp/>dieTempC;<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>flags;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>faultMask;<sp/><sp/></highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>faultId;<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>rsvd[3];<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="83"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"></highlight></codeline>
-<codeline lineno="86" refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/>{</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kindref="member">STARTING</ref>,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a1e23852820b9154316c7c06e2b7ba051" kindref="member">NORMAL</ref>,<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a39374db5533b6f88ff25658b2d6c7316" kindref="member">TX_ERROR</ref>,<sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728aea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">BUS_OFF</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="91"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Fixed<sp/>CAN<sp/>arbitration<sp/>IDs<sp/>(PanelBridge<sp/>-&gt;<sp/>All)<sp/>───────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="94"><highlight class="normal"></highlight></codeline>
-<codeline lineno="95" refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" kindref="member">CAN_ID_CTRL_BCAST</ref><sp/>=<sp/>0x010;<sp/><sp/></highlight></codeline>
-<codeline lineno="96" refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kindref="member">CAN_ID_TEST_SEQ</ref><sp/><sp/><sp/>=<sp/>0x011;<sp/><sp/></highlight></codeline>
-<codeline lineno="97" refid="CANProtocol_8h_1ad1f85ba093dec9722550d305be836227" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1ad1f85ba093dec9722550d305be836227" kindref="member">CAN_ID_SYNC_REQ</ref><sp/><sp/><sp/>=<sp/>0x012;<sp/><sp/></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"></highlight></codeline>
-<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>CAN<sp/>ID<sp/>functions<sp/>(per-node<sp/>IDs<sp/>computed<sp/>from<sp/>NODE_ID)<sp/>─────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal"></highlight></codeline>
-<codeline lineno="102" refid="CANProtocol_8h_1a3688e2363e1deaa57d248e523f9ef44c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a3688e2363e1deaa57d248e523f9ef44c" kindref="member">canIdHb</ref>(uint8_t<sp/>n)<sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x100<sp/>+<sp/>n;<sp/>}</highlight></codeline>
-<codeline lineno="103"><highlight class="normal"></highlight></codeline>
-<codeline lineno="106" refid="CANProtocol_8h_1a6f3dc603bbc005fa009f4280d01e98a1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a6f3dc603bbc005fa009f4280d01e98a1" kindref="member">canIdHealth</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x140<sp/>+<sp/>n;<sp/>}</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"></highlight></codeline>
-<codeline lineno="109" refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" kindref="member">canIdEvt</ref>(uint8_t<sp/>n)<sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x200<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kindref="member">__attribute__</ref>((packed))<sp/>NodeHealthPayload<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>nodeId;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>int8_t<sp/><sp/><sp/>dieTempC;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>flags;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>faultMask;<sp/><sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>faultId;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/>rsvd[3];<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1a67126b6bd393981156eacf9a47da539b" kindref="member">__attribute__</ref>((packed))<sp/>TelemPayload<sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>page;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>body[7];<sp/><sp/></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(TelemPayload)<sp/>==<sp/>8,<sp/></highlight><highlight class="stringliteral">&quot;TelemPayload<sp/>must<sp/>fill<sp/>one<sp/>classic<sp/>CAN<sp/>frame&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a034312d8adc8099c1c6f53aaff745e26" kindref="member">STARTING</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a1e23852820b9154316c7c06e2b7ba051" kindref="member">NORMAL</ref>,<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728a39374db5533b6f88ff25658b2d6c7316" kindref="member">TX_ERROR</ref>,<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728aea3c14b559f5e4065a5bf09df4a9d9f0" kindref="member">BUS_OFF</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="110"><highlight class="normal"></highlight></codeline>
-<codeline lineno="114" refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" kindref="member">canIdEvtRel</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x500<sp/>+<sp/>n;<sp/>}</highlight></codeline>
-<codeline lineno="115"><highlight class="normal"></highlight></codeline>
-<codeline lineno="119" refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" kindref="member">canIdEvtDir</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x600<sp/>+<sp/>n;<sp/>}</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"></highlight></codeline>
-<codeline lineno="128" refid="CANProtocol_8h_1a88e44f90215eba42c8b0fe28a5092fc0" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a88e44f90215eba42c8b0fe28a5092fc0" kindref="member">canIdEvtAction</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x700<sp/>+<sp/>n;<sp/>}</highlight></codeline>
-<codeline lineno="129"><highlight class="normal"></highlight></codeline>
-<codeline lineno="131" refid="CANProtocol_8h_1a6a9b896bfe9298c8fd1d2d7e80c140ba" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a6a9b896bfe9298c8fd1d2d7e80c140ba" kindref="member">canIdEcho</ref>(uint8_t<sp/>n)<sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x300<sp/>+<sp/>n;<sp/>}</highlight></codeline>
-<codeline lineno="132"><highlight class="normal"></highlight></codeline>
-<codeline lineno="134" refid="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" kindref="member">canIdReady</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x400<sp/>+<sp/>n;<sp/>}</highlight></codeline>
-<codeline lineno="135"><highlight class="normal"></highlight></codeline>
-<codeline lineno="136"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>controlId<sp/>namespace<sp/>───────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="137"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Payload<sp/>controlIds<sp/>live<sp/>inside<sp/>ControlPacket<sp/>data<sp/>bytes.<sp/>They<sp/>are<sp/>intentionally</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="138"><highlight class="normal"></highlight><highlight class="comment">//<sp/>separate<sp/>from<sp/>the<sp/>11-bit<sp/>CAN<sp/>arbitration<sp/>IDs<sp/>above.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="139"><highlight class="normal"></highlight><highlight class="comment">//<sp/>CTRL_ID_HID_MIN<sp/>/<sp/>CTRL_ID_HID_MAX<sp/>are<sp/>defined<sp/>as<sp/>macros<sp/>in<sp/>HIDControls.h<sp/>(included<sp/>above).</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="140"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Do<sp/>not<sp/>redeclare<sp/>them<sp/>here<sp/>—<sp/>macro<sp/>expansion<sp/>would<sp/>cause<sp/>a<sp/>syntax<sp/>error.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="141"><highlight class="normal"></highlight></codeline>
-<codeline lineno="142" refid="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" kindref="member">CTRL_ID_DCS_MIN</ref><sp/><sp/>=<sp/>0x8000;<sp/><sp/></highlight></codeline>
-<codeline lineno="143" refid="CANProtocol_8h_1a641852573b3979285d256589876be93b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="CANProtocol_8h_1a641852573b3979285d256589876be93b" kindref="member">CTRL_ID_DCS_MAX</ref><sp/><sp/>=<sp/>0x86FF;<sp/><sp/></highlight></codeline>
-<codeline lineno="144"><highlight class="normal"></highlight></codeline>
-<codeline lineno="145"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>UART<sp/>diagnostic<sp/>framing<sp/>constants<sp/>(PanelBridge<sp/>-&gt;<sp/>SimGateway)<sp/>─────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="146"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Used<sp/>by<sp/>SimGateway<sp/>to<sp/>parse<sp/>the<sp/>UART<sp/>diagnostic<sp/>stream<sp/>from<sp/>PanelBridge.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="147"><highlight class="normal"></highlight></codeline>
-<codeline lineno="148" refid="CANProtocol_8h_1af903c55bd4ae0b54a10b3c8e5311760e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1af903c55bd4ae0b54a10b3c8e5311760e" kindref="member">DIAG_MAGIC</ref><sp/>=<sp/>0xAA;<sp/><sp/></highlight></codeline>
-<codeline lineno="149" refid="CANProtocol_8h_1ab71918f3191f6a3a791f5685d23dcada" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1ab71918f3191f6a3a791f5685d23dcada" kindref="member">DIAG_RTT</ref><sp/><sp/><sp/>=<sp/>0x01;<sp/><sp/></highlight></codeline>
-<codeline lineno="150" refid="CANProtocol_8h_1ab8eb2dfcb3c349b622c9467d44988eaa" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1ab8eb2dfcb3c349b622c9467d44988eaa" kindref="member">DIAG_HB</ref><sp/><sp/><sp/><sp/>=<sp/>0x02;<sp/><sp/></highlight></codeline>
-<codeline lineno="151" refid="CANProtocol_8h_1a5feebc3a11850d3e77023b90161424d8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1a5feebc3a11850d3e77023b90161424d8" kindref="member">DIAG_ERR</ref><sp/><sp/><sp/>=<sp/>0x03;<sp/><sp/></highlight></codeline>
-<codeline lineno="152" refid="CANProtocol_8h_1a532a40e4a608edef869dfbc131a1d1f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1a532a40e4a608edef869dfbc131a1d1f3" kindref="member">DIAG_EVT</ref><sp/><sp/><sp/>=<sp/>0x04;<sp/><sp/></highlight></codeline>
-<codeline lineno="153"><highlight class="normal"></highlight></codeline>
-<codeline lineno="154"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Callback<sp/>types<sp/>────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Fixed<sp/>CAN<sp/>arbitration<sp/>IDs<sp/>(PanelBridge<sp/>-&gt;<sp/>All)<sp/>───────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1ad4fcfdb1de4fe026f80deb985b61d91a" kindref="member">CAN_ID_CTRL_BCAST</ref><sp/>=<sp/>0x010;<sp/><sp/></highlight></codeline>
+<codeline lineno="114" refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a2770e00a2d868eff1e0f882de79647d5" kindref="member">CAN_ID_TEST_SEQ</ref><sp/><sp/><sp/>=<sp/>0x011;<sp/><sp/></highlight></codeline>
+<codeline lineno="115" refid="CANProtocol_8h_1ad1f85ba093dec9722550d305be836227" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1ad1f85ba093dec9722550d305be836227" kindref="member">CAN_ID_SYNC_REQ</ref><sp/><sp/><sp/>=<sp/>0x012;<sp/><sp/></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>CAN<sp/>ID<sp/>functions<sp/>(per-node<sp/>IDs<sp/>computed<sp/>from<sp/>NODE_ID)<sp/>─────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="CANProtocol_8h_1a3688e2363e1deaa57d248e523f9ef44c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a3688e2363e1deaa57d248e523f9ef44c" kindref="member">canIdHb</ref>(uint8_t<sp/>n)<sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x100<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124" refid="CANProtocol_8h_1a6f3dc603bbc005fa009f4280d01e98a1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a6f3dc603bbc005fa009f4280d01e98a1" kindref="member">canIdHealth</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x140<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="CANProtocol_8h_1a1fe7f9f0046af6cdd5eed5525f3e8b11" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a1fe7f9f0046af6cdd5eed5525f3e8b11" kindref="member">canIdTelem</ref>(uint8_t<sp/>n)<sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x180<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a5bfcab33b81aa7ca7f63528e5d46fa0a" kindref="member">canIdEvt</ref>(uint8_t<sp/>n)<sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x200<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137" refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a1740e9719c5533fe84a86eb5bb397796" kindref="member">canIdEvtRel</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x500<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a98b697562e283c54c1b03cb3b1886cc3" kindref="member">canIdEvtDir</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x600<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151" refid="CANProtocol_8h_1a88e44f90215eba42c8b0fe28a5092fc0" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a88e44f90215eba42c8b0fe28a5092fc0" kindref="member">canIdEvtAction</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x700<sp/>+<sp/>n;<sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154" refid="CANProtocol_8h_1a6a9b896bfe9298c8fd1d2d7e80c140ba" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a6a9b896bfe9298c8fd1d2d7e80c140ba" kindref="member">canIdEcho</ref>(uint8_t<sp/>n)<sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x300<sp/>+<sp/>n;<sp/>}</highlight></codeline>
 <codeline lineno="155"><highlight class="normal"></highlight></codeline>
-<codeline lineno="157" refid="CANProtocol_8h_1a0fd53b9da84f0920081fc8324505c504" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1a0fd53b9da84f0920081fc8324505c504" kindref="member">CanStatusCallback</ref><sp/><sp/>=<sp/>void(*)(<ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/>status);</highlight></codeline>
+<codeline lineno="157" refid="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" kindref="member">canIdReady</ref>(uint8_t<sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0x400<sp/>+<sp/>n;<sp/>}</highlight></codeline>
 <codeline lineno="158"><highlight class="normal"></highlight></codeline>
-<codeline lineno="160" refid="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" kindref="member">CanRxCallback</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>void(*)(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/>uint8_t<sp/>len);</highlight></codeline>
-<codeline lineno="161"><highlight class="normal"></highlight></codeline>
-<codeline lineno="163" refid="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" kindref="member">CanSyncReqCallback</ref><sp/>=<sp/>void(*)();</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>controlId<sp/>namespace<sp/>───────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Payload<sp/>controlIds<sp/>live<sp/>inside<sp/>ControlPacket<sp/>data<sp/>bytes.<sp/>They<sp/>are<sp/>intentionally</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="comment">//<sp/>separate<sp/>from<sp/>the<sp/>11-bit<sp/>CAN<sp/>arbitration<sp/>IDs<sp/>above.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="comment">//<sp/>CTRL_ID_HID_MIN<sp/>/<sp/>CTRL_ID_HID_MAX<sp/>are<sp/>defined<sp/>as<sp/>macros<sp/>in<sp/>HIDControls.h<sp/>(included<sp/>above).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Do<sp/>not<sp/>redeclare<sp/>them<sp/>here<sp/>—<sp/>macro<sp/>expansion<sp/>would<sp/>cause<sp/>a<sp/>syntax<sp/>error.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="164"><highlight class="normal"></highlight></codeline>
-<codeline lineno="165"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Runtime<sp/>API<sp/>(STM32<sp/>only)<sp/>──────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="166"><highlight class="normal"></highlight></codeline>
-<codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="168"><highlight class="normal"></highlight></codeline>
-<codeline lineno="169"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref><sp/>{</highlight></codeline>
+<codeline lineno="165" refid="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="CANProtocol_8h_1a05ae1732f5ce786b88fff167c94adba2" kindref="member">CTRL_ID_DCS_MIN</ref><sp/><sp/>=<sp/>0x8000;<sp/><sp/></highlight></codeline>
+<codeline lineno="166" refid="CANProtocol_8h_1a641852573b3979285d256589876be93b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="CANProtocol_8h_1a641852573b3979285d256589876be93b" kindref="member">CTRL_ID_DCS_MAX</ref><sp/><sp/>=<sp/>0x86FF;<sp/><sp/></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>UART<sp/>diagnostic<sp/>framing<sp/>constants<sp/>(PanelBridge<sp/>-&gt;<sp/>SimGateway)<sp/>─────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Used<sp/>by<sp/>SimGateway<sp/>to<sp/>parse<sp/>the<sp/>UART<sp/>diagnostic<sp/>stream<sp/>from<sp/>PanelBridge.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="170"><highlight class="normal"></highlight></codeline>
-<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Filter<sp/>configuration<sp/>(call<sp/>before<sp/>start())<sp/>────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="172"><highlight class="normal"></highlight></codeline>
-<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kindref="member">filterAcceptAll</ref>();</highlight></codeline>
-<codeline lineno="180"><highlight class="normal"></highlight></codeline>
-<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a4a1066c652bf5a9d6dafb6838f1d900d" kindref="member">filterAcceptId</ref>(uint32_t<sp/>canId);</highlight></codeline>
+<codeline lineno="171" refid="CANProtocol_8h_1af903c55bd4ae0b54a10b3c8e5311760e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1af903c55bd4ae0b54a10b3c8e5311760e" kindref="member">DIAG_MAGIC</ref><sp/>=<sp/>0xAA;<sp/><sp/></highlight></codeline>
+<codeline lineno="172" refid="CANProtocol_8h_1ab71918f3191f6a3a791f5685d23dcada" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1ab71918f3191f6a3a791f5685d23dcada" kindref="member">DIAG_RTT</ref><sp/><sp/><sp/>=<sp/>0x01;<sp/><sp/></highlight></codeline>
+<codeline lineno="173" refid="CANProtocol_8h_1ab8eb2dfcb3c349b622c9467d44988eaa" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1ab8eb2dfcb3c349b622c9467d44988eaa" kindref="member">DIAG_HB</ref><sp/><sp/><sp/><sp/>=<sp/>0x02;<sp/><sp/></highlight></codeline>
+<codeline lineno="174" refid="CANProtocol_8h_1a5feebc3a11850d3e77023b90161424d8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1a5feebc3a11850d3e77023b90161424d8" kindref="member">DIAG_ERR</ref><sp/><sp/><sp/>=<sp/>0x03;<sp/><sp/></highlight></codeline>
+<codeline lineno="175" refid="CANProtocol_8h_1a532a40e4a608edef869dfbc131a1d1f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="CANProtocol_8h_1a532a40e4a608edef869dfbc131a1d1f3" kindref="member">DIAG_EVT</ref><sp/><sp/><sp/>=<sp/>0x04;<sp/><sp/></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Callback<sp/>types<sp/>────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180" refid="CANProtocol_8h_1a0fd53b9da84f0920081fc8324505c504" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1a0fd53b9da84f0920081fc8324505c504" kindref="member">CanStatusCallback</ref><sp/><sp/>=<sp/>void(*)(<ref refid="CANProtocol_8h_1af68c87a3f2856b72a0c719a36660b728" kindref="member">CanStatus</ref><sp/>status);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183" refid="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" kindref="member">CanRxCallback</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>void(*)(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/>uint8_t<sp/>len);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186" refid="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" kindref="member">CanSyncReqCallback</ref><sp/>=<sp/>void(*)();</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Runtime<sp/>API<sp/>(STM32<sp/>only)<sp/>──────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="191"><highlight class="normal"></highlight></codeline>
-<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Lifecycle<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCANProtocol" kindref="compound">CANProtocol</ref><sp/>{</highlight></codeline>
 <codeline lineno="193"><highlight class="normal"></highlight></codeline>
-<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">start</ref>();</highlight></codeline>
-<codeline lineno="206"><highlight class="normal"></highlight></codeline>
-<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1acc6510e0de85e6bf717989ef8c04cf77" kindref="member">startLoopback</ref>();</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Filter<sp/>configuration<sp/>(call<sp/>before<sp/>start())<sp/>────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kindref="member">filterAcceptAll</ref>();</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a4a1066c652bf5a9d6dafb6838f1d900d" kindref="member">filterAcceptId</ref>(uint32_t<sp/>canId);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Lifecycle<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="216"><highlight class="normal"></highlight></codeline>
-<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">drain</ref>();</highlight></codeline>
-<codeline lineno="230"><highlight class="normal"></highlight></codeline>
-<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Transmit<sp/>──────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="232"><highlight class="normal"></highlight></codeline>
-<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kindref="member">send</ref>(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/>uint8_t<sp/>len);</highlight></codeline>
-<codeline lineno="246"><highlight class="normal"></highlight></codeline>
-<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kindref="member">sendBatched</ref>(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ControlPacket&amp;<sp/>pkt);</highlight></codeline>
-<codeline lineno="264"><highlight class="normal"></highlight></codeline>
-<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a1c8a1d8a898a80e32c16d4a184d0835b" kindref="member">flushBatched</ref>(uint32_t<sp/>canId);</highlight></codeline>
-<codeline lineno="275"><highlight class="normal"></highlight></codeline>
-<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Callbacks<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="277"><highlight class="normal"></highlight></codeline>
-<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a438f275b91eb5d34ae85eeaa2a3505ea" kindref="member">onStatusChange</ref>(<ref refid="CANProtocol_8h_1a0fd53b9da84f0920081fc8324505c504" kindref="member">CanStatusCallback</ref><sp/>cb);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">start</ref>();</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1acc6510e0de85e6bf717989ef8c04cf77" kindref="member">startLoopback</ref>();</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">drain</ref>();</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Transmit<sp/>──────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kindref="member">send</ref>(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t*<sp/>data,<sp/>uint8_t<sp/>len);</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" kindref="member">sendBatched</ref>(uint32_t<sp/>canId,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ControlPacket&amp;<sp/>pkt);</highlight></codeline>
 <codeline lineno="287"><highlight class="normal"></highlight></codeline>
-<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a8ea19c74f3b784a3844f0e5a1b8ed699" kindref="member">onSyncReq</ref>(<ref refid="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" kindref="member">CanSyncReqCallback</ref><sp/>cb);</highlight></codeline>
-<codeline lineno="297"><highlight class="normal"></highlight></codeline>
-<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive</ref>(<ref refid="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" kindref="member">CanRxCallback</ref><sp/>cb);</highlight></codeline>
-<codeline lineno="307"><highlight class="normal"></highlight></codeline>
-<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Diagnostics<sp/>───────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="309"><highlight class="normal"></highlight></codeline>
-<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="namespaceCANProtocol_1aa387fe005cbba866e64171146d49018a" kindref="member">tec</ref>();</highlight></codeline>
-<codeline lineno="312"><highlight class="normal"></highlight></codeline>
-<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref>();</highlight></codeline>
-<codeline lineno="315"><highlight class="normal"></highlight></codeline>
-<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a1c61d1e29b732170869ac92225f580ad" kindref="member">busOff</ref>();</highlight></codeline>
-<codeline lineno="318"><highlight class="normal"></highlight></codeline>
-<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/>HeartbeatPayload<sp/><ref refid="namespaceCANProtocol_1af5d7ba8e24001ec0c58625e0b7094161" kindref="member">makeHeartbeatPayload</ref>(uint8_t<sp/>nodeId,<sp/>uint16_t<sp/>rxCount);</highlight></codeline>
-<codeline lineno="329"><highlight class="normal"></highlight></codeline>
-<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/>NodeHealthPayload<sp/><ref refid="namespaceCANProtocol_1a1b3df3a100c42b658b0145c597019556" kindref="member">makeNodeHealthPayload</ref>(uint8_t<sp/>nodeId,<sp/>int8_t<sp/>dieTempC,</highlight></codeline>
-<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>fault<sp/>=<sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>);</highlight></codeline>
-<codeline lineno="346"><highlight class="normal"></highlight></codeline>
-<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kindref="member">txDropCount</ref>();</highlight></codeline>
-<codeline lineno="349"><highlight class="normal"></highlight></codeline>
-<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Node<sp/>status<sp/>service<sp/>(every<sp/>node)<sp/>──────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="351"><highlight class="normal"></highlight></codeline>
-<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">serviceNodeStatus</ref>(uint16_t<sp/>rxCount<sp/>=<sp/>0);</highlight></codeline>
-<codeline lineno="383"><highlight class="normal"></highlight></codeline>
-<codeline lineno="386" refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" kindref="member">MASTER_TIMEOUT_MS</ref><sp/>=<sp/>1500;</highlight></codeline>
-<codeline lineno="387"><highlight class="normal"></highlight></codeline>
-<codeline lineno="388"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>CANProtocol</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="389"><highlight class="normal"></highlight></codeline>
-<codeline lineno="390"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a1c8a1d8a898a80e32c16d4a184d0835b" kindref="member">flushBatched</ref>(uint32_t<sp/>canId);</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Callbacks<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a438f275b91eb5d34ae85eeaa2a3505ea" kindref="member">onStatusChange</ref>(<ref refid="CANProtocol_8h_1a0fd53b9da84f0920081fc8324505c504" kindref="member">CanStatusCallback</ref><sp/>cb);</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a8ea19c74f3b784a3844f0e5a1b8ed699" kindref="member">onSyncReq</ref>(<ref refid="CANProtocol_8h_1a669a5d6292847e6d4dacc3aaf69aa632" kindref="member">CanSyncReqCallback</ref><sp/>cb);</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive</ref>(<ref refid="CANProtocol_8h_1ac27f1cd9ab18c1a008b05f6ee368d109" kindref="member">CanRxCallback</ref><sp/>cb);</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Diagnostics<sp/>───────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="namespaceCANProtocol_1aa387fe005cbba866e64171146d49018a" kindref="member">tec</ref>();</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref>();</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a1c61d1e29b732170869ac92225f580ad" kindref="member">busOff</ref>();</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/>HeartbeatPayload<sp/><ref refid="namespaceCANProtocol_1af5d7ba8e24001ec0c58625e0b7094161" kindref="member">makeHeartbeatPayload</ref>(uint8_t<sp/>nodeId,<sp/>uint16_t<sp/>rxCount);</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/>NodeHealthPayload<sp/><ref refid="namespaceCANProtocol_1a1b3df3a100c42b658b0145c597019556" kindref="member">makeNodeHealthPayload</ref>(uint8_t<sp/>nodeId,<sp/>int8_t<sp/>dieTempC,</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>fault<sp/>=<sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>);</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"></highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kindref="member">txDropCount</ref>();</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>──<sp/>Node<sp/>status<sp/>service<sp/>(every<sp/>node)<sp/>──────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="374"><highlight class="normal"></highlight></codeline>
+<codeline lineno="405"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">serviceNodeStatus</ref>(uint16_t<sp/>rxCount<sp/>=<sp/>0);</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"></highlight></codeline>
+<codeline lineno="409" refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" kindref="member">MASTER_TIMEOUT_MS</ref><sp/>=<sp/>1500;</highlight></codeline>
+<codeline lineno="410"><highlight class="normal"></highlight></codeline>
+<codeline lineno="411"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>CANProtocol</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="412"><highlight class="normal"></highlight></codeline>
+<codeline lineno="413"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/CANProtocol/CANProtocol.h"/>
   </compounddef>

@@ -17,6 +17,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md) _Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16)._     
     * **class** [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) _Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis._     
     * **struct** [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) _Captured endpoints for one axis, unsigned 0–65535 throughout._     
+    * **class** [**BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md)     
     * **struct** [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) _The whole persisted calibration set, written and erased as one unit._     
     * **class** [**Dimmer**](classOpenSkyhawk_1_1Dimmer.md) _PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin._     
     * **class** [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._     
@@ -39,6 +40,13 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md) _Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._    
     * **class** [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) _Abstract base for all DCS-driven output objects._     
+    * **namespace** [**Pdu**](namespaceOpenSkyhawk_1_1Pdu.md)     
+        * **class** [**CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md) _The reserved flash page holding the calibration log._     
+        * **struct** [**CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md) _Calibration values the conversions need. Defaults = uncalibrated._     
+        * **struct** [**Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md) _A condition that must hold_ `setMs` _to raise and its clear condition hold_`clearMs` _to drop._    
+        * **class** [**TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md)     
+    * **class** [**RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md)     
+        * **struct** [**Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md) _Per-rail limits._     
     * **class** [**RotaryAcceleratedEncoder**](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md) `RotaryEncoder` _plus the two behaviours of_`DcsBios::RotaryAcceleratedEncoder` _, both on by construction. Header-only: the logic lives in the_[_**RotaryEncoder**_](classOpenSkyhawk_1_1RotaryEncoder.md) _family base._    
     * **class** [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) _Incremental quadrature encoder on two pins (A/B). Emits a signed_ **relative** _value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) _One shared SPI shift-register bus ('165 inputs + '595 outputs)._     
@@ -53,6 +61,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **struct** [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)     
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     
 * **namespace** [**PanelGroup**](namespacePanelGroup.md) _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._    
+* **namespace** [**PduNode**](namespacePduNode.md)     
 * **class** [**PinRef**](classPinRef.md) _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _input and output classes._    
 * **struct** [**RxQueueEntry**](structRxQueueEntry.md)     
 * **namespace** [**STM32Board**](namespaceSTM32Board.md)     
@@ -61,5 +70,6 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d10.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d53.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d55.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d59.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d64.md) 
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d72.md)     
 

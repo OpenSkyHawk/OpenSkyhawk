@@ -808,6 +808,36 @@
 * **NODE\_STATUS\_MSG\_NAME** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NODE\_STATUS\_PROTO\_VERSION** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NODE\_STATUS\_REQ\_ADDR** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NODE\_TELEM\_MSG\_NAME** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NODE\_TELEM\_PROTO\_VERSION** ([**NodeStatus.h**](NodeStatus_8h.md))
+
+
+## p
+
+* **PDU\_12V\_OC\_MA** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_12V\_OV\_MV** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_12V\_UV\_MV** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_5V\_OC\_MA** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_5V\_OV\_MV** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_5V\_UV\_MV** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_BOOT\_BLANK\_MS** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_CAL\_PAGE\_ADDR** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_CLEAR\_MS** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_FUSE\_OPEN\_MV** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_OC\_SET\_MS** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_PIN\_I12** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_PIN\_I5** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_PIN\_NTC** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_PIN\_V12** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_PIN\_V5** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_SAMPLE\_US** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_TEMP\_CRIT\_DC** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_TEMP\_HYST\_DC** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_TEMP\_WARN\_DC** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_V\_HYST\_MV** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_V\_SET\_MS** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_ZERO\_GUARD\_12V\_MA** ([**PduConfig.h**](PduConfig_8h.md))
+* **PDU\_ZERO\_GUARD\_5V\_MA** ([**PduConfig.h**](PduConfig_8h.md))
 
 
 ## s

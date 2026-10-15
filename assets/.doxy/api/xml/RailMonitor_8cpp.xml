@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="RailMonitor_8cpp" kind="file" language="C++">
+    <compoundname>RailMonitor.cpp</compoundname>
+    <includes refid="RailMonitor_8h" local="yes">RailMonitor.h</includes>
+    <includes refid="PduConfig_8h" local="yes">PduConfig.h</includes>
+    <includes refid="PduMath_8h" local="yes">PduMath.h</includes>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">string.h</includes>
+    <incdepgraph>
+      <node id="5">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="4">
+        <label>NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PduMath.h</label>
+        <link refid="PduMath_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.cpp</label>
+        <link refid="RailMonitor_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+      <node id="10">
+        <label>stdio.h</label>
+      </node>
+      <node id="11">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="RailMonitor_8h" kindref="compound">RailMonitor.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduConfig_8h" kindref="compound">PduConfig.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduMath_8h" kindref="compound">PduMath.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a91ac2a32348b50ef725f6f412bad0d42" kindref="member">Latch::update</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>cond,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>clear,<sp/>uint32_t<sp/>setMs,<sp/>uint32_t<sp/>clearMs,<sp/>uint32_t<sp/>nowMs)<sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>want<sp/>=<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" kindref="member">on</ref><sp/>?<sp/>clear<sp/>:<sp/>cond;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>transition<sp/>we<sp/>are<sp/>waiting<sp/>for</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>hold<sp/>=<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" kindref="member">on</ref><sp/>?<sp/>clearMs<sp/>:<sp/>setMs;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!want)<sp/>{<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" kindref="member">pending</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" kindref="member">pending</ref>)<sp/>{<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" kindref="member">pending</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1abfec0dae3356ceb5920b245212f916ba" kindref="member">since</ref><sp/>=<sp/>nowMs;<sp/>}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nowMs<sp/>-<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1abfec0dae3356ceb5920b245212f916ba" kindref="member">since</ref><sp/>&gt;=<sp/>hold)<sp/>{<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" kindref="member">on</ref><sp/>=<sp/>!<ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a8f6853efc9f56caed35a7a3ecf741f5e" kindref="member">on</ref>;<sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch_1a5f01de1593ebba0b070879669b9d6715" kindref="member">pending</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1RailMonitor_1a26b021524f8d2b535622d0babbaa9a1c" kindref="member">RailMonitor::RailMonitor</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Config&amp;<sp/>cfg)<sp/>:<sp/>_cfg(cfg)<sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>_detail[0]<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RailMonitor::sample(uint16_t<sp/>vMv,<sp/>int32_t<sp/>iMa,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>vRailed,<sp/>uint32_t<sp/>nowMs,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>armed)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastMv<sp/>=<sp/>vMv;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastMa<sp/>=<sp/>iMa;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>_sumMv<sp/>+=<sp/>vMv;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>_sumMa<sp/>+=<sp/>iMa;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>_n++;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(vMv<sp/>&lt;<sp/>_minMv)<sp/>_minMv<sp/>=<sp/>vMv;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iMa<sp/>&gt;<sp/>(int32_t)_peakMa)<sp/>_peakMa<sp/>=<sp/>Pdu::clampU16(iMa);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!armed)<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_uv.reset();<sp/>_ov.reset();<sp/>_oc.reset();<sp/>_fuse.reset();<sp/>_sensor.reset();</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t<sp/>h<sp/>=<sp/><ref refid="PduConfig_8h_1a39cd4c1f8087369c932c3622fdf4268b" kindref="member">PDU_V_HYST_MV</ref>;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>_uv.update(vMv<sp/>&lt;<sp/>_cfg.uvMv,<sp/>vMv<sp/>&gt;<sp/>_cfg.uvMv<sp/>+<sp/>h,<sp/><ref refid="PduConfig_8h_1a15a506b0074b1abf1d0a901120641fe6" kindref="member">PDU_V_SET_MS</ref>,<sp/><ref refid="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" kindref="member">PDU_CLEAR_MS</ref>,<sp/>nowMs);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>_ov.update(vMv<sp/>&gt;<sp/>_cfg.ovMv,<sp/>vMv<sp/>+<sp/>h<sp/>&lt;<sp/>_cfg.ovMv,<sp/><ref refid="PduConfig_8h_1a15a506b0074b1abf1d0a901120641fe6" kindref="member">PDU_V_SET_MS</ref>,<sp/><ref refid="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" kindref="member">PDU_CLEAR_MS</ref>,<sp/>nowMs);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>_oc.update(iMa<sp/>&gt;<sp/>_cfg.ocMa,<sp/>iMa<sp/>&lt;<sp/>(int32_t)_cfg.ocMa<sp/>*<sp/>9<sp/>/<sp/>10,<sp/><ref refid="PduConfig_8h_1aa20eb7e5d9ca7cc2fced278c3dc5d768" kindref="member">PDU_OC_SET_MS</ref>,<sp/><ref refid="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" kindref="member">PDU_CLEAR_MS</ref>,<sp/>nowMs);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_cfg.fuseOpenCheck)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_fuse.update(vMv<sp/>&lt;<sp/>PDU_FUSE_OPEN_MV,<sp/>vMv<sp/>&gt;<sp/><ref refid="PduConfig_8h_1a3f13767053a53824afc181f0924e03dc" kindref="member">PDU_FUSE_OPEN_MV</ref><sp/>+<sp/>h,<sp/><ref refid="PduConfig_8h_1a15a506b0074b1abf1d0a901120641fe6" kindref="member">PDU_V_SET_MS</ref>,<sp/><ref refid="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" kindref="member">PDU_CLEAR_MS</ref>,<sp/>nowMs);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>_sensor.update(vRailed,<sp/>!vRailed,<sp/><ref refid="PduConfig_8h_1a15a506b0074b1abf1d0a901120641fe6" kindref="member">PDU_V_SET_MS</ref>,<sp/><ref refid="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" kindref="member">PDU_CLEAR_MS</ref>,<sp/>nowMs);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">uint8_t<sp/>RailMonitor::flags()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>f<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_uv.on)<sp/><sp/><sp/><sp/><sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da32e239067503fc565bd3f109c9f64630" kindref="member">PduRailFlag::UNDER_V</ref>;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_ov.on)<sp/><sp/><sp/><sp/><sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da619adf38f4188f442316a710589522dd" kindref="member">PduRailFlag::OVER_V</ref>;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_oc.on)<sp/><sp/><sp/><sp/><sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539dae93c8fb651c20c17bc96472c9b2cecd5" kindref="member">PduRailFlag::OVER_CURRENT</ref>;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_fuse.on)<sp/><sp/><sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da2e52d1548833ba298c1349658dcfacd2" kindref="member">PduRailFlag::FUSE_OPEN</ref>;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sensor.on)<sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da96e7947c42906e9f77c32a50cc98247c" kindref="member">PduRailFlag::SENSOR_FAULT</ref>;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal">TelemPayload<sp/>RailMonitor::buildPage(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>resetWindow)<sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t<sp/>vAvg<sp/>=<sp/>_n<sp/>?<sp/>(uint16_t)(_sumMv<sp/>/<sp/>_n)<sp/>:<sp/>_lastMv;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t<sp/>vMin<sp/>=<sp/>_n<sp/>?<sp/>_minMv<sp/>:<sp/>_lastMv;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/><sp/>iAvg<sp/>=<sp/>Pdu::clampI16(_n<sp/>?<sp/>_sumMa<sp/>/<sp/>(int32_t)_n<sp/>:<sp/>_lastMa);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>TelemPayload<sp/>p;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>p.page<sp/><sp/><sp/><sp/>=<sp/>(uint8_t)_cfg.page;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[0]<sp/>=<sp/>flags();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[1]<sp/>=<sp/>(uint8_t)(vAvg<sp/>&amp;<sp/>0xFF);<sp/><sp/>p.body[2]<sp/>=<sp/>(uint8_t)(vAvg<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[3]<sp/>=<sp/>(uint8_t)(vMin<sp/>&amp;<sp/>0xFF);<sp/><sp/>p.body[4]<sp/>=<sp/>(uint8_t)(vMin<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[5]<sp/>=<sp/>(uint8_t)((uint16_t)iAvg<sp/>&amp;<sp/>0xFF);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[6]<sp/>=<sp/>(uint8_t)((uint16_t)iAvg<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(resetWindow)<sp/>{<sp/>_sumMv<sp/>=<sp/>0;<sp/>_sumMa<sp/>=<sp/>0;<sp/>_n<sp/>=<sp/>0;<sp/>_minMv<sp/>=<sp/>UINT16_MAX;<sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>RailMonitor::faultCode()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_fuse.on)<sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kindref="member">NodeFaultCode::FUSE_OPEN</ref>;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_oc.on)<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kindref="member">NodeFaultCode::SHORT_CIRCUIT</ref>;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_ov.on)<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" kindref="member">NodeFaultCode::OVER_VOLTAGE</ref>;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_uv.on)<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kindref="member">NodeFaultCode::UNDER_VOLTAGE</ref>;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sensor.on)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">NodeFaultCode::SENSOR_FAULT</ref>;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>RailMonitor::faultDetail()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>what<sp/>=<sp/>_fuse.on<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;fuse<sp/>open&quot;</highlight><highlight class="normal"><sp/>:<sp/>_oc.on<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;over-current&quot;</highlight><highlight class="normal"><sp/>:<sp/>_ov.on<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;over-voltage&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>_uv.on<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;under-voltage&quot;</highlight><highlight class="normal"><sp/>:<sp/>_sensor.on<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;voltage<sp/>sensor<sp/>railed&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!what)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>snprintf(_detail,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(_detail),<sp/></highlight><highlight class="stringliteral">&quot;%s<sp/>rail<sp/>%s&quot;</highlight><highlight class="normal">,<sp/>_cfg.name,<sp/>what);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_detail;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/RailMonitor.cpp"/>
+  </compounddef>
+</doxygen>

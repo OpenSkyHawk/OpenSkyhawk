@@ -2026,6 +2026,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/components/" class="md-nav__link">
         
   
@@ -2352,6 +2380,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pdu-node-thresholds-pdu_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PDU node thresholds (PDU_*)
+      
+    </span>
+  </a>
   
 </li>
       
@@ -4887,6 +4926,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pdu-node-thresholds-pdu_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PDU node thresholds (PDU_*)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#third-party-set-by-us-7" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5198,6 +5248,79 @@ has it on. (Most of the 13 <code>Tests/PanelBridge</code> envs leave it off; the
 things.) The client half is already released, which is why the default flipped in the
 template rather than in the library.</p>
 </div>
+<h2 id="pdu-node-thresholds-pdu_">PDU node thresholds (<code>PDU_*</code>)</h2>
+<p>The power-distribution node (<code>PowerMonitor</code> library, <code>Panels/PDU_*</code>) takes every limit as a
+<code>PDU_*</code> macro with a default in <code>Firmware/Libraries/PowerMonitor/PduConfig.h</code>. The defaults are
+starting points to tune on the bench against the real load; override one per build, e.g.
+<code>-DPDU_12V_UV_MV=11200</code>, with no code change.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>What it sets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PDU_12V_UV_MV</code> / <code>PDU_12V_OV_MV</code></td>
+<td>11400 / 13200</td>
+<td>12 V under / over-voltage</td>
+</tr>
+<tr>
+<td><code>PDU_5V_UV_MV</code> / <code>PDU_5V_OV_MV</code></td>
+<td>4750 / 5500</td>
+<td>5 V under / over-voltage</td>
+</tr>
+<tr>
+<td><code>PDU_12V_OC_MA</code> / <code>PDU_5V_OC_MA</code></td>
+<td>4500 / 1800</td>
+<td>over-current, 90 % of the 5 A / 2 A fuse</td>
+</tr>
+<tr>
+<td><code>PDU_FUSE_OPEN_MV</code></td>
+<td>1000</td>
+<td>12 V below this while the node runs → fuse open</td>
+</tr>
+<tr>
+<td><code>PDU_V_HYST_MV</code></td>
+<td>100</td>
+<td>voltage hysteresis</td>
+</tr>
+<tr>
+<td><code>PDU_V_SET_MS</code> / <code>PDU_OC_SET_MS</code> / <code>PDU_CLEAR_MS</code></td>
+<td>50 / 100 / 500</td>
+<td>how long a condition must hold to set / clear</td>
+</tr>
+<tr>
+<td><code>PDU_TEMP_WARN_DC</code> / <code>PDU_TEMP_CRIT_DC</code> / <code>PDU_TEMP_HYST_DC</code></td>
+<td>600 / 750 / 30</td>
+<td>board temperature, tenths of °C</td>
+</tr>
+<tr>
+<td><code>PDU_BOOT_BLANK_MS</code></td>
+<td>500</td>
+<td>faults ignored after power-up (rail ramp, inrush)</td>
+</tr>
+<tr>
+<td><code>PDU_SAMPLE_US</code></td>
+<td>1000</td>
+<td>rail scan period (1 kHz)</td>
+</tr>
+<tr>
+<td><code>PDU_ZERO_GUARD_12V_MA</code> / <code>PDU_ZERO_GUARD_5V_MA</code></td>
+<td>75 / 120</td>
+<td><code>CAL ZERO</code> refuses above this — load still connected</td>
+</tr>
+<tr>
+<td><code>PDU_CAL_PAGE_ADDR</code></td>
+<td><code>0x0800FC00</code></td>
+<td>calibration flash page; the PDU builds cap the image at 63 KB (<code>board_upload.maximum_size</code>) to keep code out of it</td>
+</tr>
+</tbody>
+</table>
+<p><code>PANELBRIDGE_NODE_STATUS</code> (above) also gates the bridge's <code>_NODE_TELEM</code> forwarding of these
+readings to the host.</p>
 <h2 id="third-party-set-by-us-7">Third-party, set by us (7)</h2>
 <p>These belong to <strong>STM32duino</strong>, <strong>arduino-pico</strong>, and the <strong>DCS-BIOS</strong> library. We only set them —
 we don't own the code that reads them, and a framework update can move a default out from under

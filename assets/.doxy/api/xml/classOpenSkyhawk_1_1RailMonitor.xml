@@ -1,0 +1,506 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1RailMonitor" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::RailMonitor</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1FaultSource" prot="public" virt="non-virtual">OpenSkyhawk::FaultSource</basecompoundref>
+    <includes refid="RailMonitor_8h" local="no">RailMonitor.h</includes>
+    <innerclass refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" prot="public">OpenSkyhawk::RailMonitor::Config</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1aa565d1017ad0f42fcd2c147243a48152" prot="private" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" kindref="compound">Config</ref></type>
+        <definition>Config OpenSkyhawk::RailMonitor::_cfg</definition>
+        <argsstring></argsstring>
+        <name>_cfg</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_cfg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="88" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1ae9ac1f0aed859cdfbe9499ca014c7698" prot="private" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kindref="compound">Pdu::Latch</ref></type>
+        <definition>Pdu::Latch OpenSkyhawk::RailMonitor::_uv</definition>
+        <argsstring></argsstring>
+        <name>_uv</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_uv</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="89" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a50ed336eb786080566a3666cbdc2468b" prot="private" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kindref="compound">Pdu::Latch</ref></type>
+        <definition>Pdu::Latch OpenSkyhawk::RailMonitor::_ov</definition>
+        <argsstring></argsstring>
+        <name>_ov</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_ov</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="89" column="21" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a98b19c49a15986e143d9513820c3decc" prot="private" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kindref="compound">Pdu::Latch</ref></type>
+        <definition>Pdu::Latch OpenSkyhawk::RailMonitor::_oc</definition>
+        <argsstring></argsstring>
+        <name>_oc</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_oc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="89" column="25" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a1542a5ca883d3ca3c4238444f951754e" prot="private" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kindref="compound">Pdu::Latch</ref></type>
+        <definition>Pdu::Latch OpenSkyhawk::RailMonitor::_fuse</definition>
+        <argsstring></argsstring>
+        <name>_fuse</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_fuse</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="89" column="29" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a60a3019750755f8b28c049c6d82c49b4" prot="private" static="no" mutable="no">
+        <type><ref refid="structOpenSkyhawk_1_1Pdu_1_1Latch" kindref="compound">Pdu::Latch</ref></type>
+        <definition>Pdu::Latch OpenSkyhawk::RailMonitor::_sensor</definition>
+        <argsstring></argsstring>
+        <name>_sensor</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_sensor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="89" column="35" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a0e3b390e4854a5aeb8e25d32befb6166" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::RailMonitor::_sumMv</definition>
+        <argsstring></argsstring>
+        <name>_sumMv</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_sumMv</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="90" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a977bf0301c5d4105538f1cfd5619c5a7" prot="private" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::RailMonitor::_sumMa</definition>
+        <argsstring></argsstring>
+        <name>_sumMa</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_sumMa</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="91" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a8ed2ce9f7d91d108a2f0c77c7364a56d" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::RailMonitor::_n</definition>
+        <argsstring></argsstring>
+        <name>_n</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_n</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="92" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a18ef66da8b41a1207f4e21d1876928bd" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::RailMonitor::_minMv</definition>
+        <argsstring></argsstring>
+        <name>_minMv</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_minMv</qualifiedname>
+        <initializer>= UINT16_MAX</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="93" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a267adea3588f88535a63895b0872beec" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::RailMonitor::_peakMa</definition>
+        <argsstring></argsstring>
+        <name>_peakMa</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_peakMa</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="94" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1aa423cebf153641851613856c5e5ae99b" prot="private" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::RailMonitor::_lastMv</definition>
+        <argsstring></argsstring>
+        <name>_lastMv</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_lastMv</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="95" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a688c1648912260087d8f697789a2e074" prot="private" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::RailMonitor::_lastMa</definition>
+        <argsstring></argsstring>
+        <name>_lastMa</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_lastMa</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="96" column="17" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1RailMonitor_1a03d0df7f9efb3c260daedf7f89cc92a8" prot="private" static="no" mutable="yes">
+        <type>char</type>
+        <definition>char OpenSkyhawk::RailMonitor::_detail[32]</definition>
+        <argsstring>[32]</argsstring>
+        <name>_detail</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::_detail</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="97" column="18" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1a26b021524f8d2b535622d0babbaa9a1c" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::RailMonitor::RailMonitor</definition>
+        <argsstring>(const Config &amp;cfg)</argsstring>
+        <name>RailMonitor</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::RailMonitor</qualifiedname>
+        <param>
+          <type>const <ref refid="structOpenSkyhawk_1_1RailMonitor_1_1Config" kindref="compound">Config</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="52" column="14" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.cpp" bodystart="20" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1aa04f2c8f43eede0fa4205e9909ee4893" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RailMonitor::sample</definition>
+        <argsstring>(uint16_t vMv, int32_t iMa, bool vRailed, uint32_t nowMs, bool armed)</argsstring>
+        <name>sample</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::sample</qualifiedname>
+        <param>
+          <type>uint16_t</type>
+          <declname>vMv</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>iMa</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>vRailed</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>nowMs</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>armed</declname>
+        </param>
+        <briefdescription>
+<para>Feed one scan. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vMv</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Rail voltage, mV. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>iMa</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Rail current, mA (signed — residual offset may read slightly negative). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>vRailed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Voltage channel at the top of the ADC range (can&apos;t measure). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nowMs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>millis(). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>armed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>false during the power-up blanking window: statistics accumulate but every flag is held clear (rail ramp + inrush would otherwise trip UV / OC). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="63" column="10" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.cpp" bodystart="24" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1ade70529ef884dfe93fd72560f20e0b35" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::RailMonitor::flags</definition>
+        <argsstring>() const</argsstring>
+        <name>flags</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::flags</qualifiedname>
+        <briefdescription>
+<para>Current PduRailFlag bits (all zero = healthy). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="66" column="13" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.cpp" bodystart="46" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1a90c6d7d3d9b0a11af66b28799da65c0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TelemPayload</type>
+        <definition>TelemPayload OpenSkyhawk::RailMonitor::buildPage</definition>
+        <argsstring>(bool resetWindow)</argsstring>
+        <name>buildPage</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::buildPage</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>resetWindow</declname>
+        </param>
+        <briefdescription>
+<para>Build this rail&apos;s PDU_RAIL_* page from the current window. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resetWindow</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true for the periodic send (window restarts); false for an edge send. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="72" column="18" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.cpp" bodystart="56" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1ad8437df8b36aec34580218b0c7f12c73" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::RailMonitor::peakMa</definition>
+        <argsstring>() const</argsstring>
+        <name>peakMa</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::peakMa</qualifiedname>
+        <briefdescription>
+<para>Peak current since the last reset, mA (≥ 0). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="75" column="14" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="75" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1ade3a15779e40705bd233ea42d439e653" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::RailMonitor::resetPeak</definition>
+        <argsstring>()</argsstring>
+        <name>resetPeak</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::resetPeak</qualifiedname>
+        <briefdescription>
+<para>Restart the peak — called when the PDU_STATUS page is sent periodically. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="77" column="10" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="77" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1abc685d0e79113ab72ed97df2f62ddca8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t OpenSkyhawk::RailMonitor::lastMv</definition>
+        <argsstring>() const</argsstring>
+        <name>lastMv</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::lastMv</qualifiedname>
+        <briefdescription>
+<para>Last converted voltage, mV — DiagSerial / bring-up. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="80" column="14" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="80" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1ae4754ebd22006d9ac41f5891a4d4d5bc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int32_t</type>
+        <definition>int32_t OpenSkyhawk::RailMonitor::lastMa</definition>
+        <argsstring>() const</argsstring>
+        <name>lastMa</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::lastMa</qualifiedname>
+        <briefdescription>
+<para>Last converted current, mA — DiagSerial / bring-up. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="82" column="14" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="82" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1aebc1f3b0af484e6f551fff107984b65b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref></type>
+        <definition>NodeFaultCode OpenSkyhawk::RailMonitor::faultCode</definition>
+        <argsstring>() const override</argsstring>
+        <name>faultCode</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::faultCode</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034">faultCode</reimplements>
+        <briefdescription>
+<para>Current fault code (<ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref> when healthy). Cheap/const, cached state only. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="84" column="19" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.cpp" bodystart="73" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1RailMonitor_1a41c488ea3cdbd17f934f97c08fb81b13" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const char *</type>
+        <definition>const char * OpenSkyhawk::RailMonitor::faultDetail</definition>
+        <argsstring>() const override</argsstring>
+        <name>faultDetail</name>
+        <qualifiedname>OpenSkyhawk::RailMonitor::faultDetail</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e">faultDetail</reimplements>
+        <briefdescription>
+<para>Human-readable fault detail for the local DiagSerial tap only — never on the wire. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="85" column="18" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.cpp" bodystart="82" bodyend="88"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>OpenSkyhawk::FaultSource</label>
+        <link refid="classOpenSkyhawk_1_1FaultSource"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::RailMonitor</label>
+        <link refid="classOpenSkyhawk_1_1RailMonitor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>OpenSkyhawk::FaultSource</label>
+        <link refid="classOpenSkyhawk_1_1FaultSource"/>
+      </node>
+      <node id="1">
+        <label>OpenSkyhawk::RailMonitor</label>
+        <link refid="classOpenSkyhawk_1_1RailMonitor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PowerMonitor/RailMonitor.h" line="40" column="1" bodyfile="Firmware/Libraries/PowerMonitor/RailMonitor.h" bodystart="40" bodyend="98"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1aa565d1017ad0f42fcd2c147243a48152" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_cfg</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a03d0df7f9efb3c260daedf7f89cc92a8" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_detail</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a1542a5ca883d3ca3c4238444f951754e" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_fuse</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a688c1648912260087d8f697789a2e074" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_lastMa</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1aa423cebf153641851613856c5e5ae99b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_lastMv</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a18ef66da8b41a1207f4e21d1876928bd" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_minMv</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a8ed2ce9f7d91d108a2f0c77c7364a56d" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_n</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a98b19c49a15986e143d9513820c3decc" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_oc</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a50ed336eb786080566a3666cbdc2468b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_ov</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a267adea3588f88535a63895b0872beec" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_peakMa</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a60a3019750755f8b28c049c6d82c49b4" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_sensor</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a977bf0301c5d4105538f1cfd5619c5a7" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_sumMa</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a0e3b390e4854a5aeb8e25d32befb6166" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_sumMv</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1ae9ac1f0aed859cdfbe9499ca014c7698" prot="private" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>_uv</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a90c6d7d3d9b0a11af66b28799da65c0d" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>buildPage</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1aebc1f3b0af484e6f551fff107984b65b" prot="public" virt="virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>faultCode</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a41c488ea3cdbd17f934f97c08fb81b13" prot="public" virt="virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>faultDetail</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>FaultSource</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1ade70529ef884dfe93fd72560f20e0b35" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>flags</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1ae4754ebd22006d9ac41f5891a4d4d5bc" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>lastMa</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1abc685d0e79113ab72ed97df2f62ddca8" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>lastMv</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1ad8437df8b36aec34580218b0c7f12c73" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>peakMa</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1a26b021524f8d2b535622d0babbaa9a1c" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>RailMonitor</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1ade3a15779e40705bd233ea42d439e653" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>resetPeak</name></member>
+      <member refid="classOpenSkyhawk_1_1RailMonitor_1aa04f2c8f43eede0fa4205e9909ee4893" prot="public" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>sample</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::RailMonitor</scope><name>~FaultSource</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

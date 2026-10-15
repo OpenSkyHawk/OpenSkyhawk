@@ -23,6 +23,11 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 
 
+## Namespaces
+
+| Type | Name |
+| ---: | :--- |
+| namespace | [**Pdu**](namespaceOpenSkyhawk_1_1Pdu.md) <br> |
 
 
 ## Classes
@@ -36,6 +41,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | class | [**AnalogOutput**](classOpenSkyhawk_1_1AnalogOutput.md) <br>_Abstract base for outputs driven by one 16-bit DCS-BIOS value (FirmwarePlan D16)._  |
 | class | [**AngleSensorInput**](classOpenSkyhawk_1_1AngleSensorInput.md) <br>_Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis._  |
 | struct | [**AxisCal**](structOpenSkyhawk_1_1AxisCal.md) <br>_Captured endpoints for one axis, unsigned 0–65535 throughout._  |
+| class | [**BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md) <br> |
 | struct | [**CalBlob**](structOpenSkyhawk_1_1CalBlob.md) <br>_The whole persisted calibration set, written and erased as one unit._  |
 | class | [**Dimmer**](classOpenSkyhawk_1_1Dimmer.md) <br>_PWM dimmer output — the DcsBios::Dimmer equivalent. Maps a 16-bit DCS-BIOS value to PWM duty on a direct GPIO timer pin._  |
 | class | [**DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) <br>_Rolling-drum OLED readout. One instance == one OLED panel._  |
@@ -58,6 +64,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | class | [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md) <br>_Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) <br>_DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._ |
 | class | [**OutputBase**](classOpenSkyhawk_1_1OutputBase.md) <br>_Abstract base for all DCS-driven output objects._  |
+| class | [**RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md) <br> |
 | class | [**RotaryAcceleratedEncoder**](classOpenSkyhawk_1_1RotaryAcceleratedEncoder.md) <br>`RotaryEncoder` _plus the two behaviours of_`DcsBios::RotaryAcceleratedEncoder` _, both on by construction. Header-only: the logic lives in the_[_**RotaryEncoder**_](classOpenSkyhawk_1_1RotaryEncoder.md) _family base._ |
 | class | [**RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md) <br>_Incremental quadrature encoder on two pins (A/B). Emits a signed_ **relative** _value per detent over CAN — direction in the sign, magnitude set by the mode. Self-registers into_[_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) <br>_One shared SPI shift-register bus ('165 inputs + '595 outputs)._  |

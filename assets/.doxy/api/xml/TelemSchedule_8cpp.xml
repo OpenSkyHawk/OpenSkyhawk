@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="TelemSchedule_8cpp" kind="file" language="C++">
+    <compoundname>TelemSchedule.cpp</compoundname>
+    <includes refid="TelemSchedule_8h" local="yes">TelemSchedule.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/TelemSchedule.cpp</label>
+        <link refid="TelemSchedule_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TelemSchedule.h</label>
+        <link refid="TelemSchedule_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="TelemSchedule_8h" kindref="compound">TelemSchedule.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1aec3d7b41aac11699c7e8a5e8408ddbff" kindref="member">TelemSchedule::start</ref>(uint32_t<sp/>nowMs)<sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastPeriodic<sp/>=<sp/>nowMs;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>_rr<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref>;<sp/>i++)<sp/>{<sp/>_lastSent[i]<sp/>=<sp/>nowMs<sp/>-<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a6c0ce229a2289b08d45c449d6eee7629" kindref="member">EDGE_MIN_MS</ref>;<sp/>_lastFlags[i]<sp/>=<sp/>0;<sp/>}</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal">int8_t<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a38aa6e5e8168e952b28bd3d0dd83a1e1" kindref="member">TelemSchedule::next</ref>(uint32_t<sp/>nowMs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>flags[PAGES],<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">&amp;<sp/>periodic)<sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nowMs<sp/>-<sp/>_lastPeriodic<sp/>&gt;=<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" kindref="member">TELEM_PERIOD_MS</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_lastPeriodic<sp/>+=<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" kindref="member">TELEM_PERIOD_MS</ref>;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nowMs<sp/>-<sp/>_lastPeriodic<sp/>&gt;=<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" kindref="member">TELEM_PERIOD_MS</ref>)<sp/>_lastPeriodic<sp/>=<sp/>nowMs;<sp/><sp/></highlight><highlight class="comment">//<sp/>fell<sp/>behind:<sp/>don&apos;t<sp/>burst</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>slot<sp/>=<sp/>_rr;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_rr<sp/>=<sp/>(uint8_t)((_rr<sp/>+<sp/>1)<sp/>%<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref>);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>periodic<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(int8_t)slot;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(flags[i]<sp/>==<sp/>_lastFlags[i])<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nowMs<sp/>-<sp/>_lastSent[i]<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a6c0ce229a2289b08d45c449d6eee7629" kindref="member">EDGE_MIN_MS</ref>)<sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>periodic<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(int8_t)i;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ab010de1024a30ec48163f250f0b6c85b" kindref="member">TelemSchedule::sent</ref>(uint8_t<sp/>slot,<sp/>uint8_t<sp/>flags,<sp/>uint32_t<sp/>nowMs)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(slot<sp/>&gt;=<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">PAGES</ref>)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastSent[slot]<sp/><sp/>=<sp/>nowMs;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>_lastFlags[slot]<sp/>=<sp/>flags;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.cpp"/>
+  </compounddef>
+</doxygen>

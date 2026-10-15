@@ -43,6 +43,12 @@ struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  rsvd[3];    
 };
 
+struct __attribute__((packed)) TelemPayload {
+    uint8_t page;     
+    uint8_t body[7];  
+};
+static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
+
 enum class CanStatus {
     STARTING,   
     NORMAL,     
@@ -61,6 +67,8 @@ static constexpr uint32_t CAN_ID_SYNC_REQ   = 0x012;
 constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
+
+constexpr uint32_t canIdTelem(uint8_t n)  { return 0x180 + n; }
 
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
 

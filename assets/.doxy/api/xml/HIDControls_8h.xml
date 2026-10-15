@@ -32,6 +32,10 @@
         </childnode>
         <childnode refid="43" relation="include">
         </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
       </node>
       <node id="13">
         <label>Firmware/Libraries/DrumDisplay/DrumDisplay.cpp</label>
@@ -48,7 +52,7 @@
         <link refid="HIDControls_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="44" relation="include">
+        <childnode refid="48" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -309,18 +313,40 @@
         <childnode refid="42" relation="include">
         </childnode>
       </node>
+      <node id="44">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
       <node id="43">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.cpp</label>
+        <link refid="RailMonitor_8cpp"/>
+      </node>
+      <node id="45">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>
-      <node id="45">
+      <node id="49">
         <label>Firmware/Libraries/SimGateway/SimGateway.cpp</label>
         <link refid="SimGateway_8cpp"/>
       </node>
-      <node id="44">
+      <node id="48">
         <label>Firmware/Libraries/SimGateway/SimGateway.h</label>
         <link refid="SimGateway_8h"/>
-        <childnode refid="45" relation="include">
+        <childnode refid="49" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

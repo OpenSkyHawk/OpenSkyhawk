@@ -1,0 +1,480 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PduConfig_8h" kind="file" language="C++">
+    <compoundname>PduConfig.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="BoardThermal_8cpp" local="yes">Firmware/Libraries/PowerMonitor/BoardThermal.cpp</includedby>
+    <includedby refid="PduCalStore_8h" local="yes">Firmware/Libraries/PowerMonitor/PduCalStore.h</includedby>
+    <includedby refid="PduMath_8cpp" local="yes">Firmware/Libraries/PowerMonitor/PduMath.cpp</includedby>
+    <includedby refid="PduNode_8cpp" local="yes">Firmware/Libraries/PowerMonitor/PduNode.cpp</includedby>
+    <includedby refid="RailMonitor_8cpp" local="yes">Firmware/Libraries/PowerMonitor/RailMonitor.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/PowerMonitor/BoardThermal.cpp</label>
+        <link refid="BoardThermal_8cpp"/>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/PowerMonitor/PduCalStore.cpp</label>
+        <link refid="PduCalStore_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/PowerMonitor/PduCalStore.h</label>
+        <link refid="PduCalStore_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Firmware/Libraries/PowerMonitor/PduMath.cpp</label>
+        <link refid="PduMath_8cpp"/>
+      </node>
+      <node id="6">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+      </node>
+      <node id="5">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Firmware/Libraries/PowerMonitor/RailMonitor.cpp</label>
+        <link refid="RailMonitor_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="PduConfig_8h_1a790f0703d32e4fcc07442501c0919a45" prot="public" static="no">
+        <name>PDU_PIN_V12</name>
+        <initializer>PA0</initializer>
+        <briefdescription>
+<para>12V_READ_ADC — 33k/10k divider </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="20" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1aca6d55a46727dd23ca2a29fe750be917" prot="public" static="no">
+        <name>PDU_PIN_V5</name>
+        <initializer>PA1</initializer>
+        <briefdescription>
+<para>5V_READ_ADC — 10k/13k divider </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="23" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1aefb0af7dde93ed43c613e3dc24aff2d1" prot="public" static="no">
+        <name>PDU_PIN_I12</name>
+        <initializer>PA2</initializer>
+        <briefdescription>
+<para>I_12V_ADC — INA180A2 output. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="26" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a4f739d88e9024ad1c25a4c953eae80e9" prot="public" static="no">
+        <name>PDU_PIN_I5</name>
+        <initializer>PA3</initializer>
+        <briefdescription>
+<para>I_5V_ADC — INA180A2 output. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="29" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a31a4ad8f966a1060498ee86b3159d1b0" prot="public" static="no">
+        <name>PDU_PIN_NTC</name>
+        <initializer>PA6</initializer>
+        <briefdescription>
+<para>NTC_ADC — 10k from +3V3, NTC to GND. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="32" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1af28969c05ca13dda2f1456f945082236" prot="public" static="no">
+        <name>PDU_12V_UV_MV</name>
+        <initializer>11400</initializer>
+        <briefdescription>
+<para>12 V under-voltage (ATX −5 %) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="63" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a2b332f0e0e0634d615b1245d150786e9" prot="public" static="no">
+        <name>PDU_12V_OV_MV</name>
+        <initializer>13200</initializer>
+        <briefdescription>
+<para>12 V over-voltage (below the SMBJ12A clamp) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="66" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a8e91907dbf05f94b0955165b2ea11489" prot="public" static="no">
+        <name>PDU_5V_UV_MV</name>
+        <initializer>4750</initializer>
+        <briefdescription>
+<para>5 V under-voltage (−5 %) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="69" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1aab9784ea81b25f685f31fc9c5b176b40" prot="public" static="no">
+        <name>PDU_5V_OV_MV</name>
+        <initializer>5500</initializer>
+        <briefdescription>
+<para>5 V over-voltage (below the SMBJ6.0A standoff) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="72" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1ac1bd170405676751122a1e3c1752199b" prot="public" static="no">
+        <name>PDU_12V_OC_MA</name>
+        <initializer>4500</initializer>
+        <briefdescription>
+<para>12 V over-current — 90 % of the 5 A fuse </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="75" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a705ad0e9652257e882a404dd9cb03cc6" prot="public" static="no">
+        <name>PDU_5V_OC_MA</name>
+        <initializer>1800</initializer>
+        <briefdescription>
+<para>5 V over-current — 90 % of the 2 A fuse </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="78" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a3f13767053a53824afc181f0924e03dc" prot="public" static="no">
+        <name>PDU_FUSE_OPEN_MV</name>
+        <initializer>1000</initializer>
+        <briefdescription>
+<para>rail below this while the node runs → fuse open (12 V only) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="81" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a39cd4c1f8087369c932c3622fdf4268b" prot="public" static="no">
+        <name>PDU_V_HYST_MV</name>
+        <initializer>100</initializer>
+        <briefdescription>
+<para>voltage-threshold hysteresis </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="84" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a15a506b0074b1abf1d0a901120641fe6" prot="public" static="no">
+        <name>PDU_V_SET_MS</name>
+        <initializer>50</initializer>
+        <briefdescription>
+<para>a voltage condition must persist this long to set </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="87" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1aa20eb7e5d9ca7cc2fced278c3dc5d768" prot="public" static="no">
+        <name>PDU_OC_SET_MS</name>
+        <initializer>100</initializer>
+        <briefdescription>
+<para>over-current must persist this long to set </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="90" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" prot="public" static="no">
+        <name>PDU_CLEAR_MS</name>
+        <initializer>500</initializer>
+        <briefdescription>
+<para>a condition must be gone this long to clear </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="93" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1ae1a00cda7170a007c267677a344ef7c8" prot="public" static="no">
+        <name>PDU_TEMP_WARN_DC</name>
+        <initializer>600</initializer>
+        <briefdescription>
+<para>board temperature warning, 60.0 °C </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="96" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a171537d3b73e021f0887fcb35a631d2e" prot="public" static="no">
+        <name>PDU_TEMP_CRIT_DC</name>
+        <initializer>750</initializer>
+        <briefdescription>
+<para>board temperature critical, 75.0 °C </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="99" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a60d6c239e26367bf6b4f512324e31849" prot="public" static="no">
+        <name>PDU_TEMP_HYST_DC</name>
+        <initializer>30</initializer>
+        <briefdescription>
+<para>temperature-threshold hysteresis, 3.0 °C </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="102" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1aaf54bd918a0faede5caba39ad6044195" prot="public" static="no">
+        <name>PDU_BOOT_BLANK_MS</name>
+        <initializer>500</initializer>
+        <briefdescription>
+<para>ignore rail/thermal faults this long after boot (ramp + inrush) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="105" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1aad60ff2d437081d1d48ec3b29fe43211" prot="public" static="no">
+        <name>PDU_SAMPLE_US</name>
+        <initializer>1000</initializer>
+        <briefdescription>
+<para>rail scan period (1 kHz target) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="108" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a68421f895fb1e13a7c769c454df6d6ec" prot="public" static="no">
+        <name>PDU_ZERO_GUARD_12V_MA</name>
+        <initializer>75</initializer>
+        <briefdescription>
+<para>CAL ZERO refuses if the 12 V raw current exceeds this (load present) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="111" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a1a8486ef6dfca9c737b1e70a1e05ecca" prot="public" static="no">
+        <name>PDU_ZERO_GUARD_5V_MA</name>
+        <initializer>120</initializer>
+        <briefdescription>
+<para>5 V guard — higher: the PDU&apos;s own ~30–50 mA flows through this shunt </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="114" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="PduConfig_8h_1a905044c724d00f008d7cdb4183d3bdf0" prot="public" static="no">
+        <name>PDU_CAL_PAGE_ADDR</name>
+        <initializer>0x0800FC00UL</initializer>
+        <briefdescription>
+<para>last 1 KB page of the STM32F103C8 (64 KB) — keep out of the image </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduConfig.h" line="117" column="9" bodyfile="Firmware/Libraries/PowerMonitor/PduConfig.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>PDU monitoring node — hardware constants and tunable thresholds (#216). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Hardware constants match the PDU Rev 0.2.0 schematic (<computeroutput>PCB/Base/Power/PDU</computeroutput>, #202): pin map, divider ratios, INA180A2 gain and shunt, NTC bias. Every threshold is a <computeroutput>PDU_*</computeroutput> macro with a default, so a build overrides it with <computeroutput>build_flags = -DPDU_12V_UV_MV=11200</computeroutput> without a code change; the defaults are starting points to be tuned on the bench against the real load.</para>
+<para>Units: mV, mA, ms, and tenths of a degree C (<computeroutput>DC</computeroutput>).</para>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Pin<sp/>map<sp/>(Rev<sp/>0.2.0<sp/>netlist)<sp/>──────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_PIN_V12</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="PduConfig_8h_1a790f0703d32e4fcc07442501c0919a45" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_PIN_V12<sp/><sp/>PA0<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_PIN_V5</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="PduConfig_8h_1aca6d55a46727dd23ca2a29fe750be917" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_PIN_V5<sp/><sp/><sp/>PA1<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_PIN_I12</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="PduConfig_8h_1aefb0af7dde93ed43c613e3dc24aff2d1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_PIN_I12<sp/><sp/>PA2<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_PIN_I5</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="PduConfig_8h_1a4f739d88e9024ad1c25a4c953eae80e9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_PIN_I5<sp/><sp/><sp/>PA3<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_PIN_NTC</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="PduConfig_8h_1a31a4ad8f966a1060498ee86b3159d1b0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_PIN_NTC<sp/><sp/>PA6<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Analog<sp/>front<sp/>end<sp/>─────────────────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>1UL<sp/>&lt;&lt;<sp/>16;<sp/><sp/></highlight></codeline>
+<codeline lineno="40" refid="namespaceOpenSkyhawk_1_1Pdu_1a2e5177068bb221299732d5ee4310b3d0" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a2e5177068bb221299732d5ee4310b3d0" kindref="member">VDDA_NOMINAL_MV</ref><sp/>=<sp/>3300;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="41" refid="namespaceOpenSkyhawk_1_1Pdu_1a3053a40f97e8ea01a8fdfb75441a3679" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a3053a40f97e8ea01a8fdfb75441a3679" kindref="member">VREFINT_TYP_MV</ref><sp/><sp/>=<sp/>1200;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="namespaceOpenSkyhawk_1_1Pdu_1a89f83025b7ea1670c47a8236ed2b8a12" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a73f37d4efdc53fa4ec985012262366b8" kindref="member">V12_DIV_NUM</ref><sp/>=<sp/>43,<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a89f83025b7ea1670c47a8236ed2b8a12" kindref="member">V12_DIV_DEN</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="45" refid="namespaceOpenSkyhawk_1_1Pdu_1af4d816a46ca5719dcf16174ef5664600" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a5286428d87473c6c9996964837874452" kindref="member">V5_DIV_NUM</ref><sp/><sp/>=<sp/>23,<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af4d816a46ca5719dcf16174ef5664600" kindref="member">V5_DIV_DEN</ref><sp/><sp/>=<sp/>13;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="namespaceOpenSkyhawk_1_1Pdu_1a4b964aa2e1c4e6c109bfac48355181c6" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a4b964aa2e1c4e6c109bfac48355181c6" kindref="member">I_MA_PER_MV</ref><sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="namespaceOpenSkyhawk_1_1Pdu_1a80870d6e07bdb3ce3df3c9a2705f62b8" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a80870d6e07bdb3ce3df3c9a2705f62b8" kindref="member">NTC_R0_OHM</ref><sp/><sp/><sp/>=<sp/>10000.0f;</highlight></codeline>
+<codeline lineno="52" refid="namespaceOpenSkyhawk_1_1Pdu_1a36357ac0fef4d056c35ecd3f66e0b803" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a36357ac0fef4d056c35ecd3f66e0b803" kindref="member">NTC_BETA_K</ref><sp/><sp/><sp/>=<sp/>3450.0f;</highlight></codeline>
+<codeline lineno="53" refid="namespaceOpenSkyhawk_1_1Pdu_1a6380fa00e6e09cde078ea827d5f7a16c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6380fa00e6e09cde078ea827d5f7a16c" kindref="member">NTC_T0_K</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>298.15f;</highlight></codeline>
+<codeline lineno="54" refid="namespaceOpenSkyhawk_1_1Pdu_1a6da5afd24c804a6c4b14acd3fa1ba74d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6da5afd24c804a6c4b14acd3fa1ba74d" kindref="member">NTC_BIAS_OHM</ref><sp/>=<sp/>10000.0f;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="namespaceOpenSkyhawk_1_1Pdu_1ae8f0ec244359b3ee128086bcf2cfcafd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint16_t<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae8f0ec244359b3ee128086bcf2cfcafd" kindref="member">GAIN_UNITY</ref><sp/>=<sp/>10000;<sp/><sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>Thresholds<sp/>(override<sp/>with<sp/>-D)<sp/>─────────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_12V_UV_MV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="PduConfig_8h_1af28969c05ca13dda2f1456f945082236" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_12V_UV_MV<sp/><sp/><sp/><sp/><sp/><sp/>11400<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_12V_OV_MV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="PduConfig_8h_1a2b332f0e0e0634d615b1245d150786e9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_12V_OV_MV<sp/><sp/><sp/><sp/><sp/><sp/>13200<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_5V_UV_MV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="PduConfig_8h_1a8e91907dbf05f94b0955165b2ea11489" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_5V_UV_MV<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>4750<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_5V_OV_MV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="PduConfig_8h_1aab9784ea81b25f685f31fc9c5b176b40" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_5V_OV_MV<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>5500<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_12V_OC_MA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="PduConfig_8h_1ac1bd170405676751122a1e3c1752199b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_12V_OC_MA<sp/><sp/><sp/><sp/><sp/><sp/><sp/>4500<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_5V_OC_MA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="PduConfig_8h_1a705ad0e9652257e882a404dd9cb03cc6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_5V_OC_MA<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1800<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_FUSE_OPEN_MV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="PduConfig_8h_1a3f13767053a53824afc181f0924e03dc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_FUSE_OPEN_MV<sp/><sp/><sp/><sp/>1000<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_V_HYST_MV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="PduConfig_8h_1a39cd4c1f8087369c932c3622fdf4268b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_V_HYST_MV<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>100<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_V_SET_MS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="PduConfig_8h_1a15a506b0074b1abf1d0a901120641fe6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_V_SET_MS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>50<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_OC_SET_MS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="PduConfig_8h_1aa20eb7e5d9ca7cc2fced278c3dc5d768" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_OC_SET_MS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>100<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_CLEAR_MS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="PduConfig_8h_1a2118db7c67c0c6c5252190b7903de96a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_CLEAR_MS<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>500<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_TEMP_WARN_DC</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="PduConfig_8h_1ae1a00cda7170a007c267677a344ef7c8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_TEMP_WARN_DC<sp/><sp/><sp/><sp/><sp/>600<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_TEMP_CRIT_DC</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="PduConfig_8h_1a171537d3b73e021f0887fcb35a631d2e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_TEMP_CRIT_DC<sp/><sp/><sp/><sp/><sp/>750<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_TEMP_HYST_DC</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="PduConfig_8h_1a60d6c239e26367bf6b4f512324e31849" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_TEMP_HYST_DC<sp/><sp/><sp/><sp/><sp/><sp/>30<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_BOOT_BLANK_MS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="PduConfig_8h_1aaf54bd918a0faede5caba39ad6044195" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_BOOT_BLANK_MS<sp/><sp/><sp/><sp/>500<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_SAMPLE_US</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="PduConfig_8h_1aad60ff2d437081d1d48ec3b29fe43211" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_SAMPLE_US<sp/><sp/><sp/><sp/><sp/><sp/><sp/>1000<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_ZERO_GUARD_12V_MA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="PduConfig_8h_1a68421f895fb1e13a7c769c454df6d6ec" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_ZERO_GUARD_12V_MA<sp/>75<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_ZERO_GUARD_5V_MA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="PduConfig_8h_1a1a8486ef6dfca9c737b1e70a1e05ecca" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_ZERO_GUARD_5V_MA<sp/>120<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PDU_CAL_PAGE_ADDR</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117" refid="PduConfig_8h_1a905044c724d00f008d7cdb4183d3bdf0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PDU_CAL_PAGE_ADDR<sp/>0x0800FC00UL<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/PduConfig.h"/>
+  </compounddef>
+</doxygen>

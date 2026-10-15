@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacePduNode" kind="namespace" language="C++">
+    <compoundname>PduNode</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PduNode::setup</definition>
+        <argsstring>()</argsstring>
+        <name>setup</name>
+        <qualifiedname>PduNode::setup</qualifiedname>
+        <briefdescription>
+<para>Start the board, CAN and calibration, then send READY_n. Call from <ref refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kindref="member">setup()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp" line="205" column="6" bodyfile="Firmware/Libraries/PowerMonitor/PduNode.cpp" bodystart="205" bodyend="223" declfile="Firmware/Libraries/PowerMonitor/PduNode.h" declline="43" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PduNode::loop</definition>
+        <argsstring>()</argsstring>
+        <name>loop</name>
+        <qualifiedname>PduNode::loop</qualifiedname>
+        <briefdescription>
+<para>Run one iteration: CAN, node status, sampling, telemetry, DiagSerial. Call every <ref refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kindref="member">loop()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp" line="225" column="6" bodyfile="Firmware/Libraries/PowerMonitor/PduNode.cpp" bodystart="225" bodyend="251" declfile="Firmware/Libraries/PowerMonitor/PduNode.h" declline="46" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePduNode_1a5e1eabd3e74f9c3ef2e4d04b5ba63738" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t PduNode::scanRateHz</definition>
+        <argsstring>()</argsstring>
+        <name>scanRateHz</name>
+        <qualifiedname>PduNode::scanRateHz</qualifiedname>
+        <briefdescription>
+<para>Rail scans completed in the last full second — bring-up check of the 1 kHz target. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp" line="253" column="10" bodyfile="Firmware/Libraries/PowerMonitor/PduNode.cpp" bodystart="253" bodyend="253" declfile="Firmware/Libraries/PowerMonitor/PduNode.h" declline="49" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePduNode_1adc86f791ff0d9a226fd0d96c994fbd41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref> &amp;</type>
+        <definition>const OpenSkyhawk::RailMonitor &amp; PduNode::rail12</definition>
+        <argsstring>()</argsstring>
+        <name>rail12</name>
+        <qualifiedname>PduNode::rail12</qualifiedname>
+        <briefdescription>
+<para>The 12 V rail monitor (bring-up / tests). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp" line="254" column="20" bodyfile="Firmware/Libraries/PowerMonitor/PduNode.cpp" bodystart="254" bodyend="254" declfile="Firmware/Libraries/PowerMonitor/PduNode.h" declline="52" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePduNode_1a6e1df22c6aef3a714e1361ae0a442661" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref> &amp;</type>
+        <definition>const OpenSkyhawk::RailMonitor &amp; PduNode::rail5</definition>
+        <argsstring>()</argsstring>
+        <name>rail5</name>
+        <qualifiedname>PduNode::rail5</qualifiedname>
+        <briefdescription>
+<para>The 5 V rail monitor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp" line="255" column="20" bodyfile="Firmware/Libraries/PowerMonitor/PduNode.cpp" bodystart="255" bodyend="255" declfile="Firmware/Libraries/PowerMonitor/PduNode.h" declline="54" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacePduNode_1aeaec51f1fddc568e77c8c9653ba25e39" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="classOpenSkyhawk_1_1BoardThermal" kindref="compound">BoardThermal</ref> &amp;</type>
+        <definition>const OpenSkyhawk::BoardThermal &amp; PduNode::thermal</definition>
+        <argsstring>()</argsstring>
+        <name>thermal</name>
+        <qualifiedname>PduNode::thermal</qualifiedname>
+        <briefdescription>
+<para>The board thermal monitor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp" line="256" column="20" bodyfile="Firmware/Libraries/PowerMonitor/PduNode.cpp" bodystart="256" bodyend="256" declfile="Firmware/Libraries/PowerMonitor/PduNode.h" declline="56" declcolumn="33"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp" line="203" column="1"/>
+  </compounddef>
+</doxygen>

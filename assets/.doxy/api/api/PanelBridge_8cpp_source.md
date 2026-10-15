@@ -97,6 +97,18 @@ static void emitAllNodes() {
     snprintf(arg, sizeof(arg), "%u", (unsigned)count);
     DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
 }
+
+// Forward one TELEM_n frame to the host, unread (#216):
+//   _NODE_TELEM <nodeId(2 hex)><8 frame bytes, wire order, 16 hex>
+// No cache and no decode — the page byte tells the client the layout, so a new TelemPage needs no
+// bridge change. Contract: NODE_TELEM_* in NodeStatus.h.
+static void emitTelem(uint8_t nodeId, const uint8_t* data) {
+    char hex[19];
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+             (unsigned)nodeId, data[0], data[1], data[2], data[3],
+             data[4], data[5], data[6], data[7]);
+    DcsBios::sendDcsBiosMessage(NODE_TELEM_MSG_NAME, hex);
+}
 #endif // PANELBRIDGE_NODE_STATUS
 
 // ── TEST_SEQ state ─────────────────────────────────────────────────────────────
@@ -322,6 +334,16 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
             ns.faultMask   = h.faultMask;
             ns.faultId     = h.faultId;
         }
+#endif
+        return;
+    }
+
+    // TELEM_1 – TELEM_63: paged node telemetry — forwarded to the host unread (#216). Like HEALTH,
+    // never a liveness signal (HB owns that).
+    if (canId >= canIdTelem(1) && canId <= canIdTelem(MAX_NODE_ID)) {
+#ifdef PANELBRIDGE_NODE_STATUS
+        if (len == sizeof(TelemPayload) && data[0] != 0)
+            emitTelem((uint8_t)(canId - canIdTelem(0)), data);
 #endif
         return;
     }

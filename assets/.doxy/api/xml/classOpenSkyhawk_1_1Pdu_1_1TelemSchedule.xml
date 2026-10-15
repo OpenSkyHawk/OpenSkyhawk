@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::Pdu::TelemSchedule</compoundname>
+    <includes refid="TelemSchedule_8h" local="no">TelemSchedule.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::Pdu::TelemSchedule::PAGES</definition>
+        <argsstring></argsstring>
+        <name>PAGES</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::PAGES</qualifiedname>
+        <initializer>= 3</initializer>
+        <briefdescription>
+<para>PDU_RAIL_12V, PDU_RAIL_5V, PDU_STATUS. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="26" column="31" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::Pdu::TelemSchedule::TELEM_PERIOD_MS</definition>
+        <argsstring></argsstring>
+        <name>TELEM_PERIOD_MS</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::TELEM_PERIOD_MS</qualifiedname>
+        <initializer>= 1000</initializer>
+        <briefdescription>
+<para>one frame per second per node </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="27" column="31" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a6c0ce229a2289b08d45c449d6eee7629" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::Pdu::TelemSchedule::EDGE_MIN_MS</definition>
+        <argsstring></argsstring>
+        <name>EDGE_MIN_MS</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::EDGE_MIN_MS</qualifiedname>
+        <initializer>= 100</initializer>
+        <briefdescription>
+<para>per-page edge-send hold-off </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="28" column="31" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1adc5ec8b76ac534cf017ea95bdac8391b" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::Pdu::TelemSchedule::_lastPeriodic</definition>
+        <argsstring></argsstring>
+        <name>_lastPeriodic</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::_lastPeriodic</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="46" column="14" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a985ede54fa4859ec311e8fb93ebed975" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::Pdu::TelemSchedule::_rr</definition>
+        <argsstring></argsstring>
+        <name>_rr</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::_rr</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="47" column="14" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a71e7265fc45c82c7e07c28cafefb3767" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t OpenSkyhawk::Pdu::TelemSchedule::_lastSent[PAGES]</definition>
+        <argsstring>[PAGES]</argsstring>
+        <name>_lastSent</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::_lastSent</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="48" column="14" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a5ae0e1111d25629ec269dadd9b7df45f" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::Pdu::TelemSchedule::_lastFlags[PAGES]</definition>
+        <argsstring>[PAGES]</argsstring>
+        <name>_lastFlags</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::_lastFlags</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="49" column="14" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="49" bodyend="49"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1aec3d7b41aac11699c7e8a5e8408ddbff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::Pdu::TelemSchedule::start</definition>
+        <argsstring>(uint32_t nowMs)</argsstring>
+        <name>start</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::start</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>nowMs</declname>
+        </param>
+        <briefdescription>
+<para>Start the clock; the first periodic frame is due one period later. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="31" column="10" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.cpp" bodystart="6" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a38aa6e5e8168e952b28bd3d0dd83a1e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int8_t</type>
+        <definition>int8_t OpenSkyhawk::Pdu::TelemSchedule::next</definition>
+        <argsstring>(uint32_t nowMs, const uint8_t flags[PAGES], bool &amp;periodic)</argsstring>
+        <name>next</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::next</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>nowMs</declname>
+        </param>
+        <param>
+          <type>const uint8_t</type>
+          <declname>flags</declname>
+          <array>[PAGES]</array>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>periodic</declname>
+        </param>
+        <briefdescription>
+<para>Which page to send now, if any. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nowMs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>millis(). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current flag byte of each page (index = page slot). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>periodic</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Out: true for the periodic (window-restarting) send. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Page slot 0..PAGES-1, or -1 when nothing is due. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="40" column="12" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.cpp" bodystart="12" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ab010de1024a30ec48163f250f0b6c85b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::Pdu::TelemSchedule::sent</definition>
+        <argsstring>(uint8_t slot, uint8_t flags, uint32_t nowMs)</argsstring>
+        <name>sent</name>
+        <qualifiedname>OpenSkyhawk::Pdu::TelemSchedule::sent</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>slot</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>flags</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>nowMs</declname>
+        </param>
+        <briefdescription>
+<para>Record that page <computeroutput>slot</computeroutput> went out carrying <computeroutput>flags</computeroutput> at <computeroutput>nowMs</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="43" column="10" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.cpp" bodystart="30" bodyend="34"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="Firmware/Libraries/PowerMonitor/TelemSchedule.h" line="24" column="1" bodyfile="Firmware/Libraries/PowerMonitor/TelemSchedule.h" bodystart="24" bodyend="50"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a5ae0e1111d25629ec269dadd9b7df45f" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>_lastFlags</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1adc5ec8b76ac534cf017ea95bdac8391b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>_lastPeriodic</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a71e7265fc45c82c7e07c28cafefb3767" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>_lastSent</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a985ede54fa4859ec311e8fb93ebed975" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>_rr</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a6c0ce229a2289b08d45c449d6eee7629" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>EDGE_MIN_MS</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a38aa6e5e8168e952b28bd3d0dd83a1e1" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>PAGES</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ab010de1024a30ec48163f250f0b6c85b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>sent</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1aec3d7b41aac11699c7e8a5e8408ddbff" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>start</name></member>
+      <member refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ae5138f26f68995e9c726d135dfe927fd" prot="public" virt="non-virtual"><scope>OpenSkyhawk::Pdu::TelemSchedule</scope><name>TELEM_PERIOD_MS</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

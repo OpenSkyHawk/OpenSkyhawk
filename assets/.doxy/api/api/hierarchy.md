@@ -23,9 +23,11 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
     * **class** [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._ 
     * **class** [**OpenSkyhawk::LED**](classOpenSkyhawk_1_1LED.md) _Digital_ [_**LED**_](classOpenSkyhawk_1_1LED.md) _output. Drives a pin based on a DCS-BIOS state value._
     * **class** [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._
-* **class** [**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md) _Per-device I2C circuit breaker. Mix into any class that talks to an I2C device._     
-    * **class** [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._ 
 * **class** [**OpenSkyhawk::FaultSource**](classOpenSkyhawk_1_1FaultSource.md) _A source of node faults — implemented by any object that can fault (#163)._     
+    * **class** [**OpenSkyhawk::BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md) 
+    * **class** [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._ 
+    * **class** [**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md) 
+* **class** [**OpenSkyhawk::I2cHealth**](classOpenSkyhawk_1_1I2cHealth.md) _Per-device I2C circuit breaker. Mix into any class that talks to an I2C device._     
     * **class** [**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md) _Rolling-drum OLED readout. One instance == one OLED panel._ 
 * **class** [**OpenSkyhawk::HIDAxis**](classOpenSkyhawk_1_1HIDAxis.md) _HID axis handler. Declared at sketch scope for each joystick axis._ 
 * **class** [**OpenSkyhawk::HIDButton**](classOpenSkyhawk_1_1HIDButton.md) _HID button handler. Declared at sketch scope for each button._ 
@@ -33,6 +35,8 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **class** [**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md) _Selects one downstream channel of a TCA9548A I2C multiplexer._ 
 * **class** [**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md) _Common interface every motor/servo backend implements._     
     * **class** [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md) _Non-blocking instrument-gauge stepper driven through_ [_**PinRef**_](classPinRef.md) _coils._
+* **class** [**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md) _The reserved flash page holding the calibration log._ 
+* **class** [**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md) 
 * **class** [**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) _One shared SPI shift-register bus ('165 inputs + '595 outputs)._ 
 * **class** [**PinRef**](classPinRef.md) _Hardware pin abstraction used by all_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) _input and output classes._
 * **struct** [**BatchState**](structBatchState.md) 
@@ -46,6 +50,9 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **struct** [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md) _One DCS-BIOS digit source feeding a_ [_**DrumReadout**_](structOpenSkyhawk_1_1DrumReadout.md) _._
 * **struct** [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md) _Value → position calibration for one gauge._ 
 * **struct** [**OpenSkyhawk::HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) _Home-sensor parameters (_ HomeMode::SENSOR _only)._
+* **struct** [**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md) _Calibration values the conversions need. Defaults = uncalibrated._ 
+* **struct** [**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md) _A condition that must hold_ `setMs` _to raise and its clear condition hold_`clearMs` _to drop._
+* **struct** [**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md) _Per-rail limits._ 
 * **struct** [**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) _Full per-instance stepper configuration. Authored per sketch (panel wiring)._ 
 * **struct** [**OpenSkyhawk::ShiftBus::IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md) 
 * **struct** [**RxQueueEntry**](structRxQueueEntry.md) 

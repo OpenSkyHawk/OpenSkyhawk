@@ -1,0 +1,416 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PduNode_8cpp" kind="file" language="C++">
+    <compoundname>PduNode.cpp</compoundname>
+    <includes refid="PduNode_8h" local="yes">PduNode.h</includes>
+    <includes refid="PduConfig_8h" local="yes">PduConfig.h</includes>
+    <includes refid="PduMath_8h" local="yes">PduMath.h</includes>
+    <includes refid="TelemSchedule_8h" local="yes">TelemSchedule.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <includes local="no">string.h</includes>
+    <includes local="no">ctype.h</includes>
+    <incdepgraph>
+      <node id="8">
+        <label>CANProtocol.h</label>
+        <link refid="CANProtocol_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>HIDControls.h</label>
+        <link refid="HIDControls_8h"/>
+      </node>
+      <node id="7">
+        <label>NodeStatus.h</label>
+        <link refid="NodeStatus_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>BoardThermal.h</label>
+        <link refid="BoardThermal_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PduCalStore.h</label>
+        <link refid="PduCalStore_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>PduMath.h</label>
+        <link refid="PduMath_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
+        <link refid="PduNode_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PduNode.h</label>
+        <link refid="PduNode_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>RailMonitor.h</label>
+        <link refid="RailMonitor_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>TelemSchedule.h</label>
+        <link refid="TelemSchedule_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>STM32Board.h</label>
+        <link refid="STM32Board_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Arduino.h</label>
+      </node>
+      <node id="19">
+        <label>ctype.h</label>
+      </node>
+      <node id="15">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+      <node id="17">
+        <label>stdlib.h</label>
+      </node>
+      <node id="6">
+        <label>stm32f1xx_hal_can.h</label>
+      </node>
+      <node id="18">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacePduNode">PduNode</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduNode_8h" kindref="compound">PduNode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduConfig_8h" kindref="compound">PduConfig.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduMath_8h" kindref="compound">PduMath.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="TelemSchedule_8h" kindref="compound">TelemSchedule.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ctype.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk_1_1Pdu" kindref="compound">OpenSkyhawk::Pdu</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Fault<sp/>sources<sp/>—<sp/>globals,<sp/>as<sp/>the<sp/>FaultSource<sp/>registry<sp/>requires<sp/>(static<sp/>lifetime).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref><sp/><sp/>g12({<ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3a165ed5369aa99a5c7e797c5308efce72" kindref="member">TelemPage::PDU_RAIL_12V</ref>,<sp/></highlight><highlight class="stringliteral">&quot;12V&quot;</highlight><highlight class="normal">,<sp/><ref refid="PduConfig_8h_1af28969c05ca13dda2f1456f945082236" kindref="member">PDU_12V_UV_MV</ref>,<sp/><ref refid="PduConfig_8h_1a2b332f0e0e0634d615b1245d150786e9" kindref="member">PDU_12V_OV_MV</ref>,<sp/><ref refid="PduConfig_8h_1ac1bd170405676751122a1e3c1752199b" kindref="member">PDU_12V_OC_MA</ref>,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">});</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref><sp/><sp/>g5<sp/>({<ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3aa96ee866de12de7a409934e74e884538" kindref="member">TelemPage::PDU_RAIL_5V</ref>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;5V&quot;</highlight><highlight class="normal">,<sp/><sp/><ref refid="PduConfig_8h_1a8e91907dbf05f94b0955165b2ea11489" kindref="member">PDU_5V_UV_MV</ref>,<sp/><sp/><ref refid="PduConfig_8h_1aab9784ea81b25f685f31fc9c5b176b40" kindref="member">PDU_5V_OV_MV</ref>,<sp/><sp/><ref refid="PduConfig_8h_1a705ad0e9652257e882a404dd9cb03cc6" kindref="member">PDU_5V_OC_MA</ref>,<sp/><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">});</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1BoardThermal" kindref="compound">BoardThermal</ref><sp/>gTherm;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore" kindref="compound">CalStore</ref><sp/><sp/><sp/><sp/><sp/><sp/>gStore;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">CalRecord<sp/><sp/><sp/><sp/><sp/>gCal;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues" kindref="compound">CalValues</ref><sp/><sp/><sp/><sp/><sp/>gVals;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule" kindref="compound">TelemSchedule</ref><sp/>gSched;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal">uint16_t<sp/>gVdda<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a2e5177068bb221299732d5ee4310b3d0" kindref="member">VDDA_NOMINAL_MV</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">uint32_t<sp/>gBootMs<sp/><sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">uint32_t<sp/>gNextScanUs<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">uint32_t<sp/>gLastSlowMs<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal">uint32_t<sp/>gScans<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0;<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>scans<sp/>in<sp/>the<sp/>current<sp/>second</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">uint32_t<sp/>gRateMarkMs<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">uint16_t<sp/>gScanRate<sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>gSyncReq<sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>gLine[40];</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">uint8_t<sp/>gLineLen<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/>SLOW_MS<sp/>=<sp/>100;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NTC<sp/>+<sp/>Vrefint<sp/>cadence</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>armed(uint32_t<sp/>now)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>now<sp/>-<sp/>gBootMs<sp/>&gt;=<sp/><ref refid="PduConfig_8h_1aaf54bd918a0faede5caba39ad6044195" kindref="member">PDU_BOOT_BLANK_MS</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadCal()<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>gStore.<ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1a85e4d8c23b72383c520c2a073680d1c3" kindref="member">load</ref>(gCal);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>gVals<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ace649d6674f5b1a07b0cc61eb496ad06" kindref="member">calValues</ref>(gCal);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">uint8_t<sp/>statusFlags()<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>f<sp/>=<sp/>gTherm.flags();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!(gCal.calFlags<sp/>&amp;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220ac78855cbdf91e14c067b03a1fb147a78" kindref="member">CAL_VDDA</ref>))<sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a0a8cdc5957f14bbc41ebad0a515ee66c" kindref="member">PduStatusFlag::UNCAL_VDDA</ref>;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!(gCal.calFlags<sp/>&amp;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a00d55612142da8348b7626ea01535c57" kindref="member">CAL_ZERO</ref>))<sp/>f<sp/>|=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a96b2f238cf6c6b1ea1c9f39372ae0fcd" kindref="member">PduStatusFlag::UNCAL_ZERO</ref>;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal">TelemPayload<sp/>statusPage(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>periodic)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/><sp/>t<sp/><sp/><sp/>=<sp/>gTherm.tempDC();</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t<sp/>p12<sp/>=<sp/>g12.peakMa(),<sp/>p5<sp/>=<sp/>g5.peakMa();</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>TelemPayload<sp/>p;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>p.page<sp/><sp/><sp/><sp/>=<sp/>(uint8_t)<ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3afb17b5da7b62bafdf353114795cac8c4" kindref="member">TelemPage::PDU_STATUS</ref>;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[0]<sp/>=<sp/>statusFlags();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[1]<sp/>=<sp/>(uint8_t)((uint16_t)t<sp/>&amp;<sp/>0xFF);<sp/><sp/>p.body[2]<sp/>=<sp/>(uint8_t)((uint16_t)t<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[3]<sp/>=<sp/>(uint8_t)(p12<sp/>&amp;<sp/>0xFF);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p.body[4]<sp/>=<sp/>(uint8_t)(p12<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[5]<sp/>=<sp/>(uint8_t)(p5<sp/>&amp;<sp/>0xFF);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p.body[6]<sp/>=<sp/>(uint8_t)(p5<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(periodic)<sp/>{<sp/>g12.resetPeak();<sp/>g5.resetPeak();<sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>sendPage(uint8_t<sp/>slot,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>periodic,<sp/>uint32_t<sp/>now)<sp/>{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>TelemPayload<sp/>p<sp/>=<sp/>slot<sp/>==<sp/>0<sp/>?<sp/>g12.buildPage(periodic)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>slot<sp/>==<sp/>1<sp/>?<sp/>g5.buildPage(periodic)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>statusPage(periodic);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kindref="member">CANProtocol::send</ref>(<ref refid="CANProtocol_8h_1a1fe7f9f0046af6cdd5eed5525f3e8b11" kindref="member">canIdTelem</ref>(NODE_ID),<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keyword">const<sp/></highlight><highlight class="normal">uint8_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(&amp;p),<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(p));</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>gSched.<ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1ab010de1024a30ec48163f250f0b6c85b" kindref="member">sent</ref>(slot,<sp/>p.body[0],<sp/>now);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceCANProtocol_1a8ea19c74f3b784a3844f0e5a1b8ed699" kindref="member">onSyncReq</ref>()<sp/>{<sp/>gSyncReq<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal">uint16_t<sp/>readAdc(uint32_t<sp/>pin)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint16_t)analogRead(pin);<sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>scanRails(uint32_t<sp/>now)<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t<sp/>cV12<sp/>=<sp/>readAdc(<ref refid="PduConfig_8h_1a790f0703d32e4fcc07442501c0919a45" kindref="member">PDU_PIN_V12</ref>),<sp/>cV5<sp/>=<sp/>readAdc(<ref refid="PduConfig_8h_1aca6d55a46727dd23ca2a29fe750be917" kindref="member">PDU_PIN_V5</ref>);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint16_t<sp/>cI12<sp/>=<sp/>readAdc(<ref refid="PduConfig_8h_1aefb0af7dde93ed43c613e3dc24aff2d1" kindref="member">PDU_PIN_I12</ref>),<sp/>cI5<sp/>=<sp/>readAdc(<ref refid="PduConfig_8h_1a4f739d88e9024ad1c25a4c953eae80e9" kindref="member">PDU_PIN_I5</ref>);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>a<sp/>=<sp/>armed(now);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>g12.sample(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a2f92d83ff8984a0a6bb9d9433abe20ba" kindref="member">rail12Mv</ref>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kindref="member">countsToMv</ref>(cV12,<sp/>gVdda),<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a58016eb231a0ee15dbf28594fd94d085" kindref="member">vGain12</ref>),</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a719f7069e4205f9d1614af001ed29d35" kindref="member">currentMa</ref>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kindref="member">countsToMv</ref>(cI12,<sp/>gVdda),<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a917f23aa1da89504b2e9b877672444f9" kindref="member">zero12DmA</ref>,<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1af583d5c41249da9d6f64a556dc6c2a95" kindref="member">iGain12</ref>),<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a32f416b945841ee453968164ceb8f2ee" kindref="member">railed</ref>(cV12),<sp/>now,<sp/>a);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>g5.sample(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a07a1dfa44d53c83776c149356a8269c5" kindref="member">rail5Mv</ref>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kindref="member">countsToMv</ref>(cV5,<sp/>gVdda),<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a5469449710d31f46084e733c60d066ff" kindref="member">vGain5</ref>),</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a719f7069e4205f9d1614af001ed29d35" kindref="member">currentMa</ref>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kindref="member">countsToMv</ref>(cI5,<sp/>gVdda),<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a819be60069f26438a2ed9d0994ad21d2" kindref="member">zero5DmA</ref>,<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a9e2f6a234ad993baf98650c41cd28b1b" kindref="member">iGain5</ref>),<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a32f416b945841ee453968164ceb8f2ee" kindref="member">railed</ref>(cV5),<sp/>now,<sp/>a);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>gScans++;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>scanSlow(uint32_t<sp/>now)<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>gVdda<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ad4a2739ab5a82d99893f0a1bb0280701" kindref="member">vddaMv</ref>(readAdc(AVREF),<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a287f2d657834dca4feb079b5f6825c5c" kindref="member">vrefintMv</ref>);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>fault<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/>t<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a2b251a5db1217f1f69e8c6b3fe6a69a1" kindref="member">ntcTempDC</ref>(readAdc(<ref refid="PduConfig_8h_1a31a4ad8f966a1060498ee86b3159d1b0" kindref="member">PDU_PIN_NTC</ref>),<sp/>gVals.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a4b66ec3250a32170286b2fcc9661d3e2" kindref="member">ntcOffsetDC</ref>,<sp/>fault);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>gTherm.sample(t,<sp/>fault,<sp/>armed(now));</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>DiagSerial<sp/>calibration<sp/>commands<sp/>─────────────────────────────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal">Print&amp;<sp/>out()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceSTM32Board_1a54f0c0c3de2c351a93f77c8a851c4861" kindref="member">STM32Board::diagSerial</ref>();<sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>printCal()<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/>out();</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>cal:<sp/>VDDA=&quot;</highlight><highlight class="normal">));<sp/><sp/>d.print((gCal.calFlags<sp/>&amp;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220ac78855cbdf91e14c067b03a1fb147a78" kindref="member">CAL_VDDA</ref>)<sp/>?<sp/>F(</highlight><highlight class="stringliteral">&quot;yes&quot;</highlight><highlight class="normal">)<sp/>:<sp/>F(</highlight><highlight class="stringliteral">&quot;no&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>vrefintMv=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(gCal.vrefintMv);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>ZERO=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print((gCal.calFlags<sp/>&amp;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a00d55612142da8348b7626ea01535c57" kindref="member">CAL_ZERO</ref>)<sp/>?<sp/>F(</highlight><highlight class="stringliteral">&quot;yes&quot;</highlight><highlight class="normal">)<sp/>:<sp/>F(</highlight><highlight class="stringliteral">&quot;no&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>zero12dmA=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(gCal.zero12DmA);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>zero5dmA=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(gCal.zero5DmA);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>seq=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(gCal.seq);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>slots=&quot;</highlight><highlight class="normal">));<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d.print(gStore.<ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1af6a1fbf86f2ac16b32cc366525a56cfd" kindref="member">usedSlots</ref>());<sp/>d.print(</highlight><highlight class="charliteral">&apos;/&apos;</highlight><highlight class="normal">);<sp/>d.println(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1ab662df2566338cb50098e0838cc0c816" kindref="member">CAL_SLOTS</ref>);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>saveCal(CalRecord&amp;<sp/>rec)<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(gStore.<ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ab4abbb9e946ed2791424d27a55ccd1fb" kindref="member">save</ref>(rec))<sp/>{<sp/>loadCal();<sp/>out().print(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>saved.<sp/>&quot;</highlight><highlight class="normal">));<sp/>printCal();<sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>out().println(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>ERROR:<sp/>flash<sp/>write<sp/>failed<sp/>—<sp/>calibration<sp/>not<sp/>saved&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cmdCalVdda(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>arg)<sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>mv<sp/>=<sp/>atol(arg);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(mv<sp/>&lt;<sp/>3000<sp/>||<sp/>mv<sp/>&gt;<sp/>3600)<sp/>{<sp/>out().println(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>usage:<sp/>CAL<sp/>VDDA<sp/>&lt;mV<sp/>3000-3600&gt;<sp/>(DMM<sp/>on<sp/>3V3)&quot;</highlight><highlight class="normal">));<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>sum<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>64;<sp/>i++)<sp/>sum<sp/>+=<sp/>readAdc(AVREF);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>raw<sp/>=<sp/>sum<sp/>/<sp/>64;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>vref<sp/>=<sp/>raw<sp/>?<sp/>(uint32_t)mv<sp/>*<sp/>raw<sp/>/<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ac1e844225212d47e531cb203901672a1" kindref="member">ADC_FULL</ref><sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(vref<sp/>&lt;<sp/>1100<sp/>||<sp/>vref<sp/>&gt;<sp/>1300)<sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out().print(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>REFUSED:<sp/>derived<sp/>Vrefint<sp/>&quot;</highlight><highlight class="normal">));<sp/>out().print(vref);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out().println(F(</highlight><highlight class="stringliteral">&quot;<sp/>mV<sp/>is<sp/>outside<sp/>1100-1300<sp/>—<sp/>check<sp/>the<sp/>DMM<sp/>reading&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>CalRecord<sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref><sp/>=<sp/>gCal;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref>.vrefintMv<sp/>=<sp/>(uint16_t)vref;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref>.calFlags<sp/>|=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220ac78855cbdf91e14c067b03a1fb147a78" kindref="member">CAL_VDDA</ref>;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>saveCal(rec);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cmdCalZero()<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>s12<sp/>=<sp/>0,<sp/>s5<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>256;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s12<sp/>+=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a486ab4db963f727a0a6ee4d1dfc0f0fe" kindref="member">rawCurrentDmA</ref>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kindref="member">countsToMv</ref>(readAdc(<ref refid="PduConfig_8h_1aefb0af7dde93ed43c613e3dc24aff2d1" kindref="member">PDU_PIN_I12</ref>),<sp/>gVdda));</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s5<sp/><sp/>+=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a486ab4db963f727a0a6ee4d1dfc0f0fe" kindref="member">rawCurrentDmA</ref>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6d15ae927e661e886d1efb0d7ab3c2b2" kindref="member">countsToMv</ref>(readAdc(<ref refid="PduConfig_8h_1a4f739d88e9024ad1c25a4c953eae80e9" kindref="member">PDU_PIN_I5</ref>),<sp/><sp/>gVdda));</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int32_t<sp/>z12<sp/>=<sp/>s12<sp/>/<sp/>256,<sp/>z5<sp/>=<sp/>s5<sp/>/<sp/>256;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>out().print(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>zero<sp/>read:<sp/>12V<sp/>&quot;</highlight><highlight class="normal">));<sp/>out().print(z12<sp/>/<sp/>10);<sp/>out().print(F(</highlight><highlight class="stringliteral">&quot;<sp/>mA,<sp/>5V<sp/>&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>out().print(z5<sp/>/<sp/>10);<sp/>out().println(F(</highlight><highlight class="stringliteral">&quot;<sp/>mA<sp/>(5V<sp/>includes<sp/>the<sp/>PDU&apos;s<sp/>own<sp/>draw)&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(labs(z12)<sp/>&gt;<sp/><ref refid="PduConfig_8h_1a68421f895fb1e13a7c769c454df6d6ec" kindref="member">PDU_ZERO_GUARD_12V_MA</ref><sp/>*<sp/>10L<sp/>||<sp/>labs(z5)<sp/>&gt;<sp/><ref refid="PduConfig_8h_1a1a8486ef6dfca9c737b1e70a1e05ecca" kindref="member">PDU_ZERO_GUARD_5V_MA</ref><sp/>*<sp/>10L)<sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out().println(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>REFUSED:<sp/>current<sp/>too<sp/>high<sp/>for<sp/>a<sp/>zero<sp/>—<sp/>disconnect<sp/>the<sp/>load<sp/>and<sp/>retry&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>CalRecord<sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref><sp/>=<sp/>gCal;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref>.zero12DmA<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af06e011b9fb936c22a5531ad5dd13809" kindref="member">clampI16</ref>(z12);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref>.zero5DmA<sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af06e011b9fb936c22a5531ad5dd13809" kindref="member">clampI16</ref>(z5);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kindref="member">rec</ref>.calFlags<sp/>|=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220a00d55612142da8348b7626ea01535c57" kindref="member">CAL_ZERO</ref>;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>saveCal(rec);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cmdCalClear()<sp/>{</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Report<sp/>&quot;cleared&quot;<sp/>only<sp/>when<sp/>the<sp/>page<sp/>really<sp/>erased<sp/>—<sp/>otherwise<sp/>the<sp/>old<sp/>calibration<sp/>is<sp/>still</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>what<sp/>the<sp/>node<sp/>is<sp/>using,<sp/>and<sp/>saying<sp/>otherwise<sp/>would<sp/>mislead<sp/>whoever<sp/>is<sp/>calibrating.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!gStore.<ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ae789f859a6e89affa7204eb0e33dfcd0" kindref="member">erase</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out().println(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>ERROR:<sp/>flash<sp/>erase<sp/>failed<sp/>—<sp/>calibration<sp/>unchanged&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>loadCal();</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>out().print(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>cleared.<sp/>&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>printCal();</highlight></codeline>
+<codeline lineno="165"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>cmdRaw()<sp/>{</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/>out();</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>vdda=&quot;</highlight><highlight class="normal">));<sp/>d.print(gVdda);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;mV<sp/>12V=&quot;</highlight><highlight class="normal">));<sp/>d.print(g12.lastMv());<sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;mV/&quot;</highlight><highlight class="normal">));<sp/>d.print(g12.lastMa());</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;mA<sp/>5V=&quot;</highlight><highlight class="normal">));<sp/><sp/>d.print(g5.lastMv());<sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;mV/&quot;</highlight><highlight class="normal">));<sp/>d.print(g5.lastMa());</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;mA<sp/>temp=&quot;</highlight><highlight class="normal">));<sp/>d.print(gTherm.tempDC());<sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;dC<sp/>flags12=0x&quot;</highlight><highlight class="normal">));<sp/>d.print(g12.flags(),<sp/>HEX);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>flags5=0x&quot;</highlight><highlight class="normal">));<sp/>d.print(g5.flags(),<sp/>HEX);<sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>status=0x&quot;</highlight><highlight class="normal">));<sp/>d.print(statusFlags(),<sp/>HEX);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;<sp/>scans/s=&quot;</highlight><highlight class="normal">));<sp/>d.println(gScanRate);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>runCommand(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>line)<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>p<sp/>=<sp/>line;<sp/>*p;<sp/>p++)<sp/>*p<sp/>=<sp/>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">)toupper((</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">)*p);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(!strcmp(line,<sp/></highlight><highlight class="stringliteral">&quot;CAL<sp/>SHOW&quot;</highlight><highlight class="normal">))<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>printCal();</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!strncmp(line,<sp/></highlight><highlight class="stringliteral">&quot;CAL<sp/>VDDA<sp/>&quot;</highlight><highlight class="normal">,<sp/>9))<sp/><sp/><sp/><sp/><sp/><sp/>cmdCalVdda(line<sp/>+<sp/>9);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!strcmp(line,<sp/></highlight><highlight class="stringliteral">&quot;CAL<sp/>ZERO&quot;</highlight><highlight class="normal">))<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmdCalZero();</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!strcmp(line,<sp/></highlight><highlight class="stringliteral">&quot;CAL<sp/>CLEAR&quot;</highlight><highlight class="normal">))<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmdCalClear();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!strcmp(line,<sp/></highlight><highlight class="stringliteral">&quot;RAW&quot;</highlight><highlight class="normal">))<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cmdRaw();</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(line[0])<sp/>out().println(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>commands:<sp/>CAL<sp/>SHOW<sp/>|<sp/>CAL<sp/>VDDA<sp/>&lt;mV&gt;<sp/>|<sp/>CAL<sp/>ZERO<sp/>|<sp/>CAL<sp/>CLEAR<sp/>|<sp/>RAW&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="185"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>pollDiag()<sp/>{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/><ref refid="namespaceSTM32Board_1a54f0c0c3de2c351a93f77c8a851c4861" kindref="member">STM32Board::diagSerial</ref>();</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(d.available())<sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>(char)d.read();</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(c<sp/>==<sp/></highlight><highlight class="charliteral">&apos;\r&apos;</highlight><highlight class="normal"><sp/>||<sp/>c<sp/>==<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gLine[gLineLen]<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(gLineLen)<sp/>runCommand(gLine);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gLineLen<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(gLineLen<sp/>&lt;<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(gLine)<sp/>-<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gLine[gLineLen++]<sp/>=<sp/>c;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203" refid="namespacePduNode" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePduNode" kindref="compound">PduNode</ref><sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kindref="member">setup</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin</ref>();</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>loadCal();</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a438f275b91eb5d34ae85eeaa2a3505ea" kindref="member">CANProtocol::onStatusChange</ref>(<ref refid="namespaceSTM32Board_1a25f2a41dba3a3e6ac8d2d551a0b3a5ee" kindref="member">STM32Board::onCanStatus</ref>);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a8ea19c74f3b784a3844f0e5a1b8ed699" kindref="member">CANProtocol::onSyncReq</ref>(onSyncReq);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">CANProtocol::start</ref>();<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>HB_0<sp/>accepted<sp/>automatically;<sp/>node<sp/>status<sp/>arms<sp/>on<sp/>the<sp/>first<sp/>loop()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>gBootMs<sp/>=<sp/>gLastSlowMs<sp/>=<sp/>gRateMarkMs<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/>gNextScanUs<sp/>=<sp/>micros();</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/>gSched.<ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1aec3d7b41aac11699c7e8a5e8408ddbff" kindref="member">start</ref>(now);</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>scanSlow(now);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>VDDA<sp/>+<sp/>NTC<sp/>before<sp/>the<sp/>first<sp/>rail<sp/>scan</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>d<sp/>=<sp/>out();</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>d.print(F(</highlight><highlight class="stringliteral">&quot;[PDU]<sp/>NODE_ID=&quot;</highlight><highlight class="normal">));<sp/>d.println((</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)NODE_ID);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>printCal();</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" kindref="member">CANProtocol::send</ref>(<ref refid="CANProtocol_8h_1a491c94cebaef48948dc54d09f40c80fd" kindref="member">canIdReady</ref>(NODE_ID),<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">,<sp/>0);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kindref="member">loop</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceSTM32Board_1a126f8d94d28314ed8d17b4777bd9163b" kindref="member">STM32Board::tick</ref>();</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">CANProtocol::drain</ref>();</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">CANProtocol::serviceNodeStatus</ref>(0);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>us<sp/>=<sp/>micros();</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((int32_t)(us<sp/>-<sp/>gNextScanUs)<sp/>&gt;=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gNextScanUs<sp/>+=<sp/><ref refid="PduConfig_8h_1aad60ff2d437081d1d48ec3b29fe43211" kindref="member">PDU_SAMPLE_US</ref>;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((int32_t)(us<sp/>-<sp/>gNextScanUs)<sp/>&gt;=<sp/>(int32_t)(10<sp/>*<sp/><ref refid="PduConfig_8h_1aad60ff2d437081d1d48ec3b29fe43211" kindref="member">PDU_SAMPLE_US</ref>))<sp/>gNextScanUs<sp/>=<sp/>us<sp/>+<sp/><ref refid="PduConfig_8h_1aad60ff2d437081d1d48ec3b29fe43211" kindref="member">PDU_SAMPLE_US</ref>;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>scanRails(millis());</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>now<sp/>=<sp/>millis();</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(now<sp/>-<sp/>gLastSlowMs<sp/>&gt;=<sp/>SLOW_MS)<sp/>{<sp/>gLastSlowMs<sp/>=<sp/>now;<sp/>scanSlow(now);<sp/>}</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(now<sp/>-<sp/>gRateMarkMs<sp/>&gt;=<sp/>1000)<sp/>{<sp/>gRateMarkMs<sp/>=<sp/>now;<sp/>gScanRate<sp/>=<sp/>(uint16_t)gScans;<sp/>gScans<sp/>=<sp/>0;<sp/>}</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(gSyncReq)<sp/>{<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>host<sp/>(re)connected:<sp/>give<sp/>it<sp/>every<sp/>page<sp/>now;<sp/>windows<sp/>keep<sp/>running</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>gSyncReq<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint8_t<sp/>s<sp/>=<sp/>0;<sp/>s<sp/>&lt;<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">TelemSchedule::PAGES</ref>;<sp/>s++)<sp/>sendPage(s,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>now);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>flags[<ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1acdd375fe545b937c1fb0d01fef5e50ba" kindref="member">TelemSchedule::PAGES</ref>]<sp/>=<sp/>{g12.flags(),<sp/>g5.flags(),<sp/>statusFlags()};</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>periodic<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int8_t<sp/>slot<sp/>=<sp/>gSched.<ref refid="classOpenSkyhawk_1_1Pdu_1_1TelemSchedule_1a38aa6e5e8168e952b28bd3d0dd83a1e1" kindref="member">next</ref>(now,<sp/>flags,<sp/>periodic);</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(slot<sp/>&gt;=<sp/>0)<sp/>sendPage((uint8_t)slot,<sp/>periodic,<sp/>now);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>pollDiag();</highlight></codeline>
+<codeline lineno="251"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal">uint16_t<sp/><ref refid="namespacePduNode_1a5e1eabd3e74f9c3ef2e4d04b5ba63738" kindref="member">scanRateHz</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>gScanRate;<sp/>}</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref>&amp;<sp/><sp/><ref refid="namespacePduNode_1adc86f791ff0d9a226fd0d96c994fbd41" kindref="member">rail12</ref>()<sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>g12;<sp/>}</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">RailMonitor</ref>&amp;<sp/><sp/><ref refid="namespacePduNode_1a6e1df22c6aef3a714e1361ae0a442661" kindref="member">rail5</ref>()<sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>g5;<sp/>}</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1BoardThermal" kindref="compound">BoardThermal</ref>&amp;<sp/><ref refid="namespacePduNode_1aeaec51f1fddc568e77c8c9653ba25e39" kindref="member">thermal</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>gTherm;<sp/>}</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PduNode</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/PduNode.cpp"/>
+  </compounddef>
+</doxygen>

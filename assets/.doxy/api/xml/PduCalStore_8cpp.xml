@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="PduCalStore_8cpp" kind="file" language="C++">
+    <compoundname>PduCalStore.cpp</compoundname>
+    <includes refid="PduCalStore_8h" local="yes">PduCalStore.h</includes>
+    <includes local="no">string.h</includes>
+    <includes local="no">Arduino.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/PowerMonitor/PduCalStore.cpp</label>
+        <link refid="PduCalStore_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PduCalStore.h</label>
+        <link refid="PduCalStore_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PduConfig.h</label>
+        <link refid="PduConfig_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>PduMath.h</label>
+        <link refid="PduMath_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Arduino.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+      <node id="7">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <innernamespace refid="namespaceOpenSkyhawk_1_1Pdu">OpenSkyhawk::Pdu</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduCalStore_8h" kindref="compound">PduCalStore.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Arduino.h&gt;</highlight><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>STM32<sp/>HAL<sp/>flash<sp/>API</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="9" refid="namespaceOpenSkyhawk_1_1Pdu" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Pdu<sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal">CalRecord<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6ca3d88774257f5dc3b8985a7fd15600" kindref="member">calDefaults</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>CalRecord<sp/>r;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>memset(&amp;r,<sp/>0,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(r));</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>r.iGain12<sp/>=<sp/>r.iGain5<sp/>=<sp/>r.vGain12<sp/>=<sp/>r.vGain5<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae8f0ec244359b3ee128086bcf2cfcafd" kindref="member">GAIN_UNITY</ref>;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af6fe875ae914dd090c862aac07dd5020" kindref="member">calSeal</ref>(r);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af6fe875ae914dd090c862aac07dd5020" kindref="member">calSeal</ref>(CalRecord&amp;<sp/>rec)<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>rec.magic<sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a1cd793325c86115608c569d5ad227441" kindref="member">CAL_MAGIC</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>rec.version<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ade9868c326909a7c38af61e18603e73b" kindref="member">CAL_VERSION</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>rec.rsvd<sp/><sp/><sp/><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>rec.crc<sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6f4ea85f06d1cfb44afed3a4dd48bc01" kindref="member">crc32</ref>(</highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keyword">const<sp/></highlight><highlight class="normal">uint8_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(&amp;rec),<sp/>offsetof(CalRecord,<sp/>crc));</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a314173e9358821d2ce791b6f7c129865" kindref="member">calValid</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalRecord&amp;<sp/>rec)<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>rec.magic<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a1cd793325c86115608c569d5ad227441" kindref="member">CAL_MAGIC</ref><sp/>&amp;&amp;<sp/>rec.version<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ade9868c326909a7c38af61e18603e73b" kindref="member">CAL_VERSION</ref><sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rec.crc<sp/>==<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6f4ea85f06d1cfb44afed3a4dd48bc01" kindref="member">crc32</ref>(</highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keyword">const<sp/></highlight><highlight class="normal">uint8_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(&amp;rec),<sp/>offsetof(CalRecord,<sp/>crc));</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues" kindref="compound">CalValues</ref><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ace649d6674f5b1a07b0cc61eb496ad06" kindref="member">calValues</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalRecord&amp;<sp/>rec)<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues" kindref="compound">CalValues</ref><sp/>v;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a287f2d657834dca4feb079b5f6825c5c" kindref="member">vrefintMv</ref><sp/><sp/><sp/>=<sp/>(rec.calFlags<sp/>&amp;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220ac78855cbdf91e14c067b03a1fb147a78" kindref="member">CAL_VDDA</ref>)<sp/>?<sp/>rec.vrefintMv<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a917f23aa1da89504b2e9b877672444f9" kindref="member">zero12DmA</ref><sp/><sp/><sp/>=<sp/>rec.zero12DmA;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a819be60069f26438a2ed9d0994ad21d2" kindref="member">zero5DmA</ref><sp/><sp/><sp/><sp/>=<sp/>rec.zero5DmA;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1af583d5c41249da9d6f64a556dc6c2a95" kindref="member">iGain12</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>rec.iGain12;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a9e2f6a234ad993baf98650c41cd28b1b" kindref="member">iGain5</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>rec.iGain5;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a58016eb231a0ee15dbf28594fd94d085" kindref="member">vGain12</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>rec.vGain12;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a5469449710d31f46084e733c60d066ff" kindref="member">vGain5</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>rec.vGain5;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>v.<ref refid="structOpenSkyhawk_1_1Pdu_1_1CalValues_1a4b66ec3250a32170286b2fcc9661d3e2" kindref="member">ntcOffsetDC</ref><sp/>=<sp/>rec.ntcOffsetDC;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>v;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a7e0c54bc2bad78aaef385ffeff4188bb" kindref="member">slotEmpty</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>CalRecord*<sp/>s)<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>w[</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(CalRecord)<sp/>/<sp/>4];</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(w,<sp/>s,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(w));<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>CalRecord<sp/>is<sp/>packed<sp/>—<sp/>copy<sp/>rather<sp/>than<sp/>alias<sp/>as<sp/>uint32_t</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(uint32_t<sp/>x<sp/>:<sp/>w)</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(x<sp/>!=<sp/>0xFFFFFFFFu)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal">uint8_t<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1af6a1fbf86f2ac16b32cc366525a56cfd" kindref="member">CalStore::usedSlots</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>n<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(n<sp/>&lt;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ab662df2566338cb50098e0838cc0c816" kindref="member">CAL_SLOTS</ref><sp/>&amp;&amp;<sp/>!<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a7e0c54bc2bad78aaef385ffeff4188bb" kindref="member">slotEmpty</ref>(slot(n)))<sp/>n++;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1a85e4d8c23b72383c520c2a073680d1c3" kindref="member">CalStore::load</ref>(CalRecord&amp;<sp/>out)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>used<sp/>=<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1af6a1fbf86f2ac16b32cc366525a56cfd" kindref="member">usedSlots</ref>();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)used<sp/>-<sp/>1;<sp/>i<sp/>&gt;=<sp/>0;<sp/>i--)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceOpenSkyhawk_1_1Pdu_1a314173e9358821d2ce791b6f7c129865" kindref="member">calValid</ref>(*slot((uint8_t)i)))<sp/>{<sp/>out<sp/>=<sp/>*slot((uint8_t)i);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>out<sp/>=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a6ca3d88774257f5dc3b8985a7fd15600" kindref="member">calDefaults</ref>();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>ARDUINO_ARCH_STM32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ae789f859a6e89affa7204eb0e33dfcd0" kindref="member">CalStore::erase</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>FLASH_EraseInitTypeDef<sp/>e<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>e.TypeErase<sp/><sp/><sp/>=<sp/>FLASH_TYPEERASE_PAGES;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>e.PageAddress<sp/>=<sp/>_page;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>e.NbPages<sp/><sp/><sp/><sp/><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>pageError<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_FLASH_Unlock();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ok<sp/>=<sp/>HAL_FLASHEx_Erase(&amp;e,<sp/>&amp;pageError)<sp/>==<sp/>HAL_OK;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_FLASH_Lock();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ok;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ab4abbb9e946ed2791424d27a55ccd1fb" kindref="member">CalStore::save</ref>(CalRecord&amp;<sp/>rec)<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>CalRecord<sp/>prev;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>rec.seq<sp/>=<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1a85e4d8c23b72383c520c2a073680d1c3" kindref="member">load</ref>(prev)<sp/>?<sp/>prev.seq<sp/>+<sp/>1<sp/>:<sp/>1;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1af6fe875ae914dd090c862aac07dd5020" kindref="member">calSeal</ref>(rec);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/>i<sp/>=<sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1af6a1fbf86f2ac16b32cc366525a56cfd" kindref="member">usedSlots</ref>();</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>&gt;=<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1ab662df2566338cb50098e0838cc0c816" kindref="member">CAL_SLOTS</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ae789f859a6e89affa7204eb0e33dfcd0" kindref="member">erase</ref>())<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>i<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>addr<sp/>=<sp/>_page<sp/>+<sp/>(uint32_t)i<sp/>*<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(CalRecord);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>w[</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(CalRecord)<sp/>/<sp/>4];</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(w,<sp/>&amp;rec,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(w));<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>packed<sp/>struct<sp/>→<sp/>aligned<sp/>words<sp/>for<sp/>the<sp/>word<sp/>programmer</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_FLASH_Unlock();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ok<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>ok<sp/>&amp;&amp;<sp/>k<sp/>&lt;<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(CalRecord)<sp/>/<sp/>4;<sp/>k++)</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ok<sp/>=<sp/>HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,<sp/>addr<sp/>+<sp/>k<sp/>*<sp/>4,<sp/>w[k])<sp/>==<sp/>HAL_OK;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>HAL_FLASH_Lock();</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ok<sp/>&amp;&amp;<sp/><ref refid="namespaceOpenSkyhawk_1_1Pdu_1a314173e9358821d2ce791b6f7c129865" kindref="member">calValid</ref>(*slot(i));</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ae789f859a6e89affa7204eb0e33dfcd0" kindref="member">CalStore::erase</ref>()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1Pdu_1_1CalStore_1ab4abbb9e946ed2791424d27a55ccd1fb" kindref="member">CalStore::save</ref>(CalRecord&amp;)<sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Pdu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/PowerMonitor/PduCalStore.cpp"/>
+  </compounddef>
+</doxygen>

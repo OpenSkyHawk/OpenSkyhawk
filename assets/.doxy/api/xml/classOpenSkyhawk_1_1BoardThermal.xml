@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classOpenSkyhawk_1_1BoardThermal" kind="class" language="C++" prot="public">
+    <compoundname>OpenSkyhawk::BoardThermal</compoundname>
+    <basecompoundref refid="classOpenSkyhawk_1_1FaultSource" prot="public" virt="non-virtual">OpenSkyhawk::FaultSource</basecompoundref>
+    <includes refid="BoardThermal_8h" local="no">BoardThermal.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1BoardThermal_1a7a6e59bd5348f73735d774040b99910b" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::BoardThermal::_tempDC</definition>
+        <argsstring></argsstring>
+        <name>_tempDC</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::_tempDC</qualifiedname>
+        <initializer>= INT16_MIN</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="45" column="13" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1BoardThermal_1aa71c6e19c6e4730caf011c3a8341c5f4" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::BoardThermal::_warn</definition>
+        <argsstring></argsstring>
+        <name>_warn</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::_warn</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="46" column="13" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1BoardThermal_1a1e0620a366894ab050442dbca57423b0" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::BoardThermal::_crit</definition>
+        <argsstring></argsstring>
+        <name>_crit</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::_crit</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="47" column="13" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classOpenSkyhawk_1_1BoardThermal_1a5e0f1329772ef6692f5e51e922a9a52b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpenSkyhawk::BoardThermal::_ntcFault</definition>
+        <argsstring></argsstring>
+        <name>_ntcFault</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::_ntcFault</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="48" column="13" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classOpenSkyhawk_1_1BoardThermal_1a29010a8a27b4b539086458e04e1e6d7a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpenSkyhawk::BoardThermal::BoardThermal</definition>
+        <argsstring>()=default</argsstring>
+        <name>BoardThermal</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::BoardThermal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="25" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1BoardThermal_1a82309f7b616854bc879a9fbbaed9bff3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::BoardThermal::sample</definition>
+        <argsstring>(int16_t tempDC, bool ntcFault, bool armed)</argsstring>
+        <name>sample</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::sample</qualifiedname>
+        <param>
+          <type>int16_t</type>
+          <declname>tempDC</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>ntcFault</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>armed</declname>
+        </param>
+        <briefdescription>
+<para>Feed one reading. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tempDC</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Board temperature, 0.1 °C (ignored when <computeroutput>ntcFault</computeroutput>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ntcFault</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>NTC channel open or shorted. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>armed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>false during power-up blanking — the flags are held clear. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="33" column="10" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.cpp" bodystart="6" bodyend="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1BoardThermal_1af15858b09e59bf0c838bf78c37bd5e4b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t OpenSkyhawk::BoardThermal::flags</definition>
+        <argsstring>() const</argsstring>
+        <name>flags</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::flags</qualifiedname>
+        <briefdescription>
+<para>PduStatusFlag bits this monitor owns: TEMP_WARN, TEMP_CRIT, NTC_FAULT. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="36" column="13" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.cpp" bodystart="18" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int16_t</type>
+        <definition>int16_t OpenSkyhawk::BoardThermal::tempDC</definition>
+        <argsstring>() const</argsstring>
+        <name>tempDC</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::tempDC</qualifiedname>
+        <briefdescription>
+<para>Latest temperature, 0.1 °C; INT16_MIN when unavailable (no reading yet / NTC fault). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="39" column="13" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1BoardThermal_1a649e5f47720ac4dbbf7947c342649fca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref></type>
+        <definition>NodeFaultCode OpenSkyhawk::BoardThermal::faultCode</definition>
+        <argsstring>() const override</argsstring>
+        <name>faultCode</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::faultCode</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034">faultCode</reimplements>
+        <briefdescription>
+<para>Current fault code (<ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref> when healthy). Cheap/const, cached state only. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="41" column="19" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.cpp" bodystart="26" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classOpenSkyhawk_1_1BoardThermal_1a88e9ee1143dcb7f2daa124223c314457" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const char *</type>
+        <definition>const char * OpenSkyhawk::BoardThermal::faultDetail</definition>
+        <argsstring>() const override</argsstring>
+        <name>faultDetail</name>
+        <qualifiedname>OpenSkyhawk::BoardThermal::faultDetail</qualifiedname>
+        <reimplements refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e">faultDetail</reimplements>
+        <briefdescription>
+<para>Human-readable fault detail for the local DiagSerial tap only — never on the wire. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="42" column="18" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.cpp" bodystart="32" bodyend="36"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>OpenSkyhawk::BoardThermal</label>
+        <link refid="classOpenSkyhawk_1_1BoardThermal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::FaultSource</label>
+        <link refid="classOpenSkyhawk_1_1FaultSource"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>OpenSkyhawk::BoardThermal</label>
+        <link refid="classOpenSkyhawk_1_1BoardThermal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>OpenSkyhawk::FaultSource</label>
+        <link refid="classOpenSkyhawk_1_1FaultSource"/>
+      </node>
+    </collaborationgraph>
+    <location file="Firmware/Libraries/PowerMonitor/BoardThermal.h" line="23" column="1" bodyfile="Firmware/Libraries/PowerMonitor/BoardThermal.h" bodystart="23" bodyend="49"/>
+    <listofallmembers>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a1e0620a366894ab050442dbca57423b0" prot="private" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>_crit</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a5e0f1329772ef6692f5e51e922a9a52b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>_ntcFault</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a7a6e59bd5348f73735d774040b99910b" prot="private" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>_tempDC</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1aa71c6e19c6e4730caf011c3a8341c5f4" prot="private" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>_warn</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a29010a8a27b4b539086458e04e1e6d7a" prot="public" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>BoardThermal</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a649e5f47720ac4dbbf7947c342649fca" prot="public" virt="virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>faultCode</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a88e9ee1143dcb7f2daa124223c314457" prot="public" virt="virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>faultDetail</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>FaultSource</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1af15858b09e59bf0c838bf78c37bd5e4b" prot="public" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>flags</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" prot="public" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>head</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" prot="public" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>next</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a82309f7b616854bc879a9fbbaed9bff3" prot="public" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>sample</name></member>
+      <member refid="classOpenSkyhawk_1_1BoardThermal_1a75224f5a2188ad0a391213e1165a5277" prot="public" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>tempDC</name></member>
+      <member refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" prot="protected" virt="non-virtual"><scope>OpenSkyhawk::BoardThermal</scope><name>~FaultSource</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

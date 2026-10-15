@@ -2,7 +2,9 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="classOpenSkyhawk_1_1FaultSource" kind="class" language="C++" prot="public">
     <compoundname>OpenSkyhawk::FaultSource</compoundname>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1BoardThermal" prot="public" virt="non-virtual">OpenSkyhawk::BoardThermal</derivedcompoundref>
     <derivedcompoundref refid="classOpenSkyhawk_1_1DrumDisplay" prot="public" virt="non-virtual">OpenSkyhawk::DrumDisplay</derivedcompoundref>
+    <derivedcompoundref refid="classOpenSkyhawk_1_1RailMonitor" prot="public" virt="non-virtual">OpenSkyhawk::RailMonitor</derivedcompoundref>
     <includes refid="NodeStatus_8h" local="no">NodeStatus.h</includes>
     <sectiondef kind="private-static-attrib">
       <memberdef kind="variable" id="classOpenSkyhawk_1_1FaultSource_1ac37c96df64737beb9a6316ff95a018f7" prot="private" static="yes" mutable="no">
@@ -18,7 +20,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="91" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="91" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="140" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="140" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -34,7 +36,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="92" column="17" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="92" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="141" column="17" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="141" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -45,6 +47,8 @@
         <name>faultCode</name>
         <qualifiedname>OpenSkyhawk::FaultSource::faultCode</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1ae93dbd7bd712bf155dde58431212f322">faultCode</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1BoardThermal_1a649e5f47720ac4dbbf7947c342649fca">faultCode</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1RailMonitor_1aebc1f3b0af484e6f551fff107984b65b">faultCode</reimplementedby>
         <briefdescription>
 <para>Current fault code (<ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref> when healthy). Cheap/const, cached state only. </para>
         </briefdescription>
@@ -52,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="76" column="27" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="76" bodyend="76"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="125" column="27" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="125" bodyend="125"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>const char *</type>
@@ -61,6 +65,8 @@
         <name>faultDetail</name>
         <qualifiedname>OpenSkyhawk::FaultSource::faultDetail</qualifiedname>
         <reimplementedby refid="classOpenSkyhawk_1_1DrumDisplay_1a6a5ea894d9fe758e1e1a69b3d0ea1499">faultDetail</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1BoardThermal_1a88e9ee1143dcb7f2daa124223c314457">faultDetail</reimplementedby>
+        <reimplementedby refid="classOpenSkyhawk_1_1RailMonitor_1a41c488ea3cdbd17f934f97c08fb81b13">faultDetail</reimplementedby>
         <briefdescription>
 <para>Human-readable fault detail for the local DiagSerial tap only — never on the wire. </para>
         </briefdescription>
@@ -68,7 +74,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="79" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="79" bodyend="79"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="128" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="128" bodyend="128"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref> *</type>
@@ -83,7 +89,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="84" column="17" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="10" bodyend="10"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="133" column="17" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="10" bodyend="10"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
@@ -100,7 +106,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="82" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="9" bodyend="9"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="131" column="24" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="9" bodyend="9"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -117,7 +123,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="87" column="5" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="8" bodyend="8"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="136" column="5" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="8" bodyend="8"/>
       </memberdef>
       <memberdef kind="function" id="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -132,7 +138,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="88" column="5"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="137" column="5"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -146,6 +152,12 @@
     </detaileddescription>
     <inheritancegraph>
       <node id="2">
+        <label>OpenSkyhawk::BoardThermal</label>
+        <link refid="classOpenSkyhawk_1_1BoardThermal"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
         <label>OpenSkyhawk::DrumDisplay</label>
         <link refid="classOpenSkyhawk_1_1DrumDisplay"/>
         <childnode refid="1" relation="public-inheritance">
@@ -155,8 +167,14 @@
         <label>OpenSkyhawk::FaultSource</label>
         <link refid="classOpenSkyhawk_1_1FaultSource"/>
       </node>
+      <node id="4">
+        <label>OpenSkyhawk::RailMonitor</label>
+        <link refid="classOpenSkyhawk_1_1RailMonitor"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
     </inheritancegraph>
-    <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="73" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="73" bodyend="93"/>
+    <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="122" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="122" bodyend="142"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1FaultSource_1ac37c96df64737beb9a6316ff95a018f7" prot="private" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>_head</name></member>
       <member refid="classOpenSkyhawk_1_1FaultSource_1aef10f3ad8269ff82c503afc584ad818c" prot="private" virt="non-virtual"><scope>OpenSkyhawk::FaultSource</scope><name>_next</name></member>

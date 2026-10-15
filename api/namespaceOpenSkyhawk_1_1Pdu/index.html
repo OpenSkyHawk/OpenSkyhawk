@@ -1,0 +1,5772 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://openskyhawk.github.io/OpenSkyhawk/api/namespaceOpenSkyhawk_1_1Pdu/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Namespace OpenSkyhawk::Pdu - OpenSkyhawk</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-JZKG51X8Y1"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-JZKG51X8Y1",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-JZKG51X8Y1",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#namespace-openskyhawkpdu" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="OpenSkyhawk" class="md-header__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenSkyhawk
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Namespace OpenSkyhawk::Pdu
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-header-nav" aria-label="Primary navigation">
+      <a href="../.." class="">Home</a>
+      <a href="../../getting-started/overview/" class="">Getting Started</a>
+      <a href="../../architecture/" class="">Documentation</a>
+      <a href="../../hardware/standards/" class="">Hardware</a>
+      <a href="../" class="os-header-nav__link--active">API Reference</a>
+    </div>
+
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/overview/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../hardware/standards/" class="md-tabs__link">
+          
+  
+  
+  Hardware Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../firmware/" class="md-tabs__link">
+          
+  
+  
+  Firmware Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../panels/center-console/" class="md-tabs__link">
+          
+  
+  
+  Center Console
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../panels/left-console/" class="md-tabs__link">
+          
+  
+  
+  Left Console
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../panels/right-console/" class="md-tabs__link">
+          
+  
+  
+  Right Console
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../flight-controls/" class="md-tabs__link">
+          
+  
+  
+  Flight Controls
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kits/" class="md-tabs__link">
+          
+  
+  
+  Kit Assembly
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/" class="md-tabs__link">
+          
+  
+  
+  Build Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="OpenSkyhawk" class="md-nav__button md-logo" aria-label="OpenSkyhawk" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/site-logo.png" alt="logo">
+
+    </a>
+    OpenSkyhawk
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OpenSkyhawk/OpenSkyhawk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Get Involved
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is OpenSkyhawk?
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/system-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How the System Works
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What You'll Need
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/client-app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenSkyhawk Client
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/repo-layout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repo Layout
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/pin-addresses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pin Addresses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/expanders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expanders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Inputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switch3pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Switch3Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switchmultipos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SwitchMultiPos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/analogmultipos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AnalogMultiPos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/actionbutton/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ActionButton
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/switchwithcover2pos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SwitchWithCover2Pos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/rotaryencoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RotaryEncoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/rotaryacceleratedencoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RotaryAcceleratedEncoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/analoginput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AnalogInput
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/inputs/anglesensorinput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AngleSensorInput
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_5" id="__nav_2_6_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Outputs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Outputs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/outputs/led/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LED
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/outputs/dimmer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dimmer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/outputs/needlegauge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NeedleGauge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/outputs/drumdisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DrumDisplay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/outputs/integeroutput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IntegerOutput
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/controls/outputs/analogoutput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AnalogOutput
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/design-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/firmware-tiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firmware Tiers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/can-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN Bus Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/sim-gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SimGateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dcsbios-vs-hid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS vs HID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hardware Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/mechanical-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanical Standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/pcb-design-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PCB Design Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/kicad-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KiCad Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/cad-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAD Workflow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/3d-printing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Printing Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connector & Harness Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/base-boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base Boards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component Library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hardware/printed-parts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Printed Parts Library
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--stub"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firmware Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Firmware Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/platformio-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PlatformIO Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/build-flags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Flags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/node-id/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NODE_ID & CAN Addressing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/dcsbios-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS-BIOS Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/hid-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HID Controls
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/control-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../firmware/debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging on STM32
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Center Console
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Center Console
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panels/center-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Armament Group
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Armament Group
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panels/center-console/armament/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Left Console
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Left Console
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panels/left-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Right Console
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Right Console
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panels/right-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--new"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flight Controls
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Flight Controls
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flight-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kit Assembly
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kit Assembly
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kits/whats-in-the-box/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What's in the Box
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Armament Group Kit
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Armament Group Kit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kits/armament/assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kits/armament/flashing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashing Firmware
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kits/armament/dcs-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DCS Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kits/armament/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--planned"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Build Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/first-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your First Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/pcb-ordering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PCB Ordering (JLCPCB)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembly & Soldering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/flashing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashing Firmware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/bring-up/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bring-Up & Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/new-panel-group/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a New Panel Group
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/new-control-type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a New Control Type
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to Contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/ai-assisted-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI-Assisted Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/docs-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docs Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/adding-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adding a Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deprecated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deprecated List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_3" id="__nav_13_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespaces
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespaces
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_3_2" id="__nav_13_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Namespace Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_13_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Namespace Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_4" id="__nav_13_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Classes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annotated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hierarchy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_4_4" id="__nav_13_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Class Members
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_13_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Class Members
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_typedefs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Typedefs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class_member_enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_13_5" id="__nav_13_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_13_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macros
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-types-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Types Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Types Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enum-calflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalFlag
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Static Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-adc_full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable ADC_FULL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_magic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_MAGIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_page_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_PAGE_SIZE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_SLOTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_VERSION
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-gain_unity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable GAIN_UNITY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-i_ma_per_mv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable I_MA_PER_MV
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ntc_beta_k" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NTC_BETA_K
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ntc_bias_ohm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NTC_BIAS_OHM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ntc_r0_ohm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NTC_R0_OHM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ntc_t0_k" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NTC_T0_K
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-v12_div_den" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable V12_DIV_DEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-v12_div_num" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable V12_DIV_NUM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-v5_div_den" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable V5_DIV_DEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-v5_div_num" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable V5_DIV_NUM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-vdda_nominal_mv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable VDDA_NOMINAL_MV
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-vrefint_typ_mv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable VREFINT_TYP_MV
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-__attribute__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function __attribute__
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-caldefaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calDefaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calseal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calSeal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calvalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calValid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-calvalues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function calValues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-clampi16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function clampI16
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-clampu16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function clampU16
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-countstomv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function countsToMv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-crc32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function crc32
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-currentma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function currentMa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-ntctempdc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function ntcTempDC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-rail12mv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function rail12Mv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-rail5mv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function rail5Mv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-railed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function railed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-rawcurrentdma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function rawCurrentDmA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-vddamv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function vddaMv
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-static-functions-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Static Functions Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Static Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-slotempty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function slotEmpty
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-trimmed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function trimmed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="namespace-openskyhawkpdu">Namespace OpenSkyhawk::Pdu</h1>
+<p><a href="../namespaces/"><strong>Namespace List</strong></a> <strong>&gt;</strong> <a href="../namespaceOpenSkyhawk/"><strong>OpenSkyhawk</strong></a> <strong>&gt;</strong> <a href="./"><strong>Pdu</strong></a></p>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1Pdu_1_1CalStore/"><strong>CalStore</strong></a> <br><em>The reserved flash page holding the calibration log.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1Pdu_1_1CalValues/"><strong>CalValues</strong></a> <br><em>Calibration values the conversions need. Defaults = uncalibrated.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="../structOpenSkyhawk_1_1Pdu_1_1Latch/"><strong>Latch</strong></a> <br><em>A condition that must hold</em> <code>setMs</code> <em>to raise and its clear condition hold</em><code>clearMs</code> <em>to drop.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">class</td>
+<td style="text-align: left;"><a href="../classOpenSkyhawk_1_1Pdu_1_1TelemSchedule/"><strong>TelemSchedule</strong></a> <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-types">Public Types</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calflag"><strong>CalFlag</strong></a>  <br><em>CalRecord.calFlags bits — which calibrations this record holds.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-attributes">Public Static Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-adc_full"><strong>ADC_FULL</strong></a>   = <code>1UL &amp;lt;&amp;lt; 16</code><br><em>analogReadResolution(16), set by</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> __</td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-cal_magic"><strong>CAL_MAGIC</strong></a>   = <code>0x4C414350</code><br><em>'PCAL' little-endian</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-cal_page_size"><strong>CAL_PAGE_SIZE</strong></a>   = <code>1024</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-cal_slots"><strong>CAL_SLOTS</strong></a>   = <code>[**CAL\_PAGE\_SIZE**](namespaceOpenSkyhawk_1_1Pdu.md#variable-cal_page_size) / sizeof(CalRecord)</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-cal_version"><strong>CAL_VERSION</strong></a>   = <code>1</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-gain_unity"><strong>GAIN_UNITY</strong></a>   = <code>10000</code><br><em>cal gain trims: 10000 = ×1.0000</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-i_ma_per_mv"><strong>I_MA_PER_MV</strong></a>   = <code>2</code><br><em>INA180A2 (gain 50 V/V) on a 10 mΩ shunt: I = Vout / (50 × 0.010 Ω) → mA = 2 × mV.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr float</td>
+<td style="text-align: left;"><a href="#variable-ntc_beta_k"><strong>NTC_BETA_K</strong></a>   = <code>3450.0f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr float</td>
+<td style="text-align: left;"><a href="#variable-ntc_bias_ohm"><strong>NTC_BIAS_OHM</strong></a>   = <code>10000.0f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr float</td>
+<td style="text-align: left;"><a href="#variable-ntc_r0_ohm"><strong>NTC_R0_OHM</strong></a>   = <code>10000.0f</code><br><em>NTC: 10 kΩ ±1 % B3450 to GND, 10 kΩ bias from +3V3 (same rail as VDDA → ratiometric).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr float</td>
+<td style="text-align: left;"><a href="#variable-ntc_t0_k"><strong>NTC_T0_K</strong></a>   = <code>298.15f</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-v12_div_den"><strong>V12_DIV_DEN</strong></a>   = <code>10</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-v12_div_num"><strong>V12_DIV_NUM</strong></a>   = <code>43</code><br><em>Rail = ADC × num / den. 12 V: (33k + 10k) / 10k. 5 V: (10k + 13k) / 13k.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-v5_div_den"><strong>V5_DIV_DEN</strong></a>   = <code>13</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-v5_div_num"><strong>V5_DIV_NUM</strong></a>   = <code>23</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-vdda_nominal_mv"><strong>VDDA_NOMINAL_MV</strong></a>   = <code>3300</code><br><em>assumed VDDA until CAL VDDA anchors Vrefint</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint16_t</td>
+<td style="text-align: left;"><a href="#variable-vrefint_typ_mv"><strong>VREFINT_TYP_MV</strong></a>   = <code>1200</code><br><em>F103 Vrefint typical (untrimmed, ±~3 %)</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-functions">Public Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">struct</td>
+<td style="text-align: left;"><a href="#function-__attribute__"><strong>__attribute__</strong></a> ((packed)) <br><em>One stored calibration — 32 bytes, little-endian, CRC-32 over bytes 0–27.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">CalRecord</td>
+<td style="text-align: left;"><a href="#function-caldefaults"><strong>calDefaults</strong></a> () <br><em>An uncalibrated record: unity gains, zero offsets, no flags.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">void</td>
+<td style="text-align: left;"><a href="#function-calseal"><strong>calSeal</strong></a> (CalRecord &amp; rec) <br><em>Fill magic/version/crc for</em> <code>rec</code> <em>(seq left as set).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-calvalid"><strong>calValid</strong></a> (const CalRecord &amp; rec) <br><em>True when</em> <code>rec</code> <em>has the right magic, version and CRC.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><a href="../structOpenSkyhawk_1_1Pdu_1_1CalValues/"><strong>CalValues</strong></a></td>
+<td style="text-align: left;"><a href="#function-calvalues"><strong>calValues</strong></a> (const CalRecord &amp; rec) <br><em>The conversion values a record carries.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">int16_t</td>
+<td style="text-align: left;"><a href="#function-clampi16"><strong>clampI16</strong></a> (int32_t v) <br><em>Clamp an int32 into int16 range.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-clampu16"><strong>clampU16</strong></a> (int32_t v) <br><em>Clamp an int32 into uint16 range.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#function-countstomv"><strong>countsToMv</strong></a> (uint16_t counts, uint16_t vddaMv) <br><em>ADC pin voltage in mV for a 16-bit count at the given VDDA.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#function-crc32"><strong>crc32</strong></a> (const uint8_t * data, size_t len) <br><em>CRC-32 (IEEE 802.3, reflected 0xEDB88320) over</em> <code>len</code> <em>bytes.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">int32_t</td>
+<td style="text-align: left;"><a href="#function-currentma"><strong>currentMa</strong></a> (uint32_t adcMv, int16_t zeroDmA, uint16_t iGain) <br><em>Rail current in mA from the INA180 output voltage.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">int16_t</td>
+<td style="text-align: left;"><a href="#function-ntctempdc"><strong>ntcTempDC</strong></a> (uint16_t counts, int16_t offsetDC, bool &amp; fault) <br><em>Board temperature in 0.1 °C from the NTC channel (ratiometric — VDDA cancels).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-rail12mv"><strong>rail12Mv</strong></a> (uint32_t adcMv, uint16_t vGain) <br><em>12 V rail in mV from the ADC pin voltage, after the divider and gain trim.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-rail5mv"><strong>rail5Mv</strong></a> (uint32_t adcMv, uint16_t vGain) <br><em>5 V rail in mV from the ADC pin voltage, after the divider and gain trim.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-railed"><strong>railed</strong></a> (uint16_t counts) <br><em>True when a 16-bit count is at the top rail (≥ 99.5 % FS) — the channel can't measure.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">int32_t</td>
+<td style="text-align: left;"><a href="#function-rawcurrentdma"><strong>rawCurrentDmA</strong></a> (uint32_t adcMv) <br><em>Uncorrected current in 0.1 mA (no zero, unity gain) — what CAL ZERO measures.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-vddamv"><strong>vddaMv</strong></a> (uint16_t vrefintRaw, uint16_t vrefintMv) <br><em>VDDA in mV from a raw Vrefint reading.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-static-functions">Public Static Functions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#function-slotempty"><strong>slotEmpty</strong></a> (const CalRecord * s) <br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint16_t</td>
+<td style="text-align: left;"><a href="#function-trimmed"><strong>trimmed</strong></a> (uint32_t mv, uint16_t gain) <br></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+<h3 id="enum-calflag">enum CalFlag</h3>
+<p><em>CalRecord.calFlags bits — which calibrations this record holds.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">CalFlag</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_VDDA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_ZERO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_GAIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_NTC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+<h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-adc_full">variable ADC_FULL</h3>
+<p><em>analogReadResolution(16), set by</em> <a href="../namespaceSTM32Board/"><em><strong>STM32Board</strong></em></a> __
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">ADC_FULL</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-cal_magic">variable CAL_MAGIC</h3>
+<p><em>'PCAL' little-endian</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">CAL_MAGIC</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-cal_page_size">variable CAL_PAGE_SIZE</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">CAL_PAGE_SIZE</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-cal_slots">variable CAL_SLOTS</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">CAL_SLOTS</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-cal_version">variable CAL_VERSION</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">CAL_VERSION</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-gain_unity">variable GAIN_UNITY</h3>
+<p><em>cal gain trims: 10000 = ×1.0000</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">GAIN_UNITY</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-i_ma_per_mv">variable I_MA_PER_MV</h3>
+<p><em>INA180A2 (gain 50 V/V) on a 10 mΩ shunt: I = Vout / (50 × 0.010 Ω) → mA = 2 × mV.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">I_MA_PER_MV</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-ntc_beta_k">variable NTC_BETA_K</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">NTC_BETA_K</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-ntc_bias_ohm">variable NTC_BIAS_OHM</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">NTC_BIAS_OHM</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-ntc_r0_ohm">variable NTC_R0_OHM</h3>
+<p><em>NTC: 10 kΩ ±1 % B3450 to GND, 10 kΩ bias from +3V3 (same rail as VDDA → ratiometric).</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">NTC_R0_OHM</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-ntc_t0_k">variable NTC_T0_K</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">NTC_T0_K</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-v12_div_den">variable V12_DIV_DEN</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">V12_DIV_DEN</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-v12_div_num">variable V12_DIV_NUM</h3>
+<p><em>Rail = ADC × num / den. 12 V: (33k + 10k) / 10k. 5 V: (10k + 13k) / 13k.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">V12_DIV_NUM</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-v5_div_den">variable V5_DIV_DEN</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">V5_DIV_DEN</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-v5_div_num">variable V5_DIV_NUM</h3>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">V5_DIV_NUM</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-vdda_nominal_mv">variable VDDA_NOMINAL_MV</h3>
+<p><em>assumed VDDA until CAL VDDA anchors Vrefint</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">VDDA_NOMINAL_MV</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-vrefint_typ_mv">variable VREFINT_TYP_MV</h3>
+<p><em>F103 Vrefint typical (untrimmed, ±~3 %)</em> 
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">VREFINT_TYP_MV</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+<h3 id="function-__attribute__">function __attribute__</h3>
+<p><em>One stored calibration — 32 bytes, little-endian, CRC-32 over bytes 0–27.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">__attribute__</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">(</span><span class="n">packed</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-caldefaults">function calDefaults</h3>
+<p><em>An uncalibrated record: unity gains, zero offsets, no flags.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">CalRecord</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">calDefaults</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-calseal">function calSeal</h3>
+<p><em>Fill magic/version/crc for</em> <code>rec</code> <em>(seq left as set).</em>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">calSeal</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">CalRecord</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">rec</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-calvalid">function calValid</h3>
+<p><em>True when</em> <code>rec</code> <em>has the right magic, version and CRC.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">calValid</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">CalRecord</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">rec</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-calvalues">function calValues</h3>
+<p><em>The conversion values a record carries.</em> 
+<div class="highlight"><pre><span></span><code><span class="n">CalValues</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">calValues</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">CalRecord</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">rec</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-clampi16">function clampI16</h3>
+<p><em>Clamp an int32 into int16 range.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">clampI16</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">v</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-clampu16">function clampU16</h3>
+<p><em>Clamp an int32 into uint16 range.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">clampU16</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">v</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-countstomv">function countsToMv</h3>
+<p><em>ADC pin voltage in mV for a 16-bit count at the given VDDA.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">countsToMv</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">counts</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vddaMv</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-crc32">function crc32</h3>
+<p><em>CRC-32 (IEEE 802.3, reflected 0xEDB88320) over</em> <code>len</code> <em>bytes.</em>
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">crc32</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-currentma">function currentMa</h3>
+<p><em>Rail current in mA from the INA180 output voltage.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">currentMa</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">zeroDmA</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">iGain</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>adcMv</code> INA180 output at the ADC pin, mV. </li>
+<li><code>zeroDmA</code> Zero offset to subtract, 0.1 mA (from CAL ZERO). </li>
+<li><code>iGain</code> Gain trim, 10000 = ×1. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Signed mA — a small negative value is residual offset, kept so it stays visible. </p>
+<hr>
+
+<h3 id="function-ntctempdc">function ntcTempDC</h3>
+<p><em>Board temperature in 0.1 °C from the NTC channel (ratiometric — VDDA cancels).</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">ntcTempDC</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">counts</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">offsetDC</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">fault</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>counts</code> 16-bit ADC count of the NTC node. </li>
+<li><code>offsetDC</code> One-point offset, 0.1 °C. </li>
+<li><code>fault</code> Set true when the reading is outside 2–98 % of full scale (open / shorted NTC). </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>Temperature in 0.1 °C, or INT16_MIN when <code>fault</code>. </p>
+<hr>
+
+<h3 id="function-rail12mv">function rail12Mv</h3>
+<p><em>12 V rail in mV from the ADC pin voltage, after the divider and gain trim.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">rail12Mv</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vGain</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-rail5mv">function rail5Mv</h3>
+<p><em>5 V rail in mV from the ADC pin voltage, after the divider and gain trim.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">rail5Mv</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vGain</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-railed">function railed</h3>
+<p><em>True when a 16-bit count is at the top rail (≥ 99.5 % FS) — the channel can't measure.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">railed</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">counts</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-rawcurrentdma">function rawCurrentDmA</h3>
+<p><em>Uncorrected current in 0.1 mA (no zero, unity gain) — what CAL ZERO measures.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">int32_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">rawCurrentDmA</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">adcMv</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-vddamv">function vddaMv</h3>
+<p><em>VDDA in mV from a raw Vrefint reading.</em> 
+<div class="highlight"><pre><span></span><code><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">vddaMv</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vrefintRaw</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">vrefintMv</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>vrefintRaw</code> 16-bit ADC count of the internal reference (0 = unreadable). </li>
+<li><code>vrefintMv</code> This chip's calibrated Vrefint, or 0 when uncalibrated. </li>
+</ul>
+<p><strong>Returns:</strong></p>
+<p>VDDA in mV: Vrefint-tracked when calibrated, VDDA_NOMINAL_MV otherwise (the untrimmed F103 Vrefint is a worse reference than the regulator's nominal until anchored). </p>
+<hr>
+<h2 id="public-static-functions-documentation">Public Static Functions Documentation</h2>
+<h3 id="function-slotempty">function slotEmpty</h3>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">slotEmpty</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">CalRecord</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">s</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+<hr>
+
+<h3 id="function-trimmed">function trimmed</h3>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Pdu</span><span class="o">::</span><span class="n">trimmed</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">mv</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">gain</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+<hr>
+
+<hr />
+<p>The documentation for this class was generated from the following file <code>Firmware/Libraries/PowerMonitor/PduCalStore.cpp</code></p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  <div class="os-site-footer">
+    <div class="os-footer-grid">
+      <div class="os-footer-brand">
+        <img src="../../assets/images/brand/footer-logo.png" alt="OpenSkyhawk" />
+        <p class="os-footer-tagline">Open hardware for community-built A-4E Skyhawk cockpits.</p>
+      </div>
+      <div class="os-footer-col">
+        <h2>Quick Links</h2>
+        <a href="../../getting-started/overview/">What is OpenSkyhawk?</a>
+        <a href="../../getting-started/system-overview/">How the System Works</a>
+        <a href="../../getting-started/prerequisites/">What You'll Need</a>
+        <a href="../../guides/">Build Guides</a>
+        <a href="../../kits/">Kit Assembly</a>
+        <a href="../../guides/new-panel-group/">Adding a New Panel</a>
+      </div>
+      <div class="os-footer-col">
+        <h2>Resources</h2>
+        <a href="../../architecture/">Architecture</a>
+        <a href="../../hardware/standards/">Hardware Standards</a>
+        <a href="../../hardware/pcb-design-rules/">PCB Design Rules</a>
+        <a href="../../firmware/">Firmware Reference</a>
+        <a href="../">API Reference</a>
+        <a href="../../contributing/conventions/">Design Conventions</a>
+        <a href="../../contributing/">How to Contribute</a>
+      </div>
+      <div class="os-footer-col os-footer-community">
+        <h2>Stay in the Loop</h2>
+        <p>Follow the build, ask questions, and help shape what's next.</p>
+        <a class="os-footer-cta" href="https://github.com/OpenSkyhawk/OpenSkyhawk/discussions" target="_blank" rel="noopener">Join the Discussion</a>
+        <a class="os-footer-link" href="https://github.com/OpenSkyhawk/OpenSkyhawk/issues" target="_blank" rel="noopener">Browse open issues ›</a>
+        <a class="os-footer-link" href="https://github.com/OpenSkyhawk/OpenSkyhawk" target="_blank" rel="noopener">Star us on GitHub ›</a>
+      </div>
+    </div>
+    <div class="os-footer-bottom">
+      OpenSkyhawk. Open hardware for community-built cockpits.
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/sidebar-fit.js"></script>
+      
+    
+  </body>
+</html>

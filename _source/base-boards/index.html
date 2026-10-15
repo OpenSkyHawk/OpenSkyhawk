@@ -2020,6 +2020,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/components/" class="md-nav__link">
         
   
@@ -5136,10 +5164,10 @@ scale or isolate:</p>
   redesign.</li>
 <li><strong>+12V gets the full pass-through treatment even on pass-through-only boards</strong> (e.g. Gateway/Bridge
   draws no local 12V but still carries the cumulative downstream).</li>
-<li>Contingency: a <strong>power-distribution + monitoring CAN node</strong> (#202) — STM32 + per-zone INA226 +
-  eFuse breakers, telemetry → PanelBridge — measures the (unknown) consumption <em>and</em> provides the
-  injection points. Its eFuse breaking sits <strong>on top of</strong> the baseline per-console fuse (telemetry +
-  active trip), not instead of it.</li>
+<li><strong>Power-distribution + monitoring CAN node (PDU)</strong> (#202 hardware, #216 firmware) — STM32 +
+  per-rail INA180A2 current sense + voltage dividers + NTC, telemetry → PanelBridge (<code>TELEM_n</code>) —
+  measures the (unknown) consumption <em>and</em> provides the injection points. It monitors <strong>on top of</strong>
+  the baseline per-console fuse; it does not break the circuit (no eFuse on Rev 0.2.0).</li>
 </ul>
 <h3 id="psu-source-supply">PSU / source supply</h3>
 <p><strong>Source = a fully-modular ATX PSU</strong> (DC-DC topology — no minimum-load resistor needed; safe at the

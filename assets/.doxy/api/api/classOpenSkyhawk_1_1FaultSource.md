@@ -16,7 +16,7 @@ _A source of node faults — implemented by any object that can fault (#163)._ [
 
 
 
-Inherited by the following classes: [OpenSkyhawk::DrumDisplay](classOpenSkyhawk_1_1DrumDisplay.md)
+Inherited by the following classes: [OpenSkyhawk::BoardThermal](classOpenSkyhawk_1_1BoardThermal.md),  [OpenSkyhawk::DrumDisplay](classOpenSkyhawk_1_1DrumDisplay.md),  [OpenSkyhawk::RailMonitor](classOpenSkyhawk_1_1RailMonitor.md)
 
 
 

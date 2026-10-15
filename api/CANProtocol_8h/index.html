@@ -2020,6 +2020,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../hardware/pdu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Power Distribution Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../hardware/components/" class="md-nav__link">
         
   
@@ -4971,6 +4999,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-canidtelem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function canIdTelem
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5143,6 +5182,10 @@
 <td style="text-align: right;">constexpr uint32_t</td>
 <td style="text-align: left;"><a href="#function-canidready"><strong>canIdReady</strong></a> (uint8_t n) <br><em>Boot-complete READY frame ID for node n. Range 0x401-0x43F.</em></td>
 </tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#function-canidtelem"><strong>canIdTelem</strong></a> (uint8_t n) <br><em>Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181-0x1BF. Sits with HB (0x100) and HEALTH (0x140) in the node-status block;</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>forwards it to the host unread as</em><code>_NODE_TELEM</code> <em>.</em></td>
+</tr>
 </tbody>
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
@@ -5248,6 +5291,7 @@
 <span class="w">    </span><span class="p">(</span><span class="n">packed</span><span class="p">)</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
+<p>8-byte payload carried by TELEM_n frames — paged node telemetry (#216).</p>
 <p>8-byte payload carried by HEALTH_n frames — per-node health telemetry.</p>
 <p>8-byte payload carried by HB_n heartbeat frames.</p>
 <p>Two ControlPackets packed into one 8-byte input/output CAN frame.</p>
@@ -5259,7 +5303,9 @@
 <p><strong>Note:</strong></p>
 <p>The STM32F103 internal sensor is UNCALIBRATED (no factory trim): ~±few °C absolute, measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend and per-node overheat flagging, not precise ambient measurement. </p>
 <p><strong>Note:</strong></p>
-<p>Rail voltage/current is intentionally NOT here — that is the PDU's dedicated power telemetry (#202, real INA226 sensors), not generic per-node health. </p>
+<p>Rail voltage/current is intentionally NOT here — that is the PDU's dedicated power telemetry (TELEM_n / TelemPayload, #216; INA180A2 current sense on #202), not generic per-node health.</p>
+<p>Byte 0 is a TelemPage (<a href="../NodeStatus_8h/"><strong>NodeStatus.h</strong></a>) naming the layout of the other seven bytes; page ids are global and append-only, so a page means the same thing whichever node sends it. Multi-byte fields inside a page are little-endian. <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> forwards every TELEM_n frame to the host unread (<code>_NODE_TELEM</code>), so a new page type needs no bridge change — the client owns the decode.</p>
+<p>First user: the PDU monitoring node — pages PDU_RAIL_12V / PDU_RAIL_5V / PDU_STATUS. Generic node health (die temp, fault id) stays in HEALTH_n and is never repeated here. </p>
 <hr>
 
 <h3 id="function-canidecho">function canIdEcho</h3>
@@ -5322,6 +5368,14 @@
 <h3 id="function-canidready">function canIdReady</h3>
 <p><em>Boot-complete READY frame ID for node n. Range 0x401-0x43F.</em> 
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdReady</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
+<span class="p">)</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="function-canidtelem">function canIdTelem</h3>
+<p><em>Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181-0x1BF. Sits with HB (0x100) and HEALTH (0x140) in the node-status block;</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>forwards it to the host unread as</em><code>_NODE_TELEM</code> <em>.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">canIdTelem</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">n</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
