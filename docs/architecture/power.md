@@ -96,12 +96,13 @@ Each console's PDU measures what it feeds: the 12 V and 5 V rail voltage, the cu
 fuse, and the board temperature. It reports them over CAN about once a second, and at once when
 something changes — a rail sagging below or rising above its limits, a current near the fuse
 rating, a blown 12 V fuse, or the board running hot. Those faults also turn the node amber in the
-host app's node list. Its first job is measurement: logging the real cockpit load so the final
-fuse ratings are chosen from data.
+host app's node list. Logging a console through idle, startup, full lighting and its peaks shows
+its real load, so fuse ratings can be sized from data rather than estimates.
 
 Each PDU is calibrated once at bring-up, over its debug serial port, with a multimeter reading of
 its 3.3 V rail and the load disconnected. The calibration is stored on the board and survives
-firmware updates.
+firmware updates. The board itself, its fuses and the bring-up steps are on
+[Power Distribution Unit](../hardware/pdu.md).
 
 !!! warning "Wiring assumptions the PDU relies on"
     - **Power never chains past a PDU.** A console's downstream harness must not feed another
@@ -110,9 +111,9 @@ firmware updates.
       readings.
     - **A blown 5 V fuse takes its own PDU offline**, because the PDU runs from the fused 5 V. The
       host app shows that node going offline, not a fuse alert.
-    - **PanelBridge is powered from one of the PDUs.** If its PDU loses 5 V, the bridge goes down
-      with it and every node appears offline at once. When the whole cockpit drops off, check the
-      PDU fuses first.
+    - **The Gateway/Bridge head node is powered from one of the PDUs.** If its PDU loses 5 V, the
+      head node goes down with it and every node appears offline at once. When the whole cockpit
+      drops off, check the PDU fuses first.
 
 ## Cross-tier notes
 
