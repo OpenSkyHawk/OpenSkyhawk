@@ -1,7 +1,7 @@
 # CAD Cutout Library (FreeCAD)
 
-> **Status:** spike for #335, verified in FreeCAD 1.1.1. CAD tooling (D8) is still open,
-> so this is an internal reference page. Once D8 lands it gets promoted into
+> **Status:** verified in FreeCAD 1.1.1. CAD tooling (D8) is still open, so this is an
+> internal reference page. Once D8 lands it gets promoted into
 > `docs/hardware/cad-workflow.md`.
 
 Draw each control's cutout **once**, in a small library file, and link it into every panel
@@ -288,24 +288,8 @@ Repeat steps 3–5 for the BackPlate layer, with a second root binder on the lib
 - **Deleting a point is safe here.** The array has no per-index links, so adding, moving
   or deleting points just changes the copies. This is the opposite of the LCS rule.
 
-## Verification (#335)
-
-| Check | Result |
-|---|---|
-| LCS: move a ControlPoints point → both layers follow | ✅ |
-| LCS: rotate an LCS → both layers rotate | ✅ |
-| Pocket a cross-file binder directly | ✅ |
-| Opening the panel alone auto-loads the library | ✅ |
-| Edit a library sketch → panel cutouts update | ✅ after a recompute (Ctrl+R) |
-| Rename or move the library → link breaks visibly | ⚠️ Only in the Report view. The tree shows no error and the cutouts keep their last shape (see Gotchas) |
-| Array: move, add or delete a point → both layers update | ✅ |
-| Array: edit the library sketch → every copy on both layers updates | ✅ |
-
 ## Related
 
-- #334: the blank-panel generator should also emit `ControlPoints` and one LCS per
-  control, and wire the binders with the rotation-aware expression above.
+- #334: the blank-panel generator.
 - [Mechanical standards](../hardware/mechanical-standards.md): Dzus grid and mounting
   holes for the panel blank.
-- The spike files, `CAD/Shared/Cutouts/Toggle12.FCStd` and
-  `CAD/Shared/Cutouts/_spike/PanelBlank-Test.FCStd`, land with the #335 CAD branch.

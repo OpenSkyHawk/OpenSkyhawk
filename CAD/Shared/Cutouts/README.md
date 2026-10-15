@@ -12,4 +12,3 @@ How to build and use them: [CAD Cutout Library](../../../docs/_source/cad-cutout
   that links to it.
 - Don't move or rename a file once a panel links to it. Links use relative paths, and a
   broken link only shows up as `Link not restored` in the Report view.
-- `_spike/` holds the #335 test panel.
