@@ -436,8 +436,8 @@ namespace CANProtocol {
      * occupied, the frame is placed in the TX software ring buffer (~16 entries).
      * The buffer is drained automatically when mailboxes free up via TX-complete
      * interrupt. Overflow is frame-type dependent: CTRL_BCAST may drop/coalesce
-     * stale state; EVT/control frames retry up to 3 send attempts before drop;
-     * heartbeat frames may drop stale heartbeat state. CTRL_BCAST and EVT_n payloads are
+     * stale state; every other frame (EVT/control and the periodic HB/HEALTH/TELEM) retries up
+     * to 3 send attempts before drop. CTRL_BCAST and EVT_n payloads are
      * ControlPacketPair batches; a single input/output packet uses slot B controlId == 0x0000
      * as the null sentinel. Special/control/diagnostic frames use their explicit DLC and
      * payload. All drops increment the DIAG_ERR TX drop counter.
@@ -720,7 +720,8 @@ for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop cou
 avoids losing user actions during transient mailbox contention without allowing an unhealthy
 bus to create an unbounded backlog.
 
-`HB_n` heartbeat frames may drop stale queued heartbeat state; the next heartbeat replaces it.
+The periodic status frames — `HB_n`, `HEALTH_n`, `TELEM_n` — take the same bounded retry; they are
+not coalesced, since the next period's frame carries fresh state anyway.
 
 ### RX Queue
 

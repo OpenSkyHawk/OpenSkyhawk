@@ -329,7 +329,7 @@ via the TX-complete interrupt — no explicit drain call is required from `loop(
 |------------|--------|
 | `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
 | `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. No unbounded backlog. |
-| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. |
+| `HB_n`, `HEALTH_n`, `TELEM_n` periodic status | Same bounded retry as the event frames — up to 3 send attempts, then drop and increment the `DIAG_ERR` TX drop counter. Not coalesced: the next period's frame carries fresh state anyway. |
 | `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
 
 This prevents silent frame drops during DCS-BIOS export bursts without stalling the firmware,

@@ -54,7 +54,7 @@
       are occupied, enqueue frames in a small ring buffer (~16 entries). Use frame-type
       dependent overflow: `CTRL_BCAST` may drop/coalesce stale state; `EVT_n`, `READY_n`,
       `SYNC_REQ`, `TEST_SEQ`, and `ECHO_n` use bounded retry up to 3 attempts, then drop and
-      increment the `DIAG_ERR` TX drop counter; `HB_n` may drop stale heartbeat frames.
+      increment the `DIAG_ERR` TX drop counter; `HB_n` takes the same bounded retry.
 - [x] Build A-4E-C input map generator: parse A-4E-C DCS-BIOS JSON → assign sequential
       `DCSIN_*` IDs from 0x8001; emit **three headers plus gap report**:
       - `A4EC_CmdIds.h` — `#define DCSIN_*` constants, included by PanelGroup sketches

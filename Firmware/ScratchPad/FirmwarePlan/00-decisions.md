@@ -128,7 +128,7 @@ impossible. No parser state machine needs to be maintained for the common case �
 |------------|--------|
 | `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
 | `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. Never build an unbounded backlog. |
-| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. |
+| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. *(As built, heartbeats — and the later `HEALTH_n` / `TELEM_n` — take the same bounded retry as event frames; only `CTRL_BCAST` coalesces. See `02-can-protocol.md`.)* |
 | `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
 
 **Rationale:** output broadcasts are state snapshots; the newest value is always more useful
