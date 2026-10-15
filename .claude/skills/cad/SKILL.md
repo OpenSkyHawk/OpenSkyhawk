@@ -27,6 +27,14 @@ and `docs/hardware/cad-workflow.md`. Update this skill once D8 is resolved.
 - switch centre-to-centre spacings (measured in CAD once the panel body exists).
 - the control inventory (what cutouts/mounts the panel needs).
 
+## Cutout library
+
+Reusable panel cutouts live in `CAD/Shared/Cutouts/` and are placed via ControlPoints →
+one LCS per control → a Sub-Shape Binder per plate layer → Pocket. Full recipe,
+conventions and gotchas: `docs/_source/cad-cutout-library.md`. The key gotcha: LCS
+"Translate origin" ignores the offset rotation, so the binder Placement expression is
+`placement(SWn.Placement.Base; SWn.AttachmentOffset.Rotation)`.
+
 ## Fit against the PCB
 
 Export the board outline from KiCad (`kicad-cli pcb export step`) to check the panel model
