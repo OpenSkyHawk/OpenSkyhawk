@@ -6,7 +6,9 @@ origin. Panels link these sketches with Sub-Shape Binders. Each control gets its
 or a whole row of identical, unrotated controls (such as LEDs) is placed with one Draft
 Point Array.
 
-How to build and use them: [CAD Cutout Library](../../../docs/_source/cad-cutout-library.md).
+How to build and use them: [CAD Cutout Library](../../../docs/_source/cad-cutout-library/index.md)
+(building a [library part](../../../docs/_source/cad-cutout-library/library-part.md) is
+covered on its own page).
 
 - Edit sketches in place. Never delete and recreate one, because that breaks every panel
   that links to it.
