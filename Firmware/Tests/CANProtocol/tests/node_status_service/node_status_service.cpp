@@ -3,8 +3,9 @@
 // Single board, silent loopback (own frames come back). NODE_ID=1. Exercises
 // CANProtocol::serviceNodeStatus() end to end:
 //   - start() auto-accepts HB_0 on a non-bridge node, and drain() still forwards it to onReceive
-//   - HB_1 every 500 ms, the first one ~500 ms after start() (FirmwarePlan 09 step 8)
-//   - HEALTH_1 every 1000 ms, the first one ~1000 ms after start()
+//   - HB_1 every 500 ms, the first one ~500 ms after boot completes — setup() waits 300 ms after
+//     start() to stand in for PanelGroup steps 5-7 (FirmwarePlan 09 step 8)
+//   - HEALTH_1 every 1000 ms, the first one ~1000 ms after the first loop()
 //   - master-loss watchdog: no WARNING before a master is seen; no WARNING while HB_0 flows;
 //     WARNING once HB_0 stops for > MASTER_TIMEOUT_MS; cleared by the next HB_0
 //
@@ -83,7 +84,11 @@ void setup() {
     CANProtocol::filterAcceptId(canIdHb(NODE_ID));
     CANProtocol::filterAcceptId(canIdHealth(NODE_ID));
     CANProtocol::startLoopback();
-    _startMs = millis();
+    // Stand-in for PanelGroup setup steps 5-7 (EVT burst, flush, READY) between start() and boot
+    // complete. The first HB/HEALTH must be timed from the END of setup, not from start() — with
+    // timers armed in start() the first HB_1 would land ~200 ms after boot (PR #342 review P2).
+    delay(300);
+    _startMs = millis();  // boot complete
 }
 
 void loop() {

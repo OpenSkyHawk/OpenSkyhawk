@@ -333,8 +333,8 @@ namespace PanelGroup {
      *   6. CANProtocol::flushBatched(canIdEvt(NODE_ID)) — flush any trailing odd packet
      *      before READY.
      *   7. Send READY_n frame (canIdReady(NODE_ID), DLC=0).
-     *   8. (Heartbeat/HEALTH timers were armed by CANProtocol::start() in step 4 — first
-     *      HB_n ~500 ms after boot.)
+     *   8. (Heartbeat/HEALTH timers arm on the first CANProtocol::serviceNodeStatus() call
+     *      in loop() — first HB_n ~500 ms after boot completes.)
      *
      * @note Wire.begin() / Wire1.begin() must be called by the sketch before setup().
      *       PanelGroup never calls begin() on any I2C bus. Only start buses in use.
@@ -639,8 +639,8 @@ Owned by `CANProtocol::serviceNodeStatus()` (see the CANProtocol TechSpec, *Node
 service*), which PanelGroup calls at the end of every `loop()` (#340). PanelGroup's only input is
 `rxCount` — accepted `CTRL_BCAST` frames, `uint16_t`, wrapping at 65535 (~131 s at full bus
 load). Rollover is intentional — the counter is a diagnostic liveliness indicator, not an exact
-packet counter. The first heartbeat goes out ~500 ms after `CANProtocol::start()`, i.e. after
-boot completes; the master-loss WARNING (1500 ms without `HB_0`, after one has been seen) is
+packet counter. The first heartbeat goes out ~500 ms after the first `loop()`, i.e. after boot
+completes (the service arms its timers on its first call); the master-loss WARNING (1500 ms without `HB_0`, after one has been seen) is
 raised and cleared by the same call.
 
 ### EVT Batching
@@ -712,7 +712,7 @@ CANProtocol::flushBatched(canIdEvt(NODE_ID));
 // 7. READY frame
 CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
 
-// (HB/HEALTH timers were armed by CANProtocol::start() in step 4.)
+// (HB/HEALTH timers arm on the first CANProtocol::serviceNodeStatus() call in loop().)
 ```
 
 ---

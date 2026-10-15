@@ -404,8 +404,9 @@ PanelGroup and PanelBridge no longer carry their own copies.
   (`CANProtocol` calls `STM32Board::canHandle()`), so STM32Board cannot send frames without a
   circular dependency. CANProtocol already builds both payloads and already handles the other
   node-generic frames in `drain()` (`SYNC_REQ`, the `TEST_SEQ` echo).
-- *Behaviour is preserved, timing included.* `start()` arms the timers so the first `HB_n` still goes
-  out ~500 ms after boot (09 step 8); `HB_0` is still passed to `onReceive()` after the watchdog
+- *Behaviour is preserved, timing included.* The service arms its timers on its first call — the
+  first `loop()` after `setup()` — so the first `HB_n` still goes out ~500 ms after boot completes
+  (09 step 8), as PanelGroup's old step-8 arming did; `HB_0` is still passed to `onReceive()` after the watchdog
   stamps it. The move also removes a latent #225-pattern false timeout in the old PanelGroup
   watchdog, which compared a `now` sampled *before* `drain()` against an `HB_0` stamped *during* it.
 

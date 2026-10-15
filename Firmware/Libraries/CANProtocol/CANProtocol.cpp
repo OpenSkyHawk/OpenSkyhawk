@@ -62,6 +62,7 @@ static constexpr uint32_t HB_PERIOD_MS     = 500;
 static constexpr uint32_t HEALTH_PERIOD_MS = 1000;
 static uint32_t           _lastHbMs        = 0;
 static uint32_t           _lastHealthMs    = 0;
+static bool               _statusArmed     = false;  // timers armed on the first service call
 static uint32_t           _lastMasterMs    = 0;      // millis() of the last HB_0 seen
 static bool               _everSawMaster   = false;  // arm the timeout only after the first HB_0
 static bool               _masterHbPending = false;  // HB_0 arrived since the last service call
@@ -218,10 +219,9 @@ static void _startInternal(uint32_t mode) {
     _batches[3] = { canIdEvtDir(NODE_ID), false, {0, 0}, 0 };  // RotaryEncoder DIR
     _batches[4] = { canIdEvtAction(NODE_ID), false, {0, 0}, 0 };  // ActionButton TOGGLE
 
-    // Arm the node-status timers at bus start, so the first HB/HEALTH go out one period after
-    // boot completes rather than on the first loop (FirmwarePlan 09 step 8).
-    _lastHbMs     = millis();
-    _lastHealthMs = millis();
+    // serviceNodeStatus() arms its HB/HEALTH timers on its first call — the first loop() after
+    // setup returns — so a restart re-arms them there too (FirmwarePlan 09 step 8).
+    _statusArmed = false;
 
     _status = CanStatus::NORMAL;
     if (_statusCb) _statusCb(_status);
@@ -444,6 +444,14 @@ uint32_t txDropCount() { return _txDrops; }
 
 void serviceNodeStatus(uint16_t rxCount) {
     const uint32_t now = millis();  // after drain(): HB_0 stamps can't be ahead of `now` (#225)
+
+    // Arm on the first call: that is the first loop() after setup() returned, i.e. boot complete
+    // (READY_n already sent), whatever a node does between start() and the end of its setup().
+    if (!_statusArmed) {
+        _statusArmed  = true;
+        _lastHbMs     = now;
+        _lastHealthMs = now;
+    }
 
     if (now - _lastHbMs >= HB_PERIOD_MS) {
         _lastHbMs = now;

@@ -378,8 +378,8 @@ namespace CANProtocol {
      * and cannot be excluded. On every node except PanelBridge (NODE_ID 0) it also adds
      * HB_0 (0x100) for the serviceNodeStatus() master-loss watchdog (#340).
      *
-     * Arms the serviceNodeStatus() HB/HEALTH timers. Sets CanStatus to NORMAL on success
-     * and fires the onStatusChange callback.
+     * Resets the serviceNodeStatus() timers, which arm on its first call. Sets CanStatus to
+     * NORMAL on success and fires the onStatusChange callback.
      */
     void start();
 
@@ -569,7 +569,8 @@ namespace CANProtocol {
      * - WARNING on a non-bridge node = master loss OR overheat (NODE_OVERHEAT_C builds only),
      *   written only when that OR changes. On PanelBridge an overheat is raise-only.
      *
-     * Timers are armed by start(), so the first HB/HEALTH go out one period after boot.
+     * Timers arm on the first call (first loop() after setup()), so the first HB/HEALTH go out
+     * one period after boot completes.
      *
      * @param rxCount Caller-owned accepted RX count for the heartbeat; 0 if the node keeps none.
      * @note Samples millis() after drain() and compares signed (#225).
@@ -608,8 +609,10 @@ dependency.
   A returning master therefore never clears an overheat that is still true (PR #342 review — before
   #340 every `HB_0` cleared the latch, overheat included). On PanelBridge the latch also carries its
   dead-node WARNING, which the service cannot see, so there an overheat is raise-only.
-- **Timing.** `start()` arms both timers, so the first `HB_n` goes out ~500 ms after boot completes
-  (FirmwarePlan 09 step 8). The service samples `millis()` itself after `drain()`, and the
+- **Timing.** The first `serviceNodeStatus()` call arms both timers. That call is the first
+  `loop()` after `setup()` returned — boot complete, `READY_n` already sent — so the first `HB_n`
+  goes out ~500 ms after boot completes (FirmwarePlan 09 step 8) however long a node's setup takes
+  after `start()`. `start()` only resets them (PR #342 review). The service samples `millis()` itself after `drain()`, and the
   watchdog compares elapsed time signed, so an `HB_0` stamped a millisecond after the caller's own
   `now` cannot read as overdue — the #225 pattern.
 

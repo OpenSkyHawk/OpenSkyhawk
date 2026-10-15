@@ -199,8 +199,8 @@ namespace CANProtocol {
      * filter — mandatory for all nodes, cannot be excluded — plus HB_0 on every node except
      * PanelBridge (NODE_ID 0), for serviceNodeStatus()'s master-loss watchdog.
      *
-     * Arms the serviceNodeStatus() HB/HEALTH timers. Fires the onStatusChange callback with
-     * NORMAL on success.
+     * Resets the serviceNodeStatus() timers, which arm on its first call. Fires the
+     * onStatusChange callback with NORMAL on success.
      */
     void start();
 
@@ -365,6 +365,9 @@ namespace CANProtocol {
      *   latch only when their OR changes, so a returning master never clears a live overheat, and
      *   overheat clears once the die cools. On PanelBridge an overheat is raise-only, because its
      *   latch also carries PanelBridge's dead-node WARNING.
+     *
+     * The first call arms the HB/HEALTH timers — the first loop() after setup(), i.e. boot
+     * complete — so the first HB goes out ~500 ms and the first HEALTH ~1000 ms after it.
      *
      * `HB_0` arrival is recorded by drain(), which still passes the frame to onReceive().
      * start() adds `HB_0` to the hardware filter on non-bridge nodes, so callers never

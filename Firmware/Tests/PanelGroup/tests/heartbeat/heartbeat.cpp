@@ -3,7 +3,7 @@
 // Verifies: HB_n frame is NOT sent before 500 ms after setup completes,
 // then IS sent within 600 ms, and IS sent a second time within 1100 ms.
 // Drives the real heartbeat path PanelGroup::loop() uses — CANProtocol::serviceNodeStatus()
-// (#340), whose timer CANProtocol::startLoopback() arms.
+// (#340), which arms its timer on its first call in loop().
 //
 // Hardware: STM32. No CAN bus, no MCP23017. CAN loopback mode.
 
@@ -33,7 +33,7 @@ void setup() {
     CANProtocol::filterAcceptId(canIdHb(NODE_ID));
     CANProtocol::startLoopback();
 
-    // Tail of PanelGroup::setup() without full board init (start() above armed the HB timer)
+    // Tail of PanelGroup::setup() without full board init (the HB timer arms in loop())
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
     CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
     setupDoneMs = millis();
