@@ -152,6 +152,18 @@ void cmdCalZero() {
     saveCal(rec);
 }
 
+void cmdCalClear() {
+    // Report "cleared" only when the page really erased — otherwise the old calibration is still
+    // what the node is using, and saying otherwise would mislead whoever is calibrating.
+    if (!gStore.erase()) {
+        out().println(F("[PDU] ERROR: flash erase failed — calibration unchanged"));
+        return;
+    }
+    loadCal();
+    out().print(F("[PDU] cleared. "));
+    printCal();
+}
+
 void cmdRaw() {
     auto& d = out();
     d.print(F("[PDU] vdda=")); d.print(gVdda);
@@ -167,7 +179,7 @@ void runCommand(char* line) {
     if      (!strcmp(line, "CAL SHOW"))           printCal();
     else if (!strncmp(line, "CAL VDDA ", 9))      cmdCalVdda(line + 9);
     else if (!strcmp(line, "CAL ZERO"))           cmdCalZero();
-    else if (!strcmp(line, "CAL CLEAR"))          { gStore.erase(); loadCal(); out().print(F("[PDU] cleared. ")); printCal(); }
+    else if (!strcmp(line, "CAL CLEAR"))          cmdCalClear();
     else if (!strcmp(line, "RAW"))                cmdRaw();
     else if (line[0]) out().println(F("[PDU] commands: CAL SHOW | CAL VDDA <mV> | CAL ZERO | CAL CLEAR | RAW"));
 }
