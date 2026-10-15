@@ -33,7 +33,9 @@ Reusable panel cutouts live in `CAD/Shared/Cutouts/` and are placed via ControlP
 one LCS per control → a Sub-Shape Binder per plate layer → Pocket. Full recipe,
 conventions and gotchas: `docs/_source/cad-cutout-library.md`. The key gotcha: LCS
 "Translate origin" ignores the offset rotation, so the binder Placement expression is
-`placement(SWn.Placement.Base; SWn.AttachmentOffset.Rotation)`.
+`placement(SWn.Placement.Base; SWn.AttachmentOffset.Rotation)`. For rows of identical,
+unrotated controls (LEDs), a Draft Point Array over a dedicated points sketch replaces the
+per-control LCS and binders. The doc has a comparison table.
 
 ## Fit against the PCB
 

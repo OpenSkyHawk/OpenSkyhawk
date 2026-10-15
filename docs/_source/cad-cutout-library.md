@@ -1,12 +1,13 @@
 # CAD Cutout Library (FreeCAD)
 
-> **Status:** spike for #335, verified in FreeCAD 1.1.1. CAD tooling (D8) is still open,
-> so this is an internal reference page. Once D8 lands it gets promoted into
+> **Status:** verified in FreeCAD 1.1.1. CAD tooling (D8) is still open, so this is an
+> internal reference page. Once D8 lands it gets promoted into
 > `docs/hardware/cad-workflow.md`.
 
 Draw each control's cutout **once**, in a small library file, and link it into every panel
 that uses it. Edit the library and every panel picks up the change. Each control in a
-panel can still be moved and rotated on its own.
+panel can still be moved and rotated on its own. For rows of identical controls that never
+rotate, such as LEDs, see [Array placement](#array-placement-for-identical-unrotated-controls).
 
 The screenshots below come from a small demo built for this page: a Toggle12-style library
 part and a 100 × 50 mm BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.
@@ -165,29 +166,130 @@ the side, while SW1's points down.
   change the angle.
 - **The library doesn't need to be open.** Opening the panel loads the linked library
   automatically.
+- **Library edits show up on recompute.** After you edit and save a library sketch, the
+  panel's binders are marked as changed the next time the panel opens. Press Ctrl+R to
+  update the cutouts.
+- **A renamed or moved library fails quietly.** The panel still opens and the cutouts keep
+  their last shape. The tree shows no error. The only sign is a red `Link not restored`
+  line in the **Report view**. Put the file back under its old name and the link returns,
+  even if you saved the panel while the link was broken. Check the Report view after any
+  rename or move in `CAD/Shared/Cutouts/`.
 
-## Verification (#335 spike)
+  ![Renamed library: no error in the tree, "Link not restored" in the Report view](cad-cutout-library/09-rename-broken.png)
 
-| Check | Result |
-|---|---|
-| Move a ControlPoints point → both layers follow | ✅ |
-| Rotate an LCS → both layers rotate | ✅ |
-| Pocket a cross-file binder directly | ✅ |
-| Opening the panel alone auto-loads the library | ✅ |
-| Edit a library sketch → panel cutouts update | ⬜ |
-| Rename or move the library → link breaks visibly (not silently) | ⬜ |
+## Array placement for identical, unrotated controls
 
-## Future: array placement for unrotated controls
+One LCS per control gives each control its own rotation, but it costs an LCS, a binder and
+a pocket per control per layer. For a row or grid of identical controls that never rotate,
+such as indicator LEDs, a **Draft Point Array** over a points sketch places every copy
+at once. Each layer needs one array and one pocket, however many controls there are.
 
-One LCS per control gives each control its own rotation. For a row or grid of identical
-controls that never rotate, a single array driven by the ControlPoints sketch could replace
-the per-control LCS and binder. That approach isn't prototyped yet.
+The screenshots come from a second demo: an `LED5` library part (FacePlate Ø5.2, BackPlate
+Ø6.0) and a 100 × 30 mm panel with a row of five LEDs.
+
+### When to use which
+
+| | LCS per control | Point array |
+|---|---|---|
+| Rotation | Each control has its own | All copies share one orientation |
+| Objects for N controls, 2 layers | N LCS + 2N binders + 2N pockets | 2 arrays + 4 binders + 2 pockets, whatever N is |
+| Add a control | Add a point, an LCS, then a binder and pocket per layer | Add a point |
+| Remove a control | Delete its objects, but **keep** its point (LCSs bind by index) | Delete the point |
+| KiCad reference in the tree | Yes (the LCS label) | No, the points are anonymous |
+| Parts per placement | Any part | One library part per array |
+| Workbenches | Part Design | Part Design + Draft |
+
+Use an **array** for banks of identical, unrotated controls such as LED rows, annunciator
+lamps and push-button banks. Use **LCS per control** when a control rotates, or when you
+want its KiCad reference visible in the tree. One panel can use both.
+
+### How the pieces fit
+
+```
+CAD/Shared/Cutouts/LED5.FCStd              ← library part
+└── Body
+    ├── FacePlate   (sketch: Ø5.2 hole)
+    └── BackPlate   (sketch: Ø6.0 hole)
+
+<panel>.FCStd
+├── LED_Points            (sketch: one point per LED, nothing else)
+├── LEDs_FacePlate        (Draft PointArray over LED_Points)
+│   └── LED5_FacePlate    (root binder → LED5 FacePlate sketch)
+├── LEDs_BackPlate        (Draft PointArray over LED_Points)
+│   └── LED5_BackPlate    (root binder → LED5 BackPlate sketch)
+├── FacePlate (Body)
+│   └── … LEDsCutFacePlate (Pocket) ← LEDsBinderFacePlate (binder → LEDs_FacePlate)
+└── BackPlate (Body)
+    └── … LEDsCutBackPlate (Pocket) ← LEDsBinderBackPlate (binder → LEDs_BackPlate)
+```
+
+The array copies the binder once per point in the points sketch. A second binder carries
+the arrayed shape into the plate body, where it's pocketed. You don't need a Placement
+expression, because the array already puts every copy in place.
+
+### Recipe
+
+#### 1. Library part
+
+Same as [step 1](#1-library-part) above. Draw one sketch per layer, centred on the
+origin, and save the file in `CAD/Shared/Cutouts/`.
+
+![LED5 library: FacePlate (Ø5.2, highlighted) and BackPlate (Ø6.0) sketches](cad-cutout-library/array-01-library.png)
+
+#### 2. Points sketch
+
+1. In the panel, create a sketch (here `LED_Points`) with one **Point** per LED.
+2. Put **only** this array's points in it. The array places a copy on every vertex in the
+   sketch, so a shared ControlPoints sketch would also put LEDs on your toggles.
+
+![LED_Points: five points in a row](cad-cutout-library/array-02-points.png)
+
+#### 3. Root binder (one per layer)
+
+1. Make the panel the active document, with **no** body active, and select nothing.
+2. Part Design → **Create a sub-object(s) shape binder**. With no active body, the binder
+   lands at the document root.
+3. Drag the library's layer sketch (`FacePlate`) onto it, the same way as in step 4.3
+   above. Leave its Placement alone.
+
+![Root binder LED5_FacePlate: Support points into the LED5 library](cad-cutout-library/array-03-root-binder.png)
+
+#### 4. Point array (one per layer)
+
+1. Switch to the Draft workbench. Select the root binder, then Ctrl-click `LED_Points`.
+2. Modification → Array tools → **Point array**.
+3. Check the array's properties: *Base* is the binder, *Point Object* is `LED_Points`, and
+   *Count* matches the number of points. Rename the array (`LEDs_FacePlate`).
+
+![Point array LEDs_FacePlate: Base LED5_FacePlate, Point Object LED_Points, Count 5](cad-cutout-library/array-04-point-array.png)
+
+#### 5. Bind and cut
+
+1. Back in Part Design, double-click the plate Body so it's active, then select nothing.
+2. Create a sub-shape binder, then drag the **array** (`LEDs_FacePlate`) onto it.
+3. With the binder selected, run **Pocket**: Mode **Symmetric**, Type **Through all**.
+
+![Body binder LEDsBinderFacePlate: Support is the point array, claimed by the pocket](cad-cutout-library/array-05-body-binder.png)
+
+![Pocket on the array binder: Symmetric + Through all, all five holes previewed](cad-cutout-library/array-06-pocket.png)
+
+Repeat steps 3–5 for the BackPlate layer, with a second root binder on the library's
+`BackPlate` sketch and a second array over the same `LED_Points`.
+
+![Result: five Ø5.2 holes in the FacePlate and five Ø6.0 holes in the BackPlate](cad-cutout-library/array-07-result.png)
+
+### Array gotchas
+
+- **One points sketch per array.** Every vertex becomes a copy, and that includes the
+  endpoints of any normal line. Construction geometry is ignored. Keep each array's points
+  in a sketch of its own.
+- **All copies share one orientation.** The array's *Extra Placement* rotates every copy
+  the same way. A control that needs its own angle belongs in the LCS recipe.
+- **Deleting a point is safe here.** The array has no per-index links, so adding, moving
+  or deleting points just changes the copies. This is the opposite of the LCS rule.
 
 ## Related
 
-- #334: the blank-panel generator should also emit `ControlPoints` and one LCS per
-  control, and wire the binders with the rotation-aware expression above.
+- #334: the blank-panel generator.
 - [Mechanical standards](../hardware/mechanical-standards.md): Dzus grid and mounting
   holes for the panel blank.
-- The spike files, `CAD/Shared/Cutouts/Toggle12.FCStd` and
-  `CAD/Shared/Cutouts/_spike/PanelBlank-Test.FCStd`, land with the #335 CAD branch.
