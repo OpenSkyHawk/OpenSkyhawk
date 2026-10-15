@@ -163,6 +163,8 @@ STM32Board          (depends on CANProtocol for the CanStatus event type)
   ↑ implement HIDControls first; then A4EC and CANProtocol (either order); then STM32Board
 PanelBridge         (depends on CANProtocol, STM32Board, A4EC)
 SimGateway          (depends on HIDControls — CTRL_* constants used in sketch declarations)
+PowerMonitor        (depends on CANProtocol, STM32Board, NodeStatus — the PDU node, #216;
+                     no PanelGroup dependency)
   ↑ build the bridge/gateway backbone before the large PanelGroup surface
   └── PanelGroup/
         ├── PinRef              (no dependencies)

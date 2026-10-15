@@ -136,10 +136,10 @@ scale or isolate:
   redesign.
 - **+12V gets the full pass-through treatment even on pass-through-only boards** (e.g. Gateway/Bridge
   draws no local 12V but still carries the cumulative downstream).
-- Contingency: a **power-distribution + monitoring CAN node** (#202) — STM32 + per-zone INA226 +
-  eFuse breakers, telemetry → PanelBridge — measures the (unknown) consumption *and* provides the
-  injection points. Its eFuse breaking sits **on top of** the baseline per-console fuse (telemetry +
-  active trip), not instead of it.
+- **Power-distribution + monitoring CAN node (PDU)** (#202 hardware, #216 firmware) — STM32 +
+  per-rail INA180A2 current sense + voltage dividers + NTC, telemetry → PanelBridge (`TELEM_n`) —
+  measures the (unknown) consumption *and* provides the injection points. It monitors **on top of**
+  the baseline per-console fuse; it does not break the circuit (no eFuse on Rev 0.2.0).
 
 ### PSU / source supply
 

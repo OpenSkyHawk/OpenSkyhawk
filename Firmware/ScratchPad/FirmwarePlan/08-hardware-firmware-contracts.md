@@ -149,6 +149,46 @@ output. Production builds use `setDebug(false)` (default) — pins remain availa
 
 ---
 
+## PDU Monitoring Node — Analog Front End & Calibration Page (#202 / #216)
+
+The PDU (`PCB/Base/Power/PDU`, Rev 0.2.0) is an STM32F103C8 node running the `PowerMonitor` library
+(`Firmware/Panels/PDU_Left|Right|Center`, NODE_IDs 3/4/5). Pin map — verified against the Rev 0.2.0
+netlist; overridable as `PDU_PIN_*`:
+
+| Pin | Net | Front end | Firmware conversion |
+|---|---|---|---|
+| `PA0` | `12V_READ_ADC` | 33k / 10k divider (0.1 %) → 1k → 100 nF | rail = pin × 43 / 10 |
+| `PA1` | `5V_READ_ADC` | 10k / 13k divider (0.1 %) → 1k → 100 nF | rail = pin × 23 / 13 |
+| `PA2` | `I_12V_ADC` | 10 mΩ shunt → INA180A2 (×50) → 1k → 100 nF | mA = 2 × pin mV |
+| `PA3` | `I_5V_ADC` | 10 mΩ shunt → INA180A2 (×50) → 1k → 100 nF | mA = 2 × pin mV |
+| `PA6` | `NTC_ADC` | 10k from +3V3, NTC 10k B3450 ±1 % to GND → 1k → 100 nF | ratiometric Beta equation |
+| — | Vrefint (ch17) | internal | VDDA correction once calibrated |
+
+- **VDDA.** The ADC reference is VDDA (the AMS1117 3V3 through FB1). Uncalibrated, the firmware assumes
+  **3300 mV**; the F103 Vrefint is untrimmed (±~3 %) and worse than that nominal until anchored. A
+  one-time `CAL VDDA <mV>` (DMM reading of the 3V3 rail) stores this chip's Vrefint; VDDA then
+  tracks it. The NTC divider runs from the same rail, so temperature is ratiometric and needs no VDDA.
+- **Current zero.** `CAL ZERO` (no load connected) stores each rail's INA180 offset. The PDU's own
+  regulator, CAN transceiver and LED sit **after the 5 V shunt** (~30–50 mA), so the 5 V zero
+  subtracts the node's own draw and the 5 V reading is *downstream load only*; the refusal guard is
+  therefore 120 mA on 5 V vs 75 mA on 12 V.
+- **Filtering.** The 1 kΩ / 100 nF on each channel (τ ≈ 100 µs) is the anti-alias filter for the
+  1 kHz rail scan; reported peak current is after it.
+- **A blown 5 V fuse powers the node down** (the AMS1117 is fed from the fused 5 V), so only the 12 V
+  rail has a fuse-open check; the host sees a dead 5 V fuse as the node going offline.
+- **Calibration flash page.** The last 1 KB page, `0x0800FC00`, holds an append-only log of 32-byte
+  CRC-checked records (newest valid wins; erased only when full). The PDU builds set
+  `board_upload.maximum_size = 64512`, so the build fails before code can grow into the page, and an
+  OpenOCD upload erases only the sectors it writes — a reflash keeps the calibration. A full-chip
+  erase (e.g. STM32CubeProgrammer) wipes it; re-run the calibration afterwards.
+- **LEDs.** Rail faults are reported to the host only (`TELEM_n` flags + `HEALTH_n.faultId`). The
+  MCU status LEDs (D6 red / D7 green on PB14 / PB15) behave as on every node — CAN / link + the
+  master-loss WARNING — and don't change for rail faults (D14). The power LEDs D3 (+12 V), D4 (+5 V)
+  and D5 (+3V3) are passive, resistor-fed from their rails and not firmware-driven: they show rail
+  presence only — dark on a dead rail or blown fuse, lit through OV / OC / overheat.
+
+---
+
 ## Status LED — Bi-Color (Red/Green)
 
 Each custom OpenSkyhawk STM32 board has a bi-color red/green status LED driven by two dedicated

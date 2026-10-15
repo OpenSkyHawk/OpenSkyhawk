@@ -38,6 +38,10 @@ Note: **NO buck on the PDU.** Servo 12V→5/6V buck (AP63205WU) lives on each *p
 - ADC ref = VDDA (3.3V rail, AMS1117 ±1–2% + drift) → all readings scale with it.
 - Correction = **STM32F103 internal Vrefint** (ADC ch17, ~1.20V bandgap): FW reads it → computes true VDDA → corrects. **0 parts, $0.**
 - F103 Vrefint not per-chip trimmed (±~3% absolute) but tracks load/temp drift — enough for ballpark.
+- **Correction (2026-10-15, #216):** untrimmed, Vrefint (±~3 %) is a *worse* absolute reference than
+  the AMS1117 nominal (±1–2 %), so it only helps once anchored. Firmware assumes **VDDA = 3300 mV**
+  until a one-time `CAL VDDA <mV>` (DMM reading of the 3V3 rail) stores this chip's Vrefint; after
+  that VDDA tracks it. So "no probes" is not quite true: one DMM reading per board.
 - **LM4040 dropped** — ~$0.60 (not $0.15) precision ref; overkill vs Vrefint for ballpark goal. Revisit only if absolute-V accuracy becomes a requirement.
 
 ### B2. Shunt resistor ×2 — 10 mΩ 2512  [CURRENT SKU: C2903468 — see 2026-09-30 note below]

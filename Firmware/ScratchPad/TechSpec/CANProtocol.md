@@ -258,6 +258,19 @@ struct __attribute__((packed)) HeartbeatPayload {
     uint16_t esr;      ///< (CAN1->ESR >> 16): low byte=TEC, high byte=REC
 };
 
+/**
+ * @brief 8-byte payload carried by TELEM_n frames — paged node telemetry (#216).
+ *
+ * Byte 0 is a TelemPage (NodeStatus.h) naming the layout of bytes 1–7; page ids are global and
+ * append-only. Multi-byte page fields are little-endian. Layouts: FirmwarePlan/02-can-protocol.md
+ * (Node Telemetry Payload).
+ */
+struct __attribute__((packed)) TelemPayload {
+    uint8_t page;     ///< 0: TelemPage; 0x00 invalid
+    uint8_t body[7];  ///< 1-7: page-defined
+};
+static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
+
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
     STARTING,   ///< Peripheral configured, not yet started
@@ -279,6 +292,10 @@ constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 
 /** @brief Node-health/thermal telemetry frame ID for node n. Range 0x140–0x17F; n=0 is PanelBridge. */
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
+
+/** @brief Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181–0x1BF.
+ *         PanelBridge forwards it to the host unread as `_NODE_TELEM`. */
+constexpr uint32_t canIdTelem(uint8_t n)  { return 0x180 + n; }
 
 /** @brief Input event frame ID for node n. Range 0x201–0x23F. */
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
@@ -419,8 +436,8 @@ namespace CANProtocol {
      * occupied, the frame is placed in the TX software ring buffer (~16 entries).
      * The buffer is drained automatically when mailboxes free up via TX-complete
      * interrupt. Overflow is frame-type dependent: CTRL_BCAST may drop/coalesce
-     * stale state; EVT/control frames retry up to 3 send attempts before drop;
-     * heartbeat frames may drop stale heartbeat state. CTRL_BCAST and EVT_n payloads are
+     * stale state; every other frame (EVT/control and the periodic HB/HEALTH/TELEM) retries up
+     * to 3 send attempts before drop. CTRL_BCAST and EVT_n payloads are
      * ControlPacketPair batches; a single input/output packet uses slot B controlId == 0x0000
      * as the null sentinel. Special/control/diagnostic frames use their explicit DLC and
      * payload. All drops increment the DIAG_ERR TX drop counter.
@@ -703,7 +720,8 @@ for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop cou
 avoids losing user actions during transient mailbox contention without allowing an unhealthy
 bus to create an unbounded backlog.
 
-`HB_n` heartbeat frames may drop stale queued heartbeat state; the next heartbeat replaces it.
+The periodic status frames — `HB_n`, `HEALTH_n`, `TELEM_n` — take the same bounded retry; they are
+not coalesced, since the next period's frame carries fresh state anyway.
 
 ### RX Queue
 

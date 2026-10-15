@@ -7,6 +7,8 @@
  *     names) — **the canonical source the client's `sync-a4ec.ts` parses**;
  *   - `NodeHealthFlag` (HEALTH_n flag bits) and `NodeFaultCode` (the compact wire faultId dictionary
  *     the client maps to labels);
+ *   - the `_NODE_TELEM` host contract and the TELEM_n page vocabulary (`TelemPage`, `PduRailFlag`,
+ *     `PduStatusFlag`) — #216;
  *   - `FaultSource` — the interface a fault-producing object implements so a node-level aggregator
  *     can roll it up. A `FaultSource` is *one piece* of node status, not the whole story.
  *
@@ -31,6 +33,15 @@
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
 
+// ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────
+// PanelBridge forwards every TELEM_n CAN frame to the host unread, as one DCS-BIOS message per
+// frame: `_NODE_TELEM <nodeId(2 hex)><8 frame bytes as 16 hex, wire order>` (18 hex chars). Pushed
+// as frames arrive — no request, no cache, no end marker. Versioned separately from
+// _NODE_STATUS: a new TelemPage is additive and needs no bump; bump on a change to the message
+// framing or to an existing page's layout. Full page layouts: FirmwarePlan/02-can-protocol.md.
+#define NODE_TELEM_PROTO_VERSION  1
+#define NODE_TELEM_MSG_NAME       "_NODE_TELEM"
+
 /** @brief HEALTH_n `flags` bits — node-level health conditions (maps to NodeHealthPayload.flags). */
 enum class NodeHealthFlag : uint8_t {
     OVERHEAT = 0x01,  // die temp >= NODE_OVERHEAT_C (opt-in, #213)
@@ -51,7 +62,45 @@ enum class NodeFaultCode : uint8_t {
     UNDER_VOLTAGE  = 0x03,  // rail under-voltage (PDU)
     SHORT_CIRCUIT  = 0x04,  // rail short / over-current (PDU)
     HOST_LINK_LOST = 0x05,  // PanelBridge lost the host serial link
-    // 0x06–0xFF reserved for future fault sources
+    FUSE_OPEN      = 0x06,  // rail fuse blown — rail read ~0 V while the node is powered (PDU)
+    OVER_TEMPERATURE = 0x07,  // board temperature at the critical threshold (PDU NTC)
+    SENSOR_FAULT   = 0x08,  // a measurement channel reads implausibly (railed / open / shorted)
+    // 0x09–0xFF reserved for future fault sources
+};
+
+/**
+ * @brief TELEM_n page ids (#216) — byte 0 of TelemPayload, naming the layout of bytes 1-7.
+ *
+ * Global and append-only: a page id means the same layout whichever node sends it, so the client
+ * decodes by page, not by node type. 0x00 is invalid. Layouts (little-endian):
+ *   PDU_RAIL_12V / PDU_RAIL_5V: [1] PduRailFlag bits · [2-3] vAvgMv u16 · [4-5] vMinMv u16 ·
+ *                               [6-7] iAvgMa int16
+ *   PDU_STATUS:                 [1] PduStatusFlag bits · [2-3] ntcTempDC int16 (0.1 °C,
+ *                               INT16_MIN = unavailable) · [4-5] i12PeakMa u16 · [6-7] i5PeakMa u16
+ */
+enum class TelemPage : uint8_t {
+    INVALID      = 0x00,  // never sent
+    PDU_RAIL_12V = 0x01,  // PDU 12 V rail: flags, avg + min voltage, avg current
+    PDU_RAIL_5V  = 0x02,  // PDU 5 V rail: flags, avg + min voltage, avg current
+    PDU_STATUS   = 0x03,  // PDU board: flags, NTC temperature, per-rail peak current
+};
+
+/** @brief PDU_RAIL_* page byte 1 — per-rail condition bits (all zero = healthy). */
+enum class PduRailFlag : uint8_t {
+    UNDER_V      = 0x01,  // rail below its under-voltage threshold
+    OVER_V       = 0x02,  // rail above its over-voltage threshold
+    OVER_CURRENT = 0x04,  // sustained current above the over-current threshold
+    FUSE_OPEN    = 0x08,  // rail read ~0 V while the node is powered — fuse blown
+    SENSOR_FAULT = 0x10,  // voltage or current channel reads implausibly (railed)
+};
+
+/** @brief PDU_STATUS page byte 1 — board condition bits (all zero = healthy, calibrated). */
+enum class PduStatusFlag : uint8_t {
+    UNCAL_VDDA   = 0x01,  // no VDDA calibration stored — readings assume a nominal 3.3 V
+    UNCAL_ZERO   = 0x02,  // no current zero-offset calibration stored
+    TEMP_WARN    = 0x04,  // board temperature at the warning threshold
+    TEMP_CRIT    = 0x08,  // board temperature at the critical threshold
+    NTC_FAULT    = 0x10,  // NTC channel open or shorted
 };
 
 namespace OpenSkyhawk {

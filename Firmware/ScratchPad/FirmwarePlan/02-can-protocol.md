@@ -70,6 +70,7 @@ replaced by inline functions:
 ```cpp
 constexpr uint32_t canIdHb(uint8_t n)     { return 0x100 + n; }  // 0x100–0x13F (0 = PanelBridge)
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }  // 0x140–0x17F (node health/thermal)
+constexpr uint32_t canIdTelem(uint8_t n)  { return 0x180 + n; }  // 0x181–0x1BF (paged node telemetry, #216)
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }  // 0x201–0x23F
 constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }  // 0x301–0x33F
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
@@ -87,6 +88,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `HB_0` | `0x100` | PanelBridge → All | 8 | Master liveness beacon every 500 ms; every other node runs a master-loss watchdog on it (#93) |
 | `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | Node heartbeat every 500 ms for n=1-63 — see HB payload below |
 | `HEALTH_n` | `0x140+n` | Node_n → PanelBridge | 8 | Internal die-temp + node-health telemetry every 1000 ms (n=0-63, incl. PanelBridge itself) — see HEALTH payload below (#213/#221) |
+| `TELEM_n` | `0x180+n` | Node_n → PanelBridge | 8 | Paged node telemetry (`TelemPayload`) — one frame per second plus flag-change edges; first user the PDU (#216) — see TELEM payload below |
 | `EVT_n` | `0x200+n` | Node_n → PanelBridge | 8 | Absolute input events (switches, selectors, pots) — `ControlPacketPair`, value `%u` → `set_state` |
 | `ECHO_n` | `0x300+n` | Node_n → PanelBridge | 8 | TEST_SEQ echo — 8-byte payload mirrored unchanged |
 | `READY_n` | `0x400+n` | Node_n → PanelBridge | 0 | One-time boot signal after initial input poll and EVT burst are complete |
@@ -166,7 +168,7 @@ the degraded-state feature (#163) owns `flags` bit1 / `faultId`, populated per n
 order). A healthy node ships all-zero; a faulted node ships `flags` DEGRADED + a nonzero `faultId`,
 but `faultMask` **stays 0** — it is reserved for future fault-domain bits. `faultId` is a
 `NodeFaultCode` (NodeStatus.h) the client maps to a label — no fault strings on the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
-telemetry (#202, real INA226 sensors per console), not generic per-node health; the reserved
+telemetry (`TELEM_n` below, #216; INA180A2 current sense per console, #202), not generic per-node health; the reserved
 bytes are for future *generic* health fields (reset cause, free RAM, I2C error count).
 
 **Default-on**, compile out with `-DNODE_HEALTH_TELEM=0`. PanelBridge caches each node's fields
@@ -189,6 +191,55 @@ changes node liveness (`HB_n` owns that).
 referencing Vsense to the Vdd derived from Vrefint (typ 1.20 V). Absolute accuracy ~±few °C;
 it reads **die** temperature (not ambient) with a self-heat offset. Use for relative trend and
 overheat flagging — accurate hot-spot sensing (e.g. PDU shunt/fuse zones) still uses external NTCs.
+
+---
+
+## Node Telemetry Payload — TELEM_n (#216)
+
+`TELEM_n` frames carry **paged node telemetry**: byte 0 is a `TelemPage` (NodeStatus.h) naming the
+layout of bytes 1–7. Page ids are **global and append-only** — a page means the same layout whichever
+node sends it, so the host decodes by page, never by node type — and `0x00` is invalid. Multi-byte
+fields are little-endian.
+
+```cpp
+struct __attribute__((packed)) TelemPayload {
+    uint8_t page;     // 0:   TelemPage (NodeStatus.h); 0x00 invalid
+    uint8_t body[7];  // 1-7: page-defined
+};
+```
+
+**Why one frame family with a page byte**, not one ID block per value group: each per-node ID block
+costs 64 IDs, and with a page byte PanelBridge can forward frames **unread** (`_NODE_TELEM`, see
+`04-dcs-bios-integration.md`) — a new page type needs no bridge change. `0x180+n` sits with `HB_n`
+(`0x100`) and `HEALTH_n` (`0x140`) in the node-status block; it outranks `EVT_n` in arbitration
+exactly as `HEALTH_n` does, which at ≤ 1 frame/s per node costs an input event at most one frame time
+(~0.27 ms). Generic node health (die temp, fault id) stays in `HEALTH_n` and is never repeated here.
+
+**PDU pages** (the PDU monitoring node, `PowerMonitor` library):
+
+| Page | Byte 1 | Bytes 2–3 | Bytes 4–5 | Bytes 6–7 |
+|---|---|---|---|---|
+| `0x01 PDU_RAIL_12V` / `0x02 PDU_RAIL_5V` | `PduRailFlag` bits | `vAvgMv` u16 | `vMinMv` u16 (window min) | `iAvgMa` **int16** |
+| `0x03 PDU_STATUS` | `PduStatusFlag` bits | `ntcTempDC` int16, 0.1 °C (`INT16_MIN` = unavailable) | `i12PeakMa` u16 | `i5PeakMa` u16 |
+
+- `PduRailFlag`: bit0 UNDER_V · bit1 OVER_V · bit2 OVER_CURRENT · bit3 FUSE_OPEN · bit4 SENSOR_FAULT.
+- `PduStatusFlag`: bit0 UNCAL_VDDA · bit1 UNCAL_ZERO · bit2 TEMP_WARN · bit3 TEMP_CRIT · bit4 NTC_FAULT.
+  All flags are fault-sense — all-zero is healthy and calibrated.
+- Units are engineering units computed on the node, which holds its own calibration; the host needs no
+  per-board knowledge. `iAvgMa` is signed so residual zero-offset stays visible.
+- Peak current is after the board's ~100 µs RC filter (1 kΩ / 100 nF on each INA180 output).
+
+**Send policy (PDU):** one frame per second — the `HEALTH_n` rate — rotating `PDU_RAIL_12V` →
+`PDU_RAIL_5V` → `PDU_STATUS`, so each page refreshes every 3 s and its averages / minimum / peaks cover
+those 3 s. A page whose flag byte changes is sent at once, at most once per 100 ms per page, without
+restarting its window; every page starts from an all-clear baseline, so a condition present at boot
+goes out promptly. `SYNC_REQ` sends all three pages immediately. The node's rail and thermal monitors
+are `FaultSource`s, so their worst condition also reaches `HEALTH_n.faultId` (`FUSE_OPEN`,
+`SHORT_CIRCUIT`, `OVER_VOLTAGE`, `UNDER_VOLTAGE`, `OVER_TEMPERATURE`, `SENSOR_FAULT`).
+
+**Bus load at 500 kbit/s** (8-byte frame ≈ 130 bits worst-case stuffing ≈ 0.27 ms): 3 PDUs steady =
+3 frames/s ≈ **0.08 %**; worst-case fault storm (every page edging at the 100 ms limit) = 90 frames/s
+≈ 2.4 %. For scale, `HB_n` + `HEALTH_n` from 20 nodes is 60 frames/s ≈ 1.6 %.
 
 ---
 
@@ -252,11 +303,12 @@ unpacked C++ struct, because natural alignment can pad this layout beyond 8 byte
 ## PanelBridge Receive Filter
 
 The heartbeat address family is `canIdHb(n) = 0x100 + n`, so the full HB range is
-`0x100`-`0x13F` with `HB_0` PanelBridge's own master beacon. For child-node liveness, PanelBridge
-accepts PanelGroup frames across five inbound ranges: HB_1-HB_63 (`0x101`-`0x13F`),
-HEALTH_1-HEALTH_63 (`0x141`-`0x17F`), EVT_1-EVT_63 (`0x201`-`0x23F`), ECHO_1-ECHO_63
-(`0x301`-`0x33F`), and READY_1-READY_63 (`0x401`-`0x43F`). These cannot be expressed as a
-single CAN mask filter.
+`0x100`-`0x13F` with `HB_0` PanelBridge's own master beacon. PanelBridge accepts node frames across
+nine inbound ranges: HB_1-HB_63 (`0x101`-`0x13F`), HEALTH_1-HEALTH_63 (`0x141`-`0x17F`),
+TELEM_1-TELEM_63 (`0x181`-`0x1BF`), EVT_1-EVT_63 (`0x201`-`0x23F`), ECHO_1-ECHO_63
+(`0x301`-`0x33F`), READY_1-READY_63 (`0x401`-`0x43F`), EVT_REL (`0x501`-`0x53F`), EVT_DIR
+(`0x601`-`0x63F`) and EVT_ACTION (`0x701`-`0x73F`). These cannot be expressed as a single CAN mask
+filter.
 
 **Strategy:** use a **pass-all mask filter** (accepts every ID) with software-side validation
 inside the CAN RX interrupt handler. Frames whose ID does not fall in one of the accepted ranges
@@ -277,7 +329,7 @@ via the TX-complete interrupt — no explicit drain call is required from `loop(
 |------------|--------|
 | `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
 | `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. No unbounded backlog. |
-| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. |
+| `HB_n`, `HEALTH_n`, `TELEM_n` periodic status | Same bounded retry as the event frames — up to 3 send attempts, then drop and increment the `DIAG_ERR` TX drop counter. Not coalesced: the next period's frame carries fresh state anyway. |
 | `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
 
 This prevents silent frame drops during DCS-BIOS export bursts without stalling the firmware,

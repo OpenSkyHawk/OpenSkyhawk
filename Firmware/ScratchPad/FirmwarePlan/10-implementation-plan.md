@@ -54,7 +54,7 @@
       are occupied, enqueue frames in a small ring buffer (~16 entries). Use frame-type
       dependent overflow: `CTRL_BCAST` may drop/coalesce stale state; `EVT_n`, `READY_n`,
       `SYNC_REQ`, `TEST_SEQ`, and `ECHO_n` use bounded retry up to 3 attempts, then drop and
-      increment the `DIAG_ERR` TX drop counter; `HB_n` may drop stale heartbeat frames.
+      increment the `DIAG_ERR` TX drop counter; `HB_n` takes the same bounded retry.
 - [x] Build A-4E-C input map generator: parse A-4E-C DCS-BIOS JSON → assign sequential
       `DCSIN_*` IDs from 0x8001; emit **three headers plus gap report**:
       - `A4EC_CmdIds.h` — `#define DCSIN_*` constants, included by PanelGroup sketches
@@ -217,8 +217,14 @@ covered; the only uncovered outputs were the five light-intensity values (`LIGHT
 ## Phase 5b — Infrastructure Nodes: PDU *(Firmware v0.2.0)*
 
 - [ ] PDU boards (#202) assembled and brought up.
-- [ ] PDU monitoring firmware + its new CAN telemetry frame (#216) — reuse the `HEALTH_n` pattern
-      (D13).
+- [x] Node heartbeat / HEALTH / master watchdog moved into `CANProtocol::serviceNodeStatus()` so
+      the PDU needs no PanelGroup dependency (#340, D17).
+- [x] PDU monitoring firmware + its `TELEM_n` telemetry frame (#216, D18) — `PowerMonitor` library,
+      `Panels/PDU_Left|Right|Center` (NODE_IDs 3/4/5), `_NODE_TELEM` forwarding in PanelBridge.
+      Logic + flash tests on hardware; real-bus smoke on a non-PDU board.
+- [ ] On the PDU itself (with #202 bring-up): 1 kHz scan, `CAL VDDA` / `CAL ZERO` per board,
+      thresholds tuned against the real load, calibration survives a reflash.
+- [ ] Client: `_NODE_TELEM` decode + per-rail display (OpenSkyHawk/SkyHawkClient#61).
 
 ---
 

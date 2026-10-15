@@ -65,6 +65,11 @@ in the `HEALTH_n` handler, #221) and emits a `_NODE_STATUS <hex>` DCS-BIOS comma
 
 SimGateway is unchanged — the ASCII messages and the binary request pass through transparently.
 
+**Node telemetry to the host (#216, same flag):** every `TELEM_n` frame (`0x181`–`0x1BF`) is
+forwarded unread as `_NODE_TELEM <nodeId><8 frame bytes>` as soon as it arrives — no cache, no
+decode, so a new `TelemPage` needs no bridge change. Page-`0x00` and short frames are dropped; a
+`TELEM_n` frame never marks a node alive. Contract: `04-dcs-bios-integration.md`.
+
 ---
 
 ## ExportStreamListener

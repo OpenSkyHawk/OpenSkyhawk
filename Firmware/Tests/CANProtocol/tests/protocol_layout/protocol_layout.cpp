@@ -12,6 +12,7 @@
 static_assert(sizeof(ControlPacket)     == 4, "ControlPacket must be 4 bytes");
 static_assert(sizeof(ControlPacketPair) == 8, "ControlPacketPair must be 8 bytes");
 static_assert(sizeof(HeartbeatPayload)  == 8, "HeartbeatPayload must be 8 bytes");
+static_assert(sizeof(TelemPayload)      == 8, "TelemPayload must be 8 bytes");
 
 static_assert(canIdHb(0)    == 0x100U, "canIdHb(0) reserved for PanelBridge");
 static_assert(canIdHb(1)    == 0x101U, "canIdHb(1) must be 0x101");
@@ -24,6 +25,9 @@ static_assert(canIdEvtDir(1)  == 0x601U, "canIdEvtDir(1) must be 0x601");
 static_assert(canIdEvtDir(63) == 0x63FU, "canIdEvtDir(63) must be 0x63F");
 static_assert(canIdEvtAction(1)  == 0x701U, "canIdEvtAction(1) must be 0x701");
 static_assert(canIdEvtAction(63) == 0x73FU, "canIdEvtAction(63) must be 0x73F");
+static_assert(canIdTelem(1)  == 0x181U, "canIdTelem(1) must be 0x181");
+static_assert(canIdTelem(63) == 0x1BFU, "canIdTelem(63) must be 0x1BF");
+static_assert(canIdTelem(63) < canIdEvt(1), "TELEM range must stay below EVT");
 static_assert(canIdEcho(1)  == 0x301U, "canIdEcho(1) must be 0x301");
 static_assert(canIdReady(1) == 0x401U, "canIdReady(1) must be 0x401");
 

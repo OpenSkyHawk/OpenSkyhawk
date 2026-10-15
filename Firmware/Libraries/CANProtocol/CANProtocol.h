@@ -71,7 +71,8 @@ struct __attribute__((packed)) HeartbeatPayload {
  *       measures DIE temperature (not ambient) with a self-heat offset. Use for relative
  *       trend and per-node overheat flagging, not precise ambient measurement.
  * @note Rail voltage/current is intentionally NOT here — that is the PDU's dedicated power
- *       telemetry (#202, real INA226 sensors), not generic per-node health.
+ *       telemetry (TELEM_n / TelemPayload, #216; INA180A2 current sense on #202), not generic
+ *       per-node health.
  */
 struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  nodeId;     ///< 0: node ID — redundant with CAN ID, aids logging
@@ -81,6 +82,23 @@ struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  faultId;    ///< 4: NodeFaultCode (NodeStatus.h): 0 = no fault, else primary fault — #163
     uint8_t  rsvd[3];    ///< 5-7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
 };
+
+/**
+ * @brief 8-byte payload carried by TELEM_n frames — paged node telemetry (#216).
+ *
+ * Byte 0 is a TelemPage (NodeStatus.h) naming the layout of the other seven bytes; page ids are
+ * global and append-only, so a page means the same thing whichever node sends it. Multi-byte
+ * fields inside a page are little-endian. PanelBridge forwards every TELEM_n frame to the host
+ * unread (`_NODE_TELEM`), so a new page type needs no bridge change — the client owns the decode.
+ *
+ * First user: the PDU monitoring node — pages PDU_RAIL_12V / PDU_RAIL_5V / PDU_STATUS. Generic
+ * node health (die temp, fault id) stays in HEALTH_n and is never repeated here.
+ */
+struct __attribute__((packed)) TelemPayload {
+    uint8_t page;     ///< 0: TelemPage (NodeStatus.h); 0x00 is invalid
+    uint8_t body[7];  ///< 1-7: page-defined, little-endian multi-byte fields
+};
+static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
 
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
@@ -104,6 +122,11 @@ constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 /** @brief Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is PanelBridge.
  *         Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands). */
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
+
+/** @brief Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181-0x1BF.
+ *         Sits with HB (0x100) and HEALTH (0x140) in the node-status block; PanelBridge forwards
+ *         it to the host unread as `_NODE_TELEM`. */
+constexpr uint32_t canIdTelem(uint8_t n)  { return 0x180 + n; }
 
 /** @brief Input event frame ID for node n. Range 0x201-0x23F. */
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }

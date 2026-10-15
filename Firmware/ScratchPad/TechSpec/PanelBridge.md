@@ -361,6 +361,8 @@ are child-node liveness frames. The RX handler validates IDs in software:
 | Range | Accepted by PanelBridge | Action |
 |-------|--------------------------|--------|
 | `0x101`-`0x13F` | `HB_1`-`HB_63` | Update node heartbeat/liveness |
+| `0x141`-`0x17F` | `HEALTH_1`-`HEALTH_63` | Cache die temp + health/fault for `_NODE_STATUS` (not liveness) |
+| `0x181`-`0x1BF` | `TELEM_1`-`TELEM_63` | Forward unread as `_NODE_TELEM` (#216; not liveness; page 0 / short dropped) |
 | `0x201`-`0x23F` | `EVT_1`-`EVT_63` | Dispatch each non-null ControlPacket slot |
 | `0x301`-`0x33F` | `ECHO_1`-`ECHO_63` | Consume TEST_SEQ RTT diagnostic response |
 | `0x401`-`0x43F` | `READY_1`-`READY_63` | Mark node ready and broadcast `SYNC_REQ` |
