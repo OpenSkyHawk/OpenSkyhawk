@@ -1,7 +1,7 @@
 # NodeStatus — Technical Specification
 
 **Status:** Done
-**FirmwarePlan ref:** `FirmwarePlan/04-dcs-bios-integration.md#node-status-reporting`, `FirmwarePlan/00-decisions.md#d14`
+**FirmwarePlan ref:** `FirmwarePlan/04-dcs-bios-integration.md#node-status-reporting`, `FirmwarePlan/00-decisions.md#d14`, `#d19`
 **Depends on:** `<stdint.h>` (enum base type) — otherwise platform-agnostic
 
 ---
@@ -20,7 +20,11 @@ Owns:
   the client loudly.
 - **`NodeHealthFlag`** — HEALTH_n flag bits (OVERHEAT, DEGRADED) mirroring `NodeHealthPayload.flags`.
 - **`NodeFaultCode`** — the compact `faultId` dictionary (cross-node: I2C_PERIPHERAL, OVER_VOLTAGE,
-  UNDER_VOLTAGE, SHORT_CIRCUIT, HOST_LINK_LOST, …). Client maps id → label (SkyHawkClient#40).
+  UNDER_VOLTAGE, SHORT_CIRCUIT, HOST_LINK_LOST, DUPLICATE_NODE_ID, …). Client maps id → label
+  (SkyHawkClient#40).
+- **`NodeKind`** (#344) — the `HEALTH_n` byte-5 board kind (UNKNOWN / PANEL_GROUP / PDU / BRIDGE),
+  append-only, forwarded as `_NODE_STATUS` v3's last field. Set by each node library's role via
+  `CANProtocol::serviceNodeStatus(kind, …)`, never from the NODE_ID.
 - **`FaultSource`** — the interface a fault-producing object implements + a self-registering list.
 - **`NODE_TELEM_*` + the TELEM_n page vocabulary (#216)** — `NODE_TELEM_MSG_NAME` (`_NODE_TELEM`) and
   `NODE_TELEM_PROTO_VERSION` (1, independent of `_NODE_STATUS`); `TelemPage` (global, append-only
@@ -37,7 +41,7 @@ strings** stay local (DiagSerial) and never go on the wire or into any shared/HI
 
 ```
 Firmware/Libraries/NodeStatus/
-├── NodeStatus.h    ← NODE_STATUS_* + NodeHealthFlag + NodeFaultCode + FaultSource
+├── NodeStatus.h    ← NODE_STATUS_* + NodeHealthFlag + NodeFaultCode + NodeKind + FaultSource
 ├── NodeStatus.cpp  ← FaultSource intrusive-list statics
 └── library.json    ← platforms: *
 ```
@@ -47,7 +51,7 @@ Firmware/Libraries/NodeStatus/
 ## Public API
 
 ```cpp
-#define NODE_STATUS_PROTO_VERSION 2      // bump on ANY _NODE_STATUS wire change
+#define NODE_STATUS_PROTO_VERSION 3      // bump on ANY _NODE_STATUS wire change (v3: nodeKind + node-0 row, #344)
 #define NODE_STATUS_REQ_ADDR      0x86FE
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
@@ -59,7 +63,12 @@ enum class NodeHealthFlag : uint8_t { OVERHEAT = 0x01, DEGRADED = 0x02 };
 enum class NodeFaultCode : uint8_t {
     NONE = 0, I2C_PERIPHERAL = 1, OVER_VOLTAGE = 2, UNDER_VOLTAGE = 3,
     SHORT_CIRCUIT = 4, HOST_LINK_LOST = 5,
-    FUSE_OPEN = 6, OVER_TEMPERATURE = 7, SENSOR_FAULT = 8,  // PDU (#216); 0x09+ reserved
+    FUSE_OPEN = 6, OVER_TEMPERATURE = 7, SENSOR_FAULT = 8,  // PDU (#216)
+    DUPLICATE_NODE_ID = 9,  // another board on this node's HB_n (#344); 0x0A+ reserved
+};
+
+enum class NodeKind : uint8_t {   // HEALTH_n byte 5 (#344), append-only
+    UNKNOWN = 0, PANEL_GROUP = 1, PDU = 2, BRIDGE = 3,  // 0x04+ reserved
 };
 
 namespace OpenSkyhawk {
@@ -90,7 +99,9 @@ typed `NodeFaultCode`; the cast to `uint8_t` happens only at the CAN/DCS-BIOS pa
 **Aggregation & priority:** `aggregateFaults()` returns the **first non-`NONE`** `faultCode()` in
 **registry iteration order, which is REVERSE construction order** — the intrusive list pushes new
 sources at `head()`, so the *last-constructed* source is visited first. One fault is on the wire at
-a time; multi-fault priority is a later concern. Each node's health-TX calls it, packs the result
+a time; multi-fault priority is a later concern. The one exception sits outside the registry:
+`DUPLICATE_NODE_ID` is raised by `CANProtocol::serviceNodeStatus()` itself and outranks every
+`FaultSource` (D19) — registry order can't guarantee a priority. Each node's health-TX calls it, packs the result
 into `HEALTH_n` (via `makeNodeHealthPayload`, which derives DEGRADED), and edge-logs `faultDetail()`
 via the shared `STM32Board::logNodeFaultEdge(tag, fault, detail)` helper (one prev-fault static;
 DiagSerial only, on change). **Degraded drives no status-LED** — frame + DiagSerial only
@@ -100,7 +111,8 @@ DiagSerial only, on change). **Degraded drives no status-LED** — frame + DiagS
 `DrumDisplay` is *one* `FaultSource` (I2C); a PDU rail monitor and a PanelBridge host-link watchdog
 are others. Implementers report **cached** state only (cheap/const, no blocking I/O) — the aggregator
 runs on the periodic health path. **Adding a fault code:** append a `NodeFaultCode` value + mirror
-the client label. **Changing the `_NODE_STATUS` wire shape:** bump `NODE_STATUS_PROTO_VERSION`.
+the client label. **Adding a node kind:** append a `NodeKind` value and pass it from the new node
+library's `serviceNodeStatus()` call — no proto bump (the field already exists). **Changing the `_NODE_STATUS` wire shape:** bump `NODE_STATUS_PROTO_VERSION`.
 **Adding a TELEM page:** append a `TelemPage` value (never renumber) and document its layout in
 FirmwarePlan 02 — additive, no bump; changing an existing page's layout bumps
 `NODE_TELEM_PROTO_VERSION`.
@@ -114,8 +126,9 @@ FirmwarePlan 02 — additive, no bump; changing an existing page's layout bumps
 its detail, null `faultDetail()` normalized to `""`, `nullptr` detailOut accepted. Also verified
 indirectly: `DrumDisplay` breaker test asserts `faultCode()`/`faultDetail()` via the `FaultSource`
 override; `CANProtocol` `health_payload`/`health_flags` tests assert the faultId/DEGRADED packing
-(incl. overheat+degraded coexistence); `PanelBridge` node_status test exercises the `_NODE_STATUS`
-emission; `PanelBridge` node_telem test exercises `_NODE_TELEM` forwarding; `PowerMonitor` tests
+(incl. overheat+degraded coexistence) and the `nodeKind` byte; `CANProtocol` duplicate_node_id test
+covers `DUPLICATE_NODE_ID` raise/hold/clear; `PanelBridge` node_status test exercises the v3
+`_NODE_STATUS` emission (kind `00` before HEALTH, kind delta, node-0 row); `PanelBridge` node_telem test exercises `_NODE_TELEM` forwarding; `PowerMonitor` tests
 cover the PDU fault sources and page flags; the client `reference.test.ts` asserts the proto-version
 contract.
 

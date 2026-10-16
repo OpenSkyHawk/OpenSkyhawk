@@ -111,7 +111,23 @@ registers directly, and — since #340 — the sending itself: every node calls
 `CANProtocol::serviceNodeStatus()` once per loop, which sends `HB_n` every 500 ms and `HEALTH_n`
 every 1000 ms and, on every node except PanelBridge, runs the master-loss watchdog (WARNING after
 1500 ms without `HB_0`, once a master has been seen). On those nodes `start()` adds `HB_0` to the
-hardware filter automatically.
+hardware filter automatically. Each node passes its board kind (`NodeKind`, #344) to
+`serviceNodeStatus()` from its library role — see *Node Health Payload* below.
+
+**Duplicate NODE_ID check (#344).** `start()` also adds the node's **own** `HB_n` to its filter, on
+every node including PanelBridge. bxCAN never receives its own transmissions, so a frame on that ID
+means a second board was flashed with the same `NODE_ID` — which otherwise only shows up as one
+blended node (uptime/rxCount jumping between two boards, error frames from identical-ID
+collisions). The node then reports `NodeFaultCode::DUPLICATE_NODE_ID` in its `HEALTH_n` (DEGRADED +
+`faultId`, plus the DiagSerial fault edge log):
+- **Top priority** — it is chosen ahead of every registered `FaultSource`, because nothing else
+  reported under a shared ID can be trusted; a lesser fault can never mask it.
+- **Auto-clears** `DUP_NODE_TIMEOUT_MS` (3000 ms) after the last foreign frame, so removing or
+  re-flashing the other board clears it without rebooting this one. A live duplicate re-raises
+  within one 500 ms heartbeat.
+- In `startLoopback()` test mode the node's own heartbeats do come back; the check discounts one
+  looped-back frame per heartbeat it sent, so only extra frames read as a duplicate.
+- The own-ID frame is still passed to `onReceive()`.
 
 ```cpp
 struct __attribute__((packed)) HeartbeatPayload {
@@ -137,7 +153,8 @@ REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC.
 health that PanelBridge reports to the host. No new CAN frame is added — PanelBridge caches the
 last `HB_n` per node and re-serializes it into a DCS-BIOS `_NODE_STATUS` message
 (see `04-dcs-bios-integration.md` and `06-panelbridge-api.md`). As of `_NODE_STATUS` proto **v2**
-the message also carries the node's cached `dieTempC` + health/fault fields from `HEALTH_n` (below).
+the message also carries the node's cached `dieTempC` + health/fault fields from `HEALTH_n` (below);
+proto **v3** (#344) adds the node's board kind and the bridge's own node-0 row.
 
 ---
 
@@ -157,7 +174,8 @@ struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  flags;      // 2:   NodeHealthFlag bits (NodeStatus.h): OVERHEAT, DEGRADED           — #213/#163
     uint8_t  faultMask;  // 3:   fault source/domain bitmap — reserved for future domain bits (0)
     uint8_t  faultId;    // 4:   NodeFaultCode (NodeStatus.h): 0 = no fault, else primary fault  — #163
-    uint8_t  rsvd[3];    // 5–7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
+    uint8_t  nodeKind;   // 5:   NodeKind (NodeStatus.h): board kind from the firmware role        — #344
+    uint8_t  rsvd[2];    // 6–7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
 };
 ```
 
@@ -165,16 +183,28 @@ This is the **shared node-health wire contract**. Distinct features populate the
 within the fixed 8 bytes and never collide: temperature (#213) owns `dieTempC` / `flags` bit0;
 the degraded-state feature (#163) owns `flags` bit1 / `faultId`, populated per node by
 `OpenSkyhawk::aggregateFaults()` (the primary fault, first non-`NONE` in `FaultSource` registry
-order). A healthy node ships all-zero; a faulted node ships `flags` DEGRADED + a nonzero `faultId`,
+order) — or `DUPLICATE_NODE_ID`, which outranks them all (see *Duplicate NODE_ID check* above);
+the board-kind feature (#344) owns `nodeKind`. A healthy node ships all-zero; a faulted node ships `flags` DEGRADED + a nonzero `faultId`,
 but `faultMask` **stays 0** — it is reserved for future fault-domain bits. `faultId` is a
 `NodeFaultCode` (NodeStatus.h) the client maps to a label — no fault strings on the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
 telemetry (`TELEM_n` below, #216; INA180A2 current sense per console, #202), not generic per-node health; the reserved
 bytes are for future *generic* health fields (reset cause, free RAM, I2C error count).
 
+**nodeKind (#344)** — what kind of board this `NODE_ID` is, as a `NodeKind` (NodeStatus.h,
+append-only): `0x00` unknown, `0x01` panel group, `0x02` PDU, `0x03` bridge. It is announced by
+the board's own firmware **role**, never derived from the `NODE_ID` (a PDU can take any ID):
+`serviceNodeStatus(kind, …)` takes it as a required argument, and each node library passes its
+own — `PanelGroup` → panel group, `PduNode` (PowerMonitor) → PDU, `PanelBridge` → bridge — so a
+sketch never sets it and can't forget it. "Bridge" is the SimGateway + PanelBridge board: one board,
+two MCUs; the PanelBridge MCU reports it in `HEALTH_0`, and the SimGateway (not on the bus) has no
+kind of its own. Firmware older than #344 sent `0` in this byte (it was reserved), so `0x00` reads
+as unknown — the client never adopts a node on it.
+
 **Default-on**, compile out with `-DNODE_HEALTH_TELEM=0`. PanelBridge caches each node's fields
-(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v2, so the
-degraded feature needs no further wire/proto change). A `HEALTH_n` frame is cache-only — it never
-changes node liveness (`HB_n` owns that).
+(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v3, #344), plus
+its own `HEALTH_0` as the node-0 row. A `HEALTH_n` frame never changes node liveness (`HB_n` owns
+that); the only delta it triggers is a `_NODE_STATUS` push when the node's cached `nodeKind`
+changes (see `04-dcs-bios-integration.md`).
 
 **flags bitmask:**
 - bit 0 (`0x01`): overheat — `dieTempC >= NODE_OVERHEAT_C`. **Opt-in:** the flag is computed
@@ -312,7 +342,9 @@ filter.
 
 **Strategy:** use a **pass-all mask filter** (accepts every ID) with software-side validation
 inside the CAN RX interrupt handler. Frames whose ID does not fall in one of the accepted ranges
-are silently discarded. `HB_0` (`0x100`) is PanelBridge's own transmission, not a child-node liveness frame. This is safe
+are silently discarded. `HB_0` (`0x100`) is PanelBridge's own transmission, not a child-node liveness
+frame — so an `HB_0` that does arrive came from another board on node 0 and trips the bridge's
+duplicate NODE_ID check (#344), like any node's. This is safe
 because PanelGroup nodes never transmit outside their assigned ranges.
 
 ---

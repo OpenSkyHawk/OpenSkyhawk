@@ -60,10 +60,10 @@ actually does.
 
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
-| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:217`, `PanelGroup.cpp:300`, `STM32Board.h:29` |
+| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:225`, `PanelGroup.cpp:300`, `STM32Board.h:29` |
 | `PANELBRIDGE_NODE_STATUS` | off | on in `Templates/PanelBridge` | `PanelBridge.cpp:41` + ~10 more |
-| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:464` (`serviceNodeStatus`, every node) |
-| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:428`, `CANProtocol.cpp:472` |
+| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:495` (`serviceNodeStatus`, every node) |
+| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:449`, `CANProtocol.cpp:512` |
 | `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:179` |
 | `PINREF_DEBUG` | off | never set | `PinRef.cpp:8` + ~9 more |
 | `SHIFTBUS_SCK` | `PB3` | never set | `ShiftBus.cpp:13` |
@@ -76,8 +76,9 @@ actually does.
 
 **What they do, briefly.** `NODE_ID` is the board's CAN address — see
 [NODE_ID & CAN Addressing](node-id.md). `PANELBRIDGE_NODE_STATUS` makes PanelBridge report which
-PanelGroup nodes it can see, up to the host over DCS-BIOS. `NODE_HEALTH_TELEM` is the periodic
-health frame (die temperature, fault bitmap) at half the heartbeat rate.
+nodes it can see — with their health and board kind, and itself — up to the host over DCS-BIOS.
+`NODE_HEALTH_TELEM` is the periodic health frame (die temperature, fault, board kind) at half the
+heartbeat rate.
 `FORCE_CLOCK_FALLBACK` exercises the dead-crystal fault path without a dead crystal; the
 `test_adc_clock_fallback` env uses it to prove `SystemClock_Config` sets the ADC prescaler on its
 fault path as well as its verified-72 MHz path (#263).

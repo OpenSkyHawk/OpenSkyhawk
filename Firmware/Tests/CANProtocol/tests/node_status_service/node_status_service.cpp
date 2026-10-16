@@ -94,7 +94,7 @@ void setup() {
 void loop() {
     STM32Board::tick();
     CANProtocol::drain();
-    CANProtocol::serviceNodeStatus(0);
+    CANProtocol::serviceNodeStatus(NodeKind::PANEL_GROUP);
 
     const uint32_t t = millis() - _startMs;
 

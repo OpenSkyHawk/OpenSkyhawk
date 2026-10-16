@@ -47,7 +47,7 @@ void loop() {
 
     // Same order as PanelGroup::loop(): drain, then the node status service
     CANProtocol::drain();
-    CANProtocol::serviceNodeStatus(0);
+    CANProtocol::serviceNodeStatus(NodeKind::PANEL_GROUP);
 
     if (now - setupDoneMs < 1200) return;
 
