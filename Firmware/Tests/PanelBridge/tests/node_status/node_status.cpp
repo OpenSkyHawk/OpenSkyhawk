@@ -79,7 +79,7 @@ void loop() {
     case 0:  // Phase A — inject heartbeats; both nodes transition to alive
         d.println(F("[TEST] A: feed HB node 1 & 2 + DEGRADED HEALTH node 1 -> expect 2x _NODE_STATUS ...01..."));
         // Node 2 back to not-yet-seen (it is dead here, so no delta), so every cycle repeats.
-        PanelBridge::testFeedHealth(2, INT8_MIN);
+        PanelBridge::testFeedHealth(2, DIE_TEMP_UNAVAILABLE);
         // dieTempC 2A + DEGRADED/I2C_PERIPHERAL + PANEL_GROUP — cache before the alive edge emits
         PanelBridge::testFeedHealth(1, 42,
                                     (uint8_t)NodeHealthFlag::DEGRADED, 0,

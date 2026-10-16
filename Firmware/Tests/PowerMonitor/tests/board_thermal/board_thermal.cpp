@@ -40,7 +40,7 @@ void setup() {
     th.sample(0, true, true);
     check("NTC fault flagged", has(PduStatusFlag::NTC_FAULT));
     check("NTC fault -> SENSOR_FAULT", th.faultCode() == NodeFaultCode::SENSOR_FAULT);
-    checkEq("NTC fault -> temperature unavailable", th.tempDC(), INT16_MIN);
+    checkEq("NTC fault -> temperature unavailable", th.tempDC(), NTC_TEMP_UNAVAILABLE);
     check("NTC fault keeps last warn state", has(PduStatusFlag::TEMP_WARN));
     th.sample(400, false, true);
     checkEq("NTC back, 40 C: healthy", th.flags(), 0);

@@ -35,14 +35,14 @@ public:
     /** @brief PduStatusFlag bits this monitor owns: TEMP_WARN, TEMP_CRIT, NTC_FAULT. */
     uint8_t flags() const;
 
-    /** @brief Latest temperature, 0.1 °C; INT16_MIN when unavailable (no reading yet / NTC fault). */
+    /** @brief Latest temperature, 0.1 °C; NTC_TEMP_UNAVAILABLE when no reading yet / NTC fault. */
     int16_t tempDC() const { return _tempDC; }
 
     NodeFaultCode faultCode() const override;
     const char*   faultDetail() const override;
 
 private:
-    int16_t _tempDC   = INT16_MIN;
+    int16_t _tempDC   = NTC_TEMP_UNAVAILABLE;
     bool    _warn     = false;
     bool    _crit     = false;
     bool    _ntcFault = false;

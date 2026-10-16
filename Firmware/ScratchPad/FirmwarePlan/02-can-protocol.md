@@ -139,12 +139,13 @@ struct __attribute__((packed)) HeartbeatPayload {
 };
 ```
 
-**flags bitmask:**
+**flags bitmask** (`HeartbeatFlag`, `NodeStatus.h`):
 - bit 0 (`0x01`): BOFF — CAN controller is in bus-off state
 - bit 1 (`0x02`): EPVF — Error Passive (TEC ≥ 128 or REC ≥ 128)
 
 **esr field:** `(uint16_t)(CAN1->ESR >> 16)`. CAN_ESR register layout: TEC in bits [23:16],
-REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC.
+REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC — `HB_ESR_TEC_SHIFT` (0) and
+`HB_ESR_REC_SHIFT` (8) in `NodeStatus.h`.
 
 **rxCount field:** node-owned receive counter for diagnostics. PanelGroup uses accepted
 `CTRL_BCAST` frames received since boot.
@@ -170,7 +171,7 @@ Vrefint internally to reference Vsense to Vdd — Vdd itself is not transmitted)
 ```cpp
 struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  nodeId;     // 0:   node ID (redundant with CAN ID, aids logging)
-    int8_t   dieTempC;   // 1:   internal die temp, whole °C (INT8_MIN = unavailable)  — #213
+    int8_t   dieTempC;   // 1:   internal die temp, whole °C (DIE_TEMP_UNAVAILABLE)    — #213
     uint8_t  flags;      // 2:   NodeHealthFlag bits (NodeStatus.h): OVERHEAT, DEGRADED           — #213/#163
     uint8_t  faultMask;  // 3:   fault source/domain bitmap — reserved for future domain bits (0)
     uint8_t  faultId;    // 4:   NodeFaultCode (NodeStatus.h): 0 = no fault, else primary fault  — #163
@@ -250,7 +251,10 @@ exactly as `HEALTH_n` does, which at ≤ 1 frame/s per node costs an input event
 | Page | Byte 1 | Bytes 2–3 | Bytes 4–5 | Bytes 6–7 |
 |---|---|---|---|---|
 | `0x01 PDU_RAIL_12V` / `0x02 PDU_RAIL_5V` | `PduRailFlag` bits | `vAvgMv` u16 | `vMinMv` u16 (window min) | `iAvgMa` **int16** |
-| `0x03 PDU_STATUS` | `PduStatusFlag` bits | `ntcTempDC` int16, 0.1 °C (`INT16_MIN` = unavailable) | `i12PeakMa` u16 | `i5PeakMa` u16 |
+| `0x03 PDU_STATUS` | `PduStatusFlag` bits | `ntcTempDC` int16, 0.1 °C (`NTC_TEMP_UNAVAILABLE` = `INT16_MIN`) | `i12PeakMa` u16 | `i5PeakMa` u16 |
+
+Each page's byte offsets are named in `NodeStatus.h` — `PduRailField` for both rail pages,
+`PduStatusField` for `PDU_STATUS` — and the PDU packs its frames through them.
 
 - `PduRailFlag`: bit0 UNDER_V · bit1 OVER_V · bit2 OVER_CURRENT · bit3 FUSE_OPEN · bit4 SENSOR_FAULT.
 - `PduStatusFlag`: bit0 UNCAL_VDDA · bit1 UNCAL_ZERO · bit2 TEMP_WARN · bit3 TEMP_CRIT · bit4 NTC_FAULT.

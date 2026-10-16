@@ -38,12 +38,14 @@ forwards host→device; the response is ASCII it forwards device→host). PanelB
 `NodeStatusReqListener` (an `ExportStreamListener`) fires → emits the full roster.
 
 **Response** — `_NODE_STATUS <hex>` where `<hex>` is **28 chars** (proto **v3**, #344; v2 was 26 chars
-without `nodeKind`), **each field its numeric value as fixed-width uppercase hex
-(most-significant nibble first)**:
+without `nodeKind`) — a `NODE_STATUS_ROW_BYTES` (14) byte row, **each field its numeric value as
+fixed-width uppercase hex (most-significant nibble first)**:
 `nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2) faultMask(2) faultId(2) nodeKind(2)`
-(the 8-byte `HeartbeatPayload` plus `present`, then the node's cached `HEALTH_n` fields). `present`:
-`01` alive, `00` removed. `flags`: bit0 BOFF, bit1 EPVF. `esr`: low byte TEC, high byte REC.
-`nodeId` 0–63: 0 is the bridge's own row, 1–63 the CAN nodes. `uptime`/`rxCount` are uint16 —
+(the 8-byte `HeartbeatPayload` plus `present`, then the node's cached `HEALTH_n` fields). Each field's
+byte offset in the row is named by `NodeStatusField` in `NodeStatus.h` (hex index = 2 × offset).
+`present`: `01` alive, `00` removed. `flags`: `HeartbeatFlag` — bit0 BOFF, bit1 EPVF. `esr`: low byte
+TEC, high byte REC (`HB_ESR_TEC_SHIFT` / `HB_ESR_REC_SHIFT`). `nodeId` 0–63: `GATEWAY_NODE_ID` (0) is
+the bridge's own row, 1–63 the CAN nodes. `uptime`/`rxCount` are uint16 —
 wrap at 65535 (~18 h / 65 k frames); treat as health indicators, not monotonic counters.
 
 **Node-0 row (v3).** Every roster reply starts with the bridge's own row: `present` `01`, its
@@ -55,7 +57,7 @@ delta: the bridge is the one reporting, so it is present whenever anything arriv
 
 The last five fields come from the node's `HEALTH_n` frame (see `02-can-protocol.md`):
 - `dieTempC`: int8 two's-complement whole °C (internal MCU sensor — UNCALIBRATED, die not ambient).
-  `80` = `INT8_MIN` = not-yet-seen → render unknown.
+  `80` = `DIE_TEMP_UNAVAILABLE` (`INT8_MIN`) = not-yet-seen → render unknown.
 - `hFlags`: node health bits — bit0 overheat, bit1 degraded.
 - `faultId`: `NodeFaultCode` — `00` = no fault, else the node's primary fault, populated per node by
   `aggregateFaults()` (#163); the client maps it to a label (no strings on the wire).
@@ -96,6 +98,9 @@ frame:
 ```
 _NODE_TELEM <hex>      18 hex chars: nodeId(2) + the 8 TELEM frame bytes (16), in wire order
 ```
+
+The row is `NODE_TELEM_ROW_BYTES` (9) bytes; `NodeTelemField` names the two offsets (`ID` 0,
+`FRAME` 1).
 
 - **Pushed as frames arrive** — no request, no cache, no terminator. The host keeps the latest value
   per `(nodeId, page)` and treats a page as stale after a few periods (PDU: one frame per second,

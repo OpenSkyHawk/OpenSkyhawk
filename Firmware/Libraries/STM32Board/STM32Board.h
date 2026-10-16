@@ -20,7 +20,7 @@
 
 #include <Arduino.h>
 #include <stm32f1xx_hal_can.h>
-#include <NodeStatus.h>  // NodeFaultCode for logNodeFaultEdge (#163)
+#include <NodeStatus.h>  // NodeFaultCode for logNodeFaultEdge (#163), DIE_TEMP_UNAVAILABLE
 
 // CanStatus is owned by CANProtocol; forward-declared here so onCanStatus()
 // can accept it without pulling the full CANProtocol header into every user.
@@ -163,8 +163,8 @@ namespace STM32Board {
      * @note UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature
      *       (not ambient) with a self-heat offset. Use for relative trend / overheat
      *       flagging, not precise ambient measurement.
-     * @return Die temperature in whole °C, or INT8_MIN if the internal channels are
-     *         unavailable on this variant.
+     * @return Die temperature in whole °C, or DIE_TEMP_UNAVAILABLE (NodeStatus.h) if the internal
+     *         channels are unavailable on this variant.
      */
     int8_t readDieTempC();
 

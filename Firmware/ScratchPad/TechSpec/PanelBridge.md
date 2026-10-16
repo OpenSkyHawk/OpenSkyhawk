@@ -375,8 +375,9 @@ a child-node heartbeat — one that does arrive is another board on node 0, whic
 
 Behind `-DPANELBRIDGE_NODE_STATUS`. `NodeState` caches each node's last `HeartbeatPayload` and its
 `HEALTH_n` fields (`dieTempC`, `healthFlags`, `faultMask`, `faultId`, `nodeKind` — not-yet-seen:
-`INT8_MIN` / `0`). One `emitRow()` formats a 28-hex `_NODE_STATUS` row; `emitNode(id, present)`
-feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHeartbeatPayload(0, 0)`
+`DIE_TEMP_UNAVAILABLE` / `0`). One `emitRow()` formats a 28-hex `_NODE_STATUS` row — its `snprintf`
+format is the `NodeStatusField` layout, held to it by a `static_assert`; `emitNode(id, present)`
+feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHeartbeatPayload(GATEWAY_NODE_ID, 0)`
 plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`). `emitAllNodes()` (boot
 seed + host request) sends the node-0 row, every alive node, then `_NODE_STATUS_END <count>` with
 node 0 counted. Live deltas: alive/dead transitions, and a `nodeKind` change on an alive node.

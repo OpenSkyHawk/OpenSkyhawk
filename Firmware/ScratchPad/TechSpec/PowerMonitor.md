@@ -71,7 +71,7 @@ class OpenSkyhawk::RailMonitor : public FaultSource {
 class OpenSkyhawk::BoardThermal : public FaultSource {
     void sample(int16_t tempDC, bool ntcFault, bool armed);
     uint8_t flags() const;                    // TEMP_WARN | TEMP_CRIT | NTC_FAULT
-    int16_t tempDC() const;                   // INT16_MIN = unavailable
+    int16_t tempDC() const;                   // NTC_TEMP_UNAVAILABLE = unavailable
     NodeFaultCode faultCode() const override; // OVER_TEMPERATURE > SENSOR_FAULT
 };
 

@@ -18,7 +18,12 @@ Owns:
   version, request address, message names). **The canonical contract source the client's
   `sync-a4ec.ts` parses**; `reference.test.ts` asserts the proto version so a firmware bump fails
   the client loudly.
-- **`NodeHealthFlag`** — HEALTH_n flag bits (OVERHEAT, DEGRADED) mirroring `NodeHealthPayload.flags`.
+- **`GATEWAY_NODE_ID`** (0) and the `_NODE_STATUS` row layout — `NODE_STATUS_ROW_BYTES` (14) and
+  `NodeStatusField` (byte offset of each row field; hex index = 2 × offset).
+- **`HeartbeatFlag`** (BOFF, EPVF) + **`HB_ESR_TEC_SHIFT` / `HB_ESR_REC_SHIFT`** — the HB_n `flags`
+  bits and `esr` byte split.
+- **`NodeHealthFlag`** — HEALTH_n flag bits (OVERHEAT, DEGRADED) mirroring `NodeHealthPayload.flags`;
+  **`DIE_TEMP_UNAVAILABLE`** (−128 = `INT8_MIN`) — the `dieTempC` "unavailable / not seen" value.
 - **`NodeFaultCode`** — the compact `faultId` dictionary (cross-node: I2C_PERIPHERAL, OVER_VOLTAGE,
   UNDER_VOLTAGE, SHORT_CIRCUIT, HOST_LINK_LOST, DUPLICATE_NODE_ID, …). Client maps id → label
   (SkyHawkClient#40).
@@ -29,8 +34,15 @@ Owns:
 - **`NODE_TELEM_*` + the TELEM_n page vocabulary (#216)** — `NODE_TELEM_MSG_NAME` (`_NODE_TELEM`) and
   `NODE_TELEM_PROTO_VERSION` (1, independent of `_NODE_STATUS`); `TelemPage` (global, append-only
   page ids — PDU_RAIL_12V / PDU_RAIL_5V / PDU_STATUS); `PduRailFlag` and `PduStatusFlag` (the page
-  flag bytes). Here, not in a PDU header, so the client's `sync-a4ec.ts` generates them from the same
+  flag bytes); `PduRailField` / `PduStatusField` (each page's byte offsets); `NTC_TEMP_UNAVAILABLE`
+  (−32768 = `INT16_MIN`); `NODE_TELEM_ROW_BYTES` (9) + `NodeTelemField`. Here, not in a PDU header, so the client's `sync-a4ec.ts` generates them from the same
   contract file (SkyHawkClient#61).
+
+**Every wire value is a named declaration (#346)** — `enum class X : T { NAME = literal }` or
+`constexpr T NAME = literal` — never only a comment, a bare literal or a format string, because the
+client's `sync-a4ec.ts` can read only those two forms. Sentinels are written as literals
+(`-128`, `-32768`) with a `static_assert` against `INT8_MIN` / `INT16_MIN`. Row-field enums say `ID`,
+not `NODE_ID`: every node build defines `NODE_ID` as a macro.
 
 `NodeHealthPayload` (the CAN HEALTH_n frame struct) stays in `CANProtocol.h`. Fault **detail
 strings** stay local (DiagSerial) and never go on the wire or into any shared/HID header.
@@ -41,7 +53,7 @@ strings** stay local (DiagSerial) and never go on the wire or into any shared/HI
 
 ```
 Firmware/Libraries/NodeStatus/
-├── NodeStatus.h    ← NODE_STATUS_* + NodeHealthFlag + NodeFaultCode + NodeKind + FaultSource
+├── NodeStatus.h    ← NODE_STATUS_* + row/page layouts + HeartbeatFlag + NodeHealthFlag + NodeFaultCode + NodeKind + FaultSource
 ├── NodeStatus.cpp  ← FaultSource intrusive-list statics
 └── library.json    ← platforms: *
 ```
@@ -58,7 +70,21 @@ Firmware/Libraries/NodeStatus/
 #define NODE_TELEM_PROTO_VERSION  1      // bump on a _NODE_TELEM framing / existing-page layout change
 #define NODE_TELEM_MSG_NAME       "_NODE_TELEM"
 
+constexpr uint8_t GATEWAY_NODE_ID       = 0;   // the bridge: HB_0 / HEALTH_0, first roster row
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 14;  // 28 hex
+enum class NodeStatusField : uint8_t {         // row byte offsets; multi-byte fields MSB-first
+    ID = 0, PRESENT = 1, HB_FLAGS = 2, UPTIME = 3, RX_COUNT = 5, ESR = 7,
+    DIE_TEMP_C = 9, HEALTH_FLAGS = 10, FAULT_MASK = 11, FAULT_ID = 12, NODE_KIND = 13,
+};
+constexpr uint8_t NODE_TELEM_ROW_BYTES  = 9;   // 18 hex
+enum class NodeTelemField : uint8_t { ID = 0, FRAME = 1 };
+
+enum class HeartbeatFlag : uint8_t { BOFF = 0x01, EPVF = 0x02 };
+constexpr uint8_t HB_ESR_TEC_SHIFT = 0;        // HB_n esr: TEC low byte
+constexpr uint8_t HB_ESR_REC_SHIFT = 8;        //           REC high byte
+
 enum class NodeHealthFlag : uint8_t { OVERHEAT = 0x01, DEGRADED = 0x02 };
+constexpr int8_t DIE_TEMP_UNAVAILABLE = -128;  // == INT8_MIN, static_assert'd
 
 enum class NodeFaultCode : uint8_t {
     NONE = 0, I2C_PERIPHERAL = 1, OVER_VOLTAGE = 2, UNDER_VOLTAGE = 3,
@@ -70,6 +96,11 @@ enum class NodeFaultCode : uint8_t {
 enum class NodeKind : uint8_t {   // HEALTH_n byte 5 (#344), append-only
     UNKNOWN = 0, PANEL_GROUP = 1, PDU = 2, BRIDGE = 3,  // 0x04+ reserved
 };
+
+// TELEM_n page layouts (#216): byte offsets into the 8-byte frame, little-endian (byte 0 = TelemPage)
+enum class PduRailField   : uint8_t { FLAGS = 1, V_AVG_MV = 2, V_MIN_MV = 4, I_AVG_MA = 6 };
+enum class PduStatusField : uint8_t { FLAGS = 1, NTC_TEMP_DC = 2, I12_PEAK_MA = 4, I5_PEAK_MA = 6 };
+constexpr int16_t NTC_TEMP_UNAVAILABLE = -32768;  // == INT16_MIN, static_assert'd
 
 namespace OpenSkyhawk {
 class FaultSource {                                      // a fault-producing object implements this
