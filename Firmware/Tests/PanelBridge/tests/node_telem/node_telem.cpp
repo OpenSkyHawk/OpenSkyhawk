@@ -13,7 +13,9 @@
 //   _NODE_TELEM 030100E02E182EBC02   ← node 3 PDU_RAIL_12V: 12000 mV avg, 11800 min, 700 mA
 //   _NODE_TELEM 050303FA0010273412   ← node 5 PDU_STATUS: flags 03, 25.0 °C, peaks 10000 / 4660 mA
 //   (nothing for the page-0 frame, the 4-byte frame, or canIdTelem(0))
-//   _NODE_STATUS_END 0                ← roster request: TELEM made no node alive
+//   _NODE_STATUS 0001…03              ← roster request: the bridge's own node-0 row (#344; kind
+//                                       03, or 00 before its first HEALTH_0)
+//   _NODE_STATUS_END 1                ← node 0 only: TELEM made no CAN node alive
 //
 // hex = nodeId(2) then the 8 frame bytes in wire order (multi-byte page fields little-endian).
 
@@ -54,7 +56,7 @@ void loop() {
     PanelBridge::testFeedCanFrame(canIdTelem(3), page0, 8);
     PanelBridge::testFeedCanFrame(canIdTelem(3), rail12, 4);
     PanelBridge::testFeedCanFrame(canIdTelem(0), rail12, 8);
-    d.println(F("[TEST] roster request -> expect _NODE_STATUS_END 0 (TELEM is not liveness)"));
+    d.println(F("[TEST] roster request -> expect node-0 row + _NODE_STATUS_END 1 (TELEM is not liveness)"));
     PanelBridge::testRequestNodeStatus();
     d.println(F("[TEST] --- cycle ---"));
 }
