@@ -14,7 +14,8 @@ The firmware of the **PDU monitoring node** (#202 hardware, #216 firmware) — o
 NODE_IDs 3/4/5. It samples the 12 V and 5 V rails (voltage + current) and the board NTC, turns
 them into engineering units with the board's own calibration, raises rail / thermal conditions,
 publishes them as `TELEM_n` pages, and feeds its faults into `HEALTH_n` through the FaultSource
-registry. Node plumbing (HB / HEALTH / master watchdog) comes from `CANProtocol::serviceNodeStatus()`;
+registry. Node plumbing (HB / HEALTH / master watchdog) comes from `CANProtocol::serviceNodeStatus()`,
+called with `NodeKind::PDU` so every PDU announces its kind in `HEALTH_n` whatever its NODE_ID (#344);
 there is **no PanelGroup dependency** (the PDU has no inputs or outputs).
 
 Does **not** own: the TELEM wire contract (`TelemPayload` in CANProtocol, page vocabulary in

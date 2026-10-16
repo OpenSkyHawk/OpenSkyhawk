@@ -56,6 +56,7 @@ static uint32_t           _txDrops        = 0;
 static uint32_t           _filterIds[MAX_FILTER_IDS];
 static uint8_t            _filterCount    = 0;
 static bool               _filterPassAll  = false;
+static bool               _loopback       = false;  // started with startLoopback(): own frames return
 
 // Node status service (serviceNodeStatus) — #340
 static constexpr uint32_t HB_PERIOD_MS     = 500;
@@ -72,6 +73,12 @@ static bool               _masterHbPending = false;  // HB_0 arrived since the l
 static bool               _masterLost      = false;
 static bool               _overheat        = false;
 static bool               _warnAsserted    = false;  // what this service last wrote to the latch
+// Duplicate NODE_ID check (#344): a frame on our own HB_n came from another board with our NODE_ID.
+static uint32_t           _lastDupMs       = 0;      // millis() of the last foreign own-ID HB
+static bool               _dupSeen         = false;  // a foreign own-ID HB within DUP_NODE_TIMEOUT_MS
+static uint8_t            _ownHbLoopPending = 0;     // loopback only: own HBs sent, not yet looped back
+// Last HEALTH_n built (lastNodeHealth()) — not-yet-seen until the first one: dieTempC INT8_MIN.
+static NodeHealthPayload  _lastHealth      = { 0, INT8_MIN, 0, 0, 0, 0, { 0, 0 } };
 
 // ── Private helpers ───────────────────────────────────────────────────────────
 
@@ -120,12 +127,13 @@ static void _applyFilters() {
     }
 
     // Build combined ID list: mandatory + caller-registered
-    uint32_t ids[MAX_FILTER_IDS + 4];
+    uint32_t ids[MAX_FILTER_IDS + 5];
     uint8_t  count = 0;
     ids[count++] = CAN_ID_CTRL_BCAST;
     ids[count++] = CAN_ID_TEST_SEQ;
     ids[count++] = CAN_ID_SYNC_REQ;
     if (NODE_ID != 0) ids[count++] = canIdHb(0);  // master heartbeat → serviceNodeStatus watchdog
+    ids[count++] = canIdHb(NODE_ID);  // own heartbeat ID → duplicate NODE_ID check (#344)
     for (uint8_t i = 0; i < _filterCount; i++) {
         ids[count++] = _filterIds[i];
     }
@@ -222,6 +230,9 @@ static void _startInternal(uint32_t mode) {
     // serviceNodeStatus() arms its HB/HEALTH timers on its first call — the first loop() after
     // setup returns — so a restart re-arms them there too (FirmwarePlan 09 step 8).
     _statusArmed = false;
+    _loopback         = (mode == CAN_MODE_SILENT_LOOPBACK);
+    _ownHbLoopPending = 0;
+    _dupSeen          = false;
 
     _status = CanStatus::NORMAL;
     if (_statusCb) _statusCb(_status);
@@ -281,7 +292,16 @@ void drain() {
         } else if (frame.canId == CAN_ID_TEST_SEQ) {
             send(canIdEcho(NODE_ID), frame.data, frame.len);
         } else {
-            if (NODE_ID != 0 && frame.canId == canIdHb(0)) {
+            if (frame.canId == canIdHb(NODE_ID)) {
+                // Our own heartbeat ID. A node never receives its own frames, so another board has
+                // our NODE_ID (#344) — except in loopback, where our own heartbeats come back.
+                if (_loopback && _ownHbLoopPending > 0) {
+                    _ownHbLoopPending--;
+                } else {
+                    _lastDupMs = millis();
+                    _dupSeen   = true;
+                }
+            } else if (NODE_ID != 0 && frame.canId == canIdHb(0)) {
                 // Master heartbeat: stamp it for serviceNodeStatus()'s watchdog, then still hand it
                 // to the node's own handler like any other frame.
                 _lastMasterMs    = millis();
@@ -420,7 +440,8 @@ HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount) {
     return p;
 }
 
-NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC, NodeFaultCode fault) {
+NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
+                                        NodeFaultCode fault) {
     NodeHealthPayload p;
     p.nodeId   = nodeId;
     p.dieTempC = dieTempC;
@@ -436,13 +457,17 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC, NodeFau
     p.faultMask = 0;
     p.faultId   = static_cast<uint8_t>(fault);
     if (fault != NodeFaultCode::NONE) p.flags |= static_cast<uint8_t>(NodeHealthFlag::DEGRADED);  // bit1
-    p.rsvd[0] = p.rsvd[1] = p.rsvd[2] = 0;
+    p.nodeKind = static_cast<uint8_t>(kind);  // board kind from the node's firmware role (#344)
+    p.rsvd[0] = p.rsvd[1] = 0;
     return p;
 }
 
 uint32_t txDropCount() { return _txDrops; }
 
-void serviceNodeStatus(uint16_t rxCount) {
+const NodeHealthPayload& lastNodeHealth() { return _lastHealth; }
+
+void serviceNodeStatus(NodeKind kind, uint16_t rxCount) {
+    (void)kind;  // only HEALTH_n carries it — unused under -DNODE_HEALTH_TELEM=0
     const uint32_t now = millis();  // after drain(): HB_0 stamps can't be ahead of `now` (#225)
 
     // Arm on the first call: that is the first loop() after setup() returned, i.e. boot complete
@@ -457,16 +482,31 @@ void serviceNodeStatus(uint16_t rxCount) {
         _lastHbMs = now;
         HeartbeatPayload hb = makeHeartbeatPayload(NODE_ID, rxCount);
         send(canIdHb(NODE_ID), reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
+        if (_loopback) _ownHbLoopPending++;  // will come back — not a duplicate (#344)
     }
+
+    // Duplicate NODE_ID (#344): live until DUP_NODE_TIMEOUT_MS after the last foreign own-ID HB.
+    // Signed elapsed, as for the master watchdog (#225); dropping _dupSeen keeps an old stamp from
+    // reading as fresh again after millis() wraps.
+    if (_dupSeen && (int32_t)(now - _lastDupMs) > (int32_t)DUP_NODE_TIMEOUT_MS) _dupSeen = false;
 
     // HEALTH: half the heartbeat rate — trend data. NodeFaultCode / aggregateFaults come via
     // NodeStatus.h (included by CANProtocol.h) (#163).
 #if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
     if (now - _lastHealthMs >= HEALTH_PERIOD_MS) {
         _lastHealthMs = now;
+        // A duplicate NODE_ID outranks every FaultSource: with two boards on one ID, nothing else
+        // reported under it can be trusted, so it must never be masked by a lesser fault.
         const char* faultDetail = nullptr;   // never null after aggregateFaults()
-        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
-        NodeHealthPayload h = makeNodeHealthPayload(NODE_ID, STM32Board::readDieTempC(), fault);
+        NodeFaultCode fault;
+        if (_dupSeen) {
+            fault       = NodeFaultCode::DUPLICATE_NODE_ID;
+            faultDetail = "another board transmits on this NODE_ID";
+        } else {
+            fault = OpenSkyhawk::aggregateFaults(&faultDetail);
+        }
+        NodeHealthPayload h = makeNodeHealthPayload(NODE_ID, kind, STM32Board::readDieTempC(), fault);
+        _lastHealth = h;
         send(canIdHealth(NODE_ID), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
         STM32Board::logNodeFaultEdge(NODE_ID == 0 ? "BRIDGE" : "NODE", fault, faultDetail);
 #ifdef NODE_OVERHEAT_C

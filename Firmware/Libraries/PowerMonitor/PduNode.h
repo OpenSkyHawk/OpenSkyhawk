@@ -9,7 +9,8 @@
  * void loop()  { PduNode::loop(); }
  * @endcode
  * with `-DNODE_ID=N` in platformio.ini. What runs:
- *   - **Node status** — HB_n / HEALTH_n / master-loss watchdog via CANProtocol::serviceNodeStatus().
+ *   - **Node status** — HB_n / HEALTH_n (board kind PDU, #344) / master-loss watchdog via
+ *     CANProtocol::serviceNodeStatus().
  *     Rail and thermal faults reach HEALTH_n.faultId through the FaultSource registry.
  *   - **Sampling** — the four rail channels every PDU_SAMPLE_US (1 kHz target); the NTC and
  *     Vrefint every 100 ms. Faults are held clear for PDU_BOOT_BLANK_MS after boot.

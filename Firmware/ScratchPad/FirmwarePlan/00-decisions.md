@@ -449,3 +449,41 @@ stays at v2. The first pages belong to the PDU monitoring node: `PDU_RAIL_12V`, 
 **Affects:** `02-can-protocol.md`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`,
 `08-hardware-firmware-contracts.md`, `10-implementation-plan.md`, TechSpec (`CANProtocol`,
 `NodeStatus`, `PanelBridge`, `PowerMonitor`), `docs/architecture/can-bus.md`, `docs/architecture/power.md`.
+
+---
+
+## D19 — Every board announces its kind; nodes detect a duplicate NODE_ID (#344)
+
+**Decision:** `HEALTH_n` byte 5 (reserved until now) carries a `NodeKind` — `0x00` unknown, `0x01`
+panel group, `0x02` PDU, `0x03` bridge, append-only in `NodeStatus.h` — set by the board's firmware
+role: `serviceNodeStatus(kind, …)` takes it as a required argument and each node library passes its
+own. PanelBridge caches it and forwards it in `_NODE_STATUS` **v3** (28 hex), together with a node-0
+row for itself (its heartbeat state + its own `HEALTH_0`, kind bridge), and pushes a delta when an
+alive node's kind changes. Separately, every node filters its own `HB_n`; a frame on it raises
+`NodeFaultCode::DUPLICATE_NODE_ID`, ahead of every `FaultSource`, clearing 3 s after the last
+foreign frame.
+
+**Rationale:**
+- *The ID is not a type.* A PDU can take any `NODE_ID`, and silence proves nothing (a panel group
+  sends no telemetry), so the client had no positive signal for a panel group and couldn't let one
+  be adopted. Only the board's own firmware knows what it is.
+- *A required argument, from the library.* Sketches never call `serviceNodeStatus()` — the node
+  library does — so the library is the role. Making `kind` required means a new node library won't
+  compile until it says what it is; nothing ambiguous needs a per-sketch override today.
+- *Byte 5 is backward-safe.* Pre-#344 firmware already sends 0 there, which reads as unknown — an old
+  node stays un-adoptable until re-flashed, which is intended. The proto bump makes a v2 client fail
+  loudly instead of misreading 28 hex as 26.
+- *The bridge reports itself.* Every board reports, for consistency; the bridge row is the client's
+  own link, never a new node. The bridge stays on node 0 — the master address every node watches.
+- *Kind delta.* The alive delta leaves on a node's first `HB_n`, ~1 s before its first `HEALTH_n`,
+  so without a push the kind would wait for the client's next roster poll.
+- *Duplicate IDs hide.* Two boards on one ID blend into one node and collide on identical CAN IDs
+  (error frames, error-passive), while inputs mostly still work — a "flaky board". Filtering one's
+  own HB costs one filter slot and no traffic. The duplicate outranks every other fault because
+  nothing reported under a shared ID can be trusted, and it auto-clears so fixing the other board
+  needs no reboot of this one. It is not a registry `FaultSource`: registry order is construction
+  order, which across translation units can't guarantee its priority.
+
+**Affects:** `02-can-protocol.md`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`,
+`10-implementation-plan.md`, TechSpec (`CANProtocol`, `NodeStatus`, `PanelBridge`, `PanelGroup`,
+`PowerMonitor`), `docs/architecture/can-bus.md`, `docs/firmware/node-id.md`.

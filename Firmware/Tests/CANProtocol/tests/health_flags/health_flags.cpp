@@ -27,18 +27,18 @@ void setup() {
     const uint8_t DEGRADED = (uint8_t)NodeHealthFlag::DEGRADED;   // 0x02
 
     // Hot + healthy: overheat only.
-    NodeHealthPayload hot = CANProtocol::makeNodeHealthPayload(NODE_ID, /*dieTempC*/ 40);
+    NodeHealthPayload hot = CANProtocol::makeNodeHealthPayload(NODE_ID, NodeKind::PANEL_GROUP, /*dieTempC*/ 40);
     check("hot healthy -> OVERHEAT only", hot.flags == OVERHEAT);
 
     // Hot + faulted: both bits, faultId carries the code.
     NodeHealthPayload both = CANProtocol::makeNodeHealthPayload(
-        NODE_ID, /*dieTempC*/ 40, NodeFaultCode::I2C_PERIPHERAL);
+        NODE_ID, NodeKind::PANEL_GROUP, /*dieTempC*/ 40, NodeFaultCode::I2C_PERIPHERAL);
     check("hot + fault -> OVERHEAT|DEGRADED", both.flags == (OVERHEAT | DEGRADED));
     check("hot + fault -> faultId set",       both.faultId == (uint8_t)NodeFaultCode::I2C_PERIPHERAL);
 
     // Sentinel temp (unavailable) never trips overheat; fault alone -> DEGRADED only.
     NodeHealthPayload deg = CANProtocol::makeNodeHealthPayload(
-        NODE_ID, INT8_MIN, NodeFaultCode::OVER_VOLTAGE);
+        NODE_ID, NodeKind::PDU, INT8_MIN, NodeFaultCode::OVER_VOLTAGE);
     check("no-temp + fault -> DEGRADED only", deg.flags == DEGRADED);
 
     d.println(pass ? F("=== ALL PASS ===") : F("=== FAIL ==="));

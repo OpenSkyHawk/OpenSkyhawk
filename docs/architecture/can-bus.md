@@ -45,8 +45,14 @@ helper functions — **never hard-code these values**, always use the helper.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
   Every node — PanelBridge included, as `HB_0` — sends `HB_n` and `HEALTH_n` from one shared
   CANProtocol routine, which also runs each node's watch on the master heartbeat.
-- `HEALTH_n` carries `NodeHealthPayload` — internal die temperature, and node
-  degraded/fault state as that lands.
+- `HEALTH_n` carries `NodeHealthPayload` — internal die temperature, the node's
+  degraded/fault state, and its **board kind** (panel group, PDU or bridge). The kind comes from
+  the board's own firmware, never from its `NODE_ID`, so the host app can tell what a newly seen
+  node is before anyone adopts it. PanelBridge reports every node's kind to the host, its own
+  included.
+- Each node also listens on its own heartbeat ID. A board never hears its own frames, so a
+  heartbeat there means a second board was flashed with the same `NODE_ID`; the node then flags a
+  duplicate-ID fault in `HEALTH_n`, which the host app shows.
 - `TELEM_n` carries paged telemetry: byte 0 says which page the other seven bytes are. The
   power-distribution node uses it for per-rail voltage and current and its board temperature, one
   frame a second plus an immediate frame whenever a rail condition changes. PanelBridge passes every

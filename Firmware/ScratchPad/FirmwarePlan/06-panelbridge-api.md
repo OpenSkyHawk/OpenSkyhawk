@@ -18,7 +18,8 @@ PanelBridge is the single STM32F103 CAN master that:
    - `0x8000 <= controlId <= 0x86FF` → binary search in generated input map → `sendDcsBiosMessage()`
    - `controlId < 0x8000` → wrap in HID frame → UART → SimGateway
 4. Tracks node liveness from `HB_1`-`HB_63`, and sends its own `HB_0` master beacon and
-   `HEALTH_0` through `CANProtocol::serviceNodeStatus()` like every node (#93/#340).
+   `HEALTH_0` through `CANProtocol::serviceNodeStatus()` like every node (#93/#340), announcing
+   board kind `BRIDGE` (#344).
 
 ---
 
@@ -53,15 +54,20 @@ emitted in response to `SYNC_REQ` are the state snapshot.
 **Node-status reporting to the host (#86, behind `-DPANELBRIDGE_NODE_STATUS`, default off):**
 PanelBridge surfaces the roster + per-node health to OpenSkyhawk Client over DCS-BIOS (see
 `04-dcs-bios-integration.md`). It caches each node's last `HeartbeatPayload` (`NodeState::last`,
-populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + health/fault, cached
-in the `HEALTH_n` handler, #221) and emits a `_NODE_STATUS <hex>` DCS-BIOS command message:
+populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + health/fault +
+`nodeKind`, cached in the `HEALTH_n` handler, #221/#344) and emits a `_NODE_STATUS <hex>` DCS-BIOS
+command message (proto v3):
 
 - on every alive/dead transition — a single bare `_NODE_STATUS` (a live delta; the 3 s heartbeat
-  timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node), and
+  timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node),
+- when an alive node's cached `nodeKind` changes (#344) — normally its first `HEALTH_n`, ~1 s after
+  the alive delta, which went out with kind `00`, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
   (`0x86FE`), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
-  request/boot reply is the full roster followed by `_NODE_STATUS_END <count>`, so the host can tell
-  the burst is complete and prune nodes absent from it.
+  request/boot reply is the bridge's own node-0 row (its live heartbeat state +
+  `CANProtocol::lastNodeHealth()`, the `HEALTH_0` it last sent), then the full roster, then
+  `_NODE_STATUS_END <count>` (count includes node 0), so the host can tell the burst is complete
+  and prune nodes absent from it.
 
 SimGateway is unchanged — the ASCII messages and the binary request pass through transparently.
 

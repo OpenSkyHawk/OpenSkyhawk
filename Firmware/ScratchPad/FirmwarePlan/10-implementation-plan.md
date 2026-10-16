@@ -225,6 +225,9 @@ covered; the only uncovered outputs were the five light-intensity values (`LIGHT
 - [ ] On the PDU itself (with #202 bring-up): 1 kHz scan, `CAL VDDA` / `CAL ZERO` per board,
       thresholds tuned against the real load, calibration survives a reflash.
 - [ ] Client: `_NODE_TELEM` decode + per-rail display (OpenSkyHawk/SkyHawkClient#61).
+- [x] Board kind in `HEALTH_n` byte 5 + `_NODE_STATUS` v3 with the bridge's node-0 row, and
+      duplicate NODE_ID detection (#344, D19). Bench on PanelBridge + a panel group (+ a PDU) and
+      the client resync (SkyHawkClient#63/#77) pending.
 
 ---
 

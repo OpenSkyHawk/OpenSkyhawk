@@ -46,3 +46,13 @@ for the full workflow — claiming the ID is step one.
     `Firmware/Panels/` against this registry on each firmware PR: it fails the build if a board's
     NODE_ID is unregistered, duplicated, or out of range. The table above is transcluded directly
     from `Firmware/NODE_IDS.md`, so the docs can't drift from the registry.
+
+!!! warning "Two boards on one NODE_ID"
+    CI only checks the sketches in the repo. A board flashed by hand with an ID that is already on
+    the bus is caught at runtime instead: every node listens for its own heartbeat ID, and the
+    moment another board transmits on it, both report a **duplicate NODE_ID** fault, which the host
+    app shows against that node. Re-flash one of them with its own registered ID; the fault clears
+    a few seconds after the other board stops transmitting.
+
+A NODE_ID is an address, not a board type — a PDU can take any free ID. Each board announces what
+it is (panel group, PDU or bridge) in its health frame, from its own firmware.

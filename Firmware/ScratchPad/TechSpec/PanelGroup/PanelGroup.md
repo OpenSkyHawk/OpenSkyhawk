@@ -15,6 +15,7 @@ dispatch of input events via `CANProtocol::sendBatched()`; reception and distrib
 inputs); and the `READY_n` frame on boot completion. The node-generic status traffic — the
 500 ms `HB_n` heartbeat, the 1 s `HEALTH_n` frame and the master-loss watchdog — is not
 PanelGroup's: PanelGroup calls `CANProtocol::serviceNodeStatus()` once per loop and passes its
+board kind (`NodeKind::PANEL_GROUP`, #344 — so a PanelGroup sketch never sets it) and its
 accepted-`CTRL_BCAST` count for the heartbeat (#340).
 `TEST_SEQ` echo is owned by `CANProtocol::drain()` and is not forwarded to PanelGroup
 callbacks.
@@ -376,8 +377,8 @@ namespace PanelGroup {
      *                            then ignored by PanelGroup's receive callback.
      *        anything else    → ignored by PanelGroup's receive callback.
      *   5. Call update() on all OutputBase objects.
-     *   6. CANProtocol::serviceNodeStatus(rxCount) — HB_n every 500 ms, HEALTH_n every
-     *      1 s, master-loss watchdog (#340).
+     *   6. CANProtocol::serviceNodeStatus(NodeKind::PANEL_GROUP, rxCount) — HB_n every 500 ms,
+     *      HEALTH_n every 1 s (kind PANEL_GROUP, #344), master-loss watchdog (#340).
      */
     void loop();
 

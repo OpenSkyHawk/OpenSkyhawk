@@ -265,8 +265,8 @@ namespace PanelGroup {
      *   3. poll() on all InputBase objects.
      *   4. CANProtocol::drain() — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
      *   5. update() on all OutputBase objects.
-     *   6. CANProtocol::serviceNodeStatus(): HB_n every 500 ms, HEALTH_n every 1 s,
-     *      master-loss watchdog.
+     *   6. CANProtocol::serviceNodeStatus(): HB_n every 500 ms, HEALTH_n every 1 s (board kind
+     *      PANEL_GROUP, #344), master-loss watchdog.
      */
     void loop();
 

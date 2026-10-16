@@ -69,10 +69,11 @@ The CAN master, and the only tier that runs the DCS-BIOS library. It receives th
 stream from SimGateway over UART, fires the DCS-BIOS export listener, and broadcasts every
 DCS output onto the CAN bus as `CTRL_BCAST` frames. In the other direction it collects input
 events (`EVT_n`) from the nodes and routes each one: DCS-BIOS inputs go out as ASCII commands
-over UART; HID inputs are wrapped in HID frames for SimGateway. It also tracks which PanelGroup
-nodes are alive (from their heartbeats) and — behind a build flag — reports that roster + health
-to the host over DCS-BIOS itself (`_NODE_STATUS` messages; request address `0x86FE`), so the client
-can show connected panels without any SimGateway change
+over UART; HID inputs are wrapped in HID frames for SimGateway. It also tracks which nodes are
+alive (from their heartbeats) and — behind a build flag — reports that roster to the host over
+DCS-BIOS itself (`_NODE_STATUS` messages; request address `0x86FE`): each node's health and board
+kind, plus a row for the bridge itself. The client can show connected boards without any
+SimGateway change
 ([#86](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86)).
 
 **What it does *not* do:**
