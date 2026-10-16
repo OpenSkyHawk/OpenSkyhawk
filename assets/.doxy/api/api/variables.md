@@ -53,6 +53,7 @@
 
 * **NodeFaultCode** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NodeHealthFlag** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NodeKind** ([**NodeStatus.h**](NodeStatus_8h.md))
 
 
 ## p
@@ -83,16 +84,21 @@
 ## _
 
 * **\_batches** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_dupSeen** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_everSawMaster** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_filterCount** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_filterIds** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_filterPassAll** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_lastDupMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_lastHbMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_lastHealth** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_lastHealthMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_lastMasterMs** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_loopback** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_masterHbPending** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_masterLost** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_overheat** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **\_ownHbLoopPending** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxCb** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxHead** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **\_rxRing** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))

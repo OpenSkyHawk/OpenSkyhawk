@@ -4721,7 +4721,7 @@
 <span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">PduNode</span><span class="o">::</span><span class="n">loop</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
  with <code>-DNODE_ID=N</code> in platformio.ini. What runs:
-* <strong>Node status</strong> — HB_n / HEALTH_n / master-loss watchdog via <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a>. Rail and thermal faults reach HEALTH_n.faultId through the FaultSource registry.
+* <strong>Node status</strong> — HB_n / HEALTH_n (board kind PDU, #344) / master-loss watchdog via <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a>. Rail and thermal faults reach HEALTH_n.faultId through the FaultSource registry.
 * <strong>Sampling</strong> — the four rail channels every PDU_SAMPLE_US (1 kHz target); the NTC and Vrefint every 100 ms. Faults are held clear for PDU_BOOT_BLANK_MS after boot.
 * <strong>Telemetry</strong> — one TELEM_n frame per second, rotating PDU_RAIL_12V → PDU_RAIL_5V → PDU_STATUS; a page whose flags change goes out at once (≤ 1 per 100 ms per page); SYNC_REQ sends all three pages immediately.
 * <strong>Calibration</strong> — DiagSerial (115200) commands, one per line: <code>CAL SHOW</code> · <code>CAL VDDA &lt;mV&gt;</code> (DMM reading of the 3V3 rail) · <code>CAL ZERO</code> (no load connected) · <code>CAL CLEAR</code> · <code>RAW</code> (live readings + scan rate). Stored per board in the reserved flash page (PduCalStore).</p>

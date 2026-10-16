@@ -387,7 +387,8 @@ Sent every 500 ms by every node through serviceNodeStatus() (#340). [**PanelBrid
 
 Sent every 1000 ms by every STM32 node. This is the shared node-health wire contract; separate features populate their own fields, all within the fixed 8 bytes:
 * Temperature (#213): dieTempC, flags bit0 — read from the MCU's built-in internal temperature sensor (ADC ch16); no external parts, no PCB change.
-* Degraded state (#163): flags bit1 + faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode ([**NodeStatus.h**](NodeStatus_8h.md)). aggregateFaults() picks the primary faultId, makeNodeHealthPayload derives DEGRADED. faultMask stays 0 (reserved, see below). [**PanelBridge**](namespacePanelBridge.md) caches HEALTH\_1–HEALTH\_63 per node and forwards them in \_NODE\_STATUS.
+* Degraded state (#163): flags bit1 + faultId — a node that is alive but has a faulted FaultSource reporting a NodeFaultCode ([**NodeStatus.h**](NodeStatus_8h.md)). aggregateFaults() picks the primary faultId, makeNodeHealthPayload derives DEGRADED. faultMask stays 0 (reserved, see below).
+* Board kind (#344): nodeKind — a NodeKind ([**NodeStatus.h**](NodeStatus_8h.md)) set by the node's firmware role, never derived from NODE\_ID. Pre-#344 firmware sends 0 here = NodeKind::UNKNOWN. [**PanelBridge**](namespacePanelBridge.md) caches HEALTH\_1–HEALTH\_63 per node and forwards them in \_NODE\_STATUS, together with its own HEALTH\_0 as the node-0 row.
 
 
 

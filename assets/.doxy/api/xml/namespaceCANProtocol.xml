@@ -17,7 +17,23 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="409" column="31" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="409" bodyend="-1"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="439" column="31" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="439" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceCANProtocol_1a50c4e300da85542836ac0c6c4ebf8a0f" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t CANProtocol::DUP_NODE_TIMEOUT_MS</definition>
+        <argsstring></argsstring>
+        <name>DUP_NODE_TIMEOUT_MS</name>
+        <qualifiedname>CANProtocol::DUP_NODE_TIMEOUT_MS</qualifiedname>
+        <initializer>= 3000</initializer>
+        <briefdescription>
+<para>Duplicate NODE_ID clear time (#344): DUPLICATE_NODE_ID drops this long after the last foreign frame on our own <computeroutput>HB_NODE_ID</computeroutput> — 6× the 500 ms HB cadence, matching <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>&apos;s own node timeout. A live duplicate re-raises within one HB period. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.h" line="444" column="31" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.h" bodystart="444" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -35,7 +51,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="248" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="248" bodyend="248" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="202" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="259" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="259" bodyend="259" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="207" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a4a1066c652bf5a9d6dafb6838f1d900d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -65,7 +81,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="250" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="250" bodyend="254" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="213" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="261" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="261" bodyend="265" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="218" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -77,12 +93,12 @@
 <para>Start the CAN peripheral and apply registered filters. </para>
         </briefdescription>
         <detaileddescription>
-<para>Must be called after <ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB_0 on every node except <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (NODE_ID 0), for <ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">serviceNodeStatus()</ref>&apos;s master-loss watchdog.</para>
-<para>Resets the <ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">serviceNodeStatus()</ref> timers, which arm on its first call. Fires the onStatusChange callback with NORMAL on success. </para>
+<para>Must be called after <ref refid="namespaceSTM32Board_1a3785a13cc5ed58de231b71fd5e143f00" kindref="member">STM32Board::begin()</ref> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB_0 on every node except <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (NODE_ID 0), for <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref>&apos;s master-loss watchdog, and the node&apos;s own <computeroutput>HB_NODE_ID</computeroutput>, for its duplicate NODE_ID check (#344).</para>
+<para>Resets the <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref> timers, which arm on its first call. Fires the onStatusChange callback with NORMAL on success. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="256" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="256" bodyend="267" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="228" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="267" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="267" bodyend="278" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="234" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1acc6510e0de85e6bf717989ef8c04cf77" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -94,14 +110,14 @@
 <para>Start in silent loopback mode — for bench testing only. </para>
         </briefdescription>
         <detaileddescription>
-<para>Identical to <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">start()</ref> but uses CAN_MODE_SILENT_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus.</para>
+<para>Identical to <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">start()</ref> but uses CAN_MODE_SILENT_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus. The duplicate NODE_ID check discounts the node&apos;s own looped-back heartbeats, so only an extra <computeroutput>HB_NODE_ID</computeroutput> a test sends itself reads as a duplicate.</para>
 <para><simplesect kind="note"><para>Never call this in production firmware. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="268" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="268" bodyend="268" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="238" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="279" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="279" bodyend="279" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="246" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -116,7 +132,8 @@
 <para>Drains all frames received since the last call:<itemizedlist>
 <listitem><para>SYNC_REQ: fires <ref refid="namespaceCANProtocol_1a8ea19c74f3b784a3844f0e5a1b8ed699" kindref="member">onSyncReq()</ref>, not forwarded to <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
 </listitem><listitem><para>TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.</para>
-</listitem><listitem><para>HB_0 on a non-bridge node: stamped for <ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">serviceNodeStatus()</ref>&apos;s watchdog, then <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
+</listitem><listitem><para>HB_0 on a non-bridge node: stamped for <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref>&apos;s watchdog, then <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
+</listitem><listitem><para>The node&apos;s own <computeroutput>HB_NODE_ID</computeroutput>: stamped for <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref>&apos;s duplicate NODE_ID check (#344), then <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
 </listitem><listitem><para>All other frames: fires <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>.</para>
 </listitem></itemizedlist>
 </para>
@@ -124,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="270" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="270" bodyend="315" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="252" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="281" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="281" bodyend="335" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="262" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a2fc92ed4733eeb74630589631e2caf84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -178,7 +195,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="317" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="317" bodyend="363" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="268" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="337" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="337" bodyend="383" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="278" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1af4ff9a2b592e08b02306c70bd59e83a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -221,7 +238,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="365" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="365" bodyend="384" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="286" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="385" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="385" bodyend="404" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="296" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a1c8a1d8a898a80e32c16d4a184d0835b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -251,7 +268,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="386" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="386" bodyend="398" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="297" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="406" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="406" bodyend="418" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="307" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a438f275b91eb5d34ae85eeaa2a3505ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -281,7 +298,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="400" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="400" bodyend="403" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="309" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="420" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="420" bodyend="423" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="319" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a8ea19c74f3b784a3844f0e5a1b8ed699" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -311,7 +328,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="405" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="405" bodyend="405" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="319" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="425" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="425" bodyend="425" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="329" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -341,7 +358,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="406" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="406" bodyend="406" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="329" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="426" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="426" bodyend="426" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="339" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1aa387fe005cbba866e64171146d49018a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint8_t</type>
@@ -356,7 +373,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="408" column="9" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="408" bodyend="408" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="334" declcolumn="13"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="428" column="9" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="428" bodyend="428" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="344" declcolumn="13"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint8_t</type>
@@ -371,7 +388,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="409" column="9" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="409" bodyend="409" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="337" declcolumn="13"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="429" column="9" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="429" bodyend="429" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="347" declcolumn="13"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a1c61d1e29b732170869ac92225f580ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -386,7 +403,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="410" column="9" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="410" bodyend="410" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="340" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="430" column="9" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="430" bodyend="430" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="350" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1af5d7ba8e24001ec0c58625e0b7094161" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>HeartbeatPayload</type>
@@ -430,17 +447,21 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="412" column="18" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="412" bodyend="421" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="351" declcolumn="22"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="432" column="18" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="432" bodyend="441" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="361" declcolumn="22"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceCANProtocol_1a1b3df3a100c42b658b0145c597019556" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceCANProtocol_1a4b64b667334501b64fec898158ec53f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>NodeHealthPayload</type>
         <definition>NodeHealthPayload CANProtocol::makeNodeHealthPayload</definition>
-        <argsstring>(uint8_t nodeId, int8_t dieTempC, NodeFaultCode fault=NodeFaultCode::NONE)</argsstring>
+        <argsstring>(uint8_t nodeId, NodeKind kind, int8_t dieTempC, NodeFaultCode fault=NodeFaultCode::NONE)</argsstring>
         <name>makeNodeHealthPayload</name>
         <qualifiedname>CANProtocol::makeNodeHealthPayload</qualifiedname>
         <param>
           <type>uint8_t</type>
           <declname>nodeId</declname>
+        </param>
+        <param>
+          <type><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" kindref="member">NodeKind</ref></type>
+          <declname>kind</declname>
         </param>
         <param>
           <type>int8_t</type>
@@ -455,13 +476,21 @@
 <para>Build the 8-byte node-health payload for the current node. </para>
         </briefdescription>
         <detaileddescription>
-<para>The CAN/DCS packing boundary: takes the internal die temperature (via <ref refid="namespaceSTM32Board_1a7d2ec3789c2b1dd22bd0bec6c1064b89" kindref="member">STM32Board::readDieTempC()</ref>) and the node&apos;s aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when <computeroutput>fault</computeroutput> is not NONE (the enum→byte cast happens here). faultMask + reserved bytes stay 0.</para>
+<para>The CAN/DCS packing boundary: takes the internal die temperature (via <ref refid="namespaceSTM32Board_1a7d2ec3789c2b1dd22bd0bec6c1064b89" kindref="member">STM32Board::readDieTempC()</ref>) and the node&apos;s aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when <computeroutput>fault</computeroutput> is not NONE (the enum→byte cast happens here), and nodeKind from <computeroutput>kind</computeroutput>. faultMask + reserved bytes stay 0.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>nodeId</parametername>
 </parameternamelist>
 <parameterdescription>
 <para>Node ID (1-63 <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>; 0 <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>kind</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The node&apos;s board kind (#344) — from its firmware role, never from nodeId. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -487,7 +516,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="423" column="19" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="423" bodyend="441" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="367" declcolumn="23"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="443" column="19" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="443" bodyend="463" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="379" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint32_t</type>
@@ -502,14 +531,34 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="443" column="10" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="443" bodyend="443" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="371" declcolumn="14"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="465" column="10" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="465" bodyend="465" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="383" declcolumn="14"/>
       </memberdef>
-      <memberdef kind="function" id="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespaceCANProtocol_1a598c3f06d60603c4ed497b1133655e49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const NodeHealthPayload &amp;</type>
+        <definition>const NodeHealthPayload &amp; CANProtocol::lastNodeHealth</definition>
+        <argsstring>()</argsstring>
+        <name>lastNodeHealth</name>
+        <qualifiedname>CANProtocol::lastNodeHealth</qualifiedname>
+        <briefdescription>
+<para>The HEALTH_n payload <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref> last built for this node (#344). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> reports it as its own node-0 <computeroutput>_NODE_STATUS</computeroutput> row. Before the first HEALTH_n (or with <computeroutput>-DNODE_HEALTH_TELEM=0</computeroutput>) it reads not-yet-seen: dieTempC INT8_MIN, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH_n from. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="467" column="25" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="467" bodyend="467" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="435" declcolumn="29"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void CANProtocol::serviceNodeStatus</definition>
-        <argsstring>(uint16_t rxCount=0)</argsstring>
+        <argsstring>(NodeKind kind, uint16_t rxCount=0)</argsstring>
         <name>serviceNodeStatus</name>
         <qualifiedname>CANProtocol::serviceNodeStatus</qualifiedname>
+        <param>
+          <type><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" kindref="member">NodeKind</ref></type>
+          <declname>kind</declname>
+        </param>
         <param>
           <type>uint16_t</type>
           <declname>rxCount</declname>
@@ -521,7 +570,8 @@
         <detaileddescription>
 <para>Every node on the bus owes the same status traffic, whatever else it does (#340):<itemizedlist>
 <listitem><para><computeroutput>HB_NODE_ID</computeroutput> every 500 ms (makeHeartbeatPayload), carrying <computeroutput>rxCount</computeroutput>.</para>
-</listitem><listitem><para><computeroutput>HEALTH_NODE_ID</computeroutput> every 1000 ms (makeNodeHealthPayload) with the internal die temp and the aggregated node fault, plus the DiagSerial fault edge log (tag <computeroutput>BRIDGE</computeroutput> on NODE_ID 0, <computeroutput>NODE</computeroutput> otherwise). Compiled out with <computeroutput>-DNODE_HEALTH_TELEM=0</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>HEALTH_NODE_ID</computeroutput> every 1000 ms (makeNodeHealthPayload) with <computeroutput>kind</computeroutput>, the internal die temp and the node fault, plus the DiagSerial fault edge log (tag <computeroutput>BRIDGE</computeroutput> on NODE_ID 0, <computeroutput>NODE</computeroutput> otherwise). Compiled out with <computeroutput>-DNODE_HEALTH_TELEM=0</computeroutput>.</para>
+</listitem><listitem><para>Duplicate NODE_ID check (#344), on every node: a node never receives its own frames, so a frame on its own <computeroutput>HB_NODE_ID</computeroutput> (<ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">start()</ref> adds it to the filter) means another board has the same NODE_ID. The node fault is then <computeroutput><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a8ac276c7ffff11a1c7f7dcd869edea91" kindref="member">NodeFaultCode::DUPLICATE_NODE_ID</ref></computeroutput>, ahead of every FaultSource (the NODE_ID is wrong, so nothing else this ID reports can be trusted); it clears DUP_NODE_TIMEOUT_MS after the last foreign frame. aggregateFaults() supplies the fault otherwise.</para>
 </listitem><listitem><para>Master-loss watchdog, on every node except <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (NODE_ID 0): once a master heartbeat (<computeroutput>HB_0</computeroutput>) has been seen, master loss is set after MASTER_TIMEOUT_MS of silence and cleared by the next <computeroutput>HB_0</computeroutput>.</para>
 </listitem><listitem><para>WARNING on a non-bridge node = master loss OR overheat (overheat only when a build defines <computeroutput>NODE_OVERHEAT_C</computeroutput>). The service tracks the two causes separately and writes the shared latch only when their OR changes, so a returning master never clears a live overheat, and overheat clears once the die cools. On <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> an overheat is raise-only, because its latch also carries <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>&apos;s dead-node WARNING.</para>
 </listitem></itemizedlist>
@@ -529,6 +579,14 @@
 <para>The first call arms the HB/HEALTH timers — the first loop() after setup(), i.e. boot complete — so the first HB goes out ~500 ms and the first HEALTH ~1000 ms after it.</para>
 <para><computeroutput>HB_0</computeroutput> arrival is recorded by <ref refid="namespaceCANProtocol_1a3215742dd9da68b125f121c95425e2e4" kindref="member">drain()</ref>, which still passes the frame to <ref refid="namespaceCANProtocol_1ab9d0d6bb169c659d369e630d1630c0e1" kindref="member">onReceive()</ref>. <ref refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kindref="member">start()</ref> adds <computeroutput>HB_0</computeroutput> to the hardware filter on non-bridge nodes, so callers never register it by hand.</para>
 <para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>kind</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>This node&apos;s board kind (#344), sent in every HEALTH_n. Each node library passes its own (<ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref> → PANEL_GROUP, <ref refid="namespacePduNode" kindref="compound">PduNode</ref> → PDU, <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> → BRIDGE), so a sketch never sets it. Required: a role can&apos;t forget it. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
 <parameternamelist>
 <parametername>rxCount</parametername>
 </parameternamelist>
@@ -543,13 +601,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="445" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="445" bodyend="498" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="405" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="469" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="469" bodyend="538" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="426" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="246" column="1"/>
+    <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="257" column="1"/>
   </compounddef>
 </doxygen>

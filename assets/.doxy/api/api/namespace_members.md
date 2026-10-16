@@ -60,6 +60,7 @@
 
 ## d
 
+* **DUP\_NODE\_TIMEOUT\_MS** ([**CANProtocol**](namespaceCANProtocol.md))
 * **drain** ([**CANProtocol**](namespaceCANProtocol.md))
 * **DrumFont** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **DrumScroll** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -111,6 +112,7 @@
 
 ## l
 
+* **lastNodeHealth** ([**CANProtocol**](namespaceCANProtocol.md))
 * **LeadingZero** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**PduNode**](namespacePduNode.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))

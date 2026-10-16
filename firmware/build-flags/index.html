@@ -5119,7 +5119,7 @@ actually does.</p>
 <td><code>NODE_ID</code></td>
 <td>none — omitting it fails to compile</td>
 <td>every STM32 env that links our libraries; <code>WiringCheck</code> omits it deliberately</td>
-<td><code>CANProtocol.cpp:217</code>, <code>PanelGroup.cpp:300</code>, <code>STM32Board.h:29</code></td>
+<td><code>CANProtocol.cpp:225</code>, <code>PanelGroup.cpp:300</code>, <code>STM32Board.h:29</code></td>
 </tr>
 <tr>
 <td><code>PANELBRIDGE_NODE_STATUS</code></td>
@@ -5131,13 +5131,13 @@ actually does.</p>
 <td><code>NODE_HEALTH_TELEM</code></td>
 <td><strong>on</strong></td>
 <td>never set</td>
-<td><code>CANProtocol.cpp:464</code> (<code>serviceNodeStatus</code>, every node)</td>
+<td><code>CANProtocol.cpp:495</code> (<code>serviceNodeStatus</code>, every node)</td>
 </tr>
 <tr>
 <td><code>NODE_OVERHEAT_C</code></td>
 <td><strong>unset — by design</strong></td>
 <td>bench envs only</td>
-<td><code>CANProtocol.cpp:428</code>, <code>CANProtocol.cpp:472</code></td>
+<td><code>CANProtocol.cpp:449</code>, <code>CANProtocol.cpp:512</code></td>
 </tr>
 <tr>
 <td><code>FORCE_CLOCK_FALLBACK</code></td>
@@ -5197,8 +5197,9 @@ actually does.</p>
 </table>
 <p><strong>What they do, briefly.</strong> <code>NODE_ID</code> is the board's CAN address — see
 <a href="../node-id/">NODE_ID &amp; CAN Addressing</a>. <code>PANELBRIDGE_NODE_STATUS</code> makes PanelBridge report which
-PanelGroup nodes it can see, up to the host over DCS-BIOS. <code>NODE_HEALTH_TELEM</code> is the periodic
-health frame (die temperature, fault bitmap) at half the heartbeat rate.
+nodes it can see — with their health and board kind, and itself — up to the host over DCS-BIOS.
+<code>NODE_HEALTH_TELEM</code> is the periodic health frame (die temperature, fault, board kind) at half the
+heartbeat rate.
 <code>FORCE_CLOCK_FALLBACK</code> exercises the dead-crystal fault path without a dead crystal; the
 <code>test_adc_clock_fallback</code> env uses it to prove <code>SystemClock_Config</code> sets the ADC prescaler on its
 fault path as well as its verified-72 MHz path (#263).

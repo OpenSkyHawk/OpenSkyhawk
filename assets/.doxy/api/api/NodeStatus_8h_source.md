@@ -15,8 +15,8 @@
 // ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────
 // PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump
 // NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.
-// Full 26-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
-#define NODE_STATUS_PROTO_VERSION 2
+// Full 28-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
+#define NODE_STATUS_PROTO_VERSION 3
 #define NODE_STATUS_REQ_ADDR      0x86FE     // host→device roster-request export address
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
@@ -45,7 +45,16 @@ enum class NodeFaultCode : uint8_t {
     FUSE_OPEN      = 0x06,  // rail fuse blown — rail read ~0 V while the node is powered (PDU)
     OVER_TEMPERATURE = 0x07,  // board temperature at the critical threshold (PDU NTC)
     SENSOR_FAULT   = 0x08,  // a measurement channel reads implausibly (railed / open / shorted)
-    // 0x09–0xFF reserved for future fault sources
+    DUPLICATE_NODE_ID = 0x09,  // another board transmits on this node's HB_n — two boards share a NODE_ID (#344)
+    // 0x0A–0xFF reserved for future fault sources
+};
+
+enum class NodeKind : uint8_t {
+    UNKNOWN     = 0x00,  // pre-#344 firmware, or no HEALTH_n seen yet
+    PANEL_GROUP = 0x01,  // PanelGroup node (PanelGroup library)
+    PDU         = 0x02,  // power distribution / monitoring node (PowerMonitor library)
+    BRIDGE      = 0x03,  // the SimGateway + PanelBridge board — reported by its PanelBridge MCU (node 0)
+    // 0x04–0xFF reserved for future node types
 };
 
 enum class TelemPage : uint8_t {

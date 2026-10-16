@@ -55,6 +55,7 @@ struct NodeState {
     uint8_t  healthFlags = 0;        // overheat (#213) / degraded (#163) bits
     uint8_t  faultMask   = 0;        // fault source/domain bitmap — reserved #163
     uint8_t  faultId     = 0;        // NodeFaultCode (NodeStatus.h) — #163
+    uint8_t  nodeKind    = 0;        // NodeKind (NodeStatus.h), 0 = unseen/unknown — #344
 #endif
 };
 
@@ -69,28 +70,45 @@ static uint8_t        _deadCount          = 0;    // tracked nodes currently tim
 // command messages on a reserved control name. Owned entirely by PanelBridge;
 // SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.
 
-// Emit one node's status (proto v2, 26 hex chars):
-//   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId>
-// The last four come from the node's HEALTH_n frame (#221 contract). dieTempC 80 = not-yet-seen;
-// hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163); faultMask stays 0
-// (reserved for future fault-domain bits).
-static void emitNode(uint8_t nodeId, bool present) {
-    const NodeState& ns = _nodes[nodeId - 1];
-    const HeartbeatPayload& hb = ns.last;
-    char hex[27];
-    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X",
+// Emit one status row (proto v3, 28 hex chars):
+//   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId nodeKind>
+// The last five come from the node's HEALTH_n frame (#221 contract). dieTempC 80 + nodeKind 00 =
+// not-yet-seen; hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163);
+// faultMask stays 0 (reserved for future fault-domain bits); nodeKind is the board kind (#344).
+static void emitRow(uint8_t nodeId, bool present, const HeartbeatPayload& hb,
+                    int8_t dieTempC, uint8_t hFlags, uint8_t faultMask, uint8_t faultId,
+                    uint8_t nodeKind) {
+    char hex[29];
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X%02X",
              (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
              (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr,
-             (unsigned)(uint8_t)ns.dieTempC,
-             (unsigned)ns.healthFlags, (unsigned)ns.faultMask, (unsigned)ns.faultId);
+             (unsigned)(uint8_t)dieTempC, (unsigned)hFlags, (unsigned)faultMask,
+             (unsigned)faultId, (unsigned)nodeKind);
     DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
 }
 
-// Emit the full roster (request response / boot seed): one _NODE_STATUS per alive
-// node, then _NODE_STATUS_END <count> so the host knows the burst is complete and
-// can reconcile (prune nodes absent from it). count=0 = no panels connected.
+// One CAN node's row (nodeId 1–63), from its cached HB_n + HEALTH_n.
+static void emitNode(uint8_t nodeId, bool present) {
+    const NodeState& ns = _nodes[nodeId - 1];
+    emitRow(nodeId, present, ns.last, ns.dieTempC, ns.healthFlags, ns.faultMask, ns.faultId,
+            ns.nodeKind);
+}
+
+// The bridge's own row, node 0 (#344): its heartbeat state now, and the HEALTH_0 it last sent
+// (kind BRIDGE once the first HEALTH_0 has gone out). Always present — it is the one reporting.
+static void emitSelf() {
+    const HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(0, 0);
+    const NodeHealthPayload& h = CANProtocol::lastNodeHealth();
+    emitRow(0, true, hb, h.dieTempC, h.flags, h.faultMask, h.faultId, h.nodeKind);
+}
+
+// Emit the full roster (request response / boot seed): the bridge's own node-0 row, one
+// _NODE_STATUS per alive node, then _NODE_STATUS_END <count> so the host knows the burst is
+// complete and can reconcile (prune nodes absent from it). count includes the node-0 row, so
+// count=1 = bridge only, no other nodes connected.
 static void emitAllNodes() {
-    uint8_t count = 0;
+    emitSelf();
+    uint8_t count = 1;
     for (uint8_t i = 0; i < MAX_NODE_ID; i++)
         if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
     char arg[4];
@@ -333,6 +351,12 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
             ns.healthFlags = h.flags;
             ns.faultMask   = h.faultMask;
             ns.faultId     = h.faultId;
+            // Board kind (#344): push a live delta when it changes — the alive delta went out on
+            // the node's first HB, before any HEALTH_n, with kind 00.
+            if (h.nodeKind != ns.nodeKind) {
+                ns.nodeKind = h.nodeKind;
+                if (ns.alive) emitNode(nodeId, true);
+            }
         }
 #endif
         return;
@@ -511,7 +535,7 @@ void setup() {
     CANProtocol::start();
     broadcastSyncReq();
 #ifdef PANELBRIDGE_NODE_STATUS
-    emitAllNodes();   // seed the host with the current roster (empty at cold boot) (#86)
+    emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
 #endif
 }
 
@@ -531,7 +555,7 @@ void loop() {
     // detect master loss even when the sim is idle/paused. The bridge is a node too: its own
     // FaultSources (e.g. a future host-link watchdog) roll up into HEALTH_0. No master watchdog
     // runs here (NODE_ID 0 is the master); the bridge keeps no RX count for its heartbeat.
-    CANProtocol::serviceNodeStatus();
+    CANProtocol::serviceNodeStatus(NodeKind::BRIDGE);
 
     auto& diag = STM32Board::diagSerial();
     while (diag.available()) {
@@ -596,13 +620,17 @@ void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
 }
 
 void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
-                    uint8_t hFlags, uint8_t faultMask, uint8_t faultId) {
-    // Mirrors the HEALTH_n branch of onCanRx: cache only, no liveness change.
+                    uint8_t hFlags, uint8_t faultMask, uint8_t faultId, uint8_t nodeKind) {
+    // Mirrors the HEALTH_n branch of onCanRx: no liveness change; a kind change pushes a delta.
     NodeState& ns = _nodes[nodeId - 1];
     ns.dieTempC    = dieTempC;
     ns.healthFlags = hFlags;
     ns.faultMask   = faultMask;
     ns.faultId     = faultId;
+    if (nodeKind != ns.nodeKind) {
+        ns.nodeKind = nodeKind;
+        if (ns.alive) emitNode(nodeId, true);
+    }
 }
 
 void testRequestNodeStatus() { emitAllNodes(); }

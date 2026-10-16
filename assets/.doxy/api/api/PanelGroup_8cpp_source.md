@@ -382,7 +382,7 @@ void loop() {
 
     // 6. Node status: HB_n every 500 ms, HEALTH_n every 1 s, master-loss watchdog (#340).
     // _rxCount = accepted CTRL_BCAST frames, carried in the heartbeat.
-    CANProtocol::serviceNodeStatus(_rxCount);
+    CANProtocol::serviceNodeStatus(NodeKind::PANEL_GROUP, _rxCount);
 }
 
 // ── MCP cache bridge ──────────────────────────────────────────────────────────

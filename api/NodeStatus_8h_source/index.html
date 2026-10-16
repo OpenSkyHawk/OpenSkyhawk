@@ -4666,8 +4666,8 @@
 <span class="c1">// ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────</span>
 <span class="c1">// PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump</span>
 <span class="c1">// NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.</span>
-<span class="c1">// Full 26-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.</span>
-<span class="cp">#define NODE_STATUS_PROTO_VERSION 2</span>
+<span class="c1">// Full 28-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.</span>
+<span class="cp">#define NODE_STATUS_PROTO_VERSION 3</span>
 <span class="cp">#define NODE_STATUS_REQ_ADDR      0x86FE     </span><span class="c1">// host→device roster-request export address</span>
 <span class="cp">#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"</span>
 <span class="cp">#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"</span>
@@ -4696,7 +4696,16 @@
 <span class="w">    </span><span class="n">FUSE_OPEN</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w">  </span><span class="c1">// rail fuse blown — rail read ~0 V while the node is powered (PDU)</span>
 <span class="w">    </span><span class="n">OVER_TEMPERATURE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w">  </span><span class="c1">// board temperature at the critical threshold (PDU NTC)</span>
 <span class="w">    </span><span class="n">SENSOR_FAULT</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w">  </span><span class="c1">// a measurement channel reads implausibly (railed / open / shorted)</span>
-<span class="w">    </span><span class="c1">// 0x09–0xFF reserved for future fault sources</span>
+<span class="w">    </span><span class="n">DUPLICATE_NODE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w">  </span><span class="c1">// another board transmits on this node's HB_n — two boards share a NODE_ID (#344)</span>
+<span class="w">    </span><span class="c1">// 0x0A–0xFF reserved for future fault sources</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeKind</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">UNKNOWN</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w">  </span><span class="c1">// pre-#344 firmware, or no HEALTH_n seen yet</span>
+<span class="w">    </span><span class="n">PANEL_GROUP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w">  </span><span class="c1">// PanelGroup node (PanelGroup library)</span>
+<span class="w">    </span><span class="n">PDU</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w">  </span><span class="c1">// power distribution / monitoring node (PowerMonitor library)</span>
+<span class="w">    </span><span class="n">BRIDGE</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w">  </span><span class="c1">// the SimGateway + PanelBridge board — reported by its PanelBridge MCU (node 0)</span>
+<span class="w">    </span><span class="c1">// 0x04–0xFF reserved for future node types</span>
 <span class="p">};</span>
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TelemPage</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>

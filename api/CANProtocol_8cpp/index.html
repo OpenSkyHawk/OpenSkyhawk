@@ -4790,6 +4790,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-_dupseen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _dupSeen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-_eversawmaster" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4834,10 +4845,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-_lastdupms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _lastDupMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-_lasthbms" class="md-nav__link">
     <span class="md-ellipsis">
       
         variable _lastHbMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_lasthealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _lastHealth
       
     </span>
   </a>
@@ -4860,6 +4893,17 @@
     <span class="md-ellipsis">
       
         variable _lastMasterMs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_loopback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _loopback
       
     </span>
   </a>
@@ -4893,6 +4937,17 @@
     <span class="md-ellipsis">
       
         variable _overheat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-_ownhblooppending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable _ownHbLoopPending
       
     </span>
   </a>
@@ -5308,6 +5363,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_dupseen"><strong>_dupSeen</strong></a>   = <code>false</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#variable-_eversawmaster"><strong>_everSawMaster</strong></a>   = <code>false</code><br></td>
 </tr>
 <tr>
@@ -5324,7 +5383,15 @@
 </tr>
 <tr>
 <td style="text-align: right;">uint32_t</td>
+<td style="text-align: left;"><a href="#variable-_lastdupms"><strong>_lastDupMs</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint32_t</td>
 <td style="text-align: left;"><a href="#variable-_lasthbms"><strong>_lastHbMs</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">NodeHealthPayload</td>
+<td style="text-align: left;"><a href="#variable-_lasthealth"><strong>_lastHealth</strong></a>   = <code>{ 0, INT8\_MIN, 0, 0, 0, 0, { 0, 0 } }</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">uint32_t</td>
@@ -5333,6 +5400,10 @@
 <tr>
 <td style="text-align: right;">uint32_t</td>
 <td style="text-align: left;"><a href="#variable-_lastmasterms"><strong>_lastMasterMs</strong></a>   = <code>0</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">bool</td>
+<td style="text-align: left;"><a href="#variable-_loopback"><strong>_loopback</strong></a>   = <code>false</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">bool</td>
@@ -5345,6 +5416,10 @@
 <tr>
 <td style="text-align: right;">bool</td>
 <td style="text-align: left;"><a href="#variable-_overheat"><strong>_overheat</strong></a>   = <code>false</code><br></td>
+</tr>
+<tr>
+<td style="text-align: right;">uint8_t</td>
+<td style="text-align: left;"><a href="#variable-_ownhblooppending"><strong>_ownHbLoopPending</strong></a>   = <code>0</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;"><a href="../CANProtocol_8h/#typedef-canrxcallback"><strong>CanRxCallback</strong></a></td>
@@ -5502,6 +5577,11 @@
 </code></pre></div>
 <hr>
 
+<h3 id="variable-_dupseen">variable _dupSeen</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">_dupSeen</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
 <h3 id="variable-_eversawmaster">variable _everSawMaster</h3>
 <div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">_everSawMaster</span><span class="p">;</span>
 </code></pre></div>
@@ -5522,8 +5602,18 @@
 </code></pre></div>
 <hr>
 
+<h3 id="variable-_lastdupms">variable _lastDupMs</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastDupMs</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
 <h3 id="variable-_lasthbms">variable _lastHbMs</h3>
 <div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastHbMs</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-_lasthealth">variable _lastHealth</h3>
+<div class="highlight"><pre><span></span><code><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="n">_lastHealth</span><span class="p">;</span>
 </code></pre></div>
 <hr>
 
@@ -5534,6 +5624,11 @@
 
 <h3 id="variable-_lastmasterms">variable _lastMasterMs</h3>
 <div class="highlight"><pre><span></span><code><span class="kt">uint32_t</span><span class="w"> </span><span class="n">_lastMasterMs</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-_loopback">variable _loopback</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">_loopback</span><span class="p">;</span>
 </code></pre></div>
 <hr>
 
@@ -5549,6 +5644,11 @@
 
 <h3 id="variable-_overheat">variable _overheat</h3>
 <div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">_overheat</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+
+<h3 id="variable-_ownhblooppending">variable _ownHbLoopPending</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">_ownHbLoopPending</span><span class="p">;</span>
 </code></pre></div>
 <hr>
 

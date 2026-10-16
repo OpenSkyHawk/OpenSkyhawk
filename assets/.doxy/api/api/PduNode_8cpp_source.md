@@ -235,7 +235,7 @@ void setup() {
 void loop() {
     STM32Board::tick();
     CANProtocol::drain();
-    CANProtocol::serviceNodeStatus(0);
+    CANProtocol::serviceNodeStatus(NodeKind::PDU);
 
     const uint32_t us = micros();
     if ((int32_t)(us - gNextScanUs) >= 0) {

@@ -60,16 +60,21 @@
 |  constexpr uint8\_t | [**RX\_RING\_SIZE**](#variable-rx_ring_size)   = `8`<br> |
 |  constexpr uint8\_t | [**TX\_RING\_SIZE**](#variable-tx_ring_size)   = `16`<br> |
 |  [**BatchState**](structBatchState.md) | [**\_batches**](#variable-_batches)  <br> |
+|  bool | [**\_dupSeen**](#variable-_dupseen)   = `false`<br> |
 |  bool | [**\_everSawMaster**](#variable-_eversawmaster)   = `false`<br> |
 |  uint8\_t | [**\_filterCount**](#variable-_filtercount)   = `0`<br> |
 |  uint32\_t | [**\_filterIds**](#variable-_filterids)  <br> |
 |  bool | [**\_filterPassAll**](#variable-_filterpassall)   = `false`<br> |
+|  uint32\_t | [**\_lastDupMs**](#variable-_lastdupms)   = `0`<br> |
 |  uint32\_t | [**\_lastHbMs**](#variable-_lasthbms)   = `0`<br> |
+|  NodeHealthPayload | [**\_lastHealth**](#variable-_lasthealth)   = `{ 0, INT8\_MIN, 0, 0, 0, 0, { 0, 0 } }`<br> |
 |  uint32\_t | [**\_lastHealthMs**](#variable-_lasthealthms)   = `0`<br> |
 |  uint32\_t | [**\_lastMasterMs**](#variable-_lastmasterms)   = `0`<br> |
+|  bool | [**\_loopback**](#variable-_loopback)   = `false`<br> |
 |  bool | [**\_masterHbPending**](#variable-_masterhbpending)   = `false`<br> |
 |  bool | [**\_masterLost**](#variable-_masterlost)   = `false`<br> |
 |  bool | [**\_overheat**](#variable-_overheat)   = `false`<br> |
+|  uint8\_t | [**\_ownHbLoopPending**](#variable-_ownhblooppending)   = `0`<br> |
 |  [**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) | [**\_rxCb**](#variable-_rxcb)   = `nullptr`<br> |
 |  volatile uint8\_t | [**\_rxHead**](#variable-_rxhead)   = `0`<br> |
 |  [**RxQueueEntry**](structRxQueueEntry.md) | [**\_rxRing**](#variable-_rxring)  <br> |
@@ -240,6 +245,19 @@ BatchState _batches[5];
 
 
 
+### variable \_dupSeen 
+
+```C++
+bool _dupSeen;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_everSawMaster 
 
 ```C++
@@ -292,10 +310,36 @@ bool _filterPassAll;
 
 
 
+### variable \_lastDupMs 
+
+```C++
+uint32_t _lastDupMs;
+```
+
+
+
+
+<hr>
+
+
+
 ### variable \_lastHbMs 
 
 ```C++
 uint32_t _lastHbMs;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_lastHealth 
+
+```C++
+NodeHealthPayload _lastHealth;
 ```
 
 
@@ -322,6 +366,19 @@ uint32_t _lastHealthMs;
 
 ```C++
 uint32_t _lastMasterMs;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_loopback 
+
+```C++
+bool _loopback;
 ```
 
 
@@ -361,6 +418,19 @@ bool _masterLost;
 
 ```C++
 bool _overheat;
+```
+
+
+
+
+<hr>
+
+
+
+### variable \_ownHbLoopPending 
+
+```C++
+uint8_t _ownHbLoopPending;
 ```
 
 

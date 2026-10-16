@@ -96,7 +96,7 @@ void setup() { STM32Board::setDebug(true); PduNode::setup(); }
 void loop()  { PduNode::loop(); }
 ```
  with `-DNODE_ID=N` in platformio.ini. What runs:
-* **Node status** — HB\_n / HEALTH\_n / master-loss watchdog via [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus). Rail and thermal faults reach HEALTH\_n.faultId through the FaultSource registry.
+* **Node status** — HB\_n / HEALTH\_n (board kind PDU, #344) / master-loss watchdog via [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus). Rail and thermal faults reach HEALTH\_n.faultId through the FaultSource registry.
 * **Sampling** — the four rail channels every PDU\_SAMPLE\_US (1 kHz target); the NTC and Vrefint every 100 ms. Faults are held clear for PDU\_BOOT\_BLANK\_MS after boot.
 * **Telemetry** — one TELEM\_n frame per second, rotating PDU\_RAIL\_12V → PDU\_RAIL\_5V → PDU\_STATUS; a page whose flags change goes out at once (≤ 1 per 100 ms per page); SYNC\_REQ sends all three pages immediately.
 * **Calibration** — DiagSerial (115200) commands, one per line: `CAL SHOW` · `CAL VDDA <mV>` (DMM reading of the 3V3 rail) · `CAL ZERO` (no load connected) · `CAL CLEAR` · `RAW` (live readings + scan rate). Stored per board in the reserved flash page (PduCalStore).

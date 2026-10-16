@@ -44,6 +44,7 @@ _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhaw
 | ---: | :--- |
 | enum uint8\_t | [**NodeFaultCode**](#enum-nodefaultcode)  <br>_HEALTH\_n_ `faultId` _dictionary (#163) — cross-node fault codes._ |
 | enum uint8\_t | [**NodeHealthFlag**](#enum-nodehealthflag)  <br>_HEALTH\_n_ `flags` _bits — node-level health conditions (maps to NodeHealthPayload.flags)._ |
+| enum uint8\_t | [**NodeKind**](#enum-nodekind)  <br>_HEALTH\_n_ `nodeKind` _(byte 5) — what kind of board this node is (#344)._ |
 | enum uint8\_t | [**PduRailFlag**](#enum-pdurailflag)  <br>_PDU\_RAIL\_\* page byte 1 — per-rail condition bits (all zero = healthy)._  |
 | enum uint8\_t | [**PduStatusFlag**](#enum-pdustatusflag)  <br>_PDU\_STATUS page byte 1 — board condition bits (all zero = healthy, calibrated)._  |
 | enum uint8\_t | [**TelemPage**](#enum-telempage)  <br>_TELEM\_n page ids (#216) — byte 0 of TelemPayload, naming the layout of bytes 1-7._  |
@@ -100,7 +101,7 @@ _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhaw
 | ---: | :--- |
 | define  | [**NODE\_STATUS\_END\_MSG\_NAME**](NodeStatus_8h.md#define-node_status_end_msg_name)  `"\_NODE\_STATUS\_END"`<br> |
 | define  | [**NODE\_STATUS\_MSG\_NAME**](NodeStatus_8h.md#define-node_status_msg_name)  `"\_NODE\_STATUS"`<br> |
-| define  | [**NODE\_STATUS\_PROTO\_VERSION**](NodeStatus_8h.md#define-node_status_proto_version)  `2`<br> |
+| define  | [**NODE\_STATUS\_PROTO\_VERSION**](NodeStatus_8h.md#define-node_status_proto_version)  `3`<br> |
 | define  | [**NODE\_STATUS\_REQ\_ADDR**](NodeStatus_8h.md#define-node_status_req_addr)  `0x86FE`<br> |
 | define  | [**NODE\_TELEM\_MSG\_NAME**](NodeStatus_8h.md#define-node_telem_msg_name)  `"\_NODE\_TELEM"`<br> |
 | define  | [**NODE\_TELEM\_PROTO\_VERSION**](NodeStatus_8h.md#define-node_telem_proto_version)  `1`<br> |
@@ -111,6 +112,7 @@ _Neutral node-status contract for every_ [_**OpenSkyhawk**_](namespaceOpenSkyhaw
 Owns the cross-node **status API** — not just health:
 * the `_NODE_STATUS` DCS-BIOS host-reporting contract (proto version, request address, message names) — **the canonical source the client's `sync-a4ec.ts` parses**;
 * `NodeHealthFlag` (HEALTH\_n flag bits) and `NodeFaultCode` (the compact wire faultId dictionary the client maps to labels);
+* `NodeKind` (HEALTH\_n board-kind byte — what board a NODE\_ID is, announced by its firmware);
 * the `_NODE_TELEM` host contract and the TELEM\_n page vocabulary (`TelemPage`, `PduRailFlag`, `PduStatusFlag`) — #216;
 * `FaultSource` — the interface a fault-producing object implements so a node-level aggregator can roll it up. A `FaultSource` is _one piece_ of node status, not the whole story.
 
@@ -156,7 +158,8 @@ enum NodeFaultCode {
     HOST_LINK_LOST = 0x05,
     FUSE_OPEN = 0x06,
     OVER_TEMPERATURE = 0x07,
-    SENSOR_FAULT = 0x08
+    SENSOR_FAULT = 0x08,
+    DUPLICATE_NODE_ID = 0x09
 };
 ```
 
@@ -183,6 +186,29 @@ enum NodeHealthFlag {
 
 
 
+
+<hr>
+
+
+
+### enum NodeKind 
+
+_HEALTH\_n_ `nodeKind` _(byte 5) — what kind of board this node is (#344)._
+```C++
+enum NodeKind {
+    UNKNOWN = 0x00,
+    PANEL_GROUP = 0x01,
+    PDU = 0x02,
+    BRIDGE = 0x03
+};
+```
+
+
+
+Announced by the board's own firmware role (each node library passes its kind to [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)), never derived from the NODE\_ID — a PDU can take any ID. Append-only. 0x00 is what firmware older than #344 sends (the byte was reserved), so the client reads it as "unknown" and never adopts on it. 
+
+
+        
 
 <hr>
 
@@ -283,7 +309,7 @@ Global and append-only: a page id means the same layout whichever node sends it,
 ### define NODE\_STATUS\_PROTO\_VERSION 
 
 ```C++
-#define NODE_STATUS_PROTO_VERSION `2`
+#define NODE_STATUS_PROTO_VERSION `3`
 ```
 
 

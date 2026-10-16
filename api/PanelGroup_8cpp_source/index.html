@@ -5034,7 +5034,7 @@
 
 <span class="w">    </span><span class="c1">// 6. Node status: HB_n every 500 ms, HEALTH_n every 1 s, master-loss watchdog (#340).</span>
 <span class="w">    </span><span class="c1">// _rxCount = accepted CTRL_BCAST frames, carried in the heartbeat.</span>
-<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">serviceNodeStatus</span><span class="p">(</span><span class="n">_rxCount</span><span class="p">);</span>
+<span class="w">    </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">serviceNodeStatus</span><span class="p">(</span><span class="n">NodeKind</span><span class="o">::</span><span class="n">PANEL_GROUP</span><span class="p">,</span><span class="w"> </span><span class="n">_rxCount</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// ── MCP cache bridge ──────────────────────────────────────────────────────────</span>

@@ -132,7 +132,7 @@
 <codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1aa69b6d1d3413c31bbfa31a304fdeaa1c" kindref="member">setup</ref>()<sp/>{<sp/><ref refid="namespaceSTM32Board_1a3c18d8a23e0bc42e5ff7e7e5f1e11587" kindref="member">STM32Board::setDebug</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);<sp/><ref refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kindref="member">PduNode::setup</ref>();<sp/>}</highlight></codeline>
 <codeline><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePanelBridge_1a25e0848858cec102349b882193e20efe" kindref="member">loop</ref>()<sp/><sp/>{<sp/><ref refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kindref="member">PduNode::loop</ref>();<sp/>}</highlight></codeline>
 </programlisting> with <computeroutput>-DNODE_ID=N</computeroutput> in platformio.ini. What runs:<itemizedlist>
-<listitem><para><bold>Node status</bold> — HB_n / HEALTH_n / master-loss watchdog via <ref refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kindref="member">CANProtocol::serviceNodeStatus()</ref>. Rail and thermal faults reach HEALTH_n.faultId through the FaultSource registry.</para>
+<listitem><para><bold>Node status</bold> — HB_n / HEALTH_n (board kind PDU, #344) / master-loss watchdog via <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">CANProtocol::serviceNodeStatus()</ref>. Rail and thermal faults reach HEALTH_n.faultId through the FaultSource registry.</para>
 </listitem><listitem><para><bold>Sampling</bold> — the four rail channels every PDU_SAMPLE_US (1 kHz target); the NTC and Vrefint every 100 ms. Faults are held clear for PDU_BOOT_BLANK_MS after boot.</para>
 </listitem><listitem><para><bold>Telemetry</bold> — one TELEM_n frame per second, rotating PDU_RAIL_12V → PDU_RAIL_5V → PDU_STATUS; a page whose flags change goes out at once (≤ 1 per 100 ms per page); SYNC_REQ sends all three pages immediately.</para>
 </listitem><listitem><para><bold>Calibration</bold> — DiagSerial (115200) commands, one per line: <computeroutput>CAL SHOW</computeroutput> · <computeroutput>CAL VDDA &lt;mV&gt;</computeroutput> (DMM reading of the 3V3 rail) · <computeroutput>CAL ZERO</computeroutput> (no load connected) · <computeroutput>CAL CLEAR</computeroutput> · <computeroutput>RAW</computeroutput> (live readings + scan rate). Stored per board in the reserved flash page (PduCalStore).</para>
@@ -145,27 +145,27 @@
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="RailMonitor_8h" kindref="compound">RailMonitor.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="BoardThermal_8h" kindref="compound">BoardThermal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduCalStore_8h" kindref="compound">PduCalStore.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePduNode" kindref="compound">PduNode</ref><sp/>{</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kindref="member">setup</ref>();</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kindref="member">loop</ref>();</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"></highlight></codeline>
-<codeline lineno="49"><highlight class="normal">uint16_t<sp/><ref refid="namespacePduNode_1a5e1eabd3e74f9c3ef2e4d04b5ba63738" kindref="member">scanRateHz</ref>();</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">OpenSkyhawk::RailMonitor</ref>&amp;<sp/><ref refid="namespacePduNode_1adc86f791ff0d9a226fd0d96c994fbd41" kindref="member">rail12</ref>();</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">OpenSkyhawk::RailMonitor</ref>&amp;<sp/><ref refid="namespacePduNode_1a6e1df22c6aef3a714e1361ae0a442661" kindref="member">rail5</ref>();</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1BoardThermal" kindref="compound">OpenSkyhawk::BoardThermal</ref>&amp;<sp/><ref refid="namespacePduNode_1aeaec51f1fddc568e77c8c9653ba25e39" kindref="member">thermal</ref>();</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PduNode</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="STM32Board_8h" kindref="compound">STM32Board.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="RailMonitor_8h" kindref="compound">RailMonitor.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="BoardThermal_8h" kindref="compound">BoardThermal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="PduCalStore_8h" kindref="compound">PduCalStore.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacePduNode" kindref="compound">PduNode</ref><sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1acdbc21507ef00a33b9ffde79fc5cc9bd" kindref="member">setup</ref>();</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacePduNode_1a6765fd2baba5c59d747d3a96b57a4cdf" kindref="member">loop</ref>();</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">uint16_t<sp/><ref refid="namespacePduNode_1a5e1eabd3e74f9c3ef2e4d04b5ba63738" kindref="member">scanRateHz</ref>();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">OpenSkyhawk::RailMonitor</ref>&amp;<sp/><ref refid="namespacePduNode_1adc86f791ff0d9a226fd0d96c994fbd41" kindref="member">rail12</ref>();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1RailMonitor" kindref="compound">OpenSkyhawk::RailMonitor</ref>&amp;<sp/><ref refid="namespacePduNode_1a6e1df22c6aef3a714e1361ae0a442661" kindref="member">rail5</ref>();</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1BoardThermal" kindref="compound">OpenSkyhawk::BoardThermal</ref>&amp;<sp/><ref refid="namespacePduNode_1aeaec51f1fddc568e77c8c9653ba25e39" kindref="member">thermal</ref>();</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PduNode</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/PowerMonitor/PduNode.h"/>
   </compounddef>

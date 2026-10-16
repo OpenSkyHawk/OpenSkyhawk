@@ -704,6 +704,7 @@
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" kind="variable"><name>MASTER_TIMEOUT_MS</name></member>
+    <member refid="namespaceCANProtocol_1a50c4e300da85542836ac0c6c4ebf8a0f" kind="variable"><name>DUP_NODE_TIMEOUT_MS</name></member>
     <member refid="namespaceCANProtocol_1a0eb16415ae3e69aa8fc8601744219a87" kind="function"><name>filterAcceptAll</name></member>
     <member refid="namespaceCANProtocol_1a4a1066c652bf5a9d6dafb6838f1d900d" kind="function"><name>filterAcceptId</name></member>
     <member refid="namespaceCANProtocol_1a88802da4205140719f9714cb416f1b2c" kind="function"><name>start</name></member>
@@ -719,9 +720,10 @@
     <member refid="namespaceCANProtocol_1a288990feb3902dbb42cc35558b7c6f19" kind="function"><name>rec</name></member>
     <member refid="namespaceCANProtocol_1a1c61d1e29b732170869ac92225f580ad" kind="function"><name>busOff</name></member>
     <member refid="namespaceCANProtocol_1af5d7ba8e24001ec0c58625e0b7094161" kind="function"><name>makeHeartbeatPayload</name></member>
-    <member refid="namespaceCANProtocol_1a1b3df3a100c42b658b0145c597019556" kind="function"><name>makeNodeHealthPayload</name></member>
+    <member refid="namespaceCANProtocol_1a4b64b667334501b64fec898158ec53f4" kind="function"><name>makeNodeHealthPayload</name></member>
     <member refid="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" kind="function"><name>txDropCount</name></member>
-    <member refid="namespaceCANProtocol_1a147264d93a50ab310421564f09751d73" kind="function"><name>serviceNodeStatus</name></member>
+    <member refid="namespaceCANProtocol_1a598c3f06d60603c4ed497b1133655e49" kind="function"><name>lastNodeHealth</name></member>
+    <member refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kind="function"><name>serviceNodeStatus</name></member>
   </compound>
   <compound refid="namespaceDcsBios" kind="namespace"><name>DcsBios</name>
     <member refid="namespaceDcsBios_1aceb852413f44b4ba8587677ac29c9196" kind="function"><name>tryToSendDcsBiosMessage</name></member>
@@ -1727,6 +1729,7 @@
     <member refid="CANProtocol_8cpp_1ae8c240afe214af73dd1351beece0963f" kind="variable"><name>_filterIds</name></member>
     <member refid="CANProtocol_8cpp_1a5bbc64960a0df91680d4505a61fbf9f2" kind="variable"><name>_filterCount</name></member>
     <member refid="CANProtocol_8cpp_1a77aeda5d9cc96272ba093a0085276014" kind="variable"><name>_filterPassAll</name></member>
+    <member refid="CANProtocol_8cpp_1a9bbe9cedb7120fe1e290a9f1ec9eab75" kind="variable"><name>_loopback</name></member>
     <member refid="CANProtocol_8cpp_1a8ce9da869d86fce132156606c4d16918" kind="variable"><name>HB_PERIOD_MS</name></member>
     <member refid="CANProtocol_8cpp_1ad64b817dc82764a51d9a3cc0815a11f0" kind="variable"><name>HEALTH_PERIOD_MS</name></member>
     <member refid="CANProtocol_8cpp_1a17847f2ce84802f42c9056a0119775b1" kind="variable"><name>_lastHbMs</name></member>
@@ -1738,6 +1741,10 @@
     <member refid="CANProtocol_8cpp_1ab44a9b74458c9a816c486906bd45d464" kind="variable"><name>_masterLost</name></member>
     <member refid="CANProtocol_8cpp_1a4c2f97832c733a91d99942c28516b8e8" kind="variable"><name>_overheat</name></member>
     <member refid="CANProtocol_8cpp_1a1bd482fa65534513bc6553ba5ce68e57" kind="variable"><name>_warnAsserted</name></member>
+    <member refid="CANProtocol_8cpp_1a34fa4bdc869b48db6e62158c9166bf5d" kind="variable"><name>_lastDupMs</name></member>
+    <member refid="CANProtocol_8cpp_1a0323d2a857ad48d552dec924baf0de41" kind="variable"><name>_dupSeen</name></member>
+    <member refid="CANProtocol_8cpp_1a322002fc264607d275c00d2016a689ca" kind="variable"><name>_ownHbLoopPending</name></member>
+    <member refid="CANProtocol_8cpp_1a7f5d385be50b6ad91e47378f4a619607" kind="variable"><name>_lastHealth</name></member>
     <member refid="CANProtocol_8cpp_1a30f93eb192e2bcc94a7223591c4d4554" kind="function"><name>_drainTxQueue</name></member>
     <member refid="CANProtocol_8cpp_1a4b15c6d1739fcc2f6611c7fe635b4019" kind="function"><name>_applyFilters</name></member>
     <member refid="CANProtocol_8cpp_1a8c31ad45b7e95614b7871c4965e594cf" kind="function"><name>_updateStatus</name></member>
@@ -1819,6 +1826,12 @@
     <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kind="enumvalue"><name>FUSE_OPEN</name></member>
     <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a4717f519dbaabd32e525ceeeb1fcbfe8" kind="enumvalue"><name>OVER_TEMPERATURE</name></member>
     <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kind="enumvalue"><name>SENSOR_FAULT</name></member>
+    <member refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a8ac276c7ffff11a1c7f7dcd869edea91" kind="enumvalue"><name>DUPLICATE_NODE_ID</name></member>
+    <member refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" kind="enum"><name>NodeKind</name></member>
+    <member refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a696b031073e74bf2cb98e5ef201d4aa3" kind="enumvalue"><name>UNKNOWN</name></member>
+    <member refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a8ab4852348110bead3b20dab3f89a334" kind="enumvalue"><name>PANEL_GROUP</name></member>
+    <member refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a02b5701d3ed04e156b0499bf0449519d" kind="enumvalue"><name>PDU</name></member>
+    <member refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4aa75a1789547188e39e2e344c286d2b62" kind="enumvalue"><name>BRIDGE</name></member>
     <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" kind="enum"><name>TelemPage</name></member>
     <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3accc0377a8afbf50e7094f5c23a8af223" kind="enumvalue"><name>INVALID</name></member>
     <member refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3a165ed5369aa99a5c7e797c5308efce72" kind="enumvalue"><name>PDU_RAIL_12V</name></member>

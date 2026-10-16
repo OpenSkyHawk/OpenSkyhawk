@@ -53,7 +53,8 @@ namespace PanelBridge {
                            uint16_t rxCount, uint16_t esr);
 
     void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
-                        uint8_t hFlags = 0, uint8_t faultMask = 0, uint8_t faultId = 0);
+                        uint8_t hFlags = 0, uint8_t faultMask = 0, uint8_t faultId = 0,
+                        uint8_t nodeKind = 0);
 
     void testRequestNodeStatus();
 

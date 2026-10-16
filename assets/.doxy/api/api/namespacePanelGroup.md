@@ -142,7 +142,7 @@ Each call:
 * poll() on all InputBase objects.
 * [**CANProtocol::drain()**](namespaceCANProtocol.md#function-drain) — dispatches CTRL\_BCAST, SYNC\_REQ, TEST\_SEQ echo.
 * update() on all OutputBase objects.
-* [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus): HB\_n every 500 ms, HEALTH\_n every 1 s, master-loss watchdog. 
+* [**CANProtocol::serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus): HB\_n every 500 ms, HEALTH\_n every 1 s (board kind PANEL\_GROUP, #344), master-loss watchdog. 
 
 
 

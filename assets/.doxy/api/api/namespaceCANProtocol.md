@@ -37,6 +37,7 @@
 
 | Type | Name |
 | ---: | :--- |
+|  constexpr uint32\_t | [**DUP\_NODE\_TIMEOUT\_MS**](#variable-dup_node_timeout_ms)   = `3000`<br>_Duplicate NODE\_ID clear time (#344): DUPLICATE\_NODE\_ID drops this long after the last foreign frame on our own_ `HB_NODE_ID` _— 6× the 500 ms HB cadence, matching_[_**PanelBridge**_](namespacePanelBridge.md) _'s own node timeout. A live duplicate re-raises within one HB period._ |
 |  constexpr uint32\_t | [**MASTER\_TIMEOUT\_MS**](#variable-master_timeout_ms)   = `1500`<br>_Master-loss timeout: 3× the 500 ms_ `HB_0` _cadence, matching_[_**PanelBridge**_](namespacePanelBridge.md) _'s own node timeout ratio (3000 ms / 500 ms)._ |
 
 
@@ -61,15 +62,16 @@
 |  void | [**filterAcceptAll**](#function-filteracceptall) () <br>_Accept all incoming CAN frames. Use for_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
 |  void | [**filterAcceptId**](#function-filteracceptid) (uint32\_t canId) <br>_Accept a specific CAN ID. Use for_ [_**PanelGroup**_](namespacePanelGroup.md) _nodes._ |
 |  void | [**flushBatched**](#function-flushbatched) (uint32\_t canId) <br>_Force a half-full ControlPacketPair batch to send immediately._  |
+|  const NodeHealthPayload & | [**lastNodeHealth**](#function-lastnodehealth) () <br>_The HEALTH\_n payload_ [_**serviceNodeStatus()**_](namespaceCANProtocol.md#function-servicenodestatus) _last built for this node (#344)._ |
 |  HeartbeatPayload | [**makeHeartbeatPayload**](#function-makeheartbeatpayload) (uint8\_t nodeId, uint16\_t rxCount) <br>_Build the standard 8-byte heartbeat payload for the current node._  |
-|  NodeHealthPayload | [**makeNodeHealthPayload**](#function-makenodehealthpayload) (uint8\_t nodeId, int8\_t dieTempC, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault=NodeFaultCode::NONE) <br>_Build the 8-byte node-health payload for the current node._  |
+|  NodeHealthPayload | [**makeNodeHealthPayload**](#function-makenodehealthpayload) (uint8\_t nodeId, [**NodeKind**](NodeStatus_8h.md#enum-nodekind) kind, int8\_t dieTempC, [**NodeFaultCode**](NodeStatus_8h.md#enum-nodefaultcode) fault=NodeFaultCode::NONE) <br>_Build the 8-byte node-health payload for the current node._  |
 |  void | [**onReceive**](#function-onreceive) ([**CanRxCallback**](CANProtocol_8h.md#typedef-canrxcallback) cb) <br>_Register a general-purpose RX frame handler._  |
 |  void | [**onStatusChange**](#function-onstatuschange) ([**CanStatusCallback**](CANProtocol_8h.md#typedef-canstatuscallback) cb) <br>_Register a CAN bus status change callback._  |
 |  void | [**onSyncReq**](#function-onsyncreq) ([**CanSyncReqCallback**](CANProtocol_8h.md#typedef-cansyncreqcallback) cb) <br>_Register a SYNC\_REQ handler._  |
 |  uint8\_t | [**rec**](#function-rec) () <br>_Return the CAN Receive Error Counter (0-255) from ESR._  |
 |  void | [**send**](#function-send) (uint32\_t canId, const uint8\_t \* data, uint8\_t len) <br>_Send a CAN frame._  |
 |  void | [**sendBatched**](#function-sendbatched) (uint32\_t canId, const ControlPacket & pkt) <br>_Submit one ControlPacket to a CANProtocol-owned ControlPacketPair batch._  |
-|  void | [**serviceNodeStatus**](#function-servicenodestatus) (uint16\_t rxCount=0) <br>_Run the node-generic status duties. Call once per loop(), after_ [_**drain()**_](namespaceCANProtocol.md#function-drain) _._ |
+|  void | [**serviceNodeStatus**](#function-servicenodestatus) ([**NodeKind**](NodeStatus_8h.md#enum-nodekind) kind, uint16\_t rxCount=0) <br>_Run the node-generic status duties. Call once per loop(), after_ [_**drain()**_](namespaceCANProtocol.md#function-drain) _._ |
 |  void | [**start**](#function-start) () <br>_Start the CAN peripheral and apply registered filters._  |
 |  void | [**startLoopback**](#function-startloopback) () <br>_Start in silent loopback mode — for bench testing only._  |
 |  uint8\_t | [**tec**](#function-tec) () <br>_Return the CAN Transmit Error Counter (0-255) from ESR._  |
@@ -104,6 +106,20 @@
 
 ## Public Static Attributes Documentation
 
+
+
+
+### variable DUP\_NODE\_TIMEOUT\_MS 
+
+_Duplicate NODE\_ID clear time (#344): DUPLICATE\_NODE\_ID drops this long after the last foreign frame on our own_ `HB_NODE_ID` _— 6× the 500 ms HB cadence, matching_[_**PanelBridge**_](namespacePanelBridge.md) _'s own node timeout. A live duplicate re-raises within one HB period._
+```C++
+constexpr uint32_t CANProtocol::DUP_NODE_TIMEOUT_MS;
+```
+
+
+
+
+<hr>
 
 
 
@@ -150,6 +166,7 @@ Drains all frames received since the last call:
 * SYNC\_REQ: fires [**onSyncReq()**](namespaceCANProtocol.md#function-onsyncreq), not forwarded to [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 * TEST\_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
 * HB\_0 on a non-bridge node: stamped for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s watchdog, then [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
+* The node's own `HB_NODE_ID`: stamped for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s duplicate NODE\_ID check (#344), then [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 * All other frames: fires [**onReceive()**](namespaceCANProtocol.md#function-onreceive).
 
 
@@ -242,6 +259,24 @@ If the named CAN ID has a pending slot A, sends it with slot B as the null senti
 
 
 
+### function lastNodeHealth 
+
+_The HEALTH\_n payload_ [_**serviceNodeStatus()**_](namespaceCANProtocol.md#function-servicenodestatus) _last built for this node (#344)._
+```C++
+const NodeHealthPayload & CANProtocol::lastNodeHealth () 
+```
+
+
+
+[**PanelBridge**](namespacePanelBridge.md) reports it as its own node-0 `_NODE_STATUS` row. Before the first HEALTH\_n (or with `-DNODE_HEALTH_TELEM=0`) it reads not-yet-seen: dieTempC INT8\_MIN, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH\_n from. 
+
+
+        
+
+<hr>
+
+
+
 ### function makeHeartbeatPayload 
 
 _Build the standard 8-byte heartbeat payload for the current node._ 
@@ -287,6 +322,7 @@ _Build the 8-byte node-health payload for the current node._
 ```C++
 NodeHealthPayload CANProtocol::makeNodeHealthPayload (
     uint8_t nodeId,
+    NodeKind kind,
     int8_t dieTempC,
     NodeFaultCode fault=NodeFaultCode::NONE
 ) 
@@ -294,7 +330,7 @@ NodeHealthPayload CANProtocol::makeNodeHealthPayload (
 
 
 
-The CAN/DCS packing boundary: takes the internal die temperature (via [**STM32Board::readDieTempC()**](namespaceSTM32Board.md#function-readdietempc)) and the node's aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE\_OVERHEAT\_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when `fault` is not NONE (the enum→byte cast happens here). faultMask + reserved bytes stay 0.
+The CAN/DCS packing boundary: takes the internal die temperature (via [**STM32Board::readDieTempC()**](namespaceSTM32Board.md#function-readdietempc)) and the node's aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE\_OVERHEAT\_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when `fault` is not NONE (the enum→byte cast happens here), and nodeKind from `kind`. faultMask + reserved bytes stay 0.
 
 
 
@@ -303,6 +339,7 @@ The CAN/DCS packing boundary: takes the internal die temperature (via [**STM32Bo
 
 
 * `nodeId` Node ID (1-63 [**PanelGroup**](namespacePanelGroup.md); 0 [**PanelBridge**](namespacePanelBridge.md)). 
+* `kind` The node's board kind (#344) — from its firmware role, never from nodeId. 
 * `dieTempC` Internal die temp in whole °C (INT8\_MIN = unavailable). 
 * `fault` Aggregated node fault (NodeFaultCode::NONE = healthy). Default NONE. 
 
@@ -500,6 +537,7 @@ A frame ID with no batch slot is **silently discarded** — adding a batched fra
 _Run the node-generic status duties. Call once per loop(), after_ [_**drain()**_](namespaceCANProtocol.md#function-drain) _._
 ```C++
 void CANProtocol::serviceNodeStatus (
+    NodeKind kind,
     uint16_t rxCount=0
 ) 
 ```
@@ -508,7 +546,8 @@ void CANProtocol::serviceNodeStatus (
 
 Every node on the bus owes the same status traffic, whatever else it does (#340):
 * `HB_NODE_ID` every 500 ms (makeHeartbeatPayload), carrying `rxCount`.
-* `HEALTH_NODE_ID` every 1000 ms (makeNodeHealthPayload) with the internal die temp and the aggregated node fault, plus the DiagSerial fault edge log (tag `BRIDGE` on NODE\_ID 0, `NODE` otherwise). Compiled out with `-DNODE_HEALTH_TELEM=0`.
+* `HEALTH_NODE_ID` every 1000 ms (makeNodeHealthPayload) with `kind`, the internal die temp and the node fault, plus the DiagSerial fault edge log (tag `BRIDGE` on NODE\_ID 0, `NODE` otherwise). Compiled out with `-DNODE_HEALTH_TELEM=0`.
+* Duplicate NODE\_ID check (#344), on every node: a node never receives its own frames, so a frame on its own `HB_NODE_ID` ([**start()**](namespaceCANProtocol.md#function-start) adds it to the filter) means another board has the same NODE\_ID. The node fault is then `NodeFaultCode::DUPLICATE_NODE_ID`, ahead of every FaultSource (the NODE\_ID is wrong, so nothing else this ID reports can be trusted); it clears DUP\_NODE\_TIMEOUT\_MS after the last foreign frame. aggregateFaults() supplies the fault otherwise.
 * Master-loss watchdog, on every node except [**PanelBridge**](namespacePanelBridge.md) (NODE\_ID 0): once a master heartbeat (`HB_0`) has been seen, master loss is set after MASTER\_TIMEOUT\_MS of silence and cleared by the next `HB_0`.
 * WARNING on a non-bridge node = master loss OR overheat (overheat only when a build defines `NODE_OVERHEAT_C`). The service tracks the two causes separately and writes the shared latch only when their OR changes, so a returning master never clears a live overheat, and overheat clears once the die cools. On [**PanelBridge**](namespacePanelBridge.md) an overheat is raise-only, because its latch also carries [**PanelBridge**](namespacePanelBridge.md)'s dead-node WARNING.
 
@@ -526,6 +565,7 @@ The first call arms the HB/HEALTH timers — the first loop() after setup(), i.e
 **Parameters:**
 
 
+* `kind` This node's board kind (#344), sent in every HEALTH\_n. Each node library passes its own ([**PanelGroup**](namespacePanelGroup.md) → PANEL\_GROUP, [**PduNode**](namespacePduNode.md) → PDU, [**PanelBridge**](namespacePanelBridge.md) → BRIDGE), so a sketch never sets it. Required: a role can't forget it. 
 * `rxCount` Caller-owned accepted RX count for the heartbeat ([**PanelGroup**](namespacePanelGroup.md): accepted CTRL\_BCAST frames). Pass 0 when the node keeps no count.
 
 
@@ -553,7 +593,7 @@ void CANProtocol::start ()
 
 
 
-Must be called after [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin) and after all filter and callback registrations. Always adds CTRL\_BCAST, TEST\_SEQ, and SYNC\_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB\_0 on every node except [**PanelBridge**](namespacePanelBridge.md) (NODE\_ID 0), for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s master-loss watchdog.
+Must be called after [**STM32Board::begin()**](namespaceSTM32Board.md#function-begin) and after all filter and callback registrations. Always adds CTRL\_BCAST, TEST\_SEQ, and SYNC\_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB\_0 on every node except [**PanelBridge**](namespacePanelBridge.md) (NODE\_ID 0), for [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus)'s master-loss watchdog, and the node's own `HB_NODE_ID`, for its duplicate NODE\_ID check (#344).
 
 
 Resets the [**serviceNodeStatus()**](namespaceCANProtocol.md#function-servicenodestatus) timers, which arm on its first call. Fires the onStatusChange callback with NORMAL on success. 
@@ -574,7 +614,7 @@ void CANProtocol::startLoopback ()
 
 
 
-Identical to [**start()**](namespaceCANProtocol.md#function-start) but uses CAN\_MODE\_SILENT\_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus.
+Identical to [**start()**](namespaceCANProtocol.md#function-start) but uses CAN\_MODE\_SILENT\_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus. The duplicate NODE\_ID check discounts the node's own looped-back heartbeats, so only an extra `HB_NODE_ID` a test sends itself reads as a duplicate.
 
 
 

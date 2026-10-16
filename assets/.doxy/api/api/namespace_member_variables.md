@@ -27,6 +27,7 @@
 
 ## d
 
+* **DUP\_NODE\_TIMEOUT\_MS** ([**CANProtocol**](namespaceCANProtocol.md))
 * **DEFAULT\_UART\_RX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 * **DEFAULT\_UART\_TX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 

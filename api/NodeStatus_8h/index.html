@@ -4735,6 +4735,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#enum-nodekind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum NodeKind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-pdurailflag" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4931,6 +4942,10 @@
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-nodekind"><strong>NodeKind</strong></a>  <br><em>HEALTH_n</em> <code>nodeKind</code> <em>(byte 5) — what kind of board this node is (#344).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-pdurailflag"><strong>PduRailFlag</strong></a>  <br><em>PDU_RAIL_* page byte 1 — per-rail condition bits (all zero = healthy).</em></td>
 </tr>
 <tr>
@@ -4962,7 +4977,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
-<td style="text-align: left;"><a href="./#define-node_status_proto_version"><strong>NODE_STATUS_PROTO_VERSION</strong></a>  <code>2</code><br></td>
+<td style="text-align: left;"><a href="./#define-node_status_proto_version"><strong>NODE_STATUS_PROTO_VERSION</strong></a>  <code>3</code><br></td>
 </tr>
 <tr>
 <td style="text-align: right;">define</td>
@@ -4982,6 +4997,7 @@
 <p>Owns the cross-node <strong>status API</strong> — not just health:
 * the <code>_NODE_STATUS</code> DCS-BIOS host-reporting contract (proto version, request address, message names) — <strong>the canonical source the client's <code>sync-a4ec.ts</code> parses</strong>;
 * <code>NodeHealthFlag</code> (HEALTH_n flag bits) and <code>NodeFaultCode</code> (the compact wire faultId dictionary the client maps to labels);
+* <code>NodeKind</code> (HEALTH_n board-kind byte — what board a NODE_ID is, announced by its firmware);
 * the <code>_NODE_TELEM</code> host contract and the TELEM_n page vocabulary (<code>TelemPage</code>, <code>PduRailFlag</code>, <code>PduStatusFlag</code>) — #216;
 * <code>FaultSource</code> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <code>FaultSource</code> is <em>one piece</em> of node status, not the whole story.</p>
 <p>This is the neutral home for node-status vocabulary so it isn't shaped around any one node flavour (PanelGroup/OutputBase) or the HID namespace. <code>NodeHealthPayload</code> (the CAN HEALTH_n frame struct) stays in <code>CANProtocol.h</code>; the fault <em>detail</em> strings stay local (DiagSerial), never on the wire. Header-only contract + a tiny <code>FaultSource</code> registry (<code>NodeStatus.cpp</code>).</p>
@@ -5001,7 +5017,8 @@
 <span class="w">    </span><span class="n">HOST_LINK_LOST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span>
 <span class="w">    </span><span class="n">FUSE_OPEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span>
 <span class="w">    </span><span class="n">OVER_TEMPERATURE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
-<span class="w">    </span><span class="n">SENSOR_FAULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span>
+<span class="w">    </span><span class="n">SENSOR_FAULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DUPLICATE_NODE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x09</span>
 <span class="p">};</span>
 </code></pre></div></p>
 <p>Coarse, one active at a time on the wire; the exact device is logged locally on DiagSerial, not the frame. The client maps id → human label (SkyHawkClient#40). Each node type contributes the codes relevant to its fault sources; append as new sources appear. </p>
@@ -5014,6 +5031,18 @@
 <span class="w">    </span><span class="n">DEGRADED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span>
 <span class="p">};</span>
 </code></pre></div></p>
+<hr>
+
+<h3 id="enum-nodekind">enum NodeKind</h3>
+<p><em>HEALTH_n</em> <code>nodeKind</code> <em>(byte 5) — what kind of board this node is (#344).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">NodeKind</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">UNKNOWN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PANEL_GROUP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PDU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
+<span class="w">    </span><span class="n">BRIDGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<p>Announced by the board's own firmware role (each node library passes its kind to <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a>), never derived from the NODE_ID — a PDU can take any ID. Append-only. 0x00 is what firmware older than #344 sends (the byte was reserved), so the client reads it as "unknown" and never adopts on it. </p>
 <hr>
 
 <h3 id="enum-pdurailflag">enum PduRailFlag</h3>
@@ -5063,7 +5092,7 @@
 <hr>
 
 <h3 id="define-node_status_proto_version">define NODE_STATUS_PROTO_VERSION</h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_PROTO_VERSION `2`</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#define NODE_STATUS_PROTO_VERSION `3`</span>
 </code></pre></div>
 <hr>
 

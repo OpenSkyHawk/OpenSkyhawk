@@ -4680,6 +4680,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#variable-dup_node_timeout_ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable DUP_NODE_TIMEOUT_MS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-master_timeout_ms" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4756,6 +4767,17 @@
     <span class="md-ellipsis">
       
         function flushBatched
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-lastnodehealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function lastNodeHealth
       
     </span>
   </a>
@@ -4943,6 +4965,10 @@
 <tbody>
 <tr>
 <td style="text-align: right;">constexpr uint32_t</td>
+<td style="text-align: left;"><a href="#variable-dup_node_timeout_ms"><strong>DUP_NODE_TIMEOUT_MS</strong></a>   = <code>3000</code><br><em>Duplicate NODE_ID clear time (#344): DUPLICATE_NODE_ID drops this long after the last foreign frame on our own</em> <code>HB_NODE_ID</code> <em>— 6× the 500 ms HB cadence, matching</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>'s own node timeout. A live duplicate re-raises within one HB period.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint32_t</td>
 <td style="text-align: left;"><a href="#variable-master_timeout_ms"><strong>MASTER_TIMEOUT_MS</strong></a>   = <code>1500</code><br><em>Master-loss timeout: 3× the 500 ms</em> <code>HB_0</code> <em>cadence, matching</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>'s own node timeout ratio (3000 ms / 500 ms).</em></td>
 </tr>
 </tbody>
@@ -4977,12 +5003,16 @@
 <td style="text-align: left;"><a href="#function-flushbatched"><strong>flushBatched</strong></a> (uint32_t canId) <br><em>Force a half-full ControlPacketPair batch to send immediately.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">const NodeHealthPayload &amp;</td>
+<td style="text-align: left;"><a href="#function-lastnodehealth"><strong>lastNodeHealth</strong></a> () <br><em>The HEALTH_n payload</em> <a href="./#function-servicenodestatus"><em><strong>serviceNodeStatus()</strong></em></a> <em>last built for this node (#344).</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">HeartbeatPayload</td>
 <td style="text-align: left;"><a href="#function-makeheartbeatpayload"><strong>makeHeartbeatPayload</strong></a> (uint8_t nodeId, uint16_t rxCount) <br><em>Build the standard 8-byte heartbeat payload for the current node.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">NodeHealthPayload</td>
-<td style="text-align: left;"><a href="#function-makenodehealthpayload"><strong>makeNodeHealthPayload</strong></a> (uint8_t nodeId, int8_t dieTempC, <a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a> fault=NodeFaultCode::NONE) <br><em>Build the 8-byte node-health payload for the current node.</em></td>
+<td style="text-align: left;"><a href="#function-makenodehealthpayload"><strong>makeNodeHealthPayload</strong></a> (uint8_t nodeId, <a href="../NodeStatus_8h/#enum-nodekind"><strong>NodeKind</strong></a> kind, int8_t dieTempC, <a href="../NodeStatus_8h/#enum-nodefaultcode"><strong>NodeFaultCode</strong></a> fault=NodeFaultCode::NONE) <br><em>Build the 8-byte node-health payload for the current node.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -5010,7 +5040,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-servicenodestatus"><strong>serviceNodeStatus</strong></a> (uint16_t rxCount=0) <br><em>Run the node-generic status duties. Call once per loop(), after</em> <a href="./#function-drain"><em><strong>drain()</strong></em></a> <em>.</em></td>
+<td style="text-align: left;"><a href="#function-servicenodestatus"><strong>serviceNodeStatus</strong></a> (<a href="../NodeStatus_8h/#enum-nodekind"><strong>NodeKind</strong></a> kind, uint16_t rxCount=0) <br><em>Run the node-generic status duties. Call once per loop(), after</em> <a href="./#function-drain"><em><strong>drain()</strong></em></a> <em>.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -5031,6 +5061,12 @@
 </tbody>
 </table>
 <h2 id="public-static-attributes-documentation">Public Static Attributes Documentation</h2>
+<h3 id="variable-dup_node_timeout_ms">variable DUP_NODE_TIMEOUT_MS</h3>
+<p><em>Duplicate NODE_ID clear time (#344): DUPLICATE_NODE_ID drops this long after the last foreign frame on our own</em> <code>HB_NODE_ID</code> <em>— 6× the 500 ms HB cadence, matching</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>'s own node timeout. A live duplicate re-raises within one HB period.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">DUP_NODE_TIMEOUT_MS</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
 <h3 id="variable-master_timeout_ms">variable MASTER_TIMEOUT_MS</h3>
 <p><em>Master-loss timeout: 3× the 500 ms</em> <code>HB_0</code> <em>cadence, matching</em><a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>'s own node timeout ratio (3000 ms / 500 ms).</em>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">MASTER_TIMEOUT_MS</span><span class="p">;</span>
@@ -5051,6 +5087,7 @@
 * SYNC_REQ: fires <a href="./#function-onsyncreq"><strong>onSyncReq()</strong></a>, not forwarded to <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
 * TEST_SEQ: auto-replies with ECHO carrying the same payload, not forwarded.
 * HB_0 on a non-bridge node: stamped for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s watchdog, then <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
+* The node's own <code>HB_NODE_ID</code>: stamped for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s duplicate NODE_ID check (#344), then <a href="./#function-onreceive"><strong>onReceive()</strong></a>.
 * All other frames: fires <a href="./#function-onreceive"><strong>onReceive()</strong></a>.</p>
 <p>Also services <a href="./#function-sendbatched"><strong>sendBatched()</strong></a> deadlines: a half-full ControlPacketPair that has waited two <a href="./#function-drain"><strong>drain()</strong></a> calls is flushed with slot B set to the null sentinel. </p>
 <hr>
@@ -5088,6 +5125,13 @@
 </ul>
 <hr>
 
+<h3 id="function-lastnodehealth">function lastNodeHealth</h3>
+<p><em>The HEALTH_n payload</em> <a href="./#function-servicenodestatus"><em><strong>serviceNodeStatus()</strong></em></a> <em>last built for this node (#344).</em>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">lastNodeHealth</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reports it as its own node-0 <code>_NODE_STATUS</code> row. Before the first HEALTH_n (or with <code>-DNODE_HEALTH_TELEM=0</code>) it reads not-yet-seen: dieTempC INT8_MIN, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH_n from. </p>
+<hr>
+
 <h3 id="function-makeheartbeatpayload">function makeHeartbeatPayload</h3>
 <p><em>Build the standard 8-byte heartbeat payload for the current node.</em> 
 <div class="highlight"><pre><span></span><code><span class="n">HeartbeatPayload</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeHeartbeatPayload</span><span class="w"> </span><span class="p">(</span>
@@ -5109,14 +5153,16 @@
 <p><em>Build the 8-byte node-health payload for the current node.</em> 
 <div class="highlight"><pre><span></span><code><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">makeNodeHealthPayload</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">nodeId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">NodeKind</span><span class="w"> </span><span class="n">kind</span><span class="p">,</span>
 <span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">dieTempC</span><span class="p">,</span>
 <span class="w">    </span><span class="n">NodeFaultCode</span><span class="w"> </span><span class="n">fault</span><span class="o">=</span><span class="n">NodeFaultCode</span><span class="o">::</span><span class="n">NONE</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
-<p>The CAN/DCS packing boundary: takes the internal die temperature (via <a href="../namespaceSTM32Board/#function-readdietempc"><strong>STM32Board::readDieTempC()</strong></a>) and the node's aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when <code>fault</code> is not NONE (the enum→byte cast happens here). faultMask + reserved bytes stay 0.</p>
+<p>The CAN/DCS packing boundary: takes the internal die temperature (via <a href="../namespaceSTM32Board/#function-readdietempc"><strong>STM32Board::readDieTempC()</strong></a>) and the node's aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when <code>fault</code> is not NONE (the enum→byte cast happens here), and nodeKind from <code>kind</code>. faultMask + reserved bytes stay 0.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>nodeId</code> Node ID (1-63 <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>; 0 <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>). </li>
+<li><code>kind</code> The node's board kind (#344) — from its firmware role, never from nodeId. </li>
 <li><code>dieTempC</code> Internal die temp in whole °C (INT8_MIN = unavailable). </li>
 <li><code>fault</code> Aggregated node fault (NodeFaultCode::NONE = healthy). Default NONE. </li>
 </ul>
@@ -5205,18 +5251,21 @@
 <h3 id="function-servicenodestatus">function serviceNodeStatus</h3>
 <p><em>Run the node-generic status duties. Call once per loop(), after</em> <a href="./#function-drain"><em><strong>drain()</strong></em></a> <em>.</em>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">serviceNodeStatus</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">NodeKind</span><span class="w"> </span><span class="n">kind</span><span class="p">,</span>
 <span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">rxCount</span><span class="o">=</span><span class="mi">0</span>
 <span class="p">)</span><span class="w"> </span>
 </code></pre></div></p>
 <p>Every node on the bus owes the same status traffic, whatever else it does (#340):
 * <code>HB_NODE_ID</code> every 500 ms (makeHeartbeatPayload), carrying <code>rxCount</code>.
-* <code>HEALTH_NODE_ID</code> every 1000 ms (makeNodeHealthPayload) with the internal die temp and the aggregated node fault, plus the DiagSerial fault edge log (tag <code>BRIDGE</code> on NODE_ID 0, <code>NODE</code> otherwise). Compiled out with <code>-DNODE_HEALTH_TELEM=0</code>.
+* <code>HEALTH_NODE_ID</code> every 1000 ms (makeNodeHealthPayload) with <code>kind</code>, the internal die temp and the node fault, plus the DiagSerial fault edge log (tag <code>BRIDGE</code> on NODE_ID 0, <code>NODE</code> otherwise). Compiled out with <code>-DNODE_HEALTH_TELEM=0</code>.
+* Duplicate NODE_ID check (#344), on every node: a node never receives its own frames, so a frame on its own <code>HB_NODE_ID</code> (<a href="./#function-start"><strong>start()</strong></a> adds it to the filter) means another board has the same NODE_ID. The node fault is then <code>NodeFaultCode::DUPLICATE_NODE_ID</code>, ahead of every FaultSource (the NODE_ID is wrong, so nothing else this ID reports can be trusted); it clears DUP_NODE_TIMEOUT_MS after the last foreign frame. aggregateFaults() supplies the fault otherwise.
 * Master-loss watchdog, on every node except <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (NODE_ID 0): once a master heartbeat (<code>HB_0</code>) has been seen, master loss is set after MASTER_TIMEOUT_MS of silence and cleared by the next <code>HB_0</code>.
 * WARNING on a non-bridge node = master loss OR overheat (overheat only when a build defines <code>NODE_OVERHEAT_C</code>). The service tracks the two causes separately and writes the shared latch only when their OR changes, so a returning master never clears a live overheat, and overheat clears once the die cools. On <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> an overheat is raise-only, because its latch also carries <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>'s dead-node WARNING.</p>
 <p>The first call arms the HB/HEALTH timers — the first loop() after setup(), i.e. boot complete — so the first HB goes out ~500 ms and the first HEALTH ~1000 ms after it.</p>
 <p><code>HB_0</code> arrival is recorded by <a href="./#function-drain"><strong>drain()</strong></a>, which still passes the frame to <a href="./#function-onreceive"><strong>onReceive()</strong></a>. <a href="./#function-start"><strong>start()</strong></a> adds <code>HB_0</code> to the hardware filter on non-bridge nodes, so callers never register it by hand.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
+<li><code>kind</code> This node's board kind (#344), sent in every HEALTH_n. Each node library passes its own (<a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a> → PANEL_GROUP, <a href="../namespacePduNode/"><strong>PduNode</strong></a> → PDU, <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> → BRIDGE), so a sketch never sets it. Required: a role can't forget it. </li>
 <li><code>rxCount</code> Caller-owned accepted RX count for the heartbeat (<a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>: accepted CTRL_BCAST frames). Pass 0 when the node keeps no count.</li>
 </ul>
 <p><strong>Note:</strong></p>
@@ -5227,7 +5276,7 @@
 <p><em>Start the CAN peripheral and apply registered filters.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">start</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Must be called after <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB_0 on every node except <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (NODE_ID 0), for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s master-loss watchdog.</p>
+<p>Must be called after <a href="../namespaceSTM32Board/#function-begin"><strong>STM32Board::begin()</strong></a> and after all filter and callback registrations. Always adds CTRL_BCAST, TEST_SEQ, and SYNC_REQ to the active filter — mandatory for all nodes, cannot be excluded — plus HB_0 on every node except <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (NODE_ID 0), for <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a>'s master-loss watchdog, and the node's own <code>HB_NODE_ID</code>, for its duplicate NODE_ID check (#344).</p>
 <p>Resets the <a href="./#function-servicenodestatus"><strong>serviceNodeStatus()</strong></a> timers, which arm on its first call. Fires the onStatusChange callback with NORMAL on success. </p>
 <hr>
 
@@ -5235,7 +5284,7 @@
 <p><em>Start in silent loopback mode — for bench testing only.</em> 
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">startLoopback</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
-<p>Identical to <a href="./#function-start"><strong>start()</strong></a> but uses CAN_MODE_SILENT_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus.</p>
+<p>Identical to <a href="./#function-start"><strong>start()</strong></a> but uses CAN_MODE_SILENT_LOOPBACK: frames transmitted by this node are received back internally without going on the physical bus. The duplicate NODE_ID check discounts the node's own looped-back heartbeats, so only an extra <code>HB_NODE_ID</code> a test sends itself reads as a duplicate.</p>
 <p><strong>Note:</strong></p>
 <p>Never call this in production firmware. </p>
 <hr>

@@ -40,8 +40,10 @@ struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  flags;      
     uint8_t  faultMask;  
     uint8_t  faultId;    
-    uint8_t  rsvd[3];    
+    uint8_t  nodeKind;   
+    uint8_t  rsvd[2];    
 };
+static_assert(sizeof(NodeHealthPayload) == 8, "NodeHealthPayload must fill one classic CAN frame");
 
 struct __attribute__((packed)) TelemPayload {
     uint8_t page;     
@@ -154,16 +156,20 @@ namespace CANProtocol {
 
     HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount);
 
-    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC,
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
                                             NodeFaultCode fault = NodeFaultCode::NONE);
 
     uint32_t txDropCount();
 
     // ── Node status service (every node) ──────────────────────────────────────
 
-    void serviceNodeStatus(uint16_t rxCount = 0);
+    void serviceNodeStatus(NodeKind kind, uint16_t rxCount = 0);
+
+    const NodeHealthPayload& lastNodeHealth();
 
     static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
+
+    static constexpr uint32_t DUP_NODE_TIMEOUT_MS = 3000;
 
 } // namespace CANProtocol
 
