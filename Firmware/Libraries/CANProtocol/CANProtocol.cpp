@@ -77,8 +77,8 @@ static bool               _warnAsserted    = false;  // what this service last w
 static uint32_t           _lastDupMs       = 0;      // millis() of the last foreign own-ID HB
 static bool               _dupSeen         = false;  // a foreign own-ID HB within DUP_NODE_TIMEOUT_MS
 static uint8_t            _ownHbLoopPending = 0;     // loopback only: own HBs sent, not yet looped back
-// Last HEALTH_n built (lastNodeHealth()) — not-yet-seen until the first one: dieTempC INT8_MIN.
-static NodeHealthPayload  _lastHealth      = { 0, INT8_MIN, 0, 0, 0, 0, { 0, 0 } };
+// Last HEALTH_n built (lastNodeHealth()) — not-yet-seen until the first one.
+static NodeHealthPayload  _lastHealth      = { 0, DIE_TEMP_UNAVAILABLE, 0, 0, 0, 0, { 0, 0 } };
 
 // ── Private helpers ───────────────────────────────────────────────────────────
 
@@ -132,7 +132,7 @@ static void _applyFilters() {
     ids[count++] = CAN_ID_CTRL_BCAST;
     ids[count++] = CAN_ID_TEST_SEQ;
     ids[count++] = CAN_ID_SYNC_REQ;
-    if (NODE_ID != 0) ids[count++] = canIdHb(0);  // master heartbeat → serviceNodeStatus watchdog
+    if (NODE_ID != GATEWAY_NODE_ID) ids[count++] = canIdHb(GATEWAY_NODE_ID);  // master heartbeat → serviceNodeStatus watchdog
     ids[count++] = canIdHb(NODE_ID);  // own heartbeat ID → duplicate NODE_ID check (#344)
     for (uint8_t i = 0; i < _filterCount; i++) {
         ids[count++] = _filterIds[i];
@@ -301,7 +301,7 @@ void drain() {
                     _lastDupMs = millis();
                     _dupSeen   = true;
                 }
-            } else if (NODE_ID != 0 && frame.canId == canIdHb(0)) {
+            } else if (NODE_ID != GATEWAY_NODE_ID && frame.canId == canIdHb(GATEWAY_NODE_ID)) {
                 // Master heartbeat: stamp it for serviceNodeStatus()'s watchdog, then still hand it
                 // to the node's own handler like any other frame.
                 _lastMasterMs    = millis();
@@ -433,10 +433,12 @@ HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount) {
     HeartbeatPayload p;
     uint32_t esr = CAN1->ESR;
     p.nodeId  = nodeId;
-    p.flags   = (uint8_t)(((esr >> 2) & 0x01) | (esr & 0x02));  // bit0=BOFF, bit1=EPVF
+    p.flags   = (uint8_t)(((esr & CAN_ESR_BOFF) ? (uint8_t)HeartbeatFlag::BOFF : 0u)
+                        | ((esr & CAN_ESR_EPVF) ? (uint8_t)HeartbeatFlag::EPVF : 0u));
     p.uptime  = (uint16_t)(millis() / 1000);
     p.rxCount = rxCount;
-    p.esr     = (uint16_t)(esr >> 16);  // low byte=TEC, high byte=REC
+    p.esr     = (uint16_t)((((esr >> 16) & 0xFFu) << HB_ESR_TEC_SHIFT)    // ESR[23:16] = TEC
+                         | (((esr >> 24) & 0xFFu) << HB_ESR_REC_SHIFT));  // ESR[31:24] = REC
     return p;
 }
 
@@ -449,7 +451,7 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t di
 #ifdef NODE_OVERHEAT_C
     // Overheat trip is opt-in: the internal sensor is uncalibrated, so a sane threshold
     // needs field data first. Only compute the flag when a build defines NODE_OVERHEAT_C.
-    if (dieTempC != INT8_MIN && dieTempC >= (int)(NODE_OVERHEAT_C))
+    if (dieTempC != DIE_TEMP_UNAVAILABLE && dieTempC >= (int)(NODE_OVERHEAT_C))
         p.flags |= static_cast<uint8_t>(NodeHealthFlag::OVERHEAT);  // bit0 — OR in, never overwrite
 #endif
     // Degraded fault (#163): faultId carries the code, DEGRADED bit is derived. faultMask stays 0
@@ -508,17 +510,17 @@ void serviceNodeStatus(NodeKind kind, uint16_t rxCount) {
         NodeHealthPayload h = makeNodeHealthPayload(NODE_ID, kind, STM32Board::readDieTempC(), fault);
         _lastHealth = h;
         send(canIdHealth(NODE_ID), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
-        STM32Board::logNodeFaultEdge(NODE_ID == 0 ? "BRIDGE" : "NODE", fault, faultDetail);
+        STM32Board::logNodeFaultEdge(NODE_ID == GATEWAY_NODE_ID ? "BRIDGE" : "NODE", fault, faultDetail);
 #ifdef NODE_OVERHEAT_C
         _overheat = (h.flags & static_cast<uint8_t>(NodeHealthFlag::OVERHEAT)) != 0;
         // The bridge's latch is also PanelBridge's dead-node WARNING, which this service can't see —
         // so on the bridge overheat stays raise-only rather than risk clearing that.
-        if (NODE_ID == 0 && _overheat) STM32Board::setWarning(true);
+        if (NODE_ID == GATEWAY_NODE_ID && _overheat) STM32Board::setWarning(true);
 #endif
     }
 #endif
 
-    if (NODE_ID == 0) return;  // PanelBridge is the master: no master-loss watchdog
+    if (NODE_ID == GATEWAY_NODE_ID) return;  // PanelBridge is the master: no master-loss watchdog
 
     // Master-loss watchdog. Signed elapsed so a stamp a hair ahead of `now` reads as fresh, never as
     // overdue (#225).

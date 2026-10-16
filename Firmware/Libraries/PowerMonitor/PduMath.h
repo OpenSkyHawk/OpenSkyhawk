@@ -61,7 +61,7 @@ int32_t rawCurrentDmA(uint32_t adcMv);
  * @param counts  16-bit ADC count of the NTC node.
  * @param offsetDC One-point offset, 0.1 °C.
  * @param fault   Set true when the reading is outside 2–98 % of full scale (open / shorted NTC).
- * @return Temperature in 0.1 °C, or INT16_MIN when `fault`.
+ * @return Temperature in 0.1 °C, or NTC_TEMP_UNAVAILABLE (NodeStatus.h) when `fault`.
  */
 int16_t ntcTempDC(uint16_t counts, int16_t offsetDC, bool& fault);
 
@@ -75,6 +75,9 @@ uint32_t crc32(const uint8_t* data, size_t len);
 int16_t clampI16(int32_t v);
 /** @brief Clamp an int32 into uint16 range. */
 uint16_t clampU16(int32_t v);
+
+/** @brief Store `v` little-endian at `p[0..1]` — a multi-byte TELEM page field. */
+inline void putLe16(uint8_t* p, uint16_t v) { p[0] = (uint8_t)(v & 0xFF); p[1] = (uint8_t)(v >> 8); }
 
 } // namespace Pdu
 } // namespace OpenSkyhawk

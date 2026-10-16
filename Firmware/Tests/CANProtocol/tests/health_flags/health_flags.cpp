@@ -38,7 +38,7 @@ void setup() {
 
     // Sentinel temp (unavailable) never trips overheat; fault alone -> DEGRADED only.
     NodeHealthPayload deg = CANProtocol::makeNodeHealthPayload(
-        NODE_ID, NodeKind::PDU, INT8_MIN, NodeFaultCode::OVER_VOLTAGE);
+        NODE_ID, NodeKind::PDU, DIE_TEMP_UNAVAILABLE, NodeFaultCode::OVER_VOLTAGE);
     check("no-temp + fault -> DEGRADED only", deg.flags == DEGRADED);
 
     d.println(pass ? F("=== ALL PASS ===") : F("=== FAIL ==="));

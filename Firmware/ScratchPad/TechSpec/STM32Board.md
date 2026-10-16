@@ -264,7 +264,7 @@ namespace STM32Board {
      * (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.
      * UNCALIBRATED — ~±few °C absolute, die (not ambient), self-heat offset.
      *
-     * @returns Die temperature in whole °C, or INT8_MIN if internal channels are unavailable.
+     * @returns Die temperature in whole °C, or DIE_TEMP_UNAVAILABLE if internal channels are unavailable.
      */
     int8_t readDieTempC();
 

@@ -1,5 +1,6 @@
 #include "PduMath.h"
 #include "PduConfig.h"
+#include <NodeStatus.h>   // NTC_TEMP_UNAVAILABLE
 #include <math.h>
 
 namespace OpenSkyhawk {
@@ -55,7 +56,7 @@ bool railed(uint16_t counts) {
 int16_t ntcTempDC(uint16_t counts, int16_t offsetDC, bool& fault) {
     // Open NTC → node pulled to +3V3 (top); shorted → 0. Either way the reading means nothing.
     fault = counts < ADC_FULL * 2 / 100 || counts > ADC_FULL * 98 / 100;
-    if (fault) return INT16_MIN;
+    if (fault) return NTC_TEMP_UNAVAILABLE;
     const float x = (float)counts / (float)ADC_FULL;               // node / VDDA
     const float rNtc = NTC_BIAS_OHM * x / (1.0f - x);              // NTC is the low side
     const float invT = 1.0f / NTC_T0_K + logf(rNtc / NTC_R0_OHM) / NTC_BETA_K;

@@ -260,10 +260,10 @@ struct __attribute__((packed)) ControlPacketPair {
  */
 struct __attribute__((packed)) HeartbeatPayload {
     uint8_t  nodeId;   ///< Node ID — redundant with CAN ID, aids logging
-    uint8_t  flags;    ///< bit0=BOFF, bit1=EPVF (Error Passive; TEC ≥ 128)
+    uint8_t  flags;    ///< HeartbeatFlag bits (NodeStatus.h): BOFF, EPVF
     uint16_t uptime;   ///< Seconds since boot, little-endian (wraps at ~18 h)
     uint16_t rxCount;  ///< Node-owned accepted RX count, little-endian
-    uint16_t esr;      ///< (CAN1->ESR >> 16): low byte=TEC, high byte=REC
+    uint16_t esr;      ///< TEC at HB_ESR_TEC_SHIFT, REC at HB_ESR_REC_SHIFT (NodeStatus.h)
 };
 
 /**
@@ -571,9 +571,9 @@ namespace CANProtocol {
      * fault != NONE (never clobbering the overheat bit), and writes nodeKind (byte 5, #344).
      * faultMask + reserved bytes 6-7 stay 0 (#163).
      *
-     * @param nodeId   Node ID to place in the payload; 1-63 PanelGroup, 0 PanelBridge.
+     * @param nodeId   Node ID to place in the payload; 1-63 PanelGroup, GATEWAY_NODE_ID PanelBridge.
      * @param kind     Board kind (NodeKind) from the node's firmware role — never from nodeId.
-     * @param dieTempC Internal die temp in whole °C (INT8_MIN = unavailable).
+     * @param dieTempC Internal die temp in whole °C (DIE_TEMP_UNAVAILABLE = unavailable).
      * @param fault    Primary node fault; NONE (default) = healthy node.
      * @return         Fully populated NodeHealthPayload ready to send as HEALTH_n.
      */
@@ -614,7 +614,7 @@ namespace CANProtocol {
     void serviceNodeStatus(NodeKind kind, uint16_t rxCount = 0);
 
     /** @brief The HEALTH_n payload serviceNodeStatus() last built (PanelBridge's node-0 row, #344).
-     *         Not-yet-seen (dieTempC INT8_MIN, the rest 0) before the first one. */
+     *         Not-yet-seen (dieTempC DIE_TEMP_UNAVAILABLE, the rest 0) before the first one. */
     const NodeHealthPayload& lastNodeHealth();
 
     /** @brief Master-loss timeout — 3× the 500 ms HB_0 cadence. */

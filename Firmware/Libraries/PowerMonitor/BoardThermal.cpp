@@ -4,7 +4,7 @@
 namespace OpenSkyhawk {
 
 void BoardThermal::sample(int16_t tempDC, bool ntcFault, bool armed) {
-    _tempDC = ntcFault ? INT16_MIN : tempDC;
+    _tempDC = ntcFault ? NTC_TEMP_UNAVAILABLE : tempDC;
     if (!armed) { _warn = _crit = _ntcFault = false; return; }
 
     _ntcFault = ntcFault;

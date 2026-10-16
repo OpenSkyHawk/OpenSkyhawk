@@ -89,7 +89,7 @@ void setup() {
     d.print(F("liveTemp=")); d.print(temp); d.print(F("C"));
     d.print(F(" liveVdd=")); d.print(vdd);  d.println(F("mV"));
 
-    check("die temp plausible        ", temp == INT8_MIN || (temp >= -40 && temp <= 125));
+    check("die temp plausible        ", temp == DIE_TEMP_UNAVAILABLE || (temp >= -40 && temp <= 125));
     check("Vdd plausible             ", vdd  == 0        || (vdd  >= 2700 && vdd  <= 3600));
 
     summary();

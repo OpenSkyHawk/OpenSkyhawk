@@ -7,6 +7,7 @@
 #include "../common/check.h"
 #include <PduMath.h>
 #include <PduConfig.h>
+#include <NodeStatus.h>   // NTC_TEMP_UNAVAILABLE
 #include <string.h>
 
 using namespace OpenSkyhawk::Pdu;
@@ -37,7 +38,7 @@ void setup() {
     checkNear("NTC 4085 ohm -> 50.0 C", ntcTempDC(19007, 0, fault), 500, 2);
     checkNear("NTC 28835 ohm -> 0.0 C", ntcTempDC(48661, 0, fault), 0, 2);
     checkEq("NTC offset applied", ntcTempDC(32768, -15, fault), 235);
-    checkEq("NTC shorted -> unavailable", ntcTempDC(500, 0, fault), INT16_MIN);
+    checkEq("NTC shorted -> unavailable", ntcTempDC(500, 0, fault), NTC_TEMP_UNAVAILABLE);
     check("NTC shorted flagged", fault);
     ntcTempDC(65000, 0, fault);
     check("NTC open flagged", fault);

@@ -353,15 +353,15 @@ uint16_t readVddMv() {
 int8_t readDieTempC() {
 #if defined(ATEMP) && defined(AVREF)
     uint16_t vdd = readVddMv();
-    if (vdd == 0) return INT8_MIN;  // internal reference unreadable → unavailable
+    if (vdd == 0) return DIE_TEMP_UNAVAILABLE;  // internal reference unreadable
     uint32_t traw = analogRead(ATEMP);
     int32_t vsense_mv = (int32_t)((uint64_t)traw * vdd / ADC_FULL);
     int32_t tempC = ((V25_MV - vsense_mv) * 10) / AVG_SLOPE_10 + 25;
-    if (tempC <= INT8_MIN) tempC = INT8_MIN + 1;  // reserve INT8_MIN as the "unavailable" sentinel
+    if (tempC <= DIE_TEMP_UNAVAILABLE) tempC = DIE_TEMP_UNAVAILABLE + 1;  // keep the sentinel unambiguous
     if (tempC >  INT8_MAX) tempC = INT8_MAX;
     return (int8_t)tempC;
 #else
-    return INT8_MIN;
+    return DIE_TEMP_UNAVAILABLE;
 #endif
 }
 

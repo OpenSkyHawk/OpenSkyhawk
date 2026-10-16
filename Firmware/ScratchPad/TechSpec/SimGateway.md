@@ -343,6 +343,14 @@ void     calBlobSeal(CalBlob& blob);                 ///< Stamp magic, version, 
 } // namespace OpenSkyhawk
 ```
 
+The calibration wire protocol (FirmwarePlan 03) is declared below the blob API: `CalType`,
+`CalNackReason`, the envelope constants, and — so the client sync generates them (#346) — one
+payload-offset enum per type that carries a payload: `CalHelloAckField`, `CalDataField` +
+`CalDataRecField` (`CAL_DATA_REC_BYTES` = 10), `CalSessionOpenField`, `CalSessionAckField`,
+`CalStreamSelectField`, `CalCommitField`, `CalResetField`, `CalAckField`, `CalNackField`,
+`CalRawField`. Offsets are into the payload, little-endian; `SimGateway.cpp` reads and writes
+every payload through them, and a `static_assert` ties `CAL_DATA`'s layout to `CAL_MAX_PAYLOAD`.
+
 ---
 
 ## Key Data Structures

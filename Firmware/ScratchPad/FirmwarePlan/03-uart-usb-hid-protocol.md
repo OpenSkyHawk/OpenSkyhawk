@@ -270,6 +270,11 @@ the mapping — but that is data in the message, not the message's identity.
 | `NACK` | 3 | `type`:u8, `reason`:u8, `detail`:u8 (axis index, or `0xFF`) |
 | `RAW` | 5 | `idx`:u8, `raw`:u16, `cal`:u16 |
 
+Field offsets are named in `AxisCal.h` — one enum per type with a payload (`CalHelloAckField`,
+`CalDataField` + `CalDataRecField` and `CAL_DATA_REC_BYTES`, `CalSessionOpenField`,
+`CalSessionAckField`, `CalStreamSelectField`, `CalCommitField`, `CalResetField`, `CalAckField`,
+`CalNackField`, `CalRawField`) — and SimGateway reads and writes payloads through them.
+
 **Values on the wire are unsigned 0–65535**, matching storage and the node — `RAW`'s `raw` and
 `cal`, the `CAL_DATA` endpoints, and what `COMMIT` writes. They are positions in the node's ADC
 space, where zero carries no meaning, so a sign would say nothing extra.

@@ -344,14 +344,24 @@ void _calSend(uint8_t type, uint8_t seq, const uint8_t* payload, uint16_t len) {
 }
 
 void _calNack(uint8_t type, uint8_t seq, uint8_t reason, uint8_t detail) {
-    const uint8_t p[3] = { type, reason, detail };
+    uint8_t p[3];
+    p[OpenSkyhawk::CAL_NACK_TYPE]   = type;
+    p[OpenSkyhawk::CAL_NACK_REASON] = reason;
+    p[OpenSkyhawk::CAL_NACK_DETAIL] = detail;
     _calSend(OpenSkyhawk::CAL_T_NACK, seq, p, sizeof(p));
 }
 
+// The whole ACK payload is the acknowledged type, so it is sent straight from `type`.
+static_assert(OpenSkyhawk::CAL_ACK_TYPE == 0, "ACK payload is the type byte alone");
 void _calAck(uint8_t type, uint8_t seq) {
     _calSend(OpenSkyhawk::CAL_T_ACK, seq, &type, 1);
 }
 
+// Initialised in CalHelloAckField order; the assert holds the list to the offsets.
+static_assert(OpenSkyhawk::CAL_HELLO_ACK_PROTO == 0 && OpenSkyhawk::CAL_HELLO_ACK_BLOB_VERSION == 1
+              && OpenSkyhawk::CAL_HELLO_ACK_AXIS_SLOTS == 2 && OpenSkyhawk::CAL_HELLO_ACK_FW_MAJOR == 3
+              && OpenSkyhawk::CAL_HELLO_ACK_FW_MINOR == 4 && OpenSkyhawk::CAL_HELLO_ACK_FW_PATCH == 5,
+              "CalHelloAckField moved: reorder _calSendHelloAck's initialiser to match");
 void _calSendHelloAck(uint8_t seq) {
     const uint8_t p[6] = {
         OpenSkyhawk::CAL_PROTO_VERSION,
@@ -385,15 +395,15 @@ void _calSendCalData(uint8_t seq) {
         if (axisCalValid(_calBlob.axes[i])) calibratedMask = (uint8_t)(calibratedMask | (1u << i));
     }
 
-    p[0] = presentMask;
-    p[1] = calibratedMask;
-    uint16_t o = 2;
+    p[OpenSkyhawk::CAL_DATA_PRESENT_MASK]    = presentMask;
+    p[OpenSkyhawk::CAL_DATA_CALIBRATED_MASK] = calibratedMask;
     for (uint8_t i = 0; i < OpenSkyhawk::AXIS_CAL_SLOTS; ++i) {
-        _put16(p + o, ctrl[i]);                    o += 2;
-        _put16(p + o, _calBlob.axes[i].min);       o += 2;
-        _put16(p + o, _calBlob.axes[i].centre);    o += 2;
-        _put16(p + o, _calBlob.axes[i].max);       o += 2;
-        _put16(p + o, _calBlob.axes[i].deadzone);  o += 2;
+        uint8_t* r = p + OpenSkyhawk::CAL_DATA_RECORDS + i * OpenSkyhawk::CAL_DATA_REC_BYTES;
+        _put16(r + OpenSkyhawk::CAL_DATA_REC_CONTROL_ID, ctrl[i]);
+        _put16(r + OpenSkyhawk::CAL_DATA_REC_MIN,        _calBlob.axes[i].min);
+        _put16(r + OpenSkyhawk::CAL_DATA_REC_CENTRE,     _calBlob.axes[i].centre);
+        _put16(r + OpenSkyhawk::CAL_DATA_REC_MAX,        _calBlob.axes[i].max);
+        _put16(r + OpenSkyhawk::CAL_DATA_REC_DEADZONE,   _calBlob.axes[i].deadzone);
     }
     _calSend(OpenSkyhawk::CAL_T_CAL_DATA, seq, p, sizeof(p));
 }
@@ -483,9 +493,9 @@ void _calEmitRaw(uint8_t axisIndex, uint16_t raw) {
                        : raw;
 
     uint8_t p[5];
-    p[0] = axisIndex;
-    _put16(p + 1, raw);
-    _put16(p + 3, cal);
+    p[OpenSkyhawk::CAL_RAW_IDX] = axisIndex;
+    _put16(p + OpenSkyhawk::CAL_RAW_RAW, raw);
+    _put16(p + OpenSkyhawk::CAL_RAW_CAL, cal);
     _calSend(OpenSkyhawk::CAL_T_RAW, seq, p, sizeof(p));
 }
 
@@ -505,18 +515,19 @@ void _calEndSession() {
 // and keeps a bad axis from discarding good ones alongside it.
 void _calHandleCommit(uint8_t seq, const uint8_t* pay, uint16_t len) {
     (void)len;
-    const uint8_t idx = pay[0];
+    const uint8_t idx = pay[OpenSkyhawk::CAL_COMMIT_IDX];
 
     if (idx >= OpenSkyhawk::AXIS_CAL_SLOTS) {
         _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, idx);
         return;
     }
-    if (_get16(pay + 7) != 0) {
+    if (_get16(pay + OpenSkyhawk::CAL_COMMIT_DEADZONE) != 0) {
         _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_DEADZONE, idx);
         return;
     }
     const OpenSkyhawk::AxisCal axis = {
-        _get16(pay + 1), _get16(pay + 3), _get16(pay + 5), _get16(pay + 7)
+        _get16(pay + OpenSkyhawk::CAL_COMMIT_MIN), _get16(pay + OpenSkyhawk::CAL_COMMIT_CENTRE),
+        _get16(pay + OpenSkyhawk::CAL_COMMIT_MAX), _get16(pay + OpenSkyhawk::CAL_COMMIT_DEADZONE)
     };
     if (!axisCalValid(axis)) {
         _calNack(OpenSkyhawk::CAL_T_COMMIT, seq, OpenSkyhawk::CAL_NACK_BAD_ORDER, idx);
@@ -564,7 +575,7 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
             break;
 
         case OpenSkyhawk::CAL_T_SESSION_OPEN: {
-            const uint8_t axis = pay[0];
+            const uint8_t axis = pay[OpenSkyhawk::CAL_SESSION_OPEN_AXIS_IDX];
             if (axis != CAL_AXIS_NONE && axis >= OpenSkyhawk::AXIS_CAL_SLOTS) {
                 _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, axis);
                 break;
@@ -573,15 +584,16 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
             _calStreamAxis = axis;
             _calRawSeq     = 0;
             uint8_t p[5];
-            _put16(p + 0, (uint16_t)(CAL_SESSION_TIMEOUT_MS & 0xFFFF));
-            _put16(p + 2, (uint16_t)(CAL_SESSION_TIMEOUT_MS >> 16));
-            p[4] = axis;
+            uint8_t* t = p + OpenSkyhawk::CAL_SESSION_ACK_TIMEOUT_MS;   // u32 LE as two u16
+            _put16(t + 0, (uint16_t)(CAL_SESSION_TIMEOUT_MS & 0xFFFF));
+            _put16(t + 2, (uint16_t)(CAL_SESSION_TIMEOUT_MS >> 16));
+            p[OpenSkyhawk::CAL_SESSION_ACK_AXIS_IDX] = axis;
             _calSend(OpenSkyhawk::CAL_T_SESSION_ACK, seq, p, sizeof(p));
             break;
         }
 
         case OpenSkyhawk::CAL_T_STREAM_SELECT: {
-            const uint8_t axis = pay[0];
+            const uint8_t axis = pay[OpenSkyhawk::CAL_STREAM_SELECT_AXIS_IDX];
             if (axis != CAL_AXIS_NONE && axis >= OpenSkyhawk::AXIS_CAL_SLOTS) {
                 _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, axis);
                 break;
@@ -605,7 +617,7 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
             break;
 
         case OpenSkyhawk::CAL_T_RESET: {
-            const uint8_t idx = pay[0];
+            const uint8_t idx = pay[OpenSkyhawk::CAL_RESET_IDX];
             if (idx != CAL_AXIS_NONE && idx >= OpenSkyhawk::AXIS_CAL_SLOTS) {
                 _calNack(type, seq, OpenSkyhawk::CAL_NACK_BAD_INDEX, idx);
                 break;

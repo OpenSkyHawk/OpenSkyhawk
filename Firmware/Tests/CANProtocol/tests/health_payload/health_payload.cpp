@@ -40,7 +40,7 @@ void setup() {
     int8_t   liveTemp = STM32Board::readDieTempC();
     uint16_t liveVdd  = STM32Board::readVddMv();
 
-    bool tempOk = (liveTemp == INT8_MIN) || (liveTemp >= -40 && liveTemp <= 125);
+    bool tempOk = (liveTemp == DIE_TEMP_UNAVAILABLE) || (liveTemp >= -40 && liveTemp <= 125);
     bool vddOk  = (liveVdd == 0) || (liveVdd >= 2700 && liveVdd <= 3600);
 
     auto& d = STM32Board::diagSerial();
