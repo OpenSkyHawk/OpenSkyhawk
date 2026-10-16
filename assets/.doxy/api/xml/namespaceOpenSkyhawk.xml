@@ -480,6 +480,397 @@
         </inbodydescription>
         <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="210" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="210" bodyend="219"/>
       </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalHelloAckField</name>
+        <qualifiedname>OpenSkyhawk::CalHelloAckField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0a77abb66f8f4d7453a622e5bb90a3088b" prot="public">
+          <name>CAL_HELLO_ACK_PROTO</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0a9b523d03e79419600e93b4104e18bed1" prot="public">
+          <name>CAL_HELLO_ACK_BLOB_VERSION</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0a64bfd4eb1f21d2d2df603d0bb513ae1a" prot="public">
+          <name>CAL_HELLO_ACK_AXIS_SLOTS</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0a3cef51fa732096a66f1717b0786ebd9c" prot="public">
+          <name>CAL_HELLO_ACK_FW_MAJOR</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0a3a722fed0924ae80ac4fa5c4d6932b0e" prot="public">
+          <name>CAL_HELLO_ACK_FW_MINOR</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0a4ce6dd7eba17f985e29deb47e39a1457" prot="public">
+          <name>CAL_HELLO_ACK_FW_PATCH</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>HELLO_ACK</computeroutput> payload (6 bytes, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="232" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="232" bodyend="239"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a54eda748537446686c8ffda6acbbbfb2" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalDataField</name>
+        <qualifiedname>OpenSkyhawk::CalDataField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a54eda748537446686c8ffda6acbbbfb2a4fb6d73cc03229dd7e4eac52e5ee2c67" prot="public">
+          <name>CAL_DATA_PRESENT_MASK</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a54eda748537446686c8ffda6acbbbfb2a20ab4ad8cb5c2a8d4cb36cff7cf77342" prot="public">
+          <name>CAL_DATA_CALIBRATED_MASK</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a54eda748537446686c8ffda6acbbbfb2a6613f1b1151340dfd67f1091eb846469" prot="public">
+          <name>CAL_DATA_RECORDS</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>CAL_DATA</computeroutput> payload (82 bytes, device→client): two bitmasks, then AXIS_CAL_SLOTS records. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="242" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="242" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalDataRecField</name>
+        <qualifiedname>OpenSkyhawk::CalDataRecField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9a079c67e896fc2a46a61e678c1bed856a" prot="public">
+          <name>CAL_DATA_REC_CONTROL_ID</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9a361b49695dd3ffa13ecdb8255f88c93f" prot="public">
+          <name>CAL_DATA_REC_MIN</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9a5d08ed0bc4a2a685392b5bc876bdd537" prot="public">
+          <name>CAL_DATA_REC_CENTRE</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9a375bb2f3474d709c48e084d5b7234a83" prot="public">
+          <name>CAL_DATA_REC_MAX</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9a774124b8a60bcb02689fd9922f277ac2" prot="public">
+          <name>CAL_DATA_REC_DEADZONE</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Field offsets within one <computeroutput>CAL_DATA</computeroutput> record (record i starts at CAL_DATA_RECORDS + i × 10). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="252" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="252" bodyend="258"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a5d6d01d6028a46a8fd920c6921c06344" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalSessionOpenField</name>
+        <qualifiedname>OpenSkyhawk::CalSessionOpenField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a5d6d01d6028a46a8fd920c6921c06344a51f8b7565ff33aa4777405ea8f1cb18f" prot="public">
+          <name>CAL_SESSION_OPEN_AXIS_IDX</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>SESSION_OPEN</computeroutput> payload (1 byte, client→device). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="261" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="261" bodyend="263"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a738aa0a2436bd680bc376ebda1d2737a" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalSessionAckField</name>
+        <qualifiedname>OpenSkyhawk::CalSessionAckField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a738aa0a2436bd680bc376ebda1d2737aafa47dc3fb8f753a9815588d7d48d14d5" prot="public">
+          <name>CAL_SESSION_ACK_TIMEOUT_MS</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a738aa0a2436bd680bc376ebda1d2737aa6bd3426abb1ff4931be6e1841d107559" prot="public">
+          <name>CAL_SESSION_ACK_AXIS_IDX</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>SESSION_ACK</computeroutput> payload (5 bytes, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="266" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="266" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1afaa36990fc24a834f2ebf3b5a5550aaf" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalStreamSelectField</name>
+        <qualifiedname>OpenSkyhawk::CalStreamSelectField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1afaa36990fc24a834f2ebf3b5a5550aafae04719a9c1233ce4f17f3f50cce883e9" prot="public">
+          <name>CAL_STREAM_SELECT_AXIS_IDX</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>STREAM_SELECT</computeroutput> payload (1 byte, client→device). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="272" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="272" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abd" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalCommitField</name>
+        <qualifiedname>OpenSkyhawk::CalCommitField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abdae83432ce10a884fa955af34ff0f08c71" prot="public">
+          <name>CAL_COMMIT_IDX</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abdaa5952fe49aee23c2ac860555caa20a19" prot="public">
+          <name>CAL_COMMIT_MIN</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abdac3c6b76a53bc0d4e4b81ae764a6f9bb1" prot="public">
+          <name>CAL_COMMIT_CENTRE</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abda4969bc29ca8fa0508c8374c879c86999" prot="public">
+          <name>CAL_COMMIT_MAX</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abdad72771db5b974df10fc33a1f7be4af47" prot="public">
+          <name>CAL_COMMIT_DEADZONE</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>COMMIT</computeroutput> payload (9 bytes, client→device) — exactly one axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="277" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="277" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a44871b71bbaf67ceacf53d1f4c69917c" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalResetField</name>
+        <qualifiedname>OpenSkyhawk::CalResetField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a44871b71bbaf67ceacf53d1f4c69917ca153555a4faebfb9a8a5e7c6818b84453" prot="public">
+          <name>CAL_RESET_IDX</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>RESET</computeroutput> payload (1 byte, client→device). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="286" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="286" bodyend="288"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1af722b98e6dcc1adf2f7c5bcb93be1405" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalAckField</name>
+        <qualifiedname>OpenSkyhawk::CalAckField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1af722b98e6dcc1adf2f7c5bcb93be1405a185acda93f9a55c3ba4a8d3305871c5b" prot="public">
+          <name>CAL_ACK_TYPE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>ACK</computeroutput> payload (1 byte, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="291" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="291" bodyend="293"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1af51fbc7c106664b13996d9d452a95aad" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalNackField</name>
+        <qualifiedname>OpenSkyhawk::CalNackField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1af51fbc7c106664b13996d9d452a95aada5daa0a9a236d58d89e14657f8805e030" prot="public">
+          <name>CAL_NACK_TYPE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1af51fbc7c106664b13996d9d452a95aada2420d297fd1073005ec73ad778947a51" prot="public">
+          <name>CAL_NACK_REASON</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1af51fbc7c106664b13996d9d452a95aadaaae54bb8f91d8a3ad734f6658fd3df7b" prot="public">
+          <name>CAL_NACK_DETAIL</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>NACK</computeroutput> payload (3 bytes, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="296" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="296" bodyend="300"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalRawField</name>
+        <qualifiedname>OpenSkyhawk::CalRawField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359a9599cb377acd1d275747479ebed2aa21" prot="public">
+          <name>CAL_RAW_IDX</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359adeac11b3c319e2a3dcb702fa3cb8d1f9" prot="public">
+          <name>CAL_RAW_RAW</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359acf83c322faa854ee237742667597b3ed" prot="public">
+          <name>CAL_RAW_CAL</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>RAW</computeroutput> payload (5 bytes, device→client). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="303" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="303" bodyend="307"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="var">
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" prot="public" static="yes" mutable="no">
@@ -821,6 +1212,22 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </inbodydescription>
         <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="222" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="222" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1ac7f065d9af195b7b21358dddf50ddaf5" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::CAL_DATA_REC_BYTES</definition>
+        <argsstring></argsstring>
+        <name>CAL_DATA_REC_BYTES</name>
+        <qualifiedname>OpenSkyhawk::CAL_DATA_REC_BYTES</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>One <computeroutput>CAL_DATA</computeroutput> record&apos;s length in bytes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="249" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="249" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="func">
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -876,7 +1283,7 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.cpp" line="12" column="15" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="12" bodyend="25" declfile="Firmware/Libraries/NodeStatus/NodeStatus.h" declline="178" declcolumn="15"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.cpp" line="12" column="15" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.cpp" bodystart="12" bodyend="25" declfile="Firmware/Libraries/NodeStatus/NodeStatus.h" declline="275" declcolumn="15"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a46ddcd8bc34cc500234d4513a5952df5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="structOpenSkyhawk_1_1StepperConfig" kindref="compound">StepperConfig</ref></type>
@@ -1374,7 +1781,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="63" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="63" bodyend="84" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="242" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="63" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="63" bodyend="84" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="330" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a82486fb3a8b5c08619b2dbab91865dea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint16_t</type>
@@ -1465,7 +1872,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="86" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="86" bodyend="111" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="254" declcolumn="10"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="86" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="86" bodyend="111" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="342" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1ad6b903a2fa71bedb61152f923493b37c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -1510,7 +1917,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="113" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="113" bodyend="121" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="266" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="113" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="113" bodyend="121" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="354" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

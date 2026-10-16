@@ -4757,6 +4757,82 @@
 
 <span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CAL_AXIS_NONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span>
 
+<span class="c1">// ── Payload field offsets ─────────────────────────────────────────────────────</span>
+<span class="c1">//</span>
+<span class="c1">// Byte offsets into each type's payload (not the frame — the payload starts after the 8-byte</span>
+<span class="c1">// header). Multi-byte fields are little-endian, matching the envelope's LEN. A field runs to the</span>
+<span class="c1">// next offset; the last runs to the type's length in calLenValidForType(). Types with no payload</span>
+<span class="c1">// have no enum. Named so the client sync generates them rather than hand-typing them (#346).</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalHelloAckField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_PROTO</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: CAL_PROTO_VERSION</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_BLOB_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: CAL_VERSION</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_AXIS_SLOTS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: AXIS_CAL_SLOTS</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_FW_MAJOR</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: SimGateway firmware version</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_FW_MINOR</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_FW_PATCH</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalDataField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_DATA_PRESENT_MASK</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: bit i = an HIDAxis uses slot i</span>
+<span class="w">    </span><span class="n">CAL_DATA_CALIBRATED_MASK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: bit i = slot i passes axisCalValid()</span>
+<span class="w">    </span><span class="n">CAL_DATA_RECORDS</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="c1">// AXIS_CAL_SLOTS records of CAL_DATA_REC_BYTES, slot order</span>
+<span class="p">};</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">CAL_DATA_REC_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalDataRecField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_CONTROL_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: HID controlId of the axis in this slot, 0 = absent</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_MIN</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: AxisCal::min</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_CENTRE</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: AxisCal::centre</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_MAX</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: AxisCal::max</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_DEADZONE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: AxisCal::deadzone, always 0</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalSessionOpenField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_SESSION_OPEN_AXIS_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: axis to stream, CAL_AXIS_NONE = none</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalSessionAckField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_SESSION_ACK_TIMEOUT_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u32: session inactivity timeout, ms</span>
+<span class="w">    </span><span class="n">CAL_SESSION_ACK_AXIS_IDX</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: echoed streamed-axis selection</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalStreamSelectField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_STREAM_SELECT_AXIS_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: axis to stream, CAL_AXIS_NONE = none</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalCommitField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_IDX</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: axis slot</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_MIN</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_CENTRE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_MAX</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_DEADZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: must be 0, else NACK BAD_DEADZONE</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalResetField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_RESET_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: axis slot, CAL_AXIS_NONE = all</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalAckField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_ACK_TYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: CalType being acknowledged</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalNackField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_NACK_TYPE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: CalType being refused</span>
+<span class="w">    </span><span class="n">CAL_NACK_REASON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: CalNackReason</span>
+<span class="w">    </span><span class="n">CAL_NACK_DETAIL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: offending axis slot, else CAL_AXIS_NONE</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">CalRawField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_RAW_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: streamed axis slot</span>
+<span class="w">    </span><span class="n">CAL_RAW_RAW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: reading before calibration</span>
+<span class="w">    </span><span class="n">CAL_RAW_CAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: the same reading through axisCalApply()</span>
+<span class="p">};</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">CAL_DATA_RECORDS</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">AXIS_CAL_SLOTS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CAL_DATA_REC_BYTES</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CAL_MAX_PAYLOAD</span><span class="p">,</span>
+<span class="w">              </span><span class="s">"CAL_DATA layout no longer fills CAL_MAX_PAYLOAD"</span><span class="p">);</span>
+
 <span class="kt">bool</span><span class="w"> </span><span class="nf">calLenValidForType</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
 
 <span class="kt">uint16_t</span><span class="w"> </span><span class="nf">calBuildFrame</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">outCap</span><span class="p">,</span>

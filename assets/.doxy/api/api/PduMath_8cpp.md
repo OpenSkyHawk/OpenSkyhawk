@@ -12,6 +12,7 @@
 
 * `#include "PduMath.h"`
 * `#include "PduConfig.h"`
+* `#include <NodeStatus.h>`
 * `#include <math.h>`
 
 

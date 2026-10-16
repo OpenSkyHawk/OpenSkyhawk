@@ -96,6 +96,7 @@
 |  uint32\_t | [**crc32**](#function-crc32) (const uint8\_t \* data, size\_t len) <br>_CRC-32 (IEEE 802.3, reflected 0xEDB88320) over_ `len` _bytes._ |
 |  int32\_t | [**currentMa**](#function-currentma) (uint32\_t adcMv, int16\_t zeroDmA, uint16\_t iGain) <br>_Rail current in mA from the INA180 output voltage._  |
 |  int16\_t | [**ntcTempDC**](#function-ntctempdc) (uint16\_t counts, int16\_t offsetDC, bool & fault) <br>_Board temperature in 0.1 °C from the NTC channel (ratiometric — VDDA cancels)._  |
+|  void | [**putLe16**](#function-putle16) (uint8\_t \* p, uint16\_t v) <br>_Store_ `v` _little-endian at_`p[0..1]` _— a multi-byte TELEM page field._ |
 |  uint16\_t | [**rail12Mv**](#function-rail12mv) (uint32\_t adcMv, uint16\_t vGain) <br>_12 V rail in mV from the ADC pin voltage, after the divider and gain trim._  |
 |  uint16\_t | [**rail5Mv**](#function-rail5mv) (uint32\_t adcMv, uint16\_t vGain) <br>_5 V rail in mV from the ADC pin voltage, after the divider and gain trim._  |
 |  bool | [**railed**](#function-railed) (uint16\_t counts) <br>_True when a 16-bit count is at the top rail (≥ 99.5 % FS) — the channel can't measure._  |
@@ -600,13 +601,30 @@ int16_t OpenSkyhawk::Pdu::ntcTempDC (
 
 **Returns:**
 
-Temperature in 0.1 °C, or INT16\_MIN when `fault`. 
+Temperature in 0.1 °C, or NTC\_TEMP\_UNAVAILABLE ([**NodeStatus.h**](NodeStatus_8h.md)) when `fault`. 
 
 
 
 
 
         
+
+<hr>
+
+
+
+### function putLe16 
+
+_Store_ `v` _little-endian at_`p[0..1]` _— a multi-byte TELEM page field._
+```C++
+inline void OpenSkyhawk::Pdu::putLe16 (
+    uint8_t * p,
+    uint16_t v
+) 
+```
+
+
+
 
 <hr>
 

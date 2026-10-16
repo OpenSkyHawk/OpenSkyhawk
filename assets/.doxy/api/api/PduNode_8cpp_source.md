@@ -65,21 +65,26 @@ TelemPayload statusPage(bool periodic) {
     const int16_t  t   = gTherm.tempDC();
     const uint16_t p12 = g12.peakMa(), p5 = g5.peakMa();
     TelemPayload p;
-    p.page    = (uint8_t)TelemPage::PDU_STATUS;
-    p.body[0] = statusFlags();
-    p.body[1] = (uint8_t)((uint16_t)t & 0xFF);  p.body[2] = (uint8_t)((uint16_t)t >> 8);
-    p.body[3] = (uint8_t)(p12 & 0xFF);          p.body[4] = (uint8_t)(p12 >> 8);
-    p.body[5] = (uint8_t)(p5 & 0xFF);           p.body[6] = (uint8_t)(p5 >> 8);
+    uint8_t* f = reinterpret_cast<uint8_t*>(&p);   // whole frame: PduStatusField offsets index it
+    p.page = (uint8_t)TelemPage::PDU_STATUS;
+    f[(uint8_t)PduStatusField::FLAGS] = statusFlags();
+    Pdu::putLe16(f + (uint8_t)PduStatusField::NTC_TEMP_DC, (uint16_t)t);
+    Pdu::putLe16(f + (uint8_t)PduStatusField::I12_PEAK_MA, p12);
+    Pdu::putLe16(f + (uint8_t)PduStatusField::I5_PEAK_MA,  p5);
     if (periodic) { g12.resetPeak(); g5.resetPeak(); }
     return p;
 }
+
+static_assert((uint8_t)PduRailField::FLAGS == (uint8_t)PduStatusField::FLAGS,
+              "sendPage reads every PDU page's flags from one offset");
 
 void sendPage(uint8_t slot, bool periodic, uint32_t now) {
     TelemPayload p = slot == 0 ? g12.buildPage(periodic)
                    : slot == 1 ? g5.buildPage(periodic)
                    :             statusPage(periodic);
-    CANProtocol::send(canIdTelem(NODE_ID), reinterpret_cast<const uint8_t*>(&p), sizeof(p));
-    gSched.sent(slot, p.body[0], now);
+    const uint8_t* f = reinterpret_cast<const uint8_t*>(&p);
+    CANProtocol::send(canIdTelem(NODE_ID), f, sizeof(p));
+    gSched.sent(slot, f[(uint8_t)PduStatusField::FLAGS], now);
 }
 
 void onSyncReq() { gSyncReq = true; }

@@ -4679,6 +4679,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#public-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Attributes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#macros" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4711,6 +4722,17 @@
   
     <nav class="md-nav" aria-label="Public Types Documentation">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enum-heartbeatflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum HeartbeatFlag
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#enum-nodefaultcode" class="md-nav__link">
@@ -4746,10 +4768,54 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#enum-nodestatusfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum NodeStatusField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-nodetelemfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum NodeTelemField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-pdurailfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum PduRailField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-pdurailflag" class="md-nav__link">
     <span class="md-ellipsis">
       
         enum PduRailFlag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-pdustatusfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum PduStatusField
       
     </span>
   </a>
@@ -4772,6 +4838,100 @@
     <span class="md-ellipsis">
       
         enum TelemPage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-attributes-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Attributes Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-die_temp_unavailable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable DIE_TEMP_UNAVAILABLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-gateway_node_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable GATEWAY_NODE_ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-hb_esr_rec_shift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable HB_ESR_REC_SHIFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-hb_esr_tec_shift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable HB_ESR_TEC_SHIFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-node_status_row_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NODE_STATUS_ROW_BYTES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-node_telem_row_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NODE_TELEM_ROW_BYTES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ntc_temp_unavailable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable NTC_TEMP_UNAVAILABLE
       
     </span>
   </a>
@@ -4934,6 +5094,10 @@
 <tbody>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-heartbeatflag"><strong>HeartbeatFlag</strong></a>  <br><em>HB_n</em> <code>flags</code> <em>bits — CAN controller error state (maps to HeartbeatPayload.flags).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-nodefaultcode"><strong>NodeFaultCode</strong></a>  <br><em>HEALTH_n</em> <code>faultId</code> <em>dictionary (#163) — cross-node fault codes.</em></td>
 </tr>
 <tr>
@@ -4946,7 +5110,23 @@
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-nodestatusfield"><strong>NodeStatusField</strong></a>  <br><code>_NODE_STATUS</code> <em>row field offsets, in bytes of the decoded row (hex index = 2 × offset).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-nodetelemfield"><strong>NodeTelemField</strong></a>  <br><code>_NODE_TELEM</code> <em>row field offsets, in bytes of the decoded row (hex index = 2 × offset).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-pdurailfield"><strong>PduRailField</strong></a>  <br><em>PDU_RAIL_12V / PDU_RAIL_5V field offsets, in bytes of the 8-byte TELEM_n frame.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-pdurailflag"><strong>PduRailFlag</strong></a>  <br><em>PDU_RAIL_* page byte 1 — per-rail condition bits (all zero = healthy).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-pdustatusfield"><strong>PduStatusField</strong></a>  <br><em>PDU_STATUS field offsets, in bytes of the 8-byte TELEM_n frame.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
@@ -4955,6 +5135,45 @@
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-telempage"><strong>TelemPage</strong></a>  <br><em>TELEM_n page ids (#216) — byte 0 of TelemPayload, naming the layout of bytes 1-7.</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-attributes">Public Attributes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Type</th>
+<th style="text-align: left;">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">constexpr int8_t</td>
+<td style="text-align: left;"><a href="#variable-die_temp_unavailable"><strong>DIE_TEMP_UNAVAILABLE</strong></a>   = <code>-128</code><br><em>HEALTH_n</em> <code>dieTempC</code> <em>meaning "unavailable / not yet seen" (</em><code>80</code> <em>on the wire).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-gateway_node_id"><strong>GATEWAY_NODE_ID</strong></a>   = <code>0</code><br><em>Node ID of the Gateway board's</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>MCU — the CAN master.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-hb_esr_rec_shift"><strong>HB_ESR_REC_SHIFT</strong></a>   = <code>8</code><br><em>HB_n</em> <code>esr</code> <em>field: bit position of the receive error counter (REC, high byte).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-hb_esr_tec_shift"><strong>HB_ESR_TEC_SHIFT</strong></a>   = <code>0</code><br><em>HB_n</em> <code>esr</code> <em>field: bit position of the transmit error counter (TEC, low byte).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-node_status_row_bytes"><strong>NODE_STATUS_ROW_BYTES</strong></a>   = <code>14</code><br><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-node_telem_row_bytes"><strong>NODE_TELEM_ROW_BYTES</strong></a>   = <code>9</code><br><code>_NODE_TELEM</code> <em>row length in bytes, sent as twice as many hex chars (9 → 18 hex).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr int16_t</td>
+<td style="text-align: left;"><a href="#variable-ntc_temp_unavailable"><strong>NTC_TEMP_UNAVAILABLE</strong></a>   = <code>-32768</code><br><em>PDU_STATUS</em> <code>ntcTempDC</code> <em>meaning "unavailable" — no reading yet, or the NTC is open/shorted.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4995,10 +5214,12 @@
 </table>
 <h2 id="detailed-description">Detailed Description</h2>
 <p>Owns the cross-node <strong>status API</strong> — not just health:
-* the <code>_NODE_STATUS</code> DCS-BIOS host-reporting contract (proto version, request address, message names) — <strong>the canonical source the client's <code>sync-a4ec.ts</code> parses</strong>;
-* <code>NodeHealthFlag</code> (HEALTH_n flag bits) and <code>NodeFaultCode</code> (the compact wire faultId dictionary the client maps to labels);
+* the <code>_NODE_STATUS</code> DCS-BIOS host-reporting contract (proto version, request address, message names, <code>GATEWAY_NODE_ID</code>, row layout <code>NodeStatusField</code>) — <strong>the canonical source the client's <code>sync-a4ec.ts</code> parses</strong>;
+* <code>HeartbeatFlag</code> + the <code>HB_ESR_*</code> split (HB_n flags / esr fields);
+* <code>NodeHealthFlag</code> (HEALTH_n flag bits), <code>DIE_TEMP_UNAVAILABLE</code>, and <code>NodeFaultCode</code> (the compact wire faultId dictionary the client maps to labels);
 * <code>NodeKind</code> (HEALTH_n board-kind byte — what board a NODE_ID is, announced by its firmware);
-* the <code>_NODE_TELEM</code> host contract and the TELEM_n page vocabulary (<code>TelemPage</code>, <code>PduRailFlag</code>, <code>PduStatusFlag</code>) — #216;
+* the <code>_NODE_TELEM</code> host contract and the TELEM_n page vocabulary (<code>TelemPage</code>, <code>PduRailFlag</code>, <code>PduStatusFlag</code>, the per-page field offsets, <code>NTC_TEMP_UNAVAILABLE</code>) — #216;</p>
+<p>Every wire value is a named <code>enum class X : T { NAME = literal }</code> or <code>constexpr T NAME = literal</code> so the client sync can read it (#346) — never only a comment, a bare literal or a format string.
 * <code>FaultSource</code> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <code>FaultSource</code> is <em>one piece</em> of node status, not the whole story.</p>
 <p>This is the neutral home for node-status vocabulary so it isn't shaped around any one node flavour (PanelGroup/OutputBase) or the HID namespace. <code>NodeHealthPayload</code> (the CAN HEALTH_n frame struct) stays in <code>CANProtocol.h</code>; the fault <em>detail</em> strings stay local (DiagSerial), never on the wire. Header-only contract + a tiny <code>FaultSource</code> registry (<code>NodeStatus.cpp</code>).</p>
 <p><strong>Version:</strong></p>
@@ -5006,6 +5227,15 @@
 <p><strong>Copyright:</strong></p>
 <p>GPL-2.0-only — see Firmware/LICENSE </p>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
+<h3 id="enum-heartbeatflag">enum HeartbeatFlag</h3>
+<p><em>HB_n</em> <code>flags</code> <em>bits — CAN controller error state (maps to HeartbeatPayload.flags).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">HeartbeatFlag</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">BOFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="w">    </span><span class="n">EPVF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
 <h3 id="enum-nodefaultcode">enum NodeFaultCode</h3>
 <p><em>HEALTH_n</em> <code>faultId</code> <em>dictionary (#163) — cross-node fault codes.</em>
 <div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">NodeFaultCode</span><span class="w"> </span><span class="p">{</span>
@@ -5045,6 +5275,46 @@
 <p>Announced by the board's own firmware role (each node library passes its kind to <a href="../namespaceCANProtocol/#function-servicenodestatus"><strong>CANProtocol::serviceNodeStatus()</strong></a>), never derived from the NODE_ID — a PDU can take any ID. Append-only. 0x00 is what firmware older than #344 sends (the byte was reserved), so the client reads it as "unknown" and never adopts on it. </p>
 <hr>
 
+<h3 id="enum-nodestatusfield">enum NodeStatusField</h3>
+<p><code>_NODE_STATUS</code> <em>row field offsets, in bytes of the decoded row (hex index = 2 × offset).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">NodeStatusField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PRESENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">HB_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">UPTIME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="n">RX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ESR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DIE_TEMP_C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
+<span class="w">    </span><span class="n">HEALTH_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FAULT_MASK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FAULT_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">    </span><span class="n">NODE_KIND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<p>Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node's HB_n (plus <code>present</code>), the last five from its HEALTH_n. (Not <code>NODE_ID</code>: every node build defines that as a macro.) </p>
+<hr>
+
+<h3 id="enum-nodetelemfield">enum NodeTelemField</h3>
+<p><code>_NODE_TELEM</code> <em>row field offsets, in bytes of the decoded row (hex index = 2 × offset).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">NodeTelemField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FRAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-pdurailfield">enum PduRailField</h3>
+<p><em>PDU_RAIL_12V / PDU_RAIL_5V field offsets, in bytes of the 8-byte TELEM_n frame.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">PduRailField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">V_AVG_MV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">V_MIN_MV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="n">I_AVG_MA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<p>Byte 0 is the TelemPage; a field runs to the next offset, the last to byte 7. Little-endian. </p>
+<hr>
+
 <h3 id="enum-pdurailflag">enum PduRailFlag</h3>
 <p><em>PDU_RAIL_* page byte 1 — per-rail condition bits (all zero = healthy).</em> 
 <div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">PduRailFlag</span><span class="w"> </span><span class="p">{</span>
@@ -5055,6 +5325,18 @@
 <span class="w">    </span><span class="n">SENSOR_FAULT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span>
 <span class="p">};</span>
 </code></pre></div></p>
+<hr>
+
+<h3 id="enum-pdustatusfield">enum PduStatusField</h3>
+<p><em>PDU_STATUS field offsets, in bytes of the 8-byte TELEM_n frame.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">PduStatusField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">NTC_TEMP_DC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">I12_PEAK_MA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="n">I5_PEAK_MA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<p>Byte 0 is the TelemPage; a field runs to the next offset, the last to byte 7. Little-endian. </p>
 <hr>
 
 <h3 id="enum-pdustatusflag">enum PduStatusFlag</h3>
@@ -5078,7 +5360,52 @@
 <span class="w">    </span><span class="n">PDU_STATUS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span>
 <span class="p">};</span>
 </code></pre></div></p>
-<p>Global and append-only: a page id means the same layout whichever node sends it, so the client decodes by page, not by node type. 0x00 is invalid. Layouts (little-endian): PDU_RAIL_12V / PDU_RAIL_5V: [1] PduRailFlag bits · [2-3] vAvgMv u16 · [4-5] vMinMv u16 · [6-7] iAvgMa int16 PDU_STATUS: [1] PduStatusFlag bits · [2-3] ntcTempDC int16 (0.1 °C, INT16_MIN = unavailable) · [4-5] i12PeakMa u16 · [6-7] i5PeakMa u16 </p>
+<p>Global and append-only: a page id means the same layout whichever node sends it, so the client decodes by page, not by node type. 0x00 is invalid. Each page's layout is its field-offset enum below (PDU_RAIL_* → PduRailField, PDU_STATUS → PduStatusField); multi-byte fields little-endian. </p>
+<hr>
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+<h3 id="variable-die_temp_unavailable">variable DIE_TEMP_UNAVAILABLE</h3>
+<p><em>HEALTH_n</em> <code>dieTempC</code> <em>meaning "unavailable / not yet seen" (</em><code>80</code> <em>on the wire).</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">DIE_TEMP_UNAVAILABLE</span><span class="p">;</span>
+</code></pre></div></p>
+<p>Sent when the die sensor can't be read, and cached by <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> for a node whose first HEALTH_n hasn't arrived. Written as a literal so the client sync can read it; equal to INT8_MIN. </p>
+<hr>
+
+<h3 id="variable-gateway_node_id">variable GATEWAY_NODE_ID</h3>
+<p><em>Node ID of the Gateway board's</em> <a href="../namespacePanelBridge/"><em><strong>PanelBridge</strong></em></a> <em>MCU — the CAN master.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">GATEWAY_NODE_ID</span><span class="p">;</span>
+</code></pre></div></p>
+<p>It sends HB_0 / HEALTH_0, and its own row leads every <code>_NODE_STATUS</code> roster reply (#344). CAN nodes take 1–63 (Firmware/NODE_IDS.md). </p>
+<hr>
+
+<h3 id="variable-hb_esr_rec_shift">variable HB_ESR_REC_SHIFT</h3>
+<p><em>HB_n</em> <code>esr</code> <em>field: bit position of the receive error counter (REC, high byte).</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">HB_ESR_REC_SHIFT</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-hb_esr_tec_shift">variable HB_ESR_TEC_SHIFT</h3>
+<p><em>HB_n</em> <code>esr</code> <em>field: bit position of the transmit error counter (TEC, low byte).</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">HB_ESR_TEC_SHIFT</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-node_status_row_bytes">variable NODE_STATUS_ROW_BYTES</h3>
+<p><code>_NODE_STATUS</code> <em>row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex).</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-node_telem_row_bytes">variable NODE_TELEM_ROW_BYTES</h3>
+<p><code>_NODE_TELEM</code> <em>row length in bytes, sent as twice as many hex chars (9 → 18 hex).</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_TELEM_ROW_BYTES</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-ntc_temp_unavailable">variable NTC_TEMP_UNAVAILABLE</h3>
+<p><em>PDU_STATUS</em> <code>ntcTempDC</code> <em>meaning "unavailable" — no reading yet, or the NTC is open/shorted.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">NTC_TEMP_UNAVAILABLE</span><span class="p">;</span>
+</code></pre></div></p>
+<p><code>0x8000</code> on the wire. Written as a literal so the client sync can read it; equal to INT16_MIN. </p>
 <hr>
 <h2 id="macro-definition-documentation">Macro Definition Documentation</h2>
 <h3 id="define-node_status_end_msg_name">define NODE_STATUS_END_MSG_NAME</h3>

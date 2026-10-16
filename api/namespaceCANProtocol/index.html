@@ -5129,7 +5129,7 @@
 <p><em>The HEALTH_n payload</em> <a href="./#function-servicenodestatus"><em><strong>serviceNodeStatus()</strong></em></a> <em>last built for this node (#344).</em>
 <div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">NodeHealthPayload</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">CANProtocol</span><span class="o">::</span><span class="n">lastNodeHealth</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
-<p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reports it as its own node-0 <code>_NODE_STATUS</code> row. Before the first HEALTH_n (or with <code>-DNODE_HEALTH_TELEM=0</code>) it reads not-yet-seen: dieTempC INT8_MIN, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH_n from. </p>
+<p><a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> reports it as its own node-0 <code>_NODE_STATUS</code> row. Before the first HEALTH_n (or with <code>-DNODE_HEALTH_TELEM=0</code>) it reads not-yet-seen: dieTempC DIE_TEMP_UNAVAILABLE, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH_n from. </p>
 <hr>
 
 <h3 id="function-makeheartbeatpayload">function makeHeartbeatPayload</h3>
@@ -5142,7 +5142,7 @@
 <p>Fills uptime, CAN health flags, and ESR-derived TEC/REC from <a href="./"><strong>CANProtocol</strong></a> state.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>nodeId</code> Node ID (1-63 <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>; 0 reserved for <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>). </li>
+<li><code>nodeId</code> Node ID (1-63 <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>; GATEWAY_NODE_ID for <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>). </li>
 <li><code>rxCount</code> Caller-owned receive counter to embed in the payload. </li>
 </ul>
 <p><strong>Returns:</strong></p>
@@ -5161,9 +5161,9 @@
 <p>The CAN/DCS packing boundary: takes the internal die temperature (via <a href="../namespaceSTM32Board/#function-readdietempc"><strong>STM32Board::readDieTempC()</strong></a>) and the node's aggregated fault (via NodeStatus::aggregateFaults()) and packs them into a NodeHealthPayload. Sets the overheat flag (bit0) only when NODE_OVERHEAT_C is defined and dieTempC meets it; sets the DEGRADED flag (bit1) and faultId when <code>fault</code> is not NONE (the enum→byte cast happens here), and nodeKind from <code>kind</code>. faultMask + reserved bytes stay 0.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>nodeId</code> Node ID (1-63 <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>; 0 <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>). </li>
+<li><code>nodeId</code> Node ID (1-63 <a href="../namespacePanelGroup/"><strong>PanelGroup</strong></a>; GATEWAY_NODE_ID <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>). </li>
 <li><code>kind</code> The node's board kind (#344) — from its firmware role, never from nodeId. </li>
-<li><code>dieTempC</code> Internal die temp in whole °C (INT8_MIN = unavailable). </li>
+<li><code>dieTempC</code> Internal die temp in whole °C (DIE_TEMP_UNAVAILABLE = unavailable). </li>
 <li><code>fault</code> Aggregated node fault (NodeFaultCode::NONE = healthy). Default NONE. </li>
 </ul>
 <p><strong>Returns:</strong></p>

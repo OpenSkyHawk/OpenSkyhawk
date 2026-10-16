@@ -92,6 +92,7 @@
 
 ## p
 
+* **putLe16** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 

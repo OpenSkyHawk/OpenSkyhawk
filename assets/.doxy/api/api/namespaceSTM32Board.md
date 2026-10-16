@@ -365,7 +365,7 @@ UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature 
 
 **Returns:**
 
-Die temperature in whole °C, or INT8\_MIN if the internal channels are unavailable on this variant. 
+Die temperature in whole °C, or DIE\_TEMP\_UNAVAILABLE ([**NodeStatus.h**](NodeStatus_8h.md)) if the internal channels are unavailable on this variant. 
 
 
 

@@ -4735,10 +4735,131 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#enum-calackfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalAckField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calcommitfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalCommitField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-caldatafield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalDataField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-caldatarecfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalDataRecField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calhelloackfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalHelloAckField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calnackfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalNackField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#enum-calnackreason" class="md-nav__link">
     <span class="md-ellipsis">
       
         enum CalNackReason
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calrawfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalRawField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calresetfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalResetField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calsessionackfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalSessionAckField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calsessionopenfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalSessionOpenField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum-calstreamselectfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum CalStreamSelectField
       
     </span>
   </a>
@@ -4866,6 +4987,17 @@
     <span class="md-ellipsis">
       
         variable CAL_AXIS_NONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-cal_data_rec_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        variable CAL_DATA_REC_BYTES
       
     </span>
   </a>
@@ -5500,7 +5632,51 @@
 <tbody>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calackfield"><strong>CalAckField</strong></a>  <br><code>ACK</code> <em>payload (1 byte, device→client).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calcommitfield"><strong>CalCommitField</strong></a>  <br><code>COMMIT</code> <em>payload (9 bytes, client→device) — exactly one axis.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-caldatafield"><strong>CalDataField</strong></a>  <br><code>CAL_DATA</code> <em>payload (82 bytes, device→client): two bitmasks, then AXIS_CAL_SLOTS records.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-caldatarecfield"><strong>CalDataRecField</strong></a>  <br><em>Field offsets within one</em> <code>CAL_DATA</code> <em>record (record i starts at CAL_DATA_RECORDS + i × 10).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calhelloackfield"><strong>CalHelloAckField</strong></a>  <br><code>HELLO_ACK</code> <em>payload (6 bytes, device→client).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calnackfield"><strong>CalNackField</strong></a>  <br><code>NACK</code> <em>payload (3 bytes, device→client).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
 <td style="text-align: left;"><a href="#enum-calnackreason"><strong>CalNackReason</strong></a>  <br><em>NACK reasons.</em> <code>detail</code> <em>names the offending axis where one applies, else 0xFF.</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calrawfield"><strong>CalRawField</strong></a>  <br><code>RAW</code> <em>payload (5 bytes, device→client).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calresetfield"><strong>CalResetField</strong></a>  <br><code>RESET</code> <em>payload (1 byte, client→device).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calsessionackfield"><strong>CalSessionAckField</strong></a>  <br><code>SESSION_ACK</code> <em>payload (5 bytes, device→client).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calsessionopenfield"><strong>CalSessionOpenField</strong></a>  <br><code>SESSION_OPEN</code> <em>payload (1 byte, client→device).</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">enum uint8_t</td>
+<td style="text-align: left;"><a href="#enum-calstreamselectfield"><strong>CalStreamSelectField</strong></a>  <br><code>STREAM_SELECT</code> <em>payload (1 byte, client→device).</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">enum uint8_t</td>
@@ -5552,6 +5728,10 @@
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
 <td style="text-align: left;"><a href="#variable-cal_axis_none"><strong>CAL_AXIS_NONE</strong></a>   = <code>0xFF</code><br><code>RESET</code> <em>and the axis-selection fields use this to mean "all" / "none".</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">constexpr uint8_t</td>
+<td style="text-align: left;"><a href="#variable-cal_data_rec_bytes"><strong>CAL_DATA_REC_BYTES</strong></a>   = <code>10</code><br><em>One</em> <code>CAL_DATA</code> <em>record's length in bytes.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint16_t</td>
@@ -5717,6 +5897,71 @@
 </tbody>
 </table>
 <h2 id="public-types-documentation">Public Types Documentation</h2>
+<h3 id="enum-calackfield">enum CalAckField</h3>
+<p><code>ACK</code> <em>payload (1 byte, device→client).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalAckField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_ACK_TYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calcommitfield">enum CalCommitField</h3>
+<p><code>COMMIT</code> <em>payload (9 bytes, client→device) — exactly one axis.</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalCommitField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_MIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_CENTRE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_COMMIT_DEADZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-caldatafield">enum CalDataField</h3>
+<p><code>CAL_DATA</code> <em>payload (82 bytes, device→client): two bitmasks, then AXIS_CAL_SLOTS records.</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalDataField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_DATA_PRESENT_MASK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_DATA_CALIBRATED_MASK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_DATA_RECORDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-caldatarecfield">enum CalDataRecField</h3>
+<p><em>Field offsets within one</em> <code>CAL_DATA</code> <em>record (record i starts at CAL_DATA_RECORDS + i × 10).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalDataRecField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_CONTROL_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_MIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_CENTRE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_DATA_REC_DEADZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calhelloackfield">enum CalHelloAckField</h3>
+<p><code>HELLO_ACK</code> <em>payload (6 bytes, device→client).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalHelloAckField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_PROTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_BLOB_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_AXIS_SLOTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_FW_MAJOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_FW_MINOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_HELLO_ACK_FW_PATCH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calnackfield">enum CalNackField</h3>
+<p><code>NACK</code> <em>payload (3 bytes, device→client).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalNackField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_NACK_TYPE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_NACK_REASON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_NACK_DETAIL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
 <h3 id="enum-calnackreason">enum CalNackReason</h3>
 <p><em>NACK reasons.</em> <code>detail</code> <em>names the offending axis where one applies, else 0xFF.</em>
 <div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalNackReason</span><span class="w"> </span><span class="p">{</span>
@@ -5728,6 +5973,49 @@
 <span class="w">    </span><span class="n">CAL_NACK_NO_SESSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span>
 <span class="w">    </span><span class="n">CAL_NACK_NO_STORAGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
 <span class="w">    </span><span class="n">CAL_NACK_BAD_DEADZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calrawfield">enum CalRawField</h3>
+<p><code>RAW</code> <em>payload (5 bytes, device→client).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalRawField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_RAW_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_RAW_RAW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_RAW_CAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calresetfield">enum CalResetField</h3>
+<p><code>RESET</code> <em>payload (1 byte, client→device).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalResetField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_RESET_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calsessionackfield">enum CalSessionAckField</h3>
+<p><code>SESSION_ACK</code> <em>payload (5 bytes, device→client).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalSessionAckField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_SESSION_ACK_TIMEOUT_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CAL_SESSION_ACK_AXIS_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calsessionopenfield">enum CalSessionOpenField</h3>
+<p><code>SESSION_OPEN</code> <em>payload (1 byte, client→device).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalSessionOpenField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_SESSION_OPEN_AXIS_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="enum-calstreamselectfield">enum CalStreamSelectField</h3>
+<p><code>STREAM_SELECT</code> <em>payload (1 byte, client→device).</em>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">OpenSkyhawk</span><span class="o">::</span><span class="n">CalStreamSelectField</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CAL_STREAM_SELECT_AXIS_IDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="p">};</span>
 </code></pre></div></p>
 <hr>
@@ -5833,6 +6121,12 @@
 <h3 id="variable-cal_axis_none">variable CAL_AXIS_NONE</h3>
 <p><code>RESET</code> <em>and the axis-selection fields use this to mean "all" / "none".</em>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_AXIS_NONE</span><span class="p">;</span>
+</code></pre></div></p>
+<hr>
+
+<h3 id="variable-cal_data_rec_bytes">variable CAL_DATA_REC_BYTES</h3>
+<p><em>One</em> <code>CAL_DATA</code> <em>record's length in bytes.</em>
+<div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">CAL_DATA_REC_BYTES</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
 

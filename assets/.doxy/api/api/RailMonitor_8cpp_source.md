@@ -69,12 +69,12 @@ TelemPayload RailMonitor::buildPage(bool resetWindow) {
     const int16_t  iAvg = Pdu::clampI16(_n ? _sumMa / (int32_t)_n : _lastMa);
 
     TelemPayload p;
-    p.page    = (uint8_t)_cfg.page;
-    p.body[0] = flags();
-    p.body[1] = (uint8_t)(vAvg & 0xFF);  p.body[2] = (uint8_t)(vAvg >> 8);
-    p.body[3] = (uint8_t)(vMin & 0xFF);  p.body[4] = (uint8_t)(vMin >> 8);
-    p.body[5] = (uint8_t)((uint16_t)iAvg & 0xFF);
-    p.body[6] = (uint8_t)((uint16_t)iAvg >> 8);
+    uint8_t* f = reinterpret_cast<uint8_t*>(&p);   // whole frame: PduRailField offsets index it
+    p.page = (uint8_t)_cfg.page;
+    f[(uint8_t)PduRailField::FLAGS] = flags();
+    Pdu::putLe16(f + (uint8_t)PduRailField::V_AVG_MV, vAvg);
+    Pdu::putLe16(f + (uint8_t)PduRailField::V_MIN_MV, vMin);
+    Pdu::putLe16(f + (uint8_t)PduRailField::I_AVG_MA, (uint16_t)iAvg);
 
     if (resetWindow) { _sumMv = 0; _sumMa = 0; _n = 0; _minMv = UINT16_MAX; }
     return p;

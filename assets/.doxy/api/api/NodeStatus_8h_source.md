@@ -21,6 +21,24 @@
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
 
+constexpr uint8_t GATEWAY_NODE_ID = 0;
+
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 14;
+
+enum class NodeStatusField : uint8_t {
+    ID           = 0,   // u8: node ID; GATEWAY_NODE_ID = the bridge's own row, 1-63 = CAN nodes
+    PRESENT      = 1,   // u8: 01 alive, 00 removed
+    HB_FLAGS     = 2,   // u8: HeartbeatFlag bits
+    UPTIME       = 3,   // u16: seconds since boot, wraps at 65535
+    RX_COUNT     = 5,   // u16: node-owned accepted RX count, wraps at 65535
+    ESR          = 7,   // u16: TEC at HB_ESR_TEC_SHIFT, REC at HB_ESR_REC_SHIFT
+    DIE_TEMP_C   = 9,   // i8: whole degC, DIE_TEMP_UNAVAILABLE = not seen
+    HEALTH_FLAGS = 10,  // u8: NodeHealthFlag bits
+    FAULT_MASK   = 11,  // u8: reserved, 00
+    FAULT_ID     = 12,  // u8: NodeFaultCode
+    NODE_KIND    = 13,  // u8: NodeKind
+};
+
 // ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────
 // PanelBridge forwards every TELEM_n CAN frame to the host unread, as one DCS-BIOS message per
 // frame: `_NODE_TELEM <nodeId(2 hex)><8 frame bytes as 16 hex, wire order>` (18 hex chars). Pushed
@@ -30,10 +48,28 @@
 #define NODE_TELEM_PROTO_VERSION  1
 #define NODE_TELEM_MSG_NAME       "_NODE_TELEM"
 
+constexpr uint8_t NODE_TELEM_ROW_BYTES = 9;
+
+enum class NodeTelemField : uint8_t {
+    ID      = 0,  // u8: sending node ID (from the CAN ID)
+    FRAME   = 1,  // 8 bytes: the TELEM_n frame unread, wire order (TelemPage at FRAME + 0)
+};
+
+enum class HeartbeatFlag : uint8_t {
+    BOFF = 0x01,  // CAN controller is bus-off
+    EPVF = 0x02,  // error passive: TEC or REC >= 128
+};
+
+constexpr uint8_t HB_ESR_TEC_SHIFT = 0;
+constexpr uint8_t HB_ESR_REC_SHIFT = 8;
+
 enum class NodeHealthFlag : uint8_t {
     OVERHEAT = 0x01,  // die temp >= NODE_OVERHEAT_C (opt-in, #213)
     DEGRADED = 0x02,  // a FaultSource reports faultCode() != NodeFaultCode::NONE (#163)
 };
+
+constexpr int8_t DIE_TEMP_UNAVAILABLE = -128;
+static_assert(DIE_TEMP_UNAVAILABLE == INT8_MIN, "DIE_TEMP_UNAVAILABLE is the int8 minimum");
 
 enum class NodeFaultCode : uint8_t {
     NONE           = 0x00,
@@ -79,6 +115,23 @@ enum class PduStatusFlag : uint8_t {
     TEMP_CRIT    = 0x08,  // board temperature at the critical threshold
     NTC_FAULT    = 0x10,  // NTC channel open or shorted
 };
+
+enum class PduRailField : uint8_t {
+    FLAGS    = 1,  // u8: PduRailFlag bits
+    V_AVG_MV = 2,  // u16: window-average rail voltage, mV
+    V_MIN_MV = 4,  // u16: window-minimum rail voltage, mV
+    I_AVG_MA = 6,  // int16: window-average rail current, mA (signed: zero offset stays visible)
+};
+
+enum class PduStatusField : uint8_t {
+    FLAGS       = 1,  // u8: PduStatusFlag bits
+    NTC_TEMP_DC = 2,  // int16: board temperature, 0.1 degC (NTC_TEMP_UNAVAILABLE = no reading)
+    I12_PEAK_MA = 4,  // u16: 12 V rail peak current since the last page, mA
+    I5_PEAK_MA  = 6,  // u16: 5 V rail peak current since the last page, mA
+};
+
+constexpr int16_t NTC_TEMP_UNAVAILABLE = -32768;
+static_assert(NTC_TEMP_UNAVAILABLE == INT16_MIN, "NTC_TEMP_UNAVAILABLE is the int16 minimum");
 
 namespace OpenSkyhawk {
 

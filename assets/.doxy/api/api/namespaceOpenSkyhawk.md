@@ -80,7 +80,18 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 | Type | Name |
 | ---: | :--- |
+| enum uint8\_t | [**CalAckField**](#enum-calackfield)  <br>`ACK` _payload (1 byte, device→client)._ |
+| enum uint8\_t | [**CalCommitField**](#enum-calcommitfield)  <br>`COMMIT` _payload (9 bytes, client→device) — exactly one axis._ |
+| enum uint8\_t | [**CalDataField**](#enum-caldatafield)  <br>`CAL_DATA` _payload (82 bytes, device→client): two bitmasks, then AXIS\_CAL\_SLOTS records._ |
+| enum uint8\_t | [**CalDataRecField**](#enum-caldatarecfield)  <br>_Field offsets within one_ `CAL_DATA` _record (record i starts at CAL\_DATA\_RECORDS + i × 10)._ |
+| enum uint8\_t | [**CalHelloAckField**](#enum-calhelloackfield)  <br>`HELLO_ACK` _payload (6 bytes, device→client)._ |
+| enum uint8\_t | [**CalNackField**](#enum-calnackfield)  <br>`NACK` _payload (3 bytes, device→client)._ |
 | enum uint8\_t | [**CalNackReason**](#enum-calnackreason)  <br>_NACK reasons._ `detail` _names the offending axis where one applies, else 0xFF._ |
+| enum uint8\_t | [**CalRawField**](#enum-calrawfield)  <br>`RAW` _payload (5 bytes, device→client)._ |
+| enum uint8\_t | [**CalResetField**](#enum-calresetfield)  <br>`RESET` _payload (1 byte, client→device)._ |
+| enum uint8\_t | [**CalSessionAckField**](#enum-calsessionackfield)  <br>`SESSION_ACK` _payload (5 bytes, device→client)._ |
+| enum uint8\_t | [**CalSessionOpenField**](#enum-calsessionopenfield)  <br>`SESSION_OPEN` _payload (1 byte, client→device)._ |
+| enum uint8\_t | [**CalStreamSelectField**](#enum-calstreamselectfield)  <br>`STREAM_SELECT` _payload (1 byte, client→device)._ |
 | enum uint8\_t | [**CalType**](#enum-caltype)  <br>_Message types. High bit set = device→client, so direction is readable in a capture._  |
 | enum uint8\_t | [**DrumFont**](#enum-drumfont)  <br>_Glyph font size. Maps to a fixed monospace ProFont face._  |
 | enum uint8\_t | [**DrumScroll**](#enum-drumscroll)  <br>_Scroll behaviour per readout._  |
@@ -99,6 +110,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | ---: | :--- |
 |  constexpr uint8\_t | [**AXIS\_CAL\_SLOTS**](#variable-axis_cal_slots)   = `8`<br>_HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates._  |
 |  constexpr uint8\_t | [**CAL\_AXIS\_NONE**](#variable-cal_axis_none)   = `0xFF`<br>`RESET` _and the axis-selection fields use this to mean "all" / "none"._ |
+|  constexpr uint8\_t | [**CAL\_DATA\_REC\_BYTES**](#variable-cal_data_rec_bytes)   = `10`<br>_One_ `CAL_DATA` _record's length in bytes._ |
 |  constexpr uint16\_t | [**CAL\_ENVELOPE\_BYTES**](#variable-cal_envelope_bytes)   = `10`<br>_magic 4 + type 1 + seq 1 + len 2 + crc 2_  |
 |  constexpr uint8\_t | [**CAL\_FRAME\_MAGIC**](#variable-cal_frame_magic)   = `{ 0xAA, 0x53, 0x4B, 0x43 }`<br> |
 |  constexpr uint32\_t | [**CAL\_MAGIC**](#variable-cal_magic)   = `/* multi line expression */`<br>_Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._  |
@@ -192,6 +204,119 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 
 
 
+### enum CalAckField 
+
+`ACK` _payload (1 byte, device→client)._
+```C++
+enum OpenSkyhawk::CalAckField {
+    CAL_ACK_TYPE = 0
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalCommitField 
+
+`COMMIT` _payload (9 bytes, client→device) — exactly one axis._
+```C++
+enum OpenSkyhawk::CalCommitField {
+    CAL_COMMIT_IDX = 0,
+    CAL_COMMIT_MIN = 1,
+    CAL_COMMIT_CENTRE = 3,
+    CAL_COMMIT_MAX = 5,
+    CAL_COMMIT_DEADZONE = 7
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalDataField 
+
+`CAL_DATA` _payload (82 bytes, device→client): two bitmasks, then AXIS\_CAL\_SLOTS records._
+```C++
+enum OpenSkyhawk::CalDataField {
+    CAL_DATA_PRESENT_MASK = 0,
+    CAL_DATA_CALIBRATED_MASK = 1,
+    CAL_DATA_RECORDS = 2
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalDataRecField 
+
+_Field offsets within one_ `CAL_DATA` _record (record i starts at CAL\_DATA\_RECORDS + i × 10)._
+```C++
+enum OpenSkyhawk::CalDataRecField {
+    CAL_DATA_REC_CONTROL_ID = 0,
+    CAL_DATA_REC_MIN = 2,
+    CAL_DATA_REC_CENTRE = 4,
+    CAL_DATA_REC_MAX = 6,
+    CAL_DATA_REC_DEADZONE = 8
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalHelloAckField 
+
+`HELLO_ACK` _payload (6 bytes, device→client)._
+```C++
+enum OpenSkyhawk::CalHelloAckField {
+    CAL_HELLO_ACK_PROTO = 0,
+    CAL_HELLO_ACK_BLOB_VERSION = 1,
+    CAL_HELLO_ACK_AXIS_SLOTS = 2,
+    CAL_HELLO_ACK_FW_MAJOR = 3,
+    CAL_HELLO_ACK_FW_MINOR = 4,
+    CAL_HELLO_ACK_FW_PATCH = 5
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalNackField 
+
+`NACK` _payload (3 bytes, device→client)._
+```C++
+enum OpenSkyhawk::CalNackField {
+    CAL_NACK_TYPE = 0,
+    CAL_NACK_REASON = 1,
+    CAL_NACK_DETAIL = 2
+};
+```
+
+
+
+
+<hr>
+
+
+
 ### enum CalNackReason 
 
 _NACK reasons._ `detail` _names the offending axis where one applies, else 0xFF._
@@ -205,6 +330,89 @@ enum OpenSkyhawk::CalNackReason {
     CAL_NACK_NO_SESSION = 0x06,
     CAL_NACK_NO_STORAGE = 0x07,
     CAL_NACK_BAD_DEADZONE = 0x08
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalRawField 
+
+`RAW` _payload (5 bytes, device→client)._
+```C++
+enum OpenSkyhawk::CalRawField {
+    CAL_RAW_IDX = 0,
+    CAL_RAW_RAW = 1,
+    CAL_RAW_CAL = 3
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalResetField 
+
+`RESET` _payload (1 byte, client→device)._
+```C++
+enum OpenSkyhawk::CalResetField {
+    CAL_RESET_IDX = 0
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalSessionAckField 
+
+`SESSION_ACK` _payload (5 bytes, device→client)._
+```C++
+enum OpenSkyhawk::CalSessionAckField {
+    CAL_SESSION_ACK_TIMEOUT_MS = 0,
+    CAL_SESSION_ACK_AXIS_IDX = 4
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalSessionOpenField 
+
+`SESSION_OPEN` _payload (1 byte, client→device)._
+```C++
+enum OpenSkyhawk::CalSessionOpenField {
+    CAL_SESSION_OPEN_AXIS_IDX = 0
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalStreamSelectField 
+
+`STREAM_SELECT` _payload (1 byte, client→device)._
+```C++
+enum OpenSkyhawk::CalStreamSelectField {
+    CAL_STREAM_SELECT_AXIS_IDX = 0
 };
 ```
 
@@ -419,6 +627,20 @@ constexpr uint8_t OpenSkyhawk::AXIS_CAL_SLOTS;
 `RESET` _and the axis-selection fields use this to mean "all" / "none"._
 ```C++
 constexpr uint8_t OpenSkyhawk::CAL_AXIS_NONE;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_DATA\_REC\_BYTES 
+
+_One_ `CAL_DATA` _record's length in bytes._
+```C++
+constexpr uint8_t OpenSkyhawk::CAL_DATA_REC_BYTES;
 ```
 
 

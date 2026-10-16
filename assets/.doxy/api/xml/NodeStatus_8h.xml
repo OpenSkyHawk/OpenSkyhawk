@@ -8,6 +8,7 @@
     <includedby refid="NodeStatus_8cpp" local="yes">Firmware/Libraries/NodeStatus/NodeStatus.cpp</includedby>
     <includedby refid="PanelBridge_8cpp" local="no">Firmware/Libraries/PanelBridge/PanelBridge.cpp</includedby>
     <includedby refid="BoardThermal_8h" local="no">Firmware/Libraries/PowerMonitor/BoardThermal.h</includedby>
+    <includedby refid="PduMath_8cpp" local="no">Firmware/Libraries/PowerMonitor/PduMath.cpp</includedby>
     <includedby refid="RailMonitor_8h" local="no">Firmware/Libraries/PowerMonitor/RailMonitor.h</includedby>
     <includedby refid="STM32Board_8h" local="no">Firmware/Libraries/STM32Board/STM32Board.h</includedby>
     <incdepgraph>
@@ -81,9 +82,11 @@
         </childnode>
         <childnode refid="49" relation="include">
         </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
         <childnode refid="45" relation="include">
         </childnode>
-        <childnode refid="51" relation="include">
+        <childnode refid="52" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -102,7 +105,7 @@
         <childnode refid="16" relation="include">
         </childnode>
       </node>
-      <node id="52">
+      <node id="53">
         <label>Firmware/Libraries/PanelGroup/Helpers/ShiftBus/ShiftBus.cpp</label>
         <link refid="ShiftBus_8cpp"/>
       </node>
@@ -360,6 +363,10 @@
         <childnode refid="43" relation="include">
         </childnode>
       </node>
+      <node id="51">
+        <label>Firmware/Libraries/PowerMonitor/PduMath.cpp</label>
+        <link refid="PduMath_8cpp"/>
+      </node>
       <node id="44">
         <label>Firmware/Libraries/PowerMonitor/PduNode.cpp</label>
         <link refid="PduNode_8cpp"/>
@@ -386,7 +393,7 @@
         <label>Firmware/Libraries/STM32Board/STM32Board.cpp</label>
         <link refid="STM32Board_8cpp"/>
       </node>
-      <node id="51">
+      <node id="52">
         <label>Firmware/Libraries/STM32Board/STM32Board.h</label>
         <link refid="STM32Board_8h"/>
         <childnode refid="3" relation="include">
@@ -397,7 +404,7 @@
         </childnode>
         <childnode refid="15" relation="include">
         </childnode>
-        <childnode refid="52" relation="include">
+        <childnode refid="53" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
@@ -439,7 +446,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="32" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="32" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="37" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="37" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" prot="public" static="no">
         <name>NODE_STATUS_REQ_ADDR</name>
@@ -450,7 +457,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="33" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="33" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="38" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="38" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" prot="public" static="no">
         <name>NODE_STATUS_MSG_NAME</name>
@@ -461,7 +468,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="34" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="34" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="39" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="39" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" prot="public" static="no">
         <name>NODE_STATUS_END_MSG_NAME</name>
@@ -472,7 +479,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="35" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="35" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="40" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="40" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1ac198ac3b630e24985d2b5554f09c62e9" prot="public" static="no">
         <name>NODE_TELEM_PROTO_VERSION</name>
@@ -483,7 +490,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="43" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="43" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="82" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="82" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="NodeStatus_8h_1a7b15f66d7f1068f2333ec305a3e756f0" prot="public" static="no">
         <name>NODE_TELEM_MSG_NAME</name>
@@ -494,10 +501,167 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="44" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="44" bodyend="-1"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="83" column="9" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="83" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="enum">
+      <memberdef kind="enum" id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>NodeStatusField</name>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ab718adec73e04ce3ec720dd11a06a308" prot="public">
+          <name>ID</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a720ff3fec5d13dcf3d3aec6d5726fc36" prot="public">
+          <name>PRESENT</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a9807604fa88e178a0e3506935126bc5d" prot="public">
+          <name>HB_FLAGS</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a45c36ce571e3867b227e3d9aeee497aa" prot="public">
+          <name>UPTIME</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2abf61b2b073cbf3294bdbdd78648d1cc9" prot="public">
+          <name>RX_COUNT</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a82a52e1d203a00a77d4b222e4630b023" prot="public">
+          <name>ESR</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ac2b9e5ca6a84d9de92a1487f0fede993" prot="public">
+          <name>DIE_TEMP_C</name>
+          <initializer>= 9</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a0d282695756b296b64a23d9a313e62f5" prot="public">
+          <name>HEALTH_FLAGS</name>
+          <initializer>= 10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a1684d4ec6592e5ad6e7ccccdafaf6edf" prot="public">
+          <name>FAULT_MASK</name>
+          <initializer>= 11</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ac797f061bd092bccbf5aff012519389c" prot="public">
+          <name>FAULT_ID</name>
+          <initializer>= 12</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a3e1d13b9f14b103c19bc6630a0ab4305" prot="public">
+          <name>NODE_KIND</name>
+          <initializer>= 13</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>_NODE_STATUS</computeroutput> row field offsets, in bytes of the decoded row (hex index = 2 × offset). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node&apos;s HB_n (plus <computeroutput>present</computeroutput>), the last five from its HEALTH_n. (Not <computeroutput>NODE_ID</computeroutput>: every node build defines that as a macro.) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="62" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="62" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fd" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>NodeTelemField</name>
+        <enumvalue id="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fdab718adec73e04ce3ec720dd11a06a308" prot="public">
+          <name>ID</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fdac57e921596445b99ab85558984966184" prot="public">
+          <name>FRAME</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para><computeroutput>_NODE_TELEM</computeroutput> row field offsets, in bytes of the decoded row (hex index = 2 × offset). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="89" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="89" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1a0362fca16b7562cd4838e01ed8d4b689" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>HeartbeatFlag</name>
+        <enumvalue id="NodeStatus_8h_1a0362fca16b7562cd4838e01ed8d4b689a762960f49e2ef165acbc473297e864db" prot="public">
+          <name>BOFF</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a0362fca16b7562cd4838e01ed8d4b689acca12a177b97f280183dbaf78bcf50e1" prot="public">
+          <name>EPVF</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>HB_n <computeroutput>flags</computeroutput> bits — CAN controller error state (maps to HeartbeatPayload.flags). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="95" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="95" bodyend="98"/>
+      </memberdef>
       <memberdef kind="enum" id="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
         <name>NodeHealthFlag</name>
@@ -524,7 +688,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="47" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="47" bodyend="50"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="106" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="106" bodyend="109"/>
       </memberdef>
       <memberdef kind="enum" id="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -617,7 +781,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="59" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="59" bodyend="71"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="127" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="127" bodyend="139"/>
       </memberdef>
       <memberdef kind="enum" id="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -662,7 +826,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="81" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="81" bodyend="87"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="149" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="149" bodyend="155"/>
       </memberdef>
       <memberdef kind="enum" id="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -703,11 +867,11 @@
 <para>TELEM_n page ids (#216) — byte 0 of TelemPayload, naming the layout of bytes 1-7. </para>
         </briefdescription>
         <detaileddescription>
-<para>Global and append-only: a page id means the same layout whichever node sends it, so the client decodes by page, not by node type. 0x00 is invalid. Layouts (little-endian): PDU_RAIL_12V / PDU_RAIL_5V: [1] PduRailFlag bits · [2-3] vAvgMv u16 · [4-5] vMinMv u16 · [6-7] iAvgMa int16 PDU_STATUS: [1] PduStatusFlag bits · [2-3] ntcTempDC int16 (0.1 °C, INT16_MIN = unavailable) · [4-5] i12PeakMa u16 · [6-7] i5PeakMa u16 </para>
+<para>Global and append-only: a page id means the same layout whichever node sends it, so the client decodes by page, not by node type. 0x00 is invalid. Each page&apos;s layout is its field-offset enum below (PDU_RAIL_* → PduRailField, PDU_STATUS → PduStatusField); multi-byte fields little-endian. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="99" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="99" bodyend="104"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="164" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="164" bodyend="169"/>
       </memberdef>
       <memberdef kind="enum" id="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -759,7 +923,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="107" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="107" bodyend="113"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="172" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="172" bodyend="178"/>
       </memberdef>
       <memberdef kind="enum" id="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" prot="public" static="no" strong="yes">
         <type>uint8_t</type>
@@ -811,7 +975,207 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="116" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="116" bodyend="122"/>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="181" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="181" bodyend="187"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>PduRailField</name>
+        <enumvalue id="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5a67c6e660061c755787b8f8716b4f2430" prot="public">
+          <name>FLAGS</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5af6ade973e24f29de5d6b37df3d6f6d7c" prot="public">
+          <name>V_AVG_MV</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5ae8abd32dfd8a022148a99ea55d3d6566" prot="public">
+          <name>V_MIN_MV</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5ae84978fe3b928d39eb162ed57c09d326" prot="public">
+          <name>I_AVG_MA</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>PDU_RAIL_12V / PDU_RAIL_5V field offsets, in bytes of the 8-byte TELEM_n frame. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Byte 0 is the TelemPage; a field runs to the next offset, the last to byte 7. Little-endian. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="194" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="194" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="enum" id="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>PduStatusField</name>
+        <enumvalue id="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a67c6e660061c755787b8f8716b4f2430" prot="public">
+          <name>FLAGS</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a10eae20133dc4395b5e694ad8d5e00dc" prot="public">
+          <name>NTC_TEMP_DC</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a3bce02e8c3d8493edd0d07ee15765f4b" prot="public">
+          <name>I12_PEAK_MA</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a804f62293d1119956874dd9dc7f3fac7" prot="public">
+          <name>I5_PEAK_MA</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>PDU_STATUS field offsets, in bytes of the 8-byte TELEM_n frame. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Byte 0 is the TelemPage; a field runs to the next offset, the last to byte 7. Little-endian. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="206" column="1" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="206" bodyend="211"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="NodeStatus_8h_1a4ed9c421fe79c8e7b64e7dfcbf7c0784" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t GATEWAY_NODE_ID</definition>
+        <argsstring></argsstring>
+        <name>GATEWAY_NODE_ID</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Node ID of the Gateway board&apos;s <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> MCU — the CAN master. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>It sends HB_0 / HEALTH_0, and its own row leads every <computeroutput>_NODE_STATUS</computeroutput> roster reply (#344). CAN nodes take 1–63 (Firmware/NODE_IDS.md). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="48" column="19" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="NodeStatus_8h_1ac5d9dd26c11f8215ad904818613d5adb" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t NODE_STATUS_ROW_BYTES</definition>
+        <argsstring></argsstring>
+        <name>NODE_STATUS_ROW_BYTES</name>
+        <initializer>= 14</initializer>
+        <briefdescription>
+<para><computeroutput>_NODE_STATUS</computeroutput> row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="51" column="19" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="NodeStatus_8h_1a4512c0ff0ba2b767df78463860946069" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t NODE_TELEM_ROW_BYTES</definition>
+        <argsstring></argsstring>
+        <name>NODE_TELEM_ROW_BYTES</name>
+        <initializer>= 9</initializer>
+        <briefdescription>
+<para><computeroutput>_NODE_TELEM</computeroutput> row length in bytes, sent as twice as many hex chars (9 → 18 hex). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="86" column="19" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="NodeStatus_8h_1a10990750c67c00baab1a0df47d3f1cac" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t HB_ESR_TEC_SHIFT</definition>
+        <argsstring></argsstring>
+        <name>HB_ESR_TEC_SHIFT</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>HB_n <computeroutput>esr</computeroutput> field: bit position of the transmit error counter (TEC, low byte). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="101" column="19" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="NodeStatus_8h_1a7a8c414fcd2de8af8e66c36d1d8a6d78" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t HB_ESR_REC_SHIFT</definition>
+        <argsstring></argsstring>
+        <name>HB_ESR_REC_SHIFT</name>
+        <initializer>= 8</initializer>
+        <briefdescription>
+<para>HB_n <computeroutput>esr</computeroutput> field: bit position of the receive error counter (REC, high byte). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="103" column="19" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="NodeStatus_8h_1ac926da9f0f5a13a555f9afc4ff25f49c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr int8_t</type>
+        <definition>constexpr int8_t DIE_TEMP_UNAVAILABLE</definition>
+        <argsstring></argsstring>
+        <name>DIE_TEMP_UNAVAILABLE</name>
+        <initializer>= -128</initializer>
+        <briefdescription>
+<para>HEALTH_n <computeroutput>dieTempC</computeroutput> meaning &quot;unavailable / not yet seen&quot; (<computeroutput>80</computeroutput> on the wire). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Sent when the die sensor can&apos;t be read, and cached by <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> for a node whose first HEALTH_n hasn&apos;t arrived. Written as a literal so the client sync can read it; equal to INT8_MIN. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="117" column="18" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="NodeStatus_8h_1a38101c97f4820df74cb03246c2b21e18" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr int16_t</type>
+        <definition>constexpr int16_t NTC_TEMP_UNAVAILABLE</definition>
+        <argsstring></argsstring>
+        <name>NTC_TEMP_UNAVAILABLE</name>
+        <initializer>= -32768</initializer>
+        <briefdescription>
+<para>PDU_STATUS <computeroutput>ntcTempDC</computeroutput> meaning &quot;unavailable&quot; — no reading yet, or the NTC is open/shorted. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>0x8000</computeroutput> on the wire. Written as a literal so the client sync can read it; equal to INT16_MIN. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/NodeStatus/NodeStatus.h" line="218" column="19" bodyfile="Firmware/Libraries/NodeStatus/NodeStatus.h" bodystart="218" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -819,11 +1183,15 @@
     </briefdescription>
     <detaileddescription>
 <para>Owns the cross-node <bold>status API</bold> — not just health:<itemizedlist>
-<listitem><para>the <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS host-reporting contract (proto version, request address, message names) — <bold>the canonical source the client&apos;s <computeroutput>sync-a4ec.ts</computeroutput> parses</bold>;</para>
-</listitem><listitem><para><computeroutput>NodeHealthFlag</computeroutput> (HEALTH_n flag bits) and <computeroutput>NodeFaultCode</computeroutput> (the compact wire faultId dictionary the client maps to labels);</para>
+<listitem><para>the <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS host-reporting contract (proto version, request address, message names, <computeroutput>GATEWAY_NODE_ID</computeroutput>, row layout <computeroutput>NodeStatusField</computeroutput>) — <bold>the canonical source the client&apos;s <computeroutput>sync-a4ec.ts</computeroutput> parses</bold>;</para>
+</listitem><listitem><para><computeroutput>HeartbeatFlag</computeroutput> + the <computeroutput>HB_ESR_*</computeroutput> split (HB_n flags / esr fields);</para>
+</listitem><listitem><para><computeroutput>NodeHealthFlag</computeroutput> (HEALTH_n flag bits), <computeroutput>DIE_TEMP_UNAVAILABLE</computeroutput>, and <computeroutput>NodeFaultCode</computeroutput> (the compact wire faultId dictionary the client maps to labels);</para>
 </listitem><listitem><para><computeroutput>NodeKind</computeroutput> (HEALTH_n board-kind byte — what board a NODE_ID is, announced by its firmware);</para>
-</listitem><listitem><para>the <computeroutput>_NODE_TELEM</computeroutput> host contract and the TELEM_n page vocabulary (<computeroutput>TelemPage</computeroutput>, <computeroutput>PduRailFlag</computeroutput>, <computeroutput>PduStatusFlag</computeroutput>) — #216;</para>
-</listitem><listitem><para><computeroutput>FaultSource</computeroutput> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <computeroutput>FaultSource</computeroutput> is <emphasis>one piece</emphasis> of node status, not the whole story.</para>
+</listitem><listitem><para>the <computeroutput>_NODE_TELEM</computeroutput> host contract and the TELEM_n page vocabulary (<computeroutput>TelemPage</computeroutput>, <computeroutput>PduRailFlag</computeroutput>, <computeroutput>PduStatusFlag</computeroutput>, the per-page field offsets, <computeroutput>NTC_TEMP_UNAVAILABLE</computeroutput>) — #216;</para>
+</listitem></itemizedlist>
+</para>
+<para>Every wire value is a named <computeroutput>enum class X : T { NAME = literal }</computeroutput> or <computeroutput>constexpr T NAME = literal</computeroutput> so the client sync can read it (#346) — never only a comment, a bare literal or a format string.<itemizedlist>
+<listitem><para><computeroutput>FaultSource</computeroutput> — the interface a fault-producing object implements so a node-level aggregator can roll it up. A <computeroutput>FaultSource</computeroutput> is <emphasis>one piece</emphasis> of node status, not the whole story.</para>
 </listitem></itemizedlist>
 </para>
 <para>This is the neutral home for node-status vocabulary so it isn&apos;t shaped around any one node flavour (PanelGroup/OutputBase) or the HID namespace. <computeroutput>NodeHealthPayload</computeroutput> (the CAN HEALTH_n frame struct) stays in <computeroutput><ref refid="CANProtocol_8h" kindref="compound">CANProtocol.h</ref></computeroutput>; the fault <emphasis>detail</emphasis> strings stay local (DiagSerial), never on the wire. Header-only contract + a tiny <computeroutput>FaultSource</computeroutput> registry (<computeroutput><ref refid="NodeStatus_8cpp" kindref="compound">NodeStatus.cpp</ref></computeroutput>).</para>
@@ -835,100 +1203,153 @@
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="normal"></highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_STATUS<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#86)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>reports<sp/>connected<sp/>nodes<sp/>+<sp/>health<sp/>to<sp/>the<sp/>host<sp/>over<sp/>DCS-BIOS.<sp/>Bump</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>NODE_STATUS_PROTO_VERSION<sp/>on<sp/>any<sp/>_NODE_STATUS<sp/>wire<sp/>change<sp/>so<sp/>the<sp/>client&apos;s<sp/>sync<sp/>fails<sp/>loudly.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Full<sp/>28-hex<sp/>field<sp/>decode:<sp/>FirmwarePlan/04-dcs-bios-integration.md.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="32" refid="NodeStatus_8h_1a82b54ce9fac2a1c2716554b3294d7afd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_PROTO_VERSION<sp/>3</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33" refid="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_REQ_ADDR<sp/><sp/><sp/><sp/><sp/><sp/>0x86FE<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>host→device<sp/>roster-request<sp/>export<sp/>address</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="34" refid="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_STATUS&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="35" refid="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_END_MSG_NAME<sp/><sp/>&quot;_NODE_STATUS_END&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_TELEM<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#216)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>forwards<sp/>every<sp/>TELEM_n<sp/>CAN<sp/>frame<sp/>to<sp/>the<sp/>host<sp/>unread,<sp/>as<sp/>one<sp/>DCS-BIOS<sp/>message<sp/>per</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//<sp/>frame:<sp/>`_NODE_TELEM<sp/>&lt;nodeId(2<sp/>hex)&gt;&lt;8<sp/>frame<sp/>bytes<sp/>as<sp/>16<sp/>hex,<sp/>wire<sp/>order&gt;`<sp/>(18<sp/>hex<sp/>chars).<sp/>Pushed</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">//<sp/>as<sp/>frames<sp/>arrive<sp/>—<sp/>no<sp/>request,<sp/>no<sp/>cache,<sp/>no<sp/>end<sp/>marker.<sp/>Versioned<sp/>separately<sp/>from</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">//<sp/>_NODE_STATUS:<sp/>a<sp/>new<sp/>TelemPage<sp/>is<sp/>additive<sp/>and<sp/>needs<sp/>no<sp/>bump;<sp/>bump<sp/>on<sp/>a<sp/>change<sp/>to<sp/>the<sp/>message</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//<sp/>framing<sp/>or<sp/>to<sp/>an<sp/>existing<sp/>page&apos;s<sp/>layout.<sp/>Full<sp/>page<sp/>layouts:<sp/>FirmwarePlan/02-can-protocol.md.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="43" refid="NodeStatus_8h_1ac198ac3b630e24985d2b5554f09c62e9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_TELEM_PROTO_VERSION<sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="44" refid="NodeStatus_8h_1a7b15f66d7f1068f2333ec305a3e756f0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_TELEM_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_TELEM&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="47" refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" kindref="member">NodeHealthFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" kindref="member">OVERHEAT</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>die<sp/>temp<sp/>&gt;=<sp/>NODE_OVERHEAT_C<sp/>(opt-in,<sp/>#213)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" kindref="member">DEGRADED</ref><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>FaultSource<sp/>reports<sp/>faultCode()<sp/>!=<sp/>NodeFaultCode::NONE<sp/>(#163)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"></highlight></codeline>
-<codeline lineno="59" refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NONE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,</highlight></codeline>
-<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1ff9b4b08e327a30d2cfd75c03c1c437" kindref="member">I2C_PERIPHERAL</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>an<sp/>I2C<sp/>device<sp/>(OLED/mux/expander)<sp/>tripped<sp/>its<sp/>I2cHealth<sp/>breaker</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" kindref="member">OVER_VOLTAGE</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>over-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kindref="member">UNDER_VOLTAGE</ref><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>under-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kindref="member">SHORT_CIRCUIT</ref><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>short<sp/>/<sp/>over-current<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" kindref="member">HOST_LINK_LOST</ref><sp/>=<sp/>0x05,<sp/><sp/></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>lost<sp/>the<sp/>host<sp/>serial<sp/>link</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kindref="member">FUSE_OPEN</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x06,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>fuse<sp/>blown<sp/>—<sp/>rail<sp/>read<sp/>~0<sp/>V<sp/>while<sp/>the<sp/>node<sp/>is<sp/>powered<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a4717f519dbaabd32e525ceeeb1fcbfe8" kindref="member">OVER_TEMPERATURE</ref><sp/>=<sp/>0x07,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>critical<sp/>threshold<sp/>(PDU<sp/>NTC)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">SENSOR_FAULT</ref><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>measurement<sp/>channel<sp/>reads<sp/>implausibly<sp/>(railed<sp/>/<sp/>open<sp/>/<sp/>shorted)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a8ac276c7ffff11a1c7f7dcd869edea91" kindref="member">DUPLICATE_NODE_ID</ref><sp/>=<sp/>0x09,<sp/><sp/></highlight><highlight class="comment">//<sp/>another<sp/>board<sp/>transmits<sp/>on<sp/>this<sp/>node&apos;s<sp/>HB_n<sp/>—<sp/>two<sp/>boards<sp/>share<sp/>a<sp/>NODE_ID<sp/>(#344)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x0A–0xFF<sp/>reserved<sp/>for<sp/>future<sp/>fault<sp/>sources</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"></highlight></codeline>
-<codeline lineno="81" refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" kindref="member">NodeKind</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a696b031073e74bf2cb98e5ef201d4aa3" kindref="member">UNKNOWN</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,<sp/><sp/></highlight><highlight class="comment">//<sp/>pre-#344<sp/>firmware,<sp/>or<sp/>no<sp/>HEALTH_n<sp/>seen<sp/>yet</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a8ab4852348110bead3b20dab3f89a334" kindref="member">PANEL_GROUP</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>PanelGroup<sp/>node<sp/>(PanelGroup<sp/>library)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a02b5701d3ed04e156b0499bf0449519d" kindref="member">PDU</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>power<sp/>distribution<sp/>/<sp/>monitoring<sp/>node<sp/>(PowerMonitor<sp/>library)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4aa75a1789547188e39e2e344c286d2b62" kindref="member">BRIDGE</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>SimGateway<sp/>+<sp/>PanelBridge<sp/>board<sp/>—<sp/>reported<sp/>by<sp/>its<sp/>PanelBridge<sp/>MCU<sp/>(node<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x04–0xFF<sp/>reserved<sp/>for<sp/>future<sp/>node<sp/>types</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="87"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight></codeline>
-<codeline lineno="99" refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" kindref="member">TelemPage</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3accc0377a8afbf50e7094f5c23a8af223" kindref="member">INVALID</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,<sp/><sp/></highlight><highlight class="comment">//<sp/>never<sp/>sent</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3a165ed5369aa99a5c7e797c5308efce72" kindref="member">PDU_RAIL_12V</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>12<sp/>V<sp/>rail:<sp/>flags,<sp/>avg<sp/>+<sp/>min<sp/>voltage,<sp/>avg<sp/>current</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3aa96ee866de12de7a409934e74e884538" kindref="member">PDU_RAIL_5V</ref><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>5<sp/>V<sp/>rail:<sp/>flags,<sp/>avg<sp/>+<sp/>min<sp/>voltage,<sp/>avg<sp/>current</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3afb17b5da7b62bafdf353114795cac8c4" kindref="member">PDU_STATUS</ref><sp/><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>board:<sp/>flags,<sp/>NTC<sp/>temperature,<sp/>per-rail<sp/>peak<sp/>current</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="104"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"></highlight></codeline>
-<codeline lineno="107" refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" kindref="member">PduRailFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da32e239067503fc565bd3f109c9f64630" kindref="member">UNDER_V</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>below<sp/>its<sp/>under-voltage<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da619adf38f4188f442316a710589522dd" kindref="member">OVER_V</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>above<sp/>its<sp/>over-voltage<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539dae93c8fb651c20c17bc96472c9b2cecd5" kindref="member">OVER_CURRENT</ref><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>sustained<sp/>current<sp/>above<sp/>the<sp/>over-current<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kindref="member">FUSE_OPEN</ref><sp/><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>read<sp/>~0<sp/>V<sp/>while<sp/>the<sp/>node<sp/>is<sp/>powered<sp/>—<sp/>fuse<sp/>blown</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">SENSOR_FAULT</ref><sp/>=<sp/>0x10,<sp/><sp/></highlight><highlight class="comment">//<sp/>voltage<sp/>or<sp/>current<sp/>channel<sp/>reads<sp/>implausibly<sp/>(railed)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="113"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="114"><highlight class="normal"></highlight></codeline>
-<codeline lineno="116" refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" kindref="member">PduStatusFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
-<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a0a8cdc5957f14bbc41ebad0a515ee66c" kindref="member">UNCAL_VDDA</ref><sp/><sp/><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>VDDA<sp/>calibration<sp/>stored<sp/>—<sp/>readings<sp/>assume<sp/>a<sp/>nominal<sp/>3.3<sp/>V</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a96b2f238cf6c6b1ea1c9f39372ae0fcd" kindref="member">UNCAL_ZERO</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>current<sp/>zero-offset<sp/>calibration<sp/>stored</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210acc61615b7afa09504aea2f798fc0a813" kindref="member">TEMP_WARN</ref><sp/><sp/><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>warning<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a3fd48b6f2a7c1ad772e72a420a28f6dd" kindref="member">TEMP_CRIT</ref><sp/><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>critical<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210aa5815f7f666654e6b01ee83de5b280f7" kindref="member">NTC_FAULT</ref><sp/><sp/><sp/><sp/>=<sp/>0x10,<sp/><sp/></highlight><highlight class="comment">//<sp/>NTC<sp/>channel<sp/>open<sp/>or<sp/>shorted</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="122"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"></highlight></codeline>
-<codeline lineno="124"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"></highlight></codeline>
-<codeline lineno="140" refid="classOpenSkyhawk_1_1FaultSource" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref><sp/>{</highlight></codeline>
-<codeline lineno="141"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="143" refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" kindref="member">faultCode</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>;<sp/>}</highlight></codeline>
-<codeline lineno="144"><highlight class="normal"></highlight></codeline>
-<codeline lineno="146" refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" kindref="member">faultDetail</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
-<codeline lineno="147"><highlight class="normal"></highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kindref="member">head</ref>();</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
-<codeline lineno="152"><highlight class="normal"></highlight></codeline>
-<codeline lineno="153"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" kindref="member">FaultSource</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="155" refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" kindref="member">~FaultSource</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_STATUS<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#86)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>reports<sp/>connected<sp/>nodes<sp/>+<sp/>health<sp/>to<sp/>the<sp/>host<sp/>over<sp/>DCS-BIOS.<sp/>Bump</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//<sp/>NODE_STATUS_PROTO_VERSION<sp/>on<sp/>any<sp/>_NODE_STATUS<sp/>wire<sp/>change<sp/>so<sp/>the<sp/>client&apos;s<sp/>sync<sp/>fails<sp/>loudly.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Full<sp/>28-hex<sp/>field<sp/>decode:<sp/>FirmwarePlan/04-dcs-bios-integration.md.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="NodeStatus_8h_1a82b54ce9fac2a1c2716554b3294d7afd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_PROTO_VERSION<sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="NodeStatus_8h_1a0cad7c81046100af2cc52603e4c4b548" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_REQ_ADDR<sp/><sp/><sp/><sp/><sp/><sp/>0x86FE<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>host→device<sp/>roster-request<sp/>export<sp/>address</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="NodeStatus_8h_1ae899313135cc6e871ad3602f82e290bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_STATUS&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="NodeStatus_8h_1ab959bf73571c86cfb6f0221fe6247e96" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_STATUS_END_MSG_NAME<sp/><sp/>&quot;_NODE_STATUS_END&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="NodeStatus_8h_1a4ed9c421fe79c8e7b64e7dfcbf7c0784" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="NodeStatus_8h_1a4ed9c421fe79c8e7b64e7dfcbf7c0784" kindref="member">GATEWAY_NODE_ID</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="NodeStatus_8h_1ac5d9dd26c11f8215ad904818613d5adb" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="NodeStatus_8h_1ac5d9dd26c11f8215ad904818613d5adb" kindref="member">NODE_STATUS_ROW_BYTES</ref><sp/>=<sp/>14;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2" kindref="member">NodeStatusField</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ab718adec73e04ce3ec720dd11a06a308" kindref="member">ID</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0,<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>node<sp/>ID;<sp/>GATEWAY_NODE_ID<sp/>=<sp/>the<sp/>bridge&apos;s<sp/>own<sp/>row,<sp/>1-63<sp/>=<sp/>CAN<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a720ff3fec5d13dcf3d3aec6d5726fc36" kindref="member">PRESENT</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>1,<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>01<sp/>alive,<sp/>00<sp/>removed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a9807604fa88e178a0e3506935126bc5d" kindref="member">HB_FLAGS</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>2,<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>HeartbeatFlag<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a45c36ce571e3867b227e3d9aeee497aa" kindref="member">UPTIME</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>3,<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>u16:<sp/>seconds<sp/>since<sp/>boot,<sp/>wraps<sp/>at<sp/>65535</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2abf61b2b073cbf3294bdbdd78648d1cc9" kindref="member">RX_COUNT</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>5,<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>u16:<sp/>node-owned<sp/>accepted<sp/>RX<sp/>count,<sp/>wraps<sp/>at<sp/>65535</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a82a52e1d203a00a77d4b222e4630b023" kindref="member">ESR</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>7,<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>u16:<sp/>TEC<sp/>at<sp/>HB_ESR_TEC_SHIFT,<sp/>REC<sp/>at<sp/>HB_ESR_REC_SHIFT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ac2b9e5ca6a84d9de92a1487f0fede993" kindref="member">DIE_TEMP_C</ref><sp/><sp/><sp/>=<sp/>9,<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>i8:<sp/>whole<sp/>degC,<sp/>DIE_TEMP_UNAVAILABLE<sp/>=<sp/>not<sp/>seen</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a0d282695756b296b64a23d9a313e62f5" kindref="member">HEALTH_FLAGS</ref><sp/>=<sp/>10,<sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>NodeHealthFlag<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a1684d4ec6592e5ad6e7ccccdafaf6edf" kindref="member">FAULT_MASK</ref><sp/><sp/><sp/>=<sp/>11,<sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>reserved,<sp/>00</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ac797f061bd092bccbf5aff012519389c" kindref="member">FAULT_ID</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>12,<sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>NodeFaultCode</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2a3e1d13b9f14b103c19bc6630a0ab4305" kindref="member">NODE_KIND</ref><sp/><sp/><sp/><sp/>=<sp/>13,<sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>NodeKind</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment">//<sp/>──<sp/>_NODE_TELEM<sp/>DCS-BIOS<sp/>host-reporting<sp/>contract<sp/>(#216)<sp/>───────────────────────</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>forwards<sp/>every<sp/>TELEM_n<sp/>CAN<sp/>frame<sp/>to<sp/>the<sp/>host<sp/>unread,<sp/>as<sp/>one<sp/>DCS-BIOS<sp/>message<sp/>per</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="comment">//<sp/>frame:<sp/>`_NODE_TELEM<sp/>&lt;nodeId(2<sp/>hex)&gt;&lt;8<sp/>frame<sp/>bytes<sp/>as<sp/>16<sp/>hex,<sp/>wire<sp/>order&gt;`<sp/>(18<sp/>hex<sp/>chars).<sp/>Pushed</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="comment">//<sp/>as<sp/>frames<sp/>arrive<sp/>—<sp/>no<sp/>request,<sp/>no<sp/>cache,<sp/>no<sp/>end<sp/>marker.<sp/>Versioned<sp/>separately<sp/>from</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="comment">//<sp/>_NODE_STATUS:<sp/>a<sp/>new<sp/>TelemPage<sp/>is<sp/>additive<sp/>and<sp/>needs<sp/>no<sp/>bump;<sp/>bump<sp/>on<sp/>a<sp/>change<sp/>to<sp/>the<sp/>message</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="comment">//<sp/>framing<sp/>or<sp/>to<sp/>an<sp/>existing<sp/>page&apos;s<sp/>layout.<sp/>Full<sp/>page<sp/>layouts:<sp/>FirmwarePlan/02-can-protocol.md.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="NodeStatus_8h_1ac198ac3b630e24985d2b5554f09c62e9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_TELEM_PROTO_VERSION<sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="NodeStatus_8h_1a7b15f66d7f1068f2333ec305a3e756f0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE_TELEM_MSG_NAME<sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;_NODE_TELEM&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="NodeStatus_8h_1a4512c0ff0ba2b767df78463860946069" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="NodeStatus_8h_1a4512c0ff0ba2b767df78463860946069" kindref="member">NODE_TELEM_ROW_BYTES</ref><sp/>=<sp/>9;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fd" kindref="member">NodeTelemField</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a043a80dcc8e820ab9b17b1c66cd41fb2ab718adec73e04ce3ec720dd11a06a308" kindref="member">ID</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0,<sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>sending<sp/>node<sp/>ID<sp/>(from<sp/>the<sp/>CAN<sp/>ID)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab05557f5cb70f02b9045341f55eab3fdac57e921596445b99ab85558984966184" kindref="member">FRAME</ref><sp/><sp/><sp/>=<sp/>1,<sp/><sp/></highlight><highlight class="comment">//<sp/>8<sp/>bytes:<sp/>the<sp/>TELEM_n<sp/>frame<sp/>unread,<sp/>wire<sp/>order<sp/>(TelemPage<sp/>at<sp/>FRAME<sp/>+<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="NodeStatus_8h_1a0362fca16b7562cd4838e01ed8d4b689" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1a0362fca16b7562cd4838e01ed8d4b689" kindref="member">HeartbeatFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0362fca16b7562cd4838e01ed8d4b689a762960f49e2ef165acbc473297e864db" kindref="member">BOFF</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>CAN<sp/>controller<sp/>is<sp/>bus-off</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0362fca16b7562cd4838e01ed8d4b689acca12a177b97f280183dbaf78bcf50e1" kindref="member">EPVF</ref><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>error<sp/>passive:<sp/>TEC<sp/>or<sp/>REC<sp/>&gt;=<sp/>128</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="NodeStatus_8h_1a10990750c67c00baab1a0df47d3f1cac" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="NodeStatus_8h_1a10990750c67c00baab1a0df47d3f1cac" kindref="member">HB_ESR_TEC_SHIFT</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="103" refid="NodeStatus_8h_1a7a8c414fcd2de8af8e66c36d1d8a6d78" refkind="member"><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="NodeStatus_8h_1a7a8c414fcd2de8af8e66c36d1d8a6d78" kindref="member">HB_ESR_REC_SHIFT</ref><sp/>=<sp/>8;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07" kindref="member">NodeHealthFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a922b63193a7449068fe51b17a75f9546" kindref="member">OVERHEAT</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>die<sp/>temp<sp/>&gt;=<sp/>NODE_OVERHEAT_C<sp/>(opt-in,<sp/>#213)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ac98a70810e39f896e6a2ee562a943d07a0021017005f0e5134b204c2e69d3d4ed" kindref="member">DEGRADED</ref><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>FaultSource<sp/>reports<sp/>faultCode()<sp/>!=<sp/>NodeFaultCode::NONE<sp/>(#163)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117" refid="NodeStatus_8h_1ac926da9f0f5a13a555f9afc4ff25f49c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>int8_t<sp/><ref refid="NodeStatus_8h_1ac926da9f0f5a13a555f9afc4ff25f49c" kindref="member">DIE_TEMP_UNAVAILABLE</ref><sp/>=<sp/>-128;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(<ref refid="NodeStatus_8h_1ac926da9f0f5a13a555f9afc4ff25f49c" kindref="member">DIE_TEMP_UNAVAILABLE</ref><sp/>==<sp/>INT8_MIN,<sp/></highlight><highlight class="stringliteral">&quot;DIE_TEMP_UNAVAILABLE<sp/>is<sp/>the<sp/>int8<sp/>minimum&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NONE</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1ff9b4b08e327a30d2cfd75c03c1c437" kindref="member">I2C_PERIPHERAL</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>an<sp/>I2C<sp/>device<sp/>(OLED/mux/expander)<sp/>tripped<sp/>its<sp/>I2cHealth<sp/>breaker</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a54ffaacfd31e90309e0ceec99529099b" kindref="member">OVER_VOLTAGE</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>over-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a70f024c2b8e48bf86d58646f11a92a57" kindref="member">UNDER_VOLTAGE</ref><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>under-voltage<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a01fa42acfb9d4827860c37424640bc05" kindref="member">SHORT_CIRCUIT</ref><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>short<sp/>/<sp/>over-current<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a1edbb644838fa36ef5b4680e3fcbed07" kindref="member">HOST_LINK_LOST</ref><sp/>=<sp/>0x05,<sp/><sp/></highlight><highlight class="comment">//<sp/>PanelBridge<sp/>lost<sp/>the<sp/>host<sp/>serial<sp/>link</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kindref="member">FUSE_OPEN</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x06,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>fuse<sp/>blown<sp/>—<sp/>rail<sp/>read<sp/>~0<sp/>V<sp/>while<sp/>the<sp/>node<sp/>is<sp/>powered<sp/>(PDU)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a4717f519dbaabd32e525ceeeb1fcbfe8" kindref="member">OVER_TEMPERATURE</ref><sp/>=<sp/>0x07,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>critical<sp/>threshold<sp/>(PDU<sp/>NTC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">SENSOR_FAULT</ref><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>measurement<sp/>channel<sp/>reads<sp/>implausibly<sp/>(railed<sp/>/<sp/>open<sp/>/<sp/>shorted)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a8ac276c7ffff11a1c7f7dcd869edea91" kindref="member">DUPLICATE_NODE_ID</ref><sp/>=<sp/>0x09,<sp/><sp/></highlight><highlight class="comment">//<sp/>another<sp/>board<sp/>transmits<sp/>on<sp/>this<sp/>node&apos;s<sp/>HB_n<sp/>—<sp/>two<sp/>boards<sp/>share<sp/>a<sp/>NODE_ID<sp/>(#344)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x0A–0xFF<sp/>reserved<sp/>for<sp/>future<sp/>fault<sp/>sources</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149" refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4" kindref="member">NodeKind</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a696b031073e74bf2cb98e5ef201d4aa3" kindref="member">UNKNOWN</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,<sp/><sp/></highlight><highlight class="comment">//<sp/>pre-#344<sp/>firmware,<sp/>or<sp/>no<sp/>HEALTH_n<sp/>seen<sp/>yet</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a8ab4852348110bead3b20dab3f89a334" kindref="member">PANEL_GROUP</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>PanelGroup<sp/>node<sp/>(PanelGroup<sp/>library)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4a02b5701d3ed04e156b0499bf0449519d" kindref="member">PDU</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>power<sp/>distribution<sp/>/<sp/>monitoring<sp/>node<sp/>(PowerMonitor<sp/>library)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aac09d7d39a883b449ee56e0ab7f72cf4aa75a1789547188e39e2e344c286d2b62" kindref="member">BRIDGE</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>SimGateway<sp/>+<sp/>PanelBridge<sp/>board<sp/>—<sp/>reported<sp/>by<sp/>its<sp/>PanelBridge<sp/>MCU<sp/>(node<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>0x04–0xFF<sp/>reserved<sp/>for<sp/>future<sp/>node<sp/>types</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="156"><highlight class="normal"></highlight></codeline>
-<codeline lineno="157"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_head;</highlight></codeline>
-<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_next;</highlight></codeline>
-<codeline lineno="160"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="161"><highlight class="normal"></highlight></codeline>
-<codeline lineno="178"><highlight class="normal"><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" kindref="member">aggregateFaults</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">**<sp/>detailOut<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="164" refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3" kindref="member">TelemPage</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3accc0377a8afbf50e7094f5c23a8af223" kindref="member">INVALID</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,<sp/><sp/></highlight><highlight class="comment">//<sp/>never<sp/>sent</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3a165ed5369aa99a5c7e797c5308efce72" kindref="member">PDU_RAIL_12V</ref><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>12<sp/>V<sp/>rail:<sp/>flags,<sp/>avg<sp/>+<sp/>min<sp/>voltage,<sp/>avg<sp/>current</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3aa96ee866de12de7a409934e74e884538" kindref="member">PDU_RAIL_5V</ref><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>5<sp/>V<sp/>rail:<sp/>flags,<sp/>avg<sp/>+<sp/>min<sp/>voltage,<sp/>avg<sp/>current</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ab9a360f1c19bc3f5ef5f8089201086f3afb17b5da7b62bafdf353114795cac8c4" kindref="member">PDU_STATUS</ref><sp/><sp/><sp/>=<sp/>0x03,<sp/><sp/></highlight><highlight class="comment">//<sp/>PDU<sp/>board:<sp/>flags,<sp/>NTC<sp/>temperature,<sp/>per-rail<sp/>peak<sp/>current</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172" refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539d" kindref="member">PduRailFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da32e239067503fc565bd3f109c9f64630" kindref="member">UNDER_V</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>below<sp/>its<sp/>under-voltage<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539da619adf38f4188f442316a710589522dd" kindref="member">OVER_V</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>above<sp/>its<sp/>over-voltage<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1aa2b37b86d73fa1f55ab16dcdf8a4539dae93c8fb651c20c17bc96472c9b2cecd5" kindref="member">OVER_CURRENT</ref><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>sustained<sp/>current<sp/>above<sp/>the<sp/>over-current<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a2e52d1548833ba298c1349658dcfacd2" kindref="member">FUSE_OPEN</ref><sp/><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>rail<sp/>read<sp/>~0<sp/>V<sp/>while<sp/>the<sp/>node<sp/>is<sp/>powered<sp/>—<sp/>fuse<sp/>blown</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1a96e7947c42906e9f77c32a50cc98247c" kindref="member">SENSOR_FAULT</ref><sp/>=<sp/>0x10,<sp/><sp/></highlight><highlight class="comment">//<sp/>voltage<sp/>or<sp/>current<sp/>channel<sp/>reads<sp/>implausibly<sp/>(railed)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="179"><highlight class="normal"></highlight></codeline>
-<codeline lineno="180"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181" refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210" kindref="member">PduStatusFlag</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a0a8cdc5957f14bbc41ebad0a515ee66c" kindref="member">UNCAL_VDDA</ref><sp/><sp/><sp/>=<sp/>0x01,<sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>VDDA<sp/>calibration<sp/>stored<sp/>—<sp/>readings<sp/>assume<sp/>a<sp/>nominal<sp/>3.3<sp/>V</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a96b2f238cf6c6b1ea1c9f39372ae0fcd" kindref="member">UNCAL_ZERO</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/><sp/></highlight><highlight class="comment">//<sp/>no<sp/>current<sp/>zero-offset<sp/>calibration<sp/>stored</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210acc61615b7afa09504aea2f798fc0a813" kindref="member">TEMP_WARN</ref><sp/><sp/><sp/><sp/>=<sp/>0x04,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>warning<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210a3fd48b6f2a7c1ad772e72a420a28f6dd" kindref="member">TEMP_CRIT</ref><sp/><sp/><sp/><sp/>=<sp/>0x08,<sp/><sp/></highlight><highlight class="comment">//<sp/>board<sp/>temperature<sp/>at<sp/>the<sp/>critical<sp/>threshold</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a0a2b6cafa1ff2ab2f0b3f3d6c2042210aa5815f7f666654e6b01ee83de5b280f7" kindref="member">NTC_FAULT</ref><sp/><sp/><sp/><sp/>=<sp/>0x10,<sp/><sp/></highlight><highlight class="comment">//<sp/>NTC<sp/>channel<sp/>open<sp/>or<sp/>shorted</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194" refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5" kindref="member">PduRailField</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5a67c6e660061c755787b8f8716b4f2430" kindref="member">FLAGS</ref><sp/><sp/><sp/><sp/>=<sp/>1,<sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>PduRailFlag<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5af6ade973e24f29de5d6b37df3d6f6d7c" kindref="member">V_AVG_MV</ref><sp/>=<sp/>2,<sp/><sp/></highlight><highlight class="comment">//<sp/>u16:<sp/>window-average<sp/>rail<sp/>voltage,<sp/>mV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5ae8abd32dfd8a022148a99ea55d3d6566" kindref="member">V_MIN_MV</ref><sp/>=<sp/>4,<sp/><sp/></highlight><highlight class="comment">//<sp/>u16:<sp/>window-minimum<sp/>rail<sp/>voltage,<sp/>mV</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5ae84978fe3b928d39eb162ed57c09d326" kindref="member">I_AVG_MA</ref><sp/>=<sp/>6,<sp/><sp/></highlight><highlight class="comment">//<sp/>int16:<sp/>window-average<sp/>rail<sp/>current,<sp/>mA<sp/>(signed:<sp/>zero<sp/>offset<sp/>stays<sp/>visible)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206" refid="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71" kindref="member">PduStatusField</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5a67c6e660061c755787b8f8716b4f2430" kindref="member">FLAGS</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>1,<sp/><sp/></highlight><highlight class="comment">//<sp/>u8:<sp/>PduStatusFlag<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a10eae20133dc4395b5e694ad8d5e00dc" kindref="member">NTC_TEMP_DC</ref><sp/>=<sp/>2,<sp/><sp/></highlight><highlight class="comment">//<sp/>int16:<sp/>board<sp/>temperature,<sp/>0.1<sp/>degC<sp/>(NTC_TEMP_UNAVAILABLE<sp/>=<sp/>no<sp/>reading)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a3bce02e8c3d8493edd0d07ee15765f4b" kindref="member">I12_PEAK_MA</ref><sp/>=<sp/>4,<sp/><sp/></highlight><highlight class="comment">//<sp/>u16:<sp/>12<sp/>V<sp/>rail<sp/>peak<sp/>current<sp/>since<sp/>the<sp/>last<sp/>page,<sp/>mA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="NodeStatus_8h_1a56f3d7726b9e8bc01b3fa75bc503da71a804f62293d1119956874dd9dc7f3fac7" kindref="member">I5_PEAK_MA</ref><sp/><sp/>=<sp/>6,<sp/><sp/></highlight><highlight class="comment">//<sp/>u16:<sp/>5<sp/>V<sp/>rail<sp/>peak<sp/>current<sp/>since<sp/>the<sp/>last<sp/>page,<sp/>mA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218" refid="NodeStatus_8h_1a38101c97f4820df74cb03246c2b21e18" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>int16_t<sp/><ref refid="NodeStatus_8h_1a38101c97f4820df74cb03246c2b21e18" kindref="member">NTC_TEMP_UNAVAILABLE</ref><sp/>=<sp/>-32768;</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(<ref refid="NodeStatus_8h_1a38101c97f4820df74cb03246c2b21e18" kindref="member">NTC_TEMP_UNAVAILABLE</ref><sp/>==<sp/>INT16_MIN,<sp/></highlight><highlight class="stringliteral">&quot;NTC_TEMP_UNAVAILABLE<sp/>is<sp/>the<sp/>int16<sp/>minimum&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237" refid="classOpenSkyhawk_1_1FaultSource" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref><sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="240" refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a14bbdc6cf59b5bef85ed08a12d79d034" kindref="member">faultCode</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1ab50339a10e1de285ac99d4c3990b8693" kindref="member">NodeFaultCode::NONE</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243" refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1ac7ea19ff8f57094644e19ed355d08a0e" kindref="member">faultDetail</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a735553da41b9456c0c118d65a16fe5e5" kindref="member">head</ref>();</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1aee4955f144a71d39fecc09f326cd5182" kindref="member">next</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" kindref="member">FaultSource</ref>();<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="252" refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" kindref="member">~FaultSource</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_head;</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classOpenSkyhawk_1_1FaultSource" kindref="compound">FaultSource</ref>*<sp/>_next;</highlight></codeline>
+<codeline lineno="257"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><ref refid="NodeStatus_8h_1ad46bdfb956f3738768ac20fb36e8daf1" kindref="member">NodeFaultCode</ref><sp/><ref refid="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" kindref="member">aggregateFaults</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">**<sp/>detailOut<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="Firmware/Libraries/NodeStatus/NodeStatus.h"/>
   </compounddef>

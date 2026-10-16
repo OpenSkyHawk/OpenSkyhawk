@@ -87,7 +87,7 @@ _Shared CAN bus types, frame IDs, and runtime API for_ [_**OpenSkyhawk**_](names
 |  constexpr uint32\_t | [**canIdEvtAction**](#function-canidevtaction) (uint8\_t n) <br>_Action-input event frame ID for node n. ActionButton: the payload value is a selector, not a magnitude — 0 means_ `TOGGLE` _, the only argument DCS-BIOS's action interface defines. Any other value is malformed and the bridge drops it. Range 0x701-0x73F._ |
 |  constexpr uint32\_t | [**canIdEvtDir**](#function-canidevtdir) (uint8\_t n) <br>_Directional-input event frame ID for node n. RotaryEncoder DIR mode: payload value is a signed ±1 (int16); the bridge formats it_ `INC` _/_`DEC` _for a DCS-BIOS fixed\_step control. Range 0x601-0x63F._ |
 |  constexpr uint32\_t | [**canIdEvtRel**](#function-canidevtrel) (uint8\_t n) <br>_Relative-input event frame ID for node n. RotaryEncoder REL mode: payload value is a signed ±step (int16); the bridge formats it_ `%+d` _for a DCS-BIOS variable\_step control. Range 0x501-0x53F._ |
-|  constexpr uint32\_t | [**canIdHb**](#function-canidhb) (uint8\_t n) <br>_Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
+|  constexpr uint32\_t | [**canIdHb**](#function-canidhb) (uint8\_t n) <br>_Heartbeat frame ID for node n. Range 0x100-0x13F; n=GATEWAY\_NODE\_ID (0) is_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
 |  constexpr uint32\_t | [**canIdHealth**](#function-canidhealth) (uint8\_t n) <br>_Node-health/thermal telemetry frame ID for node n. Range 0x140-0x17F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _. Carries NodeHealthPayload (internal die temp; degraded/faultId once #163 lands)._ |
 |  constexpr uint32\_t | [**canIdReady**](#function-canidready) (uint8\_t n) <br>_Boot-complete READY frame ID for node n. Range 0x401-0x43F._  |
 |  constexpr uint32\_t | [**canIdTelem**](#function-canidtelem) (uint8\_t n) <br>_Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181-0x1BF. Sits with HB (0x100) and HEALTH (0x140) in the node-status block;_ [_**PanelBridge**_](namespacePanelBridge.md) _forwards it to the host unread as_`_NODE_TELEM` _._ |
@@ -505,7 +505,7 @@ constexpr uint32_t canIdEvtRel (
 
 ### function canIdHb 
 
-_Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is_ [_**PanelBridge**_](namespacePanelBridge.md) _._
+_Heartbeat frame ID for node n. Range 0x100-0x13F; n=GATEWAY\_NODE\_ID (0) is_ [_**PanelBridge**_](namespacePanelBridge.md) _._
 ```C++
 constexpr uint32_t canIdHb (
     uint8_t n

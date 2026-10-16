@@ -147,12 +147,12 @@
 <codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>int16_t<sp/><sp/>iAvg<sp/>=<sp/>Pdu::clampI16(_n<sp/>?<sp/>_sumMa<sp/>/<sp/>(int32_t)_n<sp/>:<sp/>_lastMa);</highlight></codeline>
 <codeline lineno="60"><highlight class="normal"></highlight></codeline>
 <codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>TelemPayload<sp/>p;</highlight></codeline>
-<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>p.page<sp/><sp/><sp/><sp/>=<sp/>(uint8_t)_cfg.page;</highlight></codeline>
-<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[0]<sp/>=<sp/>flags();</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[1]<sp/>=<sp/>(uint8_t)(vAvg<sp/>&amp;<sp/>0xFF);<sp/><sp/>p.body[2]<sp/>=<sp/>(uint8_t)(vAvg<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[3]<sp/>=<sp/>(uint8_t)(vMin<sp/>&amp;<sp/>0xFF);<sp/><sp/>p.body[4]<sp/>=<sp/>(uint8_t)(vMin<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[5]<sp/>=<sp/>(uint8_t)((uint16_t)iAvg<sp/>&amp;<sp/>0xFF);</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>p.body[6]<sp/>=<sp/>(uint8_t)((uint16_t)iAvg<sp/>&gt;&gt;<sp/>8);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t*<sp/>f<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal">uint8_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(&amp;p);<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>whole<sp/>frame:<sp/>PduRailField<sp/>offsets<sp/>index<sp/>it</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>p.page<sp/>=<sp/>(uint8_t)_cfg.page;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>f[(uint8_t)<ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5a67c6e660061c755787b8f8716b4f2430" kindref="member">PduRailField::FLAGS</ref>]<sp/>=<sp/>flags();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>Pdu::putLe16(f<sp/>+<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5af6ade973e24f29de5d6b37df3d6f6d7c" kindref="member">PduRailField::V_AVG_MV</ref>,<sp/>vAvg);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>Pdu::putLe16(f<sp/>+<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5ae8abd32dfd8a022148a99ea55d3d6566" kindref="member">PduRailField::V_MIN_MV</ref>,<sp/>vMin);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>Pdu::putLe16(f<sp/>+<sp/>(uint8_t)<ref refid="NodeStatus_8h_1a576710ea4015030d62a8547193afd4d5ae84978fe3b928d39eb162ed57c09d326" kindref="member">PduRailField::I_AVG_MA</ref>,<sp/>(uint16_t)iAvg);</highlight></codeline>
 <codeline lineno="68"><highlight class="normal"></highlight></codeline>
 <codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(resetWindow)<sp/>{<sp/>_sumMv<sp/>=<sp/>0;<sp/>_sumMa<sp/>=<sp/>0;<sp/>_n<sp/>=<sp/>0;<sp/>_minMv<sp/>=<sp/>UINT16_MAX;<sp/>}</highlight></codeline>
 <codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p;</highlight></codeline>

@@ -106,6 +106,82 @@ enum CalNackReason : uint8_t {
 
 constexpr uint8_t CAL_AXIS_NONE = 0xFF;
 
+// ── Payload field offsets ─────────────────────────────────────────────────────
+//
+// Byte offsets into each type's payload (not the frame — the payload starts after the 8-byte
+// header). Multi-byte fields are little-endian, matching the envelope's LEN. A field runs to the
+// next offset; the last runs to the type's length in calLenValidForType(). Types with no payload
+// have no enum. Named so the client sync generates them rather than hand-typing them (#346).
+
+enum CalHelloAckField : uint8_t {
+    CAL_HELLO_ACK_PROTO        = 0,  // u8: CAL_PROTO_VERSION
+    CAL_HELLO_ACK_BLOB_VERSION = 1,  // u8: CAL_VERSION
+    CAL_HELLO_ACK_AXIS_SLOTS   = 2,  // u8: AXIS_CAL_SLOTS
+    CAL_HELLO_ACK_FW_MAJOR     = 3,  // u8: SimGateway firmware version
+    CAL_HELLO_ACK_FW_MINOR     = 4,  // u8
+    CAL_HELLO_ACK_FW_PATCH     = 5,  // u8
+};
+
+enum CalDataField : uint8_t {
+    CAL_DATA_PRESENT_MASK    = 0,  // u8: bit i = an HIDAxis uses slot i
+    CAL_DATA_CALIBRATED_MASK = 1,  // u8: bit i = slot i passes axisCalValid()
+    CAL_DATA_RECORDS         = 2,  // AXIS_CAL_SLOTS records of CAL_DATA_REC_BYTES, slot order
+};
+
+constexpr uint8_t CAL_DATA_REC_BYTES = 10;
+
+enum CalDataRecField : uint8_t {
+    CAL_DATA_REC_CONTROL_ID = 0,  // u16: HID controlId of the axis in this slot, 0 = absent
+    CAL_DATA_REC_MIN        = 2,  // u16: AxisCal::min
+    CAL_DATA_REC_CENTRE     = 4,  // u16: AxisCal::centre
+    CAL_DATA_REC_MAX        = 6,  // u16: AxisCal::max
+    CAL_DATA_REC_DEADZONE   = 8,  // u16: AxisCal::deadzone, always 0
+};
+
+enum CalSessionOpenField : uint8_t {
+    CAL_SESSION_OPEN_AXIS_IDX = 0,  // u8: axis to stream, CAL_AXIS_NONE = none
+};
+
+enum CalSessionAckField : uint8_t {
+    CAL_SESSION_ACK_TIMEOUT_MS = 0,  // u32: session inactivity timeout, ms
+    CAL_SESSION_ACK_AXIS_IDX   = 4,  // u8: echoed streamed-axis selection
+};
+
+enum CalStreamSelectField : uint8_t {
+    CAL_STREAM_SELECT_AXIS_IDX = 0,  // u8: axis to stream, CAL_AXIS_NONE = none
+};
+
+enum CalCommitField : uint8_t {
+    CAL_COMMIT_IDX      = 0,  // u8: axis slot
+    CAL_COMMIT_MIN      = 1,  // u16
+    CAL_COMMIT_CENTRE   = 3,  // u16
+    CAL_COMMIT_MAX      = 5,  // u16
+    CAL_COMMIT_DEADZONE = 7,  // u16: must be 0, else NACK BAD_DEADZONE
+};
+
+enum CalResetField : uint8_t {
+    CAL_RESET_IDX = 0,  // u8: axis slot, CAL_AXIS_NONE = all
+};
+
+enum CalAckField : uint8_t {
+    CAL_ACK_TYPE = 0,  // u8: CalType being acknowledged
+};
+
+enum CalNackField : uint8_t {
+    CAL_NACK_TYPE   = 0,  // u8: CalType being refused
+    CAL_NACK_REASON = 1,  // u8: CalNackReason
+    CAL_NACK_DETAIL = 2,  // u8: offending axis slot, else CAL_AXIS_NONE
+};
+
+enum CalRawField : uint8_t {
+    CAL_RAW_IDX = 0,  // u8: streamed axis slot
+    CAL_RAW_RAW = 1,  // u16: reading before calibration
+    CAL_RAW_CAL = 3,  // u16: the same reading through axisCalApply()
+};
+
+static_assert(CAL_DATA_RECORDS + AXIS_CAL_SLOTS * CAL_DATA_REC_BYTES == CAL_MAX_PAYLOAD,
+              "CAL_DATA layout no longer fills CAL_MAX_PAYLOAD");
+
 bool calLenValidForType(uint8_t type, uint16_t len);
 
 uint16_t calBuildFrame(uint8_t* out, uint16_t outCap,

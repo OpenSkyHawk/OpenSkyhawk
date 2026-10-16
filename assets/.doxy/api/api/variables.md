@@ -29,12 +29,21 @@
 * **DIAG\_HB** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **DIAG\_MAGIC** ([**CANProtocol.h**](CANProtocol_8h.md))
 * **DIAG\_RTT** ([**CANProtocol.h**](CANProtocol_8h.md))
+* **DIE\_TEMP\_UNAVAILABLE** ([**NodeStatus.h**](NodeStatus_8h.md))
+
+
+## g
+
+* **GATEWAY\_NODE\_ID** ([**NodeStatus.h**](NodeStatus_8h.md))
 
 
 ## h
 
 * **HB\_PERIOD\_MS** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
 * **HEALTH\_PERIOD\_MS** ([**CANProtocol.cpp**](CANProtocol_8cpp.md))
+* **HB\_ESR\_REC\_SHIFT** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **HB\_ESR\_TEC\_SHIFT** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **HeartbeatFlag** ([**NodeStatus.h**](NodeStatus_8h.md))
 
 
 ## l
@@ -51,14 +60,21 @@
 
 ## n
 
+* **NODE\_STATUS\_ROW\_BYTES** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NODE\_TELEM\_ROW\_BYTES** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NTC\_TEMP\_UNAVAILABLE** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NodeFaultCode** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NodeHealthFlag** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **NodeKind** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NodeStatusField** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **NodeTelemField** ([**NodeStatus.h**](NodeStatus_8h.md))
 
 
 ## p
 
+* **PduRailField** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **PduRailFlag** ([**NodeStatus.h**](NodeStatus_8h.md))
+* **PduStatusField** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **PduStatusFlag** ([**NodeStatus.h**](NodeStatus_8h.md))
 * **PIN\_NC** ([**PinRef.cpp**](PinRef_8cpp.md), [**PinRef.h**](PinRef_8h.md))
 * **PORT\_A** ([**PinRef.h**](PinRef_8h.md))

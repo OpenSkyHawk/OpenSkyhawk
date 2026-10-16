@@ -51,7 +51,7 @@ struct NodeState {
 #ifdef PANELBRIDGE_NODE_STATUS
     HeartbeatPayload last;          // last HB payload, surfaced to the host (#86)
     // Cached NodeHealthPayload fields from the node's last HEALTH_n frame (#221 contract):
-    int8_t   dieTempC    = INT8_MIN; // internal die temp °C (INT8_MIN = unseen) — #213
+    int8_t   dieTempC    = DIE_TEMP_UNAVAILABLE; // internal die temp °C, unseen until HEALTH_n — #213
     uint8_t  healthFlags = 0;        // overheat (#213) / degraded (#163) bits
     uint8_t  faultMask   = 0;        // fault source/domain bitmap — reserved #163
     uint8_t  faultId     = 0;        // NodeFaultCode (NodeStatus.h) — #163
@@ -70,15 +70,23 @@ static uint8_t        _deadCount          = 0;    // tracked nodes currently tim
 // command messages on a reserved control name. Owned entirely by PanelBridge;
 // SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.
 
-// Emit one status row (proto v3, 28 hex chars):
+// Emit one status row (proto v3, NODE_STATUS_ROW_BYTES = 14 bytes as 28 hex chars):
 //   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId nodeKind>
-// The last five come from the node's HEALTH_n frame (#221 contract). dieTempC 80 + nodeKind 00 =
-// not-yet-seen; hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163);
+// The last five come from the node's HEALTH_n frame (#221 contract). DIE_TEMP_UNAVAILABLE + nodeKind
+// 00 = not-yet-seen; hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163);
 // faultMask stays 0 (reserved for future fault-domain bits); nodeKind is the board kind (#344).
+// The format string is the row layout: each field's width must match NodeStatusField (NodeStatus.h).
+using NSF = NodeStatusField;
+static_assert((uint8_t)NSF::ID == 0 && (uint8_t)NSF::PRESENT == 1 && (uint8_t)NSF::HB_FLAGS == 2
+              && (uint8_t)NSF::UPTIME == 3 && (uint8_t)NSF::RX_COUNT == 5 && (uint8_t)NSF::ESR == 7
+              && (uint8_t)NSF::DIE_TEMP_C == 9 && (uint8_t)NSF::HEALTH_FLAGS == 10
+              && (uint8_t)NSF::FAULT_MASK == 11 && (uint8_t)NSF::FAULT_ID == 12
+              && (uint8_t)NSF::NODE_KIND == 13 && NODE_STATUS_ROW_BYTES == 14,
+              "NodeStatusField moved: update emitRow's snprintf format to match");
 static void emitRow(uint8_t nodeId, bool present, const HeartbeatPayload& hb,
                     int8_t dieTempC, uint8_t hFlags, uint8_t faultMask, uint8_t faultId,
                     uint8_t nodeKind) {
-    char hex[29];
+    char hex[2 * NODE_STATUS_ROW_BYTES + 1];
     snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X%02X",
              (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
              (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr,
@@ -94,12 +102,12 @@ static void emitNode(uint8_t nodeId, bool present) {
             ns.nodeKind);
 }
 
-// The bridge's own row, node 0 (#344): its heartbeat state now, and the HEALTH_0 it last sent
-// (kind BRIDGE once the first HEALTH_0 has gone out). Always present — it is the one reporting.
+// The bridge's own row, GATEWAY_NODE_ID (#344): its heartbeat state now, and the HEALTH_0 it last
+// sent (kind BRIDGE once the first HEALTH_0 has gone out). Always present — it is the one reporting.
 static void emitSelf() {
-    const HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(0, 0);
+    const HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(GATEWAY_NODE_ID, 0);
     const NodeHealthPayload& h = CANProtocol::lastNodeHealth();
-    emitRow(0, true, hb, h.dieTempC, h.flags, h.faultMask, h.faultId, h.nodeKind);
+    emitRow(GATEWAY_NODE_ID, true, hb, h.dieTempC, h.flags, h.faultMask, h.faultId, h.nodeKind);
 }
 
 // Emit the full roster (request response / boot seed): the bridge's own node-0 row, one
@@ -119,9 +127,12 @@ static void emitAllNodes() {
 // Forward one TELEM_n frame to the host, unread (#216):
 //   _NODE_TELEM <nodeId(2 hex)><8 frame bytes, wire order, 16 hex>
 // No cache and no decode — the page byte tells the client the layout, so a new TelemPage needs no
-// bridge change. Contract: NODE_TELEM_* in NodeStatus.h.
+// bridge change. Contract: NODE_TELEM_* + NodeTelemField in NodeStatus.h.
+static_assert((uint8_t)NodeTelemField::ID == 0 && (uint8_t)NodeTelemField::FRAME == 1
+              && NODE_TELEM_ROW_BYTES == 1 + sizeof(TelemPayload),
+              "NodeTelemField moved: update emitTelem's snprintf format to match");
 static void emitTelem(uint8_t nodeId, const uint8_t* data) {
-    char hex[19];
+    char hex[2 * NODE_TELEM_ROW_BYTES + 1];
     snprintf(hex, sizeof(hex), "%02X%02X%02X%02X%02X%02X%02X%02X%02X",
              (unsigned)nodeId, data[0], data[1], data[2], data[3],
              data[4], data[5], data[6], data[7]);

@@ -29,7 +29,7 @@ public:
     const char*   faultDetail() const override;
 
 private:
-    int16_t _tempDC   = INT16_MIN;
+    int16_t _tempDC   = NTC_TEMP_UNAVAILABLE;
     bool    _warn     = false;
     bool    _crit     = false;
     bool    _ntcFault = false;

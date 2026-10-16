@@ -650,12 +650,12 @@ Byte 0 is a TelemPage (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.
 <para>&lt; Payload — interpretation depends on controlId range</para>
 <para>&lt; controlId 0x0000 = unused padding slot</para>
 <para>&lt; Node ID — redundant with CAN ID, aids logging</para>
-<para>&lt; bit0=BOFF, bit1=EPVF (Error Passive; TEC &gt;= 128)</para>
+<para>&lt; HeartbeatFlag bits (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>): BOFF, EPVF</para>
 <para>&lt; Seconds since boot, little-endian (wraps at ~18 h)</para>
 <para>&lt; Caller-owned accepted RX count, little-endian</para>
-<para>&lt; (CAN1-&gt;ESR &gt;&gt; 16): low byte=TEC, high byte=REC</para>
+<para>&lt; TEC at HB_ESR_TEC_SHIFT, REC at HB_ESR_REC_SHIFT (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>)</para>
 <para>&lt; 0: node ID — redundant with CAN ID, aids logging</para>
-<para>&lt; 1: internal die temp, whole °C (INT8_MIN = unavailable) — #213</para>
+<para>&lt; 1: internal die temp, whole °C (DIE_TEMP_UNAVAILABLE) — #213</para>
 <para>&lt; 2: NodeHealthFlag bits (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>): OVERHEAT (#213), DEGRADED (#163)</para>
 <para>&lt; 3: fault source/domain bitmap — reserved for future domain bits (0)</para>
 <para>&lt; 4: NodeFaultCode (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>): 0 = no fault, else primary fault — #163</para>
@@ -676,7 +676,7 @@ Byte 0 is a TelemPage (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.
           <declname>n</declname>
         </param>
         <briefdescription>
-<para>Heartbeat frame ID for node n. Range 0x100-0x13F; n=0 is <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
+<para>Heartbeat frame ID for node n. Range 0x100-0x13F; n=GATEWAY_NODE_ID (0) is <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

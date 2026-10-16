@@ -47,6 +47,8 @@ uint32_t crc32(const uint8_t* data, size_t len);
 int16_t clampI16(int32_t v);
 uint16_t clampU16(int32_t v);
 
+inline void putLe16(uint8_t* p, uint16_t v) { p[0] = (uint8_t)(v & 0xFF); p[1] = (uint8_t)(v >> 8); }
+
 } // namespace Pdu
 } // namespace OpenSkyhawk
 ```

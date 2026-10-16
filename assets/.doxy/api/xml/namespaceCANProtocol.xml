@@ -429,7 +429,7 @@
 <parametername>nodeId</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Node ID (1-63 <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>; 0 reserved for <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>). </para>
+<para>Node ID (1-63 <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>; GATEWAY_NODE_ID for <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -447,7 +447,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="432" column="18" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="432" bodyend="441" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="361" declcolumn="22"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="432" column="18" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="432" bodyend="443" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="361" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a4b64b667334501b64fec898158ec53f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>NodeHealthPayload</type>
@@ -482,7 +482,7 @@
 <parametername>nodeId</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Node ID (1-63 <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>; 0 <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>). </para>
+<para>Node ID (1-63 <ref refid="namespacePanelGroup" kindref="compound">PanelGroup</ref>; GATEWAY_NODE_ID <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -498,7 +498,7 @@
 <parametername>dieTempC</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Internal die temp in whole °C (INT8_MIN = unavailable). </para>
+<para>Internal die temp in whole °C (DIE_TEMP_UNAVAILABLE = unavailable). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -516,7 +516,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="443" column="19" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="443" bodyend="463" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="379" declcolumn="23"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="445" column="19" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="445" bodyend="465" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="379" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a1fed615c5c046e667216ff9da46bca91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint32_t</type>
@@ -531,7 +531,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="465" column="10" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="465" bodyend="465" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="383" declcolumn="14"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="467" column="10" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="467" bodyend="467" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="383" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1a598c3f06d60603c4ed497b1133655e49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>const NodeHealthPayload &amp;</type>
@@ -543,11 +543,11 @@
 <para>The HEALTH_n payload <ref refid="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" kindref="member">serviceNodeStatus()</ref> last built for this node (#344). </para>
         </briefdescription>
         <detaileddescription>
-<para><ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> reports it as its own node-0 <computeroutput>_NODE_STATUS</computeroutput> row. Before the first HEALTH_n (or with <computeroutput>-DNODE_HEALTH_TELEM=0</computeroutput>) it reads not-yet-seen: dieTempC INT8_MIN, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH_n from. </para>
+<para><ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> reports it as its own node-0 <computeroutput>_NODE_STATUS</computeroutput> row. Before the first HEALTH_n (or with <computeroutput>-DNODE_HEALTH_TELEM=0</computeroutput>) it reads not-yet-seen: dieTempC DIE_TEMP_UNAVAILABLE, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH_n from. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="467" column="25" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="467" bodyend="467" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="435" declcolumn="29"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="469" column="25" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="469" bodyend="469" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="435" declcolumn="29"/>
       </memberdef>
       <memberdef kind="function" id="namespaceCANProtocol_1aee035f550086e47e9c533b9f547687f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -601,7 +601,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="469" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="469" bodyend="538" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="426" declcolumn="10"/>
+        <location file="Firmware/Libraries/CANProtocol/CANProtocol.cpp" line="471" column="6" bodyfile="Firmware/Libraries/CANProtocol/CANProtocol.cpp" bodystart="471" bodyend="540" declfile="Firmware/Libraries/CANProtocol/CANProtocol.h" declline="426" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

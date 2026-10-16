@@ -4672,6 +4672,24 @@
 <span class="cp">#define NODE_STATUS_MSG_NAME      "_NODE_STATUS"</span>
 <span class="cp">#define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"</span>
 
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">GATEWAY_NODE_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_STATUS_ROW_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">;</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeStatusField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ID</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">   </span><span class="c1">// u8: node ID; GATEWAY_NODE_ID = the bridge's own row, 1-63 = CAN nodes</span>
+<span class="w">    </span><span class="n">PRESENT</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">   </span><span class="c1">// u8: 01 alive, 00 removed</span>
+<span class="w">    </span><span class="n">HB_FLAGS</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">   </span><span class="c1">// u8: HeartbeatFlag bits</span>
+<span class="w">    </span><span class="n">UPTIME</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">   </span><span class="c1">// u16: seconds since boot, wraps at 65535</span>
+<span class="w">    </span><span class="n">RX_COUNT</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">   </span><span class="c1">// u16: node-owned accepted RX count, wraps at 65535</span>
+<span class="w">    </span><span class="n">ESR</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">   </span><span class="c1">// u16: TEC at HB_ESR_TEC_SHIFT, REC at HB_ESR_REC_SHIFT</span>
+<span class="w">    </span><span class="n">DIE_TEMP_C</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">   </span><span class="c1">// i8: whole degC, DIE_TEMP_UNAVAILABLE = not seen</span>
+<span class="w">    </span><span class="n">HEALTH_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: NodeHealthFlag bits</span>
+<span class="w">    </span><span class="n">FAULT_MASK</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: reserved, 00</span>
+<span class="w">    </span><span class="n">FAULT_ID</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: NodeFaultCode</span>
+<span class="w">    </span><span class="n">NODE_KIND</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: NodeKind</span>
+<span class="p">};</span>
+
 <span class="c1">// ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────</span>
 <span class="c1">// PanelBridge forwards every TELEM_n CAN frame to the host unread, as one DCS-BIOS message per</span>
 <span class="c1">// frame: `_NODE_TELEM &lt;nodeId(2 hex)&gt;&lt;8 frame bytes as 16 hex, wire order&gt;` (18 hex chars). Pushed</span>
@@ -4681,10 +4699,28 @@
 <span class="cp">#define NODE_TELEM_PROTO_VERSION  1</span>
 <span class="cp">#define NODE_TELEM_MSG_NAME       "_NODE_TELEM"</span>
 
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">NODE_TELEM_ROW_BYTES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeTelemField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ID</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: sending node ID (from the CAN ID)</span>
+<span class="w">    </span><span class="n">FRAME</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// 8 bytes: the TELEM_n frame unread, wire order (TelemPage at FRAME + 0)</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">HeartbeatFlag</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">BOFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w">  </span><span class="c1">// CAN controller is bus-off</span>
+<span class="w">    </span><span class="n">EPVF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w">  </span><span class="c1">// error passive: TEC or REC &gt;= 128</span>
+<span class="p">};</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">HB_ESR_TEC_SHIFT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">HB_ESR_REC_SHIFT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeHealthFlag</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">OVERHEAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w">  </span><span class="c1">// die temp &gt;= NODE_OVERHEAT_C (opt-in, #213)</span>
 <span class="w">    </span><span class="n">DEGRADED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w">  </span><span class="c1">// a FaultSource reports faultCode() != NodeFaultCode::NONE (#163)</span>
 <span class="p">};</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">DIE_TEMP_UNAVAILABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-128</span><span class="p">;</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">DIE_TEMP_UNAVAILABLE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">INT8_MIN</span><span class="p">,</span><span class="w"> </span><span class="s">"DIE_TEMP_UNAVAILABLE is the int8 minimum"</span><span class="p">);</span>
 
 <span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">NodeFaultCode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">NONE</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
@@ -4730,6 +4766,23 @@
 <span class="w">    </span><span class="n">TEMP_CRIT</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w">  </span><span class="c1">// board temperature at the critical threshold</span>
 <span class="w">    </span><span class="n">NTC_FAULT</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w">  </span><span class="c1">// NTC channel open or shorted</span>
 <span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">PduRailField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">FLAGS</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: PduRailFlag bits</span>
+<span class="w">    </span><span class="n">V_AVG_MV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: window-average rail voltage, mV</span>
+<span class="w">    </span><span class="n">V_MIN_MV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: window-minimum rail voltage, mV</span>
+<span class="w">    </span><span class="n">I_AVG_MA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">  </span><span class="c1">// int16: window-average rail current, mA (signed: zero offset stays visible)</span>
+<span class="p">};</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">PduStatusField</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">FLAGS</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">// u8: PduStatusFlag bits</span>
+<span class="w">    </span><span class="n">NTC_TEMP_DC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="c1">// int16: board temperature, 0.1 degC (NTC_TEMP_UNAVAILABLE = no reading)</span>
+<span class="w">    </span><span class="n">I12_PEAK_MA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: 12 V rail peak current since the last page, mA</span>
+<span class="w">    </span><span class="n">I5_PEAK_MA</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">  </span><span class="c1">// u16: 5 V rail peak current since the last page, mA</span>
+<span class="p">};</span>
+
+<span class="k">constexpr</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">NTC_TEMP_UNAVAILABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-32768</span><span class="p">;</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">NTC_TEMP_UNAVAILABLE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">INT16_MIN</span><span class="p">,</span><span class="w"> </span><span class="s">"NTC_TEMP_UNAVAILABLE is the int16 minimum"</span><span class="p">);</span>
 
 <span class="k">namespace</span><span class="w"> </span><span class="nn">OpenSkyhawk</span><span class="w"> </span><span class="p">{</span>
 

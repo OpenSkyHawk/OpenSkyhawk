@@ -67,7 +67,7 @@
 |  bool | [**\_filterPassAll**](#variable-_filterpassall)   = `false`<br> |
 |  uint32\_t | [**\_lastDupMs**](#variable-_lastdupms)   = `0`<br> |
 |  uint32\_t | [**\_lastHbMs**](#variable-_lasthbms)   = `0`<br> |
-|  NodeHealthPayload | [**\_lastHealth**](#variable-_lasthealth)   = `{ 0, INT8\_MIN, 0, 0, 0, 0, { 0, 0 } }`<br> |
+|  NodeHealthPayload | [**\_lastHealth**](#variable-_lasthealth)   = `{ 0, [**DIE\_TEMP\_UNAVAILABLE**](NodeStatus_8h.md#variable-die_temp_unavailable), 0, 0, 0, 0, { 0, 0 } }`<br> |
 |  uint32\_t | [**\_lastHealthMs**](#variable-_lasthealthms)   = `0`<br> |
 |  uint32\_t | [**\_lastMasterMs**](#variable-_lastmasterms)   = `0`<br> |
 |  bool | [**\_loopback**](#variable-_loopback)   = `false`<br> |

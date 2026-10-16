@@ -78,7 +78,7 @@ Inherits the following classes: [OpenSkyhawk::FaultSource](classOpenSkyhawk_1_1F
 | virtual const char \* | [**faultDetail**](#function-faultdetail) () override const<br>_Human-readable fault detail for the local DiagSerial tap only — never on the wire._  |
 |  uint8\_t | [**flags**](#function-flags) () const<br>_PduStatusFlag bits this monitor owns: TEMP\_WARN, TEMP\_CRIT, NTC\_FAULT._  |
 |  void | [**sample**](#function-sample) (int16\_t tempDC, bool ntcFault, bool armed) <br>_Feed one reading._  |
-|  int16\_t | [**tempDC**](#function-tempdc) () const<br>_Latest temperature, 0.1 °C; INT16\_MIN when unavailable (no reading yet / NTC fault)._  |
+|  int16\_t | [**tempDC**](#function-tempdc) () const<br>_Latest temperature, 0.1 °C; NTC\_TEMP\_UNAVAILABLE when no reading yet / NTC fault._  |
 
 
 ## Public Functions inherited from OpenSkyhawk::FaultSource
@@ -256,7 +256,7 @@ void OpenSkyhawk::BoardThermal::sample (
 
 ### function tempDC 
 
-_Latest temperature, 0.1 °C; INT16\_MIN when unavailable (no reading yet / NTC fault)._ 
+_Latest temperature, 0.1 °C; NTC\_TEMP\_UNAVAILABLE when no reading yet / NTC fault._ 
 ```C++
 inline int16_t OpenSkyhawk::BoardThermal::tempDC () const
 ```

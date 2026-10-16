@@ -268,7 +268,7 @@ const NodeHealthPayload & CANProtocol::lastNodeHealth ()
 
 
 
-[**PanelBridge**](namespacePanelBridge.md) reports it as its own node-0 `_NODE_STATUS` row. Before the first HEALTH\_n (or with `-DNODE_HEALTH_TELEM=0`) it reads not-yet-seen: dieTempC INT8\_MIN, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH\_n from. 
+[**PanelBridge**](namespacePanelBridge.md) reports it as its own node-0 `_NODE_STATUS` row. Before the first HEALTH\_n (or with `-DNODE_HEALTH_TELEM=0`) it reads not-yet-seen: dieTempC DIE\_TEMP\_UNAVAILABLE, everything else 0 (nodeKind UNKNOWN) — the same rule the bridge applies to a node it has no HEALTH\_n from. 
 
 
         
@@ -297,7 +297,7 @@ Fills uptime, CAN health flags, and ESR-derived TEC/REC from [**CANProtocol**](n
 **Parameters:**
 
 
-* `nodeId` Node ID (1-63 [**PanelGroup**](namespacePanelGroup.md); 0 reserved for [**PanelBridge**](namespacePanelBridge.md)). 
+* `nodeId` Node ID (1-63 [**PanelGroup**](namespacePanelGroup.md); GATEWAY\_NODE\_ID for [**PanelBridge**](namespacePanelBridge.md)). 
 * `rxCount` Caller-owned receive counter to embed in the payload. 
 
 
@@ -338,9 +338,9 @@ The CAN/DCS packing boundary: takes the internal die temperature (via [**STM32Bo
 **Parameters:**
 
 
-* `nodeId` Node ID (1-63 [**PanelGroup**](namespacePanelGroup.md); 0 [**PanelBridge**](namespacePanelBridge.md)). 
+* `nodeId` Node ID (1-63 [**PanelGroup**](namespacePanelGroup.md); GATEWAY\_NODE\_ID [**PanelBridge**](namespacePanelBridge.md)). 
 * `kind` The node's board kind (#344) — from its firmware role, never from nodeId. 
-* `dieTempC` Internal die temp in whole °C (INT8\_MIN = unavailable). 
+* `dieTempC` Internal die temp in whole °C (DIE\_TEMP\_UNAVAILABLE = unavailable). 
 * `fault` Aggregated node fault (NodeFaultCode::NONE = healthy). Default NONE. 
 
 

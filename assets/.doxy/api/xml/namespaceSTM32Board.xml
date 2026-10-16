@@ -323,7 +323,7 @@
 <para>Free per-node thermal telemetry — no external parts, no PCB change. Reads ATEMP and AVREF (Vrefint) and converts with STM32F103 datasheet typicals (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.</para>
 <para><simplesect kind="note"><para>UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature (not ambient) with a self-heat offset. Use for relative trend / overheat flagging, not precise ambient measurement. </para>
 </simplesect>
-<simplesect kind="return"><para>Die temperature in whole °C, or INT8_MIN if the internal channels are unavailable on this variant. </para>
+<simplesect kind="return"><para>Die temperature in whole °C, or DIE_TEMP_UNAVAILABLE (<ref refid="NodeStatus_8h" kindref="compound">NodeStatus.h</ref>) if the internal channels are unavailable on this variant. </para>
 </simplesect>
 </para>
         </detaileddescription>
