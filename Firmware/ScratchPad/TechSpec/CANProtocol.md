@@ -87,11 +87,14 @@ Firmware/Tests/CANProtocol/
     ├── duplicate_node_id.cpp   — duplicate NODE_ID check (#344), loopback: own looped-back HBs never
     │                             trip it; extra HB_n frames the test sends raise DUPLICATE_NODE_ID +
     │                             DEGRADED in lastNodeHealth(), held while they flow, clear ~3 s after
+    │                             they stop
     └── node_status_bus.cpp     — the same service on a physical bus against a master (PanelBridge or
                                   a USB-CAN adapter sending HB_0 every 500 ms): DiagSerial logs every
                                   LED state change + a 10 s summary (warnRaises / hb0Seen / TEC / REC /
                                   fault / kind) for watchdog timing, flapping-master and link-drop runs,
-                                  and soaks; on two boards with the same NODE_ID, the duplicate bench
+                                  and soaks; flashed on two boards with the same NODE_ID, it is also
+                                  the duplicate-NODE_ID bench (fault=9, then fault=0 once one board is
+                                  unplugged)
 ```
 
 All runtime scenarios use `startLoopback()` — single board, no second node or physical bus
