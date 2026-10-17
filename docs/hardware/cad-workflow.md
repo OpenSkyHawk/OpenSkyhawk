@@ -25,10 +25,11 @@ turns it into the plates you cut. It lives in its own repository,
 [OpenSkyHawk/CockpitPanels](https://github.com/OpenSkyHawk/CockpitPanels), because the
 panel grid is common to many aircraft, not only the A-4.
 
-To install it, open **Tools → Addon Manager → ⚙ → Custom repositories**, add
-`https://github.com/OpenSkyHawk/CockpitPanels` with branch `main`, then install
-**Cockpit Panels** and restart FreeCAD. Updates arrive through the Addon Manager like any
-other addon. Everything the workbench creates is a plain FreeCAD object, so a panel file
+Install it through FreeCAD's Addon Manager: add `https://github.com/OpenSkyHawk/CockpitPanels`
+(branch `main`) as a custom repository in the Addon Manager preferences, then search the list
+for **CockpitPanels**. The
+[CockpitPanels README](https://github.com/OpenSkyHawk/CockpitPanels#install) has the
+step-by-step install. Everything the workbench creates is a plain FreeCAD object, so a panel file
 opens and recomputes on any FreeCAD 1.1+, with or without the workbench installed.
 
 The workbench has three tools, used in order. Their buttons sit on the Cockpit Panels

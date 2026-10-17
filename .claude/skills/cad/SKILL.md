@@ -30,8 +30,10 @@ and `docs/hardware/cad-workflow.md`. Update this skill once D8 is resolved.
 ## Panel blank + plate stack (CockpitPanels workbench)
 
 Panel bases come from the **Cockpit Panels** FreeCAD 1.1+ workbench, a separate repo:
-`OpenSkyHawk/CockpitPanels` (LGPL-2.1+; install via Addon Manager → custom repository,
-branch `main`). Its README is the reference. Three tools, in order:
+`OpenSkyHawk/CockpitPanels` (LGPL-2.1+). Install: FreeCAD 1.1 custom repositories are in
+Preferences → Addon Manager page (not the Addon Manager's ⚙ menu; the page appears only after
+the Addon Manager has been opened once) → + → URL above, branch `main`; it lists as
+"CockpitPanels" until it reaches the official catalog. Its README is the reference. Three tools, in order:
 
 - **Panel Blank**: Dzus-grid outline + mount points + clearance holes, centred on the origin
   on XY, driven by the `PanelBlank` sheet. No ControlPoints sketch: the user makes their own.
