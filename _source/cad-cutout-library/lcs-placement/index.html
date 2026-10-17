@@ -4755,32 +4755,43 @@ KiCad reference visible in the tree. For rows of identical, unrotated controls, 
 <a href="../array-placement/">point array</a> is lighter. Back to the <a href="../">overview</a>.</p>
 <p>Build the <a href="../library-part/">library part</a> first.</p>
 <p>The screenshots come from a small demo: a Toggle12-style library part and a 100 × 50 mm
-BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.</p>
+BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°. The demo predates Plate Stack
+and has fewer layers, but every step is the same in each layer Body that Plate Stack
+builds.</p>
 <h2 id="how-the-pieces-fit">How the pieces fit</h2>
 <div class="highlight"><pre><span></span><code>CAD/Shared/Cutouts/Toggle12.FCStd          ← library part
 └── Body
     ├── FacePlate   (sketch: Ø12.6 hole)
+    ├── Diffuser    (sketch: Ø12.6 hole)
     └── BackPlate   (sketch: Ø12.6 hole + anti-rotation tab)
 
 &lt;panel&gt;.FCStd
-├── Panel Blank (group)
-│   └── ControlPoints   (sketch: one point per control)
+├── Panel Blank (group, from Panel Blank)
+├── Plate Stack (group, from Plate Stack)
+├── ControlPoints   (your sketch on XY: one point per control)
 ├── Controls (group)
 │   ├── SW1   (LCS on ControlPoints:Vertex1)
 │   └── SW2   (LCS on ControlPoints:Vertex2, rotated 90°)
-├── FrontPlate (Body)
-│   └── … SW1_Face (binder → FacePlate) → Pocket, SW2_Face → Pocket
+├── FacePlate (Body)
+│   └── FacePlate_Outline, _Pad, _Cut, _Pocket (from Plate Stack)
+│       → SW1_Face (binder → FacePlate) → Pocket, SW2_Face → Pocket
+├── Diffuser (Body)
+│   └── Diffuser_Outline … _Pocket
+│       → SW1_Diff (binder → Diffuser) → Pocket, SW2_Diff → Pocket
 └── BackPlate (Body)
-    └── … SW1_Back (binder → BackPlate) → Pocket, SW2_Back → Pocket
+    └── BackPlate_Outline … _Pocket
+        → SW1_Back (binder → BackPlate) → Pocket, SW2_Back → Pocket
 </code></pre></div>
 <ul>
-<li><strong>ControlPoints</strong>: the <em>where</em>. One plain sketch point per control. Move a point and the
-  control moves on every plate.</li>
+<li><strong>ControlPoints</strong>: the <em>where</em>. One plain sketch point per control, which you create
+  yourself: Panel Blank doesn't make one. Move a point and the control moves on every
+  plate.</li>
 <li><strong>One LCS per control</strong>: the <em>which way</em>. The LCS is pinned to its point and carries the
   control's rotation. Its label is the KiCad reference (<code>SW1</code>).</li>
 <li><strong>One binder per control per plate layer</strong>: a live, cross-file copy of the library
   sketch for that layer, placed by the control's LCS.</li>
-<li><strong>Pocket the binder directly</strong> (Through all, Symmetric).</li>
+<li><strong>Pocket the binder directly</strong> (Through all, Symmetric), after the layer's own
+  <code>&lt;Layer&gt;_Pocket</code>.</li>
 </ul>
 <h2 id="panel-conventions">Panel conventions</h2>
 <table>
@@ -4791,6 +4802,10 @@ BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>ControlPoints is your own sketch on the XY plane, outside the <code>Panel Blank</code> group</td>
+<td>Panel Blank draws no control points, and running it again only updates its own objects</td>
+</tr>
 <tr>
 <td>ControlPoints uses ordinary (non-construction) points</td>
 <td>The LCS attaches to <code>Sketch:VertexN</code></td>
@@ -4816,8 +4831,10 @@ BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.</p>
 <h2 id="recipe">Recipe</h2>
 <h3 id="a1-control-positions">A1. Control positions</h3>
 <ol>
-<li>In the panel, open the <code>ControlPoints</code> sketch (Sketcher workbench).</li>
-<li>Add one <strong>Point</strong> per control and dimension it from the origin.</li>
+<li>In the panel, create a sketch on the <strong>XY plane</strong> (Sketcher workbench) and rename it
+   <code>ControlPoints</code>. Leave it outside the <code>Panel Blank</code> group.</li>
+<li>Add one <strong>Point</strong> per control and dimension it from the origin, which is the panel
+   centre. Use numbers or <code>PanelBlank</code> cell references rather than External Geometry.</li>
 <li>Close the sketch.</li>
 </ol>
 <p><img alt="ControlPoints sketch: one point per control, dimensioned from the origin" src="../02-control-points.png" /></p>
@@ -4835,12 +4852,13 @@ BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.</p>
 <p><img alt="SW2's attachment offset: Around Z-axis = 90°" src="../04-lcs-rotation.png" /></p>
 <h3 id="a3-bind-and-cut-per-control-per-plate">A3. Bind and cut (per control, per plate)</h3>
 <ol>
-<li>Make the <strong>panel</strong> the active document. Double-click the plate Body (e.g. FrontPlate)
-   so it's active, and select <strong>nothing</strong>.</li>
+<li>Make the <strong>panel</strong> the active document. Double-click the layer Body (e.g. FacePlate)
+   so it's active, and select <strong>nothing</strong>. Its Tip should be <code>FacePlate_Pocket</code> (or a
+   later feature of yours), so the new features land after the stack's own.</li>
 <li>Part Design → <strong>Create a sub-object(s) shape binder</strong>. An empty binder appears inside the
    body.</li>
-<li>In the tree, <strong>drag</strong> the library's layer sketch (<code>FacePlate</code> or <code>BackPlate</code>) onto
-   the new binder. Both documents appear in the same tree.</li>
+<li>In the tree, <strong>drag</strong> the library's sketch for this layer (<code>FacePlate</code>, <code>Diffuser</code> or
+   <code>BackPlate</code>) onto the new binder. Both documents appear in the same tree.</li>
 </ol>
 <p><img alt="Empty binder in the plate body, with the library sketch to drag" src="../05-empty-binder.png" /></p>
 <ol>
@@ -4856,10 +4874,12 @@ BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.</p>
 5. With the binder selected, run <strong>Pocket</strong>: set Mode to <strong>Symmetric</strong> and Type to
    <strong>Through all</strong>. OK.</p>
 <p><img alt="Pocket on the binder: Symmetric + Through all" src="../07-pocket.png" />
-6. Rename the binder <code>SW1_Face</code> (or <code>SW1_Back</code> on the BackPlate).
+6. Rename the binder <code>SW1_Face</code> (<code>SW1_Diff</code> on the Diffuser, <code>SW1_Back</code> on the
+   BackPlate).
 7. Save. When you're asked "Save dependent files?", answer <strong>No</strong> unless you edited the
    library on purpose.</p>
-<p>Repeat for every control and every plate layer. In the result below, SW2 is rotated 90°:
+<p>Repeat for every control and every plate layer. When the panel is done, <strong>Export
+Layers</strong> writes one DXF per layer Body, with every cutout that goes through that plate. In the result below, SW2 is rotated 90°:
 its tab sits to the side, while SW1's points down.</p>
 <p><img alt="Result: SW1 at 0°, SW2 at 90°; SW2 selected, showing its Translate attachment and 90° offset" src="../08-result.png" /></p>
 <h2 id="gotchas">Gotchas</h2>

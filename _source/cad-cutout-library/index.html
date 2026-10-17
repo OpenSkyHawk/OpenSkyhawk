@@ -4700,12 +4700,18 @@
 
 <h1 id="cad-cutout-library-freecad">CAD Cutout Library (FreeCAD)</h1>
 <blockquote>
-<p><strong>Status:</strong> verified in FreeCAD 1.1.1. CAD tooling (D8) is still open, so these are
-internal reference pages. Once D8 lands they get promoted into
-<code>docs/hardware/cad-workflow.md</code>.</p>
+<p><strong>Status:</strong> verified in FreeCAD 1.1.1, on a panel built with the
+<a href="https://github.com/OpenSkyHawk/CockpitPanels">Cockpit Panels</a> workbench (Panel Blank →
+Plate Stack). CAD tooling (D8) is still open, so these are internal reference pages. Once
+D8 lands they get promoted into <code>docs/hardware/cad-workflow.md</code>.</p>
 </blockquote>
 <p>Draw each control's cutout <strong>once</strong>, in a small library file, and link it into every panel
 that uses it. Edit the library and every panel picks up the change.</p>
+<p>Start the panel with the workbench: <strong>Panel Blank</strong> draws the outline and fastener grid,
+centred on the origin, and <strong>Plate Stack</strong> builds one Part Design Body per layer
+(<code>FacePlate</code>, <code>Diffuser</code>, <code>BackPlate</code> by default). The cutouts in these guides go into those
+Bodies. See <a href="../../hardware/cad-workflow/#panel-base-blank">CAD workflow → Panel base blank</a>
+for installing and using the workbench.</p>
 <p>A panel places library cutouts in one of two ways. Both link the same library files, and
 one panel can use both.</p>
 <table>
@@ -4746,9 +4752,9 @@ one panel can use both.</p>
 <td>All copies share one orientation</td>
 </tr>
 <tr>
-<td>Objects for N controls, 2 layers</td>
-<td>N LCS + 2N binders + 2N pockets</td>
-<td>2 arrays + 4 binders + 2 pockets, whatever N is</td>
+<td>Objects for N controls, 3 layers</td>
+<td>N LCS + 3N binders + 3N pockets</td>
+<td>3 arrays + 6 binders + 3 pockets, whatever N is</td>
 </tr>
 <tr>
 <td>Add a control</td>
@@ -4782,15 +4788,26 @@ tree: toggles, rotaries with locating tabs, gauges. Use <strong>Method B</strong
 unrotated controls: LED rows, annunciator lamps, push-button banks.</p>
 <h2 id="shared-building-blocks">Shared building blocks</h2>
 <ul>
-<li><strong>Plate layers.</strong> A panel is a stack of plate Bodies (FacePlate, BackPlate, …). The
-  library holds one sketch per layer, because each plate needs a different hole.</li>
+<li><strong>Plate layers.</strong> A panel is a stack of plate Bodies, one per Plate Stack layer:
+  <code>FacePlate</code>, <code>Diffuser</code> and <code>BackPlate</code> by default. The library holds one sketch per
+  layer, named exactly after the layer, because each plate needs a different hole.</li>
+<li><strong>Your own points sketch.</strong> Panel Blank draws the outline and the fastener grid but no
+  control positions. Make your own points sketch on the XY plane, outside the <code>Panel Blank</code>
+  group, and dimension the points from the origin, which is the panel centre.</li>
 <li><strong>Sub-Shape Binder.</strong> A live, cross-file copy of a library sketch. Both methods pocket a
   binder directly (Through all, Symmetric), so you don't need an External-Geometry cut
   sketch.</li>
-<li><strong>Cutouts stay at the control points.</strong> A binder inside a Body compensates for that
-  Body's Placement. You can stack plates by moving a Body in Z, and the Through-all pocket
-  still cuts. Don't move a plate Body in X or Y: the plate slides while its holes stay
-  where they were.</li>
+<li><strong>Cutouts go after the stack's own features.</strong> Each layer Body already holds
+  <code>&lt;Layer&gt;_Outline</code>, <code>&lt;Layer&gt;_Pad</code>, <code>&lt;Layer&gt;_Cut</code> and <code>&lt;Layer&gt;_Pocket</code> (the fastener cut).
+  Add your binders and pockets after <code>&lt;Layer&gt;_Pocket</code>, and leave those four alone: running
+  Plate Stack or Panel Blank again updates them in place.</li>
+<li><strong>Cutouts stay at the control points.</strong> Plate Stack leaves every Body at the origin and
+  sets each layer's depth on its outline binder instead, so a Through-all pocket cuts
+  whatever the layer's depth. Don't move a plate Body's Placement: the plate slides while
+  its holes stay where they were.</li>
+<li><strong>Cut files.</strong> Export Layers flattens each plate to one DXF, drawn on a single layer named
+  after the Body (<code>FacePlate.dxf</code> on layer <code>FacePlate</code>, …). Only features that go all the
+  way through the plate appear, which the Through-all pockets here always do.</li>
 </ul>
 <h2 id="related">Related</h2>
 <ul>
