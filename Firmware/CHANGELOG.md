@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/firmware-v0.1.0...firmware-v0.2.0) (2026-10-17)
+
+
+### Features
+
+* **firmware:** DrumDisplay takes a bus or a mux ([#318](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/318)) ([c37f475](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/c37f475b9f1885bef96f5ca9d15f4e4da00075cf))
+* **firmware:** nodes announce their board kind in HEALTH_n and _NODE_STATUS v3 ([#344](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/344)) ([#345](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/345)) ([d29433a](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/d29433ab149fcff1695e3d5eb07e2fab4211a603))
+* **firmware:** PDU monitoring node and TELEM_n telemetry frame ([#216](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/216)) ([#343](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/343)) ([22b6a87](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/22b6a87e73068ca2bfd964d067af1247771d5854))
+
+
+### Bug Fixes
+
+* **firmware:** ADS1115 analog reads span the full 16-bit range ([#325](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/325)) ([#330](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/330)) ([0b325fd](https://github.com/OpenSkyHawk/OpenSkyhawk/commit/0b325fd0d03175b21ca6339e5feaaf80140ec8fb))
+
 ## [0.1.0](https://github.com/OpenSkyHawk/OpenSkyhawk/compare/625e581f...firmware-v0.1.0) (2026-10-01)
 
 
