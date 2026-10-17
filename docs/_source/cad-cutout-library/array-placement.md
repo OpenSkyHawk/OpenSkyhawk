@@ -9,7 +9,9 @@ the [overview](index.md).
 Build the [library part](library-part.md) first.
 
 The screenshots come from a small demo: an `LED5` library part (FacePlate Ø5.2, BackPlate
-Ø6.0) and a 100 × 30 mm panel with a row of five LEDs.
+Ø6.0) and a 100 × 30 mm panel with a row of five LEDs. The demo predates Plate Stack and has
+only those two layers. On a Plate Stack panel, give the library a `Diffuser` sketch too and
+repeat B2–B4 for the Diffuser Body.
 
 ## How the pieces fit
 
@@ -17,18 +19,28 @@ The screenshots come from a small demo: an `LED5` library part (FacePlate Ø5.2,
 CAD/Shared/Cutouts/LED5.FCStd              ← library part
 └── Body
     ├── FacePlate   (sketch: Ø5.2 hole)
+    ├── Diffuser    (sketch: the Diffuser hole)
     └── BackPlate   (sketch: Ø6.0 hole)
 
 <panel>.FCStd
-├── LED_Points            (sketch: one point per LED, nothing else)
+├── Panel Blank (group, from Panel Blank)
+├── Plate Stack (group, from Plate Stack)
+├── LED_Points            (your sketch on XY: one point per LED, nothing else)
 ├── LEDs_FacePlate        (Draft PointArray over LED_Points)
 │   └── LED5_FacePlate    (root binder → LED5 FacePlate sketch)
+├── LEDs_Diffuser         (Draft PointArray over LED_Points)
+│   └── LED5_Diffuser     (root binder → LED5 Diffuser sketch)
 ├── LEDs_BackPlate        (Draft PointArray over LED_Points)
 │   └── LED5_BackPlate    (root binder → LED5 BackPlate sketch)
 ├── FacePlate (Body)
-│   └── … LEDsCutFacePlate (Pocket) ← LEDsBinderFacePlate (binder → LEDs_FacePlate)
+│   └── FacePlate_Outline … FacePlate_Pocket (from Plate Stack)
+│       → LEDsCutFacePlate (Pocket) ← LEDsBinderFacePlate (binder → LEDs_FacePlate)
+├── Diffuser (Body)
+│   └── Diffuser_Outline … Diffuser_Pocket
+│       → LEDsCutDiffuser (Pocket) ← LEDsBinderDiffuser (binder → LEDs_Diffuser)
 └── BackPlate (Body)
-    └── … LEDsCutBackPlate (Pocket) ← LEDsBinderBackPlate (binder → LEDs_BackPlate)
+    └── BackPlate_Outline … BackPlate_Pocket
+        → LEDsCutBackPlate (Pocket) ← LEDsBinderBackPlate (binder → LEDs_BackPlate)
 ```
 
 Each layer uses two binders:
@@ -42,7 +54,9 @@ Each layer uses two binders:
 
 ### B1. Points sketch
 
-1. In the panel, create a sketch (here `LED_Points`) with one **Point** per LED.
+1. In the panel, create a sketch on the **XY plane** (here `LED_Points`) with one
+   **Point** per LED, dimensioned from the origin (the panel centre). Panel Blank doesn't
+   make one for you; keep it outside the `Panel Blank` group.
 2. Put **only** this array's points in it. The array places a copy on every vertex in the
    sketch, so a shared ControlPoints sketch would also put LEDs on your toggles.
 
@@ -71,7 +85,9 @@ Each layer uses two binders:
 
 ### B4. Bind and cut
 
-1. Back in Part Design, double-click the plate Body so it's active, then select nothing.
+1. Back in Part Design, double-click the layer Body so it's active, then select nothing.
+   Its Tip should be `<Layer>_Pocket` (or a later feature of yours), so the binder and
+   pocket land after the stack's own features.
 2. Create a sub-shape binder, then drag the **array** (`LEDs_FacePlate`) onto it.
 3. With the binder selected, run **Pocket**: Mode **Symmetric**, Type **Through all**.
 
@@ -79,8 +95,9 @@ Each layer uses two binders:
 
 ![Pocket on the array binder: Symmetric + Through all, all five holes previewed](array-06-pocket.png)
 
-Repeat B2–B4 for the BackPlate layer, with a second root binder on the library's
-`BackPlate` sketch and a second array over the same `LED_Points`.
+Repeat B2–B4 for the Diffuser and BackPlate layers, each with its own root binder on the
+library's `Diffuser` or `BackPlate` sketch and its own array over the same `LED_Points`.
+**Export Layers** then writes one DXF per layer Body, holes included.
 
 ![Result: five Ø5.2 holes in the FacePlate and five Ø6.0 holes in the BackPlate](array-07-result.png)
 

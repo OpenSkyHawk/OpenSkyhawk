@@ -8,7 +8,9 @@ KiCad reference visible in the tree. For rows of identical, unrotated controls, 
 Build the [library part](library-part.md) first.
 
 The screenshots come from a small demo: a Toggle12-style library part and a 100 × 50 mm
-BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.
+BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°. The demo predates Plate Stack
+and has fewer layers, but every step is the same in each layer Body that Plate Stack
+builds.
 
 ## How the pieces fit
 
@@ -16,32 +18,42 @@ BackPlate with two controls, SW1 and SW2. SW2 is rotated 90°.
 CAD/Shared/Cutouts/Toggle12.FCStd          ← library part
 └── Body
     ├── FacePlate   (sketch: Ø12.6 hole)
+    ├── Diffuser    (sketch: Ø12.6 hole)
     └── BackPlate   (sketch: Ø12.6 hole + anti-rotation tab)
 
 <panel>.FCStd
-├── Panel Blank (group)
-│   └── ControlPoints   (sketch: one point per control)
+├── Panel Blank (group, from Panel Blank)
+├── Plate Stack (group, from Plate Stack)
+├── ControlPoints   (your sketch on XY: one point per control)
 ├── Controls (group)
 │   ├── SW1   (LCS on ControlPoints:Vertex1)
 │   └── SW2   (LCS on ControlPoints:Vertex2, rotated 90°)
-├── FrontPlate (Body)
-│   └── … SW1_Face (binder → FacePlate) → Pocket, SW2_Face → Pocket
+├── FacePlate (Body)
+│   └── FacePlate_Outline, _Pad, _Cut, _Pocket (from Plate Stack)
+│       → SW1_Face (binder → FacePlate) → Pocket, SW2_Face → Pocket
+├── Diffuser (Body)
+│   └── Diffuser_Outline … _Pocket
+│       → SW1_Diff (binder → Diffuser) → Pocket, SW2_Diff → Pocket
 └── BackPlate (Body)
-    └── … SW1_Back (binder → BackPlate) → Pocket, SW2_Back → Pocket
+    └── BackPlate_Outline … _Pocket
+        → SW1_Back (binder → BackPlate) → Pocket, SW2_Back → Pocket
 ```
 
-- **ControlPoints**: the *where*. One plain sketch point per control. Move a point and the
-  control moves on every plate.
+- **ControlPoints**: the *where*. One plain sketch point per control, which you create
+  yourself: Panel Blank doesn't make one. Move a point and the control moves on every
+  plate.
 - **One LCS per control**: the *which way*. The LCS is pinned to its point and carries the
   control's rotation. Its label is the KiCad reference (`SW1`).
 - **One binder per control per plate layer**: a live, cross-file copy of the library
   sketch for that layer, placed by the control's LCS.
-- **Pocket the binder directly** (Through all, Symmetric).
+- **Pocket the binder directly** (Through all, Symmetric), after the layer's own
+  `<Layer>_Pocket`.
 
 ## Panel conventions
 
 | Rule | Why |
 |---|---|
+| ControlPoints is your own sketch on the XY plane, outside the `Panel Blank` group | Panel Blank draws no control points, and running it again only updates its own objects |
 | ControlPoints uses ordinary (non-construction) points | The LCS attaches to `Sketch:VertexN` |
 | Never delete and re-add points in ControlPoints. Move them instead | The LCS binds by vertex **index**, so deleting a point renumbers the rest |
 | LCS label = KiCad reference (`SW1`, `S3`, …) | Ties CAD to schematic and firmware |
@@ -52,8 +64,10 @@ CAD/Shared/Cutouts/Toggle12.FCStd          ← library part
 
 ### A1. Control positions
 
-1. In the panel, open the `ControlPoints` sketch (Sketcher workbench).
-2. Add one **Point** per control and dimension it from the origin.
+1. In the panel, create a sketch on the **XY plane** (Sketcher workbench) and rename it
+   `ControlPoints`. Leave it outside the `Panel Blank` group.
+2. Add one **Point** per control and dimension it from the origin, which is the panel
+   centre. Use numbers or `PanelBlank` cell references rather than External Geometry.
 3. Close the sketch.
 
 ![ControlPoints sketch: one point per control, dimensioned from the origin](02-control-points.png)
@@ -74,12 +88,13 @@ CAD/Shared/Cutouts/Toggle12.FCStd          ← library part
 
 ### A3. Bind and cut (per control, per plate)
 
-1. Make the **panel** the active document. Double-click the plate Body (e.g. FrontPlate)
-   so it's active, and select **nothing**.
+1. Make the **panel** the active document. Double-click the layer Body (e.g. FacePlate)
+   so it's active, and select **nothing**. Its Tip should be `FacePlate_Pocket` (or a
+   later feature of yours), so the new features land after the stack's own.
 2. Part Design → **Create a sub-object(s) shape binder**. An empty binder appears inside the
    body.
-3. In the tree, **drag** the library's layer sketch (`FacePlate` or `BackPlate`) onto
-   the new binder. Both documents appear in the same tree.
+3. In the tree, **drag** the library's sketch for this layer (`FacePlate`, `Diffuser` or
+   `BackPlate`) onto the new binder. Both documents appear in the same tree.
 
    ![Empty binder in the plate body, with the library sketch to drag](05-empty-binder.png)
 
@@ -99,11 +114,13 @@ CAD/Shared/Cutouts/Toggle12.FCStd          ← library part
    **Through all**. OK.
 
    ![Pocket on the binder: Symmetric + Through all](07-pocket.png)
-6. Rename the binder `SW1_Face` (or `SW1_Back` on the BackPlate).
+6. Rename the binder `SW1_Face` (`SW1_Diff` on the Diffuser, `SW1_Back` on the
+   BackPlate).
 7. Save. When you're asked "Save dependent files?", answer **No** unless you edited the
    library on purpose.
 
-Repeat for every control and every plate layer. In the result below, SW2 is rotated 90°:
+Repeat for every control and every plate layer. When the panel is done, **Export
+Layers** writes one DXF per layer Body, with every cutout that goes through that plate. In the result below, SW2 is rotated 90°:
 its tab sits to the side, while SW1's points down.
 
 ![Result: SW1 at 0°, SW2 at 90°; SW2 selected, showing its Translate attachment and 90° offset](08-result.png)
