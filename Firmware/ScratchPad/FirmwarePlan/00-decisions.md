@@ -496,7 +496,8 @@ foreign frame.
 **Decision:** The PanelBridge→host relay is line-granular. A line of printable ASCII + `\n` is
 written whole when the CDC FIFO has room, otherwise dropped and counted; non-ASCII and overlong
 lines are dropped. Calibration frames are whole-or-drop too. A FAULT latched 3 s restarts the UART
-and clears itself. A pure recovery ladder (`LinkRecovery.h`) re-attaches USB after 5 s unhealthy,
+and clears itself. A pure recovery ladder (`LinkRecovery.h`) re-attaches USB after 5 s unhealthy
+(unmounted, suspended with a recent UART fault, or a CDC IN endpoint that stopped draining),
 reboots 5 s later if that fails, then backs off to a re-attach every 60 s. A 3 s hardware watchdog
 covers a hung `loop()`. Link-health counters and event times are exposed as `GET_DIAG` / `DIAG` on
 the calibration protocol.
@@ -514,9 +515,13 @@ the calibration protocol.
 - *FAULT is electrical, not starvation.* The core's UART RX IRQ empties the PL011 into a software
   queue, so a slow `loop()` overflows that queue silently and never sets RSR. That queue is now
   1 KB (~40 ms) and counted separately; the RSR bits are counted one by one.
-- *Mounted is the health signal; suspend counts only with a recent UART fault.* The RP2040 is
-  powered only from USB, so running-but-unmounted is abnormal, while a sleeping host suspends a
+- *Mounted is the main health signal; suspend counts only with a recent UART fault.* The RP2040
+  is powered only from USB, so running-but-unmounted is abnormal, while a sleeping host suspends a
   device that is perfectly healthy.
+- *A stalled endpoint is unhealthy too.* Once writes never block, a host that stays configured but
+  stops polling would turn the old hang into a silent permanent outage — `loop()` and the watchdog
+  keep running. DTR held + bytes pending + nothing drained for 1 s catches it; the host OS polls an
+  open port into its own buffer regardless of the app, so a slow app does not trip it.
 - *Backoff, not a reboot loop.* A Gateway on a charger or back-fed with no host would otherwise
   reboot every 10 s.
 - *Diagnostics on the existing binary channel.* `GET_DIAG` is answered on request and adds nothing

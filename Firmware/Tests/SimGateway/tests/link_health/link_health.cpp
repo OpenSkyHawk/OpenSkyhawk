@@ -14,7 +14,9 @@
 //   - USB-loss times stamp on the healthy → unhealthy edge only, never at boot
 //   - FAULT latched 3 s → self-clear (production restarts the UART); errors re-latch it
 //   - UART error bits counted separately, first/last times recorded
-//   - GET_DIAG answered outside a session, SEQ echoed, 45-byte payload matching diagnostics()
+//   - CDC stall: idle / no host / draining is never a stall; full + no drain for CDC_STALL_MS is
+//   - mounted, not suspended, continuous traffic, no CDC capacity → ladder DETACHes (review #358)
+//   - GET_DIAG answered outside a session, SEQ echoed, payload matching diagnostics()
 //
 // Flash:
 //   pio run -e test_link_health -t upload
@@ -209,6 +211,61 @@ static void testUartCounters() {
     checkEq(F("[E9] counters saturate, never wrap"), d.uartFraming, 0xFFFF);
 }
 
+// ── CDC stall (configured but not draining) ───────────────────────────────────
+static constexpr uint16_t FIFO = 256;
+
+static void testCdcStall() {
+    fresh();
+    bool ok = true;
+    for (uint32_t t = 0; t <= 10000; t += 10) ok &= !SimGateway::cdcStallStepForTest(t, true, FIFO, FIFO, 0);
+    check(F("[G1] DTR held, nothing pending: never a stall"), ok);
+
+    fresh();
+    ok = true;
+    for (uint32_t t = 0; t <= 10000; t += 10) ok &= !SimGateway::cdcStallStepForTest(t, false, 0, FIFO, 0);
+    check(F("[G2] FIFO full but no host (DTR low): never a stall"), ok);
+
+    // Draining exactly as fast as we refill: room never grows, but `written` shows the drain.
+    fresh();
+    ok = true;
+    for (uint32_t t = 0; t <= 10000; t += 10) ok &= !SimGateway::cdcStallStepForTest(t, true, 40, FIFO, 64);
+    check(F("[G3] constant room but bytes written each tick: progress, not a stall"), ok);
+
+    fresh();
+    SimGateway::cdcStallStepForTest(0, true, 10, FIFO, 0);
+    check(F("[G4] full, no drain: not yet at CDC_STALL_MS - 10"),
+          !SimGateway::cdcStallStepForTest(SimGateway::CDC_STALL_MS - 10, true, 10, FIFO, 0));
+    check(F("[G5] stalled at CDC_STALL_MS"),
+          SimGateway::cdcStallStepForTest(SimGateway::CDC_STALL_MS, true, 10, FIFO, 0));
+    SimGateway::cdcStallStepForTest(SimGateway::CDC_STALL_MS + 500, true, 10, FIFO, 0);
+    checkEq(F("[G6] one stall counted per onset"), SimGateway::diagnostics().cdcStalls, 1);
+    check(F("[G7] a drain clears it"),
+          !SimGateway::cdcStallStepForTest(SimGateway::CDC_STALL_MS + 600, true, 74, FIFO, 0));
+
+    // The review's case: mounted, not suspended, PanelBridge lines keep arriving, CDC has no
+    // room for any of them. Before the fix this was healthy forever.
+    fresh();
+    SimGateway::resetParser();
+    SimGateway::resetCdcCapture();
+    SimGateway::cdcSetRoomForTest(0);
+    step(0, true);                                     // healthy first
+    LinkAction a = LinkAction::NONE;
+    uint32_t at = 0;
+    for (uint32_t t = 10; t <= 20000 && a == LinkAction::NONE; t += 10) {
+        for (const char* c = "GEAR 1\n"; *c; ++c) SimGateway::feedByte((uint8_t)*c);
+        const bool stalled = SimGateway::cdcStallStepForTest(t, true, 0, FIFO, 0);
+        a = SimGateway::linkStepForTest(t, /*mounted*/ true, /*suspended*/ false, stalled);
+        if (a != LinkAction::NONE) at = t;
+    }
+    SimGateway::cdcSetRoomForTest(-1);
+    check(F("[G8] mounted + stalled CDC: ladder DETACHes"), a == LinkAction::DETACH);
+    check(F("[G9] after CDC_STALL_MS + LINK_BAD_MS"),
+          at >= SimGateway::CDC_STALL_MS + OS::LINK_BAD_MS && at <= SimGateway::CDC_STALL_MS + OS::LINK_BAD_MS + 20);
+    check(F("[G10] the lines were dropped, not written"),
+          SimGateway::cdcCaptureCount() == 0 && SimGateway::diagnostics().linesDropped > 0);
+    checkEq(F("[G11] stall counted"), SimGateway::diagnostics().cdcStalls, 1);
+}
+
 // ── GET_DIAG ──────────────────────────────────────────────────────────────────
 static uint16_t rx16(size_t i) {
     return (uint16_t)(SimGateway::cdcCaptureByte(i) | ((uint16_t)SimGateway::cdcCaptureByte(i + 1) << 8));
@@ -256,6 +313,7 @@ static void runTests() {
     testHealth();
     testFaultRestart();
     testUartCounters();
+    testCdcStall();
     testGetDiag();
 
     Serial.println();

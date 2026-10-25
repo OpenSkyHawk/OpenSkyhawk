@@ -175,6 +175,10 @@ reproduced, the firmware now recovers by itself and keeps a record of what happe
   minute instead of rebooting again, so a gateway plugged into a charger doesn't reboot forever.
 - **Watchdog.** If the firmware ever stops running, a hardware watchdog reboots the gateway
   within 3 seconds.
+- **Connected but not listening counts too.** If the PC has the port open but its USB stack
+  stops collecting data (the gateway's outgoing buffer stays full for a second), that is treated
+  the same as not being connected. A slow app doesn't trigger this, because the PC's operating
+  system keeps collecting into its own buffer either way.
 - **A sleeping PC is left alone.** Sleep suspends the USB bus, which on its own isn't treated as
   a fault.
 

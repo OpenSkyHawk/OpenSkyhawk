@@ -288,7 +288,7 @@ the mapping — but that is data in the message, not the message's identity.
 | `NACK` | 3 | `type`:u8, `reason`:u8, `detail`:u8 (axis index, or `0xFF`) |
 | `RAW` | 5 | `idx`:u8, `raw`:u16, `cal`:u16 |
 | `GET_DIAG` | 0 | — |
-| `DIAG` | 45 | link-health counters and event times — see below |
+| `DIAG` | 47 | link-health counters and event times — see below |
 
 Field offsets are named in `AxisCal.h` — one enum per type with a payload (`CalHelloAckField`,
 `CalDataField` + `CalDataRecField` and `CAL_DATA_REC_BYTES`, `CalSessionOpenField`,
@@ -346,9 +346,10 @@ Times are `millis()` since this boot, `0` = never. Counters are u16 and saturate
 | 36 | `FRAMES_DROPPED` | u16 | calibration frame dropped, no CDC room |
 | 38 | `UART_RESTARTS` | u16 | FAULT self-clears |
 | 40 | `USB_REATTACHES` | u16 | recovery-ladder detach/attach cycles |
-| 42 | `RECOVERY_REBOOTS` | u8 | recovery-ladder reboots — survives a warm reboot |
-| 43 | `WATCHDOG_RESETS` | u8 | hardware-watchdog resets — survives a warm reboot |
-| 44 | `RESET_REASON` | u8 | `CalDiagResetReason`: 0 power-on, 1 watchdog, 2 recovery reboot |
+| 42 | `CDC_STALLS` | u16 | host held the port, bytes pending, CDC IN endpoint stopped draining |
+| 44 | `RECOVERY_REBOOTS` | u8 | recovery-ladder reboots — survives a warm reboot |
+| 45 | `WATCHDOG_RESETS` | u8 | hardware-watchdog resets — survives a warm reboot |
+| 46 | `RESET_REASON` | u8 | `CalDiagResetReason`: 0 power-on, 1 watchdog, 2 recovery reboot |
 
 The UART error counters count status ticks on which the bit was set, not characters: the core's
 UART IRQ owns the data register. The two "survives" counters live in watchdog scratch registers and

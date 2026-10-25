@@ -88,7 +88,8 @@ Firmware/Tests/SimGateway/
     │                          corrupt/overlong lines dropped and counted, HID frame inside a
     │                          line, calibration frame never lands mid-line, frame drop
     ├── link_health.cpp      — recovery ladder timing + backoff, health definition, USB-loss
-    │                          stamps, FAULT self-clear, UART error counters, GET_DIAG reply
+    │                          stamps, FAULT self-clear, UART error counters, CDC stall
+    │                          detector + mounted-but-stalled ladder trip, GET_DIAG reply
     ├── uart_loopback.cpp    — public SimGateway::loop() path through the configured RP2040
     │                          UART TX/RX pins; requires GP0→GP1 jumper by default
     └── led_state.cpp        — status-LED state machine: state→colour/animation mapping,
@@ -318,13 +319,14 @@ namespace SimGateway {
     constexpr size_t   UART_RX_QUEUE_BYTES = 1024; ///< UART software RX queue (~40 ms at 250k).
     constexpr uint16_t RELAY_LINE_MAX      = 128;  ///< Longest host-bound line relayed.
     constexpr uint16_t CDC_TO_UART_BUDGET  = 64;   ///< Host→UART bytes per loop() call.
+    constexpr uint32_t CDC_STALL_MS        = 1000; ///< DTR + pending + no drain this long = stall.
     constexpr uint32_t WATCHDOG_MS         = 3000; ///< Hardware watchdog timeout.
 
     struct GatewayDiag {          ///< Fields = CalDiagField (AxisCal.h); times 0 = never
         uint32_t firstUartErrMs, lastUartErrMs, firstUsbLossMs, lastUsbLossMs;
         uint16_t uartOverrun, uartFraming, uartBreak, uartParity, uartRxOverflow;
         uint16_t linesDropped, linesCorrupt, linesOverlong, framesDropped;
-        uint16_t uartRestarts, usbReattaches;
+        uint16_t uartRestarts, usbReattaches, cdcStalls;
         uint8_t  recoveryReboots, watchdogResets, resetReason;
     };
     const GatewayDiag& diagnostics();   ///< Live counters; the host reads them via GET_DIAG.
@@ -378,7 +380,7 @@ The calibration wire protocol (FirmwarePlan 03) is declared below the blob API: 
 payload-offset enum per type that carries a payload: `CalHelloAckField`, `CalDataField` +
 `CalDataRecField` (`CAL_DATA_REC_BYTES` = 10), `CalSessionOpenField`, `CalSessionAckField`,
 `CalStreamSelectField`, `CalCommitField`, `CalResetField`, `CalAckField`, `CalNackField`,
-`CalRawField`, `CalDiagField` (`CAL_DIAG_BYTES` = 45, plus `CalDiagResetReason`). Offsets are into
+`CalRawField`, `CalDiagField` (`CAL_DIAG_BYTES` = 47, plus `CalDiagResetReason`). Offsets are into
 the payload, little-endian; `SimGateway.cpp` reads and writes
 every payload through them, and a `static_assert` ties `CAL_DATA`'s layout to `CAL_MAX_PAYLOAD`.
 
@@ -515,7 +517,11 @@ and the line buffer. Persistent errors re-latch next tick.
 
 ### USB recovery ladder and watchdog (#355)
 
-`_linkUpdate()` computes health — `mounted && !(suspended && UART error < 30 s ago)` — stamps
+`_cdcStallUpdate()` samples `Serial.dtr()`, `availableForWrite()`, `CFG_TUD_CDC_TX_BUFSIZE` and the
+bytes `_writeCdcWhole()` wrote since the last tick (`_cdcWritten`): no drain for `CDC_STALL_MS` with
+DTR held and bytes pending is a stall, counted per onset in `cdcStalls`.
+
+`_linkUpdate()` computes health — `mounted && !(suspended && UART error < 30 s ago) && !cdcStalled` — stamps
 `firstUsbLossMs` / `lastUsbLossMs` on the healthy→unhealthy edge, and calls
 `linkRecoveryStep()` (`LinkRecovery.cpp`, pure). `_linkTick()` applies the result:
 `TinyUSBDevice.detach()` / `attach()`, or for `REBOOT` bumps the scratch reboot count, sets the
@@ -680,7 +686,7 @@ taking `now` as a parameter (no `millis()`, GPIO, TinyUSB, or register access in
 drive the machine with injected inputs and read back the resolved state + captured pin levels,
 mirroring the `feedByte` / `cdcCapture` pattern. Verified by `tests/led_state/`; the self-clear,
 counters and ladder by `tests/link_health/` (`diagUartErrorsForTest`, `linkStepForTest`,
-`linkResetForTest`, `diagResetForTest`).
+`linkResetForTest`, `diagResetForTest`, `cdcStallStepForTest`).
 
 ### HIDControls.h — standalone library
 

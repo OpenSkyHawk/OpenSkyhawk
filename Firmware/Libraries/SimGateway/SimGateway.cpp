@@ -316,6 +316,8 @@ inline void _bump(uint16_t& c) { if (c != 0xFFFF) ++c; }
 int32_t _sgtest_cdcRoom = -1;   // < 0 = unlimited
 #endif
 
+uint16_t _cdcWritten = 0;   // bytes written since the stall detector last sampled
+
 uint16_t _cdcRoom() {
 #ifdef SIMGATEWAY_TEST
     return (_sgtest_cdcRoom < 0) ? (uint16_t)0xFFFF : (uint16_t)_sgtest_cdcRoom;
@@ -338,6 +340,7 @@ bool _writeCdcWhole(const uint8_t* p, uint16_t n) {
     }
 #endif
     Serial.write(p, n);
+    _cdcWritten = (uint16_t)(_cdcWritten + n);
     return true;
 }
 
@@ -477,7 +480,7 @@ void _calSendCalData(uint8_t seq) {
     _calSend(OpenSkyhawk::CAL_T_CAL_DATA, seq, p, sizeof(p));
 }
 
-// Fixed 45 bytes in CalDiagField order — the client reads it with one typed view (#355).
+// Fixed 47 bytes in CalDiagField order — the client reads it with one typed view (#355).
 void _calSendDiag(uint8_t seq) {
     uint8_t p[OpenSkyhawk::CAL_DIAG_BYTES];
     _put32(p + OpenSkyhawk::CAL_DIAG_UPTIME_MS,         millis());
@@ -496,6 +499,7 @@ void _calSendDiag(uint8_t seq) {
     _put16(p + OpenSkyhawk::CAL_DIAG_FRAMES_DROPPED,    _diag.framesDropped);
     _put16(p + OpenSkyhawk::CAL_DIAG_UART_RESTARTS,     _diag.uartRestarts);
     _put16(p + OpenSkyhawk::CAL_DIAG_USB_REATTACHES,    _diag.usbReattaches);
+    _put16(p + OpenSkyhawk::CAL_DIAG_CDC_STALLS,        _diag.cdcStalls);
     p[OpenSkyhawk::CAL_DIAG_RECOVERY_REBOOTS] = _diag.recoveryReboots;
     p[OpenSkyhawk::CAL_DIAG_WATCHDOG_RESETS]  = _diag.watchdogResets;
     p[OpenSkyhawk::CAL_DIAG_RESET_REASON]     = _diag.resetReason;
@@ -1034,9 +1038,11 @@ void _uartRestart() {
 // The decision logic is pure and lives in LinkRecovery.cpp. This part samples the inputs,
 // records the forensics, and applies the action.
 //
-// "Healthy" is mounted, and not suspended while a UART fault is recent. Mounted alone is the
-// main signal — a host that sleeps keeps the device mounted. Suspend counts only alongside a
-// fault because a sleeping host also suspends the bus, and that must not trigger a re-attach.
+// "Healthy" is mounted, not suspended while a UART fault is recent, and the CDC IN endpoint not
+// stalled. Mounted is the main signal — a host that sleeps keeps the device mounted. Suspend
+// counts only alongside a fault because a sleeping host also suspends the bus, and that must not
+// trigger a re-attach. The stall covers the case mounted() cannot see: still configured, but the
+// host stopped polling, so every line is dropped and loop() — and the watchdog — run on happily.
 
 OpenSkyhawk::LinkRecovery _link = {};
 bool _linkWasHealthy = false;   // false at boot, so enumeration is not a "loss"
@@ -1044,10 +1050,29 @@ bool _linkWasHealthy = false;   // false at boot, so enumeration is not a "loss"
 bool _wdtArmed = false;
 #endif
 
-OpenSkyhawk::LinkAction _linkUpdate(uint32_t now, bool mounted, bool suspended) {
+// CDC stall detector. Progress is "something drained since the last sample": free space now,
+// plus what we wrote in between, exceeds the free space last time. Room alone would miss a link
+// that drains exactly as fast as we refill it. Nothing pending (room == capacity) or no host
+// (DTR low) is never a stall — an idle port must not trip the ladder.
+uint32_t _cdcProgressMs = 0;
+uint16_t _cdcLastRoom   = 0;
+bool     _cdcStalled    = false;
+
+bool _cdcStallUpdate(uint32_t now, bool dtr, uint16_t room, uint16_t capacity, uint16_t written) {
+    const bool drained = (uint32_t)room + written > _cdcLastRoom;
+    if (!dtr || room >= capacity || drained) _cdcProgressMs = now;
+    _cdcLastRoom = room;
+
+    const bool stalled = (uint32_t)(now - _cdcProgressMs) >= SimGateway::CDC_STALL_MS;
+    if (stalled && !_cdcStalled) _bump(_diag.cdcStalls);
+    _cdcStalled = stalled;
+    return stalled;
+}
+
+OpenSkyhawk::LinkAction _linkUpdate(uint32_t now, bool mounted, bool suspended, bool cdcStalled) {
     const bool faultRecent = _diag.lastUartErrMs != 0 &&
                              (uint32_t)(now - _diag.lastUartErrMs) < FAULT_RECENT_MS;
-    const bool healthy = mounted && !(suspended && faultRecent);
+    const bool healthy = mounted && !(suspended && faultRecent) && !cdcStalled;
 
     if (_linkWasHealthy && !healthy) {
         const uint32_t t = now ? now : 1;
@@ -1096,7 +1121,10 @@ void _bootRecord() {
 
 #ifndef SIMGATEWAY_TEST
 void _linkTick(uint32_t now) {
-    switch (_linkUpdate(now, TinyUSBDevice.mounted(), TinyUSBDevice.suspended())) {
+    const bool stalled = _cdcStallUpdate(now, Serial.dtr() != 0, (uint16_t)Serial.availableForWrite(),
+                                         CFG_TUD_CDC_TX_BUFSIZE, _cdcWritten);
+    _cdcWritten = 0;
+    switch (_linkUpdate(now, TinyUSBDevice.mounted(), TinyUSBDevice.suspended(), stalled)) {
         case OpenSkyhawk::LinkAction::DETACH: TinyUSBDevice.detach(); break;
         case OpenSkyhawk::LinkAction::ATTACH: TinyUSBDevice.attach(); break;
         case OpenSkyhawk::LinkAction::REBOOT: {
@@ -1295,12 +1323,18 @@ void diagResetForTest()    { _diag = GatewayDiag{}; }
 void diagUartErrorsForTest(uint32_t now, bool oe, bool fe, bool be, bool pe) {
     _recordUartErrors(now, oe, fe, be, pe);
 }
-OpenSkyhawk::LinkAction linkStepForTest(uint32_t now, bool mounted, bool suspended) {
-    return _linkUpdate(now, mounted, suspended);
+OpenSkyhawk::LinkAction linkStepForTest(uint32_t now, bool mounted, bool suspended, bool cdcStalled) {
+    return _linkUpdate(now, mounted, suspended, cdcStalled);
+}
+bool cdcStallStepForTest(uint32_t now, bool dtr, uint16_t room, uint16_t capacity, uint16_t written) {
+    return _cdcStallUpdate(now, dtr, room, capacity, written);
 }
 void linkResetForTest(bool afterRecoveryReboot) {
     OpenSkyhawk::linkRecoveryBegin(_link, afterRecoveryReboot);
     _linkWasHealthy = false;
+    _cdcProgressMs  = 0;
+    _cdcLastRoom    = 0;
+    _cdcStalled     = false;
 }
 void resetCdcCapture()     { _sgtest_cdcCount = 0; _sgtest_cdcOverflow = false; }
 size_t cdcCaptureCount()   { return _sgtest_cdcCount; }

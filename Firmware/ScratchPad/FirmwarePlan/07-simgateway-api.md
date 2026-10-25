@@ -343,8 +343,18 @@ Pure logic in `LinkRecovery.h` / `.cpp`; `SimGateway::loop()` samples the inputs
 action.
 
 **Healthy** = `TinyUSBDevice.mounted()` **and not** (`TinyUSBDevice.suspended()` with a UART
-error in the last 30 s). The RP2040 is powered only from USB, so running-but-unmounted is
-abnormal. Suspend alone is a sleeping host and is left alone.
+error in the last 30 s) **and not** a CDC stall. The RP2040 is powered only from USB, so
+running-but-unmounted is abnormal. Suspend alone is a sleeping host and is left alone.
+
+A **CDC stall** is the configured-but-dead case `mounted()` cannot see: the host holds DTR, bytes
+are pending in the CDC TX FIFO, and nothing has drained for `CDC_STALL_MS` (1 s). "Drained" means
+free space now plus what the relay wrote since the last sample exceeds the free space then, so a
+link draining exactly as fast as it is refilled still counts as progress. The host OS keeps polling
+an open port into its own buffer (≈57 KB on macOS) even when the application is not reading, so a
+FIFO that stays full means the host's USB stack stopped polling, not that an app is slow. Without
+this, every line would be dropped while `loop()` and the watchdog ran on, and the ladder would never
+start. Idle (nothing pending) and no host (DTR low) are never a stall. Onsets are counted
+(`CDC_STALLS`).
 
 | Step | Condition | Action |
 |---|---|---|
@@ -366,7 +376,7 @@ is recorded and survives the reboot.
 `SimGateway::diagnostics()` returns a `GatewayDiag`; the host reads the same data with the
 calibration protocol's `GET_DIAG` request (`03-uart-usb-hid-protocol.md#payloads`), answered at
 any time. Counts: each RSR bit separately (OE / FE / BE / PE), software RX-queue overflow, the
-three line-drop reasons, dropped calibration frames, UART restarts, USB re-attaches. Times: first
+three line-drop reasons, dropped calibration frames, UART restarts, USB re-attaches, CDC stalls. Times: first
 and latest UART error, first and latest healthy→unhealthy USB edge — comparing the two answers
 "which came first". Recovery reboots, watchdog resets and this boot's reason live in watchdog
 scratch registers 0–3, so they survive a warm reboot and reset on power-on.

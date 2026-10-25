@@ -197,6 +197,12 @@ static constexpr uint16_t RELAY_LINE_MAX = 128;
 /// hold loop() for tens of ms. 64 bytes bounds it at ~2.6 ms.
 static constexpr uint16_t CDC_TO_UART_BUDGET = 64;
 
+/// The CDC IN endpoint counts as stalled after this long with DTR held, bytes pending and
+/// nothing drained. The host OS keeps polling an open port into its own buffer even when the
+/// application is not reading, so a FIFO that stays full this long means the host's USB stack
+/// stopped polling — a configured-but-dead link that `mounted()` alone cannot see.
+static constexpr uint32_t CDC_STALL_MS = 1000;
+
 /// Hardware watchdog timeout. Armed by the first loop() call, fed by every call.
 static constexpr uint32_t WATCHDOG_MS = 3000;
 
@@ -255,6 +261,7 @@ struct GatewayDiag {
     uint16_t framesDropped;    ///< Calibration frames dropped for lack of CDC room.
     uint16_t uartRestarts;     ///< FAULT self-clears (UART restarted).
     uint16_t usbReattaches;    ///< Recovery-ladder detach/attach cycles.
+    uint16_t cdcStalls;        ///< CDC stall onsets: DTR held, bytes pending, no drain for CDC_STALL_MS.
     uint8_t  recoveryReboots;  ///< Recovery-ladder reboots. Survives a warm reboot.
     uint8_t  watchdogResets;   ///< Hardware watchdog resets. Survives a warm reboot.
     uint8_t  resetReason;      ///< OpenSkyhawk::CalDiagResetReason for this boot.
@@ -359,9 +366,22 @@ void diagUartErrorsForTest(uint32_t now, bool oe, bool fe, bool be, bool pe);
  * @note "Recent UART fault" comes from diagnostics().lastUartErrMs — drive it with
  *       diagUartErrorsForTest().
  */
-OpenSkyhawk::LinkAction linkStepForTest(uint32_t now, bool mounted, bool suspended);
+OpenSkyhawk::LinkAction linkStepForTest(uint32_t now, bool mounted, bool suspended,
+                                        bool cdcStalled = false);
 
-/** @brief Reset the recovery ladder, as at boot (test builds only). */
+/**
+ * @brief Run the CDC stall detector one tick (test builds only).
+ * @param now       Fake millis() timestamp.
+ * @param dtr       Fake Serial.dtr() — the host has the port open.
+ * @param room      Fake Serial.availableForWrite().
+ * @param capacity  CDC TX FIFO size (room == capacity means nothing pending).
+ * @param written   Bytes the relay wrote since the previous tick.
+ * @return true when the endpoint counts as stalled (feeds linkStepForTest's `cdcStalled`).
+ *         Counts diagnostics().cdcStalls on each onset.
+ */
+bool cdcStallStepForTest(uint32_t now, bool dtr, uint16_t room, uint16_t capacity, uint16_t written);
+
+/** @brief Reset the recovery ladder and the CDC stall detector, as at boot (test builds only). */
 void linkResetForTest(bool afterRecoveryReboot);
 
 /** @brief Clear captured parser-forwarded USB CDC bytes (test builds only). */

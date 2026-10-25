@@ -308,7 +308,7 @@ enum CalRawField : uint8_t {
     CAL_RAW_CAL = 3,  // u16: the same reading through axisCalApply()
 };
 
-/// `DIAG` payload (45 bytes, device→client): link-health counters and event times (#355).
+/// `DIAG` payload (47 bytes, device→client): link-health counters and event times (#355).
 ///
 /// Times are millis() since this boot; 0 means "never". Counters are u16 and saturate at
 /// 0xFFFF rather than wrap, so a large number never reads as a small one. The four UART error
@@ -332,13 +332,14 @@ enum CalDiagField : uint8_t {
     CAL_DIAG_FRAMES_DROPPED     = 36,  // u16: calibration frame dropped, no CDC room
     CAL_DIAG_UART_RESTARTS      = 38,  // u16: FAULT held too long → UART restarted
     CAL_DIAG_USB_REATTACHES     = 40,  // u16: recovery ladder detach/attach cycles
-    CAL_DIAG_RECOVERY_REBOOTS   = 42,  // u8:  recovery ladder reboots (survives reboot)
-    CAL_DIAG_WATCHDOG_RESETS    = 43,  // u8:  hardware watchdog resets (survives reboot)
-    CAL_DIAG_RESET_REASON       = 44,  // u8:  CalDiagResetReason for this boot
+    CAL_DIAG_CDC_STALLS         = 42,  // u16: host held the port but the CDC IN endpoint stopped draining
+    CAL_DIAG_RECOVERY_REBOOTS   = 44,  // u8:  recovery ladder reboots (survives reboot)
+    CAL_DIAG_WATCHDOG_RESETS    = 45,  // u8:  hardware watchdog resets (survives reboot)
+    CAL_DIAG_RESET_REASON       = 46,  // u8:  CalDiagResetReason for this boot
 };
 
 /// `DIAG` payload length.
-constexpr uint8_t CAL_DIAG_BYTES = 45;
+constexpr uint8_t CAL_DIAG_BYTES = 47;
 
 /// Why this boot happened, as reported in `DIAG`.
 enum CalDiagResetReason : uint8_t {
