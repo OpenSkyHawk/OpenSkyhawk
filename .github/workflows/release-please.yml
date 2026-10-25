@@ -7,9 +7,9 @@ name: Release
 #   hardware — commits under PCB/: the next version, PCB/CHANGELOG.md, and
 #              `release:` in PCB/manifest.yaml.
 # Merging a release PR tags firmware-vX.Y.Z / hardware-vX.Y.Z and publishes the
-# GitHub Release. A follow-up job then adds what release-please can't know: the
-# third-party versions a firmware release resolved, or the boards a hardware
-# release contains.
+# GitHub Release. Follow-up jobs then add what release-please can't know: the
+# third-party versions a firmware release resolved and its prebuilt firmware
+# (firmware-release-assets.yml), or the boards a hardware release contains.
 #
 # The token is a fine-grained PAT (RELEASE_PLEASE_TOKEN), not GITHUB_TOKEN: a
 # PR opened with GITHUB_TOKEN never triggers pull_request workflows, so the
@@ -99,6 +99,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "$TAG" "$RUNNER_TEMP/dependencies.txt" --clobber
+
+  firmware-assets:
+    # The prebuilt firmware: per-board images, manifest.json and the zip with READMEs (#360).
+    name: Build and attach the firmware
+    needs: release-please
+    if: needs.release-please.outputs.firmware_released == 'true'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/firmware-release-assets.yml
+    with:
+      ref: ${{ needs.release-please.outputs.firmware_tag }}
+      publish: true
 
   hardware-boards:
     # release-please's changelog lists every PCB/ commit; this adds which
