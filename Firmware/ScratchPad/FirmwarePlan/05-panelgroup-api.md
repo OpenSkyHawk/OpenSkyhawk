@@ -19,6 +19,7 @@ All input and output objects take a `PinRef` instead of a raw `uint8_t` pin.
 | Direct STM32 GPIO | `PinRef(uint8_t pin)` | `digitalRead`/`digitalWrite`/`analogRead`/`analogWrite` directly |
 | MCP23017 GPIO | `PinRef(MCP23017& chip, uint8_t port, uint8_t bit)` | port = `PORT_A` or `PORT_B`; bit = 0–7 |
 | ADS1115 channel | `PinRef(ADS1115& adc, uint8_t channel)` | channel = 0–3; read via `readSingleEnded()` |
+| 74HC165 / 74HC595 bit | `PinRef(ShiftBus& bus, uint8_t chip, uint8_t bit)` | `configureAsInput()` binds the '165 chain, `configureAsOutput()` the '595 (#197) |
 
 **Interface:**
 - `bool read()` — digital read
@@ -31,6 +32,17 @@ All input and output objects take a `PinRef` instead of a raw `uint8_t` pin.
 `isGpio()` is a backend-type check, not dynamic hardware discovery. MCP23017 and ADS1115
 PinRefs are never PWM/servo-capable. For direct GPIO, sketches still choose PWM/servo-capable
 pins from the board wiring map.
+
+**Native-pin exceptions (#295).** Control classes always take a `PinRef`. Backend wiring — the lines
+a `PinRef` backend itself needs — takes native MCU pins, because those lines must be real GPIO:
+
+- `PanelGroup::registerExpander(chip, intaPin, intbPin)` — the MCP23017 INTA/INTB lines go to
+  `attachInterrupt()`, which needs a native EXTI pin.
+- `ShiftBus(spi, sck, miso, mosi, load, latch)` — a ShiftBus *is* a `PinRef` backend, so its own
+  lines can't be shift-register `PinRef`s, and load/latch are toggled from the TIM2 sampling ISR.
+
+A bus object (`TwoWire&` for `registerADC`, `I2cMux` and `DrumDisplay`; `SPIClass&` for `ShiftBus`)
+is not a pin and not an exception. These are the only two.
 
 ---
 

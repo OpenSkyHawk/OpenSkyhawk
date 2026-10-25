@@ -16,6 +16,11 @@ control declarations are identical regardless of where the physical pin lives.
 
 Contains no logic beyond read/write dispatch — no debounce, no filtering, no state.
 
+Every control class takes a `PinRef`. The two native-pin exceptions are backend wiring, not
+controls — `PanelGroup::registerExpander()`'s INTA/INTB lines (native EXTI) and the `ShiftBus`
+constructor's SPI + load/latch pins (a backend's own lines) — see FirmwarePlan
+`05-panelgroup-api.md` § PinRef (#295).
+
 ---
 
 ## File Layout
