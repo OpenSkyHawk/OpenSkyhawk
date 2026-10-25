@@ -15,8 +15,8 @@ verified through) and is not changed by this.
 | `NODE_ID` | 1 | 2 |
 | Base revision | 0.1.0 **or** 0.2.0 | **0.2.0** — it holds the ShiftBus stations |
 | MCU | `genericSTM32F103C8` | `genericSTM32F103C8` — tight, see below |
-| Flash | 73.1 % of 64 KB | **96.6 %** of 64 KB (63,300 B) |
-| RAM | 18.5 % | 28.0 % |
+| Flash | 73.6 % of 64 KB | **96.9 %** of 64 KB (63,488 B) |
+| RAM | 18.6 % | 28.1 % |
 
 Board A deliberately uses only `J11` pins that exist on **both** base revisions — positions 7
 and 11 (`PB5`/`PA8` on 0.1.0, `PB2`/`PC14` on 0.2.0) are left alone — so it runs on the
@@ -42,14 +42,15 @@ need calibrating against real hardware.
 ### If you redistribute stations, watch the flash
 
 Both nodes are C8s, and the flash budget follows the *grouping*, not the board letter. Board A
-links at **73.1 % with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
+links at **73.6 % with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
 one node, and keep that node's other stations light. It cannot also carry the full MCP + ADS
 input stack. Re-measure after any move; both projects build in a few seconds.
 
 ## Board B is a C8 — at ~97 % of flash
 
-The assembled 0.2.0 base carries an STM32F103**C8**, so board B builds for it: **96.6 %** of flash
-(63,300 of 65,536 bytes), and the `StepPattern::FULL_4STATE` alternate build **96.7 %**. U8g2
+The assembled 0.2.0 base carries an STM32F103**C8**, so board B builds for it: **96.9 %** of flash
+(63,488 of 65,536 bytes), and the `StepPattern::FULL_4STATE` alternate build the same, since its
+config is optimised out until you swap it in. U8g2
 plus three `StepperMotor` instances fills a C8, but the soak adds no code, so ~2 KB is enough to
 run it.
 
