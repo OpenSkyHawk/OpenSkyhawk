@@ -133,19 +133,22 @@ def cmd_diag(args) -> int:
 
 
 def cmd_stall(args) -> int:
-    with serial.Serial(args.port, 115200, timeout=0.1) as port:
+    # write_timeout so a device that stops accepting host→device bytes shows up as a count
+    # instead of hanging the test.
+    with serial.Serial(args.port, 115200, timeout=0.1, write_timeout=1.0) as port:
         port.dtr = True
         print(f"Holding {args.port} with DTR, requesting the roster every 100 ms, not reading for {args.seconds} s…")
         t_end = time.monotonic() + args.seconds
         sent = 0
+        write_timeouts = 0
         while time.monotonic() < t_end:
             try:
                 port.write(roster_request())
                 sent += 1
             except serial.SerialTimeoutException:
-                pass
+                write_timeouts += 1   # the device stopped draining its CDC RX — report it below
             time.sleep(0.1)
-        print(f"Sent {sent} roster requests. Draining…")
+        print(f"Sent {sent} roster requests ({write_timeouts} write timeouts). Draining…")
         drained = 0
         quiet_since = time.monotonic()
         while time.monotonic() - quiet_since < 1.0:
