@@ -107,6 +107,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
+| *reserved* | `0x740`–`0x7BF` | — | — | Future boot/update family (#295): `BOOT_CMD_n` = `0x740+n` (bridge → node n), `BOOT_RSP_n` = `0x780+n` (node n → bridge). Lowest priority on the bus, so update traffic never delays a control. Not assigned yet; nothing else may claim it. |
 
 ---
 
@@ -390,8 +391,9 @@ From v1.0 the frame IDs and payloads are frozen: a change that breaks an existin
   - node-specific telemetry → a new `TelemPage` on `TELEM_n` (append-only, forwarded unread);
   - identity or anything else → `READY_n`'s reserved bytes (3–7), or a new frame family in a
     free ID range (`0x013`–`0x0FF`, `0x1C0`–`0x1FF`, `0x240`–`0x2FF`, `0x340`–`0x3FF`,
-    `0x440`–`0x4FF`, `0x540`–`0x5FF`, `0x640`–`0x6FF`, `0x740`–`0x7FF`). Its position in the map
-    sets its arbitration priority (lower ID wins), which is frozen with it.
+    `0x440`–`0x4FF`, `0x540`–`0x5FF`, `0x640`–`0x6FF`, `0x7C0`–`0x7FF`; `0x740`–`0x7BF` is
+    reserved for boot/update, see the frame table). Its position in the map sets its arbitration
+    priority (lower ID wins), which is frozen with it.
 - `TELEM_n` never carries generic health, and `HEALTH_n` never carries node-specific telemetry.
 
 `TEST_SEQ` / `ECHO_n` are covered only as far as other boards rely on them: the two IDs, and every

@@ -187,6 +187,8 @@ constexpr uint16_t CAL_MAX_PAYLOAD    = 82;   ///< CAL_DATA, the largest legal p
 constexpr uint16_t CAL_MAX_FRAME      = CAL_ENVELOPE_BYTES + CAL_MAX_PAYLOAD;  // 92
 
 /// Message types. High bit set = device→client, so direction is readable in a capture.
+/// Reserved for firmware update (#295), not yet assigned: 0x10-0x1F (client→device) and
+/// 0x90-0x9F (device→client). Don't allocate them to anything else.
 enum CalType : uint8_t {
     CAL_T_HELLO         = 0x01,
     CAL_T_GET_CAL       = 0x02,
@@ -208,6 +210,7 @@ enum CalType : uint8_t {
 };
 
 /// NACK reasons. `detail` names the offending axis where one applies, else 0xFF.
+/// Reserved for firmware update (#295), not yet assigned: 0x09-0x0E.
 enum CalNackReason : uint8_t {
     CAL_NACK_BAD_CRC      = 0x01,
     CAL_NACK_BAD_LENGTH   = 0x02,

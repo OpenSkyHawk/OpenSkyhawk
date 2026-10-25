@@ -39,8 +39,11 @@ helper functions — **never hard-code these values**, always use the helper.
 | `EVT_REL_n` | `0x500 + n` | `canIdEvtRel(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_DIR_n` | `0x600 + n` | `canIdEvtDir(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_ACTION_n` | `0x700 + n` | `canIdEvtAction(n)` | Node *n* → PanelBridge | 8 |
+| *reserved* | `0x740`–`0x7BF` | — | — | — |
 
 - `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node.
+- `0x740`–`0x7BF` is reserved for a future firmware-update frame family, at the lowest priority
+  on the bus so update traffic never delays a control.
 - `EVT_n` carries input events from a node back up to PanelBridge.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
   Every node — PanelBridge included, as `HB_0` — sends `HB_n` and `HEALTH_n` from one shared

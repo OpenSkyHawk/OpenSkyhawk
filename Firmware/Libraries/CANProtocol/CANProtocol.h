@@ -176,6 +176,10 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 /** @brief Boot-complete READY frame ID for node n. Range 0x401-0x43F. */
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
+// Reserved, not yet assigned (#295): 0x740-0x7BF for a future boot/update frame family —
+// BOOT_CMD_n = 0x740+n (bridge → node n), BOOT_RSP_n = 0x780+n (node n → bridge). The lowest
+// priority on the bus, so update traffic never delays a control. Don't allocate it to anything else.
+
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally
 // separate from the 11-bit CAN arbitration IDs above.

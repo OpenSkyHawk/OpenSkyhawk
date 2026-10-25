@@ -260,6 +260,10 @@ High bit of `TYPE` set = device→client, so direction is readable at a glance i
 | `0x08` | `STREAM_SELECT` | `0x87` | `DIAG` |
 | `0x09` | `GET_DIAG` | | |
 
+**Reserved for firmware update (#295), not yet assigned:** types `0x10`–`0x1F` (client → device) and
+`0x90`–`0x9F` (device → client), and NACK reasons `0x09`–`0x0E`. Nothing else may claim them; when
+assigned they follow § Compatibility (new types are a minor change).
+
 These are numeric type codes, not strings. Contrast `_NODE_STATUS`, which *is* text because it
 must imitate a DCS-BIOS message riding the ASCII stream; this channel is quiet during exchanges,
 so binary is free.
