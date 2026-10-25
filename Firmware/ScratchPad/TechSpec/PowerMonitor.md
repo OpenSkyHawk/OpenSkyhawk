@@ -136,6 +136,9 @@ wins, erase only when full):
   average; refuses above 75 mA on 12 V / 120 mA on 5 V), `CAL CLEAR`, `RAW` (live values + scan rate).
 - **Flash budget.** `board_upload.maximum_size = 64512` keeps the image out of the calibration page;
   the PDU build is ~31.5 KB.
+- **Not covered by the v1.0 compatibility policy (#295).** The calibration survives a normal
+  reflash, but its record layout (`CAL_VERSION`) or page may change in any release; the PDU then
+  reports `UNCAL_VDDA` / `UNCAL_ZERO` (shown by the client) — recalibrate at the bench over serial.
 
 ---
 
