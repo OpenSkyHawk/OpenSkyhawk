@@ -8,11 +8,15 @@
 
 #include <STM32Board.h>
 #include <CANProtocol.h>
+#include <stddef.h>   // offsetof
 
 static_assert(sizeof(ControlPacket)     == 4, "ControlPacket must be 4 bytes");
 static_assert(sizeof(ControlPacketPair) == 8, "ControlPacketPair must be 8 bytes");
 static_assert(sizeof(HeartbeatPayload)  == 8, "HeartbeatPayload must be 8 bytes");
 static_assert(sizeof(TelemPayload)      == 8, "TelemPayload must be 8 bytes");
+static_assert(sizeof(ReadyPayload)      == 8, "ReadyPayload must be 8 bytes");
+static_assert(offsetof(ReadyPayload, fwMajor) == 0 && offsetof(ReadyPayload, fwMinor) == 1
+              && offsetof(ReadyPayload, fwPatch) == 2, "ReadyPayload version bytes are 0-2 (#295)");
 
 static_assert(canIdHb(0)    == 0x100U, "canIdHb(0) reserved for PanelBridge");
 static_assert(canIdHb(1)    == 0x101U, "canIdHb(1) must be 0x101");

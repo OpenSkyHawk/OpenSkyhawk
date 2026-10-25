@@ -246,7 +246,7 @@ namespace PanelGroup {
      *   5. CANProtocol::start().
      *   6. forceReport() burst — one EVT per registered input.
      *   7. flushBatched(canIdEvt(NODE_ID)).
-     *   8. READY_n frame (canIdReady(NODE_ID), DLC=0). (Heartbeat/HEALTH timers arm on
+     *   8. READY_n frame (CANProtocol::sendReady(): the firmware version, #295). (Heartbeat/HEALTH timers arm on
      *      the first CANProtocol::serviceNodeStatus() call in loop().)
      *
      * @note Wire.begin() must be called by the sketch before this function.

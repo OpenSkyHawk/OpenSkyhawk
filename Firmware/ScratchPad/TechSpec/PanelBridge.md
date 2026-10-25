@@ -371,16 +371,21 @@ All other IDs are discarded silently. `HB_0` (`0x100`) is PanelBridge's own tran
 a child-node heartbeat — one that does arrive is another board on node 0, which
 `CANProtocol::drain()` flags as a duplicate NODE_ID before `onCanRx` ignores it (#344).
 
-### Node-status reporting (#86, proto v3 #344)
+### Node-status reporting (#86, proto v3 #344, v4 #295)
 
-Behind `-DPANELBRIDGE_NODE_STATUS`. `NodeState` caches each node's last `HeartbeatPayload` and its
+Behind `-DPANELBRIDGE_NODE_STATUS`. `NodeState` caches each node's last `HeartbeatPayload`, its
 `HEALTH_n` fields (`dieTempC`, `healthFlags`, `faultMask`, `faultId`, `nodeKind` — not-yet-seen:
-`DIE_TEMP_UNAVAILABLE` / `0`). One `emitRow()` formats a 28-hex `_NODE_STATUS` row — its `snprintf`
+`DIE_TEMP_UNAVAILABLE` / `0`) and the firmware version from its last `READY_n` (`fwMajor`,
+`fwMinor`, `fwPatch` — `0.0.0` = not reported; an empty READY from older firmware also reads 0.0.0;
+kept across a timeout). One `emitRow()` formats a 34-hex `_NODE_STATUS` row — its `snprintf`
 format is the `NodeStatusField` layout, held to it by a `static_assert`; `emitNode(id, present)`
 feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHeartbeatPayload(GATEWAY_NODE_ID, 0)`
-plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`). `emitAllNodes()` (boot
+plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`) and its own
+`OPENSKYHAWK_FW_*` version. `emitAllNodes()` (boot
 seed + host request) sends the node-0 row, every alive node, then `_NODE_STATUS_END <count>` with
-node 0 counted. Live deltas: alive/dead transitions, and a `nodeKind` change on an alive node.
+node 0 counted. Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
+`READY_n` that changes an alive node's version (a reflash inside the heartbeat timeout — the READY
+branch caches the version before `markNodeAlive()`, so an alive delta already carries it).
 Contract: FirmwarePlan `04-dcs-bios-integration.md`.
 
 Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
@@ -390,7 +395,8 @@ faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind de
 ### READY and Recovery SYNC_REQ
 
 READY is a signal that a PanelGroup completed its boot-time input poll and can answer a
-full-state request. READY carries no input data. On READY, PanelBridge updates `lastSeenMs`,
+full-state request. READY carries no input data — its payload is the node's firmware version
+(`ReadyPayload`, #295), cached for node-status reporting. On READY, PanelBridge updates `lastSeenMs`,
 marks the node alive if needed, and broadcasts `SYNC_REQ`.
 
 Heartbeat recovery uses the same mechanism. If a node was unseen or marked dead and later

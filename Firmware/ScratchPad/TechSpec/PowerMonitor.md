@@ -160,7 +160,7 @@ Plus `Tests/PanelBridge` `test_node_telem` (`_NODE_TELEM` forwarding, needs the 
 
 | Dependency | Use |
 |---|---|
-| CANProtocol | `send`, `drain`, `start`, `serviceNodeStatus`, `canIdTelem`, `canIdReady`, `TelemPayload` |
+| CANProtocol | `send`, `drain`, `start`, `serviceNodeStatus`, `sendReady`, `canIdTelem`, `TelemPayload` |
 | STM32Board | `begin`, `tick`, `diagSerial`, `onCanStatus`, ADC resolution |
 | NodeStatus | `FaultSource`, `NodeFaultCode`, `TelemPage`, `PduRailFlag`, `PduStatusFlag` |
 | STM32duino core | `analogRead` (incl. `AVREF`), `micros`, `millis`, HAL flash (`HAL_FLASHEx_Erase`, `HAL_FLASH_Program`) |

@@ -35,7 +35,7 @@ void setup() {
 
     // Tail of PanelGroup::setup() without full board init (the HB timer arms in loop())
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
-    CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    CANProtocol::sendReady();
     setupDoneMs = millis();
 }
 

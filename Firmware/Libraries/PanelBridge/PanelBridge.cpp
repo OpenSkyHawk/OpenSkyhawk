@@ -24,6 +24,7 @@ namespace DcsBios {
 #include <CANProtocol.h>   // CAN types + NodeHealthPayload
 #include <NodeStatus.h>    // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <STM32Board.h>
+#include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the bridge's own node-0 row version (#295)
 #include <A4EC_InputMap.h>
 #include <string.h>
 
@@ -46,6 +47,11 @@ struct NodeState {
     uint8_t  faultMask   = 0;        // fault source/domain bitmap — reserved #163
     uint8_t  faultId     = 0;        // NodeFaultCode (NodeStatus.h) — #163
     uint8_t  nodeKind    = 0;        // NodeKind (NodeStatus.h), 0 = unseen/unknown — #344
+    // Firmware version from the node's last READY_n (#295); 0.0.0 = not reported (no READY seen
+    // since the bridge booted, or an empty READY from older firmware). Kept across timeouts.
+    uint8_t  fwMajor     = 0;
+    uint8_t  fwMinor     = 0;
+    uint8_t  fwPatch     = 0;
 #endif
 };
 
@@ -60,9 +66,11 @@ static uint8_t        _deadCount          = 0;    // tracked nodes currently tim
 // command messages on a reserved control name. Owned entirely by PanelBridge;
 // SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.
 
-// Emit one status row (proto v3, NODE_STATUS_ROW_BYTES = 14 bytes as 28 hex chars):
-//   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId nodeKind>
-// The last five come from the node's HEALTH_n frame (#221 contract). DIE_TEMP_UNAVAILABLE + nodeKind
+// Emit one status row (proto v4, NODE_STATUS_ROW_BYTES = 17 bytes as 34 hex chars):
+//   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId nodeKind
+//                 fwMajor fwMinor fwPatch>
+// The next five come from the node's HEALTH_n frame (#221 contract), the last three from its READY_n
+// (#295; 000000 = not reported). DIE_TEMP_UNAVAILABLE + nodeKind
 // 00 = not-yet-seen; hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163);
 // faultMask stays 0 (reserved for future fault-domain bits); nodeKind is the board kind (#344).
 // The format string is the row layout: each field's width must match NodeStatusField (NodeStatus.h).
@@ -71,17 +79,20 @@ static_assert((uint8_t)NSF::ID == 0 && (uint8_t)NSF::PRESENT == 1 && (uint8_t)NS
               && (uint8_t)NSF::UPTIME == 3 && (uint8_t)NSF::RX_COUNT == 5 && (uint8_t)NSF::ESR == 7
               && (uint8_t)NSF::DIE_TEMP_C == 9 && (uint8_t)NSF::HEALTH_FLAGS == 10
               && (uint8_t)NSF::FAULT_MASK == 11 && (uint8_t)NSF::FAULT_ID == 12
-              && (uint8_t)NSF::NODE_KIND == 13 && NODE_STATUS_ROW_BYTES == 14,
+              && (uint8_t)NSF::NODE_KIND == 13 && (uint8_t)NSF::FW_MAJOR == 14
+              && (uint8_t)NSF::FW_MINOR == 15 && (uint8_t)NSF::FW_PATCH == 16
+              && NODE_STATUS_ROW_BYTES == 17,
               "NodeStatusField moved: update emitRow's snprintf format to match");
 static void emitRow(uint8_t nodeId, bool present, const HeartbeatPayload& hb,
                     int8_t dieTempC, uint8_t hFlags, uint8_t faultMask, uint8_t faultId,
-                    uint8_t nodeKind) {
+                    uint8_t nodeKind, uint8_t fwMajor, uint8_t fwMinor, uint8_t fwPatch) {
     char hex[2 * NODE_STATUS_ROW_BYTES + 1];
-    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X%02X",
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X%02X%02X%02X%02X",
              (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
              (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr,
              (unsigned)(uint8_t)dieTempC, (unsigned)hFlags, (unsigned)faultMask,
-             (unsigned)faultId, (unsigned)nodeKind);
+             (unsigned)faultId, (unsigned)nodeKind,
+             (unsigned)fwMajor, (unsigned)fwMinor, (unsigned)fwPatch);
     DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
 }
 
@@ -89,15 +100,17 @@ static void emitRow(uint8_t nodeId, bool present, const HeartbeatPayload& hb,
 static void emitNode(uint8_t nodeId, bool present) {
     const NodeState& ns = _nodes[nodeId - 1];
     emitRow(nodeId, present, ns.last, ns.dieTempC, ns.healthFlags, ns.faultMask, ns.faultId,
-            ns.nodeKind);
+            ns.nodeKind, ns.fwMajor, ns.fwMinor, ns.fwPatch);
 }
 
 // The bridge's own row, GATEWAY_NODE_ID (#344): its heartbeat state now, and the HEALTH_0 it last
-// sent (kind BRIDGE once the first HEALTH_0 has gone out). Always present — it is the one reporting.
+// sent (kind BRIDGE once the first HEALTH_0 has gone out), and the version this build carries (#295).
+// Always present — it is the one reporting.
 static void emitSelf() {
     const HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(GATEWAY_NODE_ID, 0);
     const NodeHealthPayload& h = CANProtocol::lastNodeHealth();
-    emitRow(GATEWAY_NODE_ID, true, hb, h.dieTempC, h.flags, h.faultMask, h.faultId, h.nodeKind);
+    emitRow(GATEWAY_NODE_ID, true, hb, h.dieTempC, h.flags, h.faultMask, h.faultId, h.nodeKind,
+            OPENSKYHAWK_FW_MAJOR, OPENSKYHAWK_FW_MINOR, OPENSKYHAWK_FW_PATCH);
 }
 
 // Emit the full roster (request response / boot seed): the bridge's own node-0 row, one
@@ -438,7 +451,23 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
             auto& d = STM32Board::diagSerial();
             d.print(F("[BRIDGE] READY node=")); d.println(nodeId);
         }
+#ifdef PANELBRIDGE_NODE_STATUS
+        // Firmware version (#295): every boot re-announces it, so a reflash is seen at once. Cache
+        // it before markNodeAlive() so an alive delta already carries it; a node that rebooted
+        // inside the heartbeat timeout stays alive, so push the change as its own delta. An empty
+        // READY is older firmware: not reported.
+        NodeState& ns = _nodes[nodeId - 1];
+        ReadyPayload r = {};
+        if (len >= 3) memcpy(&r, data, len < sizeof(r) ? len : sizeof(r));
+        const bool fwChanged = r.fwMajor != ns.fwMajor || r.fwMinor != ns.fwMinor
+                             || r.fwPatch != ns.fwPatch;
+        ns.fwMajor = r.fwMajor;
+        ns.fwMinor = r.fwMinor;
+        ns.fwPatch = r.fwPatch;
+        if (!markNodeAlive(nodeId, now) && fwChanged) emitNode(nodeId, true);
+#else
         markNodeAlive(nodeId, now);
+#endif
         broadcastSyncReq();
         return;
     }

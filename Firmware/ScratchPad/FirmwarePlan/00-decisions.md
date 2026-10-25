@@ -530,3 +530,37 @@ the calibration protocol.
 **Affects:** `03-uart-usb-hid-protocol.md`, `07-simgateway-api.md`, `08-hardware-firmware-contracts.md`,
 `09-startup-resync-diagnostics.md`, TechSpec `SimGateway.md`, `docs/architecture/sim-gateway.md`,
 `docs/firmware/debugging.md`. Client half: SkyHawkClient sync of `CalDiagField`.
+
+---
+
+## D21 — Every node announces its firmware version in READY_n (#295)
+
+**Decision:** `READY_n`, empty until now, carries a `ReadyPayload`: bytes 0–2 = the firmware
+release version (`OPENSKYHAWK_FW_*` from the header-only `FirmwareVersion` library, rewritten by
+release-please), bytes 3–7 reserved. Nodes send it through `CANProtocol::sendReady()`. PanelBridge
+caches the version per node, keeps it across a timeout, pushes a `_NODE_STATUS` delta when an alive
+node's version changes, and reports it in `_NODE_STATUS` **v4** (34 hex), the node-0 row carrying
+its own. An empty READY (older firmware) and a READY the bridge never saw both read 0.0.0, "not
+reported".
+
+**Rationale:**
+- *v1.0 has a mixed-version rule* — nodes on one bus share a major version — and until now nothing
+  on the bus said which firmware a board runs. A missed board in a reflash stayed invisible.
+- *READY, not HEALTH.* HEALTH's two reserved bytes are kept for future generic health, and TELEM
+  never carries health, so spending them on identity would leave health nowhere to grow. READY was
+  empty: eight free bytes, no new frame, no extra traffic.
+- *Every update is a reboot.* An ST-Link upload resets the MCU, and READY is the last step of every
+  boot, so a reflash is announced at once. A node that only lost its CAN link doesn't reboot, and
+  its cached version is still right.
+- *Empty means older, unambiguously.* Pre-#295 firmware sends READY with DLC 0, so a missing
+  payload can't be mistaken for a real version.
+- *Accepted gap:* READY is once per boot, so a bridge that boots after a node reads it as not
+  reported until that node reboots. A re-announce on the bridge's boot `SYNC_REQ` can follow as a
+  minor change — `SYNC_REQ` is empty today.
+- *One version source.* The same header feeds SimGateway's `HELLO_ACK`, so the Gateway's two MCUs
+  can't report different versions for one build.
+
+**Affects:** `02-can-protocol.md`, `03-uart-usb-hid-protocol.md`, `04-dcs-bios-integration.md`,
+`06-panelbridge-api.md`, `09-startup-resync-diagnostics.md`, TechSpec (`CANProtocol`, `NodeStatus`,
+`PanelBridge`, `PanelGroup`, `PowerMonitor`, `README`), `docs/architecture/can-bus.md`,
+`docs/architecture/firmware-tiers.md`. Client half: SkyHawkClient sync of `NodeStatusField` v4.

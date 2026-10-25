@@ -104,6 +104,22 @@ struct __attribute__((packed)) TelemPayload {
 };
 static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
 
+/**
+ * @brief 8-byte payload carried by READY_n — the node's boot announcement (#295).
+ *
+ * Sent once per boot, after the boot EVT burst, so every reflash, reset or power cycle announces
+ * the firmware the node now runs. PanelBridge caches the version per node and reports it in
+ * `_NODE_STATUS` (v4). Firmware older than this payload sends READY_n empty (DLC 0): the bridge
+ * then reports the version as not reported (0.0.0).
+ */
+struct __attribute__((packed)) ReadyPayload {
+    uint8_t fwMajor;  ///< 0: firmware release version (FirmwareVersion.h)
+    uint8_t fwMinor;  ///< 1
+    uint8_t fwPatch;  ///< 2
+    uint8_t rsvd[5];  ///< 3-7: reserved, transmit 0
+};
+static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
+
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
     STARTING,   ///< CAN peripheral configured, not yet started
@@ -377,6 +393,21 @@ namespace CANProtocol {
      */
     NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
                                             NodeFaultCode fault = NodeFaultCode::NONE);
+
+    /**
+     * @brief Build the 8-byte READY_n payload: this build's firmware release version (#295).
+     * @return ReadyPayload with fwMajor/fwMinor/fwPatch from FirmwareVersion.h, reserved bytes 0.
+     */
+    ReadyPayload makeReadyPayload();
+
+    /**
+     * @brief Send this node's READY_n (`canIdReady(NODE_ID)`) carrying makeReadyPayload().
+     *
+     * Call once at the end of the node's setup(), after its boot EVT burst. PanelBridge marks the
+     * node alive, caches its version and broadcasts SYNC_REQ. Bounded retry like every other
+     * special frame (02-can-protocol.md).
+     */
+    void sendReady();
 
     /** @brief Return the cumulative TX queue drop count since startup. */
     uint32_t txDropCount();

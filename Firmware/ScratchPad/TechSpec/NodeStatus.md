@@ -18,8 +18,9 @@ Owns:
   version, request address, message names). **The canonical contract source the client's
   `sync-a4ec.ts` parses**; `reference.test.ts` asserts the proto version so a firmware bump fails
   the client loudly.
-- **`GATEWAY_NODE_ID`** (0) and the `_NODE_STATUS` row layout — `NODE_STATUS_ROW_BYTES` (14) and
-  `NodeStatusField` (byte offset of each row field; hex index = 2 × offset).
+- **`GATEWAY_NODE_ID`** (0) and the `_NODE_STATUS` row layout — `NODE_STATUS_ROW_BYTES` (17) and
+  `NodeStatusField` (byte offset of each row field; hex index = 2 × offset). Fields are only ever
+  appended (v4 added the firmware version from READY_n, #295).
 - **`HeartbeatFlag`** (BOFF, EPVF) + **`HB_ESR_TEC_SHIFT` / `HB_ESR_REC_SHIFT`** — the HB_n `flags`
   bits and `esr` byte split.
 - **`NodeHealthFlag`** — HEALTH_n flag bits (OVERHEAT, DEGRADED) mirroring `NodeHealthPayload.flags`;
@@ -28,7 +29,7 @@ Owns:
   UNDER_VOLTAGE, SHORT_CIRCUIT, HOST_LINK_LOST, DUPLICATE_NODE_ID, …). Client maps id → label
   (SkyHawkClient#40).
 - **`NodeKind`** (#344) — the `HEALTH_n` byte-5 board kind (UNKNOWN / PANEL_GROUP / PDU / BRIDGE),
-  append-only, forwarded as `_NODE_STATUS` v3's last field. Set by each node library's role via
+  append-only, forwarded in `_NODE_STATUS` (field `NODE_KIND`). Set by each node library's role via
   `CANProtocol::serviceNodeStatus(kind, …)`, never from the NODE_ID.
 - **`FaultSource`** — the interface a fault-producing object implements + a self-registering list.
 - **`NODE_TELEM_*` + the TELEM_n page vocabulary (#216)** — `NODE_TELEM_MSG_NAME` (`_NODE_TELEM`) and
@@ -63,7 +64,7 @@ Firmware/Libraries/NodeStatus/
 ## Public API
 
 ```cpp
-#define NODE_STATUS_PROTO_VERSION 3      // bump on ANY _NODE_STATUS wire change (v3: nodeKind + node-0 row, #344)
+#define NODE_STATUS_PROTO_VERSION 4      // bump on ANY _NODE_STATUS wire change (v3: nodeKind + node-0 row, #344; v4: firmware version, #295)
 #define NODE_STATUS_REQ_ADDR      0x86FE
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
@@ -71,10 +72,11 @@ Firmware/Libraries/NodeStatus/
 #define NODE_TELEM_MSG_NAME       "_NODE_TELEM"
 
 constexpr uint8_t GATEWAY_NODE_ID       = 0;   // the bridge: HB_0 / HEALTH_0, first roster row
-constexpr uint8_t NODE_STATUS_ROW_BYTES = 14;  // 28 hex
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 17;  // 34 hex
 enum class NodeStatusField : uint8_t {         // row byte offsets; multi-byte fields MSB-first
     ID = 0, PRESENT = 1, HB_FLAGS = 2, UPTIME = 3, RX_COUNT = 5, ESR = 7,
     DIE_TEMP_C = 9, HEALTH_FLAGS = 10, FAULT_MASK = 11, FAULT_ID = 12, NODE_KIND = 13,
+    FW_MAJOR = 14, FW_MINOR = 15, FW_PATCH = 16,  // from READY_n; 00 00 00 = not reported (#295)
 };
 constexpr uint8_t NODE_TELEM_ROW_BYTES  = 9;   // 18 hex
 enum class NodeTelemField : uint8_t { ID = 0, FRAME = 1 };
@@ -158,8 +160,8 @@ its detail, null `faultDetail()` normalized to `""`, `nullptr` detailOut accepte
 indirectly: `DrumDisplay` breaker test asserts `faultCode()`/`faultDetail()` via the `FaultSource`
 override; `CANProtocol` `health_payload`/`health_flags` tests assert the faultId/DEGRADED packing
 (incl. overheat+degraded coexistence) and the `nodeKind` byte; `CANProtocol` duplicate_node_id test
-covers `DUPLICATE_NODE_ID` raise/hold/clear; `PanelBridge` node_status test exercises the v3
-`_NODE_STATUS` emission (kind `00` before HEALTH, kind delta, node-0 row); `PanelBridge` node_telem test exercises `_NODE_TELEM` forwarding; `PowerMonitor` tests
+covers `DUPLICATE_NODE_ID` raise/hold/clear; `PanelBridge` node_status test exercises the v4
+`_NODE_STATUS` emission (kind `00` before HEALTH, kind delta, version delta from READY_n, node-0 row); `PanelBridge` node_telem test exercises `_NODE_TELEM` forwarding; `PowerMonitor` tests
 cover the PDU fault sources and page flags; the client `reference.test.ts` asserts the proto-version
 contract.
 

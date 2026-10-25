@@ -91,7 +91,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `TELEM_n` | `0x180+n` | Node_n → PanelBridge | 8 | Paged node telemetry (`TelemPayload`) — one frame per second plus flag-change edges; first user the PDU (#216) — see TELEM payload below |
 | `EVT_n` | `0x200+n` | Node_n → PanelBridge | 8 | Absolute input events (switches, selectors, pots) — `ControlPacketPair`, value `%u` → `set_state` |
 | `ECHO_n` | `0x300+n` | Node_n → PanelBridge | 8 | TEST_SEQ echo — 8-byte payload mirrored unchanged |
-| `READY_n` | `0x400+n` | Node_n → PanelBridge | 0 | One-time boot signal after initial input poll and EVT burst are complete |
+| `READY_n` | `0x400+n` | Node_n → PanelBridge | 8 | One-time boot signal after initial input poll and EVT burst are complete; carries the node's firmware version (`ReadyPayload`, #295) — see READY payload below |
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
@@ -155,7 +155,8 @@ health that PanelBridge reports to the host. No new CAN frame is added — Panel
 last `HB_n` per node and re-serializes it into a DCS-BIOS `_NODE_STATUS` message
 (see `04-dcs-bios-integration.md` and `06-panelbridge-api.md`). As of `_NODE_STATUS` proto **v2**
 the message also carries the node's cached `dieTempC` + health/fault fields from `HEALTH_n` (below);
-proto **v3** (#344) adds the node's board kind and the bridge's own node-0 row.
+proto **v3** (#344) adds the node's board kind and the bridge's own node-0 row; proto **v4** (#295)
+adds the node's firmware version from its `READY_n` (below).
 
 ---
 
@@ -202,7 +203,7 @@ kind of its own. Firmware older than #344 sent `0` in this byte (it was reserved
 as unknown — the client never adopts a node on it.
 
 **Default-on**, compile out with `-DNODE_HEALTH_TELEM=0`. PanelBridge caches each node's fields
-(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v3, #344), plus
+(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v4, #295), plus
 its own `HEALTH_0` as the node-0 row. A `HEALTH_n` frame never changes node liveness (`HB_n` owns
 that); the only delta it triggers is a `_NODE_STATUS` push when the node's cached `nodeKind`
 changes (see `04-dcs-bios-integration.md`).
@@ -274,6 +275,34 @@ are `FaultSource`s, so their worst condition also reaches `HEALTH_n.faultId` (`F
 **Bus load at 500 kbit/s** (8-byte frame ≈ 130 bits worst-case stuffing ≈ 0.27 ms): 3 PDUs steady =
 3 frames/s ≈ **0.08 %**; worst-case fault storm (every page edging at the 100 ms limit) = 90 frames/s
 ≈ 2.4 %. For scale, `HB_n` + `HEALTH_n` from 20 nodes is 60 frames/s ≈ 1.6 %.
+
+---
+
+## Ready Payload — READY_n (#295)
+
+`READY_n` (`0x400+n`) is sent once per boot, at the end of the node's `setup()` after its boot EVT
+burst (`CANProtocol::sendReady()`), so every reflash, reset or power cycle announces the firmware
+the node now runs:
+
+```cpp
+struct ReadyPayload {          // 8 bytes, DLC 8
+    uint8_t fwMajor;           // 0: firmware release version (FirmwareVersion.h, OPENSKYHAWK_FW_*)
+    uint8_t fwMinor;           // 1
+    uint8_t fwPatch;           // 2
+    uint8_t rsvd[5];           // 3-7: reserved, transmit 0
+};
+```
+
+PanelBridge caches the version per node (under `PANELBRIDGE_NODE_STATUS`), keeps it when the node
+times out, and reports it in `_NODE_STATUS` v4 (`04-dcs-bios-integration.md`). A READY from a node
+that is already alive — it rebooted inside the 3 s heartbeat timeout, e.g. a quick reflash — pushes
+a `_NODE_STATUS` delta when the version changed. Firmware older than #295 sends READY with DLC 0:
+the bridge reads that as **not reported** (0.0.0). The bridge's only other use of READY — mark the
+node alive, broadcast `SYNC_REQ` — is unchanged and ignores the payload.
+
+**Known gap (accepted):** READY is one frame per boot. If the bridge boots after a node, it never
+sees that node's READY, and the node reads 0.0.0 until it next reboots. A re-announce on the
+bridge's boot `SYNC_REQ` can be added later without a wire break (`SYNC_REQ` is empty today).
 
 ---
 

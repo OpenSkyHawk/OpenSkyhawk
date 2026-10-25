@@ -55,13 +55,16 @@ emitted in response to `SYNC_REQ` are the state snapshot.
 PanelBridge surfaces the roster + per-node health to OpenSkyhawk Client over DCS-BIOS (see
 `04-dcs-bios-integration.md`). It caches each node's last `HeartbeatPayload` (`NodeState::last`,
 populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + health/fault +
-`nodeKind`, cached in the `HEALTH_n` handler, #221/#344) and emits a `_NODE_STATUS <hex>` DCS-BIOS
-command message (proto v3):
+`nodeKind`, cached in the `HEALTH_n` handler, #221/#344) and the firmware version from its last
+`READY_n` (`fwMajor`/`fwMinor`/`fwPatch`, cached in the `READY_n` handler, #295) and emits a
+`_NODE_STATUS <hex>` DCS-BIOS command message (proto v4):
 
 - on every alive/dead transition — a single bare `_NODE_STATUS` (a live delta; the 3 s heartbeat
   timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node),
 - when an alive node's cached `nodeKind` changes (#344) — normally its first `HEALTH_n`, ~1 s after
-  the alive delta, which went out with kind `00`, and
+  the alive delta, which went out with kind `00`,
+- when a `READY_n` changes an alive node's cached firmware version (#295) — a reflash inside the
+  heartbeat timeout, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
   (`0x86FE`), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
   request/boot reply is the bridge's own node-0 row (its live heartbeat state +

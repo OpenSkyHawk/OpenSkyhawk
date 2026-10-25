@@ -2,6 +2,7 @@
 
 #include "CANProtocol.h"
 #include <STM32Board.h>
+#include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the release version READY_n carries (#295)
 #include <Arduino.h>
 #include <string.h>
 
@@ -462,6 +463,19 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t di
     p.nodeKind = static_cast<uint8_t>(kind);  // board kind from the node's firmware role (#344)
     p.rsvd[0] = p.rsvd[1] = 0;
     return p;
+}
+
+ReadyPayload makeReadyPayload() {
+    ReadyPayload p = {};
+    p.fwMajor = OPENSKYHAWK_FW_MAJOR;
+    p.fwMinor = OPENSKYHAWK_FW_MINOR;
+    p.fwPatch = OPENSKYHAWK_FW_PATCH;
+    return p;
+}
+
+void sendReady() {
+    const ReadyPayload p = makeReadyPayload();
+    send(canIdReady(NODE_ID), reinterpret_cast<const uint8_t*>(&p), sizeof(p));
 }
 
 uint32_t txDropCount() { return _txDrops; }
