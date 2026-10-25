@@ -5,12 +5,14 @@ name: Firmware release assets
 #   - one zip for people: a folder per board with its README, .elf for STM32 (the flash address
 #     is built in), the Gateway .uf2, plus the top README, CHANGES, LICENSE and manifest.json.
 #
-# Called, never triggered directly:
-#   - release-please.yml, with the release tag and publish: true, once a firmware release exists —
-#     the only path that publishes; the files are attached to that release;
-#   - firmware-release-assets-check.yml, with no tag, for pull requests — it only
-#     validates: build, flash/RAM size of every board in the job summary, and the package uploaded
-#     as an Actions artifact.
+# Called, never triggered directly — it only builds (read-only), recording the flash/RAM size of
+# every board in the job summary and uploading the package as an Actions artifact
+# (firmware-release-<version>):
+#   - release-please.yml, with the release tag, once a firmware release exists; its own
+#     firmware-assets-publish job then attaches the artifact to the release;
+#   - firmware-release-assets-check.yml, with no tag, to validate pull requests.
+# Publishing lives with the caller so this workflow never asks for write access — a nested job
+# asking for more than the caller grants fails the whole run at startup, even when skipped.
 # It always builds the caller's own commit and never checks out a passed-in ref.
 
 on:
@@ -23,11 +25,10 @@ on:
         required: false
         type: string
         default: ""
-      publish:
-        description: Attach the files to the release named by tag
-        required: false
-        type: boolean
-        default: false
+    outputs:
+      version:
+        description: The version the package is named for; the artifact is firmware-release-<version>
+        value: ${{ jobs.build.outputs.version }}
 
 permissions:
   contents: read
@@ -202,23 +203,3 @@ jobs:
           path: ${{ runner.temp }}/dist
           retention-days: 14
           if-no-files-found: error
-
-  publish:
-    name: Attach to the release
-    needs: build
-    if: inputs.publish
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download the package
-        uses: actions/download-artifact@v7
-        with:
-          name: firmware-release-${{ needs.build.outputs.version }}
-          path: dist
-
-      - name: Upload the files
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ inputs.tag }}
-        run: gh release upload "$TAG" dist/* --clobber --repo "$GITHUB_REPOSITORY"

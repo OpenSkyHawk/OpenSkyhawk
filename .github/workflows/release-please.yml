@@ -102,15 +102,33 @@ jobs:
 
   firmware-assets:
     # The prebuilt firmware: per-board images, manifest.json and the zip with READMEs (#360).
-    name: Build and attach the firmware
+    # Builds read-only; firmware-assets-publish attaches the result.
+    name: Build the firmware
     needs: release-please
     if: needs.release-please.outputs.firmware_released == 'true'
-    permissions:
-      contents: write
     uses: ./.github/workflows/firmware-release-assets.yml
     with:
       tag: ${{ needs.release-please.outputs.firmware_tag }}
-      publish: true
+
+  firmware-assets-publish:
+    name: Attach the firmware to the release
+    needs: [release-please, firmware-assets]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ needs.release-please.outputs.firmware_tag }}
+    steps:
+      - name: Download the package
+        uses: actions/download-artifact@v7
+        with:
+          name: firmware-release-${{ needs.firmware-assets.outputs.version }}
+          path: dist
+
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" dist/* --clobber --repo "$GITHUB_REPOSITORY"
 
   hardware-boards:
     # release-please's changelog lists every PCB/ commit; this adds which
