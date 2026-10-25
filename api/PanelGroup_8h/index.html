@@ -4762,10 +4762,9 @@
 <span class="n">ADS1115</span><span class="w">  </span><span class="n">adc1</span><span class="p">;</span>
 
 <span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">PIN_MASTER_ARM</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">exp1</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_A</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
-<span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">PIN_CAUTION_LED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB0</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">PinRef</span><span class="w"> </span><span class="n">PIN_FIRE_LED</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">PinRef</span><span class="p">(</span><span class="n">PB0</span><span class="p">);</span>
 
-<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="w"> </span><span class="nf">masterCaution</span><span class="p">(</span><span class="n">A_4E_C_MASTER_CAUTION</span><span class="p">,</span><span class="w"> </span><span class="n">A_4E_C_MASTER_CAUTION_AM</span><span class="p">,</span>
-<span class="w">                               </span><span class="n">PIN_CAUTION_LED</span><span class="p">);</span>
+<span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">LED</span><span class="w"> </span><span class="nf">fireLamp</span><span class="p">(</span><span class="n">A_4E_C_D_GLARE_FIRE</span><span class="p">,</span><span class="w"> </span><span class="n">A_4E_C_D_GLARE_FIRE_AM</span><span class="p">,</span><span class="w"> </span><span class="n">PIN_FIRE_LED</span><span class="p">);</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>

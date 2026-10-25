@@ -4982,7 +4982,7 @@
 </code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>controlId</code> DCSIN_* or CTRL_* constant. Determines <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> routing. </li>
+<li><code>controlId</code> DCSIN_* constant. DCS-only — <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> drops REL/DIR frames outside the DCSIN range, so a CTRL_* (HID) ID never reaches the sim. </li>
 <li><code>pinA</code> quadrature channel A. </li>
 <li><code>pinB</code> quadrature channel B (swap A/B to reverse the sensed direction). </li>
 <li><code>stepsPerDetent</code> quadrature transitions per emitted click (match the encoder). </li>

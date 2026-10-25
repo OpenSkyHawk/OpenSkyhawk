@@ -144,7 +144,7 @@
 <parametername>pin</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>GPIO or MCP23017 <ref refid="classPinRef" kindref="compound">PinRef</ref> for the <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> pin. </para>
+<para>GPIO, MCP23017, or <ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref> &apos;595 <ref refid="classPinRef" kindref="compound">PinRef</ref> for the <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> pin. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -230,7 +230,7 @@
 <para>The mask parameter handles DCS-BIOS bit-packed outputs, where a single 16-bit address carries multiple independent flags. For whole-word binary outputs (value is 0 or 1), use mask = 0xFFFF.</para>
 <para>The reverse parameter handles LEDs wired with current-sinking polarity — for example, an indicator <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref> with its anode tied to VCC through a resistor, where the MCU or MCP23017 output sinks current (LOW = on). reverse = false (default): (value &amp; mask) != 0 → pin HIGH (on). reverse = true: (value &amp; mask) != 0 → pin LOW (on).</para>
 <para>Pin is driven to the off state during <ref refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" kindref="member">configure()</ref> and remains off until a CTRL_BCAST packet with a matching controlId is received.</para>
-<para>Works with GPIO and MCP23017 PinRefs. <ref refid="classADS1115" kindref="compound">ADS1115</ref> PinRefs are input-only — do not assign one to an <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref>. </para>
+<para>Works with GPIO, MCP23017, and <ref refid="classOpenSkyhawk_1_1ShiftBus" kindref="compound">ShiftBus</ref> &apos;595 PinRefs. <ref refid="classADS1115" kindref="compound">ADS1115</ref> PinRefs are input-only — do not assign one to an <ref refid="classOpenSkyhawk_1_1LED" kindref="compound">LED</ref>. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="1">

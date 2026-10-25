@@ -4878,7 +4878,7 @@
 </code></pre></div></p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>c1..c4</code> Coil PinRefs (GPIO or MCP23017). Swap two to reverse direction. </li>
+<li><code>c1..c4</code> Coil PinRefs — c1/c2 drive one coil, c3/c4 the other. GPIO, one MCP23017 port, or one <a href="../classOpenSkyhawk_1_1ShiftBus/"><strong>ShiftBus</strong></a>'s '595s (writeDeferred() stages the frame bits and one transfer() publishes all four — an atomic coil flip). Swap c1↔c2 (or c3↔c4) to reverse direction. </li>
 <li><code>cfg</code> Per-instance configuration (copied; cfg.accel must outlive this). </li>
 <li><code>homeSense</code> Home-sensor <a href="../classPinRef/"><strong>PinRef</strong></a> for HomeMode::SENSOR (NC default for STALL). </li>
 <li><code>sleepEn</code> Optional driver ~SLEEP/enable <a href="../classPinRef/"><strong>PinRef</strong></a>, driven HIGH in <a href="./#function-configure"><strong>configure()</strong></a>. </li>

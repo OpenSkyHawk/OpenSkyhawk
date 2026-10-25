@@ -273,7 +273,7 @@ inline OpenSkyhawk::RotaryAcceleratedEncoder::RotaryAcceleratedEncoder (
 **Parameters:**
 
 
-* `controlId` DCSIN\_\* or CTRL\_\* constant. Determines [**PanelBridge**](namespacePanelBridge.md) routing. 
+* `controlId` DCSIN\_\* constant. DCS-only — [**PanelBridge**](namespacePanelBridge.md) drops REL/DIR frames outside the DCSIN range, so a CTRL\_\* (HID) ID never reaches the sim. 
 * `pinA` quadrature channel A. 
 * `pinB` quadrature channel B (swap A/B to reverse the sensed direction). 
 * `stepsPerDetent` quadrature transitions per emitted click (match the encoder). 

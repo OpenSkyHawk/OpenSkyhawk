@@ -175,7 +175,7 @@ OpenSkyhawk::StepperMotor::StepperMotor (
 **Parameters:**
 
 
-* `c1..c4` Coil PinRefs (GPIO or MCP23017). Swap two to reverse direction. 
+* `c1..c4` Coil PinRefs — c1/c2 drive one coil, c3/c4 the other. GPIO, one MCP23017 port, or one [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md)'s '595s (writeDeferred() stages the frame bits and one transfer() publishes all four — an atomic coil flip). Swap c1↔c2 (or c3↔c4) to reverse direction. 
 * `cfg` Per-instance configuration (copied; cfg.accel must outlive this). 
 * `homeSense` Home-sensor [**PinRef**](classPinRef.md) for HomeMode::SENSOR (NC default for STALL). 
 * `sleepEn` Optional driver ~SLEEP/enable [**PinRef**](classPinRef.md), driven HIGH in [**configure()**](classOpenSkyhawk_1_1StepperMotor.md#function-configure). 

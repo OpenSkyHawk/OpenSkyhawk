@@ -235,7 +235,7 @@ Active-LOW (reverse = false), 20 ms debounce.
 
 
 * `controlId` DCSIN\_\* or CTRL\_\* constant. Determines [**PanelBridge**](namespacePanelBridge.md) routing. 
-* `pin` [**PinRef**](classPinRef.md) for the switch input pin (GPIO or MCP23017). 
+* `pin` [**PinRef**](classPinRef.md) for the switch input pin (GPIO, MCP23017, or [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) '165). 
 
 
 
@@ -265,7 +265,7 @@ OpenSkyhawk::Switch2Pos::Switch2Pos (
 
 
 * `controlId` DCSIN\_\* or CTRL\_\* constant. Determines [**PanelBridge**](namespacePanelBridge.md) routing. 
-* `pin` [**PinRef**](classPinRef.md) for the switch input pin (GPIO or MCP23017). 
+* `pin` [**PinRef**](classPinRef.md) for the switch input pin (GPIO, MCP23017, or [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) '165). 
 * `reverse` false (default): active-LOW — board wiring holds HIGH, switch pulls LOW. true: active-HIGH — board wiring holds LOW, switch drives HIGH. [**configure()**](classOpenSkyhawk_1_1Switch2Pos.md#function-configure) does not enable internal pull-ups; the schematic must provide the required pull-up, pull-down, or active drive. 
 
 

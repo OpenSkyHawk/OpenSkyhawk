@@ -34,7 +34,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="91" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="91" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="92" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="92" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1a0340b648381e8169a14984f195750d2b" prot="private" static="no" mutable="no">
         <type><ref refid="classOpenSkyhawk_1_1Dimmer_1ad0512f5ebd41fc485ef906f1a12902c9" kindref="member">ScaleFn</ref></type>
@@ -49,7 +49,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="92" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="92" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="93" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="93" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1ad7871783f3a8b19d4bb004866c789176" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -65,7 +65,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="93" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="93" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="94" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="94" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1a63c94c45afedf4df4a9e04bd58744c4d" prot="private" static="no" mutable="no">
         <type>uint8_t</type>
@@ -81,7 +81,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="94" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="94" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="95" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="95" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classOpenSkyhawk_1_1Dimmer_1a55b3cf115de48ab5563ca00b699875f6" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -97,7 +97,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="95" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="95" bodyend="-1"/>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="96" column="14" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="96" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -166,11 +166,11 @@
 <para>Configure the output pin and drive duty to 0. </para>
         </briefdescription>
         <detaileddescription>
-<para>Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip.init(). Requires a direct GPIO on a timer channel; otherwise logs on DiagSerial and disables the output (no writes at all). On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL_BCAST. </para>
+<para>Called by <ref refid="namespacePanelGroup_1a54bf0702b5027fc15906ca378515ad0b" kindref="member">PanelGroup::setup()</ref> after chip.init(). Requires a direct GPIO on a timer channel; otherwise disables the output (no writes at all) and logs on DiagSerial when STM32Board::setDebug(true) is set. On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL_BCAST. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="69" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.cpp" bodystart="9" bodyend="22"/>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="70" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.cpp" bodystart="9" bodyend="22"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -193,7 +193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="88" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.cpp" bodystart="24" bodyend="42"/>
+        <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="89" column="10" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.cpp" bodystart="24" bodyend="42"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -242,7 +242,7 @@
         <link refid="classOpenSkyhawk_1_1OutputBase"/>
       </node>
     </collaborationgraph>
-    <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="45" column="1" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="45" bodyend="99"/>
+    <location file="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" line="45" column="1" bodyfile="Firmware/Libraries/PanelGroup/Outputs/Dimmer/Dimmer.h" bodystart="45" bodyend="100"/>
     <listofallmembers>
       <member refid="classOpenSkyhawk_1_1Dimmer_1ad7871783f3a8b19d4bb004866c789176" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>_enabled</name></member>
       <member refid="classOpenSkyhawk_1_1Dimmer_1a55b3cf115de48ab5563ca00b699875f6" prot="private" virt="non-virtual"><scope>OpenSkyhawk::Dimmer</scope><name>_hasState</name></member>

@@ -39,7 +39,7 @@ _One shared SPI shift-register bus ('165 inputs + '595 outputs)._ [More...](#det
 | Type | Name |
 | ---: | :--- |
 |  constexpr uint8\_t | [**MAX\_CHAIN**](#variable-max_chain)   = `8`<br>_chips per direction (64 in + 64 out)_  |
-|  constexpr uint8\_t | [**MAX\_ISR\_CONSUMERS**](#variable-max_isr_consumers)   = `16`<br>_sampled encoders per bus_  |
+|  constexpr uint8\_t | [**MAX\_ISR\_CONSUMERS**](#variable-max_isr_consumers)   = `16`<br>_ISR hooks per bus (_ [_**PanelGroup**_](namespacePanelGroup.md) _uses one)_ |
 
 
 
@@ -60,7 +60,7 @@ _One shared SPI shift-register bus ('165 inputs + '595 outputs)._ [More...](#det
 | ---: | :--- |
 |   | [**ShiftBus**](#function-shiftbus) (SPIClass & spi, uint8\_t sckPin, uint8\_t misoPin, uint8\_t mosiPin, uint8\_t loadPin, uint8\_t latchPin) <br>_Construct a bus. No hardware activity —_ [_**begin()**_](classOpenSkyhawk_1_1ShiftBus.md#function-begin) _runs in_[_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _._ |
 |  bool | [**active**](#function-active) () const<br>_Any SR pin configured on this bus? Dormant buses skip_ [_**begin()**_](classOpenSkyhawk_1_1ShiftBus.md#function-begin) _entirely._ |
-|  void | [**addIsrConsumer**](#function-addisrconsumer) (void(\*)(void \*ctx) hook, void \* ctx) <br>_Register a hook called from the sampling ISR after each_ [_**transfer()**_](classOpenSkyhawk_1_1ShiftBus.md#function-transfer) _. Used by_[_**RotaryEncoder::configure()**_](classOpenSkyhawk_1_1RotaryEncoder.md#function-configure) _to auto-attach SR-pinned encoders._ |
+|  void | [**addIsrConsumer**](#function-addisrconsumer) (void(\*)(void \*ctx) hook, void \* ctx) <br>_Register a hook called from the sampling ISR after each_ [_**transfer()**_](classOpenSkyhawk_1_1ShiftBus.md#function-transfer) _._[_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _registers one per bus when SHIFTBUS\_ISR\_HZ is defined; it samples every input, so there is no per-encoder limit._ |
 |  void | [**begin**](#function-begin) () <br>_Claim pins + start SPI. Called by_ [_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _for active buses only._ |
 |  void | [**beginIsrSampling**](#function-beginisrsampling) (TIM\_TypeDef \* tim, uint16\_t sampleHz) <br>_Start a hardware timer that runs_ [_**transfer()**_](classOpenSkyhawk_1_1ShiftBus.md#function-transfer) _+ all registered consumer hooks every tick. Called by_[_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _when SHIFTBUS\_ISR\_HZ is defined._ |
 |  bool | [**dirty**](#function-dirty) () const<br>_Pending output changes not yet shifted?_  |
@@ -129,7 +129,7 @@ constexpr uint8_t OpenSkyhawk::ShiftBus::MAX_CHAIN;
 
 ### variable MAX\_ISR\_CONSUMERS 
 
-_sampled encoders per bus_ 
+_ISR hooks per bus (_ [_**PanelGroup**_](namespacePanelGroup.md) _uses one)_
 ```C++
 constexpr uint8_t OpenSkyhawk::ShiftBus::MAX_ISR_CONSUMERS;
 ```
@@ -196,7 +196,7 @@ inline bool OpenSkyhawk::ShiftBus::active () const
 
 ### function addIsrConsumer 
 
-_Register a hook called from the sampling ISR after each_ [_**transfer()**_](classOpenSkyhawk_1_1ShiftBus.md#function-transfer) _. Used by_[_**RotaryEncoder::configure()**_](classOpenSkyhawk_1_1RotaryEncoder.md#function-configure) _to auto-attach SR-pinned encoders._
+_Register a hook called from the sampling ISR after each_ [_**transfer()**_](classOpenSkyhawk_1_1ShiftBus.md#function-transfer) _._[_**PanelGroup::setup()**_](namespacePanelGroup.md#function-setup) _registers one per bus when SHIFTBUS\_ISR\_HZ is defined; it samples every input, so there is no per-encoder limit._
 ```C++
 void OpenSkyhawk::ShiftBus::addIsrConsumer (
     void(*)(void *ctx) hook,

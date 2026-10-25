@@ -5044,7 +5044,7 @@
 <p><em>Configure the output pin and drive duty to 0.</em> 
 <div class="highlight"><pre><span></span><code><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">Dimmer</span><span class="o">::</span><span class="n">configure</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 </code></pre></div></p>
-<p>Called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip.init(). Requires a direct GPIO on a timer channel; otherwise logs on DiagSerial and disables the output (no writes at all). On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL_BCAST. </p>
+<p>Called by <a href="../namespacePanelGroup/#function-setup"><strong>PanelGroup::setup()</strong></a> after chip.init(). Requires a direct GPIO on a timer channel; otherwise disables the output (no writes at all) and logs on DiagSerial when STM32Board::setDebug(true) is set. On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL_BCAST. </p>
 <p>Implements <a href="../classOpenSkyhawk_1_1OutputBase/#function-configure"><em>OpenSkyhawk::OutputBase::configure</em></a></p>
 <hr>
 <h2 id="protected-functions-documentation">Protected Functions Documentation</h2>

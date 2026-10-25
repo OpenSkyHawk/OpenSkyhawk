@@ -171,7 +171,7 @@ The reverse parameter handles LEDs wired with current-sinking polarity — for e
 Pin is driven to the off state during [**configure()**](classOpenSkyhawk_1_1LED.md#function-configure) and remains off until a CTRL\_BCAST packet with a matching controlId is received.
 
 
-Works with GPIO and MCP23017 PinRefs. [**ADS1115**](classADS1115.md) PinRefs are input-only — do not assign one to an [**LED**](classOpenSkyhawk_1_1LED.md). 
+Works with GPIO, MCP23017, and [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) '595 PinRefs. [**ADS1115**](classADS1115.md) PinRefs are input-only — do not assign one to an [**LED**](classOpenSkyhawk_1_1LED.md). 
 
 
     
@@ -201,7 +201,7 @@ OpenSkyhawk::LED::LED (
 
 * `controlId` DCS-BIOS output address (A\_4E\_C\_\* from [**A4EC\_OutputIds.h**](A4EC__OutputIds_8h.md)). 
 * `mask` Bitmask: (value & mask) != 0 → on; == 0 → off. Use A\_4E\_C\_\*\_AM constants, or 0xFFFF for whole-word outputs. 
-* `pin` GPIO or MCP23017 [**PinRef**](classPinRef.md) for the [**LED**](classOpenSkyhawk_1_1LED.md) pin. 
+* `pin` GPIO, MCP23017, or [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) '595 [**PinRef**](classPinRef.md) for the [**LED**](classOpenSkyhawk_1_1LED.md) pin. 
 * `reverse` false (default): pin HIGH = on (current-source wiring). true: pin LOW = on (current-sink, anode to VCC). 
 
 

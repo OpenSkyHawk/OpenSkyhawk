@@ -318,7 +318,7 @@ OpenSkyhawk::SwitchWithCover2Pos::SwitchWithCover2Pos (
 
 * `switchId` DCSIN\_\* constant for the switch under the cover. 
 * `coverId` DCSIN\_\* constant for the cover itself (the generator already emits covers as their own control, e.g. AFCS\_1N2\_COVER). 
-* `pin` [**PinRef**](classPinRef.md) for the one physical switch (GPIO or MCP23017). 
+* `pin` [**PinRef**](classPinRef.md) for the one physical switch (GPIO, MCP23017, or [**ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md) '165). 
 * `reverse` false (default): active-LOW, as [**Switch2Pos**](classOpenSkyhawk_1_1Switch2Pos.md). true: active-HIGH. 
 
 

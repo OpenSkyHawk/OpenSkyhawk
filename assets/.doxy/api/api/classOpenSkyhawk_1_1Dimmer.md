@@ -308,7 +308,7 @@ virtual void OpenSkyhawk::Dimmer::configure () override
 
 
 
-Called by [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) after chip.init(). Requires a direct GPIO on a timer channel; otherwise logs on DiagSerial and disables the output (no writes at all). On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL\_BCAST. 
+Called by [**PanelGroup::setup()**](namespacePanelGroup.md#function-setup) after chip.init(). Requires a direct GPIO on a timer channel; otherwise disables the output (no writes at all) and logs on DiagSerial when STM32Board::setDebug(true) is set. On success the pin becomes an output at duty 0, so the zone stays dark until the first matching CTRL\_BCAST. 
 
 
         

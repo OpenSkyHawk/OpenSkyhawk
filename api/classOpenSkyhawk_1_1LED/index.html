@@ -4865,7 +4865,7 @@
 <p>The mask parameter handles DCS-BIOS bit-packed outputs, where a single 16-bit address carries multiple independent flags. For whole-word binary outputs (value is 0 or 1), use mask = 0xFFFF.</p>
 <p>The reverse parameter handles LEDs wired with current-sinking polarity — for example, an indicator <a href="./"><strong>LED</strong></a> with its anode tied to VCC through a resistor, where the MCU or MCP23017 output sinks current (LOW = on). reverse = false (default): (value &amp; mask) != 0 → pin HIGH (on). reverse = true: (value &amp; mask) != 0 → pin LOW (on).</p>
 <p>Pin is driven to the off state during <a href="./#function-configure"><strong>configure()</strong></a> and remains off until a CTRL_BCAST packet with a matching controlId is received.</p>
-<p>Works with GPIO and MCP23017 PinRefs. <a href="../classADS1115/"><strong>ADS1115</strong></a> PinRefs are input-only — do not assign one to an <a href="./"><strong>LED</strong></a>. </p>
+<p>Works with GPIO, MCP23017, and <a href="../classOpenSkyhawk_1_1ShiftBus/"><strong>ShiftBus</strong></a> '595 PinRefs. <a href="../classADS1115/"><strong>ADS1115</strong></a> PinRefs are input-only — do not assign one to an <a href="./"><strong>LED</strong></a>. </p>
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 <h3 id="function-led">function LED</h3>
 <p><em>Construct and register an</em> <a href="./"><em><strong>LED</strong></em></a> <em>output.</em>
@@ -4880,7 +4880,7 @@
 <ul>
 <li><code>controlId</code> DCS-BIOS output address (A_4E_C_* from <a href="../A4EC__OutputIds_8h/"><strong>A4EC_OutputIds.h</strong></a>). </li>
 <li><code>mask</code> Bitmask: (value &amp; mask) != 0 → on; == 0 → off. Use A_4E_C_*_AM constants, or 0xFFFF for whole-word outputs. </li>
-<li><code>pin</code> GPIO or MCP23017 <a href="../classPinRef/"><strong>PinRef</strong></a> for the <a href="./"><strong>LED</strong></a> pin. </li>
+<li><code>pin</code> GPIO, MCP23017, or <a href="../classOpenSkyhawk_1_1ShiftBus/"><strong>ShiftBus</strong></a> '595 <a href="../classPinRef/"><strong>PinRef</strong></a> for the <a href="./"><strong>LED</strong></a> pin. </li>
 <li><code>reverse</code> false (default): pin HIGH = on (current-source wiring). true: pin LOW = on (current-sink, anode to VCC). </li>
 </ul>
 <hr>

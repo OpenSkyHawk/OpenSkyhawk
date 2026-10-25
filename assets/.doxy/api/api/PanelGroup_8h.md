@@ -112,10 +112,9 @@ MCP23017 exp1(0x20, Wire);
 ADS1115  adc1;
 
 const PinRef PIN_MASTER_ARM  = PinRef(exp1, PORT_A, 3);
-const PinRef PIN_CAUTION_LED = PinRef(PB0);
+const PinRef PIN_FIRE_LED    = PinRef(PB0);
 
-OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM,
-                               PIN_CAUTION_LED);
+OpenSkyhawk::LED fireLamp(A_4E_C_D_GLARE_FIRE, A_4E_C_D_GLARE_FIRE_AM, PIN_FIRE_LED);
 
 void setup() {
     Wire.begin();

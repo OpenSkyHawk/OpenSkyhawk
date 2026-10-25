@@ -4940,7 +4940,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">constexpr uint8_t</td>
-<td style="text-align: left;"><a href="#variable-max_isr_consumers"><strong>MAX_ISR_CONSUMERS</strong></a>   = <code>16</code><br><em>sampled encoders per bus</em></td>
+<td style="text-align: left;"><a href="#variable-max_isr_consumers"><strong>MAX_ISR_CONSUMERS</strong></a>   = <code>16</code><br><em>ISR hooks per bus (</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>uses one)</em></td>
 </tr>
 </tbody>
 </table>
@@ -4963,7 +4963,7 @@
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
-<td style="text-align: left;"><a href="#function-addisrconsumer"><strong>addIsrConsumer</strong></a> (void(*)(void *ctx) hook, void * ctx) <br><em>Register a hook called from the sampling ISR after each</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>. Used by</em><a href="../classOpenSkyhawk_1_1RotaryEncoder/#function-configure"><em><strong>RotaryEncoder::configure()</strong></em></a> <em>to auto-attach SR-pinned encoders.</em></td>
+<td style="text-align: left;"><a href="#function-addisrconsumer"><strong>addIsrConsumer</strong></a> (void(*)(void *ctx) hook, void * ctx) <br><em>Register a hook called from the sampling ISR after each</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>.</em><a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>registers one per bus when SHIFTBUS_ISR_HZ is defined; it samples every input, so there is no per-encoder limit.</em></td>
 </tr>
 <tr>
 <td style="text-align: right;">void</td>
@@ -5025,7 +5025,7 @@
 <hr>
 
 <h3 id="variable-max_isr_consumers">variable MAX_ISR_CONSUMERS</h3>
-<p><em>sampled encoders per bus</em> 
+<p><em>ISR hooks per bus (</em> <a href="../namespacePanelGroup/"><em><strong>PanelGroup</strong></em></a> <em>uses one)</em>
 <div class="highlight"><pre><span></span><code><span class="k">constexpr</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">MAX_ISR_CONSUMERS</span><span class="p">;</span>
 </code></pre></div></p>
 <hr>
@@ -5059,7 +5059,7 @@
 <hr>
 
 <h3 id="function-addisrconsumer">function addIsrConsumer</h3>
-<p><em>Register a hook called from the sampling ISR after each</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>. Used by</em><a href="../classOpenSkyhawk_1_1RotaryEncoder/#function-configure"><em><strong>RotaryEncoder::configure()</strong></em></a> <em>to auto-attach SR-pinned encoders.</em>
+<p><em>Register a hook called from the sampling ISR after each</em> <a href="./#function-transfer"><em><strong>transfer()</strong></em></a> <em>.</em><a href="../namespacePanelGroup/#function-setup"><em><strong>PanelGroup::setup()</strong></em></a> <em>registers one per bus when SHIFTBUS_ISR_HZ is defined; it samples every input, so there is no per-encoder limit.</em>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">OpenSkyhawk</span><span class="o">::</span><span class="n">ShiftBus</span><span class="o">::</span><span class="n">addIsrConsumer</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="n">hook</span><span class="p">,</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ctx</span>
