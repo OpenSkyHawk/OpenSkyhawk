@@ -14,8 +14,8 @@ verified through) and is not changed by this.
 |---|---|---|
 | `NODE_ID` | 1 | 2 |
 | Base revision | 0.1.0 **or** 0.2.0 | **0.2.0** — it holds the ShiftBus stations |
-| MCU | `genericSTM32F103C8` | **`genericSTM32F103CB`** — see below |
-| Flash | 73.1 % of 64 KB | 48.3 % of 128 KB |
+| MCU | `genericSTM32F103C8` | `genericSTM32F103C8` — tight, see below |
+| Flash | 73.1 % of 64 KB | **96.6 %** of 64 KB (63,300 B) |
 | RAM | 18.5 % | 28.0 % |
 
 Board A deliberately uses only `J11` pins that exist on **both** base revisions — positions 7
@@ -41,18 +41,23 @@ need calibrating against real hardware.
 
 ### If you redistribute stations, watch the flash
 
-The MCU choice follows the *grouping*, not the board letter. Board A links at **73.1 % of a C8
-with no displays at all**, and U8g2 is roughly 15 KB — so **whichever node ends up with the OLEDs
-needs the CB**, and it cannot also be the node carrying the full MCP + ADS input stack on a C8.
-The other node stays comfortable on a C8. Re-measure after any move; both projects build in a few
-seconds.
+Both nodes are C8s, and the flash budget follows the *grouping*, not the board letter. Board A
+links at **73.1 % with no displays at all**, and U8g2 is roughly 15 KB — so keep all the OLEDs on
+one node, and keep that node's other stations light. It cannot also carry the full MCP + ADS
+input stack. Re-measure after any move; both projects build in a few seconds.
 
-## Why board B is the CB today
+## Board B is a C8 — at ~97 % of flash
 
-On a `genericSTM32F103C8` board B links at **94.3 % of flash** (61,816 of 65,536 bytes), which
-is not a viable margin. On `genericSTM32F103CB` the same
-binary is 47.2 %. U8g2 plus three `StepperMotor` instances is simply more than a C8 should carry.
-This matches the existing variant policy: C8 by default, CB where the flash is genuinely needed.
+The assembled 0.2.0 base carries an STM32F103**C8**, so board B builds for it: **96.6 %** of flash
+(63,300 of 65,536 bytes), and the `StepPattern::FULL_4STATE` alternate build **96.7 %**. U8g2
+plus three `StepperMotor` instances fills a C8, but the soak adds no code, so ~2 KB is enough to
+run it.
+
+If a fix or another alternate build overflows, in order:
+
+1. **Move a non-display station to board A** (say the MCP23017 needle), which has ~17 KB free.
+2. **Rework board B to an STM32F103CB** — pin-compatible on the same LQFP-48 footprint — and set
+   `board = genericSTM32F103CB`.
 
 ## Using both I²C trunks
 
