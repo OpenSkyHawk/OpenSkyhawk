@@ -52,7 +52,7 @@ Firmware/SimGateway/
   "frameworks": "arduino",
   "platforms": "raspberrypi",
   "dependencies": {
-    "adafruit/Adafruit TinyUSB Library": ">=3.0.0"
+    "adafruit/Adafruit TinyUSB Library": "^3.7.7"
   }
 }
 ```
@@ -159,7 +159,7 @@ No USB host is required. USB CDC is used only as the on-device test report conso
 
 ```ini
 [env_base]
-platform = https://github.com/maxgerhardt/platform-raspberrypi.git
+platform = https://github.com/maxgerhardt/platform-raspberrypi.git#79ce473e1a8010ed8096388690222fd2c94858a6
 board = rpipico
 board_build.core = earlephilhower
 framework = arduino
