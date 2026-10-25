@@ -19,10 +19,9 @@
  * ADS1115  adc1;
  *
  * const PinRef PIN_MASTER_ARM  = PinRef(exp1, PORT_A, 3);
- * const PinRef PIN_CAUTION_LED = PinRef(PB0);
+ * const PinRef PIN_FIRE_LED    = PinRef(PB0);
  *
- * OpenSkyhawk::LED masterCaution(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM,
- *                                PIN_CAUTION_LED);
+ * OpenSkyhawk::LED fireLamp(A_4E_C_D_GLARE_FIRE, A_4E_C_D_GLARE_FIRE_AM, PIN_FIRE_LED);
  *
  * void setup() {
  *     Wire.begin();
@@ -34,7 +33,6 @@
  * void loop() { PanelGroup::loop(); }
  * @endcode
  *
- * @version 0.3.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -179,8 +177,8 @@ private:
  *
  * @details Manages MCP23017 expander registration and cache, ADS1115 registration,
  * the 8-step boot sequence, per-loop interrupt dispatch and polling fallback,
- * CAN EVT batching, CTRL_BCAST dispatch, SYNC_REQ response, and the 500 ms
- * HB_n heartbeat.
+ * CAN EVT batching, CTRL_BCAST dispatch, and SYNC_REQ response. The node-generic HB_n /
+ * HEALTH_n traffic and master-loss watchdog run through CANProtocol::serviceNodeStatus() (#340).
  */
 namespace PanelGroup {
 
@@ -248,7 +246,8 @@ namespace PanelGroup {
      *   5. CANProtocol::start().
      *   6. forceReport() burst — one EVT per registered input.
      *   7. flushBatched(canIdEvt(NODE_ID)).
-     *   8. READY_n frame (canIdReady(NODE_ID), DLC=0). Arm heartbeat timer.
+     *   8. READY_n frame (CANProtocol::sendReady(): the firmware version, #295). (Heartbeat/HEALTH timers arm on
+     *      the first CANProtocol::serviceNodeStatus() call in loop().)
      *
      * @note Wire.begin() must be called by the sketch before this function.
      *       PanelGroup never calls Wire.begin() — only start buses in use.
@@ -264,7 +263,8 @@ namespace PanelGroup {
      *   3. poll() on all InputBase objects.
      *   4. CANProtocol::drain() — dispatches CTRL_BCAST, SYNC_REQ, TEST_SEQ echo.
      *   5. update() on all OutputBase objects.
-     *   6. Heartbeat: send HB_n every 500 ms.
+     *   6. CANProtocol::serviceNodeStatus(): HB_n every 500 ms, HEALTH_n every 1 s (board kind
+     *      PANEL_GROUP, #344), master-loss watchdog.
      */
     void loop();
 

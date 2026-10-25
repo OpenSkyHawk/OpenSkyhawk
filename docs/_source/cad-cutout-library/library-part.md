@@ -8,19 +8,22 @@ link these files. Back to the [overview](index.md).
 CAD/Shared/Cutouts/Toggle12.FCStd
 └── Body
     ├── FacePlate   (sketch: Ø12.6 hole)
+    ├── Diffuser    (sketch: Ø12.6 hole)
     └── BackPlate   (sketch: Ø12.6 hole + anti-rotation tab)
 ```
 
 The library holds one sketch per **plate layer**, because the plates need different holes.
-In Toggle12, for example, the BackPlate layer carries the anti-rotation tab and the
-FacePlate layer doesn't.
+The layers are the Bodies that Plate Stack builds: `FacePlate`, `Diffuser` and `BackPlate`
+by default. In Toggle12, for example, the BackPlate layer carries the anti-rotation tab and
+the other layers don't. Give every layer its own sketch, even when two layers cut the same
+hole.
 
 ## Conventions
 
 | Rule | Why |
 |---|---|
 | One file per part, one Body, one sketch per plate layer | Binders link to a sketch by name, so each layer must be its own sketch |
-| Label sketches by layer: `FacePlate`, `BackPlate` | Tells you which binder points where |
+| Label sketches exactly like the Plate Stack layers: `FacePlate`, `Diffuser`, `BackPlate` | Tells you which binder goes in which layer Body. If you rename or add layers in Plate Stack, name the sketches to match |
 | Centre the cutout on the sketch origin (0,0) | Both methods place the origin, so (0,0) is the control's centre |
 | Edit sketches in place: never delete and recreate them | The binder links to the sketch's internal name. A recreated sketch breaks every panel |
 | Save the library in its final folder **before** linking it | Links store a relative path. Moving or renaming the file later breaks them |
@@ -29,8 +32,8 @@ FacePlate layer doesn't.
 
 1. New file, saved in `CAD/Shared/Cutouts/` (e.g. `Toggle12.FCStd`).
 2. Part Design → Create body, then one sketch per layer on the XY plane.
-3. Draw each layer's cutout, centred on the origin. Rename the sketches `FacePlate` and
-   `BackPlate`.
+3. Draw each layer's cutout, centred on the origin. Rename the sketches `FacePlate`,
+   `Diffuser` and `BackPlate`.
 4. Save.
 
 ![Library BackPlate sketch: Ø12.6 hole plus anti-rotation tab, centred on the origin](01-library-sketch.png)

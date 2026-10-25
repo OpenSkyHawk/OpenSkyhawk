@@ -10,7 +10,8 @@
 
 RP2040 firmware library. Owns:
 
-- **USB CDC ↔ UART relay** — forwards the DCS-BIOS byte stream transparently in both directions; never parses or interprets DCS-BIOS content
+- **USB CDC ↔ UART relay** — forwards the DCS-BIOS stream in both directions without parsing or interpreting its content; the host-bound side is line-granular and never blocks (#355)
+- **Link health** — per-bit UART error counters, FAULT self-clear, USB recovery ladder (`LinkRecovery`), hardware watchdog, and the `GET_DIAG` reply (#355)
 - **HID frame demultiplexer** — intercepts binary HID frames (identified by `0xAA 0x55` magic) on the UART RX path; routes controlIds to `HIDAxis`, `HIDButton`, and `HIDHatSwitch` registered objects
 - **`HIDAxis`, `HIDButton`, `HIDHatSwitch` classes** — declared in the sketch; self-register into linked lists at construction
 - **HID report batching** — the report is sent once per `loop()` iteration after draining all UART bytes, only if any HID setter fired
@@ -32,6 +33,8 @@ Firmware/Libraries/SimGateway/
 │                    calibration load, TinyUSB HID descriptor + report struct (production only)
 ├── AxisCal.h        ← AxisCal/CalBlob structs, two-segment transform, CRC-16 — pure
 ├── AxisCal.cpp      ← implementation; no EEPROM, no Serial, no millis(), no globals
+├── LinkRecovery.h   ← USB recovery ladder (#355): LinkAction, LinkRecovery, timing constants — pure
+├── LinkRecovery.cpp ← ladder state machine; takes `now` + sampled health, returns the action
 └── library.json     ← platform: raspberrypi; dep: adafruit/Adafruit TinyUSB Library
 
 Firmware/SimGateway/
@@ -49,7 +52,7 @@ Firmware/SimGateway/
   "frameworks": "arduino",
   "platforms": "raspberrypi",
   "dependencies": {
-    "adafruit/Adafruit TinyUSB Library": ">=3.0.0"
+    "adafruit/Adafruit TinyUSB Library": "^3.7.7"
   }
 }
 ```
@@ -72,15 +75,21 @@ Firmware/Tests/SimGateway/
     ├── hid_parser.cpp       — valid 6-byte HID frame (0xAA 0x55 + controlId + value) parsed
     │                          and dispatched; DCS-BIOS bytes (≤ 0x7F) do not trigger setters;
     │                          HID report sent exactly once after drain if any setter fired
-    ├── parser_resync.cpp    — 0xAA followed by non-0x55: both bytes forwarded to CDC;
+    ├── parser_resync.cpp    — 0xAA followed by non-0x55: parser returns to IDLE;
     │                          valid frame immediately following is parsed correctly; state
     │                          machine self-heals at next byte boundary
     ├── hid_dispatch.cpp     — HIDAxis dispatch called with correct value on controlId match;
     │                          HIDButton index correct on match; non-matching controlId not
     │                          dispatched; no report sent when no setter fires
-    ├── cdc_forwarding.cpp   — every non-HID UART byte is forwarded to USB CDC in order;
+    ├── cdc_forwarding.cpp   — non-HID UART lines are forwarded to USB CDC in order;
     │                          valid HID frames are consumed and not forwarded; 0xAA followed
-    │                          by non-0x55 forwards both bytes before resuming scan
+    │                          by non-0x55 drops its line as corrupt, then scanning resumes
+    ├── cdc_relay.cpp        — host-bound relay never blocks (#355): whole line or nothing,
+    │                          corrupt/overlong lines dropped and counted, HID frame inside a
+    │                          line, calibration frame never lands mid-line, frame drop
+    ├── link_health.cpp      — recovery ladder timing + backoff, health definition, USB-loss
+    │                          stamps, FAULT self-clear, UART error counters, CDC stall
+    │                          detector + mounted-but-stalled ladder trip, GET_DIAG reply
     ├── uart_loopback.cpp    — public SimGateway::loop() path through the configured RP2040
     │                          UART TX/RX pins; requires GP0→GP1 jumper by default
     └── led_state.cpp        — status-LED state machine: state→colour/animation mapping,
@@ -112,9 +121,10 @@ configured RX pin; the default jumper is `GP0 -> GP1`.
 Test builds may expose small `SIMGATEWAY_TEST` instrumentation counters or accessors for
 assertions, such as last dispatched controlId/value, last axis/button index, mapped axis value,
 button pressed state, report-send count, and a bounded capture of bytes written to USB CDC
-by the parser forwarding path. The CDC capture is used only to assert pass-through behavior; the
-production path still writes through `Serial.write()` directly via the same helper. These hooks are
-compiled out of production builds.
+by the parser forwarding path. The CDC capture records only what the relay actually wrote, so a
+dropped line leaves it untouched; `cdcSetRoomForTest()` injects the CDC FIFO's free space to reach
+the drop path. The production path still writes through `Serial.write()` via the same helper. These
+hooks are compiled out of production builds.
 
 Test builds define `SIMGATEWAY_TEST`, which activates no-op stubs for all TinyUSB HID helpers
 directly inside `SimGateway.cpp` (under `#else` of the `#ifndef SIMGATEWAY_TEST` block). No
@@ -127,8 +137,8 @@ CDC forwarding tests must cover:
    same order and do not trigger any HID setter.
 2. A valid HID frame beginning with `0xAA 0x55` is consumed by HID dispatch and contributes no bytes
    to the CDC forwarding capture.
-3. A bad magic prefix such as `0xAA 0x42` forwards exactly `0xAA, 0x42`, returns to `IDLE`, and the
-   next ordinary DCS-BIOS byte forwards normally.
+3. A bad magic prefix such as `0xAA 0x42` returns to `IDLE`; the line it lands in is dropped as
+   corrupt (`linesCorrupt`), and the next ordinary line forwards normally.
 4. Ordinary DCS-BIOS bytes after a valid HID frame still forward normally, proving the parser returns
    to `IDLE` after frame dispatch.
 
@@ -149,7 +159,7 @@ No USB host is required. USB CDC is used only as the on-device test report conso
 
 ```ini
 [env_base]
-platform = https://github.com/maxgerhardt/platform-raspberrypi.git
+platform = https://github.com/maxgerhardt/platform-raspberrypi.git#79ce473e1a8010ed8096388690222fd2c94858a6
 board = rpipico
 board_build.core = earlephilhower
 framework = arduino
@@ -270,7 +280,8 @@ namespace SimGateway {
      *
      * Owns all hardware initialisation — the sketch calls nothing else before this:
      *   - Sets USB identity: Manufacturer "OpenSkyhawk", Product "A-4E Skyhawk", VID/PID 0x2E8A/0x4134
-     *   - Configures UART pins and calls uart.begin(250000)
+     *   - Records the boot reason for DIAG (watchdog scratch registers)
+     *   - Configures UART pins, sets a UART_RX_QUEUE_BYTES (1024) RX queue, calls uart.begin(250000)
      *   - Loads axis calibration from flash, then initialises the TinyUSB HID descriptor
      *
      * USB identity must be set before the USB stack enumerates, so this must be the
@@ -286,18 +297,39 @@ namespace SimGateway {
      * @brief Relay bytes and dispatch HID frames. Call once per loop() iteration.
      *
      * Each call:
-     *   1. Forward all bytes from USB CDC (Serial) to UART — raw DCS-BIOS stream to PanelBridge.
+     *   0. Arm (first call) or feed the WATCHDOG_MS (3 s) hardware watchdog. Production only.
+     *   1. Forward up to CDC_TO_UART_BUDGET (64) bytes from USB CDC (Serial) to UART — raw
+     *      DCS-BIOS stream to PanelBridge.
      *   2. Drain all bytes from UART:
-     *        byte ≤ 0x7F       → forward to USB CDC immediately (DCS-BIOS byte from PanelBridge).
      *        byte == 0xAA, next == 0x55 → HID frame: read 4 more bytes, parse controlId + value,
      *                                     walk HIDAxis, HIDButton, HIDHatSwitch linked lists, dispatch matches.
-     *        byte == 0xAA, next != 0x55 → forward 0xAA + mismatched byte to USB CDC; resume.
+     *        any other byte             → append to the host-bound line; on '\n' write the whole
+     *                                     line to USB CDC, or drop and count it (never blocks).
+     *        byte == 0xAA, next != 0x55 → both bytes go to the line (now corrupt); resume.
      *   3. If any HID setter fired this iteration, send the HID report exactly once.
+     *   4. statusTick(): LEDs, per-bit UART error counters, FAULT self-clear.
+     *   5. USB recovery ladder.
      *
      * @note The parser state machine is persistent across calls — a HID frame split
      *       across loop() iterations is assembled correctly.
      */
     void loop();
+
+    // ── Link health (#355) ────────────────────────────────────────────────────
+    constexpr size_t   UART_RX_QUEUE_BYTES = 1024; ///< UART software RX queue (~40 ms at 250k).
+    constexpr uint16_t RELAY_LINE_MAX      = 128;  ///< Longest host-bound line relayed.
+    constexpr uint16_t CDC_TO_UART_BUDGET  = 64;   ///< Host→UART bytes per loop() call.
+    constexpr uint32_t CDC_STALL_MS        = 1000; ///< DTR + pending + no drain this long = stall.
+    constexpr uint32_t WATCHDOG_MS         = 3000; ///< Hardware watchdog timeout.
+
+    struct GatewayDiag {          ///< Fields = CalDiagField (AxisCal.h); times 0 = never
+        uint32_t firstUartErrMs, lastUartErrMs, firstUsbLossMs, lastUsbLossMs;
+        uint16_t uartOverrun, uartFraming, uartBreak, uartParity, uartRxOverflow;
+        uint16_t linesDropped, linesCorrupt, linesOverlong, framesDropped;
+        uint16_t uartRestarts, usbReattaches, cdcStalls;
+        uint8_t  recoveryReboots, watchdogResets, resetReason;
+    };
+    const GatewayDiag& diagnostics();   ///< Live counters; the host reads them via GET_DIAG.
 
     // ── Status LEDs (Gateway_Bridge: GREEN = GP2, RED = GP3, active-high) ─────
     enum class LedState : uint8_t { FAULT, NO_HOST, STREAMING, USB_IDLE, INIT };
@@ -343,6 +375,15 @@ void     calBlobSeal(CalBlob& blob);                 ///< Stamp magic, version, 
 } // namespace OpenSkyhawk
 ```
 
+The calibration wire protocol (FirmwarePlan 03) is declared below the blob API: `CalType`,
+`CalNackReason`, the envelope constants, and — so the client sync generates them (#346) — one
+payload-offset enum per type that carries a payload: `CalHelloAckField`, `CalDataField` +
+`CalDataRecField` (`CAL_DATA_REC_BYTES` = 10), `CalSessionOpenField`, `CalSessionAckField`,
+`CalStreamSelectField`, `CalCommitField`, `CalResetField`, `CalAckField`, `CalNackField`,
+`CalRawField`, `CalDiagField` (`CAL_DIAG_BYTES` = 64 — 47 in use, `CAL_DIAG_RESERVED` 47–63 reserved for new counters, #295 — plus `CalDiagResetReason`). Offsets are into
+the payload, little-endian; `SimGateway.cpp` reads and writes
+every payload through them, and a `static_assert` ties `CAL_DATA`'s layout to `CAL_MAX_PAYLOAD`.
+
 ---
 
 ## Key Data Structures
@@ -355,10 +396,10 @@ enum class ParserState : uint8_t { IDLE, GOT_AA, IN_FRAME };
 
 | State | Trigger | Action | Next state |
 |-------|---------|--------|------------|
-| `IDLE` | byte ≤ 0x7F | Forward byte to USB CDC | `IDLE` |
+| `IDLE` | byte != 0xAA | Append to the host-bound line (see *Host-bound relay*) | `IDLE` |
 | `IDLE` | byte == 0xAA | — | `GOT_AA` |
 | `GOT_AA` | byte == 0x55 | Arm 4-byte frame buffer, reset buffer index | `IN_FRAME` |
-| `GOT_AA` | byte != 0x55 | Forward 0xAA + this byte to USB CDC | `IDLE` |
+| `GOT_AA` | byte != 0x55 | Append 0xAA + this byte to the line (marks it corrupt) | `IDLE` |
 | `IN_FRAME` | each byte | Store in frame buffer | `IN_FRAME` |
 | `IN_FRAME` | 4th byte stored | Parse controlId + value; dispatch; clear buffer | `IDLE` |
 
@@ -425,10 +466,10 @@ uint16_t value     = (uint16_t)buf[2] | ((uint16_t)buf[3] << 8);
 
 ### Calibration frames are the one inbound exception
 
-The relay is non-buffering for DCS-BIOS traffic, but the calibration parser holds a partial
+The host→PanelBridge relay is non-buffering, but the calibration parser holds a partial
 candidate — at most 92 bytes, the size of the largest legal frame. Bounded, and not
-session-scoped: the parser is always on because `HELLO` and `GET_CAL` are answered outside a
-session.
+session-scoped: the parser is always on because `HELLO`, `GET_CAL` and `GET_DIAG` are answered
+outside a session.
 
 What keeps that safe is the reject path. A candidate is consumed only after passing magic,
 `LEN`-matches-`TYPE` **and** CRC; failing any of them hands every held byte back to the relay in
@@ -438,9 +479,62 @@ cannot make the parser wait for the ~65535 bytes a noise length would claim.
 `test_axis_cal_framing` asserts this against the UART capture rather than against parser state,
 because the failure mode being guarded is DCS-BIOS bytes silently disappearing.
 
-### Relay is non-buffering
+### Host → PanelBridge is non-buffering
 
-Every byte from USB CDC (`Serial`) is written to UART immediately — no local buffer, no coalescing. Every UART byte that is not part of a HID frame is forwarded to USB CDC immediately. DCS-BIOS stream latency is USB CDC round-trip only — no additional SimGateway delay.
+Every byte from USB CDC (`Serial`) is written to UART in the same `loop()` call — no local buffer, no
+coalescing — up to `CDC_TO_UART_BUDGET` bytes per call, because the UART write blocks once its
+32-byte FIFO is full and an uncapped drain would starve step 2. DCS-BIOS export latency is USB CDC
+round-trip only.
+
+### Host-bound relay is line-granular and never blocks (#355)
+
+`Adafruit_USBD_CDC::write()` loops, calling only `yield()`, while the host holds DTR but stops
+pulling IN data. The old per-byte relay called it unguarded, so a host that stopped reading could
+stall `loop()` and everything in it. Now:
+
+- `_relayByte()` assembles a line in a `RELAY_LINE_MAX` (128) buffer. On `\n` the line goes to
+  `_writeCdcWhole()`, which writes it only if `Serial.availableForWrite()` covers all of it. Otherwise
+  it is dropped and `linesDropped` counted. Never truncated.
+- A line with any byte outside `0x20`–`0x7E` (other than its `\n`) is dropped as `linesCorrupt`;
+  one longer than the buffer as `linesOverlong`. Both mean line noise or an `0xAA` that began no HID
+  frame. PanelBridge only ever sends `name arg\n`.
+- `_writeCdcWhole()` is the only CDC writer. Calibration frames (`_calSend()`) and the boot banner
+  use it too; a dropped frame counts `framesDropped`. Because lines are buffered, a frame always
+  lands between lines. The old RAW-only `availableForWrite()` guard is subsumed.
+- `_calPersist()` discards the half-assembled line along with the UART bytes the flash erase loses.
+
+### FAULT self-clear and UART counters (#355)
+
+`statusTick()` counts each RSR bit separately (`uartOverrun` / `uartFraming` / `uartBreak` /
+`uartParity`, one per tick the bit was set), stamps first/last error times, and polls
+`SerialUART::overflow()` into `uartRxOverflow`. That last one is the real "loop() fell behind" signal:
+the core's RX IRQ empties the PL011 into a software queue (`setFIFOSize(UART_RX_QUEUE_BYTES)` before
+`begin()`), so starvation overflows the queue silently and never sets RSR.
+
+`_faultRestartCheck()`: once FAULT has been latched `FAULT_RESTART_MS` (3 s, from the latch), the
+latch is cleared and `_uartRestart()` runs `end()` / `begin()`, clears RSR, and resets the HID parser
+and the line buffer. Persistent errors re-latch next tick.
+
+### USB recovery ladder and watchdog (#355)
+
+`_cdcStallUpdate()` samples `Serial.dtr()`, `availableForWrite()`, `CFG_TUD_CDC_TX_BUFSIZE` and the
+bytes `_writeCdcWhole()` wrote since the last tick (`_cdcWritten`): no drain for `CDC_STALL_MS` with
+DTR held and bytes pending is a stall, counted per onset in `cdcStalls`.
+
+`_linkUpdate()` computes health — `mounted && !(suspended && UART error < 30 s ago) && !cdcStalled` — stamps
+`firstUsbLossMs` / `lastUsbLossMs` on the healthy→unhealthy edge, and calls
+`linkRecoveryStep()` (`LinkRecovery.cpp`, pure). `_linkTick()` applies the result:
+`TinyUSBDevice.detach()` / `attach()`, or for `REBOOT` bumps the scratch reboot count, sets the
+pending-recovery marker, and `rp2040.reboot()`s.
+
+Watchdog scratch registers 0–3 (the SDK keeps 4–7): `[0]` magic `"SGDW"` (absent after power-on, so
+the rest are zeroed), `[1]` recovery reboots, `[2]` watchdog resets, `[3]` pending-recovery marker.
+`_bootRecord()` runs first in `setup()`: marker set → `RESET_RECOVERY` and the ladder starts in
+backoff; else `watchdog_enable_caused_reboot()` → `RESET_WATCHDOG`; else `RESET_POWER_ON`.
+
+The watchdog (`rp2040.wdt_begin(WATCHDOG_MS)`) is armed by the first `loop()` call, not in `setup()`,
+so production-mode test sketches that `delay()` in `setup()` or never call `loop()`
+(`test_axis_cal_persist`) are not reset by it.
 
 ### HID report batching
 
@@ -575,20 +669,24 @@ Signal sources:
   window expired).
 - **FAULT** — read from the `uart0` PL011 error register (`uart_get_hw(uart0)->rsr`, bits
   OE/BE/PE/FE), cleared on every read (write-to-clear). The arduino-pico `SerialUART` RX IRQ drops
-  framing/parity bytes and ignores overrun without touching RSR, so RSR is the only reliable error
-  source. `Serial1 == uart0` on this board.
+  framing/parity bytes without touching RSR, so RSR is the only reliable error source.
+  `Serial1 == uart0` on this board.
 
-**FAULT latch / recovery:** latched on any error and re-stamped while errors persist; clears only
-when **both** (a) ≥ 2 s have elapsed since the last error and (b) an error-free byte arrived on
-uart0 RX *after* the fault. A silent bus holds FAULT until clean data resumes.
+**FAULT latch / recovery:** latched on any error and re-stamped while errors persist; clears when
+**both** (a) ≥ 2 s have elapsed since the last error and (b) an error-free byte arrived on uart0 RX
+*after* the fault — or, if it is still latched 3 s after it was set, by the self-clear above
+(UART restart).
 
 **Design / testability:** the state-selection, animation-phase, and latch logic are pure functions
 taking `now` as a parameter (no `millis()`, GPIO, TinyUSB, or register access inside) — only
 `_applyLed()` touches the pins, and the mount poll + RSR read sit behind `#ifndef SIMGATEWAY_TEST`.
-`SIMGATEWAY_TEST` builds add hooks (`statusInject` / `statusResolve` / `statusFaultStep` +
+`SIMGATEWAY_TEST` builds add hooks (`statusInject` / `statusResolve` / `statusFaultStep` /
+`statusFaultRestartCheck` +
 `statusState` / `statusAnim` / `statusRedLevel` / `statusGreenLevel` / `statusResetForTest`) that
 drive the machine with injected inputs and read back the resolved state + captured pin levels,
-mirroring the `feedByte` / `cdcCapture` pattern. Verified by `tests/led_state/`.
+mirroring the `feedByte` / `cdcCapture` pattern. Verified by `tests/led_state/`; the self-clear,
+counters and ladder by `tests/link_health/` (`diagUartErrorsForTest`, `linkStepForTest`,
+`linkResetForTest`, `diagResetForTest`, `cdcStallStepForTest`).
 
 ### HIDControls.h — standalone library
 
@@ -618,7 +716,8 @@ OpenSkyhawk::HIDAxis roll(CTRL_ROLL, 0);
 
 void setup() {
     SimGateway::setup(Serial1);
-    // Internally: USB identity set, Serial1.begin(250000), TinyUSB HID enumerated
+    // Internally: boot reason recorded, USB identity set, Serial1.begin(250000) with a 1 KB
+    // RX queue, TinyUSB HID enumerated. The first loop() arms the watchdog.
 }
 
 void loop() {

@@ -1,0 +1,205 @@
+name: Firmware release assets
+
+# Builds the stock firmware images and packages them for a firmware release (#360):
+#   - flat files for the client: manifest.json, one .bin per STM32 board, the Gateway .uf2;
+#   - one zip for people: a folder per board with its README, .elf for STM32 (the flash address
+#     is built in), the Gateway .uf2, plus the top README, CHANGES, LICENSE and manifest.json.
+#
+# Called, never triggered directly — it only builds (read-only), recording the flash/RAM size of
+# every board in the job summary and uploading the package as an Actions artifact
+# (firmware-release-<version>):
+#   - release-please.yml, with the release tag, once a firmware release exists; its own
+#     firmware-assets-publish job then attaches the artifact to the release;
+#   - firmware-release-assets-check.yml, with no tag, to validate pull requests.
+# Publishing lives with the caller so this workflow never asks for write access — a nested job
+# asking for more than the caller grants fails the whole run at startup, even when skipped.
+# It always builds the caller's own commit and never checks out a passed-in ref.
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: >-
+          The release tag, e.g. firmware-v0.2.0. Names the files and the release to attach them to;
+          it is never checked out — the build checks that it points at the commit being built.
+        required: false
+        type: string
+        default: ""
+    outputs:
+      version:
+        description: The version the package is named for; the artifact is firmware-release-<version>
+        value: ${{ jobs.build.outputs.version }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and package
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      # The caller's own commit, never a passed-in ref. On the release path that is the push that
+      # merged the release PR, which is exactly the commit release-please tags.
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PlatformIO
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install platformio
+
+      - name: Work out the version
+        id: version
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          # The release tag from release-please, else the ref this run was started on.
+          REF: ${{ inputs.tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$RELEASE_TAG" ]]; then
+            # Refuse to package anything but the tagged commit under the release's name.
+            git fetch --quiet --depth=1 origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+            tagged="$(git rev-parse "$RELEASE_TAG^{commit}")"
+            built="$(git rev-parse HEAD)"
+            if [[ "$tagged" != "$built" ]]; then
+              echo "::error::$RELEASE_TAG points at $tagged, but this run built $built"
+              exit 1
+            fi
+          fi
+          if [[ "$REF" == firmware-v* ]]; then
+            echo "version=${REF#firmware-v}" >> "$GITHUB_OUTPUT"
+            echo "tag=$REF" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=dev" >> "$GITHUB_OUTPUT"
+            echo "tag=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and package
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          # The boards a release ships, one per line:
+          #   project | env | folder | file base | node | title
+          # node is the NODE_ID; "usb" marks the Gateway's RP2040 half. Center_Armament is left out
+          # on purpose: that board is deprecated.
+          boards=(
+            "Firmware/Templates/SimGateway|SimGateway|gateway|gateway|usb|Gateway (USB side)"
+            "Firmware/Templates/PanelBridge|PanelBridge|gateway|gateway-bridge|0|Gateway (cockpit side)"
+            "Firmware/Panels/PDU_Left|PDU_Left|pdu-left|pdu-left|3|PDU Left"
+            "Firmware/Panels/PDU_Right|PDU_Right|pdu-right|pdu-right|4|PDU Right"
+            "Firmware/Panels/PDU_Center|PDU_Center|pdu-center|pdu-center|5|PDU Center"
+          )
+
+          pkg="openskyhawk-firmware-$VERSION"
+          dist="$RUNNER_TEMP/dist"            # flat release files
+          zipdir="$RUNNER_TEMP/zip/$pkg"      # the zip's contents
+          mkdir -p "$dist" "$zipdir"
+          entries="$RUNNER_TEMP/manifest-entries.jsonl"
+          : > "$entries"
+
+          {
+            echo "## Firmware $VERSION — flash and RAM"
+            echo
+            echo "| Board | Flash | RAM |"
+            echo "|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # usage "Flash" log → "31348 / 65536 B (47.8%)"
+          usage() {
+            sed -n -E "s/^$1: *\[[^]]*\] *([0-9.]+)% \(used ([0-9]+) bytes from ([0-9]+) bytes\).*/\2 \/ \3 B (\1%)/p" "$2" | tail -1
+          }
+
+          # add_entry file folder node format → one manifest line
+          add_entry() {
+            jq -cn --arg name "$(basename "$1")" --arg board "$2" --arg node "$3" --arg format "$4" \
+              --argjson size "$(stat -c %s "$1")" --arg sha256 "$(sha256sum "$1" | cut -d' ' -f1)" \
+              '{name: $name, board: $board, format: $format, size: $size, sha256: $sha256}
+               + (if $node == "usb" then {side: "usb"} else {nodeId: ($node | tonumber)} end)' \
+              >> "$entries"
+          }
+
+          for line in "${boards[@]}"; do
+            IFS='|' read -r project env folder base node title <<< "$line"
+            log="$RUNNER_TEMP/$env.log"
+            platformio run -d "$project" -e "$env" | tee "$log"
+            out="$project/.pio/build/$env"
+            echo "| $title | $(usage Flash "$log") | $(usage RAM "$log") |" >> "$GITHUB_STEP_SUMMARY"
+
+            mkdir -p "$zipdir/$folder"
+            if [[ "$node" == "usb" ]]; then
+              cp "$out/firmware.uf2" "$dist/$base-$VERSION.uf2"
+              cp "$out/firmware.uf2" "$zipdir/$folder/$base-$VERSION.uf2"
+              add_entry "$dist/$base-$VERSION.uf2" "$folder" "$node" uf2
+            else
+              cp "$out/firmware.bin" "$dist/$base-$VERSION.bin"
+              cp "$out/firmware.elf" "$zipdir/$folder/$base-$VERSION.elf"
+              add_entry "$dist/$base-$VERSION.bin" "$folder" "$node" bin
+              add_entry "$zipdir/$folder/$base-$VERSION.elf" "$folder" "$node" elf
+            fi
+          done
+
+          jq -s --arg version "$VERSION" --arg tag "$TAG" \
+            '{schema: 1, version: $version, tag: $tag, files: .}' "$entries" > "$dist/manifest.json"
+          cp "$dist/manifest.json" "$zipdir/manifest.json"
+
+          # READMEs: the templates in Firmware/release, filled in with envsubst. Only the named
+          # variables are replaced, so any other "$" in a template stays as written.
+          export VERSION TAG
+          export BOARD_TABLE="| \`gateway/\` | Gateway — RP2040 (USB side) + STM32F103C8 (cockpit side) | \`gateway-$VERSION.uf2\`, \`gateway-bridge-$VERSION.elf\` |
+          | \`pdu-left/\` | PDU Left — node 3 | \`pdu-left-$VERSION.elf\` |
+          | \`pdu-right/\` | PDU Right — node 4 | \`pdu-right-$VERSION.elf\` |
+          | \`pdu-center/\` | PDU Center — node 5 | \`pdu-center-$VERSION.elf\` |"
+          BOARD_TABLE="$(sed -E 's/^[[:space:]]+//' <<< "$BOARD_TABLE")"
+          envsubst '$VERSION $TAG $BOARD_TABLE' < Firmware/release/README.md > "$zipdir/README.md"
+
+          USB_FILE="gateway-$VERSION.uf2" COCKPIT_FILE="gateway-bridge-$VERSION.elf" \
+            envsubst '$VERSION $USB_FILE $COCKPIT_FILE' \
+            < Firmware/release/README-gateway.md > "$zipdir/gateway/README.md"
+
+          pdu_notes="The PDU's calibration is stored on the board and survives a firmware update. A full chip erase removes it — recalibrate afterwards: https://openskyhawk.github.io/OpenSkyhawk/hardware/pdu/#bring-up-and-calibration"
+          for p in "pdu-left|PDU Left|3" "pdu-right|PDU Right|4" "pdu-center|PDU Center|5"; do
+            IFS='|' read -r folder title node <<< "$p"
+            FILE="$folder-$VERSION.elf" BOARD_TITLE="$title" NODE_ID="$node" BOARD_NOTES="$pdu_notes" \
+              envsubst '$VERSION $FILE $BOARD_TITLE $NODE_ID $BOARD_NOTES' \
+              < Firmware/release/README-node.md > "$zipdir/$folder/README.md"
+          done
+
+          if [[ -n "$TAG" ]] && gh release view "$TAG" --json body -q .body > "$zipdir/CHANGES.md" 2>/dev/null; then
+            :
+          else
+            echo "Validation build of $(git rev-parse --short HEAD) — no release notes." > "$zipdir/CHANGES.md"
+          fi
+          cp Firmware/LICENSE "$zipdir/LICENSE"
+
+          (cd "$RUNNER_TEMP/zip" && zip -qr "$dist/$pkg.zip" "$pkg")
+
+          {
+            echo
+            echo "## Files"
+            echo
+            echo '```'
+            (cd "$dist" && ls -l)
+            echo
+            (cd "$RUNNER_TEMP/zip" && find "$pkg" -type f | sort)
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the package
+        uses: actions/upload-artifact@v7
+        with:
+          name: firmware-release-${{ steps.version.outputs.version }}
+          path: ${{ runner.temp }}/dist
+          retention-days: 14
+          if-no-files-found: error

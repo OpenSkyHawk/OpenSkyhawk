@@ -41,7 +41,7 @@ a glance:
 The state machine is shared (`STM32Board`); only the triggers differ per role. **Green solid
 (connected)** appears while data is actively flowing and decays back to green-blinking after
 ~½ s of quiet. **Amber (warning)** means a tracked PanelGroup node died (PanelBridge), the
-master heartbeat was lost (PanelGroup), or the board's **clock failed to lock** (any STM32
+master heartbeat was lost (any node other than PanelBridge), or the board's **clock failed to lock** (any STM32
 node — see below).
 
 CAN faults are driven from the `CanStatus` callback. For non-CAN faults (dead node, lost
@@ -60,6 +60,20 @@ listen-only** (never transmits at the wrong rate). Latched once at boot (query
 !!! note "PB14/PB15 are reserved"
     The status-LED pins are owned by `STM32Board` — don't use PB14/PB15 for panel I/O or
     MCP23017 interrupts. PC13/PC14/PC15 are also off-limits on custom boards.
+
+## The Gateway's link counters
+
+The Gateway's RP2040 has no debug UART. Instead, it keeps link-health counters you can read over
+its USB serial port: UART errors by kind, lines dropped, and how often it reconnected USB or
+rebooted itself, plus when the first UART error and the first USB loss happened. Close the
+OpenSkyhawk Client, then:
+
+```bash
+tools/simgw_bench/simgw_bench.py diag /dev/cu.usbmodem1101
+```
+
+What the counters mean, and how the Gateway recovers its own USB link, is on the
+[SimGateway](../architecture/sim-gateway.md#link-health-and-self-recovery) page.
 
 ## Bench gotchas
 

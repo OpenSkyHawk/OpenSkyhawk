@@ -103,21 +103,23 @@ static void runTests() {
     Serial.println();
     allPass &= t2;
 
-    // Test 3: bad magic over configured UART pins forwards both bytes.
+    // Test 3: bad magic over configured UART pins resyncs. Its line is dropped as corrupt
+    // (#355); the line after it still arrives.
     SimGateway::resetParser();
     SimGateway::resetCdcCapture();
     _sgtest_dispatchCount = 0;
     clearUartRx();
 
-    const uint8_t badMagic[] = {0xAA, 0x42};
+    const uint8_t badMagic[] = {0xAA, 0x42, '\n', 'O', 'K', '\n'};
+    const uint8_t badMagicExpected[] = {'O', 'K', '\n'};
     Serial1.write(badMagic, sizeof(badMagic));
     Serial1.flush();
-    drainLoopUntil(100, sizeof(badMagic), 0);
+    drainLoopUntil(100, sizeof(badMagicExpected), 0);
 
     bool t3 = (_sgtest_dispatchCount == 0) &&
-              captureEquals(badMagic, sizeof(badMagic));
+              captureEquals(badMagicExpected, sizeof(badMagicExpected));
 
-    Serial.print(F("[T3] UART pins forward bad magic: "));
+    Serial.print(F("[T3] UART pins resync past bad magic: "));
     Serial.print(t3 ? F("PASS") : F("FAIL"));
     if (!t3) printCapture();
     Serial.println();

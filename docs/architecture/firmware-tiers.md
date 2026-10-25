@@ -55,11 +55,12 @@ over UART, and intercepts HID frames coming back up to drive the joystick report
 
 **What it does *not* do:**
 
-- It does **not** run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream
-  — every byte is relayed verbatim.
+- It does **not** run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream:
+  the export stream is relayed verbatim, and messages back to the PC as whole lines.
 - It has **no knowledge** of DCS-BIOS control names, addresses, or the input map.
-- It does **not** buffer or delay DCS-BIOS bytes — relay is immediate, so PanelBridge sees the
-  stream with USB-CDC latency only.
+- It does **not** buffer or delay the DCS-BIOS export stream — relay is immediate, so
+  PanelBridge sees the stream with USB-CDC latency only. It never waits for the PC either: if the
+  PC stops reading, a message back is dropped rather than stalling the gateway.
 
 See [SimGateway](sim-gateway.md) for the full breakdown.
 
@@ -69,10 +70,11 @@ The CAN master, and the only tier that runs the DCS-BIOS library. It receives th
 stream from SimGateway over UART, fires the DCS-BIOS export listener, and broadcasts every
 DCS output onto the CAN bus as `CTRL_BCAST` frames. In the other direction it collects input
 events (`EVT_n`) from the nodes and routes each one: DCS-BIOS inputs go out as ASCII commands
-over UART; HID inputs are wrapped in HID frames for SimGateway. It also tracks which PanelGroup
-nodes are alive (from their heartbeats) and — behind a build flag — reports that roster + health
-to the host over DCS-BIOS itself (`_NODE_STATUS` messages; request address `0x86FE`), so the client
-can show connected panels without any SimGateway change
+over UART; HID inputs are wrapped in HID frames for SimGateway. It also tracks which nodes are
+alive (from their heartbeats) and reports that roster to the host over
+DCS-BIOS itself (`_NODE_STATUS` messages; request address `0xFF00`): each node's health, board
+kind and firmware version, plus a row for the bridge itself. The client can show connected boards without any
+SimGateway change
 ([#86](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86)).
 
 **What it does *not* do:**
@@ -83,8 +85,8 @@ can show connected panels without any SimGateway change
   state. Multiple controls may map to the same DCS command.
 - It does **not** drive panel hardware decisions; nodes own their own I/O.
 
-`NODE_ID` is always **0** for PanelBridge — reserved, and never transmitted as a heartbeat on
-the bus.
+`NODE_ID` is always **0** for PanelBridge — reserved for it, and its heartbeat `HB_0` is the
+master beacon every other node watches.
 
 ## PanelGroup (STM32F103)
 

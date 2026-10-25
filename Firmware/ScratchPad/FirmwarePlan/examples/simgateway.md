@@ -41,13 +41,14 @@ void setup() {
 void loop() {
     SimGateway::loop();
     // Each iteration:
-    //   1. Forward all available bytes from USB CDC → UART (raw DCS-BIOS stream to PanelBridge)
+    //   1. Forward up to 64 bytes from USB CDC → UART (raw DCS-BIOS stream to PanelBridge)
     //   2. Read all available bytes from UART:
-    //        byte <= 0x7F → forward to USB CDC (DCS-BIOS stream from PanelBridge)
     //        byte == 0xAA, next == 0x55 → HID frame: read 4 more bytes, parse controlId+value,
     //                                      dispatch to HIDAxis/HIDButton linked list
-    //        byte == 0xAA, next != 0x55 → forward both bytes to USB CDC, resume scanning
+    //        any other byte → append to the host-bound line; on '\n' the whole line goes to
+    //                          USB CDC, or is dropped if the host isn't reading (never blocks)
     //   3. If any HID setter fired this iteration → send one HID report
+    //   4–5. Status LEDs, UART error counters, USB self-recovery
 }
 ```
 
@@ -70,7 +71,7 @@ MASTER ARM switch  (cockpit → DCS)
   → Switch2Pos emits CAN EVT {DCSIN_ARM_MASTER, 0 or 1}
   → PanelBridge receives CAN → binary search in A4EC_InputMap
   → sendDcsBiosMessage("ARM_MASTER", "0"/"1") → raw ASCII on UART
-  → SimGateway: byte <= 0x7F → relay → USB CDC
+  → SimGateway: assembles the line → relays it whole → USB CDC
   → DCS receives command
 
 Roll axis  (cockpit → HID)

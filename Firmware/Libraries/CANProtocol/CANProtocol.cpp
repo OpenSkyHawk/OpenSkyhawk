@@ -2,6 +2,7 @@
 
 #include "CANProtocol.h"
 #include <STM32Board.h>
+#include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the release version READY_n carries (#295)
 #include <Arduino.h>
 #include <string.h>
 
@@ -56,6 +57,29 @@ static uint32_t           _txDrops        = 0;
 static uint32_t           _filterIds[MAX_FILTER_IDS];
 static uint8_t            _filterCount    = 0;
 static bool               _filterPassAll  = false;
+static bool               _loopback       = false;  // started with startLoopback(): own frames return
+
+// Node status service (serviceNodeStatus) — #340
+static constexpr uint32_t HB_PERIOD_MS     = 500;
+static constexpr uint32_t HEALTH_PERIOD_MS = 1000;
+static uint32_t           _lastHbMs        = 0;
+static uint32_t           _lastHealthMs    = 0;
+static bool               _statusArmed     = false;  // timers armed on the first service call
+static uint32_t           _lastMasterMs    = 0;      // millis() of the last HB_0 seen
+static bool               _everSawMaster   = false;  // arm the timeout only after the first HB_0
+static bool               _masterHbPending = false;  // HB_0 arrived since the last service call
+// WARNING causes this service owns on a non-bridge node. The LED has one shared latch, so the service
+// keeps its causes apart and only writes the latch when their OR changes — a returning master clears
+// master loss, never an overheat that is still true.
+static bool               _masterLost      = false;
+static bool               _overheat        = false;
+static bool               _warnAsserted    = false;  // what this service last wrote to the latch
+// Duplicate NODE_ID check (#344): a frame on our own HB_n came from another board with our NODE_ID.
+static uint32_t           _lastDupMs       = 0;      // millis() of the last foreign own-ID HB
+static bool               _dupSeen         = false;  // a foreign own-ID HB within DUP_NODE_TIMEOUT_MS
+static uint8_t            _ownHbLoopPending = 0;     // loopback only: own HBs sent, not yet looped back
+// Last HEALTH_n built (lastNodeHealth()) — not-yet-seen until the first one.
+static NodeHealthPayload  _lastHealth      = { 0, DIE_TEMP_UNAVAILABLE, 0, 0, 0, 0, { 0, 0 } };
 
 // ── Private helpers ───────────────────────────────────────────────────────────
 
@@ -104,11 +128,13 @@ static void _applyFilters() {
     }
 
     // Build combined ID list: mandatory + caller-registered
-    uint32_t ids[MAX_FILTER_IDS + 3];
+    uint32_t ids[MAX_FILTER_IDS + 5];
     uint8_t  count = 0;
     ids[count++] = CAN_ID_CTRL_BCAST;
     ids[count++] = CAN_ID_TEST_SEQ;
     ids[count++] = CAN_ID_SYNC_REQ;
+    if (NODE_ID != GATEWAY_NODE_ID) ids[count++] = canIdHb(GATEWAY_NODE_ID);  // master heartbeat → serviceNodeStatus watchdog
+    ids[count++] = canIdHb(NODE_ID);  // own heartbeat ID → duplicate NODE_ID check (#344)
     for (uint8_t i = 0; i < _filterCount; i++) {
         ids[count++] = _filterIds[i];
     }
@@ -202,6 +228,13 @@ static void _startInternal(uint32_t mode) {
     _batches[3] = { canIdEvtDir(NODE_ID), false, {0, 0}, 0 };  // RotaryEncoder DIR
     _batches[4] = { canIdEvtAction(NODE_ID), false, {0, 0}, 0 };  // ActionButton TOGGLE
 
+    // serviceNodeStatus() arms its HB/HEALTH timers on its first call — the first loop() after
+    // setup returns — so a restart re-arms them there too (FirmwarePlan 09 step 8).
+    _statusArmed = false;
+    _loopback         = (mode == CAN_MODE_SILENT_LOOPBACK);
+    _ownHbLoopPending = 0;
+    _dupSeen          = false;
+
     _status = CanStatus::NORMAL;
     if (_statusCb) _statusCb(_status);
 }
@@ -260,6 +293,22 @@ void drain() {
         } else if (frame.canId == CAN_ID_TEST_SEQ) {
             send(canIdEcho(NODE_ID), frame.data, frame.len);
         } else {
+            if (frame.canId == canIdHb(NODE_ID)) {
+                // Our own heartbeat ID. A node never receives its own frames, so another board has
+                // our NODE_ID (#344) — except in loopback, where our own heartbeats come back.
+                if (_loopback && _ownHbLoopPending > 0) {
+                    _ownHbLoopPending--;
+                } else {
+                    _lastDupMs = millis();
+                    _dupSeen   = true;
+                }
+            } else if (NODE_ID != GATEWAY_NODE_ID && frame.canId == canIdHb(GATEWAY_NODE_ID)) {
+                // Master heartbeat: stamp it for serviceNodeStatus()'s watchdog, then still hand it
+                // to the node's own handler like any other frame.
+                _lastMasterMs    = millis();
+                _everSawMaster   = true;
+                _masterHbPending = true;
+            }
             if (_rxCb) _rxCb(frame.canId, frame.data, frame.len);
         }
     }
@@ -385,14 +434,17 @@ HeartbeatPayload makeHeartbeatPayload(uint8_t nodeId, uint16_t rxCount) {
     HeartbeatPayload p;
     uint32_t esr = CAN1->ESR;
     p.nodeId  = nodeId;
-    p.flags   = (uint8_t)(((esr >> 2) & 0x01) | (esr & 0x02));  // bit0=BOFF, bit1=EPVF
+    p.flags   = (uint8_t)(((esr & CAN_ESR_BOFF) ? (uint8_t)HeartbeatFlag::BOFF : 0u)
+                        | ((esr & CAN_ESR_EPVF) ? (uint8_t)HeartbeatFlag::EPVF : 0u));
     p.uptime  = (uint16_t)(millis() / 1000);
     p.rxCount = rxCount;
-    p.esr     = (uint16_t)(esr >> 16);  // low byte=TEC, high byte=REC
+    p.esr     = (uint16_t)((((esr >> 16) & 0xFFu) << HB_ESR_TEC_SHIFT)    // ESR[23:16] = TEC
+                         | (((esr >> 24) & 0xFFu) << HB_ESR_REC_SHIFT));  // ESR[31:24] = REC
     return p;
 }
 
-NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC, NodeFaultCode fault) {
+NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
+                                        NodeFaultCode fault) {
     NodeHealthPayload p;
     p.nodeId   = nodeId;
     p.dieTempC = dieTempC;
@@ -400,7 +452,7 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC, NodeFau
 #ifdef NODE_OVERHEAT_C
     // Overheat trip is opt-in: the internal sensor is uncalibrated, so a sane threshold
     // needs field data first. Only compute the flag when a build defines NODE_OVERHEAT_C.
-    if (dieTempC != INT8_MIN && dieTempC >= (int)(NODE_OVERHEAT_C))
+    if (dieTempC != DIE_TEMP_UNAVAILABLE && dieTempC >= (int)(NODE_OVERHEAT_C))
         p.flags |= static_cast<uint8_t>(NodeHealthFlag::OVERHEAT);  // bit0 — OR in, never overwrite
 #endif
     // Degraded fault (#163): faultId carries the code, DEGRADED bit is derived. faultMask stays 0
@@ -408,11 +460,98 @@ NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC, NodeFau
     p.faultMask = 0;
     p.faultId   = static_cast<uint8_t>(fault);
     if (fault != NodeFaultCode::NONE) p.flags |= static_cast<uint8_t>(NodeHealthFlag::DEGRADED);  // bit1
-    p.rsvd[0] = p.rsvd[1] = p.rsvd[2] = 0;
+    p.nodeKind = static_cast<uint8_t>(kind);  // board kind from the node's firmware role (#344)
+    p.rsvd[0] = p.rsvd[1] = 0;
     return p;
 }
 
+ReadyPayload makeReadyPayload() {
+    ReadyPayload p = {};
+    p.fwMajor = OPENSKYHAWK_FW_MAJOR;
+    p.fwMinor = OPENSKYHAWK_FW_MINOR;
+    p.fwPatch = OPENSKYHAWK_FW_PATCH;
+    return p;
+}
+
+void sendReady() {
+    const ReadyPayload p = makeReadyPayload();
+    send(canIdReady(NODE_ID), reinterpret_cast<const uint8_t*>(&p), sizeof(p));
+}
+
 uint32_t txDropCount() { return _txDrops; }
+
+const NodeHealthPayload& lastNodeHealth() { return _lastHealth; }
+
+void serviceNodeStatus(NodeKind kind, uint16_t rxCount) {
+    (void)kind;  // only HEALTH_n carries it — unused under -DNODE_HEALTH_TELEM=0
+    const uint32_t now = millis();  // after drain(): HB_0 stamps can't be ahead of `now` (#225)
+
+    // Arm on the first call: that is the first loop() after setup() returned, i.e. boot complete
+    // (READY_n already sent), whatever a node does between start() and the end of its setup().
+    if (!_statusArmed) {
+        _statusArmed  = true;
+        _lastHbMs     = now;
+        _lastHealthMs = now;
+    }
+
+    if (now - _lastHbMs >= HB_PERIOD_MS) {
+        _lastHbMs = now;
+        HeartbeatPayload hb = makeHeartbeatPayload(NODE_ID, rxCount);
+        send(canIdHb(NODE_ID), reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
+        if (_loopback) _ownHbLoopPending++;  // will come back — not a duplicate (#344)
+    }
+
+    // Duplicate NODE_ID (#344): live until DUP_NODE_TIMEOUT_MS after the last foreign own-ID HB.
+    // Signed elapsed, as for the master watchdog (#225); dropping _dupSeen keeps an old stamp from
+    // reading as fresh again after millis() wraps.
+    if (_dupSeen && (int32_t)(now - _lastDupMs) > (int32_t)DUP_NODE_TIMEOUT_MS) _dupSeen = false;
+
+    // HEALTH: half the heartbeat rate — trend data. NodeFaultCode / aggregateFaults come via
+    // NodeStatus.h (included by CANProtocol.h) (#163).
+#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
+    if (now - _lastHealthMs >= HEALTH_PERIOD_MS) {
+        _lastHealthMs = now;
+        // A duplicate NODE_ID outranks every FaultSource: with two boards on one ID, nothing else
+        // reported under it can be trusted, so it must never be masked by a lesser fault.
+        const char* faultDetail = nullptr;   // never null after aggregateFaults()
+        NodeFaultCode fault;
+        if (_dupSeen) {
+            fault       = NodeFaultCode::DUPLICATE_NODE_ID;
+            faultDetail = "another board transmits on this NODE_ID";
+        } else {
+            fault = OpenSkyhawk::aggregateFaults(&faultDetail);
+        }
+        NodeHealthPayload h = makeNodeHealthPayload(NODE_ID, kind, STM32Board::readDieTempC(), fault);
+        _lastHealth = h;
+        send(canIdHealth(NODE_ID), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
+        STM32Board::logNodeFaultEdge(NODE_ID == GATEWAY_NODE_ID ? "BRIDGE" : "NODE", fault, faultDetail);
+#ifdef NODE_OVERHEAT_C
+        _overheat = (h.flags & static_cast<uint8_t>(NodeHealthFlag::OVERHEAT)) != 0;
+        // The bridge's latch is also PanelBridge's dead-node WARNING, which this service can't see —
+        // so on the bridge overheat stays raise-only rather than risk clearing that.
+        if (NODE_ID == GATEWAY_NODE_ID && _overheat) STM32Board::setWarning(true);
+#endif
+    }
+#endif
+
+    if (NODE_ID == GATEWAY_NODE_ID) return;  // PanelBridge is the master: no master-loss watchdog
+
+    // Master-loss watchdog. Signed elapsed so a stamp a hair ahead of `now` reads as fresh, never as
+    // overdue (#225).
+    if (_masterHbPending) {
+        _masterHbPending = false;
+        _masterLost      = false;
+    }
+    if (_everSawMaster && (int32_t)(now - _lastMasterMs) > (int32_t)MASTER_TIMEOUT_MS)
+        _masterLost = true;
+
+    // Write the latch only when the OR of this service's causes changes (master loss | overheat).
+    const bool want = _masterLost || _overheat;
+    if (want != _warnAsserted) {
+        _warnAsserted = want;
+        STM32Board::setWarning(want);
+    }
+}
 
 } // namespace CANProtocol
 

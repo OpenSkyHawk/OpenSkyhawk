@@ -23,7 +23,6 @@
  * }
  * @endcode
  *
- * @version 0.2.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -31,6 +30,14 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <stdint.h>
+
+// Node-status reporting to the host (#86) — `_NODE_STATUS` / `_NODE_STATUS_END` / `_NODE_TELEM` and
+// the `0xFF00` roster request. On by default (#295): the client depends on it. Compile it out with
+// `-DPANELBRIDGE_NODE_STATUS=0`; node tracking itself (liveness, SYNC_REQ, WARNING, callbacks)
+// never depends on it. Test with `#if PANELBRIDGE_NODE_STATUS`, never `#ifdef`.
+#ifndef PANELBRIDGE_NODE_STATUS
+#define PANELBRIDGE_NODE_STATUS 1
+#endif
 
 namespace PanelBridge {
 
@@ -70,7 +77,8 @@ namespace PanelBridge {
      * @brief Run PanelBridge work not owned by DcsBios::loop().
      *
      * Drains CANProtocol RX, dispatches EVT packets, services CANProtocol batching deadlines,
-     * checks node heartbeat timeouts (3 s), and handles DiagSerial 'T' bytes for TEST_SEQ.
+     * checks node heartbeat timeouts (3 s), sends its own HB_0 / HEALTH_0 through
+     * CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial 'T' bytes for TEST_SEQ.
      *
      * @note Call after DcsBios::loop() each iteration.
      */
@@ -135,12 +143,13 @@ namespace PanelBridge {
      * Equivalent to the BridgeExportListener receiving address/value from DCS-BIOS.
      * Calls CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, ...) with the given pair.
      *
-     * @param address  DCS-BIOS export address (0x8000–0x86FF for cockpit outputs).
+     * @param address  DCS-BIOS export address — any address the export stream carries (#295);
+     *                 0x0000 is dropped (the CAN empty-slot sentinel).
      * @param value    16-bit export value.
      */
     void testHandleExport(uint16_t address, uint16_t value);
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
     /**
      * @brief Cache a heartbeat and mark a node alive (bypassing CAN) (#86).
      *
@@ -152,15 +161,19 @@ namespace PanelBridge {
                            uint16_t rxCount, uint16_t esr);
 
     /**
-     * @brief Cache a node's HEALTH_n telemetry without changing liveness (#213/#163).
+     * @brief Cache a node's HEALTH_n telemetry without changing liveness (#213/#163/#344).
      *
      * Mirrors the HEALTH_n branch of onCanRx across all cached fields. hFlags/faultMask/faultId
      * default to 0 (healthy); pass non-zero to exercise degraded forwarding into `_NODE_STATUS`.
+     * nodeKind defaults to 0 (unknown); a change on an alive node emits one `_NODE_STATUS` delta,
+     * as a real HEALTH_n does.
      */
     void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
-                        uint8_t hFlags = 0, uint8_t faultMask = 0, uint8_t faultId = 0);
+                        uint8_t hFlags = 0, uint8_t faultMask = 0, uint8_t faultId = 0,
+                        uint8_t nodeKind = 0);
 
-    /** @brief Emit the current roster (one `_NODE_STATUS` per alive node) — the request/boot path. */
+    /** @brief Emit the current roster (node-0 row, one `_NODE_STATUS` per alive node, then
+     *         `_NODE_STATUS_END`) — the request/boot path. */
     void testRequestNodeStatus();
 
     /** @brief Run the timeout sweep with an injected clock; expires nodes and emits removals. */

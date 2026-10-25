@@ -10,7 +10,7 @@ panel-level dimensions are still being worked out and are marked TBD — don't i
 | M2 | PCB mounts, small standoffs | — |
 | M3 | Placards, light rings, small brackets | — |
 | M4 | Instrument bezels, gauge mounts | Ø4.3–4.5 mm |
-| M5 | Panel-to-subpanel, corner mounts | Ø5.3–5.5 mm |
+| M5 | Panel mounting (the default, see [Dzus rail mounting](#dzus-rail-mounting-mil-f-25173a)), panel-to-subpanel, corner mounts | Ø5.6 mm for panel mounts, Ø5.3–5.5 mm otherwise |
 
 ## Gauges
 
@@ -68,6 +68,15 @@ Worked example — a 6-unit panel (57.15 mm): rows at 1.5 and 4.5, i.e. **14.287
   (Dzus / Southco / Skybolt), chosen by head style + grip.
 - **Receptacle strip (the rail):** Dzus **`PR 3½-L`** (or equal), cut to length · .051″ music-wire
   spring · aluminum · cadmium plated.
+
+**Panel-mount fastener (the default)**: the stud above is the authentic part. Our panels default to
+an **M5 socket cap screw** (ISO 4762, or the DIN 7984 low-head version) with a Ø8.5 mm head, in a
+**Ø5.6 mm** clearance hole, at the same grid positions. The head has to fit the grid: it must stay
+inside the side edge, where the column sits 4.7625 mm in, and clear its neighbour on rows one pitch
+(9.525 mm) apart, as on the UHF panel and every 4-unit panel. An M5 head sits 0.51 mm inside the
+edge with about 1 mm to its neighbour. Every M6 head is 10 mm or more, so it overhangs the edge and
+collides. Where a printed part takes the thread, an M5 cuts its own in a Ø4.7 mm hole (found on test
+prints, so tune it to your printer).
 
 **Exceptions** (non-standard width — measured individually): throttle quadrant, lighting panel, and
 any panel not on the standard Dzus rail.

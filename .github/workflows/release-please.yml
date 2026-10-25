@@ -7,9 +7,9 @@ name: Release
 #   hardware — commits under PCB/: the next version, PCB/CHANGELOG.md, and
 #              `release:` in PCB/manifest.yaml.
 # Merging a release PR tags firmware-vX.Y.Z / hardware-vX.Y.Z and publishes the
-# GitHub Release. A follow-up job then adds what release-please can't know: the
-# third-party versions a firmware release resolved, or the boards a hardware
-# release contains.
+# GitHub Release. Follow-up jobs then add what release-please can't know: the
+# third-party versions a firmware release resolved and its prebuilt firmware
+# (firmware-release-assets.yml), or the boards a hardware release contains.
 #
 # The token is a fine-grained PAT (RELEASE_PLEASE_TOKEN), not GITHUB_TOKEN: a
 # PR opened with GITHUB_TOKEN never triggers pull_request workflows, so the
@@ -46,8 +46,10 @@ jobs:
           manifest-file: .release-please-manifest.json
 
   firmware-dependencies:
-    # Third-party versions are declared as ranges (^2.0.0, >=3.0.0), so
+    # Third-party libraries are declared as caret ranges (^2.0.0, ^3.7.7), so
     # record what a release actually resolved to rather than pinning them.
+    # (The RP2040 platform is the exception: a git URL has no range, so it is
+    # pinned to a commit.)
     name: Record third-party versions
     needs: release-please
     if: needs.release-please.outputs.firmware_released == 'true'
@@ -99,6 +101,36 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload "$TAG" "$RUNNER_TEMP/dependencies.txt" --clobber
+
+  firmware-assets:
+    # The prebuilt firmware: per-board images, manifest.json and the zip with READMEs (#360).
+    # Builds read-only; firmware-assets-publish attaches the result.
+    name: Build the firmware
+    needs: release-please
+    if: needs.release-please.outputs.firmware_released == 'true'
+    uses: ./.github/workflows/firmware-release-assets.yml
+    with:
+      tag: ${{ needs.release-please.outputs.firmware_tag }}
+
+  firmware-assets-publish:
+    name: Attach the firmware to the release
+    needs: [release-please, firmware-assets]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ needs.release-please.outputs.firmware_tag }}
+    steps:
+      - name: Download the package
+        uses: actions/download-artifact@v7
+        with:
+          name: firmware-release-${{ needs.firmware-assets.outputs.version }}
+          path: dist
+
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" dist/* --clobber --repo "$GITHUB_REPOSITORY"
 
   hardware-boards:
     # release-please's changelog lists every PCB/ commit; this adds which

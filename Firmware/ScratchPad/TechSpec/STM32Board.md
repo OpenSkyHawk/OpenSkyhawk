@@ -212,7 +212,7 @@ namespace STM32Board {
      * @brief Raise or clear the WARNING condition — red/green alternating at 500 ms.
      *
      * Call for any non-CAN fault: dead PanelGroup node (PanelBridge), lost master
-     * heartbeat (PanelGroup), SYNC timeout, I²C bus hang. CanStatus has no WARNING value —
+     * heartbeat (every non-bridge node, via CANProtocol::serviceNodeStatus()), SYNC timeout, I²C bus hang. CanStatus has no WARNING value —
      * this is the only public entry point for that state. WARNING is a clearable latch:
      * call setWarning(false) once the condition recovers. It outranks CONNECTED/NORMAL but
      * is masked by any CAN fault (CAN_ERROR/BUS_OFF).
@@ -264,7 +264,7 @@ namespace STM32Board {
      * (V25 = 1.43 V, Avg_Slope = 4.3 mV/°C), referencing Vsense to the measured Vdd.
      * UNCALIBRATED — ~±few °C absolute, die (not ambient), self-heat offset.
      *
-     * @returns Die temperature in whole °C, or INT8_MIN if internal channels are unavailable.
+     * @returns Die temperature in whole °C, or DIE_TEMP_UNAVAILABLE if internal channels are unavailable.
      */
     int8_t readDieTempC();
 

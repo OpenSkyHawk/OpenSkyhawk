@@ -127,8 +127,9 @@ namespace OpenSkyhawk {
  * Pin is driven to the off state during configure() and remains off until a CTRL_BCAST
  * packet with a matching controlId is received.
  *
- * Works with GPIO and MCP23017 PinRefs. ADS1115 PinRefs are rejected at configure()
- * time with a debug assertion — ADS1115 is input-only.
+ * Works with GPIO and MCP23017 PinRefs. ADS1115 PinRefs are input-only — do not
+ * assign one to an LED. There is no configure()-time check: PinRef's configureAsOutput()
+ * and write() on an ADS pin are no-ops (logged only under PINREF_DEBUG).
  */
 class LED : public OutputBase {
 public:

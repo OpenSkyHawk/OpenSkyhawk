@@ -55,7 +55,8 @@ Firmware/Tests/CANProtocol/
 ├── platformio.ini
 └── tests/
     ├── protocol_layout.cpp     — static_assert sizeof(ControlPacket)==4,
-    │                             sizeof(ControlPacketPair)==8, sizeof(HeartbeatPayload)==8;
+    │                             sizeof(ControlPacketPair)==8, sizeof(HeartbeatPayload)==8,
+    │                             sizeof(ReadyPayload)==8 with the version in bytes 0-2 (#295);
     │                             canIdHb(0)==0x100 reserved, canIdHb(1)==0x101; slot B null
     │                             sentinel is controlId == 0x0000
     ├── loopback_filter.cpp     — filterAcceptId / filterAcceptAll; mandatory IDs always present;
@@ -75,10 +76,26 @@ Firmware/Tests/CANProtocol/
     │                             after start(); callback not called again without a status change
     ├── heartbeat_payload.cpp   — makeHeartbeatPayload() fills nodeId, uptime, flags, rxCount,
     │                             and ESR-derived TEC/REC without callers touching HAL registers
-    ├── health_payload.cpp      — makeNodeHealthPayload() packs nodeId/dieTempC + faultId/DEGRADED,
-    │                             faultMask/reserved stay 0; on-target readDieTempC()/readVddMv() range (#213)
-    └── health_flags.cpp        — overheat+degraded coexistence: -DNODE_OVERHEAT_C=0, asserts a faulted
-                                  hot payload sets BOTH flag bits (|= never clobbers overheat) (#163)
+    ├── health_payload.cpp      — makeNodeHealthPayload() packs nodeId/dieTempC + faultId/DEGRADED +
+    │                             nodeKind in byte 5 (#344), faultMask/reserved 6-7 stay 0; on-target
+    │                             readDieTempC()/readVddMv() range (#213)
+    ├── health_flags.cpp        — overheat+degraded coexistence: -DNODE_OVERHEAT_C=0, asserts a faulted
+    │                             hot payload sets BOTH flag bits (|= never clobbers overheat) (#163)
+    ├── node_status_service.cpp — serviceNodeStatus() (#340), loopback: start() auto-accepts HB_0 and
+    │                             drain() still forwards it; HB_n every 500 ms (first ~500 ms after
+    │                             start); HEALTH_n every 1000 ms; master-loss WARNING absent before a
+    │                             master is seen, raised after HB_0 stops > 1500 ms, cleared on return
+    ├── duplicate_node_id.cpp   — duplicate NODE_ID check (#344), loopback: own looped-back HBs never
+    │                             trip it; extra HB_n frames the test sends raise DUPLICATE_NODE_ID +
+    │                             DEGRADED in lastNodeHealth(), held while they flow, clear ~3 s after
+    │                             they stop
+    └── node_status_bus.cpp     — the same service on a physical bus against a master (PanelBridge or
+                                  a USB-CAN adapter sending HB_0 every 500 ms): DiagSerial logs every
+                                  LED state change + a 10 s summary (warnRaises / hb0Seen / TEC / REC /
+                                  fault / kind) for watchdog timing, flapping-master and link-drop runs,
+                                  and soaks; flashed on two boards with the same NODE_ID, it is also
+                                  the duplicate-NODE_ID bench (fault=9, then fault=0 once one board is
+                                  unplugged)
 ```
 
 All runtime scenarios use `startLoopback()` — single board, no second node or physical bus
@@ -238,16 +255,44 @@ struct __attribute__((packed)) ControlPacketPair {
 /**
  * @brief 8-byte payload carried by HB_n heartbeat frames.
  *
- * Sent every 500 ms by PanelGroup nodes. PanelBridge reads HB_1–HB_63 to track
- * PanelGroup health and populate diagnostics. HB_0 is reserved but not transmitted.
+ * Sent every 500 ms by every node through serviceNodeStatus() (#340). PanelBridge reads
+ * HB_1–HB_63 to track node health and populate diagnostics; its own HB_0 is the master
+ * liveness beacon every other node watches (#93).
  */
 struct __attribute__((packed)) HeartbeatPayload {
     uint8_t  nodeId;   ///< Node ID — redundant with CAN ID, aids logging
-    uint8_t  flags;    ///< bit0=BOFF, bit1=EPVF (Error Passive; TEC ≥ 128)
+    uint8_t  flags;    ///< HeartbeatFlag bits (NodeStatus.h): BOFF, EPVF
     uint16_t uptime;   ///< Seconds since boot, little-endian (wraps at ~18 h)
     uint16_t rxCount;  ///< Node-owned accepted RX count, little-endian
-    uint16_t esr;      ///< (CAN1->ESR >> 16): low byte=TEC, high byte=REC
+    uint16_t esr;      ///< TEC at HB_ESR_TEC_SHIFT, REC at HB_ESR_REC_SHIFT (NodeStatus.h)
 };
+
+/**
+ * @brief 8-byte payload carried by TELEM_n frames — paged node telemetry (#216).
+ *
+ * Byte 0 is a TelemPage (NodeStatus.h) naming the layout of bytes 1–7; page ids are global and
+ * append-only. Multi-byte page fields are little-endian. Layouts: FirmwarePlan/02-can-protocol.md
+ * (Node Telemetry Payload).
+ */
+struct __attribute__((packed)) TelemPayload {
+    uint8_t page;     ///< 0: TelemPage; 0x00 invalid
+    uint8_t body[7];  ///< 1-7: page-defined
+};
+static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
+
+/**
+ * @brief 8-byte payload carried by READY_n — the node's boot announcement (#295).
+ *
+ * The firmware release version (FirmwareVersion.h). Sent once per boot by sendReady(); older
+ * firmware sends READY_n empty (DLC 0), which PanelBridge reports as not reported (0.0.0).
+ */
+struct __attribute__((packed)) ReadyPayload {
+    uint8_t fwMajor;  ///< 0: OPENSKYHAWK_FW_MAJOR
+    uint8_t fwMinor;  ///< 1
+    uint8_t fwPatch;  ///< 2
+    uint8_t rsvd[5];  ///< 3-7: reserved, transmit 0
+};
+static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
@@ -270,6 +315,10 @@ constexpr uint32_t canIdHb(uint8_t n)    { return 0x100 + n; }
 
 /** @brief Node-health/thermal telemetry frame ID for node n. Range 0x140–0x17F; n=0 is PanelBridge. */
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }
+
+/** @brief Paged node-telemetry frame ID for node n (TelemPayload, #216). Range 0x181–0x1BF.
+ *         PanelBridge forwards it to the host unread as `_NODE_TELEM`. */
+constexpr uint32_t canIdTelem(uint8_t n)  { return 0x180 + n; }
 
 /** @brief Input event frame ID for node n. Range 0x201–0x23F. */
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }
@@ -299,7 +348,7 @@ static constexpr uint16_t CTRL_ID_DCS_MIN  = 0x8000;  ///< DCS-BIOS range start
 static constexpr uint16_t CTRL_ID_DCS_MAX  = 0x86FF;  ///< DCS-BIOS range end
 
 // Node-status host contract + fault vocabulary (NODE_STATUS_*, NodeHealthFlag, NodeFaultCode,
-// FaultSource) live in the neutral `NodeStatus` library (see NodeStatus.md), not here.
+// NodeKind, FaultSource) live in the neutral `NodeStatus` library (see NodeStatus.md), not here.
 // CANProtocol owns only NodeHealthPayload (the CAN HEALTH_n frame struct).
 
 // ── HID axis/button controlIds — from HIDControls.h (included above) ────────
@@ -366,9 +415,12 @@ namespace CANProtocol {
      * Must be called after STM32Board::begin() and after all filter and callback
      * registrations. Always adds CTRL_BCAST (0x010), TEST_SEQ (0x011), and
      * SYNC_REQ (0x012) to the active filter — these are mandatory for all nodes
-     * and cannot be excluded.
+     * and cannot be excluded. On every node except PanelBridge (NODE_ID 0) it also adds
+     * HB_0 (0x100) for the serviceNodeStatus() master-loss watchdog (#340), and on every node
+     * its own HB_NODE_ID for the duplicate NODE_ID check (#344).
      *
-     * Sets CanStatus to NORMAL on success and fires the onStatusChange callback.
+     * Resets the serviceNodeStatus() timers, which arm on its first call. Sets CanStatus to
+     * NORMAL on success and fires the onStatusChange callback.
      */
     void start();
 
@@ -378,7 +430,8 @@ namespace CANProtocol {
      * Identical to start() but uses CAN_MODE_SILENT_LOOPBACK: frames transmitted
      * by this node are received back internally without going on the physical bus.
      * Enables single-board testing of filter dispatch, RX callbacks, and TX queue
-     * behaviour without a second node.
+     * behaviour without a second node. The duplicate NODE_ID check discounts one looped-back
+     * own HB_n per heartbeat sent, so only extra own-ID frames read as a duplicate (#344).
      *
      * @note Never call this in production firmware.
      */
@@ -390,7 +443,9 @@ namespace CANProtocol {
      * Call once per loop() iteration. Drains all frames received since the last
      * call. For each frame: fires onSyncReq() for SYNC_REQ, auto-replies with
      * ECHO carrying the same 8-byte payload for TEST_SEQ, fires onReceive() for
-     * all other frames.
+     * all other frames. On a non-bridge node an HB_0 is first stamped for the
+     * serviceNodeStatus() watchdog, then still passed to onReceive(). A frame on the node's own
+     * HB_NODE_ID is first stamped for the duplicate NODE_ID check (#344), then passed on too.
      *
      * Also services sendBatched() deadlines: any half-full ControlPacketPair
      * that has waited two owning firmware loop iterations is flushed with
@@ -407,8 +462,8 @@ namespace CANProtocol {
      * occupied, the frame is placed in the TX software ring buffer (~16 entries).
      * The buffer is drained automatically when mailboxes free up via TX-complete
      * interrupt. Overflow is frame-type dependent: CTRL_BCAST may drop/coalesce
-     * stale state; EVT/control frames retry up to 3 send attempts before drop;
-     * heartbeat frames may drop stale heartbeat state. CTRL_BCAST and EVT_n payloads are
+     * stale state; every other frame (EVT/control and the periodic HB/HEALTH/TELEM) retries up
+     * to 3 send attempts before drop. CTRL_BCAST and EVT_n payloads are
      * ControlPacketPair batches; a single input/output packet uses slot B controlId == 0x0000
      * as the null sentinel. Special/control/diagnostic frames use their explicit DLC and
      * payload. All drops increment the DIAG_ERR TX drop counter.
@@ -528,14 +583,16 @@ namespace CANProtocol {
      * overheat flag (bit0) only when NODE_OVERHEAT_C is defined at build time and dieTempC meets
      * it; otherwise the overheat bit is 0 (pure telemetry). This is the packing boundary that owns
      * the NodeFaultCode->byte cast: it writes faultId and OR-derives the DEGRADED flag (bit1) when
-     * fault != NONE (never clobbering the overheat bit). faultMask + reserved bytes stay 0 (#163).
+     * fault != NONE (never clobbering the overheat bit), and writes nodeKind (byte 5, #344).
+     * faultMask + reserved bytes 6-7 stay 0 (#163).
      *
-     * @param nodeId   Node ID to place in the payload; 1-63 PanelGroup, 0 PanelBridge.
-     * @param dieTempC Internal die temp in whole °C (INT8_MIN = unavailable).
-     * @param fault    Primary NodeFaultCode from aggregateFaults(); NONE (default) = healthy node.
+     * @param nodeId   Node ID to place in the payload; 1-63 PanelGroup, GATEWAY_NODE_ID PanelBridge.
+     * @param kind     Board kind (NodeKind) from the node's firmware role — never from nodeId.
+     * @param dieTempC Internal die temp in whole °C (DIE_TEMP_UNAVAILABLE = unavailable).
+     * @param fault    Primary node fault; NONE (default) = healthy node.
      * @return         Fully populated NodeHealthPayload ready to send as HEALTH_n.
      */
-    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, int8_t dieTempC,
+    NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
                                             NodeFaultCode fault = NodeFaultCode::NONE);
 
     /**
@@ -544,8 +601,99 @@ namespace CANProtocol {
      */
     uint32_t txDropCount();
 
+    /** @brief Build the READY_n payload: this build's firmware version (FirmwareVersion.h), #295. */
+    ReadyPayload makeReadyPayload();
+
+    /**
+     * @brief Send this node's READY_n with makeReadyPayload(). Called once, at the end of the node
+     *        library's setup() (PanelGroup step 8, PduNode) — never by sketches.
+     */
+    void sendReady();
+
+    // ── Node status service (every node) ──────────────────────────────────────
+
+    /**
+     * @brief Run the node-generic status duties. Call once per loop(), after drain() (#340).
+     *
+     * - HB_NODE_ID every 500 ms (makeHeartbeatPayload), carrying rxCount.
+     * - HEALTH_NODE_ID every 1000 ms (makeNodeHealthPayload, carrying `kind`) + the DiagSerial
+     *   fault edge log (tag BRIDGE on NODE_ID 0, NODE otherwise). Compiled out with
+     *   -DNODE_HEALTH_TELEM=0. The fault is DUPLICATE_NODE_ID while the duplicate check is live,
+     *   else aggregateFaults().
+     * - Duplicate NODE_ID check (#344), every node: a frame on the node's own HB_NODE_ID raises
+     *   DUPLICATE_NODE_ID, ahead of every FaultSource; clears DUP_NODE_TIMEOUT_MS after the last.
+     * - Master-loss watchdog on every node except PanelBridge (NODE_ID 0): once HB_0 has been
+     *   seen, master loss is set after MASTER_TIMEOUT_MS of silence and cleared by the next HB_0.
+     * - WARNING on a non-bridge node = master loss OR overheat (NODE_OVERHEAT_C builds only),
+     *   written only when that OR changes. On PanelBridge an overheat is raise-only.
+     *
+     * Timers arm on the first call (first loop() after setup()), so the first HB/HEALTH go out
+     * one period after boot completes.
+     *
+     * @param kind    Board kind for HEALTH_n (#344), required — each node library passes its role's
+     *                (PanelGroup PANEL_GROUP, PduNode PDU, PanelBridge BRIDGE).
+     * @param rxCount Caller-owned accepted RX count for the heartbeat; 0 if the node keeps none.
+     * @note Samples millis() after drain() and compares signed (#225).
+     */
+    void serviceNodeStatus(NodeKind kind, uint16_t rxCount = 0);
+
+    /** @brief The HEALTH_n payload serviceNodeStatus() last built (PanelBridge's node-0 row, #344).
+     *         Not-yet-seen (dieTempC DIE_TEMP_UNAVAILABLE, the rest 0) before the first one. */
+    const NodeHealthPayload& lastNodeHealth();
+
+    /** @brief Master-loss timeout — 3× the 500 ms HB_0 cadence. */
+    static constexpr uint32_t MASTER_TIMEOUT_MS = 1500;
+
+    /** @brief Duplicate NODE_ID clear time — 6× the 500 ms HB cadence (#344). */
+    static constexpr uint32_t DUP_NODE_TIMEOUT_MS = 3000;
+
 } // namespace CANProtocol
 ```
+
+### Node status service
+
+Every node owes the same status traffic whatever else it does, so CANProtocol owns it rather than
+each node library (#340 — PanelGroup and PanelBridge each carried a copy before). It is the lowest
+layer that can: STM32Board sits below CANProtocol, so it cannot send frames without a circular
+dependency.
+
+| Duty | Cadence | Who |
+|------|---------|-----|
+| `HB_n` (`makeHeartbeatPayload`) | 500 ms | every node; PanelBridge's is `HB_0` |
+| `HEALTH_n` (`makeNodeHealthPayload`, with the caller's `NodeKind`) + fault edge log | 1000 ms | every node, unless `-DNODE_HEALTH_TELEM=0` |
+| Duplicate NODE_ID check → `DUPLICATE_NODE_ID` in `HEALTH_n` | checked every call | every node, PanelBridge included |
+| Master-loss watchdog + overheat → `STM32Board::setWarning()` | checked every call | every node except NODE_ID 0 (bridge: overheat raise-only) |
+
+- **`HB_0` intake.** On a non-bridge node `start()` adds `canIdHb(0)` to the hardware filter list
+  (no-op under `filterAcceptAll()`), and `drain()` stamps each `HB_0` for the watchdog *before*
+  passing it to `onReceive()` as usual — node code may still observe it.
+- **Board kind (#344).** `kind` is a required argument: the node library is the role (sketches never
+  call the service), so a new node library won't build until it says what it is. It never comes
+  from `NODE_ID`.
+- **Duplicate NODE_ID (#344).** `start()` adds the node's own `canIdHb(NODE_ID)` to the filter on
+  every node (PanelBridge is pass-all anyway). bxCAN never receives its own frames, so `drain()`
+  stamps any frame on that ID as foreign, then passes it to `onReceive()`. While a stamp is younger
+  than `DUP_NODE_TIMEOUT_MS` the `HEALTH_n` fault is `DUPLICATE_NODE_ID` — chosen before
+  `aggregateFaults()`, so no `FaultSource` can mask it (registry order is construction order, which
+  can't guarantee a priority). It drives no LED, like every DEGRADED fault. In `startLoopback()` the
+  node's own heartbeats come back, so the service counts the heartbeats it sent and `drain()`
+  discounts that many own-ID frames.
+- **WARNING rules.** The LED has one shared WARNING latch, so on a non-bridge node the service keeps
+  its two causes apart and drives the latch from their OR, writing it only when the OR changes:
+  - *master loss* — set when `HB_0` has been silent for more than `MASTER_TIMEOUT_MS` after a master
+    was first seen (a cold start before the bridge never warns); cleared by the next `HB_0`;
+  - *overheat* — the `HEALTH_n` overheat flag, only in builds that define `NODE_OVERHEAT_C`; set and
+    cleared with each 1 s HEALTH sample.
+
+  A returning master therefore never clears an overheat that is still true (PR #342 review — before
+  #340 every `HB_0` cleared the latch, overheat included). On PanelBridge the latch also carries its
+  dead-node WARNING, which the service cannot see, so there an overheat is raise-only.
+- **Timing.** The first `serviceNodeStatus()` call arms both timers. That call is the first
+  `loop()` after `setup()` returned — boot complete, `READY_n` already sent — so the first `HB_n`
+  goes out ~500 ms after boot completes (FirmwarePlan 09 step 8) however long a node's setup takes
+  after `start()`. `start()` only resets them (PR #342 review). The service samples `millis()` itself after `drain()`, and the
+  watchdog compares elapsed time signed, so an `HB_0` stamped a millisecond after the caller's own
+  `now` cannot read as overdue — the #225 pattern.
 
 ---
 
@@ -634,7 +782,8 @@ for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop cou
 avoids losing user actions during transient mailbox contention without allowing an unhealthy
 bus to create an unbounded backlog.
 
-`HB_n` heartbeat frames may drop stale queued heartbeat state; the next heartbeat replaces it.
+The periodic status frames — `HB_n`, `HEALTH_n`, `TELEM_n` — take the same bounded retry; they are
+not coalesced, since the next period's frame carries fresh state anyway.
 
 ### RX Queue
 
@@ -676,7 +825,8 @@ overridden.
 
 `start()` unconditionally adds CTRL_BCAST (0x010), TEST_SEQ (0x011), and SYNC_REQ (0x012)
 to the active filter regardless of what the caller registered. These are global — every
-node must receive them. If `filterAcceptAll()` was called, the hardware is pass-all and
+node must receive them. It also adds the node's own `HB_n` (duplicate NODE_ID check, #344) and, on
+every node except PanelBridge, `HB_0` (master-loss watchdog, #340). If `filterAcceptAll()` was called, the hardware is pass-all and
 these additions are redundant but harmless.
 
 ### ControlPacketPair payload

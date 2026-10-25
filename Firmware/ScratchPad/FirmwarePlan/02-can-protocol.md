@@ -44,6 +44,10 @@ struct ControlPacket {
 };
 ```
 
+**Byte order: both fields little-endian on the wire** — `controlId` low byte first, then its high
+byte, then `value` the same way (#295). It is the packed struct's native layout on the STM32 and
+the RP2040, and the only byte order a third-party node or a CAN capture should assume.
+
 `ControlPacketPair` packs two packets into one 8-byte CAN frame:
 
 ```cpp
@@ -53,8 +57,16 @@ struct ControlPacketPair {
 };
 ```
 
-`ControlPacketPair` is used for `CTRL_BCAST` and `EVT_n` frames only. If only one packet is
-ready, slot B uses `controlId = 0x0000` as the null sentinel and receivers ignore it.
+| Byte(s) | Field | Encoding |
+|---------|-------|----------|
+| 0-1 | `a.controlId` | uint16_t little-endian |
+| 2-3 | `a.value` | uint16_t little-endian |
+| 4-5 | `b.controlId` | uint16_t little-endian; `0x0000` = empty slot |
+| 6-7 | `b.value` | uint16_t little-endian |
+
+`ControlPacketPair` is used for `CTRL_BCAST` and the four event frames (`EVT_n`, `EVT_REL_n`,
+`EVT_DIR_n`, `EVT_ACTION_n`) only. If only one packet is ready, slot B uses `controlId = 0x0000`
+as the null sentinel and receivers ignore it.
 
 Special/control/diagnostic frames (`SYNC_REQ`, `READY_n`, `TEST_SEQ`, `ECHO_n`, `HB_n`) use
 the frame-specific DLC and payload listed in the frame table. A special frame may carry a
@@ -70,6 +82,7 @@ replaced by inline functions:
 ```cpp
 constexpr uint32_t canIdHb(uint8_t n)     { return 0x100 + n; }  // 0x100–0x13F (0 = PanelBridge)
 constexpr uint32_t canIdHealth(uint8_t n) { return 0x140 + n; }  // 0x140–0x17F (node health/thermal)
+constexpr uint32_t canIdTelem(uint8_t n)  { return 0x180 + n; }  // 0x181–0x1BF (paged node telemetry, #216)
 constexpr uint32_t canIdEvt(uint8_t n)   { return 0x200 + n; }  // 0x201–0x23F
 constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }  // 0x301–0x33F
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
@@ -81,31 +94,50 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 
 | Frame | CAN ID | Direction | DLC | Purpose |
 |-------|--------|-----------|-----|---------|
-| `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels |
+| `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels — the whole DCS-BIOS export stream (`controlId` = export address, `0x0002`–`0xFFFE`; #295, D24) |
 | `TEST_SEQ` | `0x011` | PanelBridge → All | 8 | CAN throughput / RTT test — 8-byte payload echoed back unchanged by sub-nodes |
 | `SYNC_REQ` | `0x012` | PanelBridge → All | 0 | Request all nodes to re-poll inputs and emit EVTs. Sent on cold boot, on `model_time` backward, in response to `READY`, and when a node transitions from dead/unseen to alive. |
-| Reserved | `0x100` | — | — | `canIdHb(0)` / PanelBridge slot. Reserved by formula, not transmitted in normal firmware. |
-| `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | PanelGroup heartbeat every 500 ms for n=1-63 — see HB payload below |
+| `HB_0` | `0x100` | PanelBridge → All | 8 | Master liveness beacon every 500 ms; every other node runs a master-loss watchdog on it (#93) |
+| `HB_n` | `0x100+n` | Node_n → PanelBridge | 8 | Node heartbeat every 500 ms for n=1-63 — see HB payload below |
 | `HEALTH_n` | `0x140+n` | Node_n → PanelBridge | 8 | Internal die-temp + node-health telemetry every 1000 ms (n=0-63, incl. PanelBridge itself) — see HEALTH payload below (#213/#221) |
+| `TELEM_n` | `0x180+n` | Node_n → PanelBridge | 8 | Paged node telemetry (`TelemPayload`) — one frame per second plus flag-change edges; first user the PDU (#216) — see TELEM payload below |
 | `EVT_n` | `0x200+n` | Node_n → PanelBridge | 8 | Absolute input events (switches, selectors, pots) — `ControlPacketPair`, value `%u` → `set_state` |
 | `ECHO_n` | `0x300+n` | Node_n → PanelBridge | 8 | TEST_SEQ echo — 8-byte payload mirrored unchanged |
-| `READY_n` | `0x400+n` | Node_n → PanelBridge | 0 | One-time boot signal after initial input poll and EVT burst are complete |
+| `READY_n` | `0x400+n` | Node_n → PanelBridge | 8 | One-time boot signal after initial input poll and EVT burst are complete; carries the node's firmware version (`ReadyPayload`, #295) — see READY payload below |
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
-
-> **Migration note (Phase 1):** existing `CAN_ID_HB_1 = 0x100` changes to `canIdHb(1) = 0x101`.
-> Update any diagnostic tools, captured CAN logs, or test fixtures that reference the old value.
+| *reserved* | `0x740`–`0x7BF` | — | — | Future boot/update family (#295): `BOOT_CMD_n` = `0x740+n` (bridge → node n), `BOOT_RSP_n` = `0x780+n` (node n → bridge). Lowest priority on the bus, so update traffic never delays a control. Not assigned yet; nothing else may claim it. |
 
 ---
 
 ## Heartbeat Payload
 
-`HB_n` frames carry 8 bytes of node health data. PanelBridge reads PanelGroup heartbeats
-(`HB_1`–`HB_63`) to track node liveness and diagnostic state. `HB_0` is reserved by the ID
-formula but is not transmitted in normal firmware.
-CANProtocol owns the helper that fills this payload so higher layers do not read HAL CAN
-registers directly.
+`HB_n` frames carry 8 bytes of node health data. PanelBridge reads node heartbeats
+(`HB_1`–`HB_63`) to track node liveness and diagnostic state; its own `HB_0` is the master
+liveness beacon the other nodes watch (#93).
+CANProtocol owns both the helper that fills this payload, so higher layers do not read HAL CAN
+registers directly, and — since #340 — the sending itself: every node calls
+`CANProtocol::serviceNodeStatus()` once per loop, which sends `HB_n` every 500 ms and `HEALTH_n`
+every 1000 ms and, on every node except PanelBridge, runs the master-loss watchdog (WARNING after
+1500 ms without `HB_0`, once a master has been seen). On those nodes `start()` adds `HB_0` to the
+hardware filter automatically. Each node passes its board kind (`NodeKind`, #344) to
+`serviceNodeStatus()` from its library role — see *Node Health Payload* below.
+
+**Duplicate NODE_ID check (#344).** `start()` also adds the node's **own** `HB_n` to its filter, on
+every node including PanelBridge. bxCAN never receives its own transmissions, so a frame on that ID
+means a second board was flashed with the same `NODE_ID` — which otherwise only shows up as one
+blended node (uptime/rxCount jumping between two boards, error frames from identical-ID
+collisions). The node then reports `NodeFaultCode::DUPLICATE_NODE_ID` in its `HEALTH_n` (DEGRADED +
+`faultId`, plus the DiagSerial fault edge log):
+- **Top priority** — it is chosen ahead of every registered `FaultSource`, because nothing else
+  reported under a shared ID can be trusted; a lesser fault can never mask it.
+- **Auto-clears** `DUP_NODE_TIMEOUT_MS` (3000 ms) after the last foreign frame, so removing or
+  re-flashing the other board clears it without rebooting this one. A live duplicate re-raises
+  within one 500 ms heartbeat.
+- In `startLoopback()` test mode the node's own heartbeats do come back; the check discounts one
+  looped-back frame per heartbeat it sent, so only extra frames read as a duplicate.
+- The own-ID frame is still passed to `onReceive()`.
 
 ```cpp
 struct __attribute__((packed)) HeartbeatPayload {
@@ -117,12 +149,13 @@ struct __attribute__((packed)) HeartbeatPayload {
 };
 ```
 
-**flags bitmask:**
+**flags bitmask** (`HeartbeatFlag`, `NodeStatus.h`):
 - bit 0 (`0x01`): BOFF — CAN controller is in bus-off state
 - bit 1 (`0x02`): EPVF — Error Passive (TEC ≥ 128 or REC ≥ 128)
 
 **esr field:** `(uint16_t)(CAN1->ESR >> 16)`. CAN_ESR register layout: TEC in bits [23:16],
-REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC.
+REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC — `HB_ESR_TEC_SHIFT` (0) and
+`HB_ESR_REC_SHIFT` (8) in `NodeStatus.h`.
 
 **rxCount field:** node-owned receive counter for diagnostics. PanelGroup uses accepted
 `CTRL_BCAST` frames received since boot.
@@ -131,7 +164,9 @@ REC in bits [31:24]. After the shift: low byte = TEC, high byte = REC.
 health that PanelBridge reports to the host. No new CAN frame is added — PanelBridge caches the
 last `HB_n` per node and re-serializes it into a DCS-BIOS `_NODE_STATUS` message
 (see `04-dcs-bios-integration.md` and `06-panelbridge-api.md`). As of `_NODE_STATUS` proto **v2**
-the message also carries the node's cached `dieTempC` + health/fault fields from `HEALTH_n` (below).
+the message also carries the node's cached `dieTempC` + health/fault fields from `HEALTH_n` (below);
+proto **v3** (#344) adds the node's board kind and the bridge's own node-0 row; proto **v4** (#295)
+adds the node's firmware version from its `READY_n` (below).
 
 ---
 
@@ -147,11 +182,12 @@ Vrefint internally to reference Vsense to Vdd — Vdd itself is not transmitted)
 ```cpp
 struct __attribute__((packed)) NodeHealthPayload {
     uint8_t  nodeId;     // 0:   node ID (redundant with CAN ID, aids logging)
-    int8_t   dieTempC;   // 1:   internal die temp, whole °C (INT8_MIN = unavailable)  — #213
+    int8_t   dieTempC;   // 1:   internal die temp, whole °C (DIE_TEMP_UNAVAILABLE)    — #213
     uint8_t  flags;      // 2:   NodeHealthFlag bits (NodeStatus.h): OVERHEAT, DEGRADED           — #213/#163
     uint8_t  faultMask;  // 3:   fault source/domain bitmap — reserved for future domain bits (0)
     uint8_t  faultId;    // 4:   NodeFaultCode (NodeStatus.h): 0 = no fault, else primary fault  — #163
-    uint8_t  rsvd[3];    // 5–7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
+    uint8_t  nodeKind;   // 5:   NodeKind (NodeStatus.h): board kind from the firmware role        — #344
+    uint8_t  rsvd[2];    // 6–7: reserved, transmit 0 — future generic health (resetCause, freeRAM, …)
 };
 ```
 
@@ -159,16 +195,28 @@ This is the **shared node-health wire contract**. Distinct features populate the
 within the fixed 8 bytes and never collide: temperature (#213) owns `dieTempC` / `flags` bit0;
 the degraded-state feature (#163) owns `flags` bit1 / `faultId`, populated per node by
 `OpenSkyhawk::aggregateFaults()` (the primary fault, first non-`NONE` in `FaultSource` registry
-order). A healthy node ships all-zero; a faulted node ships `flags` DEGRADED + a nonzero `faultId`,
+order) — or `DUPLICATE_NODE_ID`, which outranks them all (see *Duplicate NODE_ID check* above);
+the board-kind feature (#344) owns `nodeKind`. A healthy node ships all-zero; a faulted node ships `flags` DEGRADED + a nonzero `faultId`,
 but `faultMask` **stays 0** — it is reserved for future fault-domain bits. `faultId` is a
 `NodeFaultCode` (NodeStatus.h) the client maps to a label — no fault strings on the wire. **Rail voltage/current is deliberately absent** — that is the PDU's dedicated power
-telemetry (#202, real INA226 sensors per console), not generic per-node health; the reserved
+telemetry (`TELEM_n` below, #216; INA180A2 current sense per console, #202), not generic per-node health; the reserved
 bytes are for future *generic* health fields (reset cause, free RAM, I2C error count).
 
+**nodeKind (#344)** — what kind of board this `NODE_ID` is, as a `NodeKind` (NodeStatus.h,
+append-only): `0x00` unknown, `0x01` panel group, `0x02` PDU, `0x03` bridge. It is announced by
+the board's own firmware **role**, never derived from the `NODE_ID` (a PDU can take any ID):
+`serviceNodeStatus(kind, …)` takes it as a required argument, and each node library passes its
+own — `PanelGroup` → panel group, `PduNode` (PowerMonitor) → PDU, `PanelBridge` → bridge — so a
+sketch never sets it and can't forget it. "Bridge" is the SimGateway + PanelBridge board: one board,
+two MCUs; the PanelBridge MCU reports it in `HEALTH_0`, and the SimGateway (not on the bus) has no
+kind of its own. Firmware older than #344 sent `0` in this byte (it was reserved), so `0x00` reads
+as unknown — the client never adopts a node on it.
+
 **Default-on**, compile out with `-DNODE_HEALTH_TELEM=0`. PanelBridge caches each node's fields
-(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v2, so the
-degraded feature needs no further wire/proto change). A `HEALTH_n` frame is cache-only — it never
-changes node liveness (`HB_n` owns that).
+(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v4, #295), plus
+its own `HEALTH_0` as the node-0 row. A `HEALTH_n` frame never changes node liveness (`HB_n` owns
+that); the only delta it triggers is a `_NODE_STATUS` push when the node's cached `nodeKind`
+changes (see `04-dcs-bios-integration.md`).
 
 **flags bitmask:**
 - bit 0 (`0x01`): overheat — `dieTempC >= NODE_OVERHEAT_C`. **Opt-in:** the flag is computed
@@ -188,10 +236,90 @@ overheat flagging — accurate hot-spot sensing (e.g. PDU shunt/fuse zones) stil
 
 ---
 
+## Node Telemetry Payload — TELEM_n (#216)
+
+`TELEM_n` frames carry **paged node telemetry**: byte 0 is a `TelemPage` (NodeStatus.h) naming the
+layout of bytes 1–7. Page ids are **global and append-only** — a page means the same layout whichever
+node sends it, so the host decodes by page, never by node type — and `0x00` is invalid. Multi-byte
+fields are little-endian.
+
+```cpp
+struct __attribute__((packed)) TelemPayload {
+    uint8_t page;     // 0:   TelemPage (NodeStatus.h); 0x00 invalid
+    uint8_t body[7];  // 1-7: page-defined
+};
+```
+
+**Why one frame family with a page byte**, not one ID block per value group: each per-node ID block
+costs 64 IDs, and with a page byte PanelBridge can forward frames **unread** (`_NODE_TELEM`, see
+`04-dcs-bios-integration.md`) — a new page type needs no bridge change. `0x180+n` sits with `HB_n`
+(`0x100`) and `HEALTH_n` (`0x140`) in the node-status block; it outranks `EVT_n` in arbitration
+exactly as `HEALTH_n` does, which at ≤ 1 frame/s per node costs an input event at most one frame time
+(~0.27 ms). Generic node health (die temp, fault id) stays in `HEALTH_n` and is never repeated here.
+
+**PDU pages** (the PDU monitoring node, `PowerMonitor` library):
+
+| Page | Byte 1 | Bytes 2–3 | Bytes 4–5 | Bytes 6–7 |
+|---|---|---|---|---|
+| `0x01 PDU_RAIL_12V` / `0x02 PDU_RAIL_5V` | `PduRailFlag` bits | `vAvgMv` u16 | `vMinMv` u16 (window min) | `iAvgMa` **int16** |
+| `0x03 PDU_STATUS` | `PduStatusFlag` bits | `ntcTempDC` int16, 0.1 °C (`NTC_TEMP_UNAVAILABLE` = `INT16_MIN`) | `i12PeakMa` u16 | `i5PeakMa` u16 |
+
+Each page's byte offsets are named in `NodeStatus.h` — `PduRailField` for both rail pages,
+`PduStatusField` for `PDU_STATUS` — and the PDU packs its frames through them.
+
+- `PduRailFlag`: bit0 UNDER_V · bit1 OVER_V · bit2 OVER_CURRENT · bit3 FUSE_OPEN · bit4 SENSOR_FAULT.
+- `PduStatusFlag`: bit0 UNCAL_VDDA · bit1 UNCAL_ZERO · bit2 TEMP_WARN · bit3 TEMP_CRIT · bit4 NTC_FAULT.
+  All flags are fault-sense — all-zero is healthy and calibrated.
+- Units are engineering units computed on the node, which holds its own calibration; the host needs no
+  per-board knowledge. `iAvgMa` is signed so residual zero-offset stays visible.
+- Peak current is after the board's ~100 µs RC filter (1 kΩ / 100 nF on each INA180 output).
+
+**Send policy (PDU):** one frame per second — the `HEALTH_n` rate — rotating `PDU_RAIL_12V` →
+`PDU_RAIL_5V` → `PDU_STATUS`, so each page refreshes every 3 s and its averages / minimum / peaks cover
+those 3 s. A page whose flag byte changes is sent at once, at most once per 100 ms per page, without
+restarting its window; every page starts from an all-clear baseline, so a condition present at boot
+goes out promptly. `SYNC_REQ` sends all three pages immediately. The node's rail and thermal monitors
+are `FaultSource`s, so their worst condition also reaches `HEALTH_n.faultId` (`FUSE_OPEN`,
+`SHORT_CIRCUIT`, `OVER_VOLTAGE`, `UNDER_VOLTAGE`, `OVER_TEMPERATURE`, `SENSOR_FAULT`).
+
+**Bus load at 500 kbit/s** (8-byte frame ≈ 130 bits worst-case stuffing ≈ 0.27 ms): 3 PDUs steady =
+3 frames/s ≈ **0.08 %**; worst-case fault storm (every page edging at the 100 ms limit) = 90 frames/s
+≈ 2.4 %. For scale, `HB_n` + `HEALTH_n` from 20 nodes is 60 frames/s ≈ 1.6 %.
+
+---
+
+## Ready Payload — READY_n (#295)
+
+`READY_n` (`0x400+n`) is sent once per boot, at the end of the node's `setup()` after its boot EVT
+burst (`CANProtocol::sendReady()`), so every reflash, reset or power cycle announces the firmware
+the node now runs:
+
+```cpp
+struct ReadyPayload {          // 8 bytes, DLC 8
+    uint8_t fwMajor;           // 0: firmware release version (FirmwareVersion.h, OPENSKYHAWK_FW_*)
+    uint8_t fwMinor;           // 1
+    uint8_t fwPatch;           // 2
+    uint8_t rsvd[5];           // 3-7: reserved, transmit 0
+};
+```
+
+PanelBridge caches the version per node (under `PANELBRIDGE_NODE_STATUS`), keeps it when the node
+times out, and reports it in `_NODE_STATUS` v4 (`04-dcs-bios-integration.md`). A READY from a node
+that is already alive — it rebooted inside the 3 s heartbeat timeout, e.g. a quick reflash — pushes
+a `_NODE_STATUS` delta when the version changed. Firmware older than #295 sends READY with DLC 0:
+the bridge reads that as **not reported** (0.0.0). The bridge's only other use of READY — mark the
+node alive, broadcast `SYNC_REQ` — is unchanged and ignores the payload.
+
+**Known gap (accepted):** READY is one frame per boot. If the bridge boots after a node, it never
+sees that node's READY, and the node reads 0.0.0 until it next reboots. A re-announce on the
+bridge's boot `SYNC_REQ` can be added later without a wire break (`SYNC_REQ` is empty today).
+
+---
+
 ## ControlPacketPair Frame Payload
 
-`CTRL_BCAST` and `EVT_n` frames carry exactly **8 bytes** — a `ControlPacketPair`.
-No other frame type is implicitly decoded as a pair:
+`CTRL_BCAST` and the four event frames carry exactly **8 bytes** — a `ControlPacketPair`
+(byte layout in § ControlPacket Wire Format). No other frame type is implicitly decoded as a pair:
 
 ```cpp
 // Payload = two ControlPackets. Slot B may be null.
@@ -226,7 +354,13 @@ void CANProtocol::flushBatched(uint32_t canId);                          // forc
 
 ### TEST_SEQ Payload Wire Layout
 
-`TEST_SEQ` carries exactly 8 payload bytes and `ECHO_n` mirrors those bytes unchanged:
+`TEST_SEQ` carries exactly 8 payload bytes and `ECHO_n` mirrors those bytes unchanged. It is a bench
+diagnostic: PanelBridge sends it when `T` is typed on its DiagSerial and prints the round-trip time.
+
+**What the freeze covers (#295):** the two IDs, and every node mirroring all 8 bytes unchanged on
+`ECHO_n` — a 1.x node must keep answering a 1.0 bridge's test. The layout below is
+**bridge-internal**: only PanelBridge writes and reads it (nodes never look inside), so it may
+change in a minor release.
 
 | Byte(s) | Field | Encoding |
 |---------|-------|----------|
@@ -238,25 +372,50 @@ Implementations must serialize this into a `uint8_t[8]`, or use a packed struct 
 `static_assert(sizeof(TestSeqPayload) == 8)`. Do not transmit `sizeof(struct)` from an
 unpacked C++ struct, because natural alignment can pad this layout beyond 8 bytes.
 
-> **Prototype note:** the existing `PanelGroup.cpp` sends 8 bytes — `ControlPacket` followed
-> by a 4-byte `millis()` timestamp. The timestamp was added for prototype RTT measurement only.
-> Production firmware uses the full 8 bytes as `ControlPacketPair`; bytes 4–7 are no longer
-> a timestamp.
+---
+
+## Compatibility — how the wire grows (#295, D22)
+
+From v1.0 the frame IDs and payloads are frozen: a change that breaks an existing reader is a new
+**major** version. Within a major, the wire only grows, and every reader tolerates growth:
+
+- **Frames never grow and fields never move.** A classic CAN frame carries 8 bytes, and the
+  STM32F103's bxCAN has no CAN FD. An existing field is never moved, resized or reinterpreted —
+  that is a major.
+- **Reserved bits and bytes:** transmit 0, ignore on receive. A later minor may give one a
+  meaning; an older reader keeps ignoring it.
+- **Unknown values are kept, not rejected.** A `NodeKind`, `NodeFaultCode`, `TelemPage` or flag bit
+  a reader doesn't know is carried as "unknown (0xNN)". New values are minor.
+- **Where new data goes** (each a minor):
+  - generic node health → `HEALTH_n`'s reserved bytes (6–7);
+  - node-specific telemetry → a new `TelemPage` on `TELEM_n` (append-only, forwarded unread);
+  - identity or anything else → `READY_n`'s reserved bytes (3–7), or a new frame family in a
+    free ID range (`0x013`–`0x0FF`, `0x1C0`–`0x1FF`, `0x240`–`0x2FF`, `0x340`–`0x3FF`,
+    `0x440`–`0x4FF`, `0x540`–`0x5FF`, `0x640`–`0x6FF`, `0x7C0`–`0x7FF`; `0x740`–`0x7BF` is
+    reserved for boot/update, see the frame table). Its position in the map sets its arbitration
+    priority (lower ID wins), which is frozen with it.
+- `TELEM_n` never carries generic health, and `HEALTH_n` never carries node-specific telemetry.
+
+`TEST_SEQ` / `ECHO_n` are covered only as far as other boards rely on them: the two IDs, and every
+node mirroring the 8 bytes unchanged. The payload contents are bridge-internal (above).
 
 ---
 
 ## PanelBridge Receive Filter
 
 The heartbeat address family is `canIdHb(n) = 0x100 + n`, so the full HB range is
-`0x100`-`0x13F` with `HB_0` reserved for PanelBridge but unused. For child-node liveness, PanelBridge
-accepts PanelGroup frames across five inbound ranges: HB_1-HB_63 (`0x101`-`0x13F`),
-HEALTH_1-HEALTH_63 (`0x141`-`0x17F`), EVT_1-EVT_63 (`0x201`-`0x23F`), ECHO_1-ECHO_63
-(`0x301`-`0x33F`), and READY_1-READY_63 (`0x401`-`0x43F`). These cannot be expressed as a
-single CAN mask filter.
+`0x100`-`0x13F` with `HB_0` PanelBridge's own master beacon. PanelBridge accepts node frames across
+nine inbound ranges: HB_1-HB_63 (`0x101`-`0x13F`), HEALTH_1-HEALTH_63 (`0x141`-`0x17F`),
+TELEM_1-TELEM_63 (`0x181`-`0x1BF`), EVT_1-EVT_63 (`0x201`-`0x23F`), ECHO_1-ECHO_63
+(`0x301`-`0x33F`), READY_1-READY_63 (`0x401`-`0x43F`), EVT_REL (`0x501`-`0x53F`), EVT_DIR
+(`0x601`-`0x63F`) and EVT_ACTION (`0x701`-`0x73F`). These cannot be expressed as a single CAN mask
+filter.
 
 **Strategy:** use a **pass-all mask filter** (accepts every ID) with software-side validation
 inside the CAN RX interrupt handler. Frames whose ID does not fall in one of the accepted ranges
-are silently discarded. `HB_0` (`0x100`) is not a PanelGroup liveness frame. This is safe
+are silently discarded. `HB_0` (`0x100`) is PanelBridge's own transmission, not a child-node liveness
+frame — so an `HB_0` that does arrive came from another board on node 0 and trips the bridge's
+duplicate NODE_ID check (#344), like any node's. This is safe
 because PanelGroup nodes never transmit outside their assigned ranges.
 
 ---
@@ -273,7 +432,7 @@ via the TX-complete interrupt — no explicit drain call is required from `loop(
 |------------|--------|
 | `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
 | `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. No unbounded backlog. |
-| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. |
+| `HB_n`, `HEALTH_n`, `TELEM_n` periodic status | Same bounded retry as the event frames — up to 3 send attempts, then drop and increment the `DIAG_ERR` TX drop counter. Not coalesced: the next period's frame carries fresh state anyway. |
 | `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
 
 This prevents silent frame drops during DCS-BIOS export bursts without stalling the firmware,

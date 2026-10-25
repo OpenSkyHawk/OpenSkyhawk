@@ -4,7 +4,7 @@
 // Eyeball: smooth acceleration, no missed steps, clean stop at each end.
 //
 // Wiring: 4 coil pins below → X27 / VID-29 / BKA-30 air-core stepper. If the needle
-// runs backwards, swap any two coil pins.
+// runs backwards, swap the two pins of one coil (PA0↔PA1 or PA4↔PA5).
 
 #include <Arduino.h>
 #include <STM32Board.h>

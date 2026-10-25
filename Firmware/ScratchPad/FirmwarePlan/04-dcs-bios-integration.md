@@ -22,42 +22,72 @@ points: **PanelBridge** (DCS-BIOS inputs) and **SimGateway** (HID inputs).
 
 ## Node-Status Reporting (#86)
 
-PanelBridge surfaces connected PanelGroup nodes + their health to the host (OpenSkyhawk Client)
+PanelBridge surfaces every board on the bus — connected nodes and, since v3 (#344), the bridge
+itself — with its health and board kind to the host (OpenSkyhawk Client)
 **over the existing DCS-BIOS protocol**, using reserved A-4E-C-namespace identifiers. No
 bespoke sideband; SimGateway relays both directions verbatim (the request is binary export it
 forwards host→device; the response is ASCII it forwards device→host). PanelBridge owns it.
 
 | Reserved ID | Direction | Purpose |
 |-------------|-----------|---------|
-| Export address `0x86FE` (`NODE_STATUS_REQ_ADDR`) | host→device | Client writes it (value ignored) to request the roster. Above every real A-4E-C output (~`0x8554`), so DCS never exports it. Excluded from the CAN broadcast in `handleDcsBiosExport()`. |
-| Command name `_NODE_STATUS` (`NODE_STATUS_MSG_NAME`) | device→host | One DCS-BIOS command message per node. Leading underscore — no A-4E-C control collides; DCS-BIOS ignores it as an unknown control if a copy leaks. |
-| Command name `_NODE_STATUS_END` (`NODE_STATUS_END_MSG_NAME`) | device→host | Burst terminator for request/boot replies; argument = node count. Lets the client know a roster reply is complete and reconcile/prune. |
+| Export address `0xFF00` (`NODE_STATUS_REQ_ADDR`, v4) | host→device | Client writes it (value ignored) to request the roster. No DCS-BIOS module exports it — every aircraft ends by `0xB2FB` and `MetadataEnd` is `0xFFFE` (DCS-BIOS v0.11.8) — so DCS never triggers it, whatever aircraft is flown. (v3 used `0x86FE`, a live AH-64D and Mirage F1 address, #295.) Outside the bridge's CAN-broadcast window, and excluded in `handleDcsBiosExport()` regardless. |
+| Command name `_NODE_STATUS` (`NODE_STATUS_MSG_NAME`) | device→host | One DCS-BIOS command message per node (the bridge's own node-0 row included). Leading underscore — no A-4E-C control collides; DCS-BIOS ignores it as an unknown control if a copy leaks. |
+| Command name `_NODE_STATUS_END` (`NODE_STATUS_END_MSG_NAME`) | device→host | Burst terminator for request/boot replies; argument = row count, node 0 included. Lets the client know a roster reply is complete and reconcile/prune. |
 
-**Request** — client writes a DCS-BIOS export frame to `0x86FE`. PanelBridge's
+**Request** — client writes a DCS-BIOS export frame to `0xFF00`. PanelBridge's
 `NodeStatusReqListener` (an `ExportStreamListener`) fires → emits the full roster.
 
-**Response** — `_NODE_STATUS <hex>` where `<hex>` is **26 chars** (proto **v2**, #221), **each field its
-numeric value as fixed-width uppercase hex (most-significant nibble first)**:
-`nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2) faultMask(2) faultId(2)`
-(the 8-byte `HeartbeatPayload` plus `present`, then the node's cached `HEALTH_n` fields). `present`:
-`01` alive, `00` removed. `flags`: bit0 BOFF, bit1 EPVF. `esr`: low byte TEC, high byte REC.
-`nodeId` 1–63. `uptime`/`rxCount` are uint16 — wrap at 65535 (~18 h / 65 k frames); treat as
-health indicators, not monotonic counters.
+**Response** — `_NODE_STATUS <hex>` where `<hex>` is **34 chars** (proto **v4**, #295; v3 was 28 chars
+without the version, v2 26 without `nodeKind`) — a `NODE_STATUS_ROW_BYTES` (17) byte row, **each field
+its numeric value as fixed-width uppercase hex (most-significant nibble first)**:
+`nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2) faultMask(2) faultId(2) nodeKind(2) fwMajor(2) fwMinor(2) fwPatch(2)`
+(the 8-byte `HeartbeatPayload` plus `present`, then the node's cached `HEALTH_n` fields, then the
+firmware version from its last `READY_n`). Fields are only ever appended: a reader parses the fields
+it knows from a longer row and ignores the rest. Each field's
+byte offset in the row is named by `NodeStatusField` in `NodeStatus.h` (hex index = 2 × offset).
+`present`: `01` alive, `00` removed. `flags`: `HeartbeatFlag` — bit0 BOFF, bit1 EPVF. `esr`: low byte
+TEC, high byte REC (`HB_ESR_TEC_SHIFT` / `HB_ESR_REC_SHIFT`). `nodeId` 0–63: `GATEWAY_NODE_ID` (0) is
+the bridge's own row, 1–63 the CAN nodes. `uptime`/`rxCount` are uint16 —
+wrap at 65535 (~18 h / 65 k frames); treat as health indicators, not monotonic counters.
 
-The last four fields come from the node's `HEALTH_n` frame (see `02-can-protocol.md`):
+**Node-0 row (v3).** Every roster reply starts with the bridge's own row: `present` `01`, its
+heartbeat state (`flags`/`uptime`/`esr` read live; `rxCount` `0000` — the bridge keeps no RX
+count), the health fields of the `HEALTH_0` it last sent, so `nodeKind` `03` (bridge), and (v4) the
+version this bridge build carries. Before
+its first `HEALTH_0` (~1 s after boot — e.g. the boot seed) the row reads not-yet-seen like any
+node: `dieTempC` `80`, `nodeKind` `00`. The row only appears in roster replies, never as a live
+delta: the bridge is the one reporting, so it is present whenever anything arrives.
+
+The last five fields come from the node's `HEALTH_n` frame (see `02-can-protocol.md`):
 - `dieTempC`: int8 two's-complement whole °C (internal MCU sensor — UNCALIBRATED, die not ambient).
-  `80` = `INT8_MIN` = not-yet-seen → render unknown.
+  `80` = `DIE_TEMP_UNAVAILABLE` (`INT8_MIN`) = not-yet-seen → render unknown.
 - `hFlags`: node health bits — bit0 overheat, bit1 degraded.
 - `faultId`: `NodeFaultCode` — `00` = no fault, else the node's primary fault, populated per node by
   `aggregateFaults()` (#163); the client maps it to a label (no strings on the wire).
 - `faultMask`: fault source/domain bitmap — stays `00`, reserved for future fault-domain bits.
+- `nodeKind` (#344): `NodeKind` — `00` unknown, `01` panel group, `02` PDU, `03` bridge (append-only).
+  Announced by the board's firmware role, never derived from `nodeId`. `00` before the node's first
+  `HEALTH_n` (same rule as `dieTempC` `80`) and from pre-#344 firmware. The client adopts a new node
+  only on `01` or `02`. A `faultId` of `09` (`DUPLICATE_NODE_ID`) means two boards share this
+  `nodeId`; every other field in the row is then a blend of both boards.
+- `fwMajor` / `fwMinor` / `fwPatch` (v4, #295): the firmware release version from the node's last
+  `READY_n` (`ReadyPayload`, `02-can-protocol.md`). `000000` = not reported: no READY seen since
+  the bridge booted, or an empty READY from older firmware. Kept when the node times out. Nodes on
+  one bus must share a major version; the client warns when a node's major differs from the
+  node-0 row's.
 
 **Emission semantics:**
 - A single bare `_NODE_STATUS` is a **live delta** — emitted on each node alive/dead transition
-  (`present` 01/00); the host applies it immediately.
-- A **request/boot reply** is N `_NODE_STATUS` messages followed by `_NODE_STATUS_END <count>`. That
-  set is the **authoritative present-roster** — the host reconciles (prunes nodes absent from
-  it). `count=0` = no panels connected.
+  (`present` 01/00), and (v3) when an alive node's cached `nodeKind` changes. The alive delta goes
+  out on a node's first `HB_n`, before its first `HEALTH_n`, so it reads kind `00`; the kind delta
+  follows ~1 s later, when that `HEALTH_n` arrives. A node re-flashed to another role pushes one
+  too. A cached kind is kept when a node times out and comes back. (v4) A `READY_n` that changes an
+  alive node's cached version pushes one as well — a node reflashed inside the 3 s heartbeat timeout
+  never goes dead, so no alive delta would carry it. The host applies a delta immediately.
+- A **request/boot reply** is the node-0 row, then one `_NODE_STATUS` per alive node, then
+  `_NODE_STATUS_END <count>`. That set is the **authoritative present-roster** — the host
+  reconciles (prunes nodes absent from it). `count` includes the node-0 row: `count=1` = the
+  bridge alone, no other nodes connected.
 - **Silent death** (node yanked / CAN bus-off) is reported as `present=00` by PanelBridge's
   existing 3 s heartbeat timeout (`checkNodeTimeouts`). A periodic client request reconciles any
   delta lost on the wire.
@@ -65,7 +95,55 @@ The last four fields come from the node's `HEALTH_n` frame (see `02-can-protocol
 Both directions ride the serial/CDC, so this works in the client's **Bridge mode only** (no
 serial in Monitor/Replay). Reserved constants + the wire format live in `NodeStatus.h` (the
 canonical contract source the client syncs against; `NODE_STATUS_PROTO_VERSION` bumps on any wire
-change). The whole feature is gated behind `-DPANELBRIDGE_NODE_STATUS` (default off).
+change). The whole feature is on by default; `-DPANELBRIDGE_NODE_STATUS=0` compiles it out (#295).
+
+### Node telemetry — `_NODE_TELEM` (#216)
+
+Same transport, separate contract (`NODE_TELEM_*` in `NodeStatus.h`, `NODE_TELEM_PROTO_VERSION` 1 —
+independent of `_NODE_STATUS`, now v4). PanelBridge forwards **every** `TELEM_n` CAN frame
+(`0x181`–`0x1BF`, see `02-can-protocol.md`) to the host **unread**, one DCS-BIOS command message per
+frame:
+
+```
+_NODE_TELEM <hex>      18 hex chars: nodeId(2) + the 8 TELEM frame bytes (16), in wire order
+```
+
+The row is `NODE_TELEM_ROW_BYTES` (9) bytes; `NodeTelemField` names the two offsets (`ID` 0,
+`FRAME` 1).
+
+- **Pushed as frames arrive** — no request, no cache, no terminator. The host keeps the latest value
+  per `(nodeId, page)` and treats a page as stale after a few periods (PDU: one frame per second,
+  rotating three pages, so each page every 3 s).
+- **Byte 2 of the hex payload is the `TelemPage`;** the host decodes by page. Unlike `_NODE_STATUS`,
+  the 8 bytes are raw frame bytes, so multi-byte page fields are **little-endian**.
+- PanelBridge drops a frame whose page byte is `0x00` or whose length is not 8; a `TELEM_n` frame
+  never changes liveness (`HB_n` owns that).
+- Bridge mode only, gated by the same `PANELBRIDGE_NODE_STATUS` flag (on by default). Like `_NODE_STATUS`, a copy
+  that reaches DCS through the client's byte-for-byte relay is ignored as an unknown command.
+
+Client side: OpenSkyhawk/SkyHawkClient#61.
+
+### Compatibility — how the host lines grow (#295, D22)
+
+`_NODE_STATUS`, `_NODE_STATUS_END`, `_NODE_TELEM` and the `0xFF00` roster request are frozen from
+v1.0 like the CAN wire (`02-can-protocol.md` § Compatibility). Within a major:
+
+- **Writers only append.** A new `_NODE_STATUS` field goes at the end of the row; existing fields
+  never move, resize or change meaning (that is a major). `NODE_STATUS_PROTO_VERSION` still bumps,
+  so the client's sync notices — but the row stays readable by older clients.
+- **Readers accept longer.** A well-formed row at least as long as the layout a reader knows is
+  parsed for the fields it knows; the rest is ignored. A shorter well-formed row means firmware
+  older than the reader needs: the client says "Gateway firmware too old", once — it never drops
+  rows silently.
+- **Unknown values show as unknown** — "unknown (0xNN)" for a `NodeKind`, `NodeFaultCode`,
+  `TelemPage` or flag bit — never an error.
+- **Versions:** each row's `fwMajor` comes from the node's `READY_n` (v4). The client warns when a
+  board's major differs from the node-0 row's (nodes on one bus share a major), and says "client
+  too old" when the Gateway's major is newer than the client supports. `000000` = not reported.
+- Malformed lines are dropped and logged for debugging only.
+
+The calibration channel on the USB CDC port follows its own rule — exact `LEN` per type, so it
+can't grow in place (`03-uart-usb-hid-protocol.md` § Calibration Protocol).
 
 ---
 

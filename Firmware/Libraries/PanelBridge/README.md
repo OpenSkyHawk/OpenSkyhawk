@@ -2,7 +2,7 @@
 
 STM32 CAN master and DCS-BIOS processing node for OpenSkyhawk.
 
-`PanelBridge` turns an STM32F103CBT6 into the CAN cluster master. It runs the DCS-BIOS
+`PanelBridge` turns an STM32F103C8T6 into the CAN cluster master. It runs the DCS-BIOS
 library on `Serial` (UART2, PA2/PA3 — wired to SimGateway), batches DCS cockpit-output
 updates to `CTRL_BCAST` CAN frames, and routes panel input events (CAN EVTs) to either
 DCS-BIOS ASCII commands or 6-byte HID frames back on the same UART.
@@ -12,14 +12,15 @@ DCS-BIOS ASCII commands or 6-byte HID frames back on the same UART.
 ```
 SimGateway (RP2040)
     ↕ UART2 (PA2/PA3) @ 250000 baud
-PanelBridge (STM32F103CBT6)   ← this library
+PanelBridge (STM32F103C8T6)    ← this library
     ↕ CAN @ 500 kbps
     ├── PanelGroup #1
     └── PanelGroup #N
 ```
 
-**DCS-BIOS exports (sim → cockpit):** `BridgeExportListener` listens to the DCS-BIOS
-stream on addresses `0x8000–0x86FF` and batches each value as a `ControlPacket` to
+**DCS-BIOS exports (sim → cockpit):** `BridgeExportListener` forwards the whole DCS-BIOS export
+stream — every address of whatever aircraft is flying, plus CommonData and the metadata, except
+`0x0000` (the CAN empty-slot sentinel) — and batches each value as a `ControlPacket` to
 `CANProtocol::sendBatched(CAN_ID_CTRL_BCAST)`. PanelGroup nodes subscribe to these frames
 to drive LEDs, gauges, and other outputs.
 
@@ -84,7 +85,7 @@ broadcasts `SYNC_REQ` so the node re-polls and sends its current input state.
 
 ### Reporting nodes to the host (#86)
 
-Behind `-DPANELBRIDGE_NODE_STATUS` (default off), PanelBridge surfaces the roster + per-node
+On by default (`-DPANELBRIDGE_NODE_STATUS=0` compiles it out), PanelBridge surfaces the roster + per-node
 health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway untouched:
 
 - **Response:** a DCS-BIOS command message `_NODE_STATUS <hex>` per node (`hex` =
@@ -92,7 +93,7 @@ health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway u
   alive/dead transition; a 3 s heartbeat timeout reports `present=00` for silent death). A
   request/boot reply is the full roster terminated by `_NODE_STATUS_END <count>` so the host can
   reconcile/prune. PanelBridge caches the last `HeartbeatPayload` for the health bytes.
-- **Request:** the client writes a DCS-BIOS export to the reserved address `0x86FE`
+- **Request:** the client writes a DCS-BIOS export to the reserved address `0xFF00`
   (`NODE_STATUS_REQ_ADDR`); a dedicated `ExportStreamListener` replies with the full roster.
 
 Reserved IDs live in `NodeStatus.h`. See `FirmwarePlan/04-dcs-bios-integration.md`.

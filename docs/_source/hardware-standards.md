@@ -220,7 +220,7 @@ accepted. Real measurement lands with E2E (#137).
 | M2 | PCB mounts, small standoffs |
 | M3 | Placards, light rings, small brackets |
 | M4 | Instrument bezels, gauge mounts — clearance Ø4.3–4.5 mm |
-| M5 | Panel-to-subpanel, corner mounts — clearance Ø5.3–5.5 mm |
+| M5 | Panel mounting (the default, socket cap, Ø8.5 head) — clearance Ø5.6 mm; panel-to-subpanel, corner mounts — clearance Ø5.3–5.5 mm |
 
 ## Connectors
 

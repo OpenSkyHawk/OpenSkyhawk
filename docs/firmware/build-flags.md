@@ -48,6 +48,7 @@ this is just the flags.
 | `SHIFTBUS_ISR_HZ` | You want timer-ISR sampling for encoder feel instead of polled sampling. |
 | `SERIAL_RX_BUFFER_SIZE=256` | **PanelBridge only.** A PanelGroup has no use for it. |
 | `NODE_HEALTH_TELEM=0` | You specifically want health telemetry **off**. It is on by default — omitting the line does not disable it. |
+| `PANELBRIDGE_NODE_STATUS=0` | **PanelBridge only.** You specifically want node reporting to the host **off** — the client then shows no boards. On by default. |
 
 ### Never in a panel
 
@@ -60,10 +61,10 @@ actually does.
 
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
-| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:200`, `PanelGroup.cpp:391`, `STM32Board.h:29` |
-| `PANELBRIDGE_NODE_STATUS` | off | on in `Templates/PanelBridge` | `PanelBridge.cpp:42` + ~10 more |
-| `NODE_HEALTH_TELEM` | **on** | never set | `PanelBridge.cpp:510`, `PanelGroup.cpp:399` |
-| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:400`, `PanelGroup.cpp:409` |
+| `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:226`, `PanelGroup.cpp:300`, `STM32Board.h:29` |
+| `PANELBRIDGE_NODE_STATUS` | **on** | `=0` in `Tests/PanelBridge` `test_input_dispatch_dcs` / `_hid` | `PanelBridge.h:38` (default), `PanelBridge.cpp:42` + ~10 more |
+| `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:511` (`serviceNodeStatus`, every node) |
+| `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:452`, `CANProtocol.cpp:528` |
 | `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:179` |
 | `PINREF_DEBUG` | off | never set | `PinRef.cpp:8` + ~9 more |
 | `SHIFTBUS_SCK` | `PB3` | never set | `ShiftBus.cpp:13` |
@@ -71,13 +72,14 @@ actually does.
 | `SHIFTBUS_MOSI` | `PB5` | never set | `ShiftBus.cpp:19` |
 | `SHIFTBUS_LOAD` | `PB8` | never set | `ShiftBus.cpp:22` |
 | `SHIFTBUS_LATCH` | `PB9` | never set | `ShiftBus.cpp:25` |
-| `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:125,240` |
-| `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:241` |
+| `SHIFTBUS_ISR_HZ` | unset → polled sampling | `Tests/ShiftBus`, `=1000` | `PanelGroup.cpp:112,227` |
+| `SHIFTBUS_ISR_TIM` | `TIM2` | never set | `PanelGroup.cpp:228` |
 
 **What they do, briefly.** `NODE_ID` is the board's CAN address — see
 [NODE_ID & CAN Addressing](node-id.md). `PANELBRIDGE_NODE_STATUS` makes PanelBridge report which
-PanelGroup nodes it can see, up to the host over DCS-BIOS. `NODE_HEALTH_TELEM` is the periodic
-health frame (die temperature, fault bitmap) at half the heartbeat rate.
+nodes it can see — with their health and board kind, and itself — up to the host over DCS-BIOS.
+`NODE_HEALTH_TELEM` is the periodic health frame (die temperature, fault, board kind) at half the
+heartbeat rate.
 `FORCE_CLOCK_FALLBACK` exercises the dead-crystal fault path without a dead crystal; the
 `test_adc_clock_fallback` env uses it to prove `SystemClock_Config` sets the ADC prescaler on its
 fault path as well as its verified-72 MHz path (#263).
@@ -118,16 +120,34 @@ them:
     client's rendering). Enabling it for real is a one-line `-DNODE_OVERHEAT_C=N` once someone has
     calibration data. See `FirmwarePlan/00-decisions.md`.
 
-!!! note "`NODE_HEALTH_TELEM` is ON by default — disable with `=0`, not by omission"
-    It's the only flag in this group that's on when absent (`#if !defined(X) || (X)`). Leaving it
-    out gets you health telemetry; you need an explicit `-DNODE_HEALTH_TELEM=0` to turn it off.
+!!! note "`NODE_HEALTH_TELEM` and `PANELBRIDGE_NODE_STATUS` are ON by default — disable with `=0`, not by omission"
+    They're the two flags in this group that are on when absent. Leaving them out gets you health
+    telemetry and the bridge's node reporting; you need an explicit `=0` to turn either off. The
+    client depends on both, so a shipped build keeps them on.
 
-!!! note "`PANELBRIDGE_NODE_STATUS` is off in the library but on in every shipped PanelBridge"
-    The library defaults it off, so the table above says "off" — but the PanelBridge template
-    enables it, and so does the E2E example. Every build you would actually flash to a cockpit
-    has it on. (Most of the 13 `Tests/PanelBridge` envs leave it off; they are testing other
-    things.) The client half is already released, which is why the default flipped in the
-    template rather than in the library.
+## PDU node thresholds (`PDU_*`)
+
+The power-distribution node (`PowerMonitor` library, `Panels/PDU_*`) takes every limit as a
+`PDU_*` macro with a default in `Firmware/Libraries/PowerMonitor/PduConfig.h`. The defaults are
+starting points to tune on the bench against the real load; override one per build, e.g.
+`-DPDU_12V_UV_MV=11200`, with no code change.
+
+| Flag | Default | What it sets |
+|---|---|---|
+| `PDU_12V_UV_MV` / `PDU_12V_OV_MV` | 11400 / 13200 | 12 V under / over-voltage |
+| `PDU_5V_UV_MV` / `PDU_5V_OV_MV` | 4750 / 5500 | 5 V under / over-voltage |
+| `PDU_12V_OC_MA` / `PDU_5V_OC_MA` | 4500 / 1800 | over-current, 90 % of the 5 A / 2 A fuse |
+| `PDU_FUSE_OPEN_MV` | 1000 | 12 V below this while the node runs → fuse open |
+| `PDU_V_HYST_MV` | 100 | voltage hysteresis |
+| `PDU_V_SET_MS` / `PDU_OC_SET_MS` / `PDU_CLEAR_MS` | 50 / 100 / 500 | how long a condition must hold to set / clear |
+| `PDU_TEMP_WARN_DC` / `PDU_TEMP_CRIT_DC` / `PDU_TEMP_HYST_DC` | 600 / 750 / 30 | board temperature, tenths of °C |
+| `PDU_BOOT_BLANK_MS` | 500 | faults ignored after power-up (rail ramp, inrush) |
+| `PDU_SAMPLE_US` | 1000 | rail scan period (1 kHz) |
+| `PDU_ZERO_GUARD_12V_MA` / `PDU_ZERO_GUARD_5V_MA` | 75 / 120 | `CAL ZERO` refuses above this — load still connected |
+| `PDU_CAL_PAGE_ADDR` | `0x0800FC00` | calibration flash page; the PDU builds cap the image at 63 KB (`board_upload.maximum_size`) to keep code out of it |
+
+`PANELBRIDGE_NODE_STATUS` (above) also gates the bridge's `_NODE_TELEM` forwarding of these
+readings to the host.
 
 ## Third-party, set by us (7)
 
@@ -189,18 +209,18 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 
 | Flag | Library it opens | First read at |
 |---|---|---|
-| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:85` |
-| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:90` |
-| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:279` |
-| `LED_TEST` | LED | `Outputs/LED/LED.h:68` |
-| `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:60` |
-| `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:78` |
-| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:84` |
+| `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:104` |
+| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:93` |
+| `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:278` |
+| `LED_TEST` | LED | `Outputs/LED/LED.h:67` |
+| `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:59` |
+| `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:77` |
+| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:92` |
 | `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:108` |
 | `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
-| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:11` (no-op HID stubs) |
-| `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:158` |
-| `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:32` |
+| `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:12` (no-op HID stubs) |
+| `STEPPERMOTOR_TEST` | StepperMotor | `Drivers/StepperMotor/StepperMotor.h:151` |
+| `STM32BOARD_TEST` | STM32Board | `STM32Board/STM32Board.h:31` |
 
 Paths are relative to `Firmware/Libraries/`, and the PanelGroup ones to
 `Firmware/Libraries/PanelGroup/`. Most seams are read in several places; the column gives the

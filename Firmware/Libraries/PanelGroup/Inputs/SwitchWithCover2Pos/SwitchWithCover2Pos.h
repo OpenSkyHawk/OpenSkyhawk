@@ -2,7 +2,6 @@
  * @file SwitchWithCover2Pos.h
  * @brief Guarded 2-position switch — one pin drives the sim's cover and the switch under it.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -52,7 +51,7 @@ public:
      * @param switchId  DCSIN_* constant for the switch under the cover.
      * @param coverId   DCSIN_* constant for the cover itself (the generator already emits covers
      *                  as their own control, e.g. AFCS_1N2_COVER).
-     * @param pin       PinRef for the one physical switch (GPIO or MCP23017).
+     * @param pin       PinRef for the one physical switch (GPIO, MCP23017, or ShiftBus '165).
      * @param reverse   false (default): active-LOW, as Switch2Pos. true: active-HIGH.
      */
     SwitchWithCover2Pos(uint16_t switchId, uint16_t coverId, PinRef pin, bool reverse = false);

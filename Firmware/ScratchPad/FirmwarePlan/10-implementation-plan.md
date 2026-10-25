@@ -54,7 +54,7 @@
       are occupied, enqueue frames in a small ring buffer (~16 entries). Use frame-type
       dependent overflow: `CTRL_BCAST` may drop/coalesce stale state; `EVT_n`, `READY_n`,
       `SYNC_REQ`, `TEST_SEQ`, and `ECHO_n` use bounded retry up to 3 attempts, then drop and
-      increment the `DIAG_ERR` TX drop counter; `HB_n` may drop stale heartbeat frames.
+      increment the `DIAG_ERR` TX drop counter; `HB_n` takes the same bounded retry.
 - [x] Build A-4E-C input map generator: parse A-4E-C DCS-BIOS JSON → assign sequential
       `DCSIN_*` IDs from 0x8001; emit **three headers plus gap report**:
       - `A4EC_CmdIds.h` — `#define DCSIN_*` constants, included by PanelGroup sketches
@@ -77,14 +77,14 @@
 - [x] Integrate DCS-BIOS library: configure `DCSBIOS_DEFAULT_SERIAL` to use `Serial`
       (UART2 PA2/PA3).
 - [x] Add `ExportStreamListener` subclass that auto-registers on `PanelBridge::setup()` and
-      submits all 0x8000–0x86FF writes to CANProtocol's `CTRL_BCAST` batching path.
+      submits every export write (0x0002–0xFFFE since #295) to CANProtocol's `CTRL_BCAST` batching path.
 - [x] Remove the UART argument from `PanelBridge::setup()` — DCS-BIOS library owns `Serial`
       directly via `DCSBIOS_DEFAULT_SERIAL`. Update `PanelBridge.h` to match.
 - [x] Replace `MAX_NODES=2` with dynamic node tracking; hardware CAN filter remains pass-all;
       add software range validation in CAN RX handler (valid child-node frames: HB_1-HB_63
       0x101–0x13F, EVT 0x201–0x23F, ECHO 0x301–0x33F, READY 0x401–0x43F — discard else).
 - [x] Broadcast `SYNC_REQ` on READY and when heartbeat tracking observes a node transition
-      from dead/unseen to alive. PanelBridge does not publish `HB_0`; `canIdHb(0)` is reserved.
+      from dead/unseen to alive. *(PanelBridge later began publishing `HB_0` as a master beacon — #93.)*
 - [x] Implement TEST_SEQ trigger on PanelBridge: a single command byte (e.g. `'T'`) received
       on DiagSerial causes PanelBridge to broadcast TEST_SEQ (0x011) and collect ECHO responses
       for RTT measurement. SimGateway is not involved.
@@ -217,8 +217,17 @@ covered; the only uncovered outputs were the five light-intensity values (`LIGHT
 ## Phase 5b — Infrastructure Nodes: PDU *(Firmware v0.2.0)*
 
 - [ ] PDU boards (#202) assembled and brought up.
-- [ ] PDU monitoring firmware + its new CAN telemetry frame (#216) — reuse the `HEALTH_n` pattern
-      (D13).
+- [x] Node heartbeat / HEALTH / master watchdog moved into `CANProtocol::serviceNodeStatus()` so
+      the PDU needs no PanelGroup dependency (#340, D17).
+- [x] PDU monitoring firmware + its `TELEM_n` telemetry frame (#216, D18) — `PowerMonitor` library,
+      `Panels/PDU_Left|Right|Center` (NODE_IDs 3/4/5), `_NODE_TELEM` forwarding in PanelBridge.
+      Logic + flash tests on hardware; real-bus smoke on a non-PDU board.
+- [ ] On the PDU itself (with #202 bring-up): 1 kHz scan, `CAL VDDA` / `CAL ZERO` per board,
+      thresholds tuned against the real load, calibration survives a reflash.
+- [ ] Client: `_NODE_TELEM` decode + per-rail display (OpenSkyHawk/SkyHawkClient#61).
+- [x] Board kind in `HEALTH_n` byte 5 + `_NODE_STATUS` v3 with the bridge's node-0 row, and
+      duplicate NODE_ID detection (#344, D19). Bench on PanelBridge + a panel group (+ a PDU) and
+      the client resync (SkyHawkClient#63/#77) pending.
 
 ---
 

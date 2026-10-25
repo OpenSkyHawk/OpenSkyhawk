@@ -47,10 +47,8 @@ static constexpr uint16_t RAW_HELD  = 30000;   // mid-scale: settled EWMA, clear
 static constexpr uint32_t WINDOW_MS = 1000;    // nominal 500 fast reads / 125 slow reads
 
 // Same node, same measurement window, different throttles.
-OpenSkyhawk::AnalogInput gFast(CTRL_FAST, PinRef(PA0), /*reverse=*/false, 0, 65535,
-                               OpenSkyhawk::AnalogInput::DEFAULT_HYSTERESIS,
-                               OpenSkyhawk::AnalogInput::DEFAULT_EWMA_SHIFT, /*pollMs=*/2);
-OpenSkyhawk::AnalogInput gSlow(CTRL_SLOW, PinRef(PA1));   // default pollMs = DEFAULT_POLL_MS (8)
+OpenSkyhawk::AnalogInput gFast(CTRL_FAST, PinRef(PA0), { .pollMs = 2 });
+OpenSkyhawk::AnalogInput gSlow(CTRL_SLOW, PinRef(PA1));   // default pollMs = AnalogConfig::DEFAULT_POLL_MS (8)
 
 void setup() {
     STM32Board::setDebug(false);   // MANDATORY — see the header note on prints inside the window

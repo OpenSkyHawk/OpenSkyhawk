@@ -72,7 +72,7 @@ void loop() {
 
     uint32_t now = millis();
     if (!_readySent && now > 200) {
-        CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+        CANProtocol::sendReady();
         _readySent = true;
     }
     if (now - _lastHbMs >= 500) {

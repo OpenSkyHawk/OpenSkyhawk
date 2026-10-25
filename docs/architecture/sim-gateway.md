@@ -63,10 +63,18 @@ exceeded.
 
 This is the heart of SimGateway, and it's deliberately dumb:
 
-- Every byte from USB CDC is forwarded to the UART **immediately**.
-- Every UART byte that is **not** part of a HID frame is forwarded to USB CDC **immediately**.
-- SimGateway never buffers, parses, or delays DCS-BIOS bytes, and never runs the DCS-BIOS
-  library. PanelBridge therefore sees the stream with USB-CDC latency only.
+- Every byte from USB CDC is forwarded to the UART **immediately**, so PanelBridge sees the
+  DCS-BIOS export stream with USB-CDC latency only.
+- Everything coming back from PanelBridge that is **not** a HID frame is a DCS-BIOS text
+  message, and SimGateway forwards each one to USB CDC as a **whole line**.
+- SimGateway never parses or interprets DCS-BIOS content, and never runs the DCS-BIOS library.
+
+**The gateway never waits for the PC.** If the PC holds the serial port open but stops reading,
+a line that doesn't fit in the USB buffer is dropped whole rather than stalling the gateway. A
+stalled gateway would also stop the joystick and the status LEDs. A line is never cut in half,
+because half a command is a different command. Anything that isn't printable ASCII is line
+noise and is dropped too. A healthy link drops nothing; the drops are counted (see
+[Link health](#link-health-and-self-recovery)).
 
 The two streams share one UART because they can't collide: DCS-BIOS text is pure printable
 ASCII + LF (every byte ≤ `0x7F`), while HID frames start with the magic bytes `0xAA 0x55`
@@ -83,7 +91,7 @@ DCS-BIOS data, and health reporting keeps flowing while it is open.
 This "dumb relay" is also why **node-status reporting** ([#86](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86))
 needs no SimGateway change: PanelBridge reports connected PanelGroup nodes to the host over
 DCS-BIOS itself — `_NODE_STATUS` ASCII command messages downstream, and a roster request as a
-DCS-BIOS export write to reserved address `0x86FE` upstream. Both ride the existing streams and
+DCS-BIOS export write to reserved address `0xFF00` upstream (an address no aircraft module uses). Both ride the existing streams and
 transit SimGateway transparently; PanelBridge owns the feature.
 
 ## controlId routing logic
@@ -98,10 +106,10 @@ Incoming HID frames (PanelBridge → SimGateway) are fixed 6-byte little-endian:
 
 SimGateway demultiplexes the UART byte stream:
 
-- Byte ≤ `0x7F` → DCS-BIOS byte → forward to USB CDC.
 - Byte `0xAA` followed by `0x55` → HID frame: read 4 more bytes, dispatch by `controlId`.
-- Byte `0xAA` *not* followed by `0x55` → not a frame: forward both bytes and resume scanning
-  (self-healing resync at the next byte boundary).
+- Any other byte → part of a DCS-BIOS text line → forwarded to USB CDC when the line ends.
+- Byte `0xAA` *not* followed by `0x55` → not a frame: resume scanning (self-healing resync at
+  the next byte boundary). The line it landed in isn't valid text, so it is dropped.
 
 HID controls are owned entirely here — PanelBridge wraps them but never interprets them. The
 `controlId` ranges SimGateway dispatches:
@@ -145,11 +153,39 @@ to lowest — the topmost active row wins:
 
 !!! note "When the fault light clears"
     `FAULT` is latched, not momentary: it stays on for at least ~2 s (so a single glitch is
-    visible) and then clears **only once clean PanelBridge data resumes** on the UART — an
-    error-free byte received *after* the fault. A fault on an otherwise-silent link therefore
-    stays lit until traffic returns error-free, rather than timing out on its own. The error is
-    read straight from the RP2040's `uart0` PL011 error register (`RSR`), because the
-    arduino-pico `SerialUART` driver doesn't surface overrun/framing flags any other way.
+    visible) and clears once clean PanelBridge data resumes on the UART. With no DCS running,
+    PanelBridge sends almost nothing, so if the light is still on after 3 s the gateway restarts
+    its UART and clears it. If the link is genuinely bad, the error comes straight back and the
+    light stays on. Every fault is still recorded in the link-health counters. The error is read
+    straight from the RP2040's `uart0` PL011 error register (`RSR`), because the arduino-pico
+    `SerialUART` driver doesn't surface overrun/framing flags any other way.
+
+## Link health and self-recovery
+
+The gateway's USB connection has dropped out twice in the field, both times with the fault light
+flashing: the PC lost the serial port and only unplugging the gateway brought it back
+([#355](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/355)). Since the cause couldn't be
+reproduced, the firmware now recovers by itself and keeps a record of what happened.
+
+- **Re-plug in software.** The gateway is powered by its USB cable, so if it is running but the
+  PC hasn't connected to it for 5 seconds, something is wrong. It disconnects itself from USB and
+  reconnects 0.1 s later, which looks to the PC exactly like unplugging and replugging it.
+- **Reboot if that didn't work.** Still no connection 5 seconds later, and the gateway reboots.
+  Calibration is stored in flash, so nothing is lost. After that it retries the reconnect once a
+  minute instead of rebooting again, so a gateway plugged into a charger doesn't reboot forever.
+- **Watchdog.** If the firmware ever stops running, a hardware watchdog reboots the gateway
+  within 3 seconds.
+- **Connected but not listening counts too.** If the PC has the port open but its USB stack
+  stops collecting data (the gateway's outgoing buffer stays full for a second), that is treated
+  the same as not being connected. A slow app doesn't trigger this, because the PC's operating
+  system keeps collecting into its own buffer either way.
+- **A sleeping PC is left alone.** Sleep suspends the USB bus, which on its own isn't treated as
+  a fault.
+
+The gateway counts what goes wrong: each kind of UART error separately, lines it had to drop and
+why, how often it reconnected or rebooted, and when the first UART error and the first USB loss
+happened, which tells you which came first. The OpenSkyhawk Client reads these counters
+over the calibration channel (`GET_DIAG`), and so does the bench script `tools/simgw_bench/`.
 
 !!! warning "Active-high, separate power domain"
     Both LEDs are active-high (HIGH = lit) and sit on the RP2040 module's own 3V3 LDO, isolated

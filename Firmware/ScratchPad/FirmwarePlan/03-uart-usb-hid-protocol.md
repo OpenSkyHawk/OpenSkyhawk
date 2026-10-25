@@ -16,7 +16,7 @@ boot sequencing (→ 09).
 The single UART carries two distinct byte streams in the **PanelBridge → SimGateway** direction:
 
 1. **DCS-BIOS text commands** — raw ASCII from `sendDcsBiosMessage()`, e.g. `"ARM_MASTER 1\n"`.
-   Forwarded by SimGateway to USB CDC verbatim.
+   Forwarded by SimGateway to USB CDC verbatim, one whole line at a time (see *Host-bound Relay*).
 2. **HID frames** — binary frames with a non-ASCII `HID_MAGIC` header, carrying
    `controlId < 0x8000` for HID dispatch.
 
@@ -56,19 +56,35 @@ short dedicated UART link. A checksum would add latency on HID-critical joystick
 
 SimGateway demultiplexes the incoming UART byte stream as follows:
 
-- Any byte ≤ `0x7F` → DCS-BIOS byte; forward to USB CDC immediately.
+- Any byte other than `0xAA` → DCS-BIOS byte; append to the host-bound line.
 - On byte `0xAA`: peek at the next byte.
   - If it is `0x55` → HID frame: read 4 more bytes, parse `controlId` + `value`, dispatch.
-  - If it is not `0x55` → not a valid frame header: forward `0xAA` + the mismatched byte to
-    USB CDC and resume scanning.
+  - If it is not `0x55` → not a valid frame header: append `0xAA` + the mismatched byte to the
+    line and resume scanning. `0xAA` is not ASCII, so that line is dropped as corrupt.
 
 This ensures any framing error is self-healing at the next byte boundary.
 
-**Consequence for anything else on the CDC stream:** the resync path puts a bare `0xAA` on USB
-CDC, followed by the mismatched byte. `0xAA` is therefore the one high-bit value the gateway is
-known to emit outbound, and it does so precisely when the link is already degraded. Any host-side
-demultiplexer watching for a `0xAA`-led frame must validate before acting — see the calibration
-protocol's CRC requirement below.
+**Consequence for anything else on the CDC stream:** since #355 the resync path no longer reaches
+the host. The relay forwards only whole lines of printable ASCII, so the only high-bit bytes the
+gateway emits outbound are its own calibration frames. A host-side demultiplexer must still
+validate a `0xAA`-led candidate before acting (older firmware did emit a bare `0xAA`), see the
+calibration protocol's CRC requirement below.
+
+---
+
+## Host-bound Relay (SimGateway → USB CDC)
+
+Issue #355. Everything PanelBridge sends the host is a newline-framed DCS-BIOS message, so the
+relay is line-granular: SimGateway assembles each line and writes it **whole** when the CDC FIFO
+has room for all of it, or drops it and counts the drop. It never truncates a line, and it never
+blocks: Adafruit TinyUSB's `write()` loops for as long as the host holds DTR but stops reading,
+which would stall the whole gateway.
+
+- A line is printable ASCII (`0x20`–`0x7E`) ending in `\n`, at most `RELAY_LINE_MAX` (128) bytes.
+  Anything else — a control byte, `\r`, a high-bit byte, or a longer run — is dropped, not relayed.
+- Calibration frames follow the same whole-or-drop rule, and since lines are buffered a frame always
+  goes out *between* lines, never inside one.
+- A host that stops reading loses lines; nothing else changes. The drops show in `DIAG`.
 
 ---
 
@@ -161,7 +177,8 @@ Consequences worth stating plainly:
 - An expired or abandoned session degrades to exactly normal operation. The only thing that
   stops is raw streaming.
 - Because outbound is shared, the client must de-multiplex on the **raw byte chunk, before line
-  assembly**. A calibration frame injected mid-line is then harmless — removing its bytes
+  assembly**. Since #355 the gateway buffers lines and never injects a frame mid-line, but older
+  firmware did; de-multiplexing first keeps that case harmless too — removing the frame's bytes
   rejoins the interrupted line correctly.
 
 ### Frame format
@@ -181,8 +198,8 @@ Identical envelope in both directions.
 device is the constrained end and the client has the budget to unpack.
 
 **`0xAA` leads all non-DCS data** on this link by project convention, matching the HID frame
-magic. It is not collision-proof on the outbound direction — the parser resync path above emits a
-bare `0xAA` — so the **CRC is mandatory, and a client must re-emit CRC-failed candidate bytes
+magic. It is not collision-proof on the outbound direction — firmware before #355 let the parser
+resync path emit a bare `0xAA` — so the **CRC is mandatory, and a client must re-emit CRC-failed candidate bytes
 into its line assembler rather than dropping them.** Otherwise a corrupted DCS-BIOS line would be
 silently swallowed. A false frame requires `AA 53 4B 43` to appear consecutively *and* the CRC to
 pass.
@@ -240,7 +257,12 @@ High bit of `TYPE` set = device→client, so direction is readable at a glance i
 | `0x05` | `COMMIT` | `0x85` | `NACK` |
 | `0x06` | `RESET` | `0x86` | `RAW` |
 | `0x07` | `KEEPALIVE` | | |
-| `0x08` | `STREAM_SELECT` | | |
+| `0x08` | `STREAM_SELECT` | `0x87` | `DIAG` |
+| `0x09` | `GET_DIAG` | | |
+
+**Reserved for firmware update (#295), not yet assigned:** types `0x10`–`0x1F` (client → device) and
+`0x90`–`0x9F` (device → client), and NACK reasons `0x09`–`0x0E`. Nothing else may claim them; when
+assigned they follow § Compatibility (new types are a minor change).
 
 These are numeric type codes, not strings. Contrast `_NODE_STATUS`, which *is* text because it
 must imitate a DCS-BIOS message riding the ASCII stream; this channel is quiet during exchanges,
@@ -256,7 +278,7 @@ the mapping — but that is data in the message, not the message's identity.
 | Type | `LEN` | Payload |
 |---|---|---|
 | `HELLO` | 0 | — |
-| `HELLO_ACK` | 6 | `proto`:u8, `blobVersion`:u8, `axisSlots`:u8 (8), `fw`:u8×3 (major, minor, patch) |
+| `HELLO_ACK` | 6 | `proto`:u8, `blobVersion`:u8, `axisSlots`:u8 (8), `fw`:u8×3 (major, minor, patch — the release version, `OPENSKYHAWK_FW_*` in `FirmwareVersion.h`) |
 | `GET_CAL` | 0 | — |
 | `CAL_DATA` | 82 | `presentMask`:u8, `calibratedMask`:u8, then **8 ×** { `controlId`:u16, `min`:u16, `centre`:u16, `max`:u16, `deadzone`:u16 } |
 | `SESSION_OPEN` | 1 | `axisIdx`:u8 — axis to stream, or `0xFF` for none |
@@ -269,6 +291,13 @@ the mapping — but that is data in the message, not the message's identity.
 | `ACK` | 1 | `type`:u8 being acknowledged |
 | `NACK` | 3 | `type`:u8, `reason`:u8, `detail`:u8 (axis index, or `0xFF`) |
 | `RAW` | 5 | `idx`:u8, `raw`:u16, `cal`:u16 |
+| `GET_DIAG` | 0 | — |
+| `DIAG` | 64 | link-health counters and event times — see below; bytes 47–63 reserved |
+
+Field offsets are named in `AxisCal.h` — one enum per type with a payload (`CalHelloAckField`,
+`CalDataField` + `CalDataRecField` and `CAL_DATA_REC_BYTES`, `CalSessionOpenField`,
+`CalSessionAckField`, `CalStreamSelectField`, `CalCommitField`, `CalResetField`, `CalAckField`,
+`CalNackField`, `CalRawField`, `CalDiagField`) — and SimGateway reads and writes payloads through them.
 
 **Values on the wire are unsigned 0–65535**, matching storage and the node — `RAW`'s `raw` and
 `cal`, the `CAL_DATA` endpoints, and what `COMMIT` writes. They are positions in the node's ADC
@@ -299,9 +328,60 @@ displays only present axes — the device has 8 slots but a cockpit may populate
 the dialog can show the sensor reading beside what DCS is currently receiving. It also carries
 `idx` so a frame in flight across a `STREAM_SELECT` can be discarded.
 
+`DIAG` (#355) is the gateway's link-health record: what went wrong on the PanelBridge UART and the
+USB link, and what the firmware did about it (`07-simgateway-api.md#link-health-and-self-recovery`).
+Times are `millis()` since this boot, `0` = never. Counters are u16 and saturate at `0xFFFF`.
+
+| Offset | Field | Type | Meaning |
+|---|---|---|---|
+| 0 | `UPTIME_MS` | u32 | `millis()` when the reply was built — the reference for the times below |
+| 4 | `FIRST_UART_ERR_MS` | u32 | first PL011 error this boot |
+| 8 | `LAST_UART_ERR_MS` | u32 | latest PL011 error |
+| 12 | `FIRST_USB_LOSS_MS` | u32 | first healthy → unhealthy host-link edge |
+| 16 | `LAST_USB_LOSS_MS` | u32 | latest such edge |
+| 20 | `UART_OVERRUN` | u16 | status ticks with RSR OE — the UART IRQ itself was held off |
+| 22 | `UART_FRAMING` | u16 | … RSR FE — electrical |
+| 24 | `UART_BREAK` | u16 | … RSR BE — RX held low (PanelBridge reset or off) |
+| 26 | `UART_PARITY` | u16 | … RSR PE |
+| 28 | `UART_RX_OVERFLOW` | u16 | software RX queue overflowed — `loop()` fell behind |
+| 30 | `LINES_DROPPED` | u16 | line dropped whole, no CDC room (host not reading) |
+| 32 | `LINES_CORRUPT` | u16 | line held a non-ASCII byte |
+| 34 | `LINES_OVERLONG` | u16 | line exceeded `RELAY_LINE_MAX` |
+| 36 | `FRAMES_DROPPED` | u16 | calibration frame dropped, no CDC room |
+| 38 | `UART_RESTARTS` | u16 | FAULT self-clears |
+| 40 | `USB_REATTACHES` | u16 | recovery-ladder detach/attach cycles |
+| 42 | `CDC_STALLS` | u16 | host held the port, bytes pending, CDC IN endpoint stopped draining |
+| 44 | `RECOVERY_REBOOTS` | u8 | recovery-ladder reboots — survives a warm reboot |
+| 45 | `WATCHDOG_RESETS` | u8 | hardware-watchdog resets — survives a warm reboot |
+| 46 | `RESET_REASON` | u8 | `CalDiagResetReason`: 0 power-on, 1 watchdog, 2 recovery reboot |
+| 47–63 | `RESERVED` | — | transmit 0, ignore on receive (#295). `LEN` is fixed per type, so a new counter fills these bytes — a minor change — instead of growing `DIAG` |
+
+The UART error counters count status ticks on which the bit was set, not characters: the core's
+UART IRQ owns the data register. The two "survives" counters live in watchdog scratch registers and
+reset on power-on, which on the Gateway means a USB replug.
+
+**`CAL_PROTO_VERSION` stays 1.** `GET_DIAG` is purely additive: an older client never sends it,
+and older firmware rejects the unknown type (`calLenValidForType()` fails), so its bytes go to
+the relay and no reply comes. A client therefore treats "no `DIAG` within its request timeout"
+as "not supported", not as a link fault. Bumping the version would make a client that requires
+an exact match refuse calibration against new firmware until it synced, for no gain.
+
+### Compatibility — how the channel grows (#295, D22)
+
+The `_NODE_*` lines grow by appending fields (`04-dcs-bios-integration.md` § Compatibility). This
+channel can't: `LEN` is fixed per type, so a longer payload on an existing type is "not a frame" to
+an older reader. From v1.0 it follows its own rule:
+
+1. **`HELLO` / `HELLO_ACK` never change**, in any version — they are how a client learns `proto`,
+   so every client must always be able to read them.
+2. **A new message type is a minor.** Older firmware fails `calLenValidForType()` on it and relays
+   the bytes as DCS data, so no reply comes; the client treats a timeout as "not supported" and
+   falls back (as `GET_DIAG` does). `CAL_PROTO_VERSION` stays.
+3. **Any change to an existing type's `LEN`, field layout or meaning bumps `CAL_PROTO_VERSION`**,
+   and is a major: a client refuses calibration against a `proto` it doesn't know.
 ### Session model
 
-`HELLO` and `GET_CAL` work **outside** a session. This is what lets the client show
+`HELLO`, `GET_CAL` and `GET_DIAG` work **outside** a session. This is what lets the client show
 calibrated/uncalibrated badges and an uncalibrated count as soon as the port opens, without
 opening a dialog. `COMMIT`, `RESET` and `STREAM_SELECT` require an open session.
 
@@ -324,7 +404,7 @@ been consumed by the time the session check runs, so relaying it is not an optio
 - A candidate with valid magic, a `LEN` matching its type, and a passing CRC is a **frame**. It is
   consumed and never reaches the UART.
 - `COMMIT`, `RESET` and `STREAM_SELECT` without an open session are consumed and answered
-  `NACK NO_SESSION`. `HELLO`, `GET_CAL` and `KEEPALIVE` are always accepted.
+  `NACK NO_SESSION`. `HELLO`, `GET_CAL`, `GET_DIAG` and `KEEPALIVE` are always accepted.
 - Anything failing magic, `LEN` or CRC is **not** a frame. Its bytes are re-emitted into the relay
   untouched, exactly as today.
 
@@ -343,7 +423,7 @@ axis, and no other axis is affected by it.
 |---|---|---|---|
 | `0x01` | `BAD_CRC` | frame checksum mismatch | retransmit |
 | `0x02` | `BAD_LENGTH` | `LEN` inconsistent with its type | client bug — log it |
-| `0x03` | `BAD_TYPE` | unknown type code | protocol version mismatch |
+| `0x03` | `BAD_TYPE` | unknown type code | never sent: an unknown type fails `calLenValidForType()` first and is relayed, so the client sees a timeout (see § Compatibility) |
 | `0x04` | `BAD_INDEX` | `idx` out of range | client bug |
 | `0x05` | `BAD_ORDER` | endpoints not ordered; `detail` names the axis | "Axis N: endpoints out of order" |
 | `0x06` | `NO_SESSION` | command requires an open session | client bug |
@@ -417,7 +497,7 @@ must therefore mean "the last received value has not moved for N ms", never "N c
 agreed", which would never complete on a stick held still.
 
 **Do not assume an update rate.** `AnalogInput`'s read throttle is **per instance** — the `pollMs`
-constructor parameter, default `DEFAULT_POLL_MS` = 8 ms — so it is a per-axis build choice, not a
+field of its `AnalogConfig`, default `AnalogConfig::DEFAULT_POLL_MS` = 8 ms — so it is a per-axis build choice, not a
 constant you can read off the class, and two axes on one node may differ. Whatever it is set to
 bounds only that axis's ADC sampling; hysteresis, `PanelGroup::loop()` timing, CAN, and PanelBridge
 all reduce it further. Measure it.

@@ -1,0 +1,21 @@
+name: Firmware release assets (validation)
+
+# Builds and packages the release firmware without publishing anything (#360), on pull requests
+# that touch the release workflow or its README templates. The flash/RAM table lands in the job
+# summary and the package is uploaded as an Actions artifact. Publishing happens only from
+# release-please.yml.
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/firmware-release-assets.yml
+      - .github/workflows/firmware-release-assets-check.yml
+      - Firmware/release/**
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate
+    uses: ./.github/workflows/firmware-release-assets.yml

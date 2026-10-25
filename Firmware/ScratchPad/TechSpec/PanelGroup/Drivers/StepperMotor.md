@@ -46,6 +46,7 @@ No new 3rd-party dependency (own PinRef stepping) — so it stays inside PanelGr
 | `deadband`       | CI | sub-deadband target changes ignored |
 | `wrap`           | CI | continuous-rotation shortest signed path; `position()` wraps |
 | `step_pattern`   | CI | 6-state and 4-state both reach target |
+| `config_defaults`| CI | `StepperConfig` defaults; `makeX27Config` = defaults + its arguments; a by-name initialiser changes only what it names (#295) |
 | `recal_guard`    | CI | auto-recal needs `homed()` **and** a sensor asserted continuously for `sensor.debounceMs`; a mid-window glitch restarts the wait |
 | `coil_port_check`| CI | coils split across MCP ports/chips are refused and stay inert; one port — or all direct GPIO — is accepted |
 | `bringup`        | bench | sweep a real X27 on 4 GPIO at 3.3 V |
@@ -72,30 +73,36 @@ enum class StepPattern : uint8_t { SWITEC_6STATE, FULL_4STATE };
 struct AccelPoint { uint16_t stepThreshold; uint16_t delayUs; };    // SwitecX25 (cumstep → delay)
 struct HomeSensor { bool activeLow; uint8_t debounceMs; uint16_t maxSeekSteps; };
 
-struct StepperConfig {
-    uint16_t          stepsPerRev;       // calibrate empirically (cal_steps_per_rev)
-    StepPattern       pattern;
-    const AccelPoint* accel; uint8_t accelN;   // last delayUs = top speed
-    HomeMode          home;
-    bool              homeSeekClockwise;
-    HomeSensor        sensor;             // SENSOR only
-    int16_t           homePosition;       // step index at the home reference
-    int16_t           parkPosition;       // rest position after homing
-    int16_t           minPos, maxPos;     // moveTo clamp (ignored if wrap)
-    bool              wrap;               // continuous-rotation, shortest path
-    uint8_t           deadband;
-    bool              autoRecal; uint32_t recalDebounceMs;
-};
-
 extern const AccelPoint kSwitecDefaultAccel[5];   // {20,3000},{50,1500},{100,1000},{150,800},{300,600}
 constexpr uint8_t       kSwitecDefaultAccelN = 5;
 
-// Factory: fills the X27 air-core motor-invariant fields (stepsPerRev/pattern/accel); a sketch sets
-// only the per-gauge wiring/travel. Shared by every X27 / VID-29 / BKA-30 gauge — override any default.
+// Every field defaulted to the X27 / VID-29 / BKA-30 family (#295): a sketch names only what differs,
+// `{ .maxPos = 960, .rangeSteps = 960 }`. Fields are only ever appended, each with a default — a
+// positional initialiser that stops early gets the defaults for the rest.
+struct StepperConfig {
+    uint16_t          stepsPerRev       = 1080;                  // X27/BKA datasheet, 1/3°/step; calibrate (cal_steps_per_rev)
+    StepPattern       pattern           = StepPattern::SWITEC_6STATE;
+    const AccelPoint* accel             = kSwitecDefaultAccel;   // last delayUs = top speed
+    uint8_t           accelN            = kSwitecDefaultAccelN;
+    HomeMode          home              = HomeMode::STALL;
+    bool              homeSeekClockwise = false;
+    HomeSensor        sensor            = { true, 5, 2000 };     // SENSOR only
+    int16_t           homePosition      = 0;                     // step index at the home reference
+    int16_t           parkPosition      = 0;                     // rest position after homing
+    int16_t           minPos            = 0;                     // moveTo clamp (ignored if wrap)
+    int16_t           maxPos            = 945;                   //   … default = rangeSteps
+    bool              wrap              = false;                 // continuous-rotation, shortest path
+    uint8_t           deadband          = 1;
+    bool              autoRecal         = false;
+    uint32_t          recalDebounceMs   = 0;
+    uint16_t          rangeSteps        = 945;                   // stop-to-stop = STALL home distance; X27.589 ~315°; 0 → stepsPerRev
+    uint16_t          homeStepUs        = 0;                     // homing seek µs/step; 0 → 2000 (≈ 500 steps/s); keep under ~774 steps/s
+};
+
+// Factory for the common case: the defaults plus the gauge's travel. Anything else — a BKA-30's
+// range, a different step count — is written by name instead.
 StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos,
-                            HomeMode home = HomeMode::STALL, bool homeSeekClockwise = false,
-                            HomeSensor sensor = {true,5,2000}, bool wrap = false, uint8_t deadband = 1,
-                            bool autoRecal = false, uint32_t recalDebounceMs = 0, uint16_t stepsPerRev = 720);
+                            HomeMode home = HomeMode::STALL);
 
 class StepperMotor : public MotorDriver {
 public:
@@ -135,8 +142,14 @@ settling exactly (`currentStep == targetStep && vel == 0`).
 
 ### Homing (reduced speed for accuracy)
 
-- **STALL** — step into the mechanical end-stop `stepsPerRev` times (a full revolution seats from any
-  start), set `pos = homePosition`. No sensor.
+Both modes seek at `homeStepUs` per step (0 → library default 2000 µs ≈ 500 steps/s). The rate must
+stay under the motor's start-stop rate (~774 steps/s for the X27 family) or the seek slips.
+
+- **STALL** — step into the mechanical end-stop `rangeSteps + rangeSteps/8` times (the mechanical
+  stop-to-stop range plus a 1/8 margin, which seats from any start), set `pos = homePosition`. No
+  sensor. Driving the range rather than a full revolution matters: over-driving a stop-limited gauge
+  by the rev/range difference grinds the seated rotor and desyncs it, so the zero lands differently
+  each home. `rangeSteps == 0` falls back to `stepsPerRev` (legacy positional configs).
 - **SENSOR** (two-pass, à la AHN) — clear the sensor, seek `homeSeekClockwise` until the debounced read
   asserts, hard-stop, set `pos = homePosition`; back off and **re-seek to refine — a failed refine pass
   also clears `homed()`**, so the `maxSeekSteps` safety holds for both passes; then move to `parkPosition`.

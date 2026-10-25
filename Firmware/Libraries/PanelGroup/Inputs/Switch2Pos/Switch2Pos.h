@@ -2,7 +2,6 @@
  * @file Switch2Pos.h
  * @brief Debounced 2-position switch for OpenSkyhawk PanelGroup nodes.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -41,7 +40,7 @@ public:
      * Active-LOW (reverse = false), 20 ms debounce.
      *
      * @param controlId  DCSIN_* or CTRL_* constant. Determines PanelBridge routing.
-     * @param pin        PinRef for the switch input pin (GPIO or MCP23017).
+     * @param pin        PinRef for the switch input pin (GPIO, MCP23017, or ShiftBus '165).
      */
     Switch2Pos(uint16_t controlId, PinRef pin);
 
@@ -49,7 +48,7 @@ public:
      * @brief Construct a 2-position switch with explicit polarity.
      *
      * @param controlId   DCSIN_* or CTRL_* constant. Determines PanelBridge routing.
-     * @param pin         PinRef for the switch input pin (GPIO or MCP23017).
+     * @param pin         PinRef for the switch input pin (GPIO, MCP23017, or ShiftBus '165).
      * @param reverse     false (default): active-LOW — board wiring holds HIGH, switch pulls LOW.
      *                    true: active-HIGH — board wiring holds LOW, switch drives HIGH.
      *                    configure() does not enable internal pull-ups; the schematic must

@@ -17,8 +17,9 @@ PanelBridge is the single STM32F103 CAN master that:
 3. Receives CAN EVTs from PanelGroup nodes and routes them:
    - `0x8000 <= controlId <= 0x86FF` → binary search in generated input map → `sendDcsBiosMessage()`
    - `controlId < 0x8000` → wrap in HID frame → UART → SimGateway
-4. Tracks PanelGroup liveness from `HB_1`-`HB_63`. PanelBridge does not publish `HB_0`;
-   `canIdHb(0)` is reserved by the ID formula but unused.
+4. Tracks node liveness from `HB_1`-`HB_63`, and sends its own `HB_0` master beacon and
+   `HEALTH_0` through `CANProtocol::serviceNodeStatus()` like every node (#93/#340), announcing
+   board kind `BRIDGE` (#344).
 
 ---
 
@@ -50,20 +51,33 @@ READY event, updates `lastSeenMs` like a heartbeat, marks the node alive if need
 broadcasts `SYNC_REQ`. The READY frame carries no input state itself; the following EVTs
 emitted in response to `SYNC_REQ` are the state snapshot.
 
-**Node-status reporting to the host (#86, behind `-DPANELBRIDGE_NODE_STATUS`, default off):**
+**Node-status reporting to the host (#86; `PANELBRIDGE_NODE_STATUS`, on by default since #295, `=0` compiles it out):**
 PanelBridge surfaces the roster + per-node health to OpenSkyhawk Client over DCS-BIOS (see
 `04-dcs-bios-integration.md`). It caches each node's last `HeartbeatPayload` (`NodeState::last`,
-populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + health/fault, cached
-in the `HEALTH_n` handler, #221) and emits a `_NODE_STATUS <hex>` DCS-BIOS command message:
+populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + health/fault +
+`nodeKind`, cached in the `HEALTH_n` handler, #221/#344) and the firmware version from its last
+`READY_n` (`fwMajor`/`fwMinor`/`fwPatch`, cached in the `READY_n` handler, #295) and emits a
+`_NODE_STATUS <hex>` DCS-BIOS command message (proto v4):
 
 - on every alive/dead transition — a single bare `_NODE_STATUS` (a live delta; the 3 s heartbeat
-  timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node), and
+  timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node),
+- when an alive node's cached `nodeKind` changes (#344) — normally its first `HEALTH_n`, ~1 s after
+  the alive delta, which went out with kind `00`,
+- when a `READY_n` changes an alive node's cached firmware version (#295) — a reflash inside the
+  heartbeat timeout, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
-  (`0x86FE`), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
-  request/boot reply is the full roster followed by `_NODE_STATUS_END <count>`, so the host can tell
-  the burst is complete and prune nodes absent from it.
+  (`0xFF00`; `0x86FE` before v4), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
+  request/boot reply is the bridge's own node-0 row (its live heartbeat state +
+  `CANProtocol::lastNodeHealth()`, the `HEALTH_0` it last sent), then the full roster, then
+  `_NODE_STATUS_END <count>` (count includes node 0), so the host can tell the burst is complete
+  and prune nodes absent from it.
 
 SimGateway is unchanged — the ASCII messages and the binary request pass through transparently.
+
+**Node telemetry to the host (#216, same flag):** every `TELEM_n` frame (`0x181`–`0x1BF`) is
+forwarded unread as `_NODE_TELEM <nodeId><8 frame bytes>` as soon as it arrives — no cache, no
+decode, so a new `TelemPage` needs no bridge change. Page-`0x00` and short frames are dropped; a
+`TELEM_n` frame never marks a node alive. Contract: `04-dcs-bios-integration.md`.
 
 ---
 
@@ -78,8 +92,8 @@ The listener overrides the DCS-BIOS Arduino library callback:
 void onDcsBiosWrite(unsigned int address, unsigned int data);
 ```
 
-For each DCS-BIOS export address in the `0x8000`-`0x86FF` range, the listener builds a
-`ControlPacket` and calls:
+For every DCS-BIOS export address the stream carries (`0x0002`–`0xFFFE`: whatever aircraft is
+flying, CommonData and the metadata; #295, D24), the listener builds a `ControlPacket` and calls:
 
 ```cpp
 CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, packet);

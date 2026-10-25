@@ -27,10 +27,29 @@ and `docs/hardware/cad-workflow.md`. Update this skill once D8 is resolved.
 - switch centre-to-centre spacings (measured in CAD once the panel body exists).
 - the control inventory (what cutouts/mounts the panel needs).
 
+## Panel blank + plate stack (CockpitPanels workbench)
+
+Panel bases come from the **Cockpit Panels** FreeCAD 1.1+ workbench, a separate repo:
+`OpenSkyHawk/CockpitPanels` (LGPL-2.1+). Install: FreeCAD 1.1 custom repositories are in
+Preferences → Addon Manager page (not the Addon Manager's ⚙ menu; the page appears only after
+the Addon Manager has been opened once) → + → URL above, branch `main`; it lists as
+"CockpitPanels" until it reaches the official catalog. Its README is the reference. Three tools, in order:
+
+- **Panel Blank**: Dzus-grid outline + mount points + clearance holes, centred on the origin
+  on XY, driven by the `PanelBlank` sheet. No ControlPoints sketch: the user makes their own.
+- **Plate Stack**: one Body per layer (default `FacePlate` 1/16″, `Diffuser` 1/8″,
+  `BackPlate` 1/8″), front face at z = 0, each with `<Layer>_Outline/_Pad/_Cut/_Pocket` and a
+  per-layer fastener cut (Clearance / Recess / Slot / Slot (open ends)); faceplate insets.
+- **Export Layers**: one DXF per plate Body, on a layer named after the Body.
+
+Published overview: `docs/hardware/cad-workflow.md` → *Panel base blank*.
+
 ## Cutout library
 
 Reusable panel cutouts live in `CAD/Shared/Cutouts/` and are linked into panels with
-Sub-Shape Binders, then pocketed. Docs: `docs/_source/cad-cutout-library/`. Start at
+Sub-Shape Binders, then pocketed inside the Plate Stack layer Bodies, after each layer's
+`<Layer>_Pocket`. Library parts carry one sketch per layer, named exactly like the layers
+(`FacePlate`, `Diffuser`, `BackPlate`). Docs: `docs/_source/cad-cutout-library/`. Start at
 `index.md` (method choice), then `library-part.md` plus one method page:
 
 - `lcs-placement.md`: ControlPoints → one LCS per control → binder per plate layer →

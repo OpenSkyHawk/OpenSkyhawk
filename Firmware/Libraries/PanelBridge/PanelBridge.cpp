@@ -24,6 +24,7 @@ namespace DcsBios {
 #include <CANProtocol.h>   // CAN types + NodeHealthPayload
 #include <NodeStatus.h>    // NODE_STATUS_REQ_ADDR / NODE_STATUS_MSG_NAME (node-status reporting, #86)
 #include <STM32Board.h>
+#include <FirmwareVersion.h>  // OPENSKYHAWK_FW_* — the bridge's own node-0 row version (#295)
 #include <A4EC_InputMap.h>
 #include <string.h>
 
@@ -33,19 +34,24 @@ namespace {
 
 static constexpr uint8_t  MAX_NODE_ID         = 63;
 static constexpr uint32_t HB_TIMEOUT_MS       = 3000;
-static constexpr uint32_t MASTER_HB_PERIOD_MS = 500;   // HB_0 master heartbeat cadence
 
 struct NodeState {
     bool     alive;
     bool     everSeen;
     uint32_t lastSeenMs;
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
     HeartbeatPayload last;          // last HB payload, surfaced to the host (#86)
     // Cached NodeHealthPayload fields from the node's last HEALTH_n frame (#221 contract):
-    int8_t   dieTempC    = INT8_MIN; // internal die temp °C (INT8_MIN = unseen) — #213
+    int8_t   dieTempC    = DIE_TEMP_UNAVAILABLE; // internal die temp °C, unseen until HEALTH_n — #213
     uint8_t  healthFlags = 0;        // overheat (#213) / degraded (#163) bits
     uint8_t  faultMask   = 0;        // fault source/domain bitmap — reserved #163
     uint8_t  faultId     = 0;        // NodeFaultCode (NodeStatus.h) — #163
+    uint8_t  nodeKind    = 0;        // NodeKind (NodeStatus.h), 0 = unseen/unknown — #344
+    // Firmware version from the node's last READY_n (#295); 0.0.0 = not reported (no READY seen
+    // since the bridge booted, or an empty READY from older firmware). Kept across timeouts.
+    uint8_t  fwMajor     = 0;
+    uint8_t  fwMinor     = 0;
+    uint8_t  fwPatch     = 0;
 #endif
 };
 
@@ -53,42 +59,87 @@ static NodeState      _nodes[MAX_NODE_ID] = {};   // index = nodeId - 1
 static void (*_cbAlive)(uint8_t)          = nullptr;
 static void (*_cbDead)(uint8_t)           = nullptr;
 static uint8_t        _deadCount          = 0;    // tracked nodes currently timed-out (drives WARNING)
-static uint32_t       _lastMasterHbMs     = 0;    // millis() of last HB_0 transmit
-static uint32_t       _lastHealthMs       = 0;    // millis() of last HEALTH_0 transmit (#213)
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
 // ── Node-status reporting (#86) ──────────────────────────────────────────────
 // Surface node presence + health to the host (OpenSkyhawk Client) as DCS-BIOS
 // command messages on a reserved control name. Owned entirely by PanelBridge;
 // SimGateway relays the ASCII verbatim. See NodeStatus.h for the wire format.
 
-// Emit one node's status (proto v2, 26 hex chars):
-//   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId>
-// The last four come from the node's HEALTH_n frame (#221 contract). dieTempC 80 = not-yet-seen;
-// hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163); faultMask stays 0
-// (reserved for future fault-domain bits).
-static void emitNode(uint8_t nodeId, bool present) {
-    const NodeState& ns = _nodes[nodeId - 1];
-    const HeartbeatPayload& hb = ns.last;
-    char hex[27];
-    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X",
+// Emit one status row (proto v4, NODE_STATUS_ROW_BYTES = 17 bytes as 34 hex chars):
+//   _NODE_STATUS <nodeId present flags uptime rxCount esr dieTempC hFlags faultMask faultId nodeKind
+//                 fwMajor fwMinor fwPatch>
+// The next five come from the node's HEALTH_n frame (#221 contract), the last three from its READY_n
+// (#295; 000000 = not reported). DIE_TEMP_UNAVAILABLE + nodeKind
+// 00 = not-yet-seen; hFlags (DEGRADED) + faultId are populated per node by aggregateFaults (#163);
+// faultMask stays 0 (reserved for future fault-domain bits); nodeKind is the board kind (#344).
+// The format string is the row layout: each field's width must match NodeStatusField (NodeStatus.h).
+using NSF = NodeStatusField;
+static_assert((uint8_t)NSF::ID == 0 && (uint8_t)NSF::PRESENT == 1 && (uint8_t)NSF::HB_FLAGS == 2
+              && (uint8_t)NSF::UPTIME == 3 && (uint8_t)NSF::RX_COUNT == 5 && (uint8_t)NSF::ESR == 7
+              && (uint8_t)NSF::DIE_TEMP_C == 9 && (uint8_t)NSF::HEALTH_FLAGS == 10
+              && (uint8_t)NSF::FAULT_MASK == 11 && (uint8_t)NSF::FAULT_ID == 12
+              && (uint8_t)NSF::NODE_KIND == 13 && (uint8_t)NSF::FW_MAJOR == 14
+              && (uint8_t)NSF::FW_MINOR == 15 && (uint8_t)NSF::FW_PATCH == 16
+              && NODE_STATUS_ROW_BYTES == 17,
+              "NodeStatusField moved: update emitRow's snprintf format to match");
+static void emitRow(uint8_t nodeId, bool present, const HeartbeatPayload& hb,
+                    int8_t dieTempC, uint8_t hFlags, uint8_t faultMask, uint8_t faultId,
+                    uint8_t nodeKind, uint8_t fwMajor, uint8_t fwMinor, uint8_t fwPatch) {
+    char hex[2 * NODE_STATUS_ROW_BYTES + 1];
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%04X%04X%04X%02X%02X%02X%02X%02X%02X%02X%02X",
              (unsigned)nodeId, present ? 1u : 0u, (unsigned)hb.flags,
              (unsigned)hb.uptime, (unsigned)hb.rxCount, (unsigned)hb.esr,
-             (unsigned)(uint8_t)ns.dieTempC,
-             (unsigned)ns.healthFlags, (unsigned)ns.faultMask, (unsigned)ns.faultId);
+             (unsigned)(uint8_t)dieTempC, (unsigned)hFlags, (unsigned)faultMask,
+             (unsigned)faultId, (unsigned)nodeKind,
+             (unsigned)fwMajor, (unsigned)fwMinor, (unsigned)fwPatch);
     DcsBios::sendDcsBiosMessage(NODE_STATUS_MSG_NAME, hex);
 }
 
-// Emit the full roster (request response / boot seed): one _NODE_STATUS per alive
-// node, then _NODE_STATUS_END <count> so the host knows the burst is complete and
-// can reconcile (prune nodes absent from it). count=0 = no panels connected.
+// One CAN node's row (nodeId 1–63), from its cached HB_n + HEALTH_n.
+static void emitNode(uint8_t nodeId, bool present) {
+    const NodeState& ns = _nodes[nodeId - 1];
+    emitRow(nodeId, present, ns.last, ns.dieTempC, ns.healthFlags, ns.faultMask, ns.faultId,
+            ns.nodeKind, ns.fwMajor, ns.fwMinor, ns.fwPatch);
+}
+
+// The bridge's own row, GATEWAY_NODE_ID (#344): its heartbeat state now, and the HEALTH_0 it last
+// sent (kind BRIDGE once the first HEALTH_0 has gone out), and the version this build carries (#295).
+// Always present — it is the one reporting.
+static void emitSelf() {
+    const HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(GATEWAY_NODE_ID, 0);
+    const NodeHealthPayload& h = CANProtocol::lastNodeHealth();
+    emitRow(GATEWAY_NODE_ID, true, hb, h.dieTempC, h.flags, h.faultMask, h.faultId, h.nodeKind,
+            OPENSKYHAWK_FW_MAJOR, OPENSKYHAWK_FW_MINOR, OPENSKYHAWK_FW_PATCH);
+}
+
+// Emit the full roster (request response / boot seed): the bridge's own node-0 row, one
+// _NODE_STATUS per alive node, then _NODE_STATUS_END <count> so the host knows the burst is
+// complete and can reconcile (prune nodes absent from it). count includes the node-0 row, so
+// count=1 = bridge only, no other nodes connected.
 static void emitAllNodes() {
-    uint8_t count = 0;
+    emitSelf();
+    uint8_t count = 1;
     for (uint8_t i = 0; i < MAX_NODE_ID; i++)
         if (_nodes[i].alive) { emitNode(i + 1, true); count++; }
     char arg[4];
     snprintf(arg, sizeof(arg), "%u", (unsigned)count);
     DcsBios::sendDcsBiosMessage(NODE_STATUS_END_MSG_NAME, arg);
+}
+
+// Forward one TELEM_n frame to the host, unread (#216):
+//   _NODE_TELEM <nodeId(2 hex)><8 frame bytes, wire order, 16 hex>
+// No cache and no decode — the page byte tells the client the layout, so a new TelemPage needs no
+// bridge change. Contract: NODE_TELEM_* + NodeTelemField in NodeStatus.h.
+static_assert((uint8_t)NodeTelemField::ID == 0 && (uint8_t)NodeTelemField::FRAME == 1
+              && NODE_TELEM_ROW_BYTES == 1 + sizeof(TelemPayload),
+              "NodeTelemField moved: update emitTelem's snprintf format to match");
+static void emitTelem(uint8_t nodeId, const uint8_t* data) {
+    char hex[2 * NODE_TELEM_ROW_BYTES + 1];
+    snprintf(hex, sizeof(hex), "%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+             (unsigned)nodeId, data[0], data[1], data[2], data[3],
+             data[4], data[5], data[6], data[7]);
+    DcsBios::sendDcsBiosMessage(NODE_TELEM_MSG_NAME, hex);
 }
 #endif // PANELBRIDGE_NODE_STATUS
 
@@ -120,7 +171,8 @@ static void sendHidFrame(uint16_t controlId, uint16_t value) {
 
 // Internal helper called by BridgeExportListener — separated for testability.
 void handleDcsBiosExport(uint16_t address, uint16_t value) {
-#ifdef PANELBRIDGE_NODE_STATUS
+    if (address == 0x0000) return;   // the ControlPacket empty-slot sentinel; never carried
+#if PANELBRIDGE_NODE_STATUS
     // Reserved: the host's node-status request — handled by NodeStatusReqListener,
     // never broadcast onto CAN.
     if (address == NODE_STATUS_REQ_ADDR) return;
@@ -280,7 +332,7 @@ static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
         if (wasDead && _deadCount > 0 && --_deadCount == 0)
             STM32Board::setWarning(false);
         if (_cbAlive) _cbAlive(nodeId);
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         emitNode(nodeId, true);   // push presence on dead/unseen → alive (#86)
 #endif
         return true;
@@ -294,7 +346,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     // HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition
     if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODE_ID)) {
         uint8_t nodeId = (uint8_t)(canId - canIdHb(0));
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         if (len >= 8) memcpy(&_nodes[nodeId - 1].last, data, 8);  // cache health for #86 reporting
 #endif
         if (markNodeAlive(nodeId, now)) broadcastSyncReq();
@@ -304,7 +356,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     // HEALTH_1 – HEALTH_63: cache internal die temp + health/fault fields for host reporting (#213).
     // Cache only — HB owns liveness/SYNC, so a health frame never triggers markNodeAlive.
     if (canId >= canIdHealth(1) && canId <= canIdHealth(MAX_NODE_ID)) {
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         if (len >= sizeof(NodeHealthPayload)) {
             uint8_t nodeId = (uint8_t)(canId - canIdHealth(0));
             NodeHealthPayload h;
@@ -314,7 +366,23 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
             ns.healthFlags = h.flags;
             ns.faultMask   = h.faultMask;
             ns.faultId     = h.faultId;
+            // Board kind (#344): push a live delta when it changes — the alive delta went out on
+            // the node's first HB, before any HEALTH_n, with kind 00.
+            if (h.nodeKind != ns.nodeKind) {
+                ns.nodeKind = h.nodeKind;
+                if (ns.alive) emitNode(nodeId, true);
+            }
         }
+#endif
+        return;
+    }
+
+    // TELEM_1 – TELEM_63: paged node telemetry — forwarded to the host unread (#216). Like HEALTH,
+    // never a liveness signal (HB owns that).
+    if (canId >= canIdTelem(1) && canId <= canIdTelem(MAX_NODE_ID)) {
+#if PANELBRIDGE_NODE_STATUS
+        if (len == sizeof(TelemPayload) && data[0] != 0)
+            emitTelem((uint8_t)(canId - canIdTelem(0)), data);
 #endif
         return;
     }
@@ -384,7 +452,23 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
             auto& d = STM32Board::diagSerial();
             d.print(F("[BRIDGE] READY node=")); d.println(nodeId);
         }
+#if PANELBRIDGE_NODE_STATUS
+        // Firmware version (#295): every boot re-announces it, so a reflash is seen at once. Cache
+        // it before markNodeAlive() so an alive delta already carries it; a node that rebooted
+        // inside the heartbeat timeout stays alive, so push the change as its own delta. An empty
+        // READY is older firmware: not reported.
+        NodeState& ns = _nodes[nodeId - 1];
+        ReadyPayload r = {};
+        if (len >= 3) memcpy(&r, data, len < sizeof(r) ? len : sizeof(r));
+        const bool fwChanged = r.fwMajor != ns.fwMajor || r.fwMinor != ns.fwMinor
+                             || r.fwPatch != ns.fwPatch;
+        ns.fwMajor = r.fwMajor;
+        ns.fwMinor = r.fwMinor;
+        ns.fwPatch = r.fwPatch;
+        if (!markNodeAlive(nodeId, now) && fwChanged) emitNode(nodeId, true);
+#else
         markNodeAlive(nodeId, now);
+#endif
         broadcastSyncReq();
         return;
     }
@@ -408,7 +492,7 @@ static void checkNodeTimeouts(uint32_t now) {
             _deadCount++;                   // a tracked node died → WARNING (amber)
             STM32Board::setWarning(true);
             if (_cbDead) _cbDead(nodeId);
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
             emitNode(nodeId, false);   // push removal on alive → dead (#86)
 #endif
         }
@@ -433,12 +517,18 @@ static void onModelTimeChange(char* value) {
     _lastModelTimeSec = sec;
 }
 
-// DCS-BIOS export listener — intercepts 0x8000–0x86FF and batches to CTRL_BCAST.
+// DCS-BIOS export listener — forwards the whole export stream to CTRL_BCAST (#295): every address
+// of whatever aircraft is flying, plus CommonData and the metadata, so the nodes decide what they
+// use. It starts at 0x0002 because a ControlPacket's controlId 0x0000 is the empty-slot sentinel —
+// the one address CAN can't carry (the first two characters of MetadataStart's _ACFT_NAME).
 // ExportStreamListener::firstExportStreamListener (Protocol.cpp) is zero-initialized
 // before any constructors run, so file-scope registration is safe.
+static constexpr uint16_t EXPORT_FIRST_ADDR = 0x0002;
+static constexpr uint16_t EXPORT_LAST_ADDR  = 0xFFFE;
+
 class BridgeExportListener : public DcsBios::ExportStreamListener {
 public:
-    BridgeExportListener() : DcsBios::ExportStreamListener(0x8000, 0x86FF) {}
+    BridgeExportListener() : DcsBios::ExportStreamListener(EXPORT_FIRST_ADDR, EXPORT_LAST_ADDR) {}
     void onDcsBiosWrite(unsigned int address, unsigned int data) override {
         handleDcsBiosExport((uint16_t)address, (uint16_t)data);
     }
@@ -447,7 +537,7 @@ public:
 static BridgeExportListener     _exportListener;
 static DcsBios::StringBuffer<5> _modelTimeBuf(CommonData_MOD_TIME_A, onModelTimeChange);
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
 // Host roster request (#86): the client writes NODE_STATUS_REQ_ADDR on the DCS-BIOS
 // export stream; PanelBridge replies with the full roster. handleDcsBiosExport()
 // drops this address so it is never broadcast onto CAN.
@@ -481,8 +571,8 @@ void setup() {
     CANProtocol::onReceive(onCanRx);
     CANProtocol::start();
     broadcastSyncReq();
-#ifdef PANELBRIDGE_NODE_STATUS
-    emitAllNodes();   // seed the host with the current roster (empty at cold boot) (#86)
+#if PANELBRIDGE_NODE_STATUS
+    emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
 #endif
 }
 
@@ -497,29 +587,12 @@ void loop() {
     uint32_t now = millis();
     checkNodeTimeouts(now);
 
-    // Master heartbeat (HB_0) every 500 ms. Unlike CTRL_BCAST (which only moves when a
-    // DCS export changes), this is an unconditional liveness beacon so PanelGroup nodes
-    // can detect master loss even when the sim is idle/paused.
-    if (now - _lastMasterHbMs >= MASTER_HB_PERIOD_MS) {
-        _lastMasterHbMs = now;
-        HeartbeatPayload hb = CANProtocol::makeHeartbeatPayload(0, 0);
-        CANProtocol::send(canIdHb(0), reinterpret_cast<const uint8_t*>(&hb), sizeof(hb));
-    }
-
-    // Node-health telemetry (HEALTH_0) every 1000 ms — the bridge reports its own internal die temp
-    // + aggregated node fault alongside the PanelGroup nodes (default-on; -DNODE_HEALTH_TELEM=0).
-    // The bridge is a node too; its own FaultSources (e.g. a future host-link watchdog) roll up here.
-#if !defined(NODE_HEALTH_TELEM) || (NODE_HEALTH_TELEM)
-    if (now - _lastHealthMs >= 1000) {
-        _lastHealthMs = now;
-        const char* faultDetail = nullptr;   // never null after aggregateFaults()
-        NodeFaultCode fault = OpenSkyhawk::aggregateFaults(&faultDetail);
-        NodeHealthPayload h = CANProtocol::makeNodeHealthPayload(
-            0, STM32Board::readDieTempC(), fault);
-        CANProtocol::send(canIdHealth(0), reinterpret_cast<const uint8_t*>(&h), sizeof(h));
-        STM32Board::logNodeFaultEdge("BRIDGE", fault, faultDetail);  // edge-log, DiagSerial only (#163)
-    }
-#endif
+    // Node status (#340): HB_0 every 500 ms and HEALTH_0 every 1 s. HB_0 is an unconditional
+    // liveness beacon — unlike CTRL_BCAST, which only moves when a DCS export changes — so nodes
+    // detect master loss even when the sim is idle/paused. The bridge is a node too: its own
+    // FaultSources (e.g. a future host-link watchdog) roll up into HEALTH_0. No master watchdog
+    // runs here (NODE_ID 0 is the master); the bridge keeps no RX count for its heartbeat.
+    CANProtocol::serviceNodeStatus(NodeKind::BRIDGE);
 
     auto& diag = STM32Board::diagSerial();
     while (diag.available()) {
@@ -575,7 +648,7 @@ void testHandleExport(uint16_t address, uint16_t value) {
     handleDcsBiosExport(address, value);
 }
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
 void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
                        uint16_t rxCount, uint16_t esr) {
     HeartbeatPayload hb{ nodeId, flags, uptime, rxCount, esr };
@@ -584,13 +657,17 @@ void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
 }
 
 void testFeedHealth(uint8_t nodeId, int8_t dieTempC,
-                    uint8_t hFlags, uint8_t faultMask, uint8_t faultId) {
-    // Mirrors the HEALTH_n branch of onCanRx: cache only, no liveness change.
+                    uint8_t hFlags, uint8_t faultMask, uint8_t faultId, uint8_t nodeKind) {
+    // Mirrors the HEALTH_n branch of onCanRx: no liveness change; a kind change pushes a delta.
     NodeState& ns = _nodes[nodeId - 1];
     ns.dieTempC    = dieTempC;
     ns.healthFlags = hFlags;
     ns.faultMask   = faultMask;
     ns.faultId     = faultId;
+    if (nodeKind != ns.nodeKind) {
+        ns.nodeKind = nodeKind;
+        if (ns.alive) emitNode(nodeId, true);
+    }
 }
 
 void testRequestNodeStatus() { emitAllNodes(); }

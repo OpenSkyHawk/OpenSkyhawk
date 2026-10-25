@@ -2,7 +2,6 @@
  * @file LED.h
  * @brief Digital LED output for OpenSkyhawk PanelGroup nodes.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -32,7 +31,7 @@ namespace OpenSkyhawk {
  * Pin is driven to the off state during configure() and remains off until a
  * CTRL_BCAST packet with a matching controlId is received.
  *
- * Works with GPIO and MCP23017 PinRefs. ADS1115 PinRefs are input-only —
+ * Works with GPIO, MCP23017, and ShiftBus '595 PinRefs. ADS1115 PinRefs are input-only —
  * do not assign one to an LED.
  */
 class LED : public OutputBase {
@@ -42,7 +41,7 @@ public:
      * @param controlId  DCS-BIOS output address (A_4E_C_* from A4EC_OutputIds.h).
      * @param mask       Bitmask: (value & mask) != 0 → on; == 0 → off.
      *                   Use A_4E_C_*_AM constants, or 0xFFFF for whole-word outputs.
-     * @param pin        GPIO or MCP23017 PinRef for the LED pin.
+     * @param pin        GPIO, MCP23017, or ShiftBus '595 PinRef for the LED pin.
      * @param reverse    false (default): pin HIGH = on (current-source wiring).
      *                   true: pin LOW = on (current-sink, anode to VCC).
      */

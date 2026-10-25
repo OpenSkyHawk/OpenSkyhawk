@@ -15,7 +15,7 @@
 static constexpr uint16_t CTRL_ID = 0x567A;
 
 // minRaw = 1000, maxRaw = 60000 → a sub-range calibration.
-OpenSkyhawk::AnalogInput gAna(CTRL_ID, PinRef(PA1), /*reverse=*/false, 1000, 60000);
+OpenSkyhawk::AnalogInput gAna(CTRL_ID, PinRef(PA1), { .minRaw = 1000, .maxRaw = 60000 });
 
 void setup() {
     STM32Board::setDebug(true);

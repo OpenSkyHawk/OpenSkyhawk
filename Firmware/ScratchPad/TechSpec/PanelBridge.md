@@ -227,7 +227,8 @@ namespace PanelBridge {
      * @brief Run PanelBridge work that is not owned by DcsBios::loop().
      *
      * Drains CANProtocol RX, dispatches EVT packets, services CANProtocol batching deadlines,
-     * checks node heartbeat timeouts, and handles DiagSerial TEST_SEQ trigger bytes.
+     * checks node heartbeat timeouts, sends its own HB_0 / HEALTH_0 (kind BRIDGE, #344) through
+     * CANProtocol::serviceNodeStatus() (#340), and handles DiagSerial TEST_SEQ trigger bytes.
      */
     void loop();
 
@@ -353,23 +354,49 @@ The sketch then calls `DcsBios::setup()`.
 
 PanelBridge uses a pass-all CAN filter because the valid receive ranges cannot be expressed
 as one STM32 CAN mask. The heartbeat address family is still `canIdHb(n) = 0x100 + n`;
-`HB_0` at `0x100` is reserved but not transmitted, and `HB_1`-`HB_63` are child-node
-liveness frames. The RX handler validates IDs in software:
+`HB_0` at `0x100` is PanelBridge's own master heartbeat (sent every 500 ms through
+`CANProtocol::serviceNodeStatus()`, watched by every other node — #93/#340), and `HB_1`-`HB_63`
+are child-node liveness frames. The RX handler validates IDs in software:
 
 | Range | Accepted by PanelBridge | Action |
 |-------|--------------------------|--------|
 | `0x101`-`0x13F` | `HB_1`-`HB_63` | Update node heartbeat/liveness |
+| `0x141`-`0x17F` | `HEALTH_1`-`HEALTH_63` | Cache die temp + health/fault + `nodeKind` for `_NODE_STATUS` (not liveness); push a `_NODE_STATUS` delta when an alive node's kind changes (#344) |
+| `0x181`-`0x1BF` | `TELEM_1`-`TELEM_63` | Forward unread as `_NODE_TELEM` (#216; not liveness; page 0 / short dropped) |
 | `0x201`-`0x23F` | `EVT_1`-`EVT_63` | Dispatch each non-null ControlPacket slot |
 | `0x301`-`0x33F` | `ECHO_1`-`ECHO_63` | Consume TEST_SEQ RTT diagnostic response |
 | `0x401`-`0x43F` | `READY_1`-`READY_63` | Mark node ready and broadcast `SYNC_REQ` |
 
-All other IDs are discarded silently. `HB_0` (`0x100`) is not accepted as a child-node
-heartbeat and is not transmitted by PanelBridge.
+All other IDs are discarded silently. `HB_0` (`0x100`) is PanelBridge's own transmission, never
+a child-node heartbeat — one that does arrive is another board on node 0, which
+`CANProtocol::drain()` flags as a duplicate NODE_ID before `onCanRx` ignores it (#344).
+
+### Node-status reporting (#86, proto v3 #344, v4 #295)
+
+Behind `PANELBRIDGE_NODE_STATUS`, which `PanelBridge.h` defaults to `1` (#295; `-DPANELBRIDGE_NODE_STATUS=0` compiles it out — code tests it with `#if`, never `#ifdef`). `NodeState` caches each node's last `HeartbeatPayload`, its
+`HEALTH_n` fields (`dieTempC`, `healthFlags`, `faultMask`, `faultId`, `nodeKind` — not-yet-seen:
+`DIE_TEMP_UNAVAILABLE` / `0`) and the firmware version from its last `READY_n` (`fwMajor`,
+`fwMinor`, `fwPatch` — `0.0.0` = not reported; an empty READY from older firmware also reads 0.0.0;
+kept across a timeout). One `emitRow()` formats a 34-hex `_NODE_STATUS` row — its `snprintf`
+format is the `NodeStatusField` layout, held to it by a `static_assert`; `emitNode(id, present)`
+feeds it from the cache and `emitSelf()` from the bridge's own state — `makeHeartbeatPayload(GATEWAY_NODE_ID, 0)`
+plus `CANProtocol::lastNodeHealth()` (its last `HEALTH_0`, kind `BRIDGE`) and its own
+`OPENSKYHAWK_FW_*` version. `emitAllNodes()` (boot
+seed + host request) sends the node-0 row, every alive node, then `_NODE_STATUS_END <count>` with
+node 0 counted. Live deltas: alive/dead transitions, a `nodeKind` change on an alive node, and a
+`READY_n` that changes an alive node's version (a reflash inside the heartbeat timeout — the READY
+branch caches the version before `markNodeAlive()`, so an alive delta already carries it).
+Contract: FirmwarePlan `04-dcs-bios-integration.md`.
+
+Test hooks (`PANELBRIDGE_TEST`): `testFeedHeartbeat`, `testFeedHealth(nodeId, dieTempC, hFlags,
+faultMask, faultId, nodeKind)` (mirrors the `HEALTH_n` branch, incl. the kind delta),
+`testRequestNodeStatus`, `testCheckTimeouts`.
 
 ### READY and Recovery SYNC_REQ
 
 READY is a signal that a PanelGroup completed its boot-time input poll and can answer a
-full-state request. READY carries no input data. On READY, PanelBridge updates `lastSeenMs`,
+full-state request. READY carries no input data — its payload is the node's firmware version
+(`ReadyPayload`, #295), cached for node-status reporting. On READY, PanelBridge updates `lastSeenMs`,
 marks the node alive if needed, and broadcasts `SYNC_REQ`.
 
 Heartbeat recovery uses the same mechanism. If a node was unseen or marked dead and later
@@ -389,13 +416,16 @@ PanelBridge owns an internal DCS-BIOS listener/adapter. The adapter is private t
 class BridgeExportListener : public DcsBios::ExportStreamListener {
 public:
     BridgeExportListener()
-        : DcsBios::ExportStreamListener(0x8000, 0x86FF) {}
+        : DcsBios::ExportStreamListener(EXPORT_FIRST_ADDR, EXPORT_LAST_ADDR) {}   // 0x0002, 0xFFFE
 
     void onDcsBiosWrite(unsigned int address, unsigned int data) override;
 };
 ```
 
-For each DCS-BIOS export update in the cockpit output address range (`0x8000`-`0x86FF`):
+For each DCS-BIOS export update, at any address the stream carries (#295, D24) — the whole stream
+is forwarded, whatever aircraft is flying; the nodes decide what they use. Address `0x0000` is
+skipped (the listener starts at `0x0002`, and `handleDcsBiosExport()` drops it): it is the
+`ControlPacket` empty-slot sentinel, so CAN can't carry it.
 
 1. Build `ControlPacket{ address, value }`.
 2. Call `CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, packet)`.

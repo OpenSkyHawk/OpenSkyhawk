@@ -26,10 +26,12 @@ assignments (→ 08), HID frame format (→ 03).
    `0x8000 <= controlId <= 0x86FF` → `sendDcsBiosMessage()` → ASCII on UART → SimGateway → USB CDC;
    `controlId < 0x8000` → HID frame → SimGateway → USB HID report. If no process is reading the
    USB ports, the host silently discards the data — no special handling needed.
-7. Send `READY` frame (`canIdReady(NODE_ID)` = `0x400 + NODE_ID`) — signals PanelBridge
-   that the initial input poll and EVT burst are complete, and that this node is ready to
-   answer a full-state `SYNC_REQ`.
-8. Begin heartbeat timer (first HB sent 500 ms after boot).
+7. Send `READY` frame (`CANProtocol::sendReady()` → `canIdReady(NODE_ID)` = `0x400 + NODE_ID`) —
+   signals PanelBridge that the initial input poll and EVT burst are complete, and that this node
+   is ready to answer a full-state `SYNC_REQ`. Its payload is the node's firmware version
+   (`ReadyPayload`, #295).
+8. Heartbeat begins — `CANProtocol::serviceNodeStatus()` arms its timers on its first call, in
+   the first `loop()` after boot, so the first HB goes out ~500 ms after boot completes (#340).
 
 ---
 
@@ -68,7 +70,9 @@ and ready to answer a full-state request. PanelBridge logs the READY event, upda
 `lastSeenMs` like a heartbeat, marks the node alive if needed, and broadcasts `SYNC_REQ`.
 
 READY does not carry input state itself. The state snapshot is the EVT burst emitted when the
-PanelGroup receives the following `SYNC_REQ`.
+PanelGroup receives the following `SYNC_REQ`. It carries the node's firmware version instead
+(#295): PanelBridge caches it per node for `_NODE_STATUS` and pushes a delta when an alive node's
+version changes. An empty READY (older firmware) reads as not reported.
 
 ---
 
@@ -103,11 +107,15 @@ In all timelines, PanelBridge eventually receives all current input states.
 
 ## SimGateway Boot Sequence
 
-1. Set USB identity (VID/PID, product strings) — see `03-uart-usb-hid-protocol.md`.
-2. Initialise the TinyUSB HID descriptor and enumerate; load axis calibration from flash.
-3. Init UART @ 250000 to PanelBridge.
-4. `SimGateway::setup(Serial1)` — enters relay mode: raw DCS-BIOS bytes forwarded
-   USB CDC ↔ UART; HID frame demultiplexer armed on UART RX.
+1. Record why this boot happened (power-on / watchdog / recovery reboot) from the watchdog
+   scratch registers, for `DIAG` (#355).
+2. Set USB identity (VID/PID, product strings) — see `03-uart-usb-hid-protocol.md`.
+3. Init UART @ 250000 to PanelBridge, with a 1 KB software RX queue.
+4. Load axis calibration from flash; initialise the TinyUSB HID descriptor and enumerate.
+5. `SimGateway::setup(Serial1)` returns — relay mode: DCS-BIOS export bytes forwarded
+   USB CDC → UART, whole lines UART → USB CDC; HID frame demultiplexer armed on UART RX.
+6. The first `SimGateway::loop()` call arms the 3 s hardware watchdog and starts the USB recovery
+   ladder (`07-simgateway-api.md#link-health-and-self-recovery`).
 
 SimGateway has no boot handshake — it is stateless with respect to the CAN cluster.
 

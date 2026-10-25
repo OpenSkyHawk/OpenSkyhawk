@@ -35,6 +35,7 @@ static const StepperConfig DRIFT_MOTOR = {
     /* deadband    */ 1,
     /* autoRecal   */ false,
     /* recalMs     */ 0,
+    0,   // rangeSteps: 0 = stepsPerRev, as before the #295 default (945)
 };
 StepperMotor driftMotor(PinRef(PA0), PinRef(PA1), PinRef(PA4), PinRef(PA5), DRIFT_MOTOR);
 

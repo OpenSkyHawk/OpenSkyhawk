@@ -20,7 +20,7 @@ using namespace OpenSkyhawk;
 
 RotaryEncoder  destLat (DCSIN_DEST_LAT_KNB,     PinRef(PA8), PinRef(PB5), EncoderStepsPerDetent::Four, EncoderMode::Rel, /*step=*/1600);
 RotaryEncoder  freq10  (DCSIN_ARC51_FREQ_10MHZ, PinRef(PB3), PinRef(PB4), EncoderStepsPerDetent::Four, EncoderMode::Dir);
-AnalogInput    arcVol  (DCSIN_ARC51_VOL,  PinRef(PA2), /*reverse=*/false, 0, 65535, /*hysteresis=*/1024);
+AnalogInput    arcVol  (DCSIN_ARC51_VOL,  PinRef(PA2));   // DCSIN → hysteresis 1024 by default
 AnalogMultiPos arcMode (DCSIN_ARC51_MODE, PinRef(PA3), 4);
 
 void setup() {

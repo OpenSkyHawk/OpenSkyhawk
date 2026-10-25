@@ -50,8 +50,8 @@ not over a second USB link.
 load. The failure in [D1](#d1-simgateway-exists-because-stm32-usb-cant-take-the-load) was
 specifically the STM32's USB peripheral, not its serial throughput. A UART is simple,
 deterministic, has no enumeration or driver surface, and lets SimGateway stay a dumb byte
-relay: any byte ≤ 0x7F is forwarded straight to USB CDC; HID frames are tagged with
-high-bit magic bytes so they're structurally impossible to confuse with DCS-BIOS ASCII.
+relay: DCS-BIOS text is forwarded straight to USB CDC, one whole line at a time; HID frames are
+tagged with high-bit magic bytes so they're structurally impossible to confuse with DCS-BIOS ASCII.
 
 ---
 
@@ -282,10 +282,15 @@ can be merged by accident.
   wire format, so a mixed set has no meaning. Every `Firmware/Libraries/*/library.json` carries
   the same version.
 - Commits that touch only `Firmware/ScratchPad/` (the spec) don't count toward a release.
-- **Before 1.0, a breaking change bumps the minor** version; 1.0 freezes the sketch API and the
-  wire format.
+- **A breaking change bumps the major version**, as Conventional Commits defines it (`!` or a
+  `BREAKING CHANGE:` footer). The breaking changes from the v1.0 freeze review (#295) made the
+  next release 1.0, which freezes the sketch API and the wire format.
 - Third-party libraries stay declared as version ranges; each release records the versions it
   resolved to as a `dependencies.txt` release asset, rather than pinning them.
+- **Each release carries prebuilt firmware**, built by CI from the release tag, for the boards
+  that need no per-build setup: the Gateway (both halves) and the production panels in
+  `Firmware/Panels/`. Tools get one `.bin` / `.uf2` per board and a `manifest.json` (sizes,
+  SHA-256); people get one zip with a folder per board, `.elf` files and flashing READMEs.
 
 ### Hardware
 

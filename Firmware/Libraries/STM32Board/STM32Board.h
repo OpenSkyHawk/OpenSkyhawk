@@ -11,7 +11,6 @@
  *   - UART : USART1 PA9 TX / PA10 RX @ 115200 (diagnostic tap)
  *   - CAN  : SN65HVD230 on PA11 (RX) / PA12 (TX)
  *
- * @version 0.4.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -20,7 +19,7 @@
 
 #include <Arduino.h>
 #include <stm32f1xx_hal_can.h>
-#include <NodeStatus.h>  // NodeFaultCode for logNodeFaultEdge (#163)
+#include <NodeStatus.h>  // NodeFaultCode for logNodeFaultEdge (#163), DIE_TEMP_UNAVAILABLE
 
 // CanStatus is owned by CANProtocol; forward-declared here so onCanStatus()
 // can accept it without pulling the full CANProtocol header into every user.
@@ -70,9 +69,11 @@ namespace STM32Board {
     void setDebug(bool on);
 
     /**
-     * @brief Drive LED animations. Call once per loop() iteration.
+     * @brief Drive LED animations. Called once per loop() iteration by the node library.
      *
      * Advances blink state using millis(). Fully non-blocking.
+     * @note Library-internal: PanelGroup / PanelBridge / PduNode call it from their loop().
+     *       Not sketch API — not covered by the compatibility policy (#295).
      */
     void tick();
 
@@ -95,6 +96,8 @@ namespace STM32Board {
      * setWarning(false) once the condition recovers.
      *
      * @param on True to raise WARNING (default); false to clear it.
+     * @note Library-internal: raised by CANProtocol and PanelBridge.
+     *       Not sketch API — not covered by the compatibility policy (#295).
      */
     void setWarning(bool on = true);
 
@@ -108,6 +111,8 @@ namespace STM32Board {
      * if data is still flowing.
      *
      * @param active True to (re)assert the data-flowing link; false to drop it immediately.
+     * @note Library-internal: driven by PanelGroup and PanelBridge.
+     *       Not sketch API — not covered by the compatibility policy (#295).
      */
     void setLinkActive(bool active);
 
@@ -127,6 +132,8 @@ namespace STM32Board {
      * clock, so callers MUST NOT drive the bus — a faulted node transmitting at the
      * wrong rate corrupts every other frame. CANProtocol::start() consults this and
      * comes up in listen-only (silent) mode instead. Latched once at boot; read-only.
+     * @note Library-internal: read by CANProtocol for node health.
+     *       Not sketch API — not covered by the compatibility policy (#295).
      */
     bool clockFault();
 
@@ -163,8 +170,10 @@ namespace STM32Board {
      * @note UNCALIBRATED: no factory trim → ~±few °C absolute; measures DIE temperature
      *       (not ambient) with a self-heat offset. Use for relative trend / overheat
      *       flagging, not precise ambient measurement.
-     * @return Die temperature in whole °C, or INT8_MIN if the internal channels are
-     *         unavailable on this variant.
+     * @return Die temperature in whole °C, or DIE_TEMP_UNAVAILABLE (NodeStatus.h) if the internal
+     *         channels are unavailable on this variant.
+     * @note Library-internal: read by CANProtocol for HEALTH_n.
+     *       Not sketch API — not covered by the compatibility policy (#295).
      */
     int8_t readDieTempC();
 
@@ -174,6 +183,8 @@ namespace STM32Board {
      * @note Uses the STM32F103 typical Vrefint of 1.20 V (the F103 has no VREFINT_CAL
      *       factory value), so absolute accuracy is limited; good for relative trend.
      * @return Vdd in millivolts, or 0 if the internal reference is unavailable.
+     * @note Library-internal: a diagnostic for the node libraries.
+     *       Not sketch API — not covered by the compatibility policy (#295).
      */
     uint16_t readVddMv();
 
@@ -191,6 +202,8 @@ namespace STM32Board {
      * @param tag    Short node tag for the log line, e.g. "NODE" or "BRIDGE".
      * @param fault  The node's current aggregated NodeFaultCode (from OpenSkyhawk::aggregateFaults()).
      * @param detail That fault's faultDetail() (non-null; ignored when fault == NONE).
+     * @note Library-internal: used by the node-status service.
+     *       Not sketch API — not covered by the compatibility policy (#295).
      */
     void logNodeFaultEdge(const char* tag, NodeFaultCode fault, const char* detail);
 

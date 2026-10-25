@@ -82,12 +82,38 @@ the rest of the cockpit and its harness.
 - **The PSU's own OCP protects the PSU, not your harness** — a single-rail ATX only trips at tens
   of amps, long after a thin lead would cook. The per-zone fuse is what actually protects the
   wiring.
-- A planned **power-distribution CAN node** adds live per-console current telemetry and active
-  eFuse breaking **on top of** — not instead of — these baseline fuses.
+- The **power-distribution node (PDU)** sits at each console's injection point, holds that
+  console's fuses, and reports live telemetry **on top of** them — it monitors, it doesn't break
+  the circuit. See *Monitoring — the PDU node* below.
 
 !!! note "Exact values live in the hardware source"
     Fuse ratings, trace widths, and injection copper are specified in the base-boards hardware
     source; this page is the overview.
+
+## Monitoring — the PDU node
+
+Each console's PDU measures what it feeds: the 12 V and 5 V rail voltage, the current through each
+fuse, and the board temperature. It reports them over CAN about once a second, and at once when
+something changes — a rail sagging below or rising above its limits, a current near the fuse
+rating, a blown 12 V fuse, or the board running hot. Those faults also turn the node amber in the
+host app's node list. Logging a console through idle, startup, full lighting and its peaks shows
+its real load, so fuse ratings can be sized from data rather than estimates.
+
+Each PDU is calibrated once at bring-up, over its debug serial port, with a multimeter reading of
+its 3.3 V rail and the load disconnected. The calibration is stored on the board and survives
+firmware updates. The board itself, its fuses and the bring-up steps are on
+[Power Distribution Unit](../hardware/pdu.md).
+
+!!! warning "Wiring assumptions the PDU relies on"
+    - **Power never chains past a PDU.** A console's downstream harness must not feed another
+      PDU's console. A blown fuse then leaves that console's rail dead, which is how the PDU
+      detects it — back-feed from a neighbour would hide the blown fuse and split the current
+      readings.
+    - **A blown 5 V fuse takes its own PDU offline**, because the PDU runs from the fused 5 V. The
+      host app shows that node going offline, not a fuse alert.
+    - **The Gateway/Bridge head node is powered from one of the PDUs.** If its PDU loses 5 V, the
+      head node goes down with it and every node appears offline at once. When the whole cockpit
+      drops off, check the PDU fuses first.
 
 ## Cross-tier notes
 

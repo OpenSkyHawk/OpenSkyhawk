@@ -2,7 +2,6 @@
  * @file Dimmer.h
  * @brief PWM backlight / dimmer output for OpenSkyhawk PanelGroup nodes.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -62,7 +61,8 @@ public:
      * @brief Configure the output pin and drive duty to 0.
      *
      * Called by PanelGroup::setup() after chip.init(). Requires a direct GPIO on a timer
-     * channel; otherwise logs on DiagSerial and disables the output (no writes at all).
+     * channel; otherwise disables the output (no writes at all) and logs on DiagSerial when
+     * STM32Board::setDebug(true) is set.
      * On success the pin becomes an output at duty 0, so the zone stays dark until the first
      * matching CTRL_BCAST.
      */

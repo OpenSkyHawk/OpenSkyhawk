@@ -43,7 +43,7 @@ void setup() {
 
     // Emit boot sequence tail (no expanders/ADCs, no inputs for EVT burst)
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
-    CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    CANProtocol::sendReady();
     // At 500 kbps, a CAN frame takes ~100 µs to complete and appear in FIFO0.
     // delay(2) ensures the hardware loopback completes before drain() polls FIFO0.
     delay(2);

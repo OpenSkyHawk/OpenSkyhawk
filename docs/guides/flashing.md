@@ -43,21 +43,21 @@ PlatformIO drives the probe directly (STM32CubeProgrammer is optional). See
 
 ## RP2040 (SimGateway) — USB
 
-No ST-Link needed, but **put the board into BOOTSEL by hand first**: hold BOOTSEL while plugging
-it in (or while tapping RESET), and wait for the `RPI-RP2` drive to appear. Then either:
+No ST-Link needed — the board flashes over the same USB cable it runs on. Either:
 
-- **From PlatformIO:** `pio run -t upload`, or
-- **By hand:** drag the built `.uf2` onto the `RPI-RP2` drive.
+- **From PlatformIO:** `pio run -t upload`. PlatformIO resets the board into its bootloader by
+  itself (the 1200-baud touch, which the Adafruit TinyUSB library in every SimGateway build
+  handles), then flashes it.
+- **By hand:** hold BOOTSEL while plugging the board in (or while tapping RESET), wait for the
+  `RPI-RP2` drive, and drag the `.uf2` onto it.
 
-!!! warning "`pio run -t upload` cannot reset the board for you"
-    Every SimGateway project builds with `-DUSE_TINYUSB`, which replaces the Pico core's USB
-    stack — and the 1200-baud-touch auto-reset goes with it. Without a manual BOOTSEL,
-    `picotool` finds no device in bootloader mode and the upload fails.
+!!! warning "Upload can't find the board?"
+    Something is holding the CDC port open. Close SkyHawkClient, serial monitors, and any
+    browser HID/serial page before flashing — an orphaned Electron process is enough to keep the
+    port claimed; check with `lsof /dev/cu.usbmodem*`.
 
-    Anything holding the CDC port open also blocks the upload — close SkyHawkClient, serial
-    monitors, and any browser HID/serial page before flashing. An orphaned Electron process
-    is enough to keep the port claimed; check with `lsof /dev/cu.usbmodem*` if BOOTSEL alone
-    doesn't fix it.
+    The automatic reset needs the running firmware to answer on USB. If the board's firmware
+    hangs before USB comes up, put it into BOOTSEL by hand and run the upload again.
 
 ## After flashing
 

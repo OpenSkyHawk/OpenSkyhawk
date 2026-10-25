@@ -104,3 +104,4 @@ bus.
   [Connector & Harness Guide](connectors.md), [PCB Design Rules](pcb-design-rules.md)
 - **How the head node fits the system:** [Architecture overview](../architecture/index.md),
   [SimGateway](../architecture/sim-gateway.md)
+- **The per-console power board** built on the same core: [Power Distribution Unit](pdu.md)

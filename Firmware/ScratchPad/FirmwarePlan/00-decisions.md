@@ -114,7 +114,8 @@ change — this is not tolerable.
 **Rationale:** DCS-BIOS ASCII text commands use only printable ASCII + LF (all bytes ≤ 0x7F).
 `0xAA` and `0x55` both have bit 7 set, making collision with DCS-BIOS bytes structurally
 impossible. No parser state machine needs to be maintained for the common case — any byte
-≤ 0x7F is forwarded immediately to USB CDC.
+≤ 0x7F is forwarded immediately to USB CDC. *(Superseded in part by D20: the host-bound side now
+forwards whole lines rather than single bytes.)*
 
 **Affects:** `03-uart-usb-hid-protocol.md`.
 
@@ -128,7 +129,7 @@ impossible. No parser state machine needs to be maintained for the common case �
 |------------|--------|
 | `CTRL_BCAST` DCS output broadcasts | Drop stale queued state and retain the newest frame. Coalesce by `controlId` where practical. |
 | `EVT_n` input events | Bounded retry: keep the event for up to 3 send attempts, then drop it and increment the `DIAG_ERR` TX drop counter. Never build an unbounded backlog. |
-| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. |
+| `HB_n` heartbeat | Drop stale heartbeat; the next heartbeat replaces it. *(As built, heartbeats — and the later `HEALTH_n` / `TELEM_n` — take the same bounded retry as event frames; only `CTRL_BCAST` coalesces. See `02-can-protocol.md`.)* |
 | `READY_n`, `SYNC_REQ`, `TEST_SEQ`, `ECHO_n` | Bounded retry up to 3 attempts, then drop and increment the `DIAG_ERR` TX drop counter. |
 
 **Rationale:** output broadcasts are state snapshots; the newest value is always more useful
@@ -217,6 +218,11 @@ event that may not arrive.
 
 ## D12 — HB_0 is reserved but not transmitted
 
+> **Superseded by #93 (2026-06-17).** PanelBridge now transmits `HB_0` every 500 ms as an
+> unconditional master-liveness beacon, and every other node raises WARNING when it stops — see
+> `08-hardware-firmware-contracts.md`. Since #340 the sending and the watchdog both live in
+> `CANProtocol::serviceNodeStatus()`. The text below is kept as the original record.
+
 **Decision:** `canIdHb(0)` (`0x100`) remains reserved by the CAN ID formula for PanelBridge,
 but PanelBridge does not transmit a master heartbeat in normal firmware.
 
@@ -235,7 +241,7 @@ CAN/DCS traffic.
 ch17 internally to reference the reading to Vdd) and reports `dieTempC` on a **new dedicated
 `HEALTH_n` frame** (`0x140+n`, 1000 ms, default-on). It is **not** folded into `HB_n`. Vdd is
 measured but **not transmitted** — per-node rail voltage is weak signal on a regulated bus and is
-covered properly by the PDU's INA226 power telemetry (#202). The overheat flag / status-LED
+covered properly by the PDU's power telemetry (`TELEM_n`, #216; INA180A2 current sense, #202). The overheat flag / status-LED
 WARNING is computed only when a build defines `NODE_OVERHEAT_C`; the default build ships pure
 telemetry with no trip point. The frame is the shared node-health contract (#221): temperature
 (#213) and degraded-state (#163) each own their own fields within the fixed 8 bytes.
@@ -377,3 +383,255 @@ INC/DEC for exactly those knobs.
 **Affects:** `05-panelgroup-api.md`, `10-implementation-plan.md`, TechSpec
 (`RotaryAcceleratedEncoder`, `AngleSensor`, `AngleSensorInput`, `AnalogOutput`, `Dimmer`,
 `IntegerOutput`, `SwitchWithCover2Pos`; `RotarySwitch` removed), `docs/firmware/control-types.md`.
+
+---
+
+## D17 — Node status traffic is owned by CANProtocol, not by each node library (#340)
+
+**Decision:** The duties every node owes the bus — `HB_n` every 500 ms, `HEALTH_n` every 1000 ms
+(with the fault edge log and the opt-in overheat WARNING), and the master-loss watchdog on `HB_0` —
+run in one place, `CANProtocol::serviceNodeStatus()`, which each node calls once per `loop()`.
+PanelGroup and PanelBridge no longer carry their own copies.
+
+**Rationale:**
+- *They were copies, not choices.* Searching the history found no recorded reason for the heartbeat
+  living in PanelGroup / PanelBridge: it came with the 2026-05-21 library split of the prototype loop,
+  `HEALTH_n` (#213) was added beside it in both places, and the `HB_0` watchdog (#93) went into
+  PanelGroup because PanelGroup was then its only consumer.
+- *A third node type made the cost real.* The PDU monitoring node (#216) has no inputs or outputs.
+  It needs exactly this plumbing and nothing else from PanelGroup; a third copy, or a dependency on
+  the panel library, would both be wrong.
+- *CANProtocol is the lowest layer that can host it.* STM32Board sits below CANProtocol
+  (`CANProtocol` calls `STM32Board::canHandle()`), so STM32Board cannot send frames without a
+  circular dependency. CANProtocol already builds both payloads and already handles the other
+  node-generic frames in `drain()` (`SYNC_REQ`, the `TEST_SEQ` echo).
+- *Behaviour is preserved, timing included.* The service arms its timers on its first call — the
+  first `loop()` after `setup()` — so the first `HB_n` still goes out ~500 ms after boot completes
+  (09 step 8), as PanelGroup's old step-8 arming did; `HB_0` is still passed to `onReceive()` after the watchdog
+  stamps it. The move also removes a latent #225-pattern false timeout in the old PanelGroup
+  watchdog, which compared a `now` sampled *before* `drain()` against an `HB_0` stamped *during* it.
+
+**Not moved:** node-domain work stays where it is — PanelGroup's `rxCount` (accepted `CTRL_BCAST`),
+`READY_n`, input/output dispatch and `SYNC_REQ` handling; PanelBridge's node tracking.
+
+**Affects:** `02-can-protocol.md`, `06-panelbridge-api.md`, `08-hardware-firmware-contracts.md`,
+`09-startup-resync-diagnostics.md`, `11-open-issues.md`, TechSpec (`CANProtocol`, `PanelGroup`,
+`PanelBridge`, `STM32Board`), `docs/architecture/can-bus.md`.
+
+---
+
+## D18 — PDU telemetry on a paged TELEM_n frame, forwarded unread (#216)
+
+**Decision:** node telemetry beyond generic health travels on one new per-node frame family,
+`TELEM_n = 0x180 + n`, whose byte 0 is a global, append-only `TelemPage` naming the layout of the
+other seven bytes. PanelBridge forwards every `TELEM_n` frame to the host **unread** as
+`_NODE_TELEM <nodeId><8 bytes>`, versioned on its own (`NODE_TELEM_PROTO_VERSION`) so `_NODE_STATUS`
+stays at v2. The first pages belong to the PDU monitoring node: `PDU_RAIL_12V`, `PDU_RAIL_5V`,
+`PDU_STATUS`, sent one frame per second in rotation plus rate-limited edges on any flag change.
+
+**Rationale:**
+- *Layer on HEALTH_n, don't duplicate it.* `HEALTH_n` already is the generic all-node health frame
+  (die temp, degraded, faultId). PDU rail faults reach it through the FaultSource registry (D14) like
+  any fault; only the rail values and their detail flags need a new frame.
+- *A page byte, not fixed IDs.* Per-node ID blocks cost 64 IDs each, and the original proposal's
+  `0x700 + n` had meanwhile gone to `EVT_ACTION_n` (#116). One family with a page byte keeps the ID
+  map small and lets the bridge stay ignorant of layouts — a new page needs no bridge change.
+- *Engineering units on the node.* The PDU holds its own per-board calibration, so it sends mV / mA /
+  0.1 °C; the bridge forwards bytes and the client needs no per-board knowledge. Raw ADC counts stay
+  on DiagSerial for bring-up.
+- *One frame per second.* Matching the `HEALTH_n` rate keeps `_NODE_TELEM` traffic to the host — and
+  the DCS relay, which receives every device line — low (about 3 messages/s for three PDUs), and the
+  CAN load negligible (~0.08 %). Edge sends make faults immediate anyway, where the 5 s roster poll
+  would delay them.
+- *VDDA: nominal until anchored.* The F103's Vrefint is untrimmed (1.16–1.24 V, ±~3 %), a worse
+  reference than the AMS1117's ±1–2 % nominal, so an uncalibrated PDU assumes 3300 mV; a one-time
+  `CAL VDDA <mV>` (DMM on the 3V3 rail) stores this chip's Vrefint, after which VDDA tracks it.
+
+**Affects:** `02-can-protocol.md`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`,
+`08-hardware-firmware-contracts.md`, `10-implementation-plan.md`, TechSpec (`CANProtocol`,
+`NodeStatus`, `PanelBridge`, `PowerMonitor`), `docs/architecture/can-bus.md`, `docs/architecture/power.md`.
+
+---
+
+## D19 — Every board announces its kind; nodes detect a duplicate NODE_ID (#344)
+
+**Decision:** `HEALTH_n` byte 5 (reserved until now) carries a `NodeKind` — `0x00` unknown, `0x01`
+panel group, `0x02` PDU, `0x03` bridge, append-only in `NodeStatus.h` — set by the board's firmware
+role: `serviceNodeStatus(kind, …)` takes it as a required argument and each node library passes its
+own. PanelBridge caches it and forwards it in `_NODE_STATUS` **v3** (28 hex), together with a node-0
+row for itself (its heartbeat state + its own `HEALTH_0`, kind bridge), and pushes a delta when an
+alive node's kind changes. Separately, every node filters its own `HB_n`; a frame on it raises
+`NodeFaultCode::DUPLICATE_NODE_ID`, ahead of every `FaultSource`, clearing 3 s after the last
+foreign frame.
+
+**Rationale:**
+- *The ID is not a type.* A PDU can take any `NODE_ID`, and silence proves nothing (a panel group
+  sends no telemetry), so the client had no positive signal for a panel group and couldn't let one
+  be adopted. Only the board's own firmware knows what it is.
+- *A required argument, from the library.* Sketches never call `serviceNodeStatus()` — the node
+  library does — so the library is the role. Making `kind` required means a new node library won't
+  compile until it says what it is; nothing ambiguous needs a per-sketch override today.
+- *Byte 5 is backward-safe.* Pre-#344 firmware already sends 0 there, which reads as unknown — an old
+  node stays un-adoptable until re-flashed, which is intended. The proto bump makes a v2 client fail
+  loudly instead of misreading 28 hex as 26.
+- *The bridge reports itself.* Every board reports, for consistency; the bridge row is the client's
+  own link, never a new node. The bridge stays on node 0 — the master address every node watches.
+- *Kind delta.* The alive delta leaves on a node's first `HB_n`, ~1 s before its first `HEALTH_n`,
+  so without a push the kind would wait for the client's next roster poll.
+- *Duplicate IDs hide.* Two boards on one ID blend into one node and collide on identical CAN IDs
+  (error frames, error-passive), while inputs mostly still work — a "flaky board". Filtering one's
+  own HB costs one filter slot and no traffic. The duplicate outranks every other fault because
+  nothing reported under a shared ID can be trusted, and it auto-clears so fixing the other board
+  needs no reboot of this one. It is not a registry `FaultSource`: registry order is construction
+  order, which across translation units can't guarantee its priority.
+
+**Affects:** `02-can-protocol.md`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`,
+`10-implementation-plan.md`, TechSpec (`CANProtocol`, `NodeStatus`, `PanelBridge`, `PanelGroup`,
+`PowerMonitor`), `docs/architecture/can-bus.md`, `docs/firmware/node-id.md`.
+
+---
+
+## D20 — SimGateway never blocks on the host, and recovers its own USB link (#355)
+
+**Decision:** The PanelBridge→host relay is line-granular. A line of printable ASCII + `\n` is
+written whole when the CDC FIFO has room, otherwise dropped and counted; non-ASCII and overlong
+lines are dropped. Calibration frames are whole-or-drop too. A FAULT latched 3 s restarts the UART
+and clears itself. A pure recovery ladder (`LinkRecovery.h`) re-attaches USB after 5 s unhealthy
+(unmounted, suspended with a recent UART fault, or a CDC IN endpoint that stopped draining),
+reboots 5 s later if that fails, then backs off to a re-attach every 60 s. A 3 s hardware watchdog
+covers a hung `loop()`. Link-health counters and event times are exposed as `GET_DIAG` / `DIAG` on
+the calibration protocol.
+
+**Rationale:**
+- *The failure couldn't be reproduced, so the fix can't depend on knowing the trigger.* Twice the
+  RP2040 dropped off the bus with its core running (FAULT flashing) and only a power cycle
+  recovered it. Recovering whatever the cause, and recording which cause it was, beats guessing.
+- *A blocking write is a latent hazard on its own.* Adafruit TinyUSB's `write()` loops while the
+  host holds DTR but stops reading, and the old per-byte relay called it unguarded. It did not
+  cause the observed failure (the loop was still animating the LED), but it could.
+- *Lines, not bytes, are the unit to drop.* Everything PanelBridge sends the host is a DCS-BIOS
+  message; dropping a whole one loses one command, while truncating one changes it. Buffering lines
+  also means a calibration frame can no longer land inside a line.
+- *FAULT is electrical, not starvation.* The core's UART RX IRQ empties the PL011 into a software
+  queue, so a slow `loop()` overflows that queue silently and never sets RSR. That queue is now
+  1 KB (~40 ms) and counted separately; the RSR bits are counted one by one.
+- *Mounted is the main health signal; suspend counts only with a recent UART fault.* The RP2040
+  is powered only from USB, so running-but-unmounted is abnormal, while a sleeping host suspends a
+  device that is perfectly healthy.
+- *A stalled endpoint is unhealthy too.* Once writes never block, a host that stays configured but
+  stops polling would turn the old hang into a silent permanent outage — `loop()` and the watchdog
+  keep running. DTR held + bytes pending + nothing drained for 1 s catches it; the host OS polls an
+  open port into its own buffer regardless of the app, so a slow app does not trip it.
+- *Backoff, not a reboot loop.* A Gateway on a charger or back-fed with no host would otherwise
+  reboot every 10 s.
+- *Diagnostics on the existing binary channel.* `GET_DIAG` is answered on request and adds nothing
+  to the stream unasked; it is additive, so `CAL_PROTO_VERSION` stays 1.
+
+**Affects:** `03-uart-usb-hid-protocol.md`, `07-simgateway-api.md`, `08-hardware-firmware-contracts.md`,
+`09-startup-resync-diagnostics.md`, TechSpec `SimGateway.md`, `docs/architecture/sim-gateway.md`,
+`docs/firmware/debugging.md`. Client half: SkyHawkClient sync of `CalDiagField`.
+
+---
+
+## D21 — Every node announces its firmware version in READY_n (#295)
+
+**Decision:** `READY_n`, empty until now, carries a `ReadyPayload`: bytes 0–2 = the firmware
+release version (`OPENSKYHAWK_FW_*` from the header-only `FirmwareVersion` library, rewritten by
+release-please), bytes 3–7 reserved. Nodes send it through `CANProtocol::sendReady()`. PanelBridge
+caches the version per node, keeps it across a timeout, pushes a `_NODE_STATUS` delta when an alive
+node's version changes, and reports it in `_NODE_STATUS` **v4** (34 hex), the node-0 row carrying
+its own. An empty READY (older firmware) and a READY the bridge never saw both read 0.0.0, "not
+reported".
+
+**Rationale:**
+- *v1.0 has a mixed-version rule* — nodes on one bus share a major version — and until now nothing
+  on the bus said which firmware a board runs. A missed board in a reflash stayed invisible.
+- *READY, not HEALTH.* HEALTH's two reserved bytes are kept for future generic health, and TELEM
+  never carries health, so spending them on identity would leave health nowhere to grow. READY was
+  empty: eight free bytes, no new frame, no extra traffic.
+- *Every update is a reboot.* An ST-Link upload resets the MCU, and READY is the last step of every
+  boot, so a reflash is announced at once. A node that only lost its CAN link doesn't reboot, and
+  its cached version is still right.
+- *Empty means older, unambiguously.* Pre-#295 firmware sends READY with DLC 0, so a missing
+  payload can't be mistaken for a real version.
+- *Accepted gap:* READY is once per boot, so a bridge that boots after a node reads it as not
+  reported until that node reboots. A re-announce on the bridge's boot `SYNC_REQ` can follow as a
+  minor change — `SYNC_REQ` is empty today.
+- *One version source.* The same header feeds SimGateway's `HELLO_ACK`, so the Gateway's two MCUs
+  can't report different versions for one build.
+
+**Affects:** `02-can-protocol.md`, `03-uart-usb-hid-protocol.md`, `04-dcs-bios-integration.md`,
+`06-panelbridge-api.md`, `09-startup-resync-diagnostics.md`, TechSpec (`CANProtocol`, `NodeStatus`,
+`PanelBridge`, `PanelGroup`, `PowerMonitor`, `README`), `docs/architecture/can-bus.md`,
+`docs/architecture/firmware-tiers.md`. Client half: SkyHawkClient sync of `NodeStatusField` v4.
+
+---
+
+## D22 — Within a major, the wire only grows and every reader tolerates growth (#295)
+
+**Decision:** From v1.0, CAN frames and payloads, the host `_NODE_*` lines and their enums are
+frozen per major. Writers only append: a frame never grows (8 bytes), a field never moves, resizes
+or changes meaning; new data goes into reserved bytes, a new `TelemPage`, or a new frame family in
+a free ID range, and new enum values are allowed. Readers accept a longer `_NODE_STATUS` row,
+parse the fields they know and ignore the rest, keep unknown enum values as "unknown (0xNN)", and
+ignore reserved bits. A shorter row means older firmware and is reported, not dropped silently.
+
+**Rationale:**
+- *A strict reader makes every addition a major.* The client dropped any `_NODE_STATUS` row whose
+  length wasn't exactly 28, so the first 1.x field (as #344's `nodeKind` and #295's version were)
+  would have blanked every 1.0 client's node list.
+- *Growth paths are named so they don't collide.* Health stays in `HEALTH_n` (its two reserved
+  bytes), node telemetry in `TELEM_n` pages, identity in `READY_n` — each owner kept single.
+- *The calibration channel is the exception.* Its `LEN` is fixed per type on purpose (false-frame
+  rejection inside the DCS-BIOS stream), so it grows by new message types instead (`03`).
+
+**Affects:** `02-can-protocol.md`, `03-uart-usb-hid-protocol.md`, `04-dcs-bios-integration.md`,
+`NodeStatus.h`. Client half: SkyHawkClient's `_NODE_STATUS` parser and alerts (client 1.0).
+
+---
+
+## D23 — The roster request moves to export address 0xFF00 (#295)
+
+**Decision:** The client asks PanelBridge for the node roster by writing DCS-BIOS export address
+`0xFF00` (`NODE_STATUS_REQ_ADDR`), not `0x86FE`. It ships with `_NODE_STATUS` v4, which the client
+must adopt anyway.
+
+**Rationale:**
+- *`0x86FE` was not reserved, only unused by the A-4E.* In DCS-BIOS v0.11.8 it is the AH-64D's
+  `PLT_VIDEO_FLIR_GAIN` and the Mirage F1's `P_VOR_01_G`. Flying either with the cockpit connected,
+  every export of that control looked like a roster request and drew a full roster burst.
+- *`0xFF00` belongs to no module.* Every aircraft module ends by `0xB2FB`; DCS-BIOS's own
+  `MetadataEnd` sits at `0xFFFE`. Module blocks are allocated upward from low addresses, so the top
+  of the map is the safest place for a host-only address.
+- *Now, not later.* The request address is part of the v1.0 host contract; moving it after the
+  freeze would be a major.
+
+**Affects:** `NodeStatus.h`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`, TechSpec
+`NodeStatus`, PanelBridge README, `docs/architecture/sim-gateway.md`, `docs/architecture/firmware-tiers.md`.
+Client half: SkyHawkClient's roster request (synced from `NodeStatus.h`).
+
+---
+
+## D24 — PanelBridge forwards the whole DCS-BIOS export stream (#295)
+
+**Decision:** `BridgeExportListener` covers `0x0002`–`0xFFFE`: every export address of whatever
+aircraft is flying, plus CommonData and the DCS-BIOS metadata, goes onto CAN as `CTRL_BCAST`. The
+nodes decide what they use — each output matches its own address. Only `0x0000` is skipped: it is
+the `ControlPacket` empty-slot sentinel, so CAN can't carry it (it holds the first two characters of
+`_ACFT_NAME`).
+
+**Rationale:**
+- *The old window was the input-ID range by accident.* It was `0x8000`–`0x86FF` — the `DCSIN_*`
+  range — not the A-4E's export block (`0x8400`–`0x8555`), so it already passed parts of the AH-64D,
+  MB-339 and Mirage F1. Filtering by aircraft would tie the bridge to one aircraft; the multi-aircraft
+  direction wants the cockpit, not the bridge, to choose.
+- *Nodes already ignore what they don't use.* `onControlPacket` hands every packet to every output,
+  and each keeps only its own address.
+
+**Cost — confirm on the #290 soak:** `CTRL_BCAST` (the highest-priority frame) now also carries
+CommonData (position, heading, model time) and the per-frame update counters, so bus load rises.
+The soak's "no false offline / zero TX drops" checks are the guard; `CTRL_BCAST` keeps the newest
+state when its queue is full.
+
+**Affects:** `PanelBridge.cpp`, `02-can-protocol.md`, `06-panelbridge-api.md`, `10-implementation-plan.md`,
+TechSpec `PanelBridge`, PanelBridge README, `docs/architecture/can-bus.md`.

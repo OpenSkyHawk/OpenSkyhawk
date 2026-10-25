@@ -13,6 +13,7 @@ using namespace OpenSkyhawk;
 static const StepperConfig MOTOR_CFG = {
     720, StepPattern::SWITEC_6STATE, kSwitecDefaultAccel, kSwitecDefaultAccelN,
     HomeMode::STALL, false, { false, 0, 0 }, 0, 0, 0, 720, false, 0, false, 0,
+    0,   // rangeSteps: 0 = stepsPerRev, as before the #295 default (945)
 };
 StepperMotor gMotor(PinRef(), PinRef(), PinRef(), PinRef(), MOTOR_CFG);
 

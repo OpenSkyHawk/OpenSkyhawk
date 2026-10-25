@@ -23,7 +23,7 @@
  * No UART. No loopback jumper. No SimGateway library. No HIDAxis/HIDButton/HIDHatSwitch.
  * Platform: RP2040 only (TinyUSB).
  *
- * Flash:   pio run -e test_hid_stress -t upload   (hold BOOTSEL)
+ * Flash:   pio run -e test_hid_stress -t upload
  * Monitor: USB CDC at 115200 baud
  * Test:    hardwaretester.com/gamepad (Mac / browser), joy.cpl (Windows), DCS Controls
  *

@@ -19,7 +19,7 @@ accident during later review passes.
 
 | Item | Resolution | Owner |
 |------|------------|-------|
-| PanelBridge heartbeat on CAN | **Implemented in #93.** PanelBridge transmits `HB_0` / `canIdHb(0)` every 500 ms as a master-liveness beacon; PanelGroup accepts it (`filterAcceptId(canIdHb(0))`) and raises WARNING if it stops for > 1500 ms after a master has been seen. | `02-can-protocol.md`, `06-panelbridge-api.md`, `08-hardware-firmware-contracts.md` |
+| PanelBridge heartbeat on CAN | **Implemented in #93.** PanelBridge transmits `HB_0` / `canIdHb(0)` every 500 ms as a master-liveness beacon; every other node accepts it and raises WARNING if it stops for > 1500 ms after a master has been seen — since #340 both sides live in `CANProtocol::serviceNodeStatus()`. | `02-can-protocol.md`, `06-panelbridge-api.md`, `08-hardware-firmware-contracts.md` |
 | `ERROR_PASSIVE` status | No separate public `CanStatus` for now. `TX_ERROR` maps to STM32Board `CAN_ERROR`; `BUS_OFF` maps to `BUS_OFF`. EPVF remains available in heartbeat flags. (Re-confirmed #93 — deferred again.) | `02-can-protocol.md`, `STM32Board TechSpec` |
 | CAN batching | `ControlPacketPair` batching is part of CANProtocol, not a conditional optimization. PanelBridge and PanelGroup submit individual `ControlPacket`s; single-packet frames use slot B `controlId = 0x0000` as the null sentinel. | `02-can-protocol.md`, `06-panelbridge-api.md` |
 | New node state request | READY and dead/unseen → alive recovery both trigger a `SYNC_REQ` broadcast so the node re-polls and sends its current input state. | `06-panelbridge-api.md`, `09-startup-resync-diagnostics.md` |
@@ -31,7 +31,7 @@ accident during later review passes.
 | Stale `DCSInput` references | Cleanup task during implementation: scan headers and remove stale names. | `10-implementation-plan.md` |
 | Accel encoder value encoding | **Superseded (#147, D16):** acceleration is a larger `±step` on the REL frame — no arg strings, no bridge change. Thresholds follow DCS-BIOS: 175 ms fast, 500 ms momentum reset. | `04-dcs-bios-integration.md`, `05-panelgroup-api.md` |
 | SimGateway boot sequence | TinyUSB silently drops HID before enumeration; no special handling required. | `07-simgateway-api.md`, `09-startup-resync-diagnostics.md` |
-| DIAG destination | DiagSerial only on each STM32 board; no SimGateway diagnostic multiplexing. | `09-startup-resync-diagnostics.md` |
+| DIAG destination | DiagSerial only on each STM32 board; no SimGateway diagnostic multiplexing. SimGateway's own link-health record is a request/response on the calibration channel (`GET_DIAG`, #355), not a DIAG frame. | `09-startup-resync-diagnostics.md` |
 | AngleSensorInput range | Inherited from `AnalogInput` (D16): 0–65535 on both routes; HID-routed axes are calibrated and converted to the signed joystick range in SimGateway. | `05-panelgroup-api.md`, `07-simgateway-api.md` |
 
 ---

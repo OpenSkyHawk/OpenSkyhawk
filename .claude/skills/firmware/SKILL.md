@@ -34,7 +34,7 @@ Open the one relevant doc via the maps below rather than reading everything.
 - `10-implementation-plan.md` / `11-open-issues.md` — phased plan / deferred items
 
 **TechSpec:** one file per library/class (`CANProtocol`, `STM32Board`, `PanelBridge`,
-`SimGateway`, `HIDControls`, `A4ECGenerator`, and `PanelGroup/{PinRef, PanelGroup,
+`SimGateway`, `HIDControls`, `A4ECGenerator`, `PowerMonitor` (the PDU node), and `PanelGroup/{PinRef, PanelGroup,
 Inputs/*, Outputs/*}`). Each cites its FirmwarePlan section. See `TechSpec/README.md`.
 
 **Availability guard:** these specs are committed but may be absent in a partial checkout —

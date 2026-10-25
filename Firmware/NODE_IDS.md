@@ -12,11 +12,14 @@ claim the next available NODE_ID here.
 | 0       | PanelBridge       | —       | Reserved — CAN master, never transmitted on bus |
 | 1       | Center_Armament   | Center  | Active |
 | 2       | Right_Navigation  | Right   | Active |
+| 3       | PDU_Left          | Left    | Active — power distribution + monitoring (#216) |
+| 4       | PDU_Right         | Right   | Active — power distribution + monitoring (#216) |
+| 5       | PDU_Center        | Center  | Active — power distribution + monitoring (#216) |
 <!-- --8<-- [end:registry] -->
 
 ## Rules
 
 - NODE_ID 0 is reserved for PanelBridge.
-- Assign incrementally: next available is 2.
+- Assign incrementally: next available is 6.
 - One NODE_ID per physical STM32 board.
 - Add your assignment here in the PR that creates the new panel sketch.

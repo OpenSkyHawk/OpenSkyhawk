@@ -112,13 +112,9 @@ A sketch may author them as degrees and convert `round(deg·stepsPerRev/360)`.
 #include <A4EC_OutputIds.h>
 using namespace OpenSkyhawk;
 
-static const AccelPoint DRIFT_ACCEL[] = { {20,3000},{50,1500},{100,1000},{150,800},{300,600} };
-static const StepperConfig DRIFT_MOTOR = {
-    /*stepsPerRev*/720, StepPattern::SWITEC_6STATE, DRIFT_ACCEL, 5,
-    HomeMode::STALL, /*homeSeekCW*/false, /*sensor*/{false,0,0},
-    /*home*/0, /*park*/0, /*minPos*/-200, /*maxPos*/200,
-    /*wrap*/false, /*deadband*/1, /*autoRecal*/false, /*recalMs*/0,
-};
+// makeX27Config bakes in the X27 motor-invariant fields (1080 steps/rev, SWITEC_6STATE, default
+// accel table, STALL home over rangeSteps = 945); the sketch sets only the per-gauge travel.
+static const StepperConfig DRIFT_MOTOR = makeX27Config(/*home*/0, /*park*/0, /*min*/-200, /*max*/200);
 StepperMotor driftMotor(PinRef(PA0), PinRef(PA1), PinRef(PA4), PinRef(PA5), DRIFT_MOTOR);
 
 static const GaugeCal DRIFT_CAL = { -150, 150, false, nullptr, nullptr, 0 };
