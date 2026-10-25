@@ -4858,21 +4858,21 @@ refuses to connect. Uncomment the override in <code>platformio.ini</code>:</p>
 the write — the projects under <code>Firmware/Tests/</code> all use <code>0</code> for this reason.</p>
 </div>
 <h2 id="rp2040-simgateway-usb">RP2040 (SimGateway) — USB</h2>
-<p>No ST-Link needed, but <strong>put the board into BOOTSEL by hand first</strong>: hold BOOTSEL while plugging
-it in (or while tapping RESET), and wait for the <code>RPI-RP2</code> drive to appear. Then either:</p>
+<p>No ST-Link needed — the board flashes over the same USB cable it runs on. Either:</p>
 <ul>
-<li><strong>From PlatformIO:</strong> <code>pio run -t upload</code>, or</li>
-<li><strong>By hand:</strong> drag the built <code>.uf2</code> onto the <code>RPI-RP2</code> drive.</li>
+<li><strong>From PlatformIO:</strong> <code>pio run -t upload</code>. PlatformIO resets the board into its bootloader by
+  itself (the 1200-baud touch, which the Adafruit TinyUSB library in every SimGateway build
+  handles), then flashes it.</li>
+<li><strong>By hand:</strong> hold BOOTSEL while plugging the board in (or while tapping RESET), wait for the
+  <code>RPI-RP2</code> drive, and drag the <code>.uf2</code> onto it.</li>
 </ul>
 <div class="admonition warning">
-<p class="admonition-title"><code>pio run -t upload</code> cannot reset the board for you</p>
-<p>Every SimGateway project builds with <code>-DUSE_TINYUSB</code>, which replaces the Pico core's USB
-stack — and the 1200-baud-touch auto-reset goes with it. Without a manual BOOTSEL,
-<code>picotool</code> finds no device in bootloader mode and the upload fails.</p>
-<p>Anything holding the CDC port open also blocks the upload — close SkyHawkClient, serial
-monitors, and any browser HID/serial page before flashing. An orphaned Electron process
-is enough to keep the port claimed; check with <code>lsof /dev/cu.usbmodem*</code> if BOOTSEL alone
-doesn't fix it.</p>
+<p class="admonition-title">Upload can't find the board?</p>
+<p>Something is holding the CDC port open. Close SkyHawkClient, serial monitors, and any
+browser HID/serial page before flashing — an orphaned Electron process is enough to keep the
+port claimed; check with <code>lsof /dev/cu.usbmodem*</code>.</p>
+<p>The automatic reset needs the running firmware to answer on USB. If the board's firmware
+hangs before USB comes up, put it into BOOTSEL by hand and run the upload again.</p>
 </div>
 <h2 id="after-flashing">After flashing</h2>
 <p>Watch the board come up on DiagSerial (115200) and check the status LED. See
