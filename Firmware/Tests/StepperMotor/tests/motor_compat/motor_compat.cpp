@@ -2,8 +2,8 @@
 //
 // X27.589 / VID-29 / BKA-30 are the same air-core family and run on the ONE 6-state
 // profile. Flash this, wire each motor in turn to PA0/PA1/PA4/PA5, and confirm the same
-// smooth sweep. If a motor runs reversed, swap any two coil pins (the AHN "BKA-30 reorder")
-// — no config change, no separate profile.
+// smooth sweep. If a motor runs reversed, swap the two pins of one coil (PA0↔PA1 or
+// PA4↔PA5; the AHN "BKA-30 reorder") — no config change, no separate profile.
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -37,7 +37,7 @@ void setup() {
     STM32Board::setDebug(true);
     STM32Board::begin();
     STM32Board::diagSerial().println("=== StepperMotor motor_compat (bench) ===");
-    STM32Board::diagSerial().println("Same 6-state profile for X27 / VID-29 / BKA-30. Swap 2 pins if reversed.");
+    STM32Board::diagSerial().println("Same 6-state profile for X27 / VID-29 / BKA-30. Swap one coil's 2 pins if reversed.");
     gMotor.configure();
     gMotor.home();
 }

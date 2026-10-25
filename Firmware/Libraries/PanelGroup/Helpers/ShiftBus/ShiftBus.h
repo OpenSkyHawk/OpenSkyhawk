@@ -40,7 +40,7 @@ namespace OpenSkyhawk {
 class ShiftBus {
 public:
     static constexpr uint8_t MAX_CHAIN         = 8;   ///< chips per direction (64 in + 64 out)
-    static constexpr uint8_t MAX_ISR_CONSUMERS = 16;  ///< sampled encoders per bus
+    static constexpr uint8_t MAX_ISR_CONSUMERS = 16;  ///< ISR hooks per bus (PanelGroup uses one)
 
     /**
      * @brief Construct a bus. No hardware activity — begin() runs in PanelGroup::setup().
@@ -131,7 +131,8 @@ public:
 
     /**
      * @brief Register a hook called from the sampling ISR after each transfer().
-     *        Used by RotaryEncoder::configure() to auto-attach SR-pinned encoders.
+     *        PanelGroup::setup() registers one per bus when SHIFTBUS_ISR_HZ is defined; it
+     *        samples every input, so there is no per-encoder limit.
      */
     void addIsrConsumer(void (*hook)(void* ctx), void* ctx);
 

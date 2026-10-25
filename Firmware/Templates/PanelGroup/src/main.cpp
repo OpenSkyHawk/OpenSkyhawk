@@ -34,9 +34,9 @@
 // OpenSkyhawk::Switch3Pos     <name>(DCSIN_<ID>, PIN_<NET_A>, PIN_<NET_B>);
 // OpenSkyhawk::AnalogInput    <name>(DCSIN_<ID>, PIN_<NET>);
 //
-// NOT IMPLEMENTED YET — planned. Momentary press-only control: sends 1 on press, no release
-// EVT, 20 ms debounce. Spec in FirmwarePlan/05-panelgroup-api.md, tracked as an open box in
-// 10-implementation-plan.md. Switch2Pos is not a substitute — it emits on both edges.
+// Momentary button for a control that latches in the sim (DCS-BIOS defineToggleSwitch): one
+// TOGGLE per press, nothing on release, 20 ms debounce. Not for definePushButton controls —
+// use Switch2Pos for those (a TOGGLE would latch them on).
 // OpenSkyhawk::ActionButton   <name>(DCSIN_<ID>, PIN_<NET>);
 //
 // N-position selector. `pins` is a pointer to a caller-owned array that must outlive the

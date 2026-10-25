@@ -75,7 +75,8 @@ public:
     /**
      * @brief Construct a quadrature encoder.
      *
-     * @param controlId       DCSIN_* or CTRL_* constant. Determines PanelBridge routing.
+     * @param controlId       DCSIN_* constant. DCS-only — PanelBridge drops REL/DIR frames outside
+     *                        the DCSIN range, so a CTRL_* (HID) ID never reaches the sim.
      * @param pinA            quadrature channel A.
      * @param pinB            quadrature channel B (swap A/B to reverse the sensed direction).
      * @param stepsPerDetent  quadrature transitions per emitted click (default One; match the encoder).
