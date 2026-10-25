@@ -5347,8 +5347,9 @@ can be merged by accident.</p>
   wire format, so a mixed set has no meaning. Every <code>Firmware/Libraries/*/library.json</code> carries
   the same version.</li>
 <li>Commits that touch only <code>Firmware/ScratchPad/</code> (the spec) don't count toward a release.</li>
-<li><strong>Before 1.0, a breaking change bumps the minor</strong> version; 1.0 freezes the sketch API and the
-  wire format.</li>
+<li><strong>A breaking change bumps the major version</strong>, as Conventional Commits defines it (<code>!</code> or a
+  <code>BREAKING CHANGE:</code> footer). The breaking changes from the v1.0 freeze review (#295) made the
+  next release 1.0, which freezes the sketch API and the wire format.</li>
 <li>Third-party libraries stay declared as version ranges; each release records the versions it
   resolved to as a <code>dependencies.txt</code> release asset, rather than pinning them.</li>
 <li><strong>Each release carries prebuilt firmware</strong>, built by CI from the release tag, for the boards
