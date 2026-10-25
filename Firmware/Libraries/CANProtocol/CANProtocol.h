@@ -206,6 +206,11 @@ using CanRxCallback      = void(*)(uint32_t canId, const uint8_t* data, uint8_t 
 using CanSyncReqCallback = void(*)();
 
 // ── Runtime API (STM32 only) ──────────────────────────────────────────────────
+//
+// Library-internal: the node libraries (PanelGroup, PanelBridge, PduNode) drive the bus through
+// these, not sketches. Not covered by the compatibility policy (#295) — except sendBatched(), which
+// a custom control class uses to send its value (with ControlPacket and the canIdEvt* functions
+// above, which are covered with the wire format).
 
 #ifdef ARDUINO_ARCH_STM32
 
