@@ -286,6 +286,10 @@ can be merged by accident.
   wire format.
 - Third-party libraries stay declared as version ranges; each release records the versions it
   resolved to as a `dependencies.txt` release asset, rather than pinning them.
+- **Each release carries prebuilt firmware**, built by CI from the release tag, for the boards
+  that need no per-build setup: the Gateway (both halves) and the production panels in
+  `Firmware/Panels/`. Tools get one `.bin` / `.uf2` per board and a `manifest.json` (sizes,
+  SHA-256); people get one zip with a folder per board, `.elf` files and flashing READMEs.
 
 ### Hardware
 

@@ -2,7 +2,7 @@
 
 STM32 CAN master and DCS-BIOS processing node for OpenSkyhawk.
 
-`PanelBridge` turns an STM32F103CBT6 into the CAN cluster master. It runs the DCS-BIOS
+`PanelBridge` turns an STM32F103C8T6 into the CAN cluster master. It runs the DCS-BIOS
 library on `Serial` (UART2, PA2/PA3 — wired to SimGateway), batches DCS cockpit-output
 updates to `CTRL_BCAST` CAN frames, and routes panel input events (CAN EVTs) to either
 DCS-BIOS ASCII commands or 6-byte HID frames back on the same UART.
@@ -12,7 +12,7 @@ DCS-BIOS ASCII commands or 6-byte HID frames back on the same UART.
 ```
 SimGateway (RP2040)
     ↕ UART2 (PA2/PA3) @ 250000 baud
-PanelBridge (STM32F103CBT6)   ← this library
+PanelBridge (STM32F103C8T6)    ← this library
     ↕ CAN @ 500 kbps
     ├── PanelGroup #1
     └── PanelGroup #N
