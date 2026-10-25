@@ -109,7 +109,7 @@ jobs:
       contents: write
     uses: ./.github/workflows/firmware-release-assets.yml
     with:
-      ref: ${{ needs.release-please.outputs.firmware_tag }}
+      tag: ${{ needs.release-please.outputs.firmware_tag }}
       publish: true
 
   hardware-boards:

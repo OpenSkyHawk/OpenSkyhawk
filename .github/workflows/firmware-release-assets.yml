@@ -8,22 +8,23 @@ name: Firmware release assets
 # Called, never triggered directly:
 #   - release-please.yml, with the release tag and publish: true, once a firmware release exists —
 #     the only path that publishes; the files are attached to that release;
-#   - firmware-release-assets-check.yml, with no ref, for pull requests and manual runs — it only
+#   - firmware-release-assets-check.yml, with no tag, for pull requests — it only
 #     validates: build, flash/RAM size of every board in the job summary, and the package uploaded
 #     as an Actions artifact.
-# Keeping the PR / manual triggers in a separate caller means the ref checked out here only ever
-# comes from release-please.
+# It always builds the caller's own commit and never checks out a passed-in ref.
 
 on:
   workflow_call:
     inputs:
-      ref:
-        description: Tag to build, e.g. firmware-v0.2.0. Empty builds the caller's own ref.
+      tag:
+        description: >-
+          The release tag, e.g. firmware-v0.2.0. Names the files and the release to attach them to;
+          it is never checked out — the build checks that it points at the commit being built.
         required: false
         type: string
         default: ""
       publish:
-        description: Attach the files to the release named by ref
+        description: Attach the files to the release named by tag
         required: false
         type: boolean
         default: false
@@ -38,10 +39,10 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
+      # The caller's own commit, never a passed-in ref. On the release path that is the push that
+      # merged the release PR, which is exactly the commit release-please tags.
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          ref: ${{ inputs.ref }}
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -57,10 +58,21 @@ jobs:
       - name: Work out the version
         id: version
         env:
+          RELEASE_TAG: ${{ inputs.tag }}
           # The release tag from release-please, else the ref this run was started on.
-          REF: ${{ inputs.ref || github.ref_name }}
+          REF: ${{ inputs.tag || github.ref_name }}
         run: |
           set -euo pipefail
+          if [[ -n "$RELEASE_TAG" ]]; then
+            # Refuse to package anything but the tagged commit under the release's name.
+            git fetch --quiet --depth=1 origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+            tagged="$(git rev-parse "$RELEASE_TAG^{commit}")"
+            built="$(git rev-parse HEAD)"
+            if [[ "$tagged" != "$built" ]]; then
+              echo "::error::$RELEASE_TAG points at $tagged, but this run built $built"
+              exit 1
+            fi
+          fi
           if [[ "$REF" == firmware-v* ]]; then
             echo "version=${REF#firmware-v}" >> "$GITHUB_OUTPUT"
             echo "tag=$REF" >> "$GITHUB_OUTPUT"
@@ -208,5 +220,5 @@ jobs:
       - name: Upload the files
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ inputs.ref }}
+          TAG: ${{ inputs.tag }}
         run: gh release upload "$TAG" dist/* --clobber --repo "$GITHUB_REPOSITORY"
