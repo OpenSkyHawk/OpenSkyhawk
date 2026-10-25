@@ -66,6 +66,7 @@ classes are hardware-verified. The summary below is a pointer, not a second sour
 
 - **[PlatformIO Setup](platformio-setup.md)** — start a firmware project from the templates
 - **[Build Flags](build-flags.md)** — all 32 `-D` flags: ours, the framework's, and the test seams
+- **[Compatibility & Versioning](compatibility.md)** — what 1.x keeps stable, and how versions move
 - **[NODE_ID & CAN Addressing](node-id.md)** — the NODE_ID scheme, registry, and how to claim one
 - **[DCS-BIOS Integration](dcsbios-integration.md)** — `DCSIN_*` IDs, the A4EC headers, output addresses
 - **[HID Controls](hid-controls.md)** — the `CTRL_*` axis/button/hat allocations
