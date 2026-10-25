@@ -98,6 +98,9 @@ struct ControlPacketPair { ControlPacket a; ControlPacket b; };    // 8 bytes
   occupy different CAN frame fields. See [DCS-BIOS vs HID](dcsbios-vs-hid.md) for the
   `controlId` ranges.
 - **`value`** is the payload — interpretation depends on the `controlId` range.
+- **Byte order:** both fields are little-endian on the wire, low byte first — in a
+  `ControlPacketPair`, bytes 0–1 `a.controlId`, 2–3 `a.value`, 4–5 `b.controlId`, 6–7 `b.value`.
+  Every multi-byte CAN payload field in this project is little-endian.
 
 `CTRL_BCAST` and all four event frames — `EVT_n`, `EVT_REL_n`, `EVT_DIR_n` and
 `EVT_ACTION_n` — carry a **`ControlPacketPair`** so two packets share one 8-byte frame. Each

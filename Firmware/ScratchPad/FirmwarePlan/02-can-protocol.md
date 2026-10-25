@@ -44,6 +44,10 @@ struct ControlPacket {
 };
 ```
 
+**Byte order: both fields little-endian on the wire** — `controlId` low byte first, then its high
+byte, then `value` the same way (#295). It is the packed struct's native layout on the STM32 and
+the RP2040, and the only byte order a third-party node or a CAN capture should assume.
+
 `ControlPacketPair` packs two packets into one 8-byte CAN frame:
 
 ```cpp
@@ -53,8 +57,16 @@ struct ControlPacketPair {
 };
 ```
 
-`ControlPacketPair` is used for `CTRL_BCAST` and `EVT_n` frames only. If only one packet is
-ready, slot B uses `controlId = 0x0000` as the null sentinel and receivers ignore it.
+| Byte(s) | Field | Encoding |
+|---------|-------|----------|
+| 0-1 | `a.controlId` | uint16_t little-endian |
+| 2-3 | `a.value` | uint16_t little-endian |
+| 4-5 | `b.controlId` | uint16_t little-endian; `0x0000` = empty slot |
+| 6-7 | `b.value` | uint16_t little-endian |
+
+`ControlPacketPair` is used for `CTRL_BCAST` and the four event frames (`EVT_n`, `EVT_REL_n`,
+`EVT_DIR_n`, `EVT_ACTION_n`) only. If only one packet is ready, slot B uses `controlId = 0x0000`
+as the null sentinel and receivers ignore it.
 
 Special/control/diagnostic frames (`SYNC_REQ`, `READY_n`, `TEST_SEQ`, `ECHO_n`, `HB_n`) use
 the frame-specific DLC and payload listed in the frame table. A special frame may carry a
@@ -95,9 +107,6 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
-
-> **Migration note (Phase 1):** existing `CAN_ID_HB_1 = 0x100` changes to `canIdHb(1) = 0x101`.
-> Update any diagnostic tools, captured CAN logs, or test fixtures that reference the old value.
 
 ---
 
@@ -308,8 +317,8 @@ bridge's boot `SYNC_REQ` can be added later without a wire break (`SYNC_REQ` is 
 
 ## ControlPacketPair Frame Payload
 
-`CTRL_BCAST` and `EVT_n` frames carry exactly **8 bytes** — a `ControlPacketPair`.
-No other frame type is implicitly decoded as a pair:
+`CTRL_BCAST` and the four event frames carry exactly **8 bytes** — a `ControlPacketPair`
+(byte layout in § ControlPacket Wire Format). No other frame type is implicitly decoded as a pair:
 
 ```cpp
 // Payload = two ControlPackets. Slot B may be null.
