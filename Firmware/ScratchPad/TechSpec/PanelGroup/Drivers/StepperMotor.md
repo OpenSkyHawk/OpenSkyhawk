@@ -85,6 +85,9 @@ struct StepperConfig {
     bool              wrap;               // continuous-rotation, shortest path
     uint8_t           deadband;
     bool              autoRecal; uint32_t recalDebounceMs;
+    // Appended for back-compat — positional initialisers that omit them value-initialise to 0.
+    uint16_t          rangeSteps;         // stop-to-stop travel = STALL home distance; 0 → stepsPerRev
+    uint16_t          homeStepUs;         // homing seek µs/step; 0 → library default (2000 ≈ 500 steps/s)
 };
 
 extern const AccelPoint kSwitecDefaultAccel[5];   // {20,3000},{50,1500},{100,1000},{150,800},{300,600}
@@ -95,7 +98,10 @@ constexpr uint8_t       kSwitecDefaultAccelN = 5;
 StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition, int16_t minPos, int16_t maxPos,
                             HomeMode home = HomeMode::STALL, bool homeSeekClockwise = false,
                             HomeSensor sensor = {true,5,2000}, bool wrap = false, uint8_t deadband = 1,
-                            bool autoRecal = false, uint32_t recalDebounceMs = 0, uint16_t stepsPerRev = 720);
+                            bool autoRecal = false, uint32_t recalDebounceMs = 0,
+                            uint16_t stepsPerRev = 1080,   // X27/BKA datasheet, 1/3°/step
+                            uint16_t rangeSteps = 945,     // X27.589 ~315°; e.g. 960 for a 320° BKA-30
+                            uint16_t homeStepUs = 0);      // 0 → 2000 µs; keep under ~774 steps/s start-stop
 
 class StepperMotor : public MotorDriver {
 public:
@@ -135,8 +141,14 @@ settling exactly (`currentStep == targetStep && vel == 0`).
 
 ### Homing (reduced speed for accuracy)
 
-- **STALL** — step into the mechanical end-stop `stepsPerRev` times (a full revolution seats from any
-  start), set `pos = homePosition`. No sensor.
+Both modes seek at `homeStepUs` per step (0 → library default 2000 µs ≈ 500 steps/s). The rate must
+stay under the motor's start-stop rate (~774 steps/s for the X27 family) or the seek slips.
+
+- **STALL** — step into the mechanical end-stop `rangeSteps + rangeSteps/8` times (the mechanical
+  stop-to-stop range plus a 1/8 margin, which seats from any start), set `pos = homePosition`. No
+  sensor. Driving the range rather than a full revolution matters: over-driving a stop-limited gauge
+  by the rev/range difference grinds the seated rotor and desyncs it, so the zero lands differently
+  each home. `rangeSteps == 0` falls back to `stepsPerRev` (legacy positional configs).
 - **SENSOR** (two-pass, à la AHN) — clear the sensor, seek `homeSeekClockwise` until the debounced read
   asserts, hard-stop, set `pos = homePosition`; back off and **re-seek to refine — a failed refine pass
   also clears `homed()`**, so the `maxSeekSteps` safety holds for both passes; then move to `parkPosition`.

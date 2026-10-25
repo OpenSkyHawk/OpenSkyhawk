@@ -91,20 +91,35 @@ namespace OpenSkyhawk {
 
 enum class DrumFont   : uint8_t { SMALL = 0, LARGE = 1 };          // profont22_mr / profont29_mr
 enum class DrumScroll : uint8_t { EASE_ONLY = 0, SNAP_SETTLE = 1 };
+enum class LeadingZero : uint8_t { Keep = 0, Suppress = 1 };      // fixed width / blank leading zeros
 
-struct DrumSource { uint16_t address; uint16_t mask; uint8_t nDigits; uint8_t place; };
+struct DrumSource {
+    uint16_t address; uint16_t mask; uint8_t nDigits; uint8_t place;
+    // band — how the exported 0..mask range divides into displayable positions (see onControlPacket)
+    uint16_t steps  = 0;   // positions across the range; 0 ⇒ 10^nDigits (a plain drum digit)
+    uint8_t  mul    = 1;   // displayed value per position (5 for the ARC-51 50 kHz drum)
+    int16_t  offset = 0;   // added after mul (22 for the ARC-51 10 MHz group, 29 for ALT_ADJ)
+};
 struct DrumGlyph  { char ch; uint8_t afterCol; float widthMm; };
 struct DrumFlag   { bool enabled; uint16_t address; uint16_t mask;
-                    const char* faces; uint8_t atVisualCol; float widthMm; };
+                    const char* faces; uint8_t atVisualCol; float widthMm;
+                    uint16_t steps = 0; };   // positions across the range; 0 ⇒ nFaces−1 (full-scale flag)
 struct DrumReadout {
+    // required
     const DrumSource* sources; uint8_t nSources; uint8_t nDigits;
-    float digitWidthMm, digitHeightMm, interDigitGapMm, groupGapMm; uint8_t groupSize;
-    const DrumGlyph* glyphs; uint8_t nGlyphs;
-    DrumFlag flag; DrumScroll scroll; float snapThreshold;
+    float digitWidthMm, digitHeightMm, interDigitGapMm;
+    // optional — default-member-initialised; set only when non-default (designated init)
+    float groupGapMm = 0.0f; uint8_t groupSize = 0;
+    const DrumGlyph* glyphs = nullptr; uint8_t nGlyphs = 0;
+    DrumFlag flag = {};
+    DrumScroll scroll = DrumScroll::SNAP_SETTLE; float snapThreshold = 3.0f;
+    LeadingZero leadingZero = LeadingZero::Keep;   // Suppress = variable width (ARC-51 preset 1..20)
 };
 
 class DrumDisplay : public OutputBase, public I2cHealth, public FaultSource {  // FaultSource: #163
 public:
+    enum class Fault : uint8_t { None, Mux, Device };  // which I²C hop failed the last probe (#163)
+
     // Direct-bus on the default trunk (Wire).
     DrumDisplay(U8G2& oled, const DrumReadout& readout,
                 DrumFont font = DrumFont::LARGE, float xOffsetMm = 0.0f, float yOffsetMm = 0.0f);

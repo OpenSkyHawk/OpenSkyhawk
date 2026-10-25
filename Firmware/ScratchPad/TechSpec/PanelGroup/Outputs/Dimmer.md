@@ -146,7 +146,7 @@ protected:
 private:
     PinRef   _pin;
     bool     _enabled;    // false when configure() rejected the pin — apply() writes nothing
-    ScaleFn  _scale;      // nullptr = default value >> 8
+    ScaleFn  _scale;      // nullptr = identity (apply() then takes v >> 8 as the duty)
     uint8_t  _lastDuty;   // last duty written (dedup)
     bool     _hasState;   // _lastDuty valid
 };

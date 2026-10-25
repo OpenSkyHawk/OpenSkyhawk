@@ -1,6 +1,6 @@
 # ShiftBus — Technical Specification
 
-**Status:** Contract agreed (2026-07-02) — implementation pending; bench pending
+**Status:** Done — implemented (#207), combined bench all 7 gates PASS (#197 / #133 closed)
 **FirmwarePlan ref:** issues #197 (74HC165 input backend) + #133 (74HC595 output backend)
 **Depends on:** `SPI` (STM32duino), `HardwareTimer` (ISR sampling mode only)
 
@@ -375,7 +375,8 @@ end-to-end) but requires **both** chip families present, which not every node wi
 4. Zero-setup lifecycle (auto-detect at configure); build flags only for pin overrides + ISR rate.
 5. Standard pins PB3/PB4/PB5 + LOAD=PB8/LATCH=PB9 (contiguous header run with I2C1).
 6. SPI2 never reserved — status LEDs stay on PB14/PB15; no PCB change; no RightNav impact.
-7. ISR default 1 kHz when enabled; ships off pending gate 6.
+7. ISR default 1 kHz when enabled. Gate 6 PASS (ISR @1 kHz caught 100 % of detents under loop
+   stalls vs ~34 % for loop-poll); ISR sampling still ships opt-in via `-DSHIFTBUS_ISR_HZ`.
 8. A4EC generator untouched (encoder ISR auto-attach).
 9. `readAnalog()` on SR: runtime no-op + diag log + `AnalogInput` construct-time rejection
    (compile-time error impossible with a tagged-union PinRef).

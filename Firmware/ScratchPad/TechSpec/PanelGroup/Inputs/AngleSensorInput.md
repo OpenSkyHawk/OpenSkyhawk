@@ -111,7 +111,7 @@ private:
 ```
 
 ```cpp
-ADS1115 adc(0x48, Wire);
+ADS1115 adc;   // registered in setup(): PanelGroup::registerADC(adc, 0x48, Wire);
 // AS5600 OUT pin → ADS1115 channel 2 (or an STM32 ADC pin: PinRef(PA3))
 OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, PinRef(adc, 2),
                                         /*centerDeg*/ 180.0f, /*travelDeg*/ 150.0f);
