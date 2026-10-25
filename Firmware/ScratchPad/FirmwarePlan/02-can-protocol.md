@@ -353,7 +353,13 @@ void CANProtocol::flushBatched(uint32_t canId);                          // forc
 
 ### TEST_SEQ Payload Wire Layout
 
-`TEST_SEQ` carries exactly 8 payload bytes and `ECHO_n` mirrors those bytes unchanged:
+`TEST_SEQ` carries exactly 8 payload bytes and `ECHO_n` mirrors those bytes unchanged. It is a bench
+diagnostic: PanelBridge sends it when `T` is typed on its DiagSerial and prints the round-trip time.
+
+**What the freeze covers (#295):** the two IDs, and every node mirroring all 8 bytes unchanged on
+`ECHO_n` — a 1.x node must keep answering a 1.0 bridge's test. The layout below is
+**bridge-internal**: only PanelBridge writes and reads it (nodes never look inside), so it may
+change in a minor release.
 
 | Byte(s) | Field | Encoding |
 |---------|-------|----------|
@@ -364,11 +370,6 @@ void CANProtocol::flushBatched(uint32_t canId);                          // forc
 Implementations must serialize this into a `uint8_t[8]`, or use a packed struct with
 `static_assert(sizeof(TestSeqPayload) == 8)`. Do not transmit `sizeof(struct)` from an
 unpacked C++ struct, because natural alignment can pad this layout beyond 8 bytes.
-
-> **Prototype note:** the existing `PanelGroup.cpp` sends 8 bytes — `ControlPacket` followed
-> by a 4-byte `millis()` timestamp. The timestamp was added for prototype RTT measurement only.
-> Production firmware uses the full 8 bytes as `ControlPacketPair`; bytes 4–7 are no longer
-> a timestamp.
 
 ---
 
