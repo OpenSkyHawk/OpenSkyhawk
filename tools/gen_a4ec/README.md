@@ -40,7 +40,15 @@ PanelGroup node should run firmware built from the same header revision.
 id for its lifetime, appends a new control at `max+1`, and retires (never reuses) a
 removed control's id — so a snapshot update never renumbers existing controls, it
 only appends. Deleting the ledger re-seeds from scratch (renumbers everything), so
-keep it committed.
+keep it committed. The generator refuses to run if an existing `DCSIN_*` id would
+change against the committed headers (#295).
+
+Each run also prints a **symbol change report** — added, removed and moved
+`DCSIN_*` / `A_4E_C_*` symbols against the committed headers (`--change-report
+<path>` writes it to a file; the refresh workflow puts it in the PR body). Additions
+are the normal case. A removed symbol breaks the build of a sketch that uses it, and
+a moved `A_4E_C_*` address silently breaks a lamp or gauge built against the old one,
+so either is the maintainer's call on the version bump.
 
 ## Source resolution (priority order)
 

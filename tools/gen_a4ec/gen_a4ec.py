@@ -9,7 +9,7 @@ Parses the DCS-BIOS A-4E-C.jsonp control definitions and emits:
   Firmware/Libraries/A4EC/GENERATOR_GAPS.md  — skipped controls with reasons
 
 Usage (from repo root):
-  python tools/gen_a4ec/gen_a4ec.py [--source <path>] [--timestamp <value>] [--fetch-github]
+  python tools/gen_a4ec/gen_a4ec.py [--source <path>] [--timestamp <value>] [--change-report <path>]
 
 Source resolution (priority order):
   1. --source <path>           explicit override, any platform
@@ -22,6 +22,7 @@ Source resolution (priority order):
 import argparse
 import json
 import platform
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -193,6 +194,49 @@ def build_output_entries(controls: dict) -> tuple:
     out.sort(key=lambda e: e["addr_id"])
     return out, gaps
 
+# ── Change report (#295) ──────────────────────────────────────────────────────
+# DCSIN_* ids are append-only (the ledger) and must never change; A_4E_C_* addresses and masks
+# follow DCS-BIOS upstream. A refresh that removes or moves a symbol a sketch may use is listed so
+# the maintainer can decide the version bump — additions are the normal case.
+
+_DEFINE_RE = re.compile(r"^#define\s+(\w+)\s+(0x[0-9A-Fa-f]+)", re.M)
+
+def parse_defines(text: str) -> dict:
+    """{name: value} for every `#define NAME 0x…` line of a generated header."""
+    return {name: int(value, 16) for name, value in _DEFINE_RE.findall(text)}
+
+def diff_defines(old: dict, new: dict) -> dict:
+    """Added / removed / moved (same name, new value) symbols between two header versions."""
+    return {
+        "added":   sorted(set(new) - set(old)),
+        "removed": sorted(set(old) - set(new)),
+        "moved":   sorted((n, old[n], new[n]) for n in set(old) & set(new) if old[n] != new[n]),
+    }
+
+def changed_dcsin_ids(cmd_diff: dict) -> list:
+    """DCSIN_* symbols whose id would change — a ledger violation, never allowed."""
+    return [m for m in cmd_diff["moved"] if m[0].startswith("DCSIN_")]
+
+def emit_change_report(cmd_diff: dict, out_diff: dict) -> str:
+    """Markdown for the refresh PR body: what a sketch built against the old headers loses."""
+    removed = cmd_diff["removed"] + out_diff["removed"]
+    moved   = out_diff["moved"]
+    added   = cmd_diff["added"] + out_diff["added"]
+    lines = ["## Symbol changes", ""]
+    if not removed and not moved:
+        lines.append(f"Additions only ({len(added)} new symbols) — nothing a sketch uses was removed "
+                     "or moved.")
+        return "\n".join(lines) + "\n"
+    lines += ["**Removed or moved symbols** — a sketch using one of these stops compiling (removed) "
+              "or silently reads the wrong address (moved). Decide whether this release needs a "
+              "major version bump before merging.", ""]
+    for name in removed:
+        lines.append(f"- removed `{name}`")
+    for name, old, new in moved:
+        lines.append(f"- moved `{name}`: `{old:#06x}` → `{new:#06x}`")
+    lines += ["", f"Added: {len(added)} new symbols."]
+    return "\n".join(lines) + "\n"
+
 # ── Emission helpers ──────────────────────────────────────────────────────────
 
 def _c_str(val: Optional[str]) -> str:
@@ -336,6 +380,8 @@ def main() -> None:
                         help="Generation timestamp/label to embed; defaults to current UTC time")
     parser.add_argument("--source-label", metavar="TEXT",
                         help="Source label to embed; defaults to the source filename")
+    parser.add_argument("--change-report", metavar="PATH",
+                        help="Write the removed/moved/added symbol report (Markdown) here")
     parser.add_argument("--fetch-github", action="store_true",
                         help="(not yet implemented) Fetch JSON from DCS-Skunkworks/dcs-bios release")
     args = parser.parse_args()
@@ -370,6 +416,24 @@ def main() -> None:
         "A4EC_InputMap.h":  emit_inputmap(input_entries,  source_name, ts),
         "GENERATOR_GAPS.md": emit_gaps(all_gaps, source_name, ts),
     }
+
+    def previous(filename: str) -> dict:
+        path = OUTPUT_DIR / filename
+        return parse_defines(path.read_text(encoding="utf-8")) if path.exists() else {}
+
+    cmd_diff = diff_defines(previous("A4EC_CmdIds.h"), parse_defines(writes["A4EC_CmdIds.h"]))
+    out_diff = diff_defines(previous("A4EC_OutputIds.h"), parse_defines(writes["A4EC_OutputIds.h"]))
+    broken = changed_dcsin_ids(cmd_diff)
+    if broken:
+        for name, old, new in broken:
+            print(f"ERROR: {name} would change {old:#06x} -> {new:#06x}", file=sys.stderr)
+        sys.exit("ERROR: DCSIN_* ids are append-only (id_ledger.json) — an existing id must never "
+                 "change. Restore the ledger from git; do not edit or re-seed it.")
+
+    report = emit_change_report(cmd_diff, out_diff)
+    print(report.rstrip())
+    if args.change_report:
+        Path(args.change_report).write_text(report, encoding="utf-8")
 
     for filename, content in writes.items():
         out_path = OUTPUT_DIR / filename

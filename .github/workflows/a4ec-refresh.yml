@@ -99,7 +99,8 @@ jobs:
           python tools/gen_a4ec/gen_a4ec.py \
             --source tools/gen_a4ec/data/A-4E-C.jsonp \
             --source-label "DCS-BIOS ${{ steps.release.outputs.tag }} (${{ steps.release.outputs.source_ref }})" \
-            --timestamp "${{ steps.release.outputs.published_at }}"
+            --timestamp "${{ steps.release.outputs.published_at }}" \
+            --change-report "$RUNNER_TEMP/a4ec-changes.md"
 
       - name: Test A4EC generator
         run: |
@@ -197,6 +198,9 @@ jobs:
           - A4EC generator pytest suite
           - PlatformIO build for projects that reference `A4EC`
           BODY
+          # Removed or moved symbols break sketches built against the old headers; the generator
+          # lists them so the maintainer decides the version bump (#295). Additions only is normal.
+          { echo; cat "$RUNNER_TEMP/a4ec-changes.md"; } >> "$body_file"
 
           existing_pr="$(gh pr list \
             --repo "$GITHUB_REPOSITORY" \
