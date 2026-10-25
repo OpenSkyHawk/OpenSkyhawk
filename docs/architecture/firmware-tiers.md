@@ -71,7 +71,7 @@ stream from SimGateway over UART, fires the DCS-BIOS export listener, and broadc
 DCS output onto the CAN bus as `CTRL_BCAST` frames. In the other direction it collects input
 events (`EVT_n`) from the nodes and routes each one: DCS-BIOS inputs go out as ASCII commands
 over UART; HID inputs are wrapped in HID frames for SimGateway. It also tracks which nodes are
-alive (from their heartbeats) and — behind a build flag — reports that roster to the host over
+alive (from their heartbeats) and reports that roster to the host over
 DCS-BIOS itself (`_NODE_STATUS` messages; request address `0x86FE`): each node's health, board
 kind and firmware version, plus a row for the bridge itself. The client can show connected boards without any
 SimGateway change

@@ -39,7 +39,7 @@ struct NodeState {
     bool     alive;
     bool     everSeen;
     uint32_t lastSeenMs;
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
     HeartbeatPayload last;          // last HB payload, surfaced to the host (#86)
     // Cached NodeHealthPayload fields from the node's last HEALTH_n frame (#221 contract):
     int8_t   dieTempC    = DIE_TEMP_UNAVAILABLE; // internal die temp °C, unseen until HEALTH_n — #213
@@ -60,7 +60,7 @@ static void (*_cbAlive)(uint8_t)          = nullptr;
 static void (*_cbDead)(uint8_t)           = nullptr;
 static uint8_t        _deadCount          = 0;    // tracked nodes currently timed-out (drives WARNING)
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
 // ── Node-status reporting (#86) ──────────────────────────────────────────────
 // Surface node presence + health to the host (OpenSkyhawk Client) as DCS-BIOS
 // command messages on a reserved control name. Owned entirely by PanelBridge;
@@ -171,7 +171,7 @@ static void sendHidFrame(uint16_t controlId, uint16_t value) {
 
 // Internal helper called by BridgeExportListener — separated for testability.
 void handleDcsBiosExport(uint16_t address, uint16_t value) {
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
     // Reserved: the host's node-status request — handled by NodeStatusReqListener,
     // never broadcast onto CAN.
     if (address == NODE_STATUS_REQ_ADDR) return;
@@ -331,7 +331,7 @@ static bool markNodeAlive(uint8_t nodeId, uint32_t now) {
         if (wasDead && _deadCount > 0 && --_deadCount == 0)
             STM32Board::setWarning(false);
         if (_cbAlive) _cbAlive(nodeId);
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         emitNode(nodeId, true);   // push presence on dead/unseen → alive (#86)
 #endif
         return true;
@@ -345,7 +345,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     // HB_1 – HB_63: update liveness; broadcast SYNC_REQ only on dead→alive transition
     if (canId >= canIdHb(1) && canId <= canIdHb(MAX_NODE_ID)) {
         uint8_t nodeId = (uint8_t)(canId - canIdHb(0));
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         if (len >= 8) memcpy(&_nodes[nodeId - 1].last, data, 8);  // cache health for #86 reporting
 #endif
         if (markNodeAlive(nodeId, now)) broadcastSyncReq();
@@ -355,7 +355,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     // HEALTH_1 – HEALTH_63: cache internal die temp + health/fault fields for host reporting (#213).
     // Cache only — HB owns liveness/SYNC, so a health frame never triggers markNodeAlive.
     if (canId >= canIdHealth(1) && canId <= canIdHealth(MAX_NODE_ID)) {
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         if (len >= sizeof(NodeHealthPayload)) {
             uint8_t nodeId = (uint8_t)(canId - canIdHealth(0));
             NodeHealthPayload h;
@@ -379,7 +379,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
     // TELEM_1 – TELEM_63: paged node telemetry — forwarded to the host unread (#216). Like HEALTH,
     // never a liveness signal (HB owns that).
     if (canId >= canIdTelem(1) && canId <= canIdTelem(MAX_NODE_ID)) {
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         if (len == sizeof(TelemPayload) && data[0] != 0)
             emitTelem((uint8_t)(canId - canIdTelem(0)), data);
 #endif
@@ -451,7 +451,7 @@ static void onCanRx(uint32_t canId, const uint8_t* data, uint8_t len) {
             auto& d = STM32Board::diagSerial();
             d.print(F("[BRIDGE] READY node=")); d.println(nodeId);
         }
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
         // Firmware version (#295): every boot re-announces it, so a reflash is seen at once. Cache
         // it before markNodeAlive() so an alive delta already carries it; a node that rebooted
         // inside the heartbeat timeout stays alive, so push the change as its own delta. An empty
@@ -491,7 +491,7 @@ static void checkNodeTimeouts(uint32_t now) {
             _deadCount++;                   // a tracked node died → WARNING (amber)
             STM32Board::setWarning(true);
             if (_cbDead) _cbDead(nodeId);
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
             emitNode(nodeId, false);   // push removal on alive → dead (#86)
 #endif
         }
@@ -530,7 +530,7 @@ public:
 static BridgeExportListener     _exportListener;
 static DcsBios::StringBuffer<5> _modelTimeBuf(CommonData_MOD_TIME_A, onModelTimeChange);
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
 // Host roster request (#86): the client writes NODE_STATUS_REQ_ADDR on the DCS-BIOS
 // export stream; PanelBridge replies with the full roster. handleDcsBiosExport()
 // drops this address so it is never broadcast onto CAN.
@@ -564,7 +564,7 @@ void setup() {
     CANProtocol::onReceive(onCanRx);
     CANProtocol::start();
     broadcastSyncReq();
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
     emitAllNodes();   // seed the host with the current roster (node-0 row only at cold boot) (#86)
 #endif
 }
@@ -641,7 +641,7 @@ void testHandleExport(uint16_t address, uint16_t value) {
     handleDcsBiosExport(address, value);
 }
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
 void testFeedHeartbeat(uint8_t nodeId, uint8_t flags, uint16_t uptime,
                        uint16_t rxCount, uint16_t esr) {
     HeartbeatPayload hb{ nodeId, flags, uptime, rxCount, esr };

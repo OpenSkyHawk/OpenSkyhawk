@@ -48,6 +48,7 @@ this is just the flags.
 | `SHIFTBUS_ISR_HZ` | You want timer-ISR sampling for encoder feel instead of polled sampling. |
 | `SERIAL_RX_BUFFER_SIZE=256` | **PanelBridge only.** A PanelGroup has no use for it. |
 | `NODE_HEALTH_TELEM=0` | You specifically want health telemetry **off**. It is on by default — omitting the line does not disable it. |
+| `PANELBRIDGE_NODE_STATUS=0` | **PanelBridge only.** You specifically want node reporting to the host **off** — the client then shows no boards. On by default. |
 
 ### Never in a panel
 
@@ -61,7 +62,7 @@ actually does.
 | Flag | Default | Set where | Read at |
 |---|---|---|---|
 | `NODE_ID` | none — omitting it fails to compile | every STM32 env that links our libraries; `WiringCheck` omits it deliberately | `CANProtocol.cpp:226`, `PanelGroup.cpp:300`, `STM32Board.h:29` |
-| `PANELBRIDGE_NODE_STATUS` | off | on in `Templates/PanelBridge` | `PanelBridge.cpp:42` + ~10 more |
+| `PANELBRIDGE_NODE_STATUS` | **on** | `=0` in `Tests/PanelBridge` `test_input_dispatch_dcs` / `_hid` | `PanelBridge.h:38` (default), `PanelBridge.cpp:42` + ~10 more |
 | `NODE_HEALTH_TELEM` | **on** | never set | `CANProtocol.cpp:511` (`serviceNodeStatus`, every node) |
 | `NODE_OVERHEAT_C` | **unset — by design** | bench envs only | `CANProtocol.cpp:452`, `CANProtocol.cpp:528` |
 | `FORCE_CLOCK_FALLBACK` | off | `Tests/STM32Board` env `test_adc_clock_fallback` | `STM32Board.cpp:179` |
@@ -119,16 +120,10 @@ them:
     client's rendering). Enabling it for real is a one-line `-DNODE_OVERHEAT_C=N` once someone has
     calibration data. See `FirmwarePlan/00-decisions.md`.
 
-!!! note "`NODE_HEALTH_TELEM` is ON by default — disable with `=0`, not by omission"
-    It's the only flag in this group that's on when absent (`#if !defined(X) || (X)`). Leaving it
-    out gets you health telemetry; you need an explicit `-DNODE_HEALTH_TELEM=0` to turn it off.
-
-!!! note "`PANELBRIDGE_NODE_STATUS` is off in the library but on in every shipped PanelBridge"
-    The library defaults it off, so the table above says "off" — but the PanelBridge template
-    enables it, and so does the E2E example. Every build you would actually flash to a cockpit
-    has it on. (Most of the 13 `Tests/PanelBridge` envs leave it off; they are testing other
-    things.) The client half is already released, which is why the default flipped in the
-    template rather than in the library.
+!!! note "`NODE_HEALTH_TELEM` and `PANELBRIDGE_NODE_STATUS` are ON by default — disable with `=0`, not by omission"
+    They're the two flags in this group that are on when absent. Leaving them out gets you health
+    telemetry and the bridge's node reporting; you need an explicit `=0` to turn either off. The
+    client depends on both, so a shipped build keeps them on.
 
 ## PDU node thresholds (`PDU_*`)
 
@@ -220,7 +215,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 | `LED_TEST` | LED | `Outputs/LED/LED.h:67` |
 | `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:59` |
 | `NEEDLEGAUGE_TEST` | NeedleGauge | `Outputs/NeedleGauge/NeedleGauge.h:77` |
-| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:84` |
+| `PANELBRIDGE_TEST` | PanelBridge | `PanelBridge/PanelBridge.h:92` |
 | `ROTARYENCODER_TEST` | RotaryEncoder | `Inputs/RotaryEncoder/RotaryEncoder.h:108` |
 | `SHIFTBUS_TEST` | ShiftBus | `Helpers/ShiftBus/ShiftBus.h:141` |
 | `SIMGATEWAY_TEST` | SimGateway | `SimGateway/SimGateway.cpp:12` (no-op HID stubs) |

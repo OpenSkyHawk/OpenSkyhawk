@@ -51,7 +51,7 @@ READY event, updates `lastSeenMs` like a heartbeat, marks the node alive if need
 broadcasts `SYNC_REQ`. The READY frame carries no input state itself; the following EVTs
 emitted in response to `SYNC_REQ` are the state snapshot.
 
-**Node-status reporting to the host (#86, behind `-DPANELBRIDGE_NODE_STATUS`, default off):**
+**Node-status reporting to the host (#86; `PANELBRIDGE_NODE_STATUS`, on by default since #295, `=0` compiles it out):**
 PanelBridge surfaces the roster + per-node health to OpenSkyhawk Client over DCS-BIOS (see
 `04-dcs-bios-integration.md`). It caches each node's last `HeartbeatPayload` (`NodeState::last`,
 populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + health/fault +

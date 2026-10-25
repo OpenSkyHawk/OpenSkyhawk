@@ -84,7 +84,7 @@ broadcasts `SYNC_REQ` so the node re-polls and sends its current input state.
 
 ### Reporting nodes to the host (#86)
 
-Behind `-DPANELBRIDGE_NODE_STATUS` (default off), PanelBridge surfaces the roster + per-node
+On by default (`-DPANELBRIDGE_NODE_STATUS=0` compiles it out), PanelBridge surfaces the roster + per-node
 health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway untouched:
 
 - **Response:** a DCS-BIOS command message `_NODE_STATUS <hex>` per node (`hex` =

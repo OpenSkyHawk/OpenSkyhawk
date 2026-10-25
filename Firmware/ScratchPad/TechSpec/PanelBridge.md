@@ -373,7 +373,7 @@ a child-node heartbeat — one that does arrive is another board on node 0, whic
 
 ### Node-status reporting (#86, proto v3 #344, v4 #295)
 
-Behind `-DPANELBRIDGE_NODE_STATUS`. `NodeState` caches each node's last `HeartbeatPayload`, its
+Behind `PANELBRIDGE_NODE_STATUS`, which `PanelBridge.h` defaults to `1` (#295; `-DPANELBRIDGE_NODE_STATUS=0` compiles it out — code tests it with `#if`, never `#ifdef`). `NodeState` caches each node's last `HeartbeatPayload`, its
 `HEALTH_n` fields (`dieTempC`, `healthFlags`, `faultMask`, `faultId`, `nodeKind` — not-yet-seen:
 `DIE_TEMP_UNAVAILABLE` / `0`) and the firmware version from its last `READY_n` (`fwMajor`,
 `fwMinor`, `fwPatch` — `0.0.0` = not reported; an empty READY from older firmware also reads 0.0.0;

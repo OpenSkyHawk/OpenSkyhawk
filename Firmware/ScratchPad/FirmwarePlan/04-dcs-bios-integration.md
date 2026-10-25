@@ -95,7 +95,7 @@ The last five fields come from the node's `HEALTH_n` frame (see `02-can-protocol
 Both directions ride the serial/CDC, so this works in the client's **Bridge mode only** (no
 serial in Monitor/Replay). Reserved constants + the wire format live in `NodeStatus.h` (the
 canonical contract source the client syncs against; `NODE_STATUS_PROTO_VERSION` bumps on any wire
-change). The whole feature is gated behind `-DPANELBRIDGE_NODE_STATUS` (default off).
+change). The whole feature is on by default; `-DPANELBRIDGE_NODE_STATUS=0` compiles it out (#295).
 
 ### Node telemetry — `_NODE_TELEM` (#216)
 
@@ -118,7 +118,7 @@ The row is `NODE_TELEM_ROW_BYTES` (9) bytes; `NodeTelemField` names the two offs
   the 8 bytes are raw frame bytes, so multi-byte page fields are **little-endian**.
 - PanelBridge drops a frame whose page byte is `0x00` or whose length is not 8; a `TELEM_n` frame
   never changes liveness (`HB_n` owns that).
-- Bridge mode only, gated by the same `-DPANELBRIDGE_NODE_STATUS` flag. Like `_NODE_STATUS`, a copy
+- Bridge mode only, gated by the same `PANELBRIDGE_NODE_STATUS` flag (on by default). Like `_NODE_STATUS`, a copy
   that reaches DCS through the client's byte-for-byte relay is ignored as an unknown command.
 
 Client side: OpenSkyhawk/SkyHawkClient#61.
