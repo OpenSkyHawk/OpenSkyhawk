@@ -478,7 +478,7 @@ must therefore mean "the last received value has not moved for N ms", never "N c
 agreed", which would never complete on a stick held still.
 
 **Do not assume an update rate.** `AnalogInput`'s read throttle is **per instance** — the `pollMs`
-constructor parameter, default `DEFAULT_POLL_MS` = 8 ms — so it is a per-axis build choice, not a
+field of its `AnalogConfig`, default `AnalogConfig::DEFAULT_POLL_MS` = 8 ms — so it is a per-axis build choice, not a
 constant you can read off the class, and two axes on one node may differ. Whatever it is set to
 bounds only that axis's ADC sampling; hysteresis, `PanelGroup::loop()` timing, CAN, and PanelBridge
 all reduce it further. Measure it.

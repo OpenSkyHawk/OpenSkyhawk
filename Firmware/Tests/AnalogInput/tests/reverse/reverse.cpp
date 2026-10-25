@@ -13,7 +13,7 @@
 
 static constexpr uint16_t CTRL_ID = 0x567A;
 
-OpenSkyhawk::AnalogInput gAna(CTRL_ID, PinRef(PA1), /*reverse=*/true);   // full range 0..65535
+OpenSkyhawk::AnalogInput gAna(CTRL_ID, PinRef(PA1), { .reverse = true });   // full range 0..65535
 
 void setup() {
     STM32Board::setDebug(true);
