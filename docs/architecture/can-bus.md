@@ -41,7 +41,8 @@ helper functions — **never hard-code these values**, always use the helper.
 | `EVT_ACTION_n` | `0x700 + n` | `canIdEvtAction(n)` | Node *n* → PanelBridge | 8 |
 | *reserved* | `0x740`–`0x7BF` | — | — | — |
 
-- `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node.
+- `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node — the whole export
+  stream, whatever aircraft is flying; each output picks out its own address.
 - `0x740`–`0x7BF` is reserved for a future firmware-update frame family, at the lowest priority
   on the bus so update traffic never delays a control.
 - `EVT_n` carries input events from a node back up to PanelBridge.

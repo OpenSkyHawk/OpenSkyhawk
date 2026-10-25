@@ -92,8 +92,8 @@ The listener overrides the DCS-BIOS Arduino library callback:
 void onDcsBiosWrite(unsigned int address, unsigned int data);
 ```
 
-For each DCS-BIOS export address in the `0x8000`-`0x86FF` range, the listener builds a
-`ControlPacket` and calls:
+For every DCS-BIOS export address the stream carries (`0x0002`–`0xFFFE`: whatever aircraft is
+flying, CommonData and the metadata; #295, D24), the listener builds a `ControlPacket` and calls:
 
 ```cpp
 CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, packet);

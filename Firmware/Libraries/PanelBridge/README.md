@@ -18,8 +18,9 @@ PanelBridge (STM32F103CBT6)   ← this library
     └── PanelGroup #N
 ```
 
-**DCS-BIOS exports (sim → cockpit):** `BridgeExportListener` listens to the DCS-BIOS
-stream on addresses `0x8000–0x86FF` and batches each value as a `ControlPacket` to
+**DCS-BIOS exports (sim → cockpit):** `BridgeExportListener` forwards the whole DCS-BIOS export
+stream — every address of whatever aircraft is flying, plus CommonData and the metadata, except
+`0x0000` (the CAN empty-slot sentinel) — and batches each value as a `ControlPacket` to
 `CANProtocol::sendBatched(CAN_ID_CTRL_BCAST)`. PanelGroup nodes subscribe to these frames
 to drive LEDs, gauges, and other outputs.
 

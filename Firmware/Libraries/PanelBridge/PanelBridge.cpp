@@ -171,6 +171,7 @@ static void sendHidFrame(uint16_t controlId, uint16_t value) {
 
 // Internal helper called by BridgeExportListener — separated for testability.
 void handleDcsBiosExport(uint16_t address, uint16_t value) {
+    if (address == 0x0000) return;   // the ControlPacket empty-slot sentinel; never carried
 #if PANELBRIDGE_NODE_STATUS
     // Reserved: the host's node-status request — handled by NodeStatusReqListener,
     // never broadcast onto CAN.
@@ -516,12 +517,18 @@ static void onModelTimeChange(char* value) {
     _lastModelTimeSec = sec;
 }
 
-// DCS-BIOS export listener — intercepts 0x8000–0x86FF and batches to CTRL_BCAST.
+// DCS-BIOS export listener — forwards the whole export stream to CTRL_BCAST (#295): every address
+// of whatever aircraft is flying, plus CommonData and the metadata, so the nodes decide what they
+// use. It starts at 0x0002 because a ControlPacket's controlId 0x0000 is the empty-slot sentinel —
+// the one address CAN can't carry (the first two characters of MetadataStart's _ACFT_NAME).
 // ExportStreamListener::firstExportStreamListener (Protocol.cpp) is zero-initialized
 // before any constructors run, so file-scope registration is safe.
+static constexpr uint16_t EXPORT_FIRST_ADDR = 0x0002;
+static constexpr uint16_t EXPORT_LAST_ADDR  = 0xFFFE;
+
 class BridgeExportListener : public DcsBios::ExportStreamListener {
 public:
-    BridgeExportListener() : DcsBios::ExportStreamListener(0x8000, 0x86FF) {}
+    BridgeExportListener() : DcsBios::ExportStreamListener(EXPORT_FIRST_ADDR, EXPORT_LAST_ADDR) {}
     void onDcsBiosWrite(unsigned int address, unsigned int data) override {
         handleDcsBiosExport((uint16_t)address, (uint16_t)data);
     }

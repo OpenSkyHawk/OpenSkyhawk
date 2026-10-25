@@ -94,7 +94,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 
 | Frame | CAN ID | Direction | DLC | Purpose |
 |-------|--------|-----------|-----|---------|
-| `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels |
+| `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels — the whole DCS-BIOS export stream (`controlId` = export address, `0x0002`–`0xFFFE`; #295, D24) |
 | `TEST_SEQ` | `0x011` | PanelBridge → All | 8 | CAN throughput / RTT test — 8-byte payload echoed back unchanged by sub-nodes |
 | `SYNC_REQ` | `0x012` | PanelBridge → All | 0 | Request all nodes to re-poll inputs and emit EVTs. Sent on cold boot, on `model_time` backward, in response to `READY`, and when a node transitions from dead/unseen to alive. |
 | `HB_0` | `0x100` | PanelBridge → All | 8 | Master liveness beacon every 500 ms; every other node runs a master-loss watchdog on it (#93) |

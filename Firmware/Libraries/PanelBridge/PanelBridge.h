@@ -143,7 +143,8 @@ namespace PanelBridge {
      * Equivalent to the BridgeExportListener receiving address/value from DCS-BIOS.
      * Calls CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, ...) with the given pair.
      *
-     * @param address  DCS-BIOS export address (0x8000–0x86FF for cockpit outputs).
+     * @param address  DCS-BIOS export address — any address the export stream carries (#295);
+     *                 0x0000 is dropped (the CAN empty-slot sentinel).
      * @param value    16-bit export value.
      */
     void testHandleExport(uint16_t address, uint16_t value);

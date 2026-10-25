@@ -77,7 +77,7 @@
 - [x] Integrate DCS-BIOS library: configure `DCSBIOS_DEFAULT_SERIAL` to use `Serial`
       (UART2 PA2/PA3).
 - [x] Add `ExportStreamListener` subclass that auto-registers on `PanelBridge::setup()` and
-      submits all 0x8000–0x86FF writes to CANProtocol's `CTRL_BCAST` batching path.
+      submits every export write (0x0002–0xFFFE since #295) to CANProtocol's `CTRL_BCAST` batching path.
 - [x] Remove the UART argument from `PanelBridge::setup()` — DCS-BIOS library owns `Serial`
       directly via `DCSBIOS_DEFAULT_SERIAL`. Update `PanelBridge.h` to match.
 - [x] Replace `MAX_NODES=2` with dynamic node tracking; hardware CAN filter remains pass-all;

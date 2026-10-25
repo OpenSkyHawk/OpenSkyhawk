@@ -416,13 +416,16 @@ PanelBridge owns an internal DCS-BIOS listener/adapter. The adapter is private t
 class BridgeExportListener : public DcsBios::ExportStreamListener {
 public:
     BridgeExportListener()
-        : DcsBios::ExportStreamListener(0x8000, 0x86FF) {}
+        : DcsBios::ExportStreamListener(EXPORT_FIRST_ADDR, EXPORT_LAST_ADDR) {}   // 0x0002, 0xFFFE
 
     void onDcsBiosWrite(unsigned int address, unsigned int data) override;
 };
 ```
 
-For each DCS-BIOS export update in the cockpit output address range (`0x8000`-`0x86FF`):
+For each DCS-BIOS export update, at any address the stream carries (#295, D24) — the whole stream
+is forwarded, whatever aircraft is flying; the nodes decide what they use. Address `0x0000` is
+skipped (the listener starts at `0x0002`, and `handleDcsBiosExport()` drops it): it is the
+`ControlPacket` empty-slot sentinel, so CAN can't carry it.
 
 1. Build `ControlPacket{ address, value }`.
 2. Call `CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, packet)`.

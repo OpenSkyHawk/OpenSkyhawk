@@ -609,3 +609,29 @@ must adopt anyway.
 **Affects:** `NodeStatus.h`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`, TechSpec
 `NodeStatus`, PanelBridge README, `docs/architecture/sim-gateway.md`, `docs/architecture/firmware-tiers.md`.
 Client half: SkyHawkClient's roster request (synced from `NodeStatus.h`).
+
+---
+
+## D24 — PanelBridge forwards the whole DCS-BIOS export stream (#295)
+
+**Decision:** `BridgeExportListener` covers `0x0002`–`0xFFFE`: every export address of whatever
+aircraft is flying, plus CommonData and the DCS-BIOS metadata, goes onto CAN as `CTRL_BCAST`. The
+nodes decide what they use — each output matches its own address. Only `0x0000` is skipped: it is
+the `ControlPacket` empty-slot sentinel, so CAN can't carry it (it holds the first two characters of
+`_ACFT_NAME`).
+
+**Rationale:**
+- *The old window was the input-ID range by accident.* It was `0x8000`–`0x86FF` — the `DCSIN_*`
+  range — not the A-4E's export block (`0x8400`–`0x8555`), so it already passed parts of the AH-64D,
+  MB-339 and Mirage F1. Filtering by aircraft would tie the bridge to one aircraft; the multi-aircraft
+  direction wants the cockpit, not the bridge, to choose.
+- *Nodes already ignore what they don't use.* `onControlPacket` hands every packet to every output,
+  and each keeps only its own address.
+
+**Cost — confirm on the #290 soak:** `CTRL_BCAST` (the highest-priority frame) now also carries
+CommonData (position, heading, model time) and the per-frame update counters, so bus load rises.
+The soak's "no false offline / zero TX drops" checks are the guard; `CTRL_BCAST` keeps the newest
+state when its queue is full.
+
+**Affects:** `PanelBridge.cpp`, `02-can-protocol.md`, `06-panelbridge-api.md`, `10-implementation-plan.md`,
+TechSpec `PanelBridge`, PanelBridge README, `docs/architecture/can-bus.md`.
