@@ -210,7 +210,7 @@ is set only by its own `Firmware/Tests/<Library>/platformio.ini`.
 | Flag | Library it opens | First read at |
 |---|---|---|
 | `ANALOGINPUT_TEST` | AnalogInput | `Inputs/AnalogInput/AnalogInput.h:84` |
-| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:89` |
+| `ANALOGMULTIPOS_TEST` | AnalogMultiPos | `Inputs/AnalogMultiPos/AnalogMultiPos.h:93` |
 | `DRUMDISPLAY_TEST` | DrumDisplay | `DrumDisplay/DrumDisplay.h:278` |
 | `LED_TEST` | LED | `Outputs/LED/LED.h:67` |
 | `MULTIPOS_TEST` | MultiPosInput | `Inputs/MultiPosInput/MultiPosInput.h:59` |

@@ -47,6 +47,9 @@ static constexpr uint16_t ANALOG_NC = MultiPosInput::NO_POSITION;
 class AnalogMultiPos : public MultiPosInput {
 public:
     static constexpr uint16_t DEFAULT_DEADBAND = 1000;  ///< counts trimmed from each band edge
+    /// No deadband — bands meet edge to edge. Pass this, not a literal `0`: a literal `0` is also a
+    /// null `posVals` pointer, so `AnalogMultiPos(id, pin, n, 0)` is ambiguous and doesn't compile.
+    static constexpr uint16_t NO_DEADBAND      = 0;
     static constexpr uint16_t POLL_MS          = 8;     ///< min interval between ADC reads (ms)
 
     /**
@@ -57,7 +60,8 @@ public:
      * @param numPos     N — number of positions (valid indices 0..N-1).
      * @param posVals    caller-owned array of N expected 16-bit ADC values, one per position.
      *                   Must outlive this object. Use ANALOG_NC for a position with no detent.
-     * @param deadband   counts trimmed from each band edge for hysteresis (default 1000).
+     * @param deadband   counts trimmed from each band edge for hysteresis (default 1000;
+     *                   NO_DEADBAND for none).
      */
     AnalogMultiPos(uint16_t controlId, PinRef pin, uint8_t numPos,
                    const uint16_t* posVals, uint16_t deadband = DEFAULT_DEADBAND);
@@ -68,7 +72,7 @@ public:
      * @param controlId  DCSIN_* or CTRL_* constant.
      * @param pin        analog PinRef.
      * @param numPos     N — number of positions.
-     * @param deadband   counts trimmed from each band edge (default 1000).
+     * @param deadband   counts trimmed from each band edge (default 1000; NO_DEADBAND for none).
      */
     AnalogMultiPos(uint16_t controlId, PinRef pin, uint8_t numPos,
                    uint16_t deadband = DEFAULT_DEADBAND);

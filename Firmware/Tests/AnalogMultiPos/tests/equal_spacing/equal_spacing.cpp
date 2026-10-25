@@ -1,7 +1,8 @@
 // AnalogMultiPos — equal_spacing test
 //
 // Shorthand ctor (no posVals): N=5 → positions evenly spaced 0..65535 → {0,16383,32767,49151,65535}.
-// Pure debugResolve.
+// Pure debugResolve. gNoDb also proves NO_DEADBAND selects this overload — a literal 0 would be
+// ambiguous with the posVals (null pointer) form and not compile (#295).
 
 #include <Arduino.h>
 #include <STM32Board.h>
@@ -11,6 +12,7 @@ using namespace OpenSkyhawk;
 
 static constexpr uint16_t CTRL_ID = 0x803b;
 AnalogMultiPos gSel(CTRL_ID, PinRef(PA1), 5);   // shorthand — equal spacing
+AnalogMultiPos gNoDb(CTRL_ID + 1, PinRef(PA2), 5, AnalogMultiPos::NO_DEADBAND);
 
 static constexpr uint16_t NOPOS = MultiPosInput::NO_POSITION;
 
@@ -34,6 +36,10 @@ void setup() {
 
     // Gap at the midpoint of positions 0 and 1 (8191) ± deadband.
     check("8191 -> NOPOS (gap)", gSel.debugResolve(8191) == NOPOS);
+
+    // NO_DEADBAND: bands meet, so the midpoint resolves to a position instead of a gap.
+    check("NO_DEADBAND 8191 -> a position", gNoDb.debugResolve(8191) != NOPOS);
+    check("NO_DEADBAND 16383 -> 1",         gNoDb.debugResolve(16383) == 1);
 
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");
 }
