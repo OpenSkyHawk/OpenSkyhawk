@@ -255,17 +255,14 @@ int32_t StepperMotor::position() const {
 }
 
 StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
-                            int16_t minPos, int16_t maxPos,
-                            HomeMode home, bool homeSeekClockwise, HomeSensor sensor,
-                            bool wrap, uint8_t deadband, bool autoRecal, uint32_t recalDebounceMs,
-                            uint16_t stepsPerRev, uint16_t rangeSteps, uint16_t homeStepUs) {
-    return StepperConfig{
-        stepsPerRev, StepPattern::SWITEC_6STATE, kSwitecDefaultAccel, kSwitecDefaultAccelN,
-        home, homeSeekClockwise, sensor,
-        homePosition, parkPosition, minPos, maxPos,
-        wrap, deadband, autoRecal, recalDebounceMs,
-        rangeSteps, homeStepUs,
-    };
+                            int16_t minPos, int16_t maxPos, HomeMode home) {
+    StepperConfig c;   // the X27-family defaults
+    c.home         = home;
+    c.homePosition = homePosition;
+    c.parkPosition = parkPosition;
+    c.minPos       = minPos;
+    c.maxPos       = maxPos;
+    return c;
 }
 
 } // namespace OpenSkyhawk

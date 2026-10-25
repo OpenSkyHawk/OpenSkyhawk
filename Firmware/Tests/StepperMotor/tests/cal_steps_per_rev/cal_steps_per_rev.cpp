@@ -31,6 +31,7 @@ static const StepperConfig CFG = {
     /* deadband          */ 0,
     /* autoRecal         */ false,
     /* recalDebounceMs   */ 0,
+    /* rangeSteps        */ 0,   // 0 = stepsPerRev, as before the #295 default (945)
 };
 
 StepperMotor gMotor(PinRef(PA0), PinRef(PA1), PinRef(PA4), PinRef(PA5), CFG);
