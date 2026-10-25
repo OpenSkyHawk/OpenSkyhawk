@@ -36,6 +36,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**InputBase**](classOpenSkyhawk_1_1InputBase.md) _Abstract base for all hardware-polled input objects._     
     * **class** [**IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md) _Callback output — the DcsBios::IntegerBuffer equivalent, for outputs no built-in class covers (a custom display, an LCD, a bespoke actuator)._     
     * **class** [**LED**](classOpenSkyhawk_1_1LED.md) _Digital_ [_**LED**_](classOpenSkyhawk_1_1LED.md) _output. Drives a pin based on a DCS-BIOS state value._    
+    * **struct** [**LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) _Ladder state. Zero-initialised = healthy, no backoff._     
     * **class** [**MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md) _Common interface every motor/servo backend implements._     
     * **class** [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md) _Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._    
     * **class** [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) _DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._    
@@ -58,6 +59,7 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
     * **class** [**SwitchWithCover2Pos**](classOpenSkyhawk_1_1SwitchWithCover2Pos.md) _Guarded switch — the DcsBios::SwitchWithCover2Pos equivalent. One physical switch pin drives two sim controls: the guard cover and the switch it protects._     
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d14.md) 
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d27.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d72.md)     
 * **struct** [**IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md)     
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     
 * **namespace** [**PanelGroup**](namespacePanelGroup.md) _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._    
@@ -66,10 +68,11 @@ Here are the classes, structs, unions and interfaces with brief descriptions:
 * **struct** [**RxQueueEntry**](structRxQueueEntry.md)     
 * **namespace** [**STM32Board**](namespaceSTM32Board.md)     
 * **namespace** [**SimGateway**](namespaceSimGateway.md)     
+* **struct** [**GatewayDiag**](structSimGateway_1_1GatewayDiag.md) _Link-health counters and event times (#355). Reported to the host as_ `DIAG` _._    
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md)     
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelBridge/PanelBridge.cpp}**](namespace_0d10.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d53.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d55.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d64.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d72.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md)     
 

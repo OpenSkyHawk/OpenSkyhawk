@@ -4,7 +4,7 @@
 
 
 
-[**Namespace List**](namespaces.md) **>** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d72.md)
+[**Namespace List**](namespaces.md) **>** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md)
 
 
 
@@ -33,6 +33,7 @@
 | ---: | :--- |
 | enum uint8\_t | [**LedColor**](#enum-ledcolor)  <br> |
 | enum uint8\_t | [**ParserState**](#enum-parserstate)  <br> |
+| enum uint8\_t | [**namespace\_0d74\_1ae30af8389a9e349709c1fc94356c1904**](#enum-namespace_0d74_1ae30af8389a9e349709c1fc94356c1904)  <br> |
 
 
 
@@ -111,6 +112,19 @@ enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::ParserSt
     GOT_AA,
     IN_FRAME
 };
+```
+
+
+
+
+<hr>
+
+
+
+### enum namespace\_0d74\_1ae30af8389a9e349709c1fc94356c1904 
+
+```C++
+enum anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}::namespace_0d74_1ae30af8389a9e349709c1fc94356c1904;
 ```
 
 

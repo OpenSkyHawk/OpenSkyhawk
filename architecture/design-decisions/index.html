@@ -5061,8 +5061,8 @@ not over a second USB link.</p>
 load. The failure in <a href="#d1-simgateway-exists-because-stm32-usb-cant-take-the-load">D1</a> was
 specifically the STM32's USB peripheral, not its serial throughput. A UART is simple,
 deterministic, has no enumeration or driver surface, and lets SimGateway stay a dumb byte
-relay: any byte ≤ 0x7F is forwarded straight to USB CDC; HID frames are tagged with
-high-bit magic bytes so they're structurally impossible to confuse with DCS-BIOS ASCII.</p>
+relay: DCS-BIOS text is forwarded straight to USB CDC, one whole line at a time; HID frames are
+tagged with high-bit magic bytes so they're structurally impossible to confuse with DCS-BIOS ASCII.</p>
 <hr />
 <h2 id="d3-can-bus-not-i2c-between-boards">D3 — CAN bus, not I²C, between boards</h2>
 <p><strong>Decision:</strong> Inter-board communication uses a <strong>CAN bus at 500 kbps</strong>, not I²C. (I²C is used

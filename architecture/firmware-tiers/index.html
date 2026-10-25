@@ -4922,11 +4922,12 @@ generic VID/PID + CDC class. It relays the DCS-BIOS byte stream transparently to
 over UART, and intercepts HID frames coming back up to drive the joystick report.</p>
 <p><strong>What it does <em>not</em> do:</strong></p>
 <ul>
-<li>It does <strong>not</strong> run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream
-  — every byte is relayed verbatim.</li>
+<li>It does <strong>not</strong> run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream:
+  the export stream is relayed verbatim, and messages back to the PC as whole lines.</li>
 <li>It has <strong>no knowledge</strong> of DCS-BIOS control names, addresses, or the input map.</li>
-<li>It does <strong>not</strong> buffer or delay DCS-BIOS bytes — relay is immediate, so PanelBridge sees the
-  stream with USB-CDC latency only.</li>
+<li>It does <strong>not</strong> buffer or delay the DCS-BIOS export stream — relay is immediate, so
+  PanelBridge sees the stream with USB-CDC latency only. It never waits for the PC either: if the
+  PC stops reading, a message back is dropped rather than stalling the gateway.</li>
 </ul>
 <p>See <a href="../sim-gateway/">SimGateway</a> for the full breakdown.</p>
 <h2 id="panelbridge-stm32f103">PanelBridge (STM32F103)</h2>

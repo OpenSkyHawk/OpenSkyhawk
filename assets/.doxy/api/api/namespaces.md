@@ -10,6 +10,7 @@ Here is a list of all namespaces with brief descriptions:
     * **namespace** [**Pdu**](namespaceOpenSkyhawk_1_1Pdu.md)     
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d14.md) 
 * **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d27.md) 
+* **namespace** [**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d72.md)     
 * **namespace** [**PanelBridge**](namespacePanelBridge.md)     
 * **namespace** [**PanelGroup**](namespacePanelGroup.md) _Static singleton for CAN sub-node (_ [_**PanelGroup**_](namespacePanelGroup.md) _) firmware._    
 * **namespace** [**PduNode**](namespacePduNode.md)     
@@ -19,5 +20,5 @@ Here is a list of all namespaces with brief descriptions:
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PanelGroup.cpp}**](namespace_0d53.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PanelGroup/PinRef.cpp}**](namespace_0d55.md) 
 * **namespace** [**anonymous namespace{Firmware/Libraries/PowerMonitor/PduNode.cpp}**](namespace_0d64.md) 
-* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d72.md)     
+* **namespace** [**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md)     
 

@@ -52,6 +52,7 @@
 | Type | Name |
 | ---: | :--- |
 |  const [**OpenSkyhawk::CalBlob**](structOpenSkyhawk_1_1CalBlob.md) & | [**calibration**](#function-calibration) () <br>_The calibration currently applied to dispatched axis values._  |
+|  const GatewayDiag & | [**diagnostics**](#function-diagnostics) () <br>_The live link-health counters. Safe to call at any time._  |
 |  void | [**loop**](#function-loop) () <br>_Relay bytes and dispatch HID frames. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _iteration._ |
 |  void | [**setup**](#function-setup) (SerialUART & uart, uint8\_t txPin=DEFAULT\_UART\_TX\_PIN, uint8\_t rxPin=DEFAULT\_UART\_RX\_PIN) <br>_Initialise USB identity, the HID device, and the UART link to_ [_**PanelBridge**_](namespacePanelBridge.md) _._ |
 |  void | [**statusLedBegin**](#function-statusledbegin) () <br>_Configure GP2 (green) / GP3 (red) as outputs, both off. Call once from_ [_**setup()**_](namespaceSimGateway.md#function-setup) _._ |
@@ -114,6 +115,20 @@ Every axis reads as uncalibrated until [**setup()**](namespaceSimGateway.md#func
 
 
 
+### function diagnostics 
+
+_The live link-health counters. Safe to call at any time._ 
+```C++
+const GatewayDiag & SimGateway::diagnostics () 
+```
+
+
+
+
+<hr>
+
+
+
 ### function loop 
 
 _Relay bytes and dispatch HID frames. Call once per_ [_**loop()**_](namespaceSimGateway.md#function-loop) _iteration._
@@ -124,11 +139,23 @@ void SimGateway::loop ()
 
 
 Per call:
-* Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to [**PanelBridge**](namespacePanelBridge.md).
-* Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from [**PanelBridge**](namespacePanelBridge.md)) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE
+* Forward up to CDC\_TO\_UART\_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to [**PanelBridge**](namespacePanelBridge.md).
+* Drain all UART bytes: 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists any other byte → append to the host-bound line; on `\n` the whole line is written to USB CDC, or dropped and counted (see below) 0xAA + non-0x55 → both bytes go to the line, which makes it corrupt; resume IDLE
 * If any HID setter fired, send the HID report exactly once.
+* Status LEDs, UART error counters, FAULT self-clear.
+* USB recovery ladder ([**LinkRecovery.h**](LinkRecovery_8h.md)).
 
 
+
+
+**Never blocks on the host.** A line is written only if the CDC FIFO has room for all of it; otherwise it is dropped whole — never truncated — and counted in GatewayDiag::linesDropped. A line holding anything but printable ASCII (0x20–0x7E) and its `\n` is dropped as corrupt, and one longer than RELAY\_LINE\_MAX as overlong. Everything [**PanelBridge**](namespacePanelBridge.md) sends the host is a newline-framed DCS-BIOS message, so neither happens on a healthy link. Calibration frames are written whole or not at all in the same way.
+
+
+
+
+**Note:**
+
+The first call arms a WATCHDOG\_MS hardware watchdog; after that, [**loop()**](namespaceSimGateway.md#function-loop) must be called at least that often or the chip resets (production builds only).
 
 
 
@@ -171,7 +198,7 @@ Must be the first call in the sketch's [**setup()**](namespaceSimGateway.md#func
 * Manufacturer: "OpenSkyhawk"
 * Product: "A-4E Skyhawk"
 * VID/PID: 0x2E8A / 0x4134
-* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates.
+* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins, enlarges the UART's software RX queue to UART\_RX\_QUEUE\_BYTES and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates. Also records why this boot happened (see [**diagnostics()**](namespaceSimGateway.md#function-diagnostics)).
 
 
 
@@ -181,7 +208,7 @@ Must be the first call in the sketch's [**setup()**](namespaceSimGateway.md#func
 **Parameters:**
 
 
-* `uart` Hardware UART connected to [**PanelBridge**](namespacePanelBridge.md) (Serial1 / UART0 on standard board). 
+* `uart` Hardware UART connected to [**PanelBridge**](namespacePanelBridge.md) (Serial1 / UART0 on standard board). Must not have been begun already — the RX queue size can only be set before. 
 * `txPin` RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3. 
 * `rxPin` RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2.
 

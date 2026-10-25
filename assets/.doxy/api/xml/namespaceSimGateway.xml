@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
   <compounddef id="namespaceSimGateway" kind="namespace" language="C++">
     <compoundname>SimGateway</compoundname>
+    <innerclass refid="structSimGateway_1_1GatewayDiag" prot="private">SimGateway::GatewayDiag</innerclass>
     <sectiondef kind="enum">
       <memberdef kind="enum" id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bd" prot="private" static="no" strong="yes">
         <type>uint8_t</type>
@@ -10,7 +11,7 @@
         <enumvalue id="namespaceSimGateway_1a32b10168fc88951dc47dab2f75b440bda893b3aaf1661e3717b18e8335ff93a72" prot="private">
           <name>FAULT</name>
           <briefdescription>
-<para>uart0 hardware error (RSR) — RED FAST. Latched until clean data resumes (≥2 s hold). </para>
+<para>uart0 hardware error (RSR) — RED FAST. ≥2 s hold; clears on clean data, or after 3 s by restarting the UART. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -55,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="226" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="226" bodyend="232"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="296" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="296" bodyend="302"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783" prot="private" static="no" strong="yes">
         <type>uint8_t</type>
@@ -116,7 +117,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="235" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="235" bodyend="242"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="305" column="1" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="305" bodyend="312"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -134,7 +135,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="148" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="148" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="149" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="149" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceSimGateway_1ad3fdd14db89769c45bb818c966922d9e" prot="private" static="yes" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -150,7 +151,87 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="149" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="149" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="150" column="26" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceSimGateway_1a28c3ca8e3ffac626ff4899f7d70444a0" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr size_t</type>
+        <definition>constexpr size_t SimGateway::UART_RX_QUEUE_BYTES</definition>
+        <argsstring></argsstring>
+        <name>UART_RX_QUEUE_BYTES</name>
+        <qualifiedname>SimGateway::UART_RX_QUEUE_BYTES</qualifiedname>
+        <initializer>= 1024</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Bytes the UART&apos;s software RX queue holds (core default 32). At 250000 baud that is ~40 ms of <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref> latency before bytes are lost, instead of ~1.3 ms. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="189" column="25" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceSimGateway_1aca6b1478a274ea03c5e626a6062b7224" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t SimGateway::RELAY_LINE_MAX</definition>
+        <argsstring></argsstring>
+        <name>RELAY_LINE_MAX</name>
+        <qualifiedname>SimGateway::RELAY_LINE_MAX</qualifiedname>
+        <initializer>= 128</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Host-bound bytes per line the relay buffers. The longest real line is a <computeroutput>_NODE_STATUS</computeroutput> row at ~42 bytes; anything longer is not a line <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> sends, and is dropped. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="193" column="27" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="193" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceSimGateway_1abe40c6d1ff1a7d81c1bdae5637c26679" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint16_t</type>
+        <definition>constexpr uint16_t SimGateway::CDC_TO_UART_BUDGET</definition>
+        <argsstring></argsstring>
+        <name>CDC_TO_UART_BUDGET</name>
+        <qualifiedname>SimGateway::CDC_TO_UART_BUDGET</qualifiedname>
+        <initializer>= 64</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Host→PanelBridge bytes forwarded per <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref> call. The UART write blocks once its 32-byte hardware FIFO is full (~40 µs per byte), so an uncapped drain of a DCS export burst would hold <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref> for tens of ms. 64 bytes bounds it at ~2.6 ms. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="198" column="27" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceSimGateway_1ace3e925efea7e04f542b272579272026" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t SimGateway::CDC_STALL_MS</definition>
+        <argsstring></argsstring>
+        <name>CDC_STALL_MS</name>
+        <qualifiedname>SimGateway::CDC_STALL_MS</qualifiedname>
+        <initializer>= 1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The CDC IN endpoint counts as stalled after this long with DTR held, bytes pending and nothing drained. The host OS keeps polling an open port into its own buffer even when the application is not reading, so a FIFO that stays full this long means the host&apos;s USB stack stopped polling — a configured-but-dead link that <computeroutput>mounted()</computeroutput> alone cannot see. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="204" column="27" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="204" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceSimGateway_1aaa2a4fabceed2944e487465e1f9e2735" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t SimGateway::WATCHDOG_MS</definition>
+        <argsstring></argsstring>
+        <name>WATCHDOG_MS</name>
+        <qualifiedname>SimGateway::WATCHDOG_MS</qualifiedname>
+        <initializer>= 3000</initializer>
+        <briefdescription>
+<para>Hardware watchdog timeout. Armed by the first <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref> call, fed by every call. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.h" line="207" column="27" bodyfile="Firmware/Libraries/SimGateway/SimGateway.h" bodystart="207" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -182,7 +263,7 @@
 <listitem><para>Manufacturer: &quot;OpenSkyhawk&quot;</para>
 </listitem><listitem><para>Product: &quot;A-4E Skyhawk&quot;</para>
 </listitem><listitem><para>VID/PID: 0x2E8A / 0x4134</para>
-</listitem><listitem><para>CDC port: &quot;A-4E Skyhawk DCS-BIOS&quot; (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates.</para>
+</listitem><listitem><para>CDC port: &quot;A-4E Skyhawk DCS-BIOS&quot; (iInterface — names the serial port) Configures the UART pins, enlarges the UART&apos;s software RX queue to UART_RX_QUEUE_BYTES and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates. Also records why this boot happened (see <ref refid="namespaceSimGateway_1a144839a7d099af218ef254915332a39f" kindref="member">diagnostics()</ref>).</para>
 </listitem></itemizedlist>
 </para>
 <para><parameterlist kind="param"><parameteritem>
@@ -190,7 +271,7 @@
 <parametername>uart</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Hardware UART connected to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (Serial1 / UART0 on standard board). </para>
+<para>Hardware UART connected to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> (Serial1 / UART0 on standard board). Must not have been begun already — the RX queue size can only be set before. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -216,7 +297,22 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="916" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="916" bodyend="947" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="180" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1167" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="1167" bodyend="1204" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="183" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceSimGateway_1a144839a7d099af218ef254915332a39f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const GatewayDiag &amp;</type>
+        <definition>const GatewayDiag &amp; SimGateway::diagnostics</definition>
+        <argsstring>()</argsstring>
+        <name>diagnostics</name>
+        <qualifiedname>SimGateway::diagnostics</qualifiedname>
+        <briefdescription>
+<para>The live link-health counters. Safe to call at any time. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1206" column="19" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="1206" bodyend="1206" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="271" declcolumn="19"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1afa7f75ce54b436f48617b235a1ff2304" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>const <ref refid="structOpenSkyhawk_1_1CalBlob" kindref="compound">OpenSkyhawk::CalBlob</ref> &amp;</type>
@@ -234,7 +330,7 @@ Every axis reads as uncalibrated until <ref refid="namespaceSimGateway_1aa708bae
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="949" column="28" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="949" bodyend="949" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="211" declcolumn="28"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1208" column="28" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="1208" bodyend="1208" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="281" declcolumn="28"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -247,12 +343,17 @@ Every axis reads as uncalibrated until <ref refid="namespaceSimGateway_1aa708bae
         </briefdescription>
         <detaileddescription>
 <para>Per call:<orderedlist>
-<listitem><para>Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>.</para>
-</listitem><listitem><para>Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE</para>
+<listitem><para>Forward up to CDC_TO_UART_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>.</para>
+</listitem><listitem><para>Drain all UART bytes: 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists any other byte → append to the host-bound line; on <computeroutput>\n</computeroutput> the whole line is written to USB CDC, or dropped and counted (see below) 0xAA + non-0x55 → both bytes go to the line, which makes it corrupt; resume IDLE</para>
 </listitem><listitem><para>If any HID setter fired, send the HID report exactly once.</para>
+</listitem><listitem><para>Status LEDs, UART error counters, FAULT self-clear.</para>
+</listitem><listitem><para>USB recovery ladder (<ref refid="LinkRecovery_8h" kindref="compound">LinkRecovery.h</ref>).</para>
 </listitem></orderedlist>
 </para>
-<para><simplesect kind="note"><para>Node-status reporting (#86) needs no handling here: <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>&apos;s <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host&apos;s roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.</para>
+<para><bold>Never blocks on the host.</bold> A line is written only if the CDC FIFO has room for all of it; otherwise it is dropped whole — never truncated — and counted in GatewayDiag::linesDropped. A line holding anything but printable ASCII (0x20–0x7E) and its <computeroutput>\n</computeroutput> is dropped as corrupt, and one longer than RELAY_LINE_MAX as overlong. Everything <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref> sends the host is a newline-framed DCS-BIOS message, so neither happens on a healthy link. Calibration frames are written whole or not at all in the same way.</para>
+<para><simplesect kind="note"><para>The first call arms a WATCHDOG_MS hardware watchdog; after that, <ref refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kindref="member">loop()</ref> must be called at least that often or the chip resets (production builds only).</para>
+</simplesect>
+<simplesect kind="note"><para>Node-status reporting (#86) needs no handling here: <ref refid="namespacePanelBridge" kindref="compound">PanelBridge</ref>&apos;s <computeroutput>_NODE_STATUS</computeroutput> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host&apos;s roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.</para>
 </simplesect>
 <simplesect kind="note"><para>Parser state persists across calls — frames split across iterations assemble correctly. </para>
 </simplesect>
@@ -260,7 +361,7 @@ Every axis reads as uncalibrated until <ref refid="namespaceSimGateway_1aa708bae
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="951" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="951" bodyend="989" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="201" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1210" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="1210" bodyend="1268" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="240" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1ae18de25981235d01df1935695a286476" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -276,7 +377,7 @@ Every axis reads as uncalibrated until <ref refid="namespaceSimGateway_1aa708bae
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="991" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="991" bodyend="998" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="249" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1270" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="1270" bodyend="1277" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="319" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceSimGateway_1a1a82d4907b44c0e0cf33238fc34c8ae7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -292,13 +393,13 @@ Every axis reads as uncalibrated until <ref refid="namespaceSimGateway_1aa708bae
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1000" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="1000" bodyend="1026" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="258" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1279" column="6" bodyfile="Firmware/Libraries/SimGateway/SimGateway.cpp" bodystart="1279" bodyend="1316" declfile="Firmware/Libraries/SimGateway/SimGateway.h" declline="328" declcolumn="6"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="914" column="1"/>
+    <location file="Firmware/Libraries/SimGateway/SimGateway.cpp" line="1165" column="1"/>
   </compounddef>
 </doxygen>

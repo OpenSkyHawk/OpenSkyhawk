@@ -44,6 +44,7 @@
 
 * **drain** ([**CANProtocol**](namespaceCANProtocol.md))
 * **diagSerial** ([**STM32Board**](namespaceSTM32Board.md))
+* **diagnostics** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## f
@@ -62,6 +63,8 @@
 ## l
 
 * **lastNodeHealth** ([**CANProtocol**](namespaceCANProtocol.md))
+* **linkRecoveryBegin** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **linkRecoveryStep** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**PduNode**](namespacePduNode.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **logNodeFaultEdge** ([**STM32Board**](namespaceSTM32Board.md))

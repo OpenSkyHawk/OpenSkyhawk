@@ -28,6 +28,7 @@
     <innerclass refid="classOpenSkyhawk_1_1InputBase" prot="public">OpenSkyhawk::InputBase</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1IntegerOutput" prot="public">OpenSkyhawk::IntegerOutput</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1LED" prot="public">OpenSkyhawk::LED</innerclass>
+    <innerclass refid="structOpenSkyhawk_1_1LinkRecovery" prot="public">OpenSkyhawk::LinkRecovery</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1MotorDriver" prot="public">OpenSkyhawk::MotorDriver</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1MultiPosInput" prot="public">OpenSkyhawk::MultiPosInput</innerclass>
     <innerclass refid="classOpenSkyhawk_1_1NeedleGauge" prot="public">OpenSkyhawk::NeedleGauge</innerclass>
@@ -346,6 +347,14 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887ace2cffce7e5c3f401de76066405fd3a9" prot="public">
+          <name>CAL_T_GET_DIAG</name>
+          <initializer>= 0x09</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887af02f1b83fd999d31d8b471cf92085197" prot="public">
           <name>CAL_T_HELLO_ACK</name>
           <initializer>= 0x81</initializer>
@@ -394,6 +403,14 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a7cf1c98404c433cf343cf2d9e42ec5bd" prot="public">
+          <name>CAL_T_DIAG</name>
+          <initializer>= 0x87</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
 <para>Message types. High bit set = device→client, so direction is readable in a capture. </para>
         </briefdescription>
@@ -401,7 +418,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="191" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="191" bodyend="207"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="191" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="191" bodyend="209"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aaf" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -478,7 +495,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="210" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="210" bodyend="219"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="212" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="212" bodyend="221"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1acb5af8b90d767c3c5cd3ab753117b7e0" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -539,7 +556,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="232" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="232" bodyend="239"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="234" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="234" bodyend="241"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a54eda748537446686c8ffda6acbbbfb2" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -576,7 +593,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="242" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="242" bodyend="246"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="244" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="244" bodyend="248"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1aaeb11c351af8723da10b35f90ebb85c9" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -629,7 +646,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="252" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="252" bodyend="258"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="254" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="254" bodyend="260"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a5d6d01d6028a46a8fd920c6921c06344" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -650,7 +667,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="261" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="261" bodyend="263"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="263" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="263" bodyend="265"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a738aa0a2436bd680bc376ebda1d2737a" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -679,7 +696,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="266" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="266" bodyend="269"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="268" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="268" bodyend="271"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1afaa36990fc24a834f2ebf3b5a5550aaf" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -700,7 +717,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="272" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="272" bodyend="274"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="274" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="274" bodyend="276"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a3694081d3117f06dd19625c05eaa0abd" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -753,7 +770,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="277" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="277" bodyend="283"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="279" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="279" bodyend="285"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1a44871b71bbaf67ceacf53d1f4c69917c" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -774,7 +791,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="286" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="286" bodyend="288"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="288" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="288" bodyend="290"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1af722b98e6dcc1adf2f7c5bcb93be1405" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -795,7 +812,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="291" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="291" bodyend="293"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="293" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="293" bodyend="295"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1af51fbc7c106664b13996d9d452a95aad" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -832,7 +849,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="296" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="296" bodyend="300"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="298" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="298" bodyend="302"/>
       </memberdef>
       <memberdef kind="enum" id="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359" prot="public" static="no" strong="no">
         <type>uint8_t</type>
@@ -869,7 +886,263 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="303" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="303" bodyend="307"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="305" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="305" bodyend="309"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalDiagField</name>
+        <qualifiedname>OpenSkyhawk::CalDiagField</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a06afada1ee000994f038c23bdc241485" prot="public">
+          <name>CAL_DIAG_UPTIME_MS</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a1afdff9f4f86d5d362b9a792513e4db0" prot="public">
+          <name>CAL_DIAG_FIRST_UART_ERR_MS</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a383275a029f801b7b45f20d0aaaf68c1" prot="public">
+          <name>CAL_DIAG_LAST_UART_ERR_MS</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a3015a90573565d85fa1680d010a97bb8" prot="public">
+          <name>CAL_DIAG_FIRST_USB_LOSS_MS</name>
+          <initializer>= 12</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aa310a62545d2d81516e1c5c4ba447c2e" prot="public">
+          <name>CAL_DIAG_LAST_USB_LOSS_MS</name>
+          <initializer>= 16</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aad072a2092da7bf1b9b1118c7a58a16e" prot="public">
+          <name>CAL_DIAG_UART_OVERRUN</name>
+          <initializer>= 20</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aad39787d69b046f72201ddc9a27cbb9b" prot="public">
+          <name>CAL_DIAG_UART_FRAMING</name>
+          <initializer>= 22</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a39c08f11fcaae11705e8748e981c9273" prot="public">
+          <name>CAL_DIAG_UART_BREAK</name>
+          <initializer>= 24</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a57e79150534fa23407055a0cb48baecb" prot="public">
+          <name>CAL_DIAG_UART_PARITY</name>
+          <initializer>= 26</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99af4060fae1b818815690583915c4169fb" prot="public">
+          <name>CAL_DIAG_UART_RX_OVERFLOW</name>
+          <initializer>= 28</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a39ee1934956dc1ec80c8b3134016df53" prot="public">
+          <name>CAL_DIAG_LINES_DROPPED</name>
+          <initializer>= 30</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a626989ea86dc219f3e4eea417e177e95" prot="public">
+          <name>CAL_DIAG_LINES_CORRUPT</name>
+          <initializer>= 32</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a343bf19dd6b31d025c4e92f5ef48c971" prot="public">
+          <name>CAL_DIAG_LINES_OVERLONG</name>
+          <initializer>= 34</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a7949d68f9615b73d4e8f733ca0f8a949" prot="public">
+          <name>CAL_DIAG_FRAMES_DROPPED</name>
+          <initializer>= 36</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a483509378032815a44884ac831f2855d" prot="public">
+          <name>CAL_DIAG_UART_RESTARTS</name>
+          <initializer>= 38</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99acd68615b0cb129269ed39b3f8b971d20" prot="public">
+          <name>CAL_DIAG_USB_REATTACHES</name>
+          <initializer>= 40</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a208986edf45c91d2462ca290bfc4279b" prot="public">
+          <name>CAL_DIAG_CDC_STALLS</name>
+          <initializer>= 42</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aa8b07eef530c22654aeca45c82d020e6" prot="public">
+          <name>CAL_DIAG_RECOVERY_REBOOTS</name>
+          <initializer>= 44</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a30f6f8274baa49ef8e6e49109f700aff" prot="public">
+          <name>CAL_DIAG_WATCHDOG_RESETS</name>
+          <initializer>= 45</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a4c2598c007c7546a4af88d905f126c96" prot="public">
+          <name>CAL_DIAG_RESET_REASON</name>
+          <initializer>= 46</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><computeroutput>DIAG</computeroutput> payload (47 bytes, device→client): link-health counters and event times (#355).</para>
+<para>Times are millis() since this boot; 0 means &quot;never&quot;. Counters are u16 and saturate at 0xFFFF rather than wrap, so a large number never reads as a small one. The four UART error counters count status ticks on which that PL011 RSR bit was set — the core&apos;s UART IRQ owns the data register, so per-character counts are not available. The three u8 fields at the end survive a warm reboot (watchdog scratch registers) and reset on power-on. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="318" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="318" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>CalDiagResetReason</name>
+        <qualifiedname>OpenSkyhawk::CalDiagResetReason</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110ac9d4b43f3a3d49f08ce5c25bf28e5e6b" prot="public">
+          <name>CAL_DIAG_RESET_POWER_ON</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110a2b11c213ac4212f9eb8be59eb27c51e7" prot="public">
+          <name>CAL_DIAG_RESET_WATCHDOG</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110a5d20a8f8489d71cd2a23231d79492aa8" prot="public">
+          <name>CAL_DIAG_RESET_RECOVERY</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Why this boot happened, as reported in <computeroutput>DIAG</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="345" column="1" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="345" bodyend="349"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3" prot="public" static="no" strong="yes">
+        <type>uint8_t</type>
+        <name>LinkAction</name>
+        <qualifiedname>OpenSkyhawk::LinkAction</qualifiedname>
+        <enumvalue id="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3ab50339a10e1de285ac99d4c3990b8693" prot="public">
+          <name>NONE</name>
+          <briefdescription>
+<para>Nothing. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3a36b709e0b9f2710e86bade3966143a15" prot="public">
+          <name>DETACH</name>
+          <briefdescription>
+<para>TinyUSBDevice.detach(). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3ab924981f4e935420a5024dc8c6125d02" prot="public">
+          <name>ATTACH</name>
+          <briefdescription>
+<para>TinyUSBDevice.attach(). </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3a65abf85acd7ea0c82f179038bdc375f5" prot="public">
+          <name>REBOOT</name>
+          <briefdescription>
+<para>Record the reason, then reboot the chip. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>What the caller should do this tick. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/LinkRecovery.h" line="35" column="1" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.h" bodystart="35" bodyend="40"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -1210,7 +1483,7 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="222" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="222" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="224" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="224" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespaceOpenSkyhawk_1ac7f065d9af195b7b21358dddf50ddaf5" prot="public" static="no" constexpr="yes" mutable="no">
         <type>constexpr uint8_t</type>
@@ -1226,7 +1499,87 @@ input&quot; role, but a different sentinel because an analog ladder is an array 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="249" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="249" bodyend="-1"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="251" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="251" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1aabeca9b9b0391c4603c79420a92e3032" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint8_t</type>
+        <definition>constexpr uint8_t OpenSkyhawk::CAL_DIAG_BYTES</definition>
+        <argsstring></argsstring>
+        <name>CAL_DIAG_BYTES</name>
+        <qualifiedname>OpenSkyhawk::CAL_DIAG_BYTES</qualifiedname>
+        <initializer>= 47</initializer>
+        <briefdescription>
+<para><computeroutput>DIAG</computeroutput> payload length. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.h" line="342" column="19" bodyfile="Firmware/Libraries/SimGateway/AxisCal.h" bodystart="342" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1abdda8726e90f3f96bc501e418a9f5e9d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::LINK_BAD_MS</definition>
+        <argsstring></argsstring>
+        <name>LINK_BAD_MS</name>
+        <qualifiedname>OpenSkyhawk::LINK_BAD_MS</qualifiedname>
+        <initializer>= 5000</initializer>
+        <briefdescription>
+<para>unhealthy this long → first re-attach </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/LinkRecovery.h" line="29" column="20" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a6c37058ec256954494a9927262c08ee2" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::LINK_REATTACH_GAP_MS</definition>
+        <argsstring></argsstring>
+        <name>LINK_REATTACH_GAP_MS</name>
+        <qualifiedname>OpenSkyhawk::LINK_REATTACH_GAP_MS</qualifiedname>
+        <initializer>= 100</initializer>
+        <briefdescription>
+<para>detached this long before attach </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/LinkRecovery.h" line="30" column="20" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a5156e220176f5f48fffeba3b2f54a5dd" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::LINK_REBOOT_AFTER_MS</definition>
+        <argsstring></argsstring>
+        <name>LINK_REBOOT_AFTER_MS</name>
+        <qualifiedname>OpenSkyhawk::LINK_REBOOT_AFTER_MS</qualifiedname>
+        <initializer>= 5000</initializer>
+        <briefdescription>
+<para>re-attached, still unhealthy → reboot </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/LinkRecovery.h" line="31" column="20" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceOpenSkyhawk_1a63974dcb3a3bbcdd113f9a49955904f3" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr uint32_t</type>
+        <definition>constexpr uint32_t OpenSkyhawk::LINK_BACKOFF_MS</definition>
+        <argsstring></argsstring>
+        <name>LINK_BACKOFF_MS</name>
+        <qualifiedname>OpenSkyhawk::LINK_BACKOFF_MS</qualifiedname>
+        <initializer>= 60000</initializer>
+        <briefdescription>
+<para>after a recovery reboot: re-attach period </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/LinkRecovery.h" line="32" column="20" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.h" bodystart="32" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -1781,7 +2134,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="63" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="63" bodyend="84" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="330" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="63" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="63" bodyend="86" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="374" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1a82486fb3a8b5c08619b2dbab91865dea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>uint16_t</type>
@@ -1872,7 +2225,7 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="86" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="86" bodyend="111" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="342" declcolumn="10"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="88" column="10" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="88" bodyend="113" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="386" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="namespaceOpenSkyhawk_1ad6b903a2fa71bedb61152f923493b37c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -1917,7 +2270,105 @@ This is the framing-layer gate, and it is checked <bold>before the payload is bu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="113" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="113" bodyend="121" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="354" declcolumn="6"/>
+        <location file="Firmware/Libraries/SimGateway/AxisCal.cpp" line="115" column="6" bodyfile="Firmware/Libraries/SimGateway/AxisCal.cpp" bodystart="115" bodyend="123" declfile="Firmware/Libraries/SimGateway/AxisCal.h" declline="398" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a9163c975afb2763bd6f649480de9e986" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void OpenSkyhawk::linkRecoveryBegin</definition>
+        <argsstring>(LinkRecovery &amp;s, bool afterRecoveryReboot)</argsstring>
+        <name>linkRecoveryBegin</name>
+        <qualifiedname>OpenSkyhawk::linkRecoveryBegin</qualifiedname>
+        <param>
+          <type><ref refid="structOpenSkyhawk_1_1LinkRecovery" kindref="compound">LinkRecovery</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>afterRecoveryReboot</declname>
+        </param>
+        <briefdescription>
+<para>Reset the ladder. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Ladder state. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>afterRecoveryReboot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True when this boot was caused by the ladder&apos;s own REBOOT. Puts the ladder straight into backoff, so it never reboots twice in a row. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/LinkRecovery.cpp" line="14" column="6" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.cpp" bodystart="14" bodyend="18" declfile="Firmware/Libraries/SimGateway/LinkRecovery.h" declline="56" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceOpenSkyhawk_1a16e7b3067de9d7c627396b7afea85df3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3" kindref="member">LinkAction</ref></type>
+        <definition>LinkAction OpenSkyhawk::linkRecoveryStep</definition>
+        <argsstring>(LinkRecovery &amp;s, uint32_t now, bool healthy)</argsstring>
+        <name>linkRecoveryStep</name>
+        <qualifiedname>OpenSkyhawk::linkRecoveryStep</qualifiedname>
+        <param>
+          <type><ref refid="structOpenSkyhawk_1_1LinkRecovery" kindref="compound">LinkRecovery</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>now</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>healthy</declname>
+        </param>
+        <briefdescription>
+<para>Advance the ladder one tick. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Ladder state. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>now</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>millis(). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>healthy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The host link is usable: mounted, and not suspended with a recent UART fault. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The action to apply now. At most one per tick.</para>
+</simplesect>
+<simplesect kind="note"><para>A DETACH is always followed by its ATTACH, whatever <computeroutput>healthy</computeroutput> says in between — a detached device is unmounted by definition, and a half-run ladder must never leave the pull-up off. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="Firmware/Libraries/SimGateway/LinkRecovery.cpp" line="20" column="12" bodyfile="Firmware/Libraries/SimGateway/LinkRecovery.cpp" bodystart="20" bodyend="67" declfile="Firmware/Libraries/SimGateway/LinkRecovery.h" declline="69" declcolumn="12"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

@@ -50,12 +50,14 @@ This inheritance list is sorted roughly, but not completely, alphabetically:
 * **struct** [**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md) _One DCS-BIOS digit source feeding a_ [_**DrumReadout**_](structOpenSkyhawk_1_1DrumReadout.md) _._
 * **struct** [**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md) _Value → position calibration for one gauge._ 
 * **struct** [**OpenSkyhawk::HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) _Home-sensor parameters (_ HomeMode::SENSOR _only)._
+* **struct** [**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) _Ladder state. Zero-initialised = healthy, no backoff._ 
 * **struct** [**OpenSkyhawk::Pdu::CalValues**](structOpenSkyhawk_1_1Pdu_1_1CalValues.md) _Calibration values the conversions need. Defaults = uncalibrated._ 
 * **struct** [**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md) _A condition that must hold_ `setMs` _to raise and its clear condition hold_`clearMs` _to drop._
 * **struct** [**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md) _Per-rail limits._ 
 * **struct** [**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) _Full per-instance stepper configuration. Authored per sketch (panel wiring)._ 
 * **struct** [**OpenSkyhawk::ShiftBus::IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md) 
 * **struct** [**RxQueueEntry**](structRxQueueEntry.md) 
+* **struct** [**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md) _Link-health counters and event times (#355). Reported to the host as_ `DIAG` _._
 * **struct** [**TxQueueEntry**](structTxQueueEntry.md) 
 * **class** **Adafruit_ADS1115**    
     * **class** [**ADS1115**](classADS1115.md) [_**ADS1115**_](classADS1115.md) _ADC. Inherits Adafruit\_ADS1115 without modification._

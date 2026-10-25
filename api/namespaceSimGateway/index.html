@@ -4680,6 +4680,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        function diagnostics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4764,6 +4775,10 @@
 <td style="text-align: left;"><a href="#function-calibration"><strong>calibration</strong></a> () <br><em>The calibration currently applied to dispatched axis values.</em></td>
 </tr>
 <tr>
+<td style="text-align: right;">const GatewayDiag &amp;</td>
+<td style="text-align: left;"><a href="#function-diagnostics"><strong>diagnostics</strong></a> () <br><em>The live link-health counters. Safe to call at any time.</em></td>
+</tr>
+<tr>
 <td style="text-align: right;">void</td>
 <td style="text-align: left;"><a href="#function-loop"><strong>loop</strong></a> () <br><em>Relay bytes and dispatch HID frames. Call once per</em> <a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em></td>
 </tr>
@@ -4791,14 +4806,25 @@
 <p>Every axis reads as uncalibrated until <a href="./#function-setup"><strong>setup()</strong></a> loads a valid blob, so this is safe to call at any time. Use <a href="../namespaceOpenSkyhawk/#function-axiscalvalid"><strong>OpenSkyhawk::axisCalValid()</strong></a> on an element to ask whether that particular axis is calibrated. </p>
 <hr>
 
+<h3 id="function-diagnostics">function diagnostics</h3>
+<p><em>The live link-health counters. Safe to call at any time.</em> 
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">GatewayDiag</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">SimGateway</span><span class="o">::</span><span class="n">diagnostics</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
+</code></pre></div></p>
+<hr>
+
 <h3 id="function-loop">function loop</h3>
 <p><em>Relay bytes and dispatch HID frames. Call once per</em> <a href="./#function-loop"><em><strong>loop()</strong></em></a> <em>iteration.</em>
 <div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">SimGateway</span><span class="o">::</span><span class="n">loop</span><span class="w"> </span><span class="p">()</span><span class="w"> </span>
 </code></pre></div></p>
 <p>Per call:
-* Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>.
-* Drain all UART bytes: byte ≤ 0x7F → forward to USB CDC (DCS-BIOS from <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>) 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists 0xAA + non-0x55 → forward 0xAA + byte to USB CDC; resume IDLE
-* If any HID setter fired, send the HID report exactly once.</p>
+* Forward up to CDC_TO_UART_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>.
+* Drain all UART bytes: 0xAA 0x55 + 4 bytes → parse controlId + value LE; dispatch to HID lists any other byte → append to the host-bound line; on <code>\n</code> the whole line is written to USB CDC, or dropped and counted (see below) 0xAA + non-0x55 → both bytes go to the line, which makes it corrupt; resume IDLE
+* If any HID setter fired, send the HID report exactly once.
+* Status LEDs, UART error counters, FAULT self-clear.
+* USB recovery ladder (<a href="../LinkRecovery_8h/"><strong>LinkRecovery.h</strong></a>).</p>
+<p><strong>Never blocks on the host.</strong> A line is written only if the CDC FIFO has room for all of it; otherwise it is dropped whole — never truncated — and counted in GatewayDiag::linesDropped. A line holding anything but printable ASCII (0x20–0x7E) and its <code>\n</code> is dropped as corrupt, and one longer than RELAY_LINE_MAX as overlong. Everything <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> sends the host is a newline-framed DCS-BIOS message, so neither happens on a healthy link. Calibration frames are written whole or not at all in the same way.</p>
+<p><strong>Note:</strong></p>
+<p>The first call arms a WATCHDOG_MS hardware watchdog; after that, <a href="./#function-loop"><strong>loop()</strong></a> must be called at least that often or the chip resets (production builds only).</p>
 <p><strong>Note:</strong></p>
 <p>Node-status reporting (#86) needs no handling here: <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a>'s <code>_NODE_STATUS</code> DCS-BIOS messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.</p>
 <p><strong>Note:</strong></p>
@@ -4817,10 +4843,10 @@
 * Manufacturer: "OpenSkyhawk"
 * Product: "A-4E Skyhawk"
 * VID/PID: 0x2E8A / 0x4134
-* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates.</p>
+* CDC port: "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port) Configures the UART pins, enlarges the UART's software RX queue to UART_RX_QUEUE_BYTES and calls uart.begin(250000), then loads the stored axis calibration and initialises the HID descriptor, then enumerates. Also records why this boot happened (see <a href="./#function-diagnostics"><strong>diagnostics()</strong></a>).</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><code>uart</code> Hardware UART connected to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (Serial1 / UART0 on standard board). </li>
+<li><code>uart</code> Hardware UART connected to <a href="../namespacePanelBridge/"><strong>PanelBridge</strong></a> (Serial1 / UART0 on standard board). Must not have been begun already — the RX queue size can only be set before. </li>
 <li><code>txPin</code> RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3. </li>
 <li><code>rxPin</code> RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2.</li>
 </ul>

@@ -65,6 +65,7 @@
 
 ## g
 
+* [**GatewayDiag**](structSimGateway_1_1GatewayDiag.md)
 * [**GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
@@ -99,6 +100,8 @@
 * [**Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md)
 ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * [**LED**](classOpenSkyhawk_1_1LED.md)
+([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* [**LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md)
 ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 

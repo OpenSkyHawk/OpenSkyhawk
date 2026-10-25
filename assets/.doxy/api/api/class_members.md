@@ -34,6 +34,7 @@
 * **BoardThermal** ([**OpenSkyhawk::BoardThermal**](classOpenSkyhawk_1_1BoardThermal.md))
 * **BAND\_EPS** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
 * **bus** ([**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md), [**PinRef**](classPinRef.md))
+* **backoff** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **buildPage** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
 * **begin** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
 * **beginIsrSampling** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
@@ -65,6 +66,7 @@
 * **chip** ([**PinRef**](classPinRef.md))
 * **configureAsInput** ([**PinRef**](classPinRef.md))
 * **configureAsOutput** ([**PinRef**](classPinRef.md))
+* **cdcStalls** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## d
@@ -120,6 +122,9 @@
 * **fuseOpenCheck** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
 * **FAST\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **flushNow** ([**OpenSkyhawk::ShiftBus**](classOpenSkyhawk_1_1ShiftBus.md))
+* **firstUartErrMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **firstUsbLossMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **framesDropped** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## g
@@ -176,6 +181,11 @@
 * **lastMa** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
 * **lastMv** ([**OpenSkyhawk::RailMonitor**](classOpenSkyhawk_1_1RailMonitor.md))
 * **len** ([**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
+* **lastUartErrMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **lastUsbLossMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **linesCorrupt** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **linesDropped** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **linesOverlong** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## m
@@ -231,6 +241,7 @@
 * **POLL\_MS** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **posValAt** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **place** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
+* **phase** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **position** ([**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md), [**OpenSkyhawk::MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **pending** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
 * **PAGES** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
@@ -265,6 +276,8 @@
 * **read** ([**PinRef**](classPinRef.md))
 * **readAnalog** ([**PinRef**](classPinRef.md))
 * **readLive** ([**PinRef**](classPinRef.md))
+* **recoveryReboots** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **resetReason** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## s
@@ -282,6 +295,7 @@
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **select** ([**OpenSkyhawk::I2cMux**](classOpenSkyhawk_1_1I2cMux.md))
 * **sampleTick** ([**OpenSkyhawk::InputBase**](classOpenSkyhawk_1_1InputBase.md), [**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **sinceMs** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **save** ([**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md))
 * **slot** ([**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md))
 * **since** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
@@ -320,6 +334,13 @@
 * **update** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md), [**OpenSkyhawk::MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md), [**OpenSkyhawk::NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md), [**OpenSkyhawk::OutputBase**](classOpenSkyhawk_1_1OutputBase.md), [**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md), [**OpenSkyhawk::StepperMotor**](classOpenSkyhawk_1_1StepperMotor.md))
 * **usedSlots** ([**OpenSkyhawk::Pdu::CalStore**](classOpenSkyhawk_1_1Pdu_1_1CalStore.md))
 * **uvMv** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
+* **uartBreak** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartFraming** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartOverrun** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartParity** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartRestarts** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartRxOverflow** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **usbReattaches** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## v
@@ -341,6 +362,7 @@
 * **write** ([**PinRef**](classPinRef.md))
 * **writeAnalog** ([**PinRef**](classPinRef.md))
 * **writeDeferred** ([**PinRef**](classPinRef.md))
+* **watchdogResets** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## z

@@ -260,6 +260,27 @@
     <member refid="classOpenSkyhawk_1_1FaultSource_1a28eaf132a80e26bd0c0c4717bd651575" kind="function"><name>FaultSource</name></member>
     <member refid="classOpenSkyhawk_1_1FaultSource_1a454105f8d38e04045352728a97811ea6" kind="function"><name>~FaultSource</name></member>
   </compound>
+  <compound refid="structSimGateway_1_1GatewayDiag" kind="struct"><name>SimGateway::GatewayDiag</name>
+    <member refid="structSimGateway_1_1GatewayDiag_1ae49802b499dac80e35aa8e3592fad3d2" kind="variable"><name>firstUartErrMs</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a3c83c5c49753841cd4aa85ea824b4ae7" kind="variable"><name>lastUartErrMs</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a03151ec71bf0c92a1b8e672119568d56" kind="variable"><name>firstUsbLossMs</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a715bcc2d7b199a5f31d70830fd812712" kind="variable"><name>lastUsbLossMs</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1ae10a75b3dbb96f972fb41d99fb8130a6" kind="variable"><name>uartOverrun</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1ac3d77e7b28c2d0ae6295a268cfa4640d" kind="variable"><name>uartFraming</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1afdc4520d50d39d4428af2874c6902d06" kind="variable"><name>uartBreak</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1ab324aa44e7a1d009e167a82bd31e4e39" kind="variable"><name>uartParity</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a67a817c6e1b3333fadf904b7cc6a2c51" kind="variable"><name>uartRxOverflow</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a6f9d9a2fd2f92020ed2ff5ead6630ba8" kind="variable"><name>linesDropped</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a91e2ec59ac2cb42908ae82152a64b779" kind="variable"><name>linesCorrupt</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1aa02a1784a171628c5c4385c4b0f50975" kind="variable"><name>linesOverlong</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a892e5c463b1b185cef3602af428b467c" kind="variable"><name>framesDropped</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1ad0e97bd1f737f42a9e7e4ccd26c46d88" kind="variable"><name>uartRestarts</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1ae7a5eafef051e68f97739552d934667b" kind="variable"><name>usbReattaches</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1ad13c546ce95e2fdb3459a5e929aadbfc" kind="variable"><name>cdcStalls</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a3ab201e710d517f12750bbe76cff5605" kind="variable"><name>recoveryReboots</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1a605b1c69d6bae6e341471b8d9c3ee475" kind="variable"><name>watchdogResets</name></member>
+    <member refid="structSimGateway_1_1GatewayDiag_1ad6b5f11ddf4d1a8a51227743ff7fd03c" kind="variable"><name>resetReason</name></member>
+  </compound>
   <compound refid="structOpenSkyhawk_1_1GaugeCal" kind="struct"><name>OpenSkyhawk::GaugeCal</name>
     <member refid="structOpenSkyhawk_1_1GaugeCal_1a8274ca7f32bbfef17c7d95c408c9d6ec" kind="variable"><name>minTravel</name></member>
     <member refid="structOpenSkyhawk_1_1GaugeCal_1a67368f5c74562fdeeb32095cfb728ce3" kind="variable"><name>maxTravel</name></member>
@@ -364,6 +385,11 @@
     <member refid="classOpenSkyhawk_1_1LED_1a563c5f236ed992c8a321792b0f80ccff" kind="function"><name>LED</name></member>
     <member refid="classOpenSkyhawk_1_1LED_1a256732d0b28ea69f0ba33a230b191bd9" kind="function"><name>configure</name></member>
     <member refid="classOpenSkyhawk_1_1LED_1a2854b10fc7fea177f3b3b84afb278341" kind="function"><name>onControlPacket</name></member>
+  </compound>
+  <compound refid="structOpenSkyhawk_1_1LinkRecovery" kind="struct"><name>OpenSkyhawk::LinkRecovery</name>
+    <member refid="structOpenSkyhawk_1_1LinkRecovery_1a89cfa6d6666681cebce714b6d1ba99ad" kind="variable"><name>phase</name></member>
+    <member refid="structOpenSkyhawk_1_1LinkRecovery_1a298998560223883451dd9bc65657f423" kind="variable"><name>backoff</name></member>
+    <member refid="structOpenSkyhawk_1_1LinkRecovery_1a2e6d500fde0ed419252e25bf07db8028" kind="variable"><name>sinceMs</name></member>
   </compound>
   <compound refid="classOpenSkyhawk_1_1MotorDriver" kind="class"><name>OpenSkyhawk::MotorDriver</name>
     <member refid="classOpenSkyhawk_1_1MotorDriver_1a0d6189324d9bfc937ce04961f698e7f9" kind="function"><name>~MotorDriver</name></member>
@@ -692,15 +718,16 @@
   </compound>
   <compound refid="namespace_0d64" kind="namespace"><name>@64</name>
   </compound>
-  <compound refid="namespace_0d72" kind="namespace"><name>@72</name>
-    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120c" kind="enum"><name>ParserState</name></member>
-    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120caa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
-    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120ca1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
-    <member refid="namespace_0d72_1a55cebf51593cfdf8bdb6d97a517a120ca03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
-    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3" kind="enum"><name>LedColor</name></member>
-    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
-    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
-    <member refid="namespace_0d72_1a4d2bd4be243f2971a5fec7336b7925f3a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+  <compound refid="namespace_0d74" kind="namespace"><name>@74</name>
+    <member refid="namespace_0d74_1a119017089d595c3bf24410fad8369390" kind="enum"><name>ParserState</name></member>
+    <member refid="namespace_0d74_1a119017089d595c3bf24410fad8369390aa5daf7f2ebbba4975d61dab1c40188c7" kind="enumvalue"><name>IDLE</name></member>
+    <member refid="namespace_0d74_1a119017089d595c3bf24410fad8369390a1c8e958a29871eeebbdd9ed38db70f51" kind="enumvalue"><name>GOT_AA</name></member>
+    <member refid="namespace_0d74_1a119017089d595c3bf24410fad8369390a03d8264efe7676269e63f4d906f3005d" kind="enumvalue"><name>IN_FRAME</name></member>
+    <member refid="namespace_0d74_1a500721c4992a3cee526f4e475f088d15" kind="enum"><name>LedColor</name></member>
+    <member refid="namespace_0d74_1a500721c4992a3cee526f4e475f088d15ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespace_0d74_1a500721c4992a3cee526f4e475f088d15aa2d9547b5d3dd9f05984475f7c926da0" kind="enumvalue"><name>RED</name></member>
+    <member refid="namespace_0d74_1a500721c4992a3cee526f4e475f088d15a9de0e5dd94e861317e74964bed179fa0" kind="enumvalue"><name>GREEN</name></member>
+    <member refid="namespace_0d74_1ae30af8389a9e349709c1fc94356c1904" kind="enum"><name></name></member>
   </compound>
   <compound refid="namespaceCANProtocol" kind="namespace"><name>CANProtocol</name>
     <member refid="namespaceCANProtocol_1a78e16c36805ce36c8c2a2389fa178c92" kind="variable"><name>MASTER_TIMEOUT_MS</name></member>
@@ -761,12 +788,14 @@
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a63456e2f42661f8f77c8401c1c36eb97" kind="enumvalue"><name>CAL_T_RESET</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a49c1d55f98951d21ebcf2d0029311939" kind="enumvalue"><name>CAL_T_KEEPALIVE</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a530ea3571ada92444465d3e49b21305a" kind="enumvalue"><name>CAL_T_STREAM_SELECT</name></member>
+    <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887ace2cffce7e5c3f401de76066405fd3a9" kind="enumvalue"><name>CAL_T_GET_DIAG</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887af02f1b83fd999d31d8b471cf92085197" kind="enumvalue"><name>CAL_T_HELLO_ACK</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a2570d297b5f241b951789aed0751768e" kind="enumvalue"><name>CAL_T_CAL_DATA</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a932aa1d4733af980a34af26a6b082ef1" kind="enumvalue"><name>CAL_T_SESSION_ACK</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a20cfe47093f878e157cb763979ed5fd0" kind="enumvalue"><name>CAL_T_ACK</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887aef9845504a1f03679078baf61c517896" kind="enumvalue"><name>CAL_T_NACK</name></member>
     <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a2f30fa4aced73922c50efb92cde04a48" kind="enumvalue"><name>CAL_T_RAW</name></member>
+    <member refid="namespaceOpenSkyhawk_1aad7cd5643b0f23c2b885277c49142887a7cf1c98404c433cf343cf2d9e42ec5bd" kind="enumvalue"><name>CAL_T_DIAG</name></member>
     <member refid="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aaf" kind="enum"><name>CalNackReason</name></member>
     <member refid="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafa54d44d7266ff740dc82916801ad8102e" kind="enumvalue"><name>CAL_NACK_BAD_CRC</name></member>
     <member refid="namespaceOpenSkyhawk_1a5654f97d3ac1742e1e93285809b52aafad9c6f5ae2729373c27b8f3607a8bf233" kind="enumvalue"><name>CAL_NACK_BAD_LENGTH</name></member>
@@ -818,6 +847,36 @@
     <member refid="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359a9599cb377acd1d275747479ebed2aa21" kind="enumvalue"><name>CAL_RAW_IDX</name></member>
     <member refid="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359adeac11b3c319e2a3dcb702fa3cb8d1f9" kind="enumvalue"><name>CAL_RAW_RAW</name></member>
     <member refid="namespaceOpenSkyhawk_1afe60d3894e86bf8edd9c14dbf4274359acf83c322faa854ee237742667597b3ed" kind="enumvalue"><name>CAL_RAW_CAL</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99" kind="enum"><name>CalDiagField</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a06afada1ee000994f038c23bdc241485" kind="enumvalue"><name>CAL_DIAG_UPTIME_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a1afdff9f4f86d5d362b9a792513e4db0" kind="enumvalue"><name>CAL_DIAG_FIRST_UART_ERR_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a383275a029f801b7b45f20d0aaaf68c1" kind="enumvalue"><name>CAL_DIAG_LAST_UART_ERR_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a3015a90573565d85fa1680d010a97bb8" kind="enumvalue"><name>CAL_DIAG_FIRST_USB_LOSS_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aa310a62545d2d81516e1c5c4ba447c2e" kind="enumvalue"><name>CAL_DIAG_LAST_USB_LOSS_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aad072a2092da7bf1b9b1118c7a58a16e" kind="enumvalue"><name>CAL_DIAG_UART_OVERRUN</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aad39787d69b046f72201ddc9a27cbb9b" kind="enumvalue"><name>CAL_DIAG_UART_FRAMING</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a39c08f11fcaae11705e8748e981c9273" kind="enumvalue"><name>CAL_DIAG_UART_BREAK</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a57e79150534fa23407055a0cb48baecb" kind="enumvalue"><name>CAL_DIAG_UART_PARITY</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99af4060fae1b818815690583915c4169fb" kind="enumvalue"><name>CAL_DIAG_UART_RX_OVERFLOW</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a39ee1934956dc1ec80c8b3134016df53" kind="enumvalue"><name>CAL_DIAG_LINES_DROPPED</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a626989ea86dc219f3e4eea417e177e95" kind="enumvalue"><name>CAL_DIAG_LINES_CORRUPT</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a343bf19dd6b31d025c4e92f5ef48c971" kind="enumvalue"><name>CAL_DIAG_LINES_OVERLONG</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a7949d68f9615b73d4e8f733ca0f8a949" kind="enumvalue"><name>CAL_DIAG_FRAMES_DROPPED</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a483509378032815a44884ac831f2855d" kind="enumvalue"><name>CAL_DIAG_UART_RESTARTS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99acd68615b0cb129269ed39b3f8b971d20" kind="enumvalue"><name>CAL_DIAG_USB_REATTACHES</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a208986edf45c91d2462ca290bfc4279b" kind="enumvalue"><name>CAL_DIAG_CDC_STALLS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99aa8b07eef530c22654aeca45c82d020e6" kind="enumvalue"><name>CAL_DIAG_RECOVERY_REBOOTS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a30f6f8274baa49ef8e6e49109f700aff" kind="enumvalue"><name>CAL_DIAG_WATCHDOG_RESETS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a2168bacc0b83ac3024373c81e3b0de99a4c2598c007c7546a4af88d905f126c96" kind="enumvalue"><name>CAL_DIAG_RESET_REASON</name></member>
+    <member refid="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110" kind="enum"><name>CalDiagResetReason</name></member>
+    <member refid="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110ac9d4b43f3a3d49f08ce5c25bf28e5e6b" kind="enumvalue"><name>CAL_DIAG_RESET_POWER_ON</name></member>
+    <member refid="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110a2b11c213ac4212f9eb8be59eb27c51e7" kind="enumvalue"><name>CAL_DIAG_RESET_WATCHDOG</name></member>
+    <member refid="namespaceOpenSkyhawk_1af483729f0af7398c2e3b1431dc191110a5d20a8f8489d71cd2a23231d79492aa8" kind="enumvalue"><name>CAL_DIAG_RESET_RECOVERY</name></member>
+    <member refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3" kind="enum"><name>LinkAction</name></member>
+    <member refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3ab50339a10e1de285ac99d4c3990b8693" kind="enumvalue"><name>NONE</name></member>
+    <member refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3a36b709e0b9f2710e86bade3966143a15" kind="enumvalue"><name>DETACH</name></member>
+    <member refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3ab924981f4e935420a5024dc8c6125d02" kind="enumvalue"><name>ATTACH</name></member>
+    <member refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3a65abf85acd7ea0c82f179038bdc375f5" kind="enumvalue"><name>REBOOT</name></member>
     <member refid="namespaceOpenSkyhawk_1a99e132aa5cadd5a84874e2b787890c77" kind="variable"><name>EASE</name></member>
     <member refid="namespaceOpenSkyhawk_1ad718667155d85fa62e6eff912a9c002f" kind="variable"><name>FRAME_MS</name></member>
     <member refid="namespaceOpenSkyhawk_1a7613a17d142e906a8087a59dcbe92ab9" kind="variable"><name>SETTLE_EPS</name></member>
@@ -840,6 +899,11 @@
     <member refid="namespaceOpenSkyhawk_1a78f03e029aee1924ae4efaf262fb2d94" kind="variable"><name>CAL_MAX_FRAME</name></member>
     <member refid="namespaceOpenSkyhawk_1ac4dafa7e3e38c06df4cdfb40b5b5eba6" kind="variable"><name>CAL_AXIS_NONE</name></member>
     <member refid="namespaceOpenSkyhawk_1ac7f065d9af195b7b21358dddf50ddaf5" kind="variable"><name>CAL_DATA_REC_BYTES</name></member>
+    <member refid="namespaceOpenSkyhawk_1aabeca9b9b0391c4603c79420a92e3032" kind="variable"><name>CAL_DIAG_BYTES</name></member>
+    <member refid="namespaceOpenSkyhawk_1abdda8726e90f3f96bc501e418a9f5e9d" kind="variable"><name>LINK_BAD_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a6c37058ec256954494a9927262c08ee2" kind="variable"><name>LINK_REATTACH_GAP_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a5156e220176f5f48fffeba3b2f54a5dd" kind="variable"><name>LINK_REBOOT_AFTER_MS</name></member>
+    <member refid="namespaceOpenSkyhawk_1a63974dcb3a3bbcdd113f9a49955904f3" kind="variable"><name>LINK_BACKOFF_MS</name></member>
     <member refid="namespaceOpenSkyhawk_1a6ff7992a527de0120fa36edd599ed250" kind="function"><name>pow10l</name></member>
     <member refid="namespaceOpenSkyhawk_1a5b42e68d949a4a79f1e1e16d0f3b2c34" kind="function"><name>aggregateFaults</name></member>
     <member refid="namespaceOpenSkyhawk_1a46ddcd8bc34cc500234d4513a5952df5" kind="function"><name>makeX27Config</name></member>
@@ -853,10 +917,15 @@
     <member refid="namespaceOpenSkyhawk_1a9af8133ecc526a0b26b57ca1d06f2891" kind="function"><name>calLenValidForType</name></member>
     <member refid="namespaceOpenSkyhawk_1a82486fb3a8b5c08619b2dbab91865dea" kind="function"><name>calBuildFrame</name></member>
     <member refid="namespaceOpenSkyhawk_1ad6b903a2fa71bedb61152f923493b37c" kind="function"><name>calFrameCrcOk</name></member>
+    <member refid="namespaceOpenSkyhawk_1a9163c975afb2763bd6f649480de9e986" kind="function"><name>linkRecoveryBegin</name></member>
+    <member refid="namespaceOpenSkyhawk_1a16e7b3067de9d7c627396b7afea85df3" kind="function"><name>linkRecoveryStep</name></member>
   </compound>
   <compound refid="namespaceOpenSkyhawk_1_1_0d14" kind="namespace"><name>OpenSkyhawk::@14</name>
   </compound>
   <compound refid="namespaceOpenSkyhawk_1_1_0d27" kind="namespace"><name>OpenSkyhawk::@27</name>
+  </compound>
+  <compound refid="namespaceOpenSkyhawk_1_1_0d72" kind="namespace"><name>OpenSkyhawk::@72</name>
+    <member refid="namespaceOpenSkyhawk_1_1_0d72_1a6426c159458727c8e37960b1f20e51d6" kind="enum"><name>LinkPhase</name></member>
   </compound>
   <compound refid="namespaceOpenSkyhawk_1_1Pdu" kind="namespace"><name>OpenSkyhawk::Pdu</name>
     <member refid="namespaceOpenSkyhawk_1_1Pdu_1ae0da93030631bb57a8136b645249c220" kind="enum"><name>CalFlag</name></member>
@@ -945,7 +1014,13 @@
     <member refid="namespaceSimGateway_1af05dda7f6bbf4c9490c44a630bf0d783a4712174b138f092655be88673fc2a070" kind="enumvalue"><name>PULSE</name></member>
     <member refid="namespaceSimGateway_1a5130d15328037ded5720f8c9dd28b908" kind="variable"><name>DEFAULT_UART_TX_PIN</name></member>
     <member refid="namespaceSimGateway_1ad3fdd14db89769c45bb818c966922d9e" kind="variable"><name>DEFAULT_UART_RX_PIN</name></member>
+    <member refid="namespaceSimGateway_1a28c3ca8e3ffac626ff4899f7d70444a0" kind="variable"><name>UART_RX_QUEUE_BYTES</name></member>
+    <member refid="namespaceSimGateway_1aca6b1478a274ea03c5e626a6062b7224" kind="variable"><name>RELAY_LINE_MAX</name></member>
+    <member refid="namespaceSimGateway_1abe40c6d1ff1a7d81c1bdae5637c26679" kind="variable"><name>CDC_TO_UART_BUDGET</name></member>
+    <member refid="namespaceSimGateway_1ace3e925efea7e04f542b272579272026" kind="variable"><name>CDC_STALL_MS</name></member>
+    <member refid="namespaceSimGateway_1aaa2a4fabceed2944e487465e1f9e2735" kind="variable"><name>WATCHDOG_MS</name></member>
     <member refid="namespaceSimGateway_1aa708bae3840992ba113450b98dc0dc68" kind="function"><name>setup</name></member>
+    <member refid="namespaceSimGateway_1a144839a7d099af218ef254915332a39f" kind="function"><name>diagnostics</name></member>
     <member refid="namespaceSimGateway_1afa7f75ce54b436f48617b235a1ff2304" kind="function"><name>calibration</name></member>
     <member refid="namespaceSimGateway_1aa8f7b2f81634cf26fff1d4d03b3ec70b" kind="function"><name>loop</name></member>
     <member refid="namespaceSimGateway_1ae18de25981235d01df1935695a286476" kind="function"><name>statusLedBegin</name></member>
@@ -2088,6 +2163,10 @@
   <compound refid="AxisCal_8cpp" kind="file"><name>AxisCal.cpp</name>
   </compound>
   <compound refid="AxisCal_8h" kind="file"><name>AxisCal.h</name>
+  </compound>
+  <compound refid="LinkRecovery_8cpp" kind="file"><name>LinkRecovery.cpp</name>
+  </compound>
+  <compound refid="LinkRecovery_8h" kind="file"><name>LinkRecovery.h</name>
   </compound>
   <compound refid="SimGateway_8cpp" kind="file"><name>SimGateway.cpp</name>
   </compound>

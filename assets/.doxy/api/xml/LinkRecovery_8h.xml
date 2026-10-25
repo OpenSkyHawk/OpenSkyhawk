@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="LinkRecovery_8h" kind="file" language="C++">
+    <compoundname>LinkRecovery.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="LinkRecovery_8cpp" local="yes">Firmware/Libraries/SimGateway/LinkRecovery.cpp</includedby>
+    <includedby refid="SimGateway_8h" local="yes">Firmware/Libraries/SimGateway/SimGateway.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>Firmware/Libraries/SimGateway/LinkRecovery.h</label>
+        <link refid="LinkRecovery_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>Firmware/Libraries/SimGateway/LinkRecovery.cpp</label>
+        <link refid="LinkRecovery_8cpp"/>
+      </node>
+      <node id="1">
+        <label>Firmware/Libraries/SimGateway/LinkRecovery.h</label>
+        <link refid="LinkRecovery_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Firmware/Libraries/SimGateway/SimGateway.cpp</label>
+        <link refid="SimGateway_8cpp"/>
+      </node>
+      <node id="3">
+        <label>Firmware/Libraries/SimGateway/SimGateway.h</label>
+        <link refid="SimGateway_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structOpenSkyhawk_1_1LinkRecovery" prot="public">OpenSkyhawk::LinkRecovery</innerclass>
+    <innernamespace refid="namespaceOpenSkyhawk">OpenSkyhawk</innernamespace>
+    <briefdescription>
+<para>USB self-recovery ladder for <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref> — pure decision logic, no hardware. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref> is powered only from its USB-C, so while it runs it is plugged into something. Running but not configured by a host is therefore abnormal, and the failure this exists for (#355) looks exactly like that: the device dropped off the bus while the core kept running, and only a power cycle brought it back. The ladder escalates:</para>
+<para><orderedlist>
+<listitem><para>unhealthy for LINK_BAD_MS → detach, then attach LINK_REATTACH_GAP_MS later (toggles the D+ pull-up: the host sees a fresh plug-in)</para>
+</listitem><listitem><para>still unhealthy LINK_REBOOT_AFTER_MS → reboot (fully resets the USB controller)</para>
+</listitem><listitem><para>after a recovery reboot → re-attach every LINK_BACKOFF_MS, never reboot again until the link has been healthy once</para>
+</listitem></orderedlist>
+</para>
+<para>Step 3 keeps a <ref refid="namespaceSimGateway" kindref="compound">SimGateway</ref> on a charger, or back-fed with no host, from reboot-looping.</para>
+<para>Pure: takes <computeroutput>now</computeroutput> and the sampled health, returns what to do. <ref refid="SimGateway_8cpp" kindref="compound">SimGateway.cpp</ref> applies the action, so SIMGATEWAY_TEST builds drive the whole ladder with injected inputs.</para>
+<para><simplesect kind="copyright"><para>GPL-2.0-only — see Firmware/LICENSE </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceOpenSkyhawk" kindref="compound">OpenSkyhawk</ref><sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="namespaceOpenSkyhawk_1abdda8726e90f3f96bc501e418a9f5e9d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1abdda8726e90f3f96bc501e418a9f5e9d" kindref="member">LINK_BAD_MS</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>5000;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="30" refid="namespaceOpenSkyhawk_1a6c37058ec256954494a9927262c08ee2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1a6c37058ec256954494a9927262c08ee2" kindref="member">LINK_REATTACH_GAP_MS</ref><sp/>=<sp/>100;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="31" refid="namespaceOpenSkyhawk_1a5156e220176f5f48fffeba3b2f54a5dd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1a5156e220176f5f48fffeba3b2f54a5dd" kindref="member">LINK_REBOOT_AFTER_MS</ref><sp/>=<sp/>5000;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="32" refid="namespaceOpenSkyhawk_1a63974dcb3a3bbcdd113f9a49955904f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="namespaceOpenSkyhawk_1a63974dcb3a3bbcdd113f9a49955904f3" kindref="member">LINK_BACKOFF_MS</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>60000;<sp/><sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3" kindref="member">LinkAction</ref><sp/>:<sp/>uint8_t<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3ab50339a10e1de285ac99d4c3990b8693" kindref="member">NONE</ref>,<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3a36b709e0b9f2710e86bade3966143a15" kindref="member">DETACH</ref>,<sp/><sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3ab924981f4e935420a5024dc8c6125d02" kindref="member">ATTACH</ref>,<sp/><sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3a65abf85acd7ea0c82f179038bdc375f5" kindref="member">REBOOT</ref>,<sp/><sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="structOpenSkyhawk_1_1LinkRecovery" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structOpenSkyhawk_1_1LinkRecovery" kindref="compound">LinkRecovery</ref><sp/>{</highlight></codeline>
+<codeline lineno="44" refid="structOpenSkyhawk_1_1LinkRecovery_1a89cfa6d6666681cebce714b6d1ba99ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structOpenSkyhawk_1_1LinkRecovery_1a89cfa6d6666681cebce714b6d1ba99ad" kindref="member">phase</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>internal:<sp/>LinkPhase</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="structOpenSkyhawk_1_1LinkRecovery_1a298998560223883451dd9bc65657f423" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="structOpenSkyhawk_1_1LinkRecovery_1a298998560223883451dd9bc65657f423" kindref="member">backoff</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>recovery<sp/>reboot<sp/>already<sp/>happened<sp/>and<sp/>has<sp/>not<sp/>been<sp/>followed<sp/>by<sp/>health</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="structOpenSkyhawk_1_1LinkRecovery_1a2e6d500fde0ed419252e25bf07db8028" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="structOpenSkyhawk_1_1LinkRecovery_1a2e6d500fde0ed419252e25bf07db8028" kindref="member">sinceMs</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>start<sp/>of<sp/>the<sp/>current<sp/>phase</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceOpenSkyhawk_1a9163c975afb2763bd6f649480de9e986" kindref="member">linkRecoveryBegin</ref>(<ref refid="structOpenSkyhawk_1_1LinkRecovery" kindref="compound">LinkRecovery</ref>&amp;<sp/>s,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>afterRecoveryReboot);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><ref refid="namespaceOpenSkyhawk_1a94f6ab6811a1b8bb7fc14c366d5356f3" kindref="member">LinkAction</ref><sp/><ref refid="namespaceOpenSkyhawk_1a16e7b3067de9d7c627396b7afea85df3" kindref="member">linkRecoveryStep</ref>(<ref refid="structOpenSkyhawk_1_1LinkRecovery" kindref="compound">LinkRecovery</ref>&amp;<sp/>s,<sp/>uint32_t<sp/>now,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>healthy);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>OpenSkyhawk</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="Firmware/Libraries/SimGateway/LinkRecovery.h"/>
+  </compounddef>
+</doxygen>

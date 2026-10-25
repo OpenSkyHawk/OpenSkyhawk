@@ -115,6 +115,8 @@ Here is a list of all files with brief descriptions:
         * **dir** [**SimGateway**](dir_a54aa0246e1c520ae49dfef506a428ca.md)     
             * **file** [**AxisCal.cpp**](AxisCal_8cpp.md)     
             * **file** [**AxisCal.h**](AxisCal_8h.md) _Per-axis HID calibration — storage layout, the two-segment transform, and CRC._     
+            * **file** [**LinkRecovery.cpp**](LinkRecovery_8cpp.md)     
+            * **file** [**LinkRecovery.h**](LinkRecovery_8h.md) _USB self-recovery ladder for_ [_**SimGateway**_](namespaceSimGateway.md) _— pure decision logic, no hardware._    
             * **file** [**SimGateway.cpp**](SimGateway_8cpp.md)     
             * **file** [**SimGateway.h**](SimGateway_8h.md) _RP2040 USB HID gateway library for_ [_**OpenSkyhawk**_](namespaceOpenSkyhawk.md) __[_**SimGateway**_](namespaceSimGateway.md) _board._    
 

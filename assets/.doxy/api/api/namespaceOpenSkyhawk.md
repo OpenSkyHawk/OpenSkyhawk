@@ -60,6 +60,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | class | [**InputBase**](classOpenSkyhawk_1_1InputBase.md) <br>_Abstract base for all hardware-polled input objects._  |
 | class | [**IntegerOutput**](classOpenSkyhawk_1_1IntegerOutput.md) <br>_Callback output — the DcsBios::IntegerBuffer equivalent, for outputs no built-in class covers (a custom display, an LCD, a bespoke actuator)._  |
 | class | [**LED**](classOpenSkyhawk_1_1LED.md) <br>_Digital_ [_**LED**_](classOpenSkyhawk_1_1LED.md) _output. Drives a pin based on a DCS-BIOS state value._ |
+| struct | [**LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) <br>_Ladder state. Zero-initialised = healthy, no backoff._  |
 | class | [**MotorDriver**](classOpenSkyhawk_1_1MotorDriver.md) <br>_Common interface every motor/servo backend implements._  |
 | class | [**MultiPosInput**](classOpenSkyhawk_1_1MultiPosInput.md) <br>_Base for the MULTIPOS input family — selectors that emit an absolute position index 0..N-1 over CAN. Self-registers into_ [_**PanelGroup**_](namespacePanelGroup.md) _'s_[_**InputBase**_](classOpenSkyhawk_1_1InputBase.md) _list._ |
 | class | [**NeedleGauge**](classOpenSkyhawk_1_1NeedleGauge.md) <br>_DCS-driven pointer gauge over any_ [_**MotorDriver**_](classOpenSkyhawk_1_1MotorDriver.md) _backend._ |
@@ -84,6 +85,8 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | enum uint8\_t | [**CalCommitField**](#enum-calcommitfield)  <br>`COMMIT` _payload (9 bytes, client→device) — exactly one axis._ |
 | enum uint8\_t | [**CalDataField**](#enum-caldatafield)  <br>`CAL_DATA` _payload (82 bytes, device→client): two bitmasks, then AXIS\_CAL\_SLOTS records._ |
 | enum uint8\_t | [**CalDataRecField**](#enum-caldatarecfield)  <br>_Field offsets within one_ `CAL_DATA` _record (record i starts at CAL\_DATA\_RECORDS + i × 10)._ |
+| enum uint8\_t | [**CalDiagField**](#enum-caldiagfield)  <br> |
+| enum uint8\_t | [**CalDiagResetReason**](#enum-caldiagresetreason)  <br>_Why this boot happened, as reported in_ `DIAG` _._ |
 | enum uint8\_t | [**CalHelloAckField**](#enum-calhelloackfield)  <br>`HELLO_ACK` _payload (6 bytes, device→client)._ |
 | enum uint8\_t | [**CalNackField**](#enum-calnackfield)  <br>`NACK` _payload (3 bytes, device→client)._ |
 | enum uint8\_t | [**CalNackReason**](#enum-calnackreason)  <br>_NACK reasons._ `detail` _names the offending axis where one applies, else 0xFF._ |
@@ -99,6 +102,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 | enum uint8\_t | [**EncoderStepsPerDetent**](#enum-encoderstepsperdetent)  <br>_Quadrature transitions per mechanical detent (match to the encoder). Scoped enum._  |
 | enum uint8\_t | [**HomeMode**](#enum-homemode)  <br>_How the driver establishes its zero reference at boot._  |
 | enum uint8\_t | [**LeadingZero**](#enum-leadingzero)  <br>_Leading-zero handling for a readout's high-order digit cells._  |
+| enum uint8\_t | [**LinkAction**](#enum-linkaction)  <br>_What the caller should do this tick._  |
 | enum uint8\_t | [**StepPattern**](#enum-steppattern)  <br>_Coil energising sequence._  |
 
 
@@ -111,6 +115,7 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 |  constexpr uint8\_t | [**AXIS\_CAL\_SLOTS**](#variable-axis_cal_slots)   = `8`<br>_HID report axis slots. Fixed by the report descriptor, not by how many a cockpit populates._  |
 |  constexpr uint8\_t | [**CAL\_AXIS\_NONE**](#variable-cal_axis_none)   = `0xFF`<br>`RESET` _and the axis-selection fields use this to mean "all" / "none"._ |
 |  constexpr uint8\_t | [**CAL\_DATA\_REC\_BYTES**](#variable-cal_data_rec_bytes)   = `10`<br>_One_ `CAL_DATA` _record's length in bytes._ |
+|  constexpr uint8\_t | [**CAL\_DIAG\_BYTES**](#variable-cal_diag_bytes)   = `47`<br>`DIAG` _payload length._ |
 |  constexpr uint16\_t | [**CAL\_ENVELOPE\_BYTES**](#variable-cal_envelope_bytes)   = `10`<br>_magic 4 + type 1 + seq 1 + len 2 + crc 2_  |
 |  constexpr uint8\_t | [**CAL\_FRAME\_MAGIC**](#variable-cal_frame_magic)   = `{ 0xAA, 0x53, 0x4B, 0x43 }`<br> |
 |  constexpr uint32\_t | [**CAL\_MAGIC**](#variable-cal_magic)   = `/* multi line expression */`<br>_Blob signature. Little-endian in flash, so a hexdump reads "OSKC"._  |
@@ -118,6 +123,10 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 |  constexpr uint16\_t | [**CAL\_MAX\_PAYLOAD**](#variable-cal_max_payload)   = `82`<br>_CAL\_DATA, the largest legal payload._  |
 |  constexpr uint8\_t | [**CAL\_PROTO\_VERSION**](#variable-cal_proto_version)   = `1`<br> |
 |  constexpr uint16\_t | [**CAL\_VERSION**](#variable-cal_version)   = `1`<br>_Blob layout version._  |
+|  constexpr uint32\_t | [**LINK\_BACKOFF\_MS**](#variable-link_backoff_ms)   = `60000`<br>_after a recovery reboot: re-attach period_  |
+|  constexpr uint32\_t | [**LINK\_BAD\_MS**](#variable-link_bad_ms)   = `5000`<br>_unhealthy this long → first re-attach_  |
+|  constexpr uint32\_t | [**LINK\_REATTACH\_GAP\_MS**](#variable-link_reattach_gap_ms)   = `100`<br>_detached this long before attach_  |
+|  constexpr uint32\_t | [**LINK\_REBOOT\_AFTER\_MS**](#variable-link_reboot_after_ms)   = `5000`<br>_re-attached, still unhealthy → reboot_  |
 |  const [**AccelPoint**](structOpenSkyhawk_1_1AccelPoint.md) | [**kSwitecDefaultAccel**](#variable-kswitecdefaultaccel)   = `/* multi line expression */`<br>_Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family._  |
 |  constexpr uint8\_t | [**kSwitecDefaultAccelN**](#variable-kswitecdefaultacceln)   = `5`<br> |
 
@@ -165,6 +174,8 @@ _Thin wrapper over Adafruit\_ADS1115; see_ [_**ADS1115.h**_](ADS1115_8h.md) _._
 |  uint16\_t | [**calCrc16**](#function-calcrc16) (const uint8\_t \* data, size\_t len) <br>_CRC-16/CCITT-FALSE — poly 0x1021, init 0xFFFF, no reflection, no final XOR._  |
 |  bool | [**calFrameCrcOk**](#function-calframecrcok) (const uint8\_t \* frame, uint16\_t n) <br>_Verify the CRC of a complete, already-assembled frame._  |
 |  bool | [**calLenValidForType**](#function-callenvalidfortype) (uint8\_t type, uint16\_t len) <br>_Is_ `len` _the only length this_`type` _may legally carry?_ |
+|  void | [**linkRecoveryBegin**](#function-linkrecoverybegin) ([**LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) & s, bool afterRecoveryReboot) <br>_Reset the ladder._  |
+|  [**LinkAction**](namespaceOpenSkyhawk.md#enum-linkaction) | [**linkRecoveryStep**](#function-linkrecoverystep) ([**LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md) & s, uint32\_t now, bool healthy) <br>_Advance the ladder one tick._  |
 |  [**StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md) | [**makeX27Config**](#function-makex27config) (int16\_t homePosition, int16\_t parkPosition, int16\_t minPos, int16\_t maxPos, [**HomeMode**](namespaceOpenSkyhawk.md#enum-homemode) home=HomeMode::STALL, bool homeSeekClockwise=false, [**HomeSensor**](structOpenSkyhawk_1_1HomeSensor.md) sensor={ true, 5, 2000 }, bool wrap=false, uint8\_t deadband=1, bool autoRecal=false, uint32\_t recalDebounceMs=0, uint16\_t stepsPerRev=1080, uint16\_t rangeSteps=945, uint16\_t homeStepUs=0) <br>_Build a_ [_**StepperConfig**_](structOpenSkyhawk_1_1StepperConfig.md) _with the X27 air-core motor defaults filled in._ |
 
 
@@ -268,6 +279,65 @@ enum OpenSkyhawk::CalDataRecField {
     CAL_DATA_REC_CENTRE = 4,
     CAL_DATA_REC_MAX = 6,
     CAL_DATA_REC_DEADZONE = 8
+};
+```
+
+
+
+
+<hr>
+
+
+
+### enum CalDiagField 
+
+```C++
+enum OpenSkyhawk::CalDiagField {
+    CAL_DIAG_UPTIME_MS = 0,
+    CAL_DIAG_FIRST_UART_ERR_MS = 4,
+    CAL_DIAG_LAST_UART_ERR_MS = 8,
+    CAL_DIAG_FIRST_USB_LOSS_MS = 12,
+    CAL_DIAG_LAST_USB_LOSS_MS = 16,
+    CAL_DIAG_UART_OVERRUN = 20,
+    CAL_DIAG_UART_FRAMING = 22,
+    CAL_DIAG_UART_BREAK = 24,
+    CAL_DIAG_UART_PARITY = 26,
+    CAL_DIAG_UART_RX_OVERFLOW = 28,
+    CAL_DIAG_LINES_DROPPED = 30,
+    CAL_DIAG_LINES_CORRUPT = 32,
+    CAL_DIAG_LINES_OVERLONG = 34,
+    CAL_DIAG_FRAMES_DROPPED = 36,
+    CAL_DIAG_UART_RESTARTS = 38,
+    CAL_DIAG_USB_REATTACHES = 40,
+    CAL_DIAG_CDC_STALLS = 42,
+    CAL_DIAG_RECOVERY_REBOOTS = 44,
+    CAL_DIAG_WATCHDOG_RESETS = 45,
+    CAL_DIAG_RESET_REASON = 46
+};
+```
+
+
+
+`DIAG` payload (47 bytes, device→client): link-health counters and event times (#355).
+
+
+Times are millis() since this boot; 0 means "never". Counters are u16 and saturate at 0xFFFF rather than wrap, so a large number never reads as a small one. The four UART error counters count status ticks on which that PL011 RSR bit was set — the core's UART IRQ owns the data register, so per-character counts are not available. The three u8 fields at the end survive a warm reboot (watchdog scratch registers) and reset on power-on. 
+
+
+        
+
+<hr>
+
+
+
+### enum CalDiagResetReason 
+
+_Why this boot happened, as reported in_ `DIAG` _._
+```C++
+enum OpenSkyhawk::CalDiagResetReason {
+    CAL_DIAG_RESET_POWER_ON = 0,
+    CAL_DIAG_RESET_WATCHDOG = 1,
+    CAL_DIAG_RESET_RECOVERY = 2
 };
 ```
 
@@ -436,12 +506,14 @@ enum OpenSkyhawk::CalType {
     CAL_T_RESET = 0x06,
     CAL_T_KEEPALIVE = 0x07,
     CAL_T_STREAM_SELECT = 0x08,
+    CAL_T_GET_DIAG = 0x09,
     CAL_T_HELLO_ACK = 0x81,
     CAL_T_CAL_DATA = 0x82,
     CAL_T_SESSION_ACK = 0x83,
     CAL_T_ACK = 0x84,
     CAL_T_NACK = 0x85,
-    CAL_T_RAW = 0x86
+    CAL_T_RAW = 0x86,
+    CAL_T_DIAG = 0x87
 };
 ```
 
@@ -589,6 +661,25 @@ Suppress blanks the high-order zero cells down to the target's significant-digit
 
 
 
+### enum LinkAction 
+
+_What the caller should do this tick._ 
+```C++
+enum OpenSkyhawk::LinkAction {
+    NONE,
+    DETACH,
+    ATTACH,
+    REBOOT
+};
+```
+
+
+
+
+<hr>
+
+
+
 ### enum StepPattern 
 
 _Coil energising sequence._ 
@@ -641,6 +732,20 @@ constexpr uint8_t OpenSkyhawk::CAL_AXIS_NONE;
 _One_ `CAL_DATA` _record's length in bytes._
 ```C++
 constexpr uint8_t OpenSkyhawk::CAL_DATA_REC_BYTES;
+```
+
+
+
+
+<hr>
+
+
+
+### variable CAL\_DIAG\_BYTES 
+
+`DIAG` _payload length._
+```C++
+constexpr uint8_t OpenSkyhawk::CAL_DIAG_BYTES;
 ```
 
 
@@ -755,6 +860,62 @@ A mismatch means "absent" — every axis falls back to identity and flash is lef
 
 
         
+
+<hr>
+
+
+
+### variable LINK\_BACKOFF\_MS 
+
+_after a recovery reboot: re-attach period_ 
+```C++
+constexpr uint32_t OpenSkyhawk::LINK_BACKOFF_MS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable LINK\_BAD\_MS 
+
+_unhealthy this long → first re-attach_ 
+```C++
+constexpr uint32_t OpenSkyhawk::LINK_BAD_MS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable LINK\_REATTACH\_GAP\_MS 
+
+_detached this long before attach_ 
+```C++
+constexpr uint32_t OpenSkyhawk::LINK_REATTACH_GAP_MS;
+```
+
+
+
+
+<hr>
+
+
+
+### variable LINK\_REBOOT\_AFTER\_MS 
+
+_re-attached, still unhealthy → reboot_ 
+```C++
+constexpr uint32_t OpenSkyhawk::LINK_REBOOT_AFTER_MS;
+```
+
+
+
 
 <hr>
 
@@ -1388,6 +1549,80 @@ There are no variable-length types. `COMMIT` carries exactly one axis, so the ru
 **Note:**
 
 An unknown type is rejected. Protocol versions must match — `HELLO_ACK` carries `proto` for exactly that — so an unrecognised type is an error, not something to skip. 
+
+
+
+
+
+        
+
+<hr>
+
+
+
+### function linkRecoveryBegin 
+
+_Reset the ladder._ 
+```C++
+void OpenSkyhawk::linkRecoveryBegin (
+    LinkRecovery & s,
+    bool afterRecoveryReboot
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `s` Ladder state. 
+* `afterRecoveryReboot` True when this boot was caused by the ladder's own REBOOT. Puts the ladder straight into backoff, so it never reboots twice in a row. 
+
+
+
+
+        
+
+<hr>
+
+
+
+### function linkRecoveryStep 
+
+_Advance the ladder one tick._ 
+```C++
+LinkAction OpenSkyhawk::linkRecoveryStep (
+    LinkRecovery & s,
+    uint32_t now,
+    bool healthy
+) 
+```
+
+
+
+
+
+**Parameters:**
+
+
+* `s` Ladder state. 
+* `now` millis(). 
+* `healthy` The host link is usable: mounted, and not suspended with a recent UART fault. 
+
+
+
+**Returns:**
+
+The action to apply now. At most one per tick.
+
+
+
+
+**Note:**
+
+A DETACH is always followed by its ATTACH, whatever `healthy` says in between — a detached device is unmounted by definition, and a half-run ladder must never leave the pull-up off. 
 
 
 

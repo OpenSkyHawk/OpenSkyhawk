@@ -15,6 +15,7 @@
 
 * **CAL\_AXIS\_NONE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_DATA\_REC\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_DIAG\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_ENVELOPE\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_FRAME\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md), [**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -24,6 +25,8 @@
 * **CAL\_VERSION** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md), [**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **CAL\_PAGE\_SIZE** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **CAL\_SLOTS** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
+* **CDC\_STALL\_MS** ([**SimGateway**](namespaceSimGateway.md))
+* **CDC\_TO\_UART\_BUDGET** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## d
@@ -62,6 +65,14 @@
 * **kSwitecDefaultAccelN** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 
 
+## l
+
+* **LINK\_BACKOFF\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LINK\_BAD\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LINK\_REATTACH\_GAP\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LINK\_REBOOT\_AFTER\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
 ## m
 
 * **MASTER\_TIMEOUT\_MS** ([**CANProtocol**](namespaceCANProtocol.md))
@@ -82,10 +93,20 @@
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
 
 
+## r
+
+* **RELAY\_LINE\_MAX** ([**SimGateway**](namespaceSimGateway.md))
+
+
 ## s
 
 * **SETTLE\_EPS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **SNAP\_LANDING** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+
+
+## u
+
+* **UART\_RX\_QUEUE\_BYTES** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## v
@@ -96,6 +117,11 @@
 * **V5\_DIV\_NUM** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **VDDA\_NOMINAL\_MV** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **VREFINT\_TYP\_MV** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
+
+
+## w
+
+* **WATCHDOG\_MS** ([**SimGateway**](namespaceSimGateway.md))
 
 
 

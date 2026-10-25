@@ -25,6 +25,7 @@
 
 * **CAL\_AXIS\_NONE** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_DATA\_REC\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CAL\_DIAG\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_ENVELOPE\_BYTES** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_FRAME\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CAL\_MAGIC** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md), [**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -36,6 +37,8 @@
 * **CalCommitField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalDataField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalDataRecField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CalDiagField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **CalDiagResetReason** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalHelloAckField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalNackField** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **CalNackReason** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
@@ -67,6 +70,8 @@
 * **calLenValidForType** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **canHandle** ([**STM32Board**](namespaceSTM32Board.md))
 * **clockFault** ([**STM32Board**](namespaceSTM32Board.md))
+* **CDC\_STALL\_MS** ([**SimGateway**](namespaceSimGateway.md))
+* **CDC\_TO\_UART\_BUDGET** ([**SimGateway**](namespaceSimGateway.md))
 * **calibration** ([**SimGateway**](namespaceSimGateway.md))
 
 
@@ -79,6 +84,7 @@
 * **diagSerial** ([**STM32Board**](namespaceSTM32Board.md))
 * **DEFAULT\_UART\_RX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
 * **DEFAULT\_UART\_TX\_PIN** ([**SimGateway**](namespaceSimGateway.md))
+* **diagnostics** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## e
@@ -125,12 +131,20 @@
 ## l
 
 * **lastNodeHealth** ([**CANProtocol**](namespaceCANProtocol.md))
+* **LINK\_BACKOFF\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LINK\_BAD\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LINK\_REATTACH\_GAP\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LINK\_REBOOT\_AFTER\_MS** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **LeadingZero** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LinkAction** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **linkRecoveryBegin** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **linkRecoveryStep** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
+* **LinkPhase** ([**OpenSkyhawk**](namespaceOpenSkyhawk_1_1_0d72.md))
 * **loop** ([**PanelBridge**](namespacePanelBridge.md), [**PanelGroup**](namespacePanelGroup.md), [**PduNode**](namespacePduNode.md), [**SimGateway**](namespaceSimGateway.md))
 * **log** ([**STM32Board**](namespaceSTM32Board.md))
 * **logNodeFaultEdge** ([**STM32Board**](namespaceSTM32Board.md))
 * **LedState** ([**SimGateway**](namespaceSimGateway.md))
-* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d72.md))
+* **LedColor** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md))
 
 
 ## m
@@ -150,6 +164,7 @@
 * **ntcTempDC** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
 * **NodeCallback** ([**PanelBridge**](namespacePanelBridge.md))
 * **noteShiftBus** ([**PanelGroup**](namespacePanelGroup.md))
+* **namespace\_0d74\_1ae30af8389a9e349709c1fc94356c1904** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md))
 
 
 ## o
@@ -169,7 +184,7 @@
 * **pow10l** ([**OpenSkyhawk**](namespaceOpenSkyhawk.md))
 * **PIN\_LED\_GREEN** ([**STM32Board**](namespaceSTM32Board.md))
 * **PIN\_LED\_RED** ([**STM32Board**](namespaceSTM32Board.md))
-* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d72.md))
+* **ParserState** ([**anonymous namespace{Firmware/Libraries/SimGateway/SimGateway.cpp}**](namespace_0d74.md))
 
 
 ## r
@@ -187,6 +202,7 @@
 * **rail5** ([**PduNode**](namespacePduNode.md))
 * **readDieTempC** ([**STM32Board**](namespaceSTM32Board.md))
 * **readVddMv** ([**STM32Board**](namespaceSTM32Board.md))
+* **RELAY\_LINE\_MAX** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## s
@@ -219,6 +235,11 @@
 * **tick** ([**STM32Board**](namespaceSTM32Board.md))
 
 
+## u
+
+* **UART\_RX\_QUEUE\_BYTES** ([**SimGateway**](namespaceSimGateway.md))
+
+
 ## v
 
 * **V12\_DIV\_DEN** ([**OpenSkyhawk::Pdu**](namespaceOpenSkyhawk_1_1Pdu.md))
@@ -234,6 +255,7 @@
 
 * **writeCachedPin** ([**PanelGroup**](namespacePanelGroup.md))
 * **writeCachedPinDeferred** ([**PanelGroup**](namespacePanelGroup.md))
+* **WATCHDOG\_MS** ([**SimGateway**](namespaceSimGateway.md))
 
 
 ## _

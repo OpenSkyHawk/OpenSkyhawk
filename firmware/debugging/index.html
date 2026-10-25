@@ -2457,6 +2457,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-gateways-link-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Gateway's link counters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bench-gotchas" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4759,6 +4770,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-gateways-link-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Gateway's link counters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bench-gotchas" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4889,6 +4911,15 @@ listen-only</strong> (never transmits at the wrong rate). Latched once at boot (
 <p>The status-LED pins are owned by <code>STM32Board</code> — don't use PB14/PB15 for panel I/O or
 MCP23017 interrupts. PC13/PC14/PC15 are also off-limits on custom boards.</p>
 </div>
+<h2 id="the-gateways-link-counters">The Gateway's link counters</h2>
+<p>The Gateway's RP2040 has no debug UART. Instead, it keeps link-health counters you can read over
+its USB serial port: UART errors by kind, lines dropped, and how often it reconnected USB or
+rebooted itself, plus when the first UART error and the first USB loss happened. Close the
+OpenSkyhawk Client, then:</p>
+<div class="highlight"><pre><span></span><code>tools/simgw_bench/simgw_bench.py<span class="w"> </span>diag<span class="w"> </span>/dev/cu.usbmodem1101
+</code></pre></div>
+<p>What the counters mean, and how the Gateway recovers its own USB link, is on the
+<a href="../../architecture/sim-gateway/#link-health-and-self-recovery">SimGateway</a> page.</p>
 <h2 id="bench-gotchas">Bench gotchas</h2>
 <div class="admonition warning">
 <p class="admonition-title">ST-Link won't upload or connect</p>

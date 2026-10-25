@@ -16,6 +16,7 @@
 #include <HIDControls.h>
 
 #include "AxisCal.h"
+#include "LinkRecovery.h"
 
 namespace OpenSkyhawk {
 
@@ -85,7 +86,41 @@ void setup(SerialUART& uart,
            uint8_t txPin = DEFAULT_UART_TX_PIN,
            uint8_t rxPin = DEFAULT_UART_RX_PIN);
 
+static constexpr size_t UART_RX_QUEUE_BYTES = 1024;
+
+static constexpr uint16_t RELAY_LINE_MAX = 128;
+
+static constexpr uint16_t CDC_TO_UART_BUDGET = 64;
+
+static constexpr uint32_t CDC_STALL_MS = 1000;
+
+static constexpr uint32_t WATCHDOG_MS = 3000;
+
 void loop();
+
+struct GatewayDiag {
+    uint32_t firstUartErrMs;   
+    uint32_t lastUartErrMs;    
+    uint32_t firstUsbLossMs;   
+    uint32_t lastUsbLossMs;    
+    uint16_t uartOverrun;      
+    uint16_t uartFraming;      
+    uint16_t uartBreak;        
+    uint16_t uartParity;       
+    uint16_t uartRxOverflow;   
+    uint16_t linesDropped;     
+    uint16_t linesCorrupt;     
+    uint16_t linesOverlong;    
+    uint16_t framesDropped;    
+    uint16_t uartRestarts;     
+    uint16_t usbReattaches;    
+    uint16_t cdcStalls;        
+    uint8_t  recoveryReboots;  
+    uint8_t  watchdogResets;   
+    uint8_t  resetReason;      
+};
+
+const GatewayDiag& diagnostics();
 
 const OpenSkyhawk::CalBlob& calibration();
 
@@ -122,6 +157,19 @@ void statusTick();
 bool feedByte(uint8_t b);
 
 void resetParser();
+
+void cdcSetRoomForTest(int32_t room);
+
+void diagResetForTest();
+
+void diagUartErrorsForTest(uint32_t now, bool oe, bool fe, bool be, bool pe);
+
+OpenSkyhawk::LinkAction linkStepForTest(uint32_t now, bool mounted, bool suspended,
+                                        bool cdcStalled = false);
+
+bool cdcStallStepForTest(uint32_t now, bool dtr, uint16_t room, uint16_t capacity, uint16_t written);
+
+void linkResetForTest(bool afterRecoveryReboot);
 
 void resetCdcCapture();
 
@@ -181,6 +229,8 @@ void statusInject(uint32_t now, bool mounted, uint32_t lastCdcRxMs, bool faultAc
 void statusResolve();
 
 bool statusFaultStep(uint32_t now, bool rsrError, bool uartRxMoved);
+
+bool statusFaultRestartCheck(uint32_t now);
 
 LedState statusState();
 

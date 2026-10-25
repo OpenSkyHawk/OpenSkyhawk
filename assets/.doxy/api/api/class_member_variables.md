@@ -22,6 +22,7 @@
 ## b
 
 * **BAND\_EPS** ([**OpenSkyhawk::DrumDisplay**](classOpenSkyhawk_1_1DrumDisplay.md))
+* **backoff** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **bit** ([**PinRef**](classPinRef.md))
 * **bus** ([**PinRef**](classPinRef.md))
 
@@ -41,6 +42,7 @@
 * **ctx** ([**OpenSkyhawk::ShiftBus::IsrConsumer**](structOpenSkyhawk_1_1ShiftBus_1_1IsrConsumer.md))
 * **channel** ([**PinRef**](classPinRef.md))
 * **chip** ([**PinRef**](classPinRef.md))
+* **cdcStalls** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## d
@@ -72,6 +74,9 @@
 * **flag** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **fuseOpenCheck** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
 * **FAST\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
+* **firstUartErrMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **firstUsbLossMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **framesDropped** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## g
@@ -105,6 +110,11 @@
 * **loopsWaited** ([**BatchState**](structBatchState.md))
 * **leadingZero** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **len** ([**RxQueueEntry**](structRxQueueEntry.md), [**TxQueueEntry**](structTxQueueEntry.md))
+* **lastUartErrMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **lastUsbLossMs** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **linesCorrupt** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **linesDropped** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **linesOverlong** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## m
@@ -149,6 +159,7 @@
 
 * **POLL\_MS** ([**OpenSkyhawk::AnalogMultiPos**](classOpenSkyhawk_1_1AnalogMultiPos.md))
 * **place** ([**OpenSkyhawk::DrumSource**](structOpenSkyhawk_1_1DrumSource.md))
+* **phase** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **pending** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
 * **PAGES** ([**OpenSkyhawk::Pdu::TelemSchedule**](classOpenSkyhawk_1_1Pdu_1_1TelemSchedule.md))
 * **page** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
@@ -163,6 +174,8 @@
 * **reverse** ([**OpenSkyhawk::GaugeCal**](structOpenSkyhawk_1_1GaugeCal.md))
 * **rangeSteps** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
 * **recalDebounceMs** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
+* **recoveryReboots** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **resetReason** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## s
@@ -172,6 +185,7 @@
 * **scroll** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **snapThreshold** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
 * **sources** ([**OpenSkyhawk::DrumReadout**](structOpenSkyhawk_1_1DrumReadout.md))
+* **sinceMs** ([**OpenSkyhawk::LinkRecovery**](structOpenSkyhawk_1_1LinkRecovery.md))
 * **since** ([**OpenSkyhawk::Pdu::Latch**](structOpenSkyhawk_1_1Pdu_1_1Latch.md))
 * **STOPPED\_THRESHOLD\_MS** ([**OpenSkyhawk::RotaryEncoder**](classOpenSkyhawk_1_1RotaryEncoder.md))
 * **sensor** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
@@ -187,6 +201,13 @@
 ## u
 
 * **uvMv** ([**OpenSkyhawk::RailMonitor::Config**](structOpenSkyhawk_1_1RailMonitor_1_1Config.md))
+* **uartBreak** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartFraming** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartOverrun** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartParity** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartRestarts** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **uartRxOverflow** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
+* **usbReattaches** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## v
@@ -201,6 +222,7 @@
 
 * **widthMm** ([**OpenSkyhawk::DrumFlag**](structOpenSkyhawk_1_1DrumFlag.md), [**OpenSkyhawk::DrumGlyph**](structOpenSkyhawk_1_1DrumGlyph.md))
 * **wrap** ([**OpenSkyhawk::StepperConfig**](structOpenSkyhawk_1_1StepperConfig.md))
+* **watchdogResets** ([**SimGateway::GatewayDiag**](structSimGateway_1_1GatewayDiag.md))
 
 
 ## z

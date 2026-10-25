@@ -84,6 +84,7 @@ enum CalType : uint8_t {
     CAL_T_RESET         = 0x06,
     CAL_T_KEEPALIVE     = 0x07,
     CAL_T_STREAM_SELECT = 0x08,
+    CAL_T_GET_DIAG      = 0x09,   // link-health counters (#355); answered at any time
 
     CAL_T_HELLO_ACK     = 0x81,
     CAL_T_CAL_DATA      = 0x82,
@@ -91,6 +92,7 @@ enum CalType : uint8_t {
     CAL_T_ACK           = 0x84,
     CAL_T_NACK          = 0x85,
     CAL_T_RAW           = 0x86,
+    CAL_T_DIAG          = 0x87,
 };
 
 enum CalNackReason : uint8_t {
@@ -178,6 +180,39 @@ enum CalRawField : uint8_t {
     CAL_RAW_RAW = 1,  // u16: reading before calibration
     CAL_RAW_CAL = 3,  // u16: the same reading through axisCalApply()
 };
+
+enum CalDiagField : uint8_t {
+    CAL_DIAG_UPTIME_MS          = 0,   // u32: millis() when the reply was built
+    CAL_DIAG_FIRST_UART_ERR_MS  = 4,   // u32: first PL011 error this boot
+    CAL_DIAG_LAST_UART_ERR_MS   = 8,   // u32: latest PL011 error
+    CAL_DIAG_FIRST_USB_LOSS_MS  = 12,  // u32: first healthy → unhealthy host-link edge
+    CAL_DIAG_LAST_USB_LOSS_MS   = 16,  // u32: latest such edge
+    CAL_DIAG_UART_OVERRUN       = 20,  // u16: RSR OE — the UART IRQ itself was held off
+    CAL_DIAG_UART_FRAMING       = 22,  // u16: RSR FE — electrical
+    CAL_DIAG_UART_BREAK         = 24,  // u16: RSR BE — RX held low (PanelBridge reset/off)
+    CAL_DIAG_UART_PARITY        = 26,  // u16: RSR PE
+    CAL_DIAG_UART_RX_OVERFLOW   = 28,  // u16: software RX queue full — loop() fell behind
+    CAL_DIAG_LINES_DROPPED      = 30,  // u16: whole line dropped, no CDC room (host not reading)
+    CAL_DIAG_LINES_CORRUPT      = 32,  // u16: line held a non-ASCII byte, not relayed
+    CAL_DIAG_LINES_OVERLONG     = 34,  // u16: line exceeded the relay buffer, not relayed
+    CAL_DIAG_FRAMES_DROPPED     = 36,  // u16: calibration frame dropped, no CDC room
+    CAL_DIAG_UART_RESTARTS      = 38,  // u16: FAULT held too long → UART restarted
+    CAL_DIAG_USB_REATTACHES     = 40,  // u16: recovery ladder detach/attach cycles
+    CAL_DIAG_CDC_STALLS         = 42,  // u16: host held the port but the CDC IN endpoint stopped draining
+    CAL_DIAG_RECOVERY_REBOOTS   = 44,  // u8:  recovery ladder reboots (survives reboot)
+    CAL_DIAG_WATCHDOG_RESETS    = 45,  // u8:  hardware watchdog resets (survives reboot)
+    CAL_DIAG_RESET_REASON       = 46,  // u8:  CalDiagResetReason for this boot
+};
+
+constexpr uint8_t CAL_DIAG_BYTES = 47;
+
+enum CalDiagResetReason : uint8_t {
+    CAL_DIAG_RESET_POWER_ON = 0,  // cold start, RUN pin, or anything not listed below
+    CAL_DIAG_RESET_WATCHDOG = 1,  // hardware watchdog: loop() stopped running
+    CAL_DIAG_RESET_RECOVERY = 2,  // the USB recovery ladder rebooted on purpose
+};
+
+static_assert(CAL_DIAG_BYTES <= CAL_MAX_PAYLOAD, "DIAG must fit the largest legal payload");
 
 static_assert(CAL_DATA_RECORDS + AXIS_CAL_SLOTS * CAL_DATA_REC_BYTES == CAL_MAX_PAYLOAD,
               "CAL_DATA layout no longer fills CAL_MAX_PAYLOAD");

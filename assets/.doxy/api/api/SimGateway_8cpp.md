@@ -15,6 +15,7 @@
 * `#include <EEPROM.h>`
 * `#include "hardware/structs/uart.h"`
 * `#include "hardware/regs/uart.h"`
+* `#include "hardware/watchdog.h"`
 
 
 

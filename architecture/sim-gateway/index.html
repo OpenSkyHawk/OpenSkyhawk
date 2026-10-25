@@ -1788,6 +1788,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#link-health-and-self-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Link health and self-recovery
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4857,6 +4868,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#link-health-and-self-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Link health and self-recovery
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4950,11 +4972,18 @@ silently — no error, no crash. The production report is 34 bytes; keep it well
 <h2 id="the-relay-contract">The relay contract</h2>
 <p>This is the heart of SimGateway, and it's deliberately dumb:</p>
 <ul>
-<li>Every byte from USB CDC is forwarded to the UART <strong>immediately</strong>.</li>
-<li>Every UART byte that is <strong>not</strong> part of a HID frame is forwarded to USB CDC <strong>immediately</strong>.</li>
-<li>SimGateway never buffers, parses, or delays DCS-BIOS bytes, and never runs the DCS-BIOS
-  library. PanelBridge therefore sees the stream with USB-CDC latency only.</li>
+<li>Every byte from USB CDC is forwarded to the UART <strong>immediately</strong>, so PanelBridge sees the
+  DCS-BIOS export stream with USB-CDC latency only.</li>
+<li>Everything coming back from PanelBridge that is <strong>not</strong> a HID frame is a DCS-BIOS text
+  message, and SimGateway forwards each one to USB CDC as a <strong>whole line</strong>.</li>
+<li>SimGateway never parses or interprets DCS-BIOS content, and never runs the DCS-BIOS library.</li>
 </ul>
+<p><strong>The gateway never waits for the PC.</strong> If the PC holds the serial port open but stops reading,
+a line that doesn't fit in the USB buffer is dropped whole rather than stalling the gateway. A
+stalled gateway would also stop the joystick and the status LEDs. A line is never cut in half,
+because half a command is a different command. Anything that isn't printable ASCII is line
+noise and is dropped too. A healthy link drops nothing; the drops are counted (see
+<a href="#link-health-and-self-recovery">Link health</a>).</p>
 <p>The two streams share one UART because they can't collide: DCS-BIOS text is pure printable
 ASCII + LF (every byte ≤ <code>0x7F</code>), while HID frames start with the magic bytes <code>0xAA 0x55</code>
 (both have bit 7 set).</p>
@@ -4996,10 +5025,10 @@ transit SimGateway transparently; PanelBridge owns the feature.</p>
 </table>
 <p>SimGateway demultiplexes the UART byte stream:</p>
 <ul>
-<li>Byte ≤ <code>0x7F</code> → DCS-BIOS byte → forward to USB CDC.</li>
 <li>Byte <code>0xAA</code> followed by <code>0x55</code> → HID frame: read 4 more bytes, dispatch by <code>controlId</code>.</li>
-<li>Byte <code>0xAA</code> <em>not</em> followed by <code>0x55</code> → not a frame: forward both bytes and resume scanning
-  (self-healing resync at the next byte boundary).</li>
+<li>Any other byte → part of a DCS-BIOS text line → forwarded to USB CDC when the line ends.</li>
+<li>Byte <code>0xAA</code> <em>not</em> followed by <code>0x55</code> → not a frame: resume scanning (self-healing resync at
+  the next byte boundary). The line it landed in isn't valid text, so it is dropped.</li>
 </ul>
 <p>HID controls are owned entirely here — PanelBridge wraps them but never interprets them. The
 <code>controlId</code> ranges SimGateway dispatches:</p>
@@ -5091,12 +5120,38 @@ to lowest — the topmost active row wins:</p>
 <div class="admonition note">
 <p class="admonition-title">When the fault light clears</p>
 <p><code>FAULT</code> is latched, not momentary: it stays on for at least ~2 s (so a single glitch is
-visible) and then clears <strong>only once clean PanelBridge data resumes</strong> on the UART — an
-error-free byte received <em>after</em> the fault. A fault on an otherwise-silent link therefore
-stays lit until traffic returns error-free, rather than timing out on its own. The error is
-read straight from the RP2040's <code>uart0</code> PL011 error register (<code>RSR</code>), because the
-arduino-pico <code>SerialUART</code> driver doesn't surface overrun/framing flags any other way.</p>
+visible) and clears once clean PanelBridge data resumes on the UART. With no DCS running,
+PanelBridge sends almost nothing, so if the light is still on after 3 s the gateway restarts
+its UART and clears it. If the link is genuinely bad, the error comes straight back and the
+light stays on. Every fault is still recorded in the link-health counters. The error is read
+straight from the RP2040's <code>uart0</code> PL011 error register (<code>RSR</code>), because the arduino-pico
+<code>SerialUART</code> driver doesn't surface overrun/framing flags any other way.</p>
 </div>
+<h2 id="link-health-and-self-recovery">Link health and self-recovery</h2>
+<p>The gateway's USB connection has dropped out twice in the field, both times with the fault light
+flashing: the PC lost the serial port and only unplugging the gateway brought it back
+(<a href="https://github.com/OpenSkyHawk/OpenSkyhawk/issues/355">#355</a>). Since the cause couldn't be
+reproduced, the firmware now recovers by itself and keeps a record of what happened.</p>
+<ul>
+<li><strong>Re-plug in software.</strong> The gateway is powered by its USB cable, so if it is running but the
+  PC hasn't connected to it for 5 seconds, something is wrong. It disconnects itself from USB and
+  reconnects 0.1 s later, which looks to the PC exactly like unplugging and replugging it.</li>
+<li><strong>Reboot if that didn't work.</strong> Still no connection 5 seconds later, and the gateway reboots.
+  Calibration is stored in flash, so nothing is lost. After that it retries the reconnect once a
+  minute instead of rebooting again, so a gateway plugged into a charger doesn't reboot forever.</li>
+<li><strong>Watchdog.</strong> If the firmware ever stops running, a hardware watchdog reboots the gateway
+  within 3 seconds.</li>
+<li><strong>Connected but not listening counts too.</strong> If the PC has the port open but its USB stack
+  stops collecting data (the gateway's outgoing buffer stays full for a second), that is treated
+  the same as not being connected. A slow app doesn't trigger this, because the PC's operating
+  system keeps collecting into its own buffer either way.</li>
+<li><strong>A sleeping PC is left alone.</strong> Sleep suspends the USB bus, which on its own isn't treated as
+  a fault.</li>
+</ul>
+<p>The gateway counts what goes wrong: each kind of UART error separately, lines it had to drop and
+why, how often it reconnected or rebooted, and when the first UART error and the first USB loss
+happened, which tells you which came first. The OpenSkyhawk Client reads these counters
+over the calibration channel (<code>GET_DIAG</code>), and so does the bench script <code>tools/simgw_bench/</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Active-high, separate power domain</p>
 <p>Both LEDs are active-high (HIGH = lit) and sit on the RP2040 module's own 3V3 LDO, isolated
