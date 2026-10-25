@@ -360,6 +360,20 @@ and older firmware rejects the unknown type (`calLenValidForType()` fails), so i
 the relay and no reply comes. A client therefore treats "no `DIAG` within its request timeout"
 as "not supported", not as a link fault. Bumping the version would make a client that requires
 an exact match refuse calibration against new firmware until it synced, for no gain.
+
+### Compatibility — how the channel grows (#295, D22)
+
+The `_NODE_*` lines grow by appending fields (`04-dcs-bios-integration.md` § Compatibility). This
+channel can't: `LEN` is fixed per type, so a longer payload on an existing type is "not a frame" to
+an older reader. From v1.0 it follows its own rule:
+
+1. **`HELLO` / `HELLO_ACK` never change**, in any version — they are how a client learns `proto`,
+   so every client must always be able to read them.
+2. **A new message type is a minor.** Older firmware fails `calLenValidForType()` on it and relays
+   the bytes as DCS data, so no reply comes; the client treats a timeout as "not supported" and
+   falls back (as `GET_DIAG` does). `CAL_PROTO_VERSION` stays.
+3. **Any change to an existing type's `LEN`, field layout or meaning bumps `CAL_PROTO_VERSION`**,
+   and is a major: a client refuses calibration against a `proto` it doesn't know.
 ### Session model
 
 `HELLO`, `GET_CAL` and `GET_DIAG` work **outside** a session. This is what lets the client show
@@ -404,7 +418,7 @@ axis, and no other axis is affected by it.
 |---|---|---|---|
 | `0x01` | `BAD_CRC` | frame checksum mismatch | retransmit |
 | `0x02` | `BAD_LENGTH` | `LEN` inconsistent with its type | client bug — log it |
-| `0x03` | `BAD_TYPE` | unknown type code | protocol version mismatch |
+| `0x03` | `BAD_TYPE` | unknown type code | never sent: an unknown type fails `calLenValidForType()` first and is relayed, so the client sees a timeout (see § Compatibility) |
 | `0x04` | `BAD_INDEX` | `idx` out of range | client bug |
 | `0x05` | `BAD_ORDER` | endpoints not ordered; `detail` names the axis | "Axis N: endpoints out of order" |
 | `0x06` | `NO_SESSION` | command requires an open session | client bug |
