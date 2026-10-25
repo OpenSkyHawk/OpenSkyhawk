@@ -227,9 +227,10 @@ def emit_change_report(cmd_diff: dict, out_diff: dict) -> str:
         lines.append(f"Additions only ({len(added)} new symbols) — nothing a sketch uses was removed "
                      "or moved.")
         return "\n".join(lines) + "\n"
-    lines += ["**Removed or moved symbols** — a sketch using one of these stops compiling (removed) "
-              "or silently reads the wrong address (moved). Decide whether this release needs a "
-              "major version bump before merging.", ""]
+    warning = ("**Removed or moved symbols** — a sketch using one of these stops compiling (removed) "
+               "or silently reads the wrong address (moved). Decide whether this release needs a "
+               "major version bump before merging.")
+    lines += [warning, ""]
     for name in removed:
         lines.append(f"- removed `{name}`")
     for name, old, new in moved:
