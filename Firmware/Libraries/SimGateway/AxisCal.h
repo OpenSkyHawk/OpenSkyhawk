@@ -310,13 +310,17 @@ enum CalRawField : uint8_t {
     CAL_RAW_CAL = 3,  // u16: the same reading through axisCalApply()
 };
 
-/// `DIAG` payload (47 bytes, device→client): link-health counters and event times (#355).
+/// `DIAG` payload (64 bytes, device→client): link-health counters and event times (#355).
 ///
 /// Times are millis() since this boot; 0 means "never". Counters are u16 and saturate at
 /// 0xFFFF rather than wrap, so a large number never reads as a small one. The four UART error
 /// counters count status ticks on which that PL011 RSR bit was set — the core's UART IRQ owns
 /// the data register, so per-character counts are not available. The three u8 fields at the
 /// end survive a warm reboot (watchdog scratch registers) and reset on power-on.
+///
+/// Bytes 47–63 are reserved (#295): transmit 0, ignore on receive. A calibration frame's `LEN` is
+/// fixed per type, so `DIAG` can't grow in place — a new counter fills reserved bytes instead, a
+/// minor change that older clients simply don't read.
 enum CalDiagField : uint8_t {
     CAL_DIAG_UPTIME_MS          = 0,   // u32: millis() when the reply was built
     CAL_DIAG_FIRST_UART_ERR_MS  = 4,   // u32: first PL011 error this boot
@@ -338,10 +342,11 @@ enum CalDiagField : uint8_t {
     CAL_DIAG_RECOVERY_REBOOTS   = 44,  // u8:  recovery ladder reboots (survives reboot)
     CAL_DIAG_WATCHDOG_RESETS    = 45,  // u8:  hardware watchdog resets (survives reboot)
     CAL_DIAG_RESET_REASON       = 46,  // u8:  CalDiagResetReason for this boot
+    CAL_DIAG_RESERVED           = 47,  // 17 bytes: reserved, transmit 0 (#295)
 };
 
-/// `DIAG` payload length.
-constexpr uint8_t CAL_DIAG_BYTES = 47;
+/// `DIAG` payload length — 47 bytes in use, the rest reserved.
+constexpr uint8_t CAL_DIAG_BYTES = 64;
 
 /// Why this boot happened, as reported in `DIAG`.
 enum CalDiagResetReason : uint8_t {

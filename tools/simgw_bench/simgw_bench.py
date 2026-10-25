@@ -113,6 +113,8 @@ def print_diag(pay: bytes) -> None:
         nxt = fields[idx + 1][1][0] if idx + 1 < len(fields) else DIAG_BYTES
         val = int.from_bytes(pay[off:nxt], "little")
         label = name.removeprefix("CAL_DIAG_")
+        if label == "RESERVED":
+            continue
         if label == "RESET_REASON":
             shown = RESET_REASONS.get(val, f"unknown ({val})").removeprefix("CAL_DIAG_RESET_")
         elif label.endswith("_MS"):

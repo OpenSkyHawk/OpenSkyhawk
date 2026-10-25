@@ -481,9 +481,10 @@ void _calSendCalData(uint8_t seq) {
     _calSend(OpenSkyhawk::CAL_T_CAL_DATA, seq, p, sizeof(p));
 }
 
-// Fixed 47 bytes in CalDiagField order — the client reads it with one typed view (#355).
+// Fixed CAL_DIAG_BYTES in CalDiagField order — the client reads it with one typed view (#355).
+// Zero-initialised, so the reserved tail goes out as 0 (#295).
 void _calSendDiag(uint8_t seq) {
-    uint8_t p[OpenSkyhawk::CAL_DIAG_BYTES];
+    uint8_t p[OpenSkyhawk::CAL_DIAG_BYTES] = {};
     _put32(p + OpenSkyhawk::CAL_DIAG_UPTIME_MS,         millis());
     _put32(p + OpenSkyhawk::CAL_DIAG_FIRST_UART_ERR_MS, _diag.firstUartErrMs);
     _put32(p + OpenSkyhawk::CAL_DIAG_LAST_UART_ERR_MS,  _diag.lastUartErrMs);
@@ -506,7 +507,7 @@ void _calSendDiag(uint8_t seq) {
     p[OpenSkyhawk::CAL_DIAG_RESET_REASON]     = _diag.resetReason;
     _calSend(OpenSkyhawk::CAL_T_DIAG, seq, p, sizeof(p));
 }
-static_assert(OpenSkyhawk::CAL_DIAG_RESET_REASON + 1 == OpenSkyhawk::CAL_DIAG_BYTES,
+static_assert(OpenSkyhawk::CAL_DIAG_RESET_REASON + 1 == OpenSkyhawk::CAL_DIAG_RESERVED,
               "CalDiagField grew: extend _calSendDiag to fill it");
 
 // Write a candidate blob to flash and, only if that succeeds, make it the live calibration.

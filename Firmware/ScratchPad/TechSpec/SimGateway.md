@@ -380,7 +380,7 @@ The calibration wire protocol (FirmwarePlan 03) is declared below the blob API: 
 payload-offset enum per type that carries a payload: `CalHelloAckField`, `CalDataField` +
 `CalDataRecField` (`CAL_DATA_REC_BYTES` = 10), `CalSessionOpenField`, `CalSessionAckField`,
 `CalStreamSelectField`, `CalCommitField`, `CalResetField`, `CalAckField`, `CalNackField`,
-`CalRawField`, `CalDiagField` (`CAL_DIAG_BYTES` = 47, plus `CalDiagResetReason`). Offsets are into
+`CalRawField`, `CalDiagField` (`CAL_DIAG_BYTES` = 64 — 47 in use, `CAL_DIAG_RESERVED` 47–63 reserved for new counters, #295 — plus `CalDiagResetReason`). Offsets are into
 the payload, little-endian; `SimGateway.cpp` reads and writes
 every payload through them, and a `static_assert` ties `CAL_DATA`'s layout to `CAL_MAX_PAYLOAD`.
 
