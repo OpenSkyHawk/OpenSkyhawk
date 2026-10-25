@@ -51,19 +51,22 @@ READY event, updates `lastSeenMs` like a heartbeat, marks the node alive if need
 broadcasts `SYNC_REQ`. The READY frame carries no input state itself; the following EVTs
 emitted in response to `SYNC_REQ` are the state snapshot.
 
-**Node-status reporting to the host (#86, behind `-DPANELBRIDGE_NODE_STATUS`, default off):**
+**Node-status reporting to the host (#86; `PANELBRIDGE_NODE_STATUS`, on by default since #295, `=0` compiles it out):**
 PanelBridge surfaces the roster + per-node health to OpenSkyhawk Client over DCS-BIOS (see
 `04-dcs-bios-integration.md`). It caches each node's last `HeartbeatPayload` (`NodeState::last`,
 populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + health/fault +
-`nodeKind`, cached in the `HEALTH_n` handler, #221/#344) and emits a `_NODE_STATUS <hex>` DCS-BIOS
-command message (proto v3):
+`nodeKind`, cached in the `HEALTH_n` handler, #221/#344) and the firmware version from its last
+`READY_n` (`fwMajor`/`fwMinor`/`fwPatch`, cached in the `READY_n` handler, #295) and emits a
+`_NODE_STATUS <hex>` DCS-BIOS command message (proto v4):
 
 - on every alive/dead transition — a single bare `_NODE_STATUS` (a live delta; the 3 s heartbeat
   timeout in `checkNodeTimeouts` emits `present=00` for a silently-dead node),
 - when an alive node's cached `nodeKind` changes (#344) — normally its first `HEALTH_n`, ~1 s after
-  the alive delta, which went out with kind `00`, and
+  the alive delta, which went out with kind `00`,
+- when a `READY_n` changes an alive node's cached firmware version (#295) — a reflash inside the
+  heartbeat timeout, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
-  (`0x86FE`), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
+  (`0xFF00`; `0x86FE` before v4), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
   request/boot reply is the bridge's own node-0 row (its live heartbeat state +
   `CANProtocol::lastNodeHealth()`, the `HEALTH_0` it last sent), then the full roster, then
   `_NODE_STATUS_END <count>` (count includes node 0), so the host can tell the burst is complete
@@ -89,8 +92,8 @@ The listener overrides the DCS-BIOS Arduino library callback:
 void onDcsBiosWrite(unsigned int address, unsigned int data);
 ```
 
-For each DCS-BIOS export address in the `0x8000`-`0x86FF` range, the listener builds a
-`ControlPacket` and calls:
+For every DCS-BIOS export address the stream carries (`0x0002`–`0xFFFE`: whatever aircraft is
+flying, CommonData and the metadata; #295, D24), the listener builds a `ControlPacket` and calls:
 
 ```cpp
 CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, packet);

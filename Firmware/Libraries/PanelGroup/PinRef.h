@@ -11,7 +11,6 @@
  * Contains no logic beyond read/write dispatch — no debounce, no filtering, no state.
  * PinRef objects are value types: live on the stack or as class members, never heap-allocated.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

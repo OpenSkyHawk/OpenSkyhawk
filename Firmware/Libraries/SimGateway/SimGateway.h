@@ -11,7 +11,6 @@
  * Does NOT run DCS-BIOS, parse DCS-BIOS addresses, or interact with CAN.
  * Platform: RP2040 only.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -149,12 +148,6 @@ namespace SimGateway {
 static constexpr uint8_t DEFAULT_UART_TX_PIN = 0; ///< RP2040 UART0 TX to PanelBridge RX.
 static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from PanelBridge TX.
 
-// Firmware version reported in the calibration protocol's HELLO_ACK, so the client can show
-// which build a device is running. Keep in step with library.json.
-#define SIMGATEWAY_FW_MAJOR 0
-#define SIMGATEWAY_FW_MINOR 1
-#define SIMGATEWAY_FW_PATCH 0
-
 /**
  * @brief Initialise USB identity, the HID device, and the UART link to PanelBridge.
  *
@@ -233,7 +226,7 @@ static constexpr uint32_t WATCHDOG_MS = 3000;
  *
  * @note Node-status reporting (#86) needs no handling here: PanelBridge's `_NODE_STATUS` DCS-BIOS
  *       messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a
- *       DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.
+ *       DCS-BIOS export write (addr NODE_STATUS_REQ_ADDR, 0xFF00) forwarded by step 1. Both transit transparently.
  *
  * @note Parser state persists across calls — frames split across iterations assemble correctly.
  */

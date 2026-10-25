@@ -530,3 +530,108 @@ the calibration protocol.
 **Affects:** `03-uart-usb-hid-protocol.md`, `07-simgateway-api.md`, `08-hardware-firmware-contracts.md`,
 `09-startup-resync-diagnostics.md`, TechSpec `SimGateway.md`, `docs/architecture/sim-gateway.md`,
 `docs/firmware/debugging.md`. Client half: SkyHawkClient sync of `CalDiagField`.
+
+---
+
+## D21 — Every node announces its firmware version in READY_n (#295)
+
+**Decision:** `READY_n`, empty until now, carries a `ReadyPayload`: bytes 0–2 = the firmware
+release version (`OPENSKYHAWK_FW_*` from the header-only `FirmwareVersion` library, rewritten by
+release-please), bytes 3–7 reserved. Nodes send it through `CANProtocol::sendReady()`. PanelBridge
+caches the version per node, keeps it across a timeout, pushes a `_NODE_STATUS` delta when an alive
+node's version changes, and reports it in `_NODE_STATUS` **v4** (34 hex), the node-0 row carrying
+its own. An empty READY (older firmware) and a READY the bridge never saw both read 0.0.0, "not
+reported".
+
+**Rationale:**
+- *v1.0 has a mixed-version rule* — nodes on one bus share a major version — and until now nothing
+  on the bus said which firmware a board runs. A missed board in a reflash stayed invisible.
+- *READY, not HEALTH.* HEALTH's two reserved bytes are kept for future generic health, and TELEM
+  never carries health, so spending them on identity would leave health nowhere to grow. READY was
+  empty: eight free bytes, no new frame, no extra traffic.
+- *Every update is a reboot.* An ST-Link upload resets the MCU, and READY is the last step of every
+  boot, so a reflash is announced at once. A node that only lost its CAN link doesn't reboot, and
+  its cached version is still right.
+- *Empty means older, unambiguously.* Pre-#295 firmware sends READY with DLC 0, so a missing
+  payload can't be mistaken for a real version.
+- *Accepted gap:* READY is once per boot, so a bridge that boots after a node reads it as not
+  reported until that node reboots. A re-announce on the bridge's boot `SYNC_REQ` can follow as a
+  minor change — `SYNC_REQ` is empty today.
+- *One version source.* The same header feeds SimGateway's `HELLO_ACK`, so the Gateway's two MCUs
+  can't report different versions for one build.
+
+**Affects:** `02-can-protocol.md`, `03-uart-usb-hid-protocol.md`, `04-dcs-bios-integration.md`,
+`06-panelbridge-api.md`, `09-startup-resync-diagnostics.md`, TechSpec (`CANProtocol`, `NodeStatus`,
+`PanelBridge`, `PanelGroup`, `PowerMonitor`, `README`), `docs/architecture/can-bus.md`,
+`docs/architecture/firmware-tiers.md`. Client half: SkyHawkClient sync of `NodeStatusField` v4.
+
+---
+
+## D22 — Within a major, the wire only grows and every reader tolerates growth (#295)
+
+**Decision:** From v1.0, CAN frames and payloads, the host `_NODE_*` lines and their enums are
+frozen per major. Writers only append: a frame never grows (8 bytes), a field never moves, resizes
+or changes meaning; new data goes into reserved bytes, a new `TelemPage`, or a new frame family in
+a free ID range, and new enum values are allowed. Readers accept a longer `_NODE_STATUS` row,
+parse the fields they know and ignore the rest, keep unknown enum values as "unknown (0xNN)", and
+ignore reserved bits. A shorter row means older firmware and is reported, not dropped silently.
+
+**Rationale:**
+- *A strict reader makes every addition a major.* The client dropped any `_NODE_STATUS` row whose
+  length wasn't exactly 28, so the first 1.x field (as #344's `nodeKind` and #295's version were)
+  would have blanked every 1.0 client's node list.
+- *Growth paths are named so they don't collide.* Health stays in `HEALTH_n` (its two reserved
+  bytes), node telemetry in `TELEM_n` pages, identity in `READY_n` — each owner kept single.
+- *The calibration channel is the exception.* Its `LEN` is fixed per type on purpose (false-frame
+  rejection inside the DCS-BIOS stream), so it grows by new message types instead (`03`).
+
+**Affects:** `02-can-protocol.md`, `03-uart-usb-hid-protocol.md`, `04-dcs-bios-integration.md`,
+`NodeStatus.h`. Client half: SkyHawkClient's `_NODE_STATUS` parser and alerts (client 1.0).
+
+---
+
+## D23 — The roster request moves to export address 0xFF00 (#295)
+
+**Decision:** The client asks PanelBridge for the node roster by writing DCS-BIOS export address
+`0xFF00` (`NODE_STATUS_REQ_ADDR`), not `0x86FE`. It ships with `_NODE_STATUS` v4, which the client
+must adopt anyway.
+
+**Rationale:**
+- *`0x86FE` was not reserved, only unused by the A-4E.* In DCS-BIOS v0.11.8 it is the AH-64D's
+  `PLT_VIDEO_FLIR_GAIN` and the Mirage F1's `P_VOR_01_G`. Flying either with the cockpit connected,
+  every export of that control looked like a roster request and drew a full roster burst.
+- *`0xFF00` belongs to no module.* Every aircraft module ends by `0xB2FB`; DCS-BIOS's own
+  `MetadataEnd` sits at `0xFFFE`. Module blocks are allocated upward from low addresses, so the top
+  of the map is the safest place for a host-only address.
+- *Now, not later.* The request address is part of the v1.0 host contract; moving it after the
+  freeze would be a major.
+
+**Affects:** `NodeStatus.h`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`, TechSpec
+`NodeStatus`, PanelBridge README, `docs/architecture/sim-gateway.md`, `docs/architecture/firmware-tiers.md`.
+Client half: SkyHawkClient's roster request (synced from `NodeStatus.h`).
+
+---
+
+## D24 — PanelBridge forwards the whole DCS-BIOS export stream (#295)
+
+**Decision:** `BridgeExportListener` covers `0x0002`–`0xFFFE`: every export address of whatever
+aircraft is flying, plus CommonData and the DCS-BIOS metadata, goes onto CAN as `CTRL_BCAST`. The
+nodes decide what they use — each output matches its own address. Only `0x0000` is skipped: it is
+the `ControlPacket` empty-slot sentinel, so CAN can't carry it (it holds the first two characters of
+`_ACFT_NAME`).
+
+**Rationale:**
+- *The old window was the input-ID range by accident.* It was `0x8000`–`0x86FF` — the `DCSIN_*`
+  range — not the A-4E's export block (`0x8400`–`0x8555`), so it already passed parts of the AH-64D,
+  MB-339 and Mirage F1. Filtering by aircraft would tie the bridge to one aircraft; the multi-aircraft
+  direction wants the cockpit, not the bridge, to choose.
+- *Nodes already ignore what they don't use.* `onControlPacket` hands every packet to every output,
+  and each keeps only its own address.
+
+**Cost — confirm on the #290 soak:** `CTRL_BCAST` (the highest-priority frame) now also carries
+CommonData (position, heading, model time) and the per-frame update counters, so bus load rises.
+The soak's "no false offline / zero TX drops" checks are the guard; `CTRL_BCAST` keeps the newest
+state when its queue is full.
+
+**Affects:** `PanelBridge.cpp`, `02-can-protocol.md`, `06-panelbridge-api.md`, `10-implementation-plan.md`,
+TechSpec `PanelBridge`, PanelBridge README, `docs/architecture/can-bus.md`.

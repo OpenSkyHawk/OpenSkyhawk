@@ -46,8 +46,10 @@ jobs:
           manifest-file: .release-please-manifest.json
 
   firmware-dependencies:
-    # Third-party versions are declared as ranges (^2.0.0, >=3.0.0), so
+    # Third-party libraries are declared as caret ranges (^2.0.0, ^3.7.7), so
     # record what a release actually resolved to rather than pinning them.
+    # (The RP2040 platform is the exception: a git URL has no range, so it is
+    # pinned to a commit.)
     name: Record third-party versions
     needs: release-please
     if: needs.release-please.outputs.firmware_released == 'true'

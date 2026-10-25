@@ -55,7 +55,8 @@ Firmware/Tests/CANProtocol/
 ├── platformio.ini
 └── tests/
     ├── protocol_layout.cpp     — static_assert sizeof(ControlPacket)==4,
-    │                             sizeof(ControlPacketPair)==8, sizeof(HeartbeatPayload)==8;
+    │                             sizeof(ControlPacketPair)==8, sizeof(HeartbeatPayload)==8,
+    │                             sizeof(ReadyPayload)==8 with the version in bytes 0-2 (#295);
     │                             canIdHb(0)==0x100 reserved, canIdHb(1)==0x101; slot B null
     │                             sentinel is controlId == 0x0000
     ├── loopback_filter.cpp     — filterAcceptId / filterAcceptAll; mandatory IDs always present;
@@ -278,6 +279,20 @@ struct __attribute__((packed)) TelemPayload {
     uint8_t body[7];  ///< 1-7: page-defined
 };
 static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
+
+/**
+ * @brief 8-byte payload carried by READY_n — the node's boot announcement (#295).
+ *
+ * The firmware release version (FirmwareVersion.h). Sent once per boot by sendReady(); older
+ * firmware sends READY_n empty (DLC 0), which PanelBridge reports as not reported (0.0.0).
+ */
+struct __attribute__((packed)) ReadyPayload {
+    uint8_t fwMajor;  ///< 0: OPENSKYHAWK_FW_MAJOR
+    uint8_t fwMinor;  ///< 1
+    uint8_t fwPatch;  ///< 2
+    uint8_t rsvd[5];  ///< 3-7: reserved, transmit 0
+};
+static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
 
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
@@ -585,6 +600,15 @@ namespace CANProtocol {
      * @returns Number of frames dropped due to TX buffer overflow.
      */
     uint32_t txDropCount();
+
+    /** @brief Build the READY_n payload: this build's firmware version (FirmwareVersion.h), #295. */
+    ReadyPayload makeReadyPayload();
+
+    /**
+     * @brief Send this node's READY_n with makeReadyPayload(). Called once, at the end of the node
+     *        library's setup() (PanelGroup step 8, PduNode) — never by sketches.
+     */
+    void sendReady();
 
     // ── Node status service (every node) ──────────────────────────────────────
 

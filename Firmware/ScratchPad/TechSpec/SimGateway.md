@@ -52,7 +52,7 @@ Firmware/SimGateway/
   "frameworks": "arduino",
   "platforms": "raspberrypi",
   "dependencies": {
-    "adafruit/Adafruit TinyUSB Library": ">=3.0.0"
+    "adafruit/Adafruit TinyUSB Library": "^3.7.7"
   }
 }
 ```
@@ -159,7 +159,7 @@ No USB host is required. USB CDC is used only as the on-device test report conso
 
 ```ini
 [env_base]
-platform = https://github.com/maxgerhardt/platform-raspberrypi.git
+platform = https://github.com/maxgerhardt/platform-raspberrypi.git#79ce473e1a8010ed8096388690222fd2c94858a6
 board = rpipico
 board_build.core = earlephilhower
 framework = arduino
@@ -380,7 +380,7 @@ The calibration wire protocol (FirmwarePlan 03) is declared below the blob API: 
 payload-offset enum per type that carries a payload: `CalHelloAckField`, `CalDataField` +
 `CalDataRecField` (`CAL_DATA_REC_BYTES` = 10), `CalSessionOpenField`, `CalSessionAckField`,
 `CalStreamSelectField`, `CalCommitField`, `CalResetField`, `CalAckField`, `CalNackField`,
-`CalRawField`, `CalDiagField` (`CAL_DIAG_BYTES` = 47, plus `CalDiagResetReason`). Offsets are into
+`CalRawField`, `CalDiagField` (`CAL_DIAG_BYTES` = 64 — 47 in use, `CAL_DIAG_RESERVED` 47–63 reserved for new counters, #295 — plus `CalDiagResetReason`). Offsets are into
 the payload, little-endian; `SimGateway.cpp` reads and writes
 every payload through them, and a `static_assert` ties `CAL_DATA`'s layout to `CAL_MAX_PAYLOAD`.
 

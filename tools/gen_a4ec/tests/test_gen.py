@@ -352,3 +352,79 @@ def test_inputmap_emitted_in_cmdid_order(tmp_path):
     ordered_ids = [by_name[n] for n in rows]
     assert ordered_ids == sorted(ordered_ids)             # rows ascend by cmdId
     assert rows[0] != "AAA_NEW_SWITCH"                    # not first despite alphabetical name
+
+
+# ── Change report (#295) ──────────────────────────────────────────────────────
+
+def _header_defines(tmp_path, controls):
+    """{name: value} of the CmdIds + OutputIds headers the generator would emit for `controls`."""
+    entries, _ = G.build_input_entries(controls, tmp_path / "ledger.json")
+    outs, _    = G.build_output_entries(controls)
+    return (G.parse_defines(G.emit_cmdids(entries, "fixture", "T")),
+            G.parse_defines(G.emit_outputids(outs, "fixture", "T")))
+
+
+def test_change_report_additions_only(tmp_path):
+    """A new control is reported as an addition, with nothing removed or moved."""
+    controls = load_fixture()
+    old_cmd, old_out = _header_defines(tmp_path, controls)
+    controls["ZZZ_NEW_SWITCH"] = _switch_control()
+    new_cmd, new_out = _header_defines(tmp_path, controls)
+
+    cmd_diff = G.diff_defines(old_cmd, new_cmd)
+    out_diff = G.diff_defines(old_out, new_out)
+    assert cmd_diff["added"] == ["DCSIN_ZZZ_NEW_SWITCH"]
+    assert not cmd_diff["removed"] and not cmd_diff["moved"] and not G.changed_dcsin_ids(cmd_diff)
+    assert "Additions only" in G.emit_change_report(cmd_diff, out_diff)
+
+
+def test_change_report_lists_removed_and_moved():
+    """Removed and moved output symbols are listed for the maintainer, with old/new addresses."""
+    old = {"A_4E_C_GONE": 0x8400, "A_4E_C_MOVED": 0x8402, "A_4E_C_SAME": 0x8404}
+    new = {"A_4E_C_MOVED": 0x8410, "A_4E_C_SAME": 0x8404}
+    report = G.emit_change_report(G.diff_defines({}, {}), G.diff_defines(old, new))
+    assert "removed `A_4E_C_GONE`" in report
+    assert "moved `A_4E_C_MOVED`: `0x8402` → `0x8410`" in report
+    assert "A_4E_C_SAME" not in report
+
+
+def test_changed_dcsin_id_is_flagged():
+    """A DCSIN_* id that changes (hand-edited or re-seeded ledger) is a violation; an address isn't."""
+    old = {"DCSIN_ARM_MASTER": 0x8001, "A_4E_C_X": 0x8400}
+    new = {"DCSIN_ARM_MASTER": 0x8005, "A_4E_C_X": 0x8402}
+    assert G.changed_dcsin_ids(G.diff_defines(old, new)) == [("DCSIN_ARM_MASTER", 0x8001, 0x8005)]
+
+
+# ── Reserved address / names check (#295) ─────────────────────────────────────
+
+def test_read_reserved_from_node_status_h():
+    """The roster address and _NODE_* names come from NodeStatus.h, the single source."""
+    addr, names = G.read_reserved()
+    assert addr == 0xFF00
+    assert names == {"_NODE_STATUS", "_NODE_STATUS_END", "_NODE_TELEM"}
+
+
+def _module(tmp_path, name, controls):
+    (tmp_path / f"{name}.json").write_text(json.dumps({"Cat": controls}), encoding="utf-8")
+
+
+def test_reserved_check_clear(tmp_path):
+    _module(tmp_path, "Plane", {"KNOB": {"outputs": [{"address": 0x8400, "type": "integer"}]}})
+    (tmp_path / "AircraftAliases.json").write_text(json.dumps({"": ["x"]}), encoding="utf-8")
+    assert G.find_reserved_conflicts(tmp_path, 0xFF00, {"_NODE_STATUS"}) == []
+    assert "No aircraft" in G.emit_reserved_report([], 0xFF00)
+
+
+def test_reserved_check_warns_on_address_and_name(tmp_path):
+    _module(tmp_path, "NewJet", {
+        "GAIN": {"outputs": [{"address": 0xFF00, "type": "integer"}]},
+        "_NODE_STATUS": {"outputs": []},
+    })
+    _module(tmp_path, "Display", {   # a string starting below 0xFF00 that runs over it
+        "TEXT": {"outputs": [{"address": 0xFEFC, "type": "string", "max_length": 8}]},
+    })
+    conflicts = G.find_reserved_conflicts(tmp_path, 0xFF00, {"_NODE_STATUS"})
+    assert any("NewJet" in c and "0xff00" in c for c in conflicts)
+    assert any("_NODE_STATUS" in c for c in conflicts)
+    assert any("Display" in c for c in conflicts)
+    assert "**Warning:**" in G.emit_reserved_report(conflicts, 0xFF00)

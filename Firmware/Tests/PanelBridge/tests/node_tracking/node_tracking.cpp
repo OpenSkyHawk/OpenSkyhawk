@@ -71,7 +71,7 @@ static void sendHb() {
 }
 
 static void sendReady() {
-    CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    CANProtocol::sendReady();
 }
 
 void setup() {

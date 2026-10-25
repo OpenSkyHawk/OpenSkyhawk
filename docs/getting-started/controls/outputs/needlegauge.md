@@ -195,7 +195,14 @@ then pull the needle off its shaft and press it back on pointing exactly at zero
     **What `makeX27Config` fills in for you.** 1,080 steps per full turn, and 945 steps
     (about 315°) between the motor's two end stops. Homing drives that distance plus an eighth,
     so it reaches the stop from anywhere. A motor with different stops, such as a 320° BKA-30,
-    takes its own value; the full list of options is in the API reference.
+    takes its own value. Write the description by name instead, giving only what differs:
+
+    ```cpp
+    const OpenSkyhawk::StepperConfig OIL_MOTOR = { .maxPos = 960, .rangeSteps = 960 };
+    ```
+
+    Everything you leave out keeps the X27 default. The full list of settings is in the API
+    reference.
 
     **Smooth moves.** Every move speeds up and slows down gently, using the same motion as
     Guy Carpenter's SwitecX25 library. Changes of a single step are ignored, so a value that

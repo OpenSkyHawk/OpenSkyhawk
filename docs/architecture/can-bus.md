@@ -35,12 +35,16 @@ helper functions — **never hard-code these values**, always use the helper.
 | `TELEM_n` | `0x180 + n` | `canIdTelem(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_n` | `0x200 + n` | `canIdEvt(n)` | Node *n* → PanelBridge | 8 |
 | `ECHO_n` | `0x300 + n` | `canIdEcho(n)` | Node *n* → PanelBridge | 8 |
-| `READY_n` | `0x400 + n` | `canIdReady(n)` | Node *n* → PanelBridge | 0 |
+| `READY_n` | `0x400 + n` | `canIdReady(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_REL_n` | `0x500 + n` | `canIdEvtRel(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_DIR_n` | `0x600 + n` | `canIdEvtDir(n)` | Node *n* → PanelBridge | 8 |
 | `EVT_ACTION_n` | `0x700 + n` | `canIdEvtAction(n)` | Node *n* → PanelBridge | 8 |
+| *reserved* | `0x740`–`0x7BF` | — | — | — |
 
-- `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node.
+- `CTRL_BCAST` carries DCS-BIOS output state from PanelBridge to every node — the whole export
+  stream, whatever aircraft is flying; each output picks out its own address.
+- `0x740`–`0x7BF` is reserved for a future firmware-update frame family, at the lowest priority
+  on the bus so update traffic never delays a control.
 - `EVT_n` carries input events from a node back up to PanelBridge.
 - `HB_n` is a 500 ms heartbeat with CAN health (TEC/REC, flags, uptime).
   Every node — PanelBridge included, as `HB_0` — sends `HB_n` and `HEALTH_n` from one shared
@@ -98,6 +102,9 @@ struct ControlPacketPair { ControlPacket a; ControlPacket b; };    // 8 bytes
   occupy different CAN frame fields. See [DCS-BIOS vs HID](dcsbios-vs-hid.md) for the
   `controlId` ranges.
 - **`value`** is the payload — interpretation depends on the `controlId` range.
+- **Byte order:** both fields are little-endian on the wire, low byte first — in a
+  `ControlPacketPair`, bytes 0–1 `a.controlId`, 2–3 `a.value`, 4–5 `b.controlId`, 6–7 `b.value`.
+  Every multi-byte CAN payload field in this project is little-endian.
 
 `CTRL_BCAST` and all four event frames — `EVT_n`, `EVT_REL_n`, `EVT_DIR_n` and
 `EVT_ACTION_n` — carry a **`ControlPacketPair`** so two packets share one 8-byte frame. Each
@@ -120,7 +127,8 @@ on the [NODE_ID & CAN Addressing](../firmware/node-id.md) page.
 PanelGroup nodes may power up before or after PanelBridge, so boot state can't be assumed.
 The `SYNC_REQ` / `READY` handshake makes input state deterministic:
 
-1. On cold boot a PanelGroup completes its initial input poll, then sends `READY_n`.
+1. On cold boot a PanelGroup completes its initial input poll, then sends `READY_n`, carrying its
+   firmware version so the client can show which build every board runs.
 2. PanelBridge broadcasts `SYNC_REQ` — on its own cold boot, on a DCS session change, when it
    sees a `READY_n`, or when a node transitions from unseen to alive.
 3. On receiving `SYNC_REQ`, every PanelGroup re-polls all its inputs and re-sends their

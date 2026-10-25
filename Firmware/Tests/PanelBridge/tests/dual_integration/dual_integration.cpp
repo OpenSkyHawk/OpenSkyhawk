@@ -121,7 +121,7 @@ void loop() {
     // Boot sequence: EVT burst then READY after 200 ms
     if (!_readySent && now > 200) {
         sendEvtBurst();
-        CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+        CANProtocol::sendReady();
         _readySent = true;
         STM32Board::diagSerial().println(F("[NODE] READY sent"));
     }

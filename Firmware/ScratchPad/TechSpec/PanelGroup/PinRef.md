@@ -16,6 +16,11 @@ control declarations are identical regardless of where the physical pin lives.
 
 Contains no logic beyond read/write dispatch — no debounce, no filtering, no state.
 
+Every control class takes a `PinRef`. The two native-pin exceptions are backend wiring, not
+controls — `PanelGroup::registerExpander()`'s INTA/INTB lines (native EXTI) and the `ShiftBus`
+constructor's SPI + load/latch pins (a backend's own lines) — see FirmwarePlan
+`05-panelgroup-api.md` § PinRef (#295).
+
 ---
 
 ## File Layout
@@ -405,17 +410,17 @@ library's default and one we never override (`PinRef.cpp` sets the gain delibera
 conversion time is a **configuration choice we have not yet made**, not a fixed property of the
 silicon — at 860 SPS it is ~1.2 ms.
 
-`AnalogMultiPos::POLL_MS` (fixed, 8 ms) and `AnalogInput::DEFAULT_POLL_MS` (8 ms) happen to sit at
+`AnalogMultiPos::POLL_MS` (fixed, 8 ms) and `AnalogConfig::DEFAULT_POLL_MS` (8 ms) happen to sit at
 the same figure, but they were **not sized for this part**: both are inherited from DCS-BIOS
 `PotentiometerEWMA`, chosen for a cockpit pot on a bandwidth-constrained serial link (see
 `AnalogInput`'s class comment). The match is coincidence, not design. It does still set the floor
 at the data rate we currently run — so at 128 SPS, do not go below it on an ADS-backed input.
 
-`AnalogInput::pollMs` is per instance and may be set below 8 — but only for a **GPIO** PinRef,
+`AnalogConfig::pollMs` is per instance and may be set below 8 — but only for a **GPIO** PinRef,
 where `analogRead()` costs microseconds. On an **ADS1115** PinRef a smaller `pollMs` cannot make
 the conversion faster; it only makes `poll()` re-enter the blocking read as soon as the previous
 one returns, so the node's loop runs at the ADC's conversion rate and every other input and
-output on that node queues behind it. Keep an ADS1115-backed `AnalogInput` at `DEFAULT_POLL_MS`
+output on that node queues behind it. Keep an ADS1115-backed `AnalogInput` at `AnalogConfig::DEFAULT_POLL_MS`
 or higher. (That a slow ADS knob already delays a fast axis sharing the node is a known defect —
 #269.) Do not call `readAnalog()` on an ADS1115 PinRef from an ISR.
 

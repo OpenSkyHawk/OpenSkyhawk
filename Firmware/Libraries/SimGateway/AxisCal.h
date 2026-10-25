@@ -18,7 +18,6 @@
  * Deliberately not wrapped in `#ifdef ARDUINO_ARCH_RP2040` — this is portable C++ and the
  * guard would only obstruct compiling it anywhere else.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -188,6 +187,8 @@ constexpr uint16_t CAL_MAX_PAYLOAD    = 82;   ///< CAL_DATA, the largest legal p
 constexpr uint16_t CAL_MAX_FRAME      = CAL_ENVELOPE_BYTES + CAL_MAX_PAYLOAD;  // 92
 
 /// Message types. High bit set = device→client, so direction is readable in a capture.
+/// Reserved for firmware update (#295), not yet assigned: 0x10-0x1F (client→device) and
+/// 0x90-0x9F (device→client). Don't allocate them to anything else.
 enum CalType : uint8_t {
     CAL_T_HELLO         = 0x01,
     CAL_T_GET_CAL       = 0x02,
@@ -209,6 +210,7 @@ enum CalType : uint8_t {
 };
 
 /// NACK reasons. `detail` names the offending axis where one applies, else 0xFF.
+/// Reserved for firmware update (#295), not yet assigned: 0x09-0x0E.
 enum CalNackReason : uint8_t {
     CAL_NACK_BAD_CRC      = 0x01,
     CAL_NACK_BAD_LENGTH   = 0x02,
@@ -235,7 +237,7 @@ enum CalHelloAckField : uint8_t {
     CAL_HELLO_ACK_PROTO        = 0,  // u8: CAL_PROTO_VERSION
     CAL_HELLO_ACK_BLOB_VERSION = 1,  // u8: CAL_VERSION
     CAL_HELLO_ACK_AXIS_SLOTS   = 2,  // u8: AXIS_CAL_SLOTS
-    CAL_HELLO_ACK_FW_MAJOR     = 3,  // u8: SimGateway firmware version
+    CAL_HELLO_ACK_FW_MAJOR     = 3,  // u8: firmware release version (FirmwareVersion.h)
     CAL_HELLO_ACK_FW_MINOR     = 4,  // u8
     CAL_HELLO_ACK_FW_PATCH     = 5,  // u8
 };
@@ -308,13 +310,17 @@ enum CalRawField : uint8_t {
     CAL_RAW_CAL = 3,  // u16: the same reading through axisCalApply()
 };
 
-/// `DIAG` payload (47 bytes, device→client): link-health counters and event times (#355).
+/// `DIAG` payload (64 bytes, device→client): link-health counters and event times (#355).
 ///
 /// Times are millis() since this boot; 0 means "never". Counters are u16 and saturate at
 /// 0xFFFF rather than wrap, so a large number never reads as a small one. The four UART error
 /// counters count status ticks on which that PL011 RSR bit was set — the core's UART IRQ owns
 /// the data register, so per-character counts are not available. The three u8 fields at the
 /// end survive a warm reboot (watchdog scratch registers) and reset on power-on.
+///
+/// Bytes 47–63 are reserved (#295): transmit 0, ignore on receive. A calibration frame's `LEN` is
+/// fixed per type, so `DIAG` can't grow in place — a new counter fills reserved bytes instead, a
+/// minor change that older clients simply don't read.
 enum CalDiagField : uint8_t {
     CAL_DIAG_UPTIME_MS          = 0,   // u32: millis() when the reply was built
     CAL_DIAG_FIRST_UART_ERR_MS  = 4,   // u32: first PL011 error this boot
@@ -336,10 +342,11 @@ enum CalDiagField : uint8_t {
     CAL_DIAG_RECOVERY_REBOOTS   = 44,  // u8:  recovery ladder reboots (survives reboot)
     CAL_DIAG_WATCHDOG_RESETS    = 45,  // u8:  hardware watchdog resets (survives reboot)
     CAL_DIAG_RESET_REASON       = 46,  // u8:  CalDiagResetReason for this boot
+    CAL_DIAG_RESERVED           = 47,  // 17 bytes: reserved, transmit 0 (#295)
 };
 
-/// `DIAG` payload length.
-constexpr uint8_t CAL_DIAG_BYTES = 47;
+/// `DIAG` payload length — 47 bytes in use, the rest reserved.
+constexpr uint8_t CAL_DIAG_BYTES = 64;
 
 /// Why this boot happened, as reported in `DIAG`.
 enum CalDiagResetReason : uint8_t {

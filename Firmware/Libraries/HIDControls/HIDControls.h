@@ -11,7 +11,6 @@
  *   0x0030–0x00AF  HID buttons     — routed to button setters on SimGateway
  *   0x00B0–0x00FF  Reserved HID expansion slots
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

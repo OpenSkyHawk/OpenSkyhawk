@@ -19,6 +19,7 @@ All input and output objects take a `PinRef` instead of a raw `uint8_t` pin.
 | Direct STM32 GPIO | `PinRef(uint8_t pin)` | `digitalRead`/`digitalWrite`/`analogRead`/`analogWrite` directly |
 | MCP23017 GPIO | `PinRef(MCP23017& chip, uint8_t port, uint8_t bit)` | port = `PORT_A` or `PORT_B`; bit = 0–7 |
 | ADS1115 channel | `PinRef(ADS1115& adc, uint8_t channel)` | channel = 0–3; read via `readSingleEnded()` |
+| 74HC165 / 74HC595 bit | `PinRef(ShiftBus& bus, uint8_t chip, uint8_t bit)` | `configureAsInput()` binds the '165 chain, `configureAsOutput()` the '595 (#197) |
 
 **Interface:**
 - `bool read()` — digital read
@@ -31,6 +32,17 @@ All input and output objects take a `PinRef` instead of a raw `uint8_t` pin.
 `isGpio()` is a backend-type check, not dynamic hardware discovery. MCP23017 and ADS1115
 PinRefs are never PWM/servo-capable. For direct GPIO, sketches still choose PWM/servo-capable
 pins from the board wiring map.
+
+**Native-pin exceptions (#295).** Control classes always take a `PinRef`. Backend wiring — the lines
+a `PinRef` backend itself needs — takes native MCU pins, because those lines must be real GPIO:
+
+- `PanelGroup::registerExpander(chip, intaPin, intbPin)` — the MCP23017 INTA/INTB lines go to
+  `attachInterrupt()`, which needs a native EXTI pin.
+- `ShiftBus(spi, sck, miso, mosi, load, latch)` — a ShiftBus *is* a `PinRef` backend, so its own
+  lines can't be shift-register `PinRef`s, and load/latch are toggled from the TIM2 sampling ISR.
+
+A bus object (`TwoWire&` for `registerADC`, `I2cMux` and `DrumDisplay`; `SPIClass&` for `ShiftBus`)
+is not a pin and not an exception. These are the only two.
 
 ---
 
@@ -348,7 +360,7 @@ Continuous or stepped analog input. All sources normalised to **16-bit (0–6553
 | ADS1115 | 15-bit single-ended (0–32767) | 0–3.3V → 0–65534, factor from the gain (#325) | GAIN_ONE (±4.096V FSR); 3.3V ≈ 26400 raw → 65534 — same span as a board pin |
 
 Configurable `[minRaw, maxRaw]` input range; values outside clamped to 0 or 65535. Read throttle:
-**per instance** — `pollMs`, default `DEFAULT_POLL_MS` = 8 ms, so a HID flight axis and a cockpit
+**per instance** — `pollMs`, default `AnalogConfig::DEFAULT_POLL_MS` = 8 ms, so a HID flight axis and a cockpit
 pot on the same node can sample at different rates (`forceReport()` bypasses the throttle for the
 boot / SYNC baseline).
 
@@ -356,18 +368,22 @@ boot / SYNC baseline).
 shift not a divide — no soft-float on the F103) smooths the ×16-amplified ADC noise; a new value is
 emitted only when the smoothed result moves more than `hysteresis` counts from the last sent value,
 or reaches a rail (0 / 65535) moving toward it — so endpoints are always reached and a settled pot
-is silent. The constructor exposes `reverse`, `[minRaw, maxRaw]`, `hysteresis` (default 128),
-`ewmaShift` (default 3; **valid 0–15**, capped so the `int32` accumulator `scaled << ewmaShift`
-cannot overflow at full scale), and `pollMs` (default 8; **not** capped — 0 means read every loop
-iteration). `pollMs` and `ewmaShift` are **coupled**: the filter time constant is
+is silent. Tuning is one `AnalogConfig` argument (#295) — a struct with every field defaulted, set by
+name (`{ .hysteresis = 32, .pollMs = 2 }`): `reverse`, `[minRaw, maxRaw]`, `hysteresis` (default
+`HYSTERESIS_AUTO` — route-aware: `DCS_HYSTERESIS` 1024 for a `DCSIN_*` id, so a sweep doesn't flood
+DCS-BIOS import, and `HID_HYSTERESIS` 128 for a `CTRL_*` id, the value the axis calibration was
+validated with; an explicit value always wins), `ewmaShift` (default 3; **valid 0–15**, capped so
+the `int32` accumulator `scaled << ewmaShift` cannot overflow at full scale), and `pollMs` (default
+8; **not** capped — 0 means read every loop iteration). Fields are only ever appended. `pollMs` and `ewmaShift` are **coupled**: the filter time constant is
 τ ≈ 2^`ewmaShift` × `pollMs`, so halving the read interval halves τ unless the shift rises with it.
 A *linear* class — it sends an absolute value on `EVT_n` (ABS) like the selector classes, but the
 value is continuous, not a position index.
 
 ```cpp
-OpenSkyhawk::AnalogInput throttle(CTRL_THROTTLE, PinRef(PA0));
+OpenSkyhawk::AnalogInput throttle(CTRL_THROTTLE, PinRef(PA0));                 // HID: hysteresis 128
+OpenSkyhawk::AnalogInput volume(DCSIN_ARC51_VOL, PinRef(PA2), { .reverse = true }); // DCS: 1024
 
-ADS1115 adc(0x48, Wire);
+ADS1115 adc;   // PanelGroup::registerADC(adc, 0x48) in setup()
 OpenSkyhawk::AnalogInput rudder(CTRL_RUDDER, PinRef(adc, 0));
 ```
 
@@ -386,7 +402,10 @@ Design (D16) — **`AngleSensorInput : AnalogInput`**, not a sibling class:
 
 - **Takes a `PinRef`** like every control class: the sensor's analog output pin, read through an
   STM32 ADC pin or an ADS1115 channel. It calls `AnalogInput`'s existing public constructor, with
-  `centerDeg` / `travelDeg` converted to `[minRaw, maxRaw]`.
+  `centerDeg` / `travelDeg` converted to `[minRaw, maxRaw]`. Its own tuning is an `AngleConfig`
+  (#295) — `hysteresis` (route-aware by default, like `AnalogInput`), `ewmaShift`, `pollMs` — the
+  `AnalogConfig` fields that still mean something once the window comes from the angle. No
+  `reverse`: the sensor's DIR pin sets direction.
 - `AnalogInput` gains one protected virtual `readRaw()` (default: `_pin.readAnalog()`);
   `AngleSensorInput` overrides it to **re-centre** the reading so `centerDeg` lands at mid-scale —
   the 0°/360° seam then only matters for travel wider than ±180°. Everything else is inherited —
@@ -400,10 +419,11 @@ Design (D16) — **`AngleSensorInput : AnalogInput`**, not a sibling class:
   addition, not part of the first cut.
 
 ```cpp
-ADS1115 adc(0x48, Wire);
+ADS1115 adc;   // PanelGroup::registerADC(adc, 0x48) in setup()
 // AS5600 OUT pin → ADS1115 channel 2 (or an STM32 ADC pin: PinRef(PA3))
 OpenSkyhawk::AngleSensorInput gunsight(DCSIN_GUNSIGHT_KNB, PinRef(adc, 2),
-                                        /*centerDeg*/ 180.0f, /*travelDeg*/ 150.0f);
+                                        /*centerDeg*/ 180.0f, /*travelDeg*/ 150.0f,
+                                        { .hysteresis = 512 });   // optional: default 1024 (DCS)
 ```
 
 ---

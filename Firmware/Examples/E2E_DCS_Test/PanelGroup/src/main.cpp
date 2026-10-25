@@ -121,7 +121,7 @@ RotaryEncoder  destLat (DCSIN_DEST_LAT_KNB,     PinRef(PA8), PinRef(PB5), Encode
 RotaryEncoder  freq10  (DCSIN_ARC51_FREQ_10MHZ, PinRef(PB3), PinRef(PB4), EncoderStepsPerDetent::Four, EncoderMode::Dir);
 // hysteresis 1024 (≈64 steps over the throw) — default 128 floods DCS-BIOS import on a sweep (~125
 // cmd/s) and lags the cockpit seconds behind; 1024 cuts that ~5× while staying smooth for a vol knob.
-AnalogInput    arcVol  (DCSIN_ARC51_VOL,  PinRef(PA2), /*reverse=*/false, 0, 65535, /*hysteresis=*/1024);
+AnalogInput    arcVol  (DCSIN_ARC51_VOL,  PinRef(PA2));   // DCSIN → hysteresis 1024 by default
 AnalogMultiPos arcMode (DCSIN_ARC51_MODE, PinRef(PA3), 4);
 
 void setup() {

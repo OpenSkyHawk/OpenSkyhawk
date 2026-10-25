@@ -23,7 +23,6 @@
  * frame struct) stays in `CANProtocol.h`; the fault *detail* strings stay local (DiagSerial),
  * never on the wire. Header-only contract + a tiny `FaultSource` registry (`NodeStatus.cpp`).
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -33,9 +32,14 @@
 // ── _NODE_STATUS DCS-BIOS host-reporting contract (#86) ───────────────────────
 // PanelBridge reports connected nodes + health to the host over DCS-BIOS. Bump
 // NODE_STATUS_PROTO_VERSION on any _NODE_STATUS wire change so the client's sync fails loudly.
-// Full 28-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
-#define NODE_STATUS_PROTO_VERSION 3
-#define NODE_STATUS_REQ_ADDR      0x86FE     // host→device roster-request export address
+// Full 34-hex field decode: FirmwarePlan/04-dcs-bios-integration.md.
+#define NODE_STATUS_PROTO_VERSION 4
+// Host→device roster-request export address (#295, v4). No DCS-BIOS module exports here: every
+// aircraft ends by 0xB2FB and MetadataEnd is 0xFFFE (checked against DCS-BIOS v0.11.8). The old
+// 0x86FE is a live address for the AH-64D and the Mirage F1, so flying either answered every
+// export of that control with a roster burst. The A4EC refresh warns if a new DCS-BIOS release ever
+// puts an aircraft here (tools/gen_a4ec, --modules-dir).
+#define NODE_STATUS_REQ_ADDR      0xFF00
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
 
@@ -47,8 +51,8 @@
  */
 constexpr uint8_t GATEWAY_NODE_ID = 0;
 
-/// `_NODE_STATUS` row length in bytes, sent as twice as many hex chars (proto v3: 14 → 28 hex).
-constexpr uint8_t NODE_STATUS_ROW_BYTES = 14;
+/// `_NODE_STATUS` row length in bytes, sent as twice as many hex chars (proto v4: 17 → 34 hex).
+constexpr uint8_t NODE_STATUS_ROW_BYTES = 17;
 
 /**
  * @brief `_NODE_STATUS` row field offsets, in bytes of the decoded row (hex index = 2 × offset).
@@ -56,8 +60,9 @@ constexpr uint8_t NODE_STATUS_ROW_BYTES = 14;
  * Each field is its numeric value as fixed-width uppercase hex, most-significant byte first, so
  * the u16 fields read big-endian here although they are little-endian on CAN. A field runs to the
  * next offset; the last runs to NODE_STATUS_ROW_BYTES. The first six come from the node's HB_n
- * (plus `present`), the last five from its HEALTH_n. (Not `NODE_ID`: every node build defines
- * that as a macro.)
+ * (plus `present`), the next five from its HEALTH_n, the last three from its READY_n (v4, #295).
+ * Fields are only ever appended: a reader parses the fields it knows from a longer row and ignores
+ * the rest. (Not `NODE_ID`: every node build defines that as a macro.)
  */
 enum class NodeStatusField : uint8_t {
     ID           = 0,   // u8: node ID; GATEWAY_NODE_ID = the bridge's own row, 1-63 = CAN nodes
@@ -71,6 +76,9 @@ enum class NodeStatusField : uint8_t {
     FAULT_MASK   = 11,  // u8: reserved, 00
     FAULT_ID     = 12,  // u8: NodeFaultCode
     NODE_KIND    = 13,  // u8: NodeKind
+    FW_MAJOR     = 14,  // u8: firmware release version from the node's READY_n; 00 00 00 = not reported
+    FW_MINOR     = 15,  // u8
+    FW_PATCH     = 16,  // u8
 };
 
 // ── _NODE_TELEM DCS-BIOS host-reporting contract (#216) ───────────────────────

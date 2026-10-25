@@ -2,7 +2,6 @@
  * @file AnalogInput.h
  * @brief Continuous analog input (potentiometer / axis) for OpenSkyhawk PanelGroup nodes.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -12,6 +11,44 @@
 #include <PanelGroup.h>  // InputBase, PinRef
 
 namespace OpenSkyhawk {
+
+/**
+ * @brief Tuning for an AnalogInput. Every field has a default, so a sketch sets only what differs,
+ *        by name: `{ .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 }` (#295).
+ *
+ * Fields are only ever appended, each with a default, so a new setting never breaks a sketch.
+ * The constants are the defaults and limits the fields refer to.
+ */
+struct AnalogConfig {
+    /// `hysteresis` default: chosen from the controlId's route when the input is constructed —
+    /// DCS_HYSTERESIS for a DCSIN_* (DCS-BIOS) id, HID_HYSTERESIS for a CTRL_* (HID) id. Any other
+    /// value is used as given.
+    static constexpr uint16_t HYSTERESIS_AUTO    = 0xFFFF;
+    /// DCS-BIOS route: 1024 keeps a sweep from flooding DCS-BIOS import (SoakRig and E2E use it).
+    static constexpr uint16_t DCS_HYSTERESIS     = 1024;
+    /// HID route: 128 — the value the axis calibration was validated with (#46/#251).
+    static constexpr uint16_t HID_HYSTERESIS     = 128;
+    static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;    ///< EWMA α = 1/2^3 = 1/8.
+    static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;   ///< cap: scaled<<shift must fit int32 at full scale.
+    static constexpr uint16_t DEFAULT_POLL_MS    = 8;    ///< default min interval between ADC reads (ms).
+
+    /// false: minRaw → 0, maxRaw → 65535. true: inverted.
+    bool     reverse    = false;
+    /// Raw ADC value mapping to 0. Readings below are clamped.
+    uint16_t minRaw     = 0;
+    /// Raw ADC value mapping to 65535. Readings above are clamped.
+    uint16_t maxRaw     = 65535;
+    /// Output counts of movement required before a new value is emitted (HYSTERESIS_AUTO: by route).
+    uint16_t hysteresis = HYSTERESIS_AUTO;
+    /// EWMA smoothing strength: α = 1/2^ewmaShift. Capped to MAX_EWMA_SHIFT — beyond that the int32
+    /// accumulator (scaled << shift) would overflow at full scale.
+    uint8_t  ewmaShift  = DEFAULT_EWMA_SHIFT;
+    /// Min interval between ADC reads, ms. Per instance, not per node. Not clamped: 0 means read
+    /// every loop iteration, which is legal but makes τ track the loop rate — not a controlled
+    /// quantity. An ADS1115 PinRef blocks ~8 ms per conversion whatever this says, so keep those at
+    /// the default or higher.
+    uint16_t pollMs     = DEFAULT_POLL_MS;
+};
 
 /**
  * @brief Continuous analog input — one analog `PinRef`, normalised to a 16-bit value 0..65535.
@@ -28,7 +65,7 @@ namespace OpenSkyhawk {
  * smoothed value moves more than `hysteresis` counts from the last sent value, or when it reaches a
  * rail (0 / 65535) moving toward it — a settled pot is silent, the endpoints always reached.
  *
- * The ADC is re-read at most every `pollMs` — a constructor parameter, default `DEFAULT_POLL_MS`
+ * The ADC is re-read at most every `pollMs` — an AnalogConfig field, default `DEFAULT_POLL_MS`
  * (8 ms). It is **per instance, not per node**: two AnalogInputs on one board may read at different
  * rates, and PanelGroup owns no analog timer of its own (it calls `poll()` every iteration and lets
  * each input decide). `forceReport()` samples fresh (bypassing the throttle) and emits the current
@@ -45,33 +82,15 @@ namespace OpenSkyhawk {
  */
 class AnalogInput : public InputBase {
 public:
-    static constexpr uint16_t DEFAULT_HYSTERESIS = 128;  ///< counts on the 16-bit output.
-    static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;    ///< EWMA α = 1/2^3 = 1/8.
-    static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;   ///< cap: scaled<<shift must fit int32 at full scale.
-    static constexpr uint16_t DEFAULT_POLL_MS    = 8;    ///< default min interval between ADC reads (ms).
-
     /**
      * @brief Construct a continuous analog input.
      *
-     * @param controlId   DCSIN_* or CTRL_* constant. Determines PanelBridge routing.
-     * @param pin         analog PinRef (STM32 ADC GPIO or ADS1115 channel).
-     * @param reverse     false (default): minRaw → 0, maxRaw → 65535. true: inverted.
-     * @param minRaw      raw ADC value mapping to 0 (default 0). Readings below are clamped.
-     * @param maxRaw      raw ADC value mapping to 65535 (default 65535). Above are clamped.
-     * @param hysteresis  output counts of movement required before a new value is emitted.
-     * @param ewmaShift   EWMA smoothing strength: α = 1/2^ewmaShift (default 3 → 1/8). Capped to
-     *                    MAX_EWMA_SHIFT (15) — beyond that the int32 accumulator (scaled << shift)
-     *                    would overflow at full scale.
-     * @param pollMs      min interval between ADC reads, ms (default 8). Per instance, not per
-     *                    node. Not clamped: 0 means read every loop iteration, which is legal but
-     *                    makes τ track the loop rate — not a controlled quantity. An ADS1115 PinRef
-     *                    blocks ~8 ms per conversion whatever this says, so keep those at the
-     *                    default or higher.
+     * @param controlId  DCSIN_* or CTRL_* constant. Determines PanelBridge routing — and, with
+     *                   the default config, the hysteresis (AnalogConfig::HYSTERESIS_AUTO).
+     * @param pin        analog PinRef (STM32 ADC GPIO or ADS1115 channel).
+     * @param cfg        tuning; set only the fields that differ, e.g. `{ .reverse = true }`.
      */
-    AnalogInput(uint16_t controlId, PinRef pin, bool reverse = false,
-                uint16_t minRaw = 0, uint16_t maxRaw = 65535,
-                uint16_t hysteresis = DEFAULT_HYSTERESIS, uint8_t ewmaShift = DEFAULT_EWMA_SHIFT,
-                uint16_t pollMs = DEFAULT_POLL_MS);
+    AnalogInput(uint16_t controlId, PinRef pin, const AnalogConfig& cfg = {});
 
     /** @brief Throttled ADC read + EWMA; emit when the value clears the hysteresis or a rail. */
     void poll() override;

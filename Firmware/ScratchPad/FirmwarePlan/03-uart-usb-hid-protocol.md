@@ -260,6 +260,10 @@ High bit of `TYPE` set = device→client, so direction is readable at a glance i
 | `0x08` | `STREAM_SELECT` | `0x87` | `DIAG` |
 | `0x09` | `GET_DIAG` | | |
 
+**Reserved for firmware update (#295), not yet assigned:** types `0x10`–`0x1F` (client → device) and
+`0x90`–`0x9F` (device → client), and NACK reasons `0x09`–`0x0E`. Nothing else may claim them; when
+assigned they follow § Compatibility (new types are a minor change).
+
 These are numeric type codes, not strings. Contrast `_NODE_STATUS`, which *is* text because it
 must imitate a DCS-BIOS message riding the ASCII stream; this channel is quiet during exchanges,
 so binary is free.
@@ -274,7 +278,7 @@ the mapping — but that is data in the message, not the message's identity.
 | Type | `LEN` | Payload |
 |---|---|---|
 | `HELLO` | 0 | — |
-| `HELLO_ACK` | 6 | `proto`:u8, `blobVersion`:u8, `axisSlots`:u8 (8), `fw`:u8×3 (major, minor, patch) |
+| `HELLO_ACK` | 6 | `proto`:u8, `blobVersion`:u8, `axisSlots`:u8 (8), `fw`:u8×3 (major, minor, patch — the release version, `OPENSKYHAWK_FW_*` in `FirmwareVersion.h`) |
 | `GET_CAL` | 0 | — |
 | `CAL_DATA` | 82 | `presentMask`:u8, `calibratedMask`:u8, then **8 ×** { `controlId`:u16, `min`:u16, `centre`:u16, `max`:u16, `deadzone`:u16 } |
 | `SESSION_OPEN` | 1 | `axisIdx`:u8 — axis to stream, or `0xFF` for none |
@@ -288,7 +292,7 @@ the mapping — but that is data in the message, not the message's identity.
 | `NACK` | 3 | `type`:u8, `reason`:u8, `detail`:u8 (axis index, or `0xFF`) |
 | `RAW` | 5 | `idx`:u8, `raw`:u16, `cal`:u16 |
 | `GET_DIAG` | 0 | — |
-| `DIAG` | 47 | link-health counters and event times — see below |
+| `DIAG` | 64 | link-health counters and event times — see below; bytes 47–63 reserved |
 
 Field offsets are named in `AxisCal.h` — one enum per type with a payload (`CalHelloAckField`,
 `CalDataField` + `CalDataRecField` and `CAL_DATA_REC_BYTES`, `CalSessionOpenField`,
@@ -350,6 +354,7 @@ Times are `millis()` since this boot, `0` = never. Counters are u16 and saturate
 | 44 | `RECOVERY_REBOOTS` | u8 | recovery-ladder reboots — survives a warm reboot |
 | 45 | `WATCHDOG_RESETS` | u8 | hardware-watchdog resets — survives a warm reboot |
 | 46 | `RESET_REASON` | u8 | `CalDiagResetReason`: 0 power-on, 1 watchdog, 2 recovery reboot |
+| 47–63 | `RESERVED` | — | transmit 0, ignore on receive (#295). `LEN` is fixed per type, so a new counter fills these bytes — a minor change — instead of growing `DIAG` |
 
 The UART error counters count status ticks on which the bit was set, not characters: the core's
 UART IRQ owns the data register. The two "survives" counters live in watchdog scratch registers and
@@ -360,6 +365,20 @@ and older firmware rejects the unknown type (`calLenValidForType()` fails), so i
 the relay and no reply comes. A client therefore treats "no `DIAG` within its request timeout"
 as "not supported", not as a link fault. Bumping the version would make a client that requires
 an exact match refuse calibration against new firmware until it synced, for no gain.
+
+### Compatibility — how the channel grows (#295, D22)
+
+The `_NODE_*` lines grow by appending fields (`04-dcs-bios-integration.md` § Compatibility). This
+channel can't: `LEN` is fixed per type, so a longer payload on an existing type is "not a frame" to
+an older reader. From v1.0 it follows its own rule:
+
+1. **`HELLO` / `HELLO_ACK` never change**, in any version — they are how a client learns `proto`,
+   so every client must always be able to read them.
+2. **A new message type is a minor.** Older firmware fails `calLenValidForType()` on it and relays
+   the bytes as DCS data, so no reply comes; the client treats a timeout as "not supported" and
+   falls back (as `GET_DIAG` does). `CAL_PROTO_VERSION` stays.
+3. **Any change to an existing type's `LEN`, field layout or meaning bumps `CAL_PROTO_VERSION`**,
+   and is a major: a client refuses calibration against a `proto` it doesn't know.
 ### Session model
 
 `HELLO`, `GET_CAL` and `GET_DIAG` work **outside** a session. This is what lets the client show
@@ -404,7 +423,7 @@ axis, and no other axis is affected by it.
 |---|---|---|---|
 | `0x01` | `BAD_CRC` | frame checksum mismatch | retransmit |
 | `0x02` | `BAD_LENGTH` | `LEN` inconsistent with its type | client bug — log it |
-| `0x03` | `BAD_TYPE` | unknown type code | protocol version mismatch |
+| `0x03` | `BAD_TYPE` | unknown type code | never sent: an unknown type fails `calLenValidForType()` first and is relayed, so the client sees a timeout (see § Compatibility) |
 | `0x04` | `BAD_INDEX` | `idx` out of range | client bug |
 | `0x05` | `BAD_ORDER` | endpoints not ordered; `detail` names the axis | "Axis N: endpoints out of order" |
 | `0x06` | `NO_SESSION` | command requires an open session | client bug |
@@ -478,7 +497,7 @@ must therefore mean "the last received value has not moved for N ms", never "N c
 agreed", which would never complete on a stick held still.
 
 **Do not assume an update rate.** `AnalogInput`'s read throttle is **per instance** — the `pollMs`
-constructor parameter, default `DEFAULT_POLL_MS` = 8 ms — so it is a per-axis build choice, not a
+field of its `AnalogConfig`, default `AnalogConfig::DEFAULT_POLL_MS` = 8 ms — so it is a per-axis build choice, not a
 constant you can read off the class, and two axes on one node may differ. Whatever it is set to
 bounds only that axis's ADC sampling; hysteresis, `PanelGroup::loop()` timing, CAN, and PanelBridge
 all reduce it further. Measure it.

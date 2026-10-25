@@ -98,11 +98,19 @@ match. Not part of the first cut.
 ## Public API (sketch)
 
 ```cpp
+// The AnalogConfig fields that still mean something once the window comes from the angle (#295).
+// No reverse: the sensor's DIR pin sets direction.
+struct AngleConfig {
+    uint16_t hysteresis = AnalogConfig::HYSTERESIS_AUTO;   // route-aware, like AnalogInput
+    uint8_t  ewmaShift  = AnalogConfig::DEFAULT_EWMA_SHIFT;
+    uint16_t pollMs     = AnalogConfig::DEFAULT_POLL_MS;
+};
+
 class AngleSensorInput : public AnalogInput {
 public:
     AngleSensorInput(uint16_t controlId, PinRef pin,
                      float centerDeg, float travelDeg,
-                     uint16_t pollMs = DEFAULT_POLL_MS);
+                     const AngleConfig& cfg = {});
 protected:
     uint16_t readRaw() override;        // AnalogInput::readRaw(), re-centred on centerDeg
 private:

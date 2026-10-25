@@ -23,7 +23,6 @@
  * }
  * @endcode
  *
- * @version 0.2.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -31,6 +30,14 @@
 #ifdef ARDUINO_ARCH_STM32
 
 #include <stdint.h>
+
+// Node-status reporting to the host (#86) — `_NODE_STATUS` / `_NODE_STATUS_END` / `_NODE_TELEM` and
+// the `0xFF00` roster request. On by default (#295): the client depends on it. Compile it out with
+// `-DPANELBRIDGE_NODE_STATUS=0`; node tracking itself (liveness, SYNC_REQ, WARNING, callbacks)
+// never depends on it. Test with `#if PANELBRIDGE_NODE_STATUS`, never `#ifdef`.
+#ifndef PANELBRIDGE_NODE_STATUS
+#define PANELBRIDGE_NODE_STATUS 1
+#endif
 
 namespace PanelBridge {
 
@@ -136,12 +143,13 @@ namespace PanelBridge {
      * Equivalent to the BridgeExportListener receiving address/value from DCS-BIOS.
      * Calls CANProtocol::sendBatched(CAN_ID_CTRL_BCAST, ...) with the given pair.
      *
-     * @param address  DCS-BIOS export address (0x8000–0x86FF for cockpit outputs).
+     * @param address  DCS-BIOS export address — any address the export stream carries (#295);
+     *                 0x0000 is dropped (the CAN empty-slot sentinel).
      * @param value    16-bit export value.
      */
     void testHandleExport(uint16_t address, uint16_t value);
 
-#ifdef PANELBRIDGE_NODE_STATUS
+#if PANELBRIDGE_NODE_STATUS
     /**
      * @brief Cache a heartbeat and mark a node alive (bypassing CAN) (#86).
      *

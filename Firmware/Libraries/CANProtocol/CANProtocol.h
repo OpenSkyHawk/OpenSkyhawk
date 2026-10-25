@@ -13,7 +13,6 @@
  * Dependency: STM32Board::begin() must be called before CANProtocol::start().
  * CANProtocol owns CAN bus operation; STM32Board owns peripheral hardware init.
  *
- * @version 0.3.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -105,6 +104,22 @@ struct __attribute__((packed)) TelemPayload {
 };
 static_assert(sizeof(TelemPayload) == 8, "TelemPayload must fill one classic CAN frame");
 
+/**
+ * @brief 8-byte payload carried by READY_n — the node's boot announcement (#295).
+ *
+ * Sent once per boot, after the boot EVT burst, so every reflash, reset or power cycle announces
+ * the firmware the node now runs. PanelBridge caches the version per node and reports it in
+ * `_NODE_STATUS` (v4). Firmware older than this payload sends READY_n empty (DLC 0): the bridge
+ * then reports the version as not reported (0.0.0).
+ */
+struct __attribute__((packed)) ReadyPayload {
+    uint8_t fwMajor;  ///< 0: firmware release version (FirmwareVersion.h)
+    uint8_t fwMinor;  ///< 1
+    uint8_t fwPatch;  ///< 2
+    uint8_t rsvd[5];  ///< 3-7: reserved, transmit 0
+};
+static_assert(sizeof(ReadyPayload) == 8, "ReadyPayload must fill one classic CAN frame");
+
 /** @brief CAN bus health states. Reported to STM32Board via onStatusChange(). */
 enum class CanStatus {
     STARTING,   ///< CAN peripheral configured, not yet started
@@ -161,6 +176,10 @@ constexpr uint32_t canIdEcho(uint8_t n)  { return 0x300 + n; }
 /** @brief Boot-complete READY frame ID for node n. Range 0x401-0x43F. */
 constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }
 
+// Reserved, not yet assigned (#295): 0x740-0x7BF for a future boot/update frame family —
+// BOOT_CMD_n = 0x740+n (bridge → node n), BOOT_RSP_n = 0x780+n (node n → bridge). The lowest
+// priority on the bus, so update traffic never delays a control. Don't allocate it to anything else.
+
 // ── controlId namespace ───────────────────────────────────────────────────────
 // Payload controlIds live inside ControlPacket data bytes. They are intentionally
 // separate from the 11-bit CAN arbitration IDs above.
@@ -191,6 +210,11 @@ using CanRxCallback      = void(*)(uint32_t canId, const uint8_t* data, uint8_t 
 using CanSyncReqCallback = void(*)();
 
 // ── Runtime API (STM32 only) ──────────────────────────────────────────────────
+//
+// Library-internal: the node libraries (PanelGroup, PanelBridge, PduNode) drive the bus through
+// these, not sketches. Not covered by the compatibility policy (#295) — except sendBatched(), which
+// a custom control class uses to send its value (with ControlPacket and the canIdEvt* functions
+// above, which are covered with the wire format).
 
 #ifdef ARDUINO_ARCH_STM32
 
@@ -378,6 +402,21 @@ namespace CANProtocol {
      */
     NodeHealthPayload makeNodeHealthPayload(uint8_t nodeId, NodeKind kind, int8_t dieTempC,
                                             NodeFaultCode fault = NodeFaultCode::NONE);
+
+    /**
+     * @brief Build the 8-byte READY_n payload: this build's firmware release version (#295).
+     * @return ReadyPayload with fwMajor/fwMinor/fwPatch from FirmwareVersion.h, reserved bytes 0.
+     */
+    ReadyPayload makeReadyPayload();
+
+    /**
+     * @brief Send this node's READY_n (`canIdReady(NODE_ID)`) carrying makeReadyPayload().
+     *
+     * Call once at the end of the node's setup(), after its boot EVT burst. PanelBridge marks the
+     * node alive, caches its version and broadcasts SYNC_REQ. Bounded retry like every other
+     * special frame (02-can-protocol.md).
+     */
+    void sendReady();
 
     /** @brief Return the cumulative TX queue drop count since startup. */
     uint32_t txDropCount();

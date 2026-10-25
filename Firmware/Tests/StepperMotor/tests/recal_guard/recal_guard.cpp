@@ -38,6 +38,7 @@ static StepperConfig cfg(uint16_t maxSeek) {
         /* deadband          */ 0,
         /* autoRecal         */ true,
         /* recalDebounceMs   */ 0,
+        /* rangeSteps        */ 0,   // 0 = stepsPerRev, as before the #295 default (945)
     };
     return c;
 }

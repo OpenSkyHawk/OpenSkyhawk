@@ -83,6 +83,11 @@ Out of scope, deliberately: response curves and axis inversion (both belong in t
 firmware curve would stack with DCS's per-aircraft curves), and boot-time centre auto-zero (the
 stick may not be at rest at power-on, and not every axis has a rest position).
 
+**Not covered by the v1.0 compatibility policy (#295).** The stored blob survives a normal reflash,
+but its layout (`CAL_VERSION`) — and the EEPROM-emulation sector, whose position comes from the
+RP2040 core — may change in any release, and every axis then reads uncalibrated. The client keeps a
+copy per board serial and offers to restore it (same PC); otherwise, recalibrate.
+
 ---
 
 ## HIDButton

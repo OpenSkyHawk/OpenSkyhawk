@@ -2,7 +2,6 @@
  * @file AngleSensorInput.h
  * @brief Magnetic angle sensor as an absolute knob / axis, for OpenSkyhawk PanelGroup nodes.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -12,6 +11,24 @@
 #include <Inputs/AnalogInput/AnalogInput.h>  // family base (InputBase, PinRef via PanelGroup.h)
 
 namespace OpenSkyhawk {
+
+/**
+ * @brief Tuning for an AngleSensorInput — the AnalogConfig fields that still mean something once
+ *        the raw window comes from the centre and travel (#295). Set by name:
+ *        `{ .hysteresis = 512 }`. Fields are only ever appended, each with a default.
+ *
+ * There is no reverse here: flip direction with the sensor's DIR pin.
+ */
+struct AngleConfig {
+    /// Output counts of movement before a new value is emitted. HYSTERESIS_AUTO picks by route,
+    /// like AnalogInput: DCS_HYSTERESIS for DCSIN_*, HID_HYSTERESIS for CTRL_*.
+    uint16_t hysteresis = AnalogConfig::HYSTERESIS_AUTO;
+    /// EWMA smoothing strength: α = 1/2^ewmaShift (capped to AnalogConfig::MAX_EWMA_SHIFT).
+    uint8_t  ewmaShift  = AnalogConfig::DEFAULT_EWMA_SHIFT;
+    /// Min interval between ADC reads, ms. Per instance; an ADS1115 PinRef blocks ~8 ms per
+    /// conversion regardless.
+    uint16_t pollMs     = AnalogConfig::DEFAULT_POLL_MS;
+};
 
 /**
  * @brief Magnetic angle sensor (AS5600 / MT6701) as an absolute knob or axis.
@@ -61,11 +78,10 @@ public:
      *                   turn, because the ends of a full turn are one sensor angle. The wrap
      *                   point sits opposite centerDeg, so the closer travel comes to 360° the
      *                   nearer that break sits to the ends of travel.
-     * @param pollMs     min interval between ADC reads, ms (default DEFAULT_POLL_MS). Per
-     *                   instance; an ADS1115 PinRef blocks ~8 ms per conversion regardless.
+     * @param cfg        tuning — hysteresis, smoothing, poll rate; set only what differs.
      */
     AngleSensorInput(uint16_t controlId, PinRef pin, float centerDeg, float travelDeg,
-                     uint16_t pollMs = DEFAULT_POLL_MS);
+                     const AngleConfig& cfg = {});
 
 protected:
     /** @brief The base's reading, re-centred so centerDeg sits at mid-scale (0°/360° wraps). */

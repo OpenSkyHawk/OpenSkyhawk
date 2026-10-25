@@ -3,7 +3,6 @@
  * @brief Quadrature encoder with a momentum filter and a fast-detent step — DcsBios
  *        RotaryAcceleratedEncoder parity (D16, #287).
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

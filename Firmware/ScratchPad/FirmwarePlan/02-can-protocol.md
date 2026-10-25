@@ -44,6 +44,10 @@ struct ControlPacket {
 };
 ```
 
+**Byte order: both fields little-endian on the wire** — `controlId` low byte first, then its high
+byte, then `value` the same way (#295). It is the packed struct's native layout on the STM32 and
+the RP2040, and the only byte order a third-party node or a CAN capture should assume.
+
 `ControlPacketPair` packs two packets into one 8-byte CAN frame:
 
 ```cpp
@@ -53,8 +57,16 @@ struct ControlPacketPair {
 };
 ```
 
-`ControlPacketPair` is used for `CTRL_BCAST` and `EVT_n` frames only. If only one packet is
-ready, slot B uses `controlId = 0x0000` as the null sentinel and receivers ignore it.
+| Byte(s) | Field | Encoding |
+|---------|-------|----------|
+| 0-1 | `a.controlId` | uint16_t little-endian |
+| 2-3 | `a.value` | uint16_t little-endian |
+| 4-5 | `b.controlId` | uint16_t little-endian; `0x0000` = empty slot |
+| 6-7 | `b.value` | uint16_t little-endian |
+
+`ControlPacketPair` is used for `CTRL_BCAST` and the four event frames (`EVT_n`, `EVT_REL_n`,
+`EVT_DIR_n`, `EVT_ACTION_n`) only. If only one packet is ready, slot B uses `controlId = 0x0000`
+as the null sentinel and receivers ignore it.
 
 Special/control/diagnostic frames (`SYNC_REQ`, `READY_n`, `TEST_SEQ`, `ECHO_n`, `HB_n`) use
 the frame-specific DLC and payload listed in the frame table. A special frame may carry a
@@ -82,7 +94,7 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 
 | Frame | CAN ID | Direction | DLC | Purpose |
 |-------|--------|-----------|-----|---------|
-| `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels |
+| `CTRL_BCAST` | `0x010` | PanelBridge → All | 8 | Broadcast `ControlPacketPair` to all panels — the whole DCS-BIOS export stream (`controlId` = export address, `0x0002`–`0xFFFE`; #295, D24) |
 | `TEST_SEQ` | `0x011` | PanelBridge → All | 8 | CAN throughput / RTT test — 8-byte payload echoed back unchanged by sub-nodes |
 | `SYNC_REQ` | `0x012` | PanelBridge → All | 0 | Request all nodes to re-poll inputs and emit EVTs. Sent on cold boot, on `model_time` backward, in response to `READY`, and when a node transitions from dead/unseen to alive. |
 | `HB_0` | `0x100` | PanelBridge → All | 8 | Master liveness beacon every 500 ms; every other node runs a master-loss watchdog on it (#93) |
@@ -91,13 +103,11 @@ constexpr uint32_t canIdReady(uint8_t n) { return 0x400 + n; }  // 0x401–0x43F
 | `TELEM_n` | `0x180+n` | Node_n → PanelBridge | 8 | Paged node telemetry (`TelemPayload`) — one frame per second plus flag-change edges; first user the PDU (#216) — see TELEM payload below |
 | `EVT_n` | `0x200+n` | Node_n → PanelBridge | 8 | Absolute input events (switches, selectors, pots) — `ControlPacketPair`, value `%u` → `set_state` |
 | `ECHO_n` | `0x300+n` | Node_n → PanelBridge | 8 | TEST_SEQ echo — 8-byte payload mirrored unchanged |
-| `READY_n` | `0x400+n` | Node_n → PanelBridge | 0 | One-time boot signal after initial input poll and EVT burst are complete |
+| `READY_n` | `0x400+n` | Node_n → PanelBridge | 8 | One-time boot signal after initial input poll and EVT burst are complete; carries the node's firmware version (`ReadyPayload`, #295) — see READY payload below |
 | `EVT_REL_n` | `0x500+n` | Node_n → PanelBridge | 8 | Relative encoder events (`RotaryEncoder` REL) — `ControlPacketPair`, signed `%+d` → `variable_step` (#147) |
 | `EVT_DIR_n` | `0x600+n` | Node_n → PanelBridge | 8 | Directional encoder events (`RotaryEncoder` DIR) — `ControlPacketPair`, `±1` → `INC`/`DEC` `fixed_step` (#147) |
 | `EVT_ACTION_n` | `0x700+n` | Node_n → PanelBridge | 8 | Action events (`ActionButton`) — `ControlPacketPair`, selector `0` → `TOGGLE` `action` (#116) |
-
-> **Migration note (Phase 1):** existing `CAN_ID_HB_1 = 0x100` changes to `canIdHb(1) = 0x101`.
-> Update any diagnostic tools, captured CAN logs, or test fixtures that reference the old value.
+| *reserved* | `0x740`–`0x7BF` | — | — | Future boot/update family (#295): `BOOT_CMD_n` = `0x740+n` (bridge → node n), `BOOT_RSP_n` = `0x780+n` (node n → bridge). Lowest priority on the bus, so update traffic never delays a control. Not assigned yet; nothing else may claim it. |
 
 ---
 
@@ -155,7 +165,8 @@ health that PanelBridge reports to the host. No new CAN frame is added — Panel
 last `HB_n` per node and re-serializes it into a DCS-BIOS `_NODE_STATUS` message
 (see `04-dcs-bios-integration.md` and `06-panelbridge-api.md`). As of `_NODE_STATUS` proto **v2**
 the message also carries the node's cached `dieTempC` + health/fault fields from `HEALTH_n` (below);
-proto **v3** (#344) adds the node's board kind and the bridge's own node-0 row.
+proto **v3** (#344) adds the node's board kind and the bridge's own node-0 row; proto **v4** (#295)
+adds the node's firmware version from its `READY_n` (below).
 
 ---
 
@@ -202,7 +213,7 @@ kind of its own. Firmware older than #344 sent `0` in this byte (it was reserved
 as unknown — the client never adopts a node on it.
 
 **Default-on**, compile out with `-DNODE_HEALTH_TELEM=0`. PanelBridge caches each node's fields
-(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v3, #344), plus
+(under `PANELBRIDGE_NODE_STATUS`) and forwards all of them in `_NODE_STATUS` (proto v4, #295), plus
 its own `HEALTH_0` as the node-0 row. A `HEALTH_n` frame never changes node liveness (`HB_n` owns
 that); the only delta it triggers is a `_NODE_STATUS` push when the node's cached `nodeKind`
 changes (see `04-dcs-bios-integration.md`).
@@ -277,10 +288,38 @@ are `FaultSource`s, so their worst condition also reaches `HEALTH_n.faultId` (`F
 
 ---
 
+## Ready Payload — READY_n (#295)
+
+`READY_n` (`0x400+n`) is sent once per boot, at the end of the node's `setup()` after its boot EVT
+burst (`CANProtocol::sendReady()`), so every reflash, reset or power cycle announces the firmware
+the node now runs:
+
+```cpp
+struct ReadyPayload {          // 8 bytes, DLC 8
+    uint8_t fwMajor;           // 0: firmware release version (FirmwareVersion.h, OPENSKYHAWK_FW_*)
+    uint8_t fwMinor;           // 1
+    uint8_t fwPatch;           // 2
+    uint8_t rsvd[5];           // 3-7: reserved, transmit 0
+};
+```
+
+PanelBridge caches the version per node (under `PANELBRIDGE_NODE_STATUS`), keeps it when the node
+times out, and reports it in `_NODE_STATUS` v4 (`04-dcs-bios-integration.md`). A READY from a node
+that is already alive — it rebooted inside the 3 s heartbeat timeout, e.g. a quick reflash — pushes
+a `_NODE_STATUS` delta when the version changed. Firmware older than #295 sends READY with DLC 0:
+the bridge reads that as **not reported** (0.0.0). The bridge's only other use of READY — mark the
+node alive, broadcast `SYNC_REQ` — is unchanged and ignores the payload.
+
+**Known gap (accepted):** READY is one frame per boot. If the bridge boots after a node, it never
+sees that node's READY, and the node reads 0.0.0 until it next reboots. A re-announce on the
+bridge's boot `SYNC_REQ` can be added later without a wire break (`SYNC_REQ` is empty today).
+
+---
+
 ## ControlPacketPair Frame Payload
 
-`CTRL_BCAST` and `EVT_n` frames carry exactly **8 bytes** — a `ControlPacketPair`.
-No other frame type is implicitly decoded as a pair:
+`CTRL_BCAST` and the four event frames carry exactly **8 bytes** — a `ControlPacketPair`
+(byte layout in § ControlPacket Wire Format). No other frame type is implicitly decoded as a pair:
 
 ```cpp
 // Payload = two ControlPackets. Slot B may be null.
@@ -315,7 +354,13 @@ void CANProtocol::flushBatched(uint32_t canId);                          // forc
 
 ### TEST_SEQ Payload Wire Layout
 
-`TEST_SEQ` carries exactly 8 payload bytes and `ECHO_n` mirrors those bytes unchanged:
+`TEST_SEQ` carries exactly 8 payload bytes and `ECHO_n` mirrors those bytes unchanged. It is a bench
+diagnostic: PanelBridge sends it when `T` is typed on its DiagSerial and prints the round-trip time.
+
+**What the freeze covers (#295):** the two IDs, and every node mirroring all 8 bytes unchanged on
+`ECHO_n` — a 1.x node must keep answering a 1.0 bridge's test. The layout below is
+**bridge-internal**: only PanelBridge writes and reads it (nodes never look inside), so it may
+change in a minor release.
 
 | Byte(s) | Field | Encoding |
 |---------|-------|----------|
@@ -327,10 +372,32 @@ Implementations must serialize this into a `uint8_t[8]`, or use a packed struct 
 `static_assert(sizeof(TestSeqPayload) == 8)`. Do not transmit `sizeof(struct)` from an
 unpacked C++ struct, because natural alignment can pad this layout beyond 8 bytes.
 
-> **Prototype note:** the existing `PanelGroup.cpp` sends 8 bytes — `ControlPacket` followed
-> by a 4-byte `millis()` timestamp. The timestamp was added for prototype RTT measurement only.
-> Production firmware uses the full 8 bytes as `ControlPacketPair`; bytes 4–7 are no longer
-> a timestamp.
+---
+
+## Compatibility — how the wire grows (#295, D22)
+
+From v1.0 the frame IDs and payloads are frozen: a change that breaks an existing reader is a new
+**major** version. Within a major, the wire only grows, and every reader tolerates growth:
+
+- **Frames never grow and fields never move.** A classic CAN frame carries 8 bytes, and the
+  STM32F103's bxCAN has no CAN FD. An existing field is never moved, resized or reinterpreted —
+  that is a major.
+- **Reserved bits and bytes:** transmit 0, ignore on receive. A later minor may give one a
+  meaning; an older reader keeps ignoring it.
+- **Unknown values are kept, not rejected.** A `NodeKind`, `NodeFaultCode`, `TelemPage` or flag bit
+  a reader doesn't know is carried as "unknown (0xNN)". New values are minor.
+- **Where new data goes** (each a minor):
+  - generic node health → `HEALTH_n`'s reserved bytes (6–7);
+  - node-specific telemetry → a new `TelemPage` on `TELEM_n` (append-only, forwarded unread);
+  - identity or anything else → `READY_n`'s reserved bytes (3–7), or a new frame family in a
+    free ID range (`0x013`–`0x0FF`, `0x1C0`–`0x1FF`, `0x240`–`0x2FF`, `0x340`–`0x3FF`,
+    `0x440`–`0x4FF`, `0x540`–`0x5FF`, `0x640`–`0x6FF`, `0x7C0`–`0x7FF`; `0x740`–`0x7BF` is
+    reserved for boot/update, see the frame table). Its position in the map sets its arbitration
+    priority (lower ID wins), which is frozen with it.
+- `TELEM_n` never carries generic health, and `HEALTH_n` never carries node-specific telemetry.
+
+`TEST_SEQ` / `ECHO_n` are covered only as far as other boards rely on them: the two IDs, and every
+node mirroring the 8 bytes unchanged. The payload contents are bridge-internal (above).
 
 ---
 

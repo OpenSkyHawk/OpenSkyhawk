@@ -299,9 +299,10 @@ void setup() {
     // Step 7 — flush trailing batch
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
 
-    // Step 8 — READY frame. The heartbeat/HEALTH timers arm on the first serviceNodeStatus() call
-    // in loop(); the master-loss watchdog stays disarmed until the first HB_0 is seen.
-    CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+    // Step 8 — READY frame, carrying this build's firmware version (#295). The heartbeat/HEALTH
+    // timers arm on the first serviceNodeStatus() call in loop(); the master-loss watchdog stays
+    // disarmed until the first HB_0 is seen.
+    CANProtocol::sendReady();
 }
 
 // ── PanelGroup::loop ──────────────────────────────────────────────────────────

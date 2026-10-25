@@ -1,12 +1,12 @@
 // PanelBridge — output_submission test
 //
 // Purpose: verify that handleDcsBiosExport() submits ControlPackets to
-// CANProtocol::sendBatched(CAN_ID_CTRL_BCAST) for in-range DCS-BIOS addresses.
+// CANProtocol::sendBatched(CAN_ID_CTRL_BCAST) for DCS-BIOS export addresses. The bridge forwards
+// the whole export stream (#295) — any aircraft, CommonData, metadata — except 0x0000, the
+// ControlPacket empty-slot sentinel.
 //
 // NOTE: testHandleExport() calls handleDcsBiosExport() directly, bypassing
-// BridgeExportListener. The listener's registration and address filter (0x8000-0x86FF)
-// are NOT exercised by this test. Do not add out-of-range address cases here —
-// they would be submitted to sendBatched regardless of address value.
+// BridgeExportListener, so the listener's registration (0x0002-0xFFFE) is NOT exercised here.
 //
 // Hardware: single STM32F103CB board.
 //   - DiagSerial (USART1 PA9/PA10) at 115200 baud
@@ -37,9 +37,11 @@ struct ExportCase {
 };
 
 static const ExportCase CASES[] = {
-    { 0x8001, 0x0001 },  // first valid cockpit output address
-    { 0x8040, 0x4000 },  // arbitrary mid-range address
-    { 0x86FF, 0xFFFF },  // last valid DCS output address — boundary check
+    { 0x0402, 0x0001 },  // CommonData — forwarded like any aircraft output
+    { 0x8400, 0x4000 },  // A-4E-C (RPM)
+    { 0x8000, 0x1234 },  // AH-64D's block — forwarded whatever aircraft is flying
+    { 0xFFFE, 0xFFFF },  // MetadataEnd — the last address the stream carries
+    { 0x0000, 0x0042 },  // the empty-slot sentinel — dropped, nothing submitted
 };
 static const uint8_t CASE_COUNT = sizeof(CASES) / sizeof(CASES[0]);
 

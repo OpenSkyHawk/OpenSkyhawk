@@ -19,7 +19,6 @@
  * seeks a debounced digital home sensor — a micro switch, reed, hall, or opto-interrupter
  * all read identically through one PinRef + an active-level flag.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
@@ -65,72 +64,62 @@ struct HomeSensor {
     uint16_t maxSeekSteps;  ///< abort the seek after this many steps (mis-wired safety)
 };
 
-/**
- * @brief Full per-instance stepper configuration. Authored per sketch (panel wiring).
- * @note @c accel must point at storage that outlives the StepperMotor (e.g. a static
- * const table). @c homePosition / @c parkPosition / @c minPos / @c maxPos are in steps;
- * a sketch may compute them from degrees as @c round(deg*stepsPerRev/360).
- */
-struct StepperConfig {
-    uint16_t          stepsPerRev;       ///< steps per full revolution (calibrate empirically)
-    StepPattern       pattern;           ///< coil drive sequence
-    const AccelPoint* accel;             ///< acceleration curve (not owned)
-    uint8_t           accelN;            ///< entries in accel[]
-    HomeMode          home;              ///< homing strategy
-    bool              homeSeekClockwise; ///< direction to seek the home reference
-    HomeSensor        sensor;            ///< SENSOR-mode params (ignored for STALL)
-    int16_t           homePosition;      ///< step index assigned at the home reference
-    int16_t           parkPosition;      ///< step to rest at after homing
-    int16_t           minPos;            ///< lower travel clamp for moveTo (ignored if wrap)
-    int16_t           maxPos;            ///< upper travel clamp for moveTo (ignored if wrap)
-    bool              wrap;              ///< continuous-rotation gauge (shortest-path, no clamp)
-    uint8_t           deadband;          ///< ignore target changes within this many steps
-    bool              autoRecal;         ///< re-zero to homePosition when the sensor next asserts
-    uint32_t          recalDebounceMs;   ///< minimum interval between auto-recals
-    // Appended for back-compat: existing positional initialisers omit these → value-initialised to
-    // 0 → legacy behaviour (STALL home drives stepsPerRev at the library default rate).
-    uint16_t          rangeSteps;        ///< mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 0 → stepsPerRev
-    uint16_t          homeStepUs;        ///< homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)
-};
-
 /** @brief Default SwitecX25 acceleration table; fits the X27/VID-29/BKA-30 air-core family. */
 extern const AccelPoint kSwitecDefaultAccel[5];
 constexpr uint8_t kSwitecDefaultAccelN = 5;
 
 /**
- * @brief Build a StepperConfig with the X27 air-core motor defaults filled in.
+ * @brief Full per-instance stepper configuration. Authored per sketch (panel wiring).
  *
- * Bakes the motor-invariant fields — `stepsPerRev`, `pattern` (SWITEC_6STATE), and the default
- * SwitecX25 accel table — so a sketch specifies only the per-gauge wiring/travel. Shared by every
- * X27 / VID-29 / BKA-30 gauge; override any default for a specific panel.
+ * Every field has a default — the X27 / VID-29 / BKA-30 air-core family's — so a sketch sets only
+ * what differs, by name (#295):
+ * @code
+ * const OpenSkyhawk::StepperConfig OIL_MOTOR = { .maxPos = 960, .rangeSteps = 960 };  // 320° BKA-30
+ * @endcode
+ * Fields are only ever appended, each with a default, so a new setting never breaks a sketch; a
+ * positional `{…}` initialiser that stops early gets the defaults for the rest.
  *
- * @param homePosition       step index at the home reference.
- * @param parkPosition       rest position after homing.
- * @param minPos             lower moveTo travel clamp (ignored if wrap).
- * @param maxPos             upper moveTo travel clamp (ignored if wrap).
- * @param home               homing strategy. Default STALL.
- * @param homeSeekClockwise  seek direction. Default false.
- * @param sensor             home-sensor params (SENSOR mode). Default active-low, 5 ms, 2000 steps.
- * @param wrap               continuous-rotation gauge. Default false.
- * @param deadband           anti-jitter band, steps. Default 1.
- * @param autoRecal          re-zero on sensor crossing. Default false.
- * @param recalDebounceMs    minimum interval between auto-recals. Default 0.
- * @param stepsPerRev        full revolution in steps. Default 1080 (X27/BKA datasheet, 1/3°/step).
- * @param rangeSteps         mechanical stop-to-stop travel in steps = STALL home distance. Default 945
- *                           (X27.589 ~315°); set per gauge (e.g. 960 for a 320° BKA-30).
- * @param homeStepUs         homing seek rate µs/step. Default 0 → library default (2000 ≈ 500 steps/s).
- *                           Keep under the motor start-stop rate (~774 steps/s) or the seek slips.
+ * @note @c accel must point at storage that outlives the StepperMotor (e.g. a static
+ * const table). @c homePosition / @c parkPosition / @c minPos / @c maxPos are in steps;
+ * a sketch may compute them from degrees as @c round(deg*stepsPerRev/360).
+ */
+struct StepperConfig {
+    uint16_t          stepsPerRev       = 1080;  ///< steps per full revolution (X27/BKA datasheet, 1/3°/step; calibrate empirically)
+    StepPattern       pattern           = StepPattern::SWITEC_6STATE;  ///< coil drive sequence
+    const AccelPoint* accel             = kSwitecDefaultAccel;   ///< acceleration curve (not owned)
+    uint8_t           accelN            = kSwitecDefaultAccelN;  ///< entries in accel[]
+    HomeMode          home              = HomeMode::STALL;       ///< homing strategy
+    bool              homeSeekClockwise = false;  ///< direction to seek the home reference
+    HomeSensor        sensor            = { true, 5, 2000 };  ///< SENSOR-mode params (ignored for STALL)
+    int16_t           homePosition      = 0;      ///< step index assigned at the home reference
+    int16_t           parkPosition      = 0;      ///< step to rest at after homing
+    int16_t           minPos            = 0;      ///< lower travel clamp for moveTo (ignored if wrap)
+    int16_t           maxPos            = 945;    ///< upper travel clamp for moveTo (ignored if wrap); default = rangeSteps
+    bool              wrap              = false;  ///< continuous-rotation gauge (shortest-path, no clamp)
+    uint8_t           deadband          = 1;      ///< ignore target changes within this many steps
+    bool              autoRecal         = false;  ///< re-zero to homePosition when the sensor next asserts
+    uint32_t          recalDebounceMs   = 0;      ///< minimum interval between auto-recals
+    uint16_t          rangeSteps        = 945;    ///< mechanical stop-to-stop travel in steps; STALL home drives this (+margin). 945 = X27.589 ~315°; 0 → stepsPerRev
+    uint16_t          homeStepUs        = 0;      ///< homing seek rate µs/step; MUST stay under the motor start-stop rate or the seek slips. 0 → library default (2000)
+};
+
+/**
+ * @brief Build a StepperConfig for an X27-family gauge from its travel.
+ *
+ * Every other field keeps the StepperConfig default (1080 steps/rev, SWITEC_6STATE, the SwitecX25
+ * accel table, 945-step stop-to-stop range, deadband 1, …). To change one of those, write the
+ * config by name instead: `{ .homePosition = 0, .maxPos = 960, .rangeSteps = 960 }`.
+ *
+ * @param homePosition  step index at the home reference.
+ * @param parkPosition  rest position after homing.
+ * @param minPos        lower moveTo travel clamp (ignored if wrap).
+ * @param maxPos        upper moveTo travel clamp (ignored if wrap).
+ * @param home          homing strategy. Default STALL.
  * @return Populated StepperConfig.
  */
 StepperConfig makeX27Config(int16_t homePosition, int16_t parkPosition,
                             int16_t minPos, int16_t maxPos,
-                            HomeMode home = HomeMode::STALL,
-                            bool homeSeekClockwise = false,
-                            HomeSensor sensor = { true, 5, 2000 },
-                            bool wrap = false, uint8_t deadband = 1,
-                            bool autoRecal = false, uint32_t recalDebounceMs = 0,
-                            uint16_t stepsPerRev = 1080, uint16_t rangeSteps = 945,
-                            uint16_t homeStepUs = 0);
+                            HomeMode home = HomeMode::STALL);
 
 /**
  * @brief Non-blocking instrument-gauge stepper driven through PinRef coils.

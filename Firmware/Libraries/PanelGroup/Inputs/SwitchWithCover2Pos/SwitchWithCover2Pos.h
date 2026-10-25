@@ -2,7 +2,6 @@
  * @file SwitchWithCover2Pos.h
  * @brief Guarded 2-position switch — one pin drives the sim's cover and the switch under it.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

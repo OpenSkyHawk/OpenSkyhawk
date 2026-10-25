@@ -1,13 +1,14 @@
-// PanelBridge — node_status test (#86, v3 #344)
+// PanelBridge — node_status test (#86, v3 #344, v4 #295)
 //
 // Purpose: verify node-status reporting. PanelBridge surfaces connected nodes + health to the
-// host as `_NODE_STATUS` DCS-BIOS command messages (proto v3, 28 hex), emitted on:
+// host as `_NODE_STATUS` DCS-BIOS command messages (proto v4, 34 hex), emitted on:
 //   - node alive (dead/unseen → alive transition),
 //   - a node's board kind changing (its first HEALTH_n after the alive delta) (#344),
+//   - a node's firmware version changing (a READY_n while it is alive — a reflash) (#295),
 //   - host request (full roster: the bridge's own node-0 row first), and
-//   - node removal (heartbeat timeout, present=00, cached health retained).
+//   - node removal (heartbeat timeout, present=00, cached health + version retained).
 // Exercises the PANELBRIDGE_NODE_STATUS path via PANELBRIDGE_TEST hooks — no CAN
-// bus or second board required (heartbeats are injected directly).
+// bus or second board required (heartbeats, HEALTH and READY are injected directly).
 //
 // Hardware: single STM32F103CB board.
 //   - Serial (UART2 PA2/PA3) → USB-UART adapter → PC terminal @ 250000 baud
@@ -19,42 +20,49 @@
 //   2. Open USB-UART @ 250000 (the _NODE_STATUS messages) and DiagSerial @ 115200 (phase log).
 //
 // Also at boot (before the bridge's first HEALTH_0, so its row reads not-yet-seen 80 / kind 00):
-//   _NODE_STATUS 0001ffuuuu0000eeee8000000000
+//   _NODE_STATUS 0001ffuuuu0000eeee8000000000vvvvvv
 //   _NODE_STATUS_END 1
 //
-// Expected on USB-UART (250000), repeating each cycle. Node 1 is fed a DEGRADED HEALTH frame
-// before it goes alive (42 °C → dieTempC 2A; hFlags 02 DEGRADED; faultMask 00 reserved;
-// faultId 01 I2C_PERIPHERAL; nodeKind 01 PANEL_GROUP) — this proves the #163 degraded fields and
-// the #344 kind forward through the cache into _NODE_STATUS. Node 2 goes alive with no HEALTH
-// (temp 80, kind 00 — not yet seen), then gets its first HEALTH (35 °C, kind 02 PDU), which pushes
-// one delta:
+// Expected on USB-UART (250000), repeating each cycle n = 0, 1, 2, … Node 1 is fed a DEGRADED
+// HEALTH frame before it goes alive (42 °C → dieTempC 2A; hFlags 02 DEGRADED; faultMask 00
+// reserved; faultId 01 I2C_PERIPHERAL; nodeKind 01 PANEL_GROUP) — this proves the #163 degraded
+// fields and the #344 kind forward through the cache into _NODE_STATUS. Node 2 goes alive with no
+// HEALTH (temp 80, kind 00 — not yet seen), then gets its first HEALTH (35 °C, kind 02 PDU), which
+// pushes one delta. Node 1 announces firmware 1.2.n in a READY while alive (a reflash) — one delta;
+// node 2 never sends READY, so its version stays 000000 (not reported). pppppp = node 1's version
+// from the previous cycle (000000 on the first, kept across the timeout), nn = n in hex:
 //   Phase A — two nodes go alive (bare delta emits, no terminator):
-//     _NODE_STATUS 010100000A001200002A02000101
-//     _NODE_STATUS 0201020014003400028000000000
-//   Phase B — node 2's first HEALTH (kind 00 → 02 delta), then host request (full roster,
-//   node-0 row first, terminated; count includes node 0):
-//     _NODE_STATUS 0201020014003400022300000002
-//     _NODE_STATUS 0001ffuuuu0000eeeett00000003
-//     _NODE_STATUS 010100000A001200002A02000101
-//     _NODE_STATUS 0201020014003400022300000002
+//     _NODE_STATUS 010100000A001200002A02000101pppppp
+//     _NODE_STATUS 0201020014003400028000000000000000
+//   Phase B — node 1's READY (version → 1.2.n delta), node 2's first HEALTH (kind 00 → 02 delta),
+//   then host request (full roster, node-0 row first, terminated; count includes node 0):
+//     _NODE_STATUS 010100000A001200002A020001010102nn
+//     _NODE_STATUS 0201020014003400022300000002000000
+//     _NODE_STATUS 0001ffuuuu0000eeeett00000003vvvvvv
+//     _NODE_STATUS 010100000A001200002A020001010102nn
+//     _NODE_STATUS 0201020014003400022300000002000000
 //     _NODE_STATUS_END 3
 //   Phase C — heartbeat timeout (~3 s after Phase A) removes both (present=00 deltas,
-//   cached health retained, incl. node 1's degraded fields and both kinds):
-//     _NODE_STATUS 010000000A001200002A02000101
-//     _NODE_STATUS 0200020014003400022300000002
+//   cached health and version retained, incl. node 1's degraded fields and both kinds):
+//     _NODE_STATUS 010000000A001200002A020001010102nn
+//     _NODE_STATUS 0200020014003400022300000002000000
 //
 // hex = nodeId(2) present(2) flags(2) uptime(4) rxCount(4) esr(4) dieTempC(2) hFlags(2)
-//       faultMask(2) faultId(2) nodeKind(2); each field a fixed-width hex number (MSN first).
+//       faultMask(2) faultId(2) nodeKind(2) fwMajor(2) fwMinor(2) fwPatch(2); each field a
+//       fixed-width hex number (MSN first).
 // dieTempC int8 two's-complement (80 = unseen). Node-0 row: ff = the bridge's own CAN flags,
-// uuuu = its uptime in s, eeee = its ESR, tt = its die temp, kind 03 BRIDGE — live values.
+// uuuu = its uptime in s, eeee = its ESR, tt = its die temp, kind 03 BRIDGE — live values;
+// vvvvvv = this build's version (FirmwareVersion.h; 000100 for 0.1.0).
 
 #define DCSBIOS_DEFAULT_SERIAL
 #include <DcsBios.h>
 #include <PanelBridge.h>
 #include <STM32Board.h>
 #include <NodeStatus.h>  // NodeHealthFlag / NodeFaultCode / NodeKind for the HEALTH injections (#163/#344)
+#include <CANProtocol.h> // canIdReady + ReadyPayload for the READY injection (#295)
 
 static uint8_t  _phase  = 0;
+static uint8_t  _cycle  = 0;  // node 1 announces firmware 1.2.<cycle>, so every cycle's READY is a change
 static uint32_t _lastMs = 0;
 
 void setup() {
@@ -89,7 +97,12 @@ void loop() {
         PanelBridge::testFeedHeartbeat(2, 0x02, 20, 52, 0x0002);  // node 2: no HEALTH → temp 80
         _phase = 1;
         break;
-    case 1:  // Phase B — host roster request
+    case 1:  // Phase B — node 1 reflashed, node 2's first HEALTH, host roster request
+    {
+        d.print(F("[TEST] B: node 1 READY fw 1.2.")); d.print(_cycle); d.println(F(" -> expect 1 delta"));
+        ReadyPayload r = {};
+        r.fwMajor = 1; r.fwMinor = 2; r.fwPatch = _cycle;
+        PanelBridge::testFeedCanFrame(canIdReady(1), reinterpret_cast<const uint8_t*>(&r), sizeof(r));
         d.println(F("[TEST] B: node 2 first HEALTH (kind PDU) -> expect 1 delta"));
         PanelBridge::testFeedHealth(2, 35, 0, 0, 0, (uint8_t)NodeKind::PDU);
         d.println(F("[TEST] B: request -> expect node-0 row + 2x _NODE_STATUS + _NODE_STATUS_END 3"));
@@ -97,8 +110,10 @@ void loop() {
         d.println(F("[TEST] C: stop feeding -> ~3 s timeout removes both (present=00)"));
         _phase = 2;
         break;
+    }
     default: // idle a cycle so the real 3 s timeout fires, then repeat
         d.println(F("[TEST] --- cycle ---"));
+        _cycle++;
         _phase = 0;
         break;
     }

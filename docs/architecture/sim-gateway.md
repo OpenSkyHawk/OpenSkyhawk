@@ -91,7 +91,7 @@ DCS-BIOS data, and health reporting keeps flowing while it is open.
 This "dumb relay" is also why **node-status reporting** ([#86](https://github.com/OpenSkyHawk/OpenSkyhawk/issues/86))
 needs no SimGateway change: PanelBridge reports connected PanelGroup nodes to the host over
 DCS-BIOS itself — `_NODE_STATUS` ASCII command messages downstream, and a roster request as a
-DCS-BIOS export write to reserved address `0x86FE` upstream. Both ride the existing streams and
+DCS-BIOS export write to reserved address `0xFF00` upstream (an address no aircraft module uses). Both ride the existing streams and
 transit SimGateway transparently; PanelBridge owns the feature.
 
 ## controlId routing logic

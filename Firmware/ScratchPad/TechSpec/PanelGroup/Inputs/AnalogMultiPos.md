@@ -59,6 +59,7 @@ static constexpr uint16_t ANALOG_NC = 0xFFFF;   // posVals[] sentinel — no det
 class AnalogMultiPos : public MultiPosInput {
 public:
     static constexpr uint16_t DEFAULT_DEADBAND = 1000;
+    static constexpr uint16_t NO_DEADBAND      = 0;     // named so it never reads as a null posVals (#295)
     static constexpr uint16_t POLL_MS          = 8;
 
     // Explicit ladder. posVals = N expected 16-bit ADC values (ANALOG_NC for a no-detent position).

@@ -15,7 +15,7 @@
 static constexpr uint16_t CTRL_ID = 0x567A;
 
 // ewmaShift = 20 → clamped to MAX_EWMA_SHIFT (15).
-OpenSkyhawk::AnalogInput gAna(CTRL_ID, PinRef(PA1), false, 0, 65535, 128, /*ewmaShift=*/20);
+OpenSkyhawk::AnalogInput gAna(CTRL_ID, PinRef(PA1), { .hysteresis = 128, .ewmaShift = 20 });
 
 void setup() {
     STM32Board::setDebug(true);

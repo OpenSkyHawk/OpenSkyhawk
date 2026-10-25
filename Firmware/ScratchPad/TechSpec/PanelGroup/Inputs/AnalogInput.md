@@ -26,8 +26,8 @@ Handles:
 - **hysteresis + near-rail** — emit only when the smoothed value moves more than `hysteresis` counts
   from the last sent value, or reaches a rail (0 / 65535) moving toward it (so endpoints are always
   reached and a settled pot is silent);
-- a **per-instance ADC read throttle** — `pollMs`, default `DEFAULT_POLL_MS` (8 ms), a constructor
-  parameter rather than a class constant, so two AnalogInputs on one node may read at different
+- a **per-instance ADC read throttle** — `pollMs`, default `AnalogConfig::DEFAULT_POLL_MS` (8 ms),
+  an `AnalogConfig` field rather than a class constant, so two AnalogInputs on one node may read at different
   rates (`forceReport()` bypasses it for the boot/SYNC baseline).
 
 Does **not** interpret `controlId`, drive a position index, or enable internal pull-ups.
@@ -67,28 +67,35 @@ CAN runs in **normal mode** so the node ACKs the PanelBridge. No jumpers or pot 
 ## Public API
 
 ```cpp
+// Tuning — every field defaulted; a sketch sets only what differs, by name (#295).
+// Namespace scope, not nested: a nested struct with default member initialisers can't be a
+// `= {}` default argument inside its enclosing class (GCC, CWG 1397).
+struct AnalogConfig {
+    static constexpr uint16_t HYSTERESIS_AUTO    = 0xFFFF; // pick by route at construction
+    static constexpr uint16_t DCS_HYSTERESIS     = 1024;   // DCSIN_*: no DCS-BIOS import flood
+    static constexpr uint16_t HID_HYSTERESIS     = 128;    // CTRL_*: the calibration-validated value
+    static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;      // α = 1/8
+    static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;     // scaled << shift must fit int32
+    static constexpr uint16_t DEFAULT_POLL_MS    = 8;      // min ms between ADC reads
+
+    bool     reverse    = false;            // minRaw → 0, maxRaw → 65535; true: inverted
+    uint16_t minRaw     = 0;                // raw value mapping to 0; below is clamped
+    uint16_t maxRaw     = 65535;            // raw value mapping to 65535; above is clamped
+    uint16_t hysteresis = HYSTERESIS_AUTO;  // output counts before a new value is emitted
+    uint8_t  ewmaShift  = DEFAULT_EWMA_SHIFT;  // α = 1/2^ewmaShift, capped to MAX_EWMA_SHIFT
+    uint16_t pollMs     = DEFAULT_POLL_MS;  // per instance; not clamped — 0 = every loop
+};
+
 class AnalogInput : public InputBase {
 public:
-    static constexpr uint16_t DEFAULT_HYSTERESIS = 128;  // counts on the 16-bit output
-    static constexpr uint8_t  DEFAULT_EWMA_SHIFT = 3;    // α = 1/8
-    static constexpr uint8_t  MAX_EWMA_SHIFT     = 15;   // scaled << shift must fit int32
-    static constexpr uint16_t DEFAULT_POLL_MS    = 8;    // min ms between ADC reads
-
     /**
-     * @param controlId   DCSIN_* or CTRL_* constant. Determines PanelBridge routing.
-     * @param pin         analog PinRef (STM32 ADC GPIO or ADS1115 channel).
-     * @param reverse     false (default): minRaw → 0, maxRaw → 65535. true: inverted.
-     * @param minRaw      raw value mapping to 0 (default 0); below is clamped.
-     * @param maxRaw      raw value mapping to 65535 (default 65535); above is clamped.
-     * @param hysteresis  output counts of movement before a new value is emitted (default 128).
-     * @param ewmaShift   EWMA strength α = 1/2^ewmaShift (default 3 → 1/8).
-     * @param pollMs      min interval between ADC reads, ms (default 8). Per instance, not per
-     *                    node. Not clamped — 0 = read every loop iteration.
+     * @param controlId  DCSIN_* or CTRL_* constant. Determines PanelBridge routing — and, with
+     *                   HYSTERESIS_AUTO, the hysteresis (DCS-BIOS range → 1024, else 128; the same
+     *                   split PanelBridge routes by: CTRL_ID_DCS_MIN..MAX).
+     * @param pin        analog PinRef (STM32 ADC GPIO or ADS1115 channel).
+     * @param cfg        tuning, e.g. `{ .reverse = true }`.
      */
-    AnalogInput(uint16_t controlId, PinRef pin, bool reverse = false,
-                uint16_t minRaw = 0, uint16_t maxRaw = 65535,
-                uint16_t hysteresis = DEFAULT_HYSTERESIS, uint8_t ewmaShift = DEFAULT_EWMA_SHIFT,
-                uint16_t pollMs = DEFAULT_POLL_MS);
+    AnalogInput(uint16_t controlId, PinRef pin, const AnalogConfig& cfg = {});
 
     void poll() override;          // throttled read + EWMA; emit on hysteresis / rail
     void forceReport() override;   // sample fresh, seed EWMA, emit baseline
@@ -186,8 +193,7 @@ every input unconditionally, every iteration, and owns no analog timer of its ow
 **Validated HID stick axis** (assembled PanelGroup Rev 1, 2026-08-14) — τ = 2^4 × 2 = 32 ms:
 
 ```cpp
-OpenSkyhawk::AnalogInput axisX(CTRL_ROLL, PIN_X, /*reverse=*/false, 0, 65535,
-                               /*hysteresis=*/32, /*ewmaShift=*/4, /*pollMs=*/2);
+OpenSkyhawk::AnalogInput axisX(CTRL_ROLL, PIN_X, { .hysteresis = 32, .ewmaShift = 4, .pollMs = 2 });
 ```
 
 Three preconditions, each of which binds:
@@ -201,7 +207,7 @@ Three preconditions, each of which binds:
 - **HID routing.** See the note below on DCS-BIOS-routed values.
 
 2 ms is not arbitrary: SimGateway declares its HID endpoint with `interval_ms = 2`
-(`SimGateway.cpp:78-79`), so 500 Hz is exactly the USB report rate and a faster axis is discarded at
+(`SimGateway.cpp:80-81`), so 500 Hz is exactly the USB report rate and a faster axis is discarded at
 the USB boundary. The gain is **latency, not throughput** — real flying sits at 40–200 Hz per axis,
 below even the shipped 125 Hz, so a faster poll buys up to ~6 ms less sampling delay on every
 movement rather than more updates.

@@ -12,6 +12,9 @@
 // centerDeg 180 / travelDeg 150 → ~27300 raw counts span the full 0..65535 output, so one raw
 // count is about 2.4 output counts: +20 raw stays under the hysteresis, +400 raw clears it.
 //
+// AngleConfig (#295): the hysteresis is route-aware by default, like AnalogInput, and overridable.
+// +400 raw (~960 output counts) stays under a DCSIN id's 1024 and clears an explicit 128.
+//
 // Rig: this STM32 alone, CAN in silent loopback (no bus, no PanelBridge, no sensor). Do NOT run it
 // on a board wired to a live bus: a loopback node never ACKs, which drives the bridge
 // error-passive. PASS/FAIL comes from the input's own test seams, not from CAN.
@@ -25,6 +28,17 @@ static constexpr uint16_t CTRL_ID = 0x567E;
 static uint16_t deg(float d) { return (uint16_t)(d * 65536.0f / 360.0f); }
 
 OpenSkyhawk::AngleSensorInput gAngle(CTRL_ID, PinRef(PA1), /*centerDeg=*/180.0f, /*travelDeg=*/150.0f);
+OpenSkyhawk::AngleSensorInput gDcsAngle(0x8001, PinRef(PA2), 180.0f, 150.0f);                 // auto → 1024
+OpenSkyhawk::AngleSensorInput gOverAngle(0x8002, PinRef(PA3), 180.0f, 150.0f, { .hysteresis = 128 });
+
+// Baseline at the centre, then +400 raw: true if it emitted past the baseline.
+static bool emitsOn400(OpenSkyhawk::AngleSensorInput& a, uint16_t centre) {
+    a.configure();
+    a.debugSetRaw(centre); a.forceReport();
+    a.debugSetRaw((uint16_t)(centre + 400));
+    for (uint8_t i = 0; i < 60; i++) a.debugStep();
+    return a.emitCount() > 1;
+}
 
 void setup() {
     STM32Board::setDebug(true);
@@ -66,6 +80,9 @@ void setup() {
     check("return to centre: emitted     ", gAngle.emitCount() > beforeReturn);
     check("return to centre: near baseline",
           gAngle.value() > baseline - 600 && gAngle.value() < baseline + 600);
+
+    check("AngleConfig auto, DCSIN id: silent", !emitsOn400(gDcsAngle, centre));
+    check("AngleConfig explicit 128: emits    ",  emitsOn400(gOverAngle, centre));
 
     CANProtocol::flushBatched(canIdEvt(NODE_ID));
     STM32Board::diagSerial().println(pass ? "=== ALL PASS ===" : "=== FAIL ===");

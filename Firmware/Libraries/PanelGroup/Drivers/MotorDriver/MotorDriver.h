@@ -14,7 +14,6 @@
  *
  * Concrete drivers: StepperMotor (now); ServoMotor / StepDirMotor (future siblings).
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 

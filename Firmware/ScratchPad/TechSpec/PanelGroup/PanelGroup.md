@@ -333,7 +333,7 @@ namespace PanelGroup {
      *      CANProtocol::sendBatched(canIdEvt(NODE_ID), ...).
      *   6. CANProtocol::flushBatched(canIdEvt(NODE_ID)) — flush any trailing odd packet
      *      before READY.
-     *   7. Send READY_n frame (canIdReady(NODE_ID), DLC=0).
+     *   7. Send READY_n frame (CANProtocol::sendReady() — the firmware version, #295).
      *   8. (Heartbeat/HEALTH timers arm on the first CANProtocol::serviceNodeStatus() call
      *      in loop() — first HB_n ~500 ms after boot completes.)
      *
@@ -630,8 +630,9 @@ is left pending.
 
 ### READY Frame
 
-Sent once during `setup()`, after the initial EVT burst and `flushBatched()`. DLC = 0. No
-payload. CAN ID = `canIdReady(NODE_ID)`. PanelBridge marks the node online and broadcasts
+Sent once during `setup()`, after the initial EVT burst and `flushBatched()`, by
+`CANProtocol::sendReady()`. DLC = 8: `ReadyPayload`, the firmware release version (#295).
+CAN ID = `canIdReady(NODE_ID)`. PanelBridge marks the node online and broadcasts
 `SYNC_REQ` on receipt.
 
 ### Heartbeat, HEALTH and master watchdog
@@ -710,8 +711,8 @@ for (InputBase* p = InputBase::head(); p; p = p->next()) { p->forceReport(); }
 // 6. Flush trailing batch
 CANProtocol::flushBatched(canIdEvt(NODE_ID));
 
-// 7. READY frame
-CANProtocol::send(canIdReady(NODE_ID), nullptr, 0);
+// 7. READY frame — carries the firmware version (#295)
+CANProtocol::sendReady();
 
 // (HB/HEALTH timers arm on the first CANProtocol::serviceNodeStatus() call in loop().)
 ```

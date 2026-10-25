@@ -2,7 +2,6 @@
  * @file IntegerOutput.h
  * @brief Callback output for OpenSkyhawk PanelGroup nodes — the escape hatch.
  *
- * @version 0.1.0
  * @copyright GPL-2.0-only — see Firmware/LICENSE
  */
 
