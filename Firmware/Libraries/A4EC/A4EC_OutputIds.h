@@ -15,7 +15,7 @@
 //   <address_mask_identifier> (_AM)   — uint16_t bitmask for the relevant bits
 //
 // Usage with LED:
-//   OpenSkyhawk::LED warn(A_4E_C_MASTER_CAUTION, A_4E_C_MASTER_CAUTION_AM, pin);
+//   OpenSkyhawk::LED fire(A_4E_C_D_GLARE_FIRE, A_4E_C_D_GLARE_FIRE_AM, pin);
 
 #define A_4E_C_ACCEL_CUR                             0x8442  // Accelerometer
 #define A_4E_C_ACCEL_CUR_AM                          0xffff
