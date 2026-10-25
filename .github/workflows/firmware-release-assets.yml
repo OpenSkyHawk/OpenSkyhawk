@@ -22,12 +22,9 @@ on:
         required: false
         type: boolean
         default: false
+  # Validation only, nothing is published. It builds the branch or tag picked in "Use workflow
+  # from" — deliberately no ref input, so a manual run never checks out a typed-in ref.
   workflow_dispatch:
-    inputs:
-      ref:
-        description: Tag or branch to build (validation only, nothing is published)
-        required: true
-        default: main
   pull_request:
     paths:
       - .github/workflows/firmware-release-assets.yml
@@ -62,7 +59,8 @@ jobs:
       - name: Work out the version
         id: version
         env:
-          REF: ${{ inputs.ref }}
+          # The release tag from release-please, else the ref this run was started on.
+          REF: ${{ inputs.ref || github.ref_name }}
         run: |
           set -euo pipefail
           if [[ "$REF" == firmware-v* ]]; then
