@@ -32,7 +32,7 @@
 #include <stdint.h>
 
 // Node-status reporting to the host (#86) — `_NODE_STATUS` / `_NODE_STATUS_END` / `_NODE_TELEM` and
-// the `0x86FE` roster request. On by default (#295): the client depends on it. Compile it out with
+// the `0xFF00` roster request. On by default (#295): the client depends on it. Compile it out with
 // `-DPANELBRIDGE_NODE_STATUS=0`; node tracking itself (liveness, SYNC_REQ, WARNING, callbacks)
 // never depends on it. Test with `#if PANELBRIDGE_NODE_STATUS`, never `#ifdef`.
 #ifndef PANELBRIDGE_NODE_STATUS

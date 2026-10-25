@@ -226,7 +226,7 @@ static constexpr uint32_t WATCHDOG_MS = 3000;
  *
  * @note Node-status reporting (#86) needs no handling here: PanelBridge's `_NODE_STATUS` DCS-BIOS
  *       messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a
- *       DCS-BIOS export write (addr 0x86FE) forwarded by step 1. Both transit transparently.
+ *       DCS-BIOS export write (addr NODE_STATUS_REQ_ADDR, 0xFF00) forwarded by step 1. Both transit transparently.
  *
  * @note Parser state persists across calls — frames split across iterations assemble correctly.
  */

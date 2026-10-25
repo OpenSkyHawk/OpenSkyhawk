@@ -92,7 +92,7 @@ health to OpenSkyhawk Client over DCS-BIOS — no bespoke sideband, SimGateway u
   alive/dead transition; a 3 s heartbeat timeout reports `present=00` for silent death). A
   request/boot reply is the full roster terminated by `_NODE_STATUS_END <count>` so the host can
   reconcile/prune. PanelBridge caches the last `HeartbeatPayload` for the health bytes.
-- **Request:** the client writes a DCS-BIOS export to the reserved address `0x86FE`
+- **Request:** the client writes a DCS-BIOS export to the reserved address `0xFF00`
   (`NODE_STATUS_REQ_ADDR`); a dedicated `ExportStreamListener` replies with the full roster.
 
 Reserved IDs live in `NodeStatus.h`. See `FirmwarePlan/04-dcs-bios-integration.md`.

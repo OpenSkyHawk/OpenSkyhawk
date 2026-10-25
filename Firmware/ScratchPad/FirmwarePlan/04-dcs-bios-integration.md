@@ -30,11 +30,11 @@ forwards host→device; the response is ASCII it forwards device→host). PanelB
 
 | Reserved ID | Direction | Purpose |
 |-------------|-----------|---------|
-| Export address `0x86FE` (`NODE_STATUS_REQ_ADDR`) | host→device | Client writes it (value ignored) to request the roster. Above every real A-4E-C output (~`0x8554`), so DCS never exports it. Excluded from the CAN broadcast in `handleDcsBiosExport()`. |
+| Export address `0xFF00` (`NODE_STATUS_REQ_ADDR`, v4) | host→device | Client writes it (value ignored) to request the roster. No DCS-BIOS module exports it — every aircraft ends by `0xB2FB` and `MetadataEnd` is `0xFFFE` (DCS-BIOS v0.11.8) — so DCS never triggers it, whatever aircraft is flown. (v3 used `0x86FE`, a live AH-64D and Mirage F1 address, #295.) Outside the bridge's CAN-broadcast window, and excluded in `handleDcsBiosExport()` regardless. |
 | Command name `_NODE_STATUS` (`NODE_STATUS_MSG_NAME`) | device→host | One DCS-BIOS command message per node (the bridge's own node-0 row included). Leading underscore — no A-4E-C control collides; DCS-BIOS ignores it as an unknown control if a copy leaks. |
 | Command name `_NODE_STATUS_END` (`NODE_STATUS_END_MSG_NAME`) | device→host | Burst terminator for request/boot replies; argument = row count, node 0 included. Lets the client know a roster reply is complete and reconcile/prune. |
 
-**Request** — client writes a DCS-BIOS export frame to `0x86FE`. PanelBridge's
+**Request** — client writes a DCS-BIOS export frame to `0xFF00`. PanelBridge's
 `NodeStatusReqListener` (an `ExportStreamListener`) fires → emits the full roster.
 
 **Response** — `_NODE_STATUS <hex>` where `<hex>` is **34 chars** (proto **v4**, #295; v3 was 28 chars
@@ -125,7 +125,7 @@ Client side: OpenSkyhawk/SkyHawkClient#61.
 
 ### Compatibility — how the host lines grow (#295, D22)
 
-`_NODE_STATUS`, `_NODE_STATUS_END`, `_NODE_TELEM` and the `0x86FE` roster request are frozen from
+`_NODE_STATUS`, `_NODE_STATUS_END`, `_NODE_TELEM` and the `0xFF00` roster request are frozen from
 v1.0 like the CAN wire (`02-can-protocol.md` § Compatibility). Within a major:
 
 - **Writers only append.** A new `_NODE_STATUS` field goes at the end of the row; existing fields

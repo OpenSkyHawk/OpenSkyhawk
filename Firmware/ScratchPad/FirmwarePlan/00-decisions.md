@@ -587,3 +587,25 @@ ignore reserved bits. A shorter row means older firmware and is reported, not dr
 
 **Affects:** `02-can-protocol.md`, `03-uart-usb-hid-protocol.md`, `04-dcs-bios-integration.md`,
 `NodeStatus.h`. Client half: SkyHawkClient's `_NODE_STATUS` parser and alerts (client 1.0).
+
+---
+
+## D23 — The roster request moves to export address 0xFF00 (#295)
+
+**Decision:** The client asks PanelBridge for the node roster by writing DCS-BIOS export address
+`0xFF00` (`NODE_STATUS_REQ_ADDR`), not `0x86FE`. It ships with `_NODE_STATUS` v4, which the client
+must adopt anyway.
+
+**Rationale:**
+- *`0x86FE` was not reserved, only unused by the A-4E.* In DCS-BIOS v0.11.8 it is the AH-64D's
+  `PLT_VIDEO_FLIR_GAIN` and the Mirage F1's `P_VOR_01_G`. Flying either with the cockpit connected,
+  every export of that control looked like a roster request and drew a full roster burst.
+- *`0xFF00` belongs to no module.* Every aircraft module ends by `0xB2FB`; DCS-BIOS's own
+  `MetadataEnd` sits at `0xFFFE`. Module blocks are allocated upward from low addresses, so the top
+  of the map is the safest place for a host-only address.
+- *Now, not later.* The request address is part of the v1.0 host contract; moving it after the
+  freeze would be a major.
+
+**Affects:** `NodeStatus.h`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`, TechSpec
+`NodeStatus`, PanelBridge README, `docs/architecture/sim-gateway.md`, `docs/architecture/firmware-tiers.md`.
+Client half: SkyHawkClient's roster request (synced from `NodeStatus.h`).

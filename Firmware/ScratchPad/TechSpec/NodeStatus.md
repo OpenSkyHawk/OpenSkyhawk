@@ -65,7 +65,7 @@ Firmware/Libraries/NodeStatus/
 
 ```cpp
 #define NODE_STATUS_PROTO_VERSION 4      // bump on ANY _NODE_STATUS wire change (v3: nodeKind + node-0 row, #344; v4: firmware version, #295)
-#define NODE_STATUS_REQ_ADDR      0x86FE
+#define NODE_STATUS_REQ_ADDR      0xFF00     // v4 (#295): no DCS-BIOS module exports here; 0x86FE was AH-64D/MirageF1
 #define NODE_STATUS_MSG_NAME      "_NODE_STATUS"
 #define NODE_STATUS_END_MSG_NAME  "_NODE_STATUS_END"
 #define NODE_TELEM_PROTO_VERSION  1      // bump on a _NODE_TELEM framing / existing-page layout change

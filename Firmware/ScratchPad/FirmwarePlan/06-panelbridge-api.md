@@ -66,7 +66,7 @@ populated in the `HB_n` handler) plus its last `HEALTH_n` fields (`dieTempC` + h
 - when a `READY_n` changes an alive node's cached firmware version (#295) — a reflash inside the
   heartbeat timeout, and
 - at boot, and in response to a host request — a DCS-BIOS export write to `NODE_STATUS_REQ_ADDR`
-  (`0x86FE`), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
+  (`0xFF00`; `0x86FE` before v4), handled by a dedicated `ExportStreamListener`, excluded from the CAN broadcast. A
   request/boot reply is the bridge's own node-0 row (its live heartbeat state +
   `CANProtocol::lastNodeHealth()`, the `HEALTH_0` it last sent), then the full roster, then
   `_NODE_STATUS_END <count>` (count includes node 0), so the host can tell the burst is complete
