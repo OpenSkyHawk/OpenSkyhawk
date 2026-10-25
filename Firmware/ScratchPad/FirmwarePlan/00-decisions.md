@@ -114,7 +114,8 @@ change — this is not tolerable.
 **Rationale:** DCS-BIOS ASCII text commands use only printable ASCII + LF (all bytes ≤ 0x7F).
 `0xAA` and `0x55` both have bit 7 set, making collision with DCS-BIOS bytes structurally
 impossible. No parser state machine needs to be maintained for the common case — any byte
-≤ 0x7F is forwarded immediately to USB CDC.
+≤ 0x7F is forwarded immediately to USB CDC. *(Superseded in part by D20: the host-bound side now
+forwards whole lines rather than single bytes.)*
 
 **Affects:** `03-uart-usb-hid-protocol.md`.
 
@@ -487,3 +488,40 @@ foreign frame.
 **Affects:** `02-can-protocol.md`, `04-dcs-bios-integration.md`, `06-panelbridge-api.md`,
 `10-implementation-plan.md`, TechSpec (`CANProtocol`, `NodeStatus`, `PanelBridge`, `PanelGroup`,
 `PowerMonitor`), `docs/architecture/can-bus.md`, `docs/firmware/node-id.md`.
+
+---
+
+## D20 — SimGateway never blocks on the host, and recovers its own USB link (#355)
+
+**Decision:** The PanelBridge→host relay is line-granular. A line of printable ASCII + `\n` is
+written whole when the CDC FIFO has room, otherwise dropped and counted; non-ASCII and overlong
+lines are dropped. Calibration frames are whole-or-drop too. A FAULT latched 3 s restarts the UART
+and clears itself. A pure recovery ladder (`LinkRecovery.h`) re-attaches USB after 5 s unhealthy,
+reboots 5 s later if that fails, then backs off to a re-attach every 60 s. A 3 s hardware watchdog
+covers a hung `loop()`. Link-health counters and event times are exposed as `GET_DIAG` / `DIAG` on
+the calibration protocol.
+
+**Rationale:**
+- *The failure couldn't be reproduced, so the fix can't depend on knowing the trigger.* Twice the
+  RP2040 dropped off the bus with its core running (FAULT flashing) and only a power cycle
+  recovered it. Recovering whatever the cause, and recording which cause it was, beats guessing.
+- *A blocking write is a latent hazard on its own.* Adafruit TinyUSB's `write()` loops while the
+  host holds DTR but stops reading, and the old per-byte relay called it unguarded. It did not
+  cause the observed failure (the loop was still animating the LED), but it could.
+- *Lines, not bytes, are the unit to drop.* Everything PanelBridge sends the host is a DCS-BIOS
+  message; dropping a whole one loses one command, while truncating one changes it. Buffering lines
+  also means a calibration frame can no longer land inside a line.
+- *FAULT is electrical, not starvation.* The core's UART RX IRQ empties the PL011 into a software
+  queue, so a slow `loop()` overflows that queue silently and never sets RSR. That queue is now
+  1 KB (~40 ms) and counted separately; the RSR bits are counted one by one.
+- *Mounted is the health signal; suspend counts only with a recent UART fault.* The RP2040 is
+  powered only from USB, so running-but-unmounted is abnormal, while a sleeping host suspends a
+  device that is perfectly healthy.
+- *Backoff, not a reboot loop.* A Gateway on a charger or back-fed with no host would otherwise
+  reboot every 10 s.
+- *Diagnostics on the existing binary channel.* `GET_DIAG` is answered on request and adds nothing
+  to the stream unasked; it is additive, so `CAL_PROTO_VERSION` stays 1.
+
+**Affects:** `03-uart-usb-hid-protocol.md`, `07-simgateway-api.md`, `08-hardware-firmware-contracts.md`,
+`09-startup-resync-diagnostics.md`, TechSpec `SimGateway.md`, `docs/architecture/sim-gateway.md`,
+`docs/firmware/debugging.md`. Client half: SkyHawkClient sync of `CalDiagField`.

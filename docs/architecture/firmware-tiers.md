@@ -55,11 +55,12 @@ over UART, and intercepts HID frames coming back up to drive the joystick report
 
 **What it does *not* do:**
 
-- It does **not** run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream
-  — every byte is relayed verbatim.
+- It does **not** run the DCS-BIOS library. It never parses or interprets the DCS-BIOS stream:
+  the export stream is relayed verbatim, and messages back to the PC as whole lines.
 - It has **no knowledge** of DCS-BIOS control names, addresses, or the input map.
-- It does **not** buffer or delay DCS-BIOS bytes — relay is immediate, so PanelBridge sees the
-  stream with USB-CDC latency only.
+- It does **not** buffer or delay the DCS-BIOS export stream — relay is immediate, so
+  PanelBridge sees the stream with USB-CDC latency only. It never waits for the PC either: if the
+  PC stops reading, a message back is dropped rather than stalling the gateway.
 
 See [SimGateway](sim-gateway.md) for the full breakdown.
 

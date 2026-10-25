@@ -61,6 +61,20 @@ listen-only** (never transmits at the wrong rate). Latched once at boot (query
     The status-LED pins are owned by `STM32Board` — don't use PB14/PB15 for panel I/O or
     MCP23017 interrupts. PC13/PC14/PC15 are also off-limits on custom boards.
 
+## The Gateway's link counters
+
+The Gateway's RP2040 has no debug UART. Instead, it keeps link-health counters you can read over
+its USB serial port: UART errors by kind, lines dropped, and how often it reconnected USB or
+rebooted itself, plus when the first UART error and the first USB loss happened. Close the
+OpenSkyhawk Client, then:
+
+```bash
+tools/simgw_bench/simgw_bench.py diag /dev/cu.usbmodem1101
+```
+
+What the counters mean, and how the Gateway recovers its own USB link, is on the
+[SimGateway](../architecture/sim-gateway.md#link-health-and-self-recovery) page.
+
 ## Bench gotchas
 
 !!! warning "ST-Link won't upload or connect"

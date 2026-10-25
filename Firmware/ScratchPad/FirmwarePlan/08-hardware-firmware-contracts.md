@@ -262,8 +262,9 @@ Priority is highest-first (`FAULT` > `NO_HOST` > `STREAMING` > `USB_IDLE` > `INI
 **SimGateway-local** engine (issue #94); it shares the animation vocabulary (OFF / SOLID / SLOW
 1 Hz / FAST 4 Hz / ALT / PULSE) with `STM32Board` (issue #93) but not the code — the shared
 `StatusLedAnimator` was not adopted. `FAULT` is read from the `uart0` PL011 `RSR` register
-(arduino-pico `SerialUART` surfaces no error flags), latched for ≥2 s, and clears only when clean
-UART data resumes after the fault — a silent bus holds it. Full behaviour:
+(arduino-pico `SerialUART` surfaces no error flags), latched for ≥2 s, and clears when clean UART
+data resumes after the fault — or, on a silent bus, after 3 s by restarting the UART (#355). Full
+behaviour:
 `07-simgateway-api.md` → *Status LEDs*.
 
 ---

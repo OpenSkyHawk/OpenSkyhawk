@@ -3,7 +3,8 @@
 // Verifies the parser forwarding contract:
 //   - ordinary PanelBridge -> SimGateway UART bytes are forwarded to USB CDC in order
 //   - valid HID frames are consumed and do not forward their bytes to USB CDC
-//   - 0xAA followed by a non-0x55 byte forwards both bytes and resumes scanning
+//   - 0xAA followed by a non-0x55 byte resumes scanning; the line it lands in is not ASCII,
+//     so it is dropped as corrupt rather than relayed (#355), and the next line still forwards
 //   - ordinary bytes after a valid HID frame still forward
 //
 // Flash:
@@ -87,18 +88,21 @@ static void runTests() {
     Serial.println();
     allPass &= t2;
 
-    // Test 3: bad magic prefix forwards both bytes and returns to IDLE.
+    // Test 3: bad magic prefix returns to IDLE. Its line is dropped as corrupt — 0xAA is not
+    // ASCII — and the line after it forwards untouched.
     SimGateway::resetParser();
     SimGateway::resetCdcCapture();
+    SimGateway::diagResetForTest();
     _sgtest_dispatchCount = 0;
 
-    const uint8_t badMagic[] = {0xAA, 0x42, 0x43};
-    const uint8_t badMagicExpected[] = {0xAA, 0x42, 0x43};
+    const uint8_t badMagic[] = {0xAA, 0x42, 0x43, '\n', 'O', 'K', '\n'};
+    const uint8_t badMagicExpected[] = {'O', 'K', '\n'};
     fired = feedBytes(badMagic, sizeof(badMagic));
     bool t3 = !fired && (_sgtest_dispatchCount == 0) &&
-              captureEquals(badMagicExpected, sizeof(badMagicExpected));
+              captureEquals(badMagicExpected, sizeof(badMagicExpected)) &&
+              SimGateway::diagnostics().linesCorrupt == 1;
 
-    Serial.print(F("[T3] Bad magic forwarded and parser resumed: "));
+    Serial.print(F("[T3] Bad magic dropped as corrupt, parser resumed: "));
     Serial.print(t3 ? F("PASS") : F("FAIL"));
     if (!t3) printCapture();
     Serial.println();

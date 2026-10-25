@@ -13,6 +13,7 @@
 #include <EEPROM.h>
 #include "hardware/structs/uart.h" // uart0_hw — PL011 registers; also used by the status LED
 #include "hardware/regs/uart.h"    // UART_UARTRSR_*_BITS error-flag masks
+#include "hardware/watchdog.h"     // watchdog_enable_caused_reboot(), watchdog_hw->scratch[]
 
 namespace {
 
@@ -260,6 +261,8 @@ namespace {
 
 enum class ParserState : uint8_t { IDLE, GOT_AA, IN_FRAME };
 
+constexpr uint32_t UART_BAUD = 250000;
+
 SerialUART*     _uart     = nullptr;
 ParserState     _state    = ParserState::IDLE;
 uint8_t         _frameBuf[4];
@@ -296,15 +299,76 @@ void _writeUart(uint8_t b) {
     if (_uart) _uart->write(b);
 }
 
-void _writeCdc(uint8_t b) {
+// ── Host-bound output (#355) ──────────────────────────────────────────────────
+//
+// Nothing here may block. Adafruit_USBD_CDC::write() loops — calling only yield() — for as
+// long as the host holds DTR but stops pulling IN data, and a loop() stalled there stops
+// draining the UART, sending HID reports and animating the status LEDs. So every host-bound
+// unit is written whole when the CDC FIFO has room for all of it, and dropped and counted
+// otherwise. Truncating would be worse than dropping: half a DCS-BIOS command is a different
+// command, and half a calibration frame is noise the client has to resynchronise past.
+
+SimGateway::GatewayDiag _diag = {};
+
+inline void _bump(uint16_t& c) { if (c != 0xFFFF) ++c; }
+
 #ifdef SIMGATEWAY_TEST
-    if (_sgtest_cdcCount < SGTEST_CDC_CAPTURE_CAPACITY) {
-        _sgtest_cdcBytes[_sgtest_cdcCount++] = b;
-    } else {
-        _sgtest_cdcOverflow = true;
+int32_t _sgtest_cdcRoom = -1;   // < 0 = unlimited
+#endif
+
+uint16_t _cdcRoom() {
+#ifdef SIMGATEWAY_TEST
+    return (_sgtest_cdcRoom < 0) ? (uint16_t)0xFFFF : (uint16_t)_sgtest_cdcRoom;
+#else
+    return (uint16_t)Serial.availableForWrite();
+#endif
+}
+
+// The only writer to USB CDC. Mirrors _writeUart's additive capture pattern: the tap records
+// what is actually written, and the real write still happens.
+bool _writeCdcWhole(const uint8_t* p, uint16_t n) {
+    if (_cdcRoom() < n) return false;
+#ifdef SIMGATEWAY_TEST
+    for (uint16_t i = 0; i < n; ++i) {
+        if (_sgtest_cdcCount < SGTEST_CDC_CAPTURE_CAPACITY) {
+            _sgtest_cdcBytes[_sgtest_cdcCount++] = p[i];
+        } else {
+            _sgtest_cdcOverflow = true;
+        }
     }
 #endif
-    Serial.write(b);
+    Serial.write(p, n);
+    return true;
+}
+
+// The UART→host relay is line-granular. Everything PanelBridge sends the host is a DCS-BIOS
+// message — `name arg\n`, printable ASCII — so a line is the unit that can be dropped
+// without corrupting what follows. Binary on this path can only be line noise (or an 0xAA
+// that began no HID frame), and relaying it would hand the host bytes nothing there parses.
+uint8_t  _line[SimGateway::RELAY_LINE_MAX];
+uint16_t _lineLen      = 0;
+bool     _lineCorrupt  = false;
+bool     _lineOverlong = false;
+
+void _lineReset() {
+    _lineLen      = 0;
+    _lineCorrupt  = false;
+    _lineOverlong = false;
+}
+
+void _relayByte(uint8_t b) {
+    if (_lineLen < SimGateway::RELAY_LINE_MAX) _line[_lineLen++] = b;
+    else                                       _lineOverlong = true;
+
+    if (b != '\n') {
+        if (b < 0x20 || b > 0x7E) _lineCorrupt = true;
+        return;
+    }
+
+    if      (_lineOverlong)                    _bump(_diag.linesOverlong);
+    else if (_lineCorrupt)                     _bump(_diag.linesCorrupt);
+    else if (!_writeCdcWhole(_line, _lineLen)) _bump(_diag.linesDropped);
+    _lineReset();
 }
 
 // ── Calibration transport (issue #251) ────────────────────────────────────────
@@ -334,13 +398,18 @@ constexpr uint32_t CAL_SESSION_TIMEOUT_MS = 30000;
 
 inline void _put16(uint8_t* p, uint16_t v) { p[0] = (uint8_t)(v & 0xFF); p[1] = (uint8_t)(v >> 8); }
 inline uint16_t _get16(const uint8_t* p)   { return (uint16_t)(p[0] | ((uint16_t)p[1] << 8)); }
+inline void _put32(uint8_t* p, uint32_t v) { _put16(p, (uint16_t)(v & 0xFFFF)); _put16(p + 2, (uint16_t)(v >> 16)); }
 
 // Emit one frame to the host. Outbound is shared with DCS-BIOS text and _NODE_STATUS, so the
-// client de-multiplexes on the raw chunk before line assembly.
+// client de-multiplexes on the raw chunk before line assembly. The relay buffers whole lines,
+// so a frame can never land in the middle of one.
+//
+// Whole or not at all, like a relayed line. Only a host that has stopped reading loses one,
+// and the client already treats an unanswered request as lost.
 void _calSend(uint8_t type, uint8_t seq, const uint8_t* payload, uint16_t len) {
     uint8_t frame[CAL_MAX_FRAME];
     const uint16_t n = OpenSkyhawk::calBuildFrame(frame, sizeof(frame), type, seq, payload, len);
-    for (uint16_t i = 0; i < n; ++i) _writeCdc(frame[i]);
+    if (n && !_writeCdcWhole(frame, n)) _bump(_diag.framesDropped);
 }
 
 void _calNack(uint8_t type, uint8_t seq, uint8_t reason, uint8_t detail) {
@@ -408,6 +477,33 @@ void _calSendCalData(uint8_t seq) {
     _calSend(OpenSkyhawk::CAL_T_CAL_DATA, seq, p, sizeof(p));
 }
 
+// Fixed 45 bytes in CalDiagField order — the client reads it with one typed view (#355).
+void _calSendDiag(uint8_t seq) {
+    uint8_t p[OpenSkyhawk::CAL_DIAG_BYTES];
+    _put32(p + OpenSkyhawk::CAL_DIAG_UPTIME_MS,         millis());
+    _put32(p + OpenSkyhawk::CAL_DIAG_FIRST_UART_ERR_MS, _diag.firstUartErrMs);
+    _put32(p + OpenSkyhawk::CAL_DIAG_LAST_UART_ERR_MS,  _diag.lastUartErrMs);
+    _put32(p + OpenSkyhawk::CAL_DIAG_FIRST_USB_LOSS_MS, _diag.firstUsbLossMs);
+    _put32(p + OpenSkyhawk::CAL_DIAG_LAST_USB_LOSS_MS,  _diag.lastUsbLossMs);
+    _put16(p + OpenSkyhawk::CAL_DIAG_UART_OVERRUN,      _diag.uartOverrun);
+    _put16(p + OpenSkyhawk::CAL_DIAG_UART_FRAMING,      _diag.uartFraming);
+    _put16(p + OpenSkyhawk::CAL_DIAG_UART_BREAK,        _diag.uartBreak);
+    _put16(p + OpenSkyhawk::CAL_DIAG_UART_PARITY,       _diag.uartParity);
+    _put16(p + OpenSkyhawk::CAL_DIAG_UART_RX_OVERFLOW,  _diag.uartRxOverflow);
+    _put16(p + OpenSkyhawk::CAL_DIAG_LINES_DROPPED,     _diag.linesDropped);
+    _put16(p + OpenSkyhawk::CAL_DIAG_LINES_CORRUPT,     _diag.linesCorrupt);
+    _put16(p + OpenSkyhawk::CAL_DIAG_LINES_OVERLONG,    _diag.linesOverlong);
+    _put16(p + OpenSkyhawk::CAL_DIAG_FRAMES_DROPPED,    _diag.framesDropped);
+    _put16(p + OpenSkyhawk::CAL_DIAG_UART_RESTARTS,     _diag.uartRestarts);
+    _put16(p + OpenSkyhawk::CAL_DIAG_USB_REATTACHES,    _diag.usbReattaches);
+    p[OpenSkyhawk::CAL_DIAG_RECOVERY_REBOOTS] = _diag.recoveryReboots;
+    p[OpenSkyhawk::CAL_DIAG_WATCHDOG_RESETS]  = _diag.watchdogResets;
+    p[OpenSkyhawk::CAL_DIAG_RESET_REASON]     = _diag.resetReason;
+    _calSend(OpenSkyhawk::CAL_T_DIAG, seq, p, sizeof(p));
+}
+static_assert(OpenSkyhawk::CAL_DIAG_RESET_REASON + 1 == OpenSkyhawk::CAL_DIAG_BYTES,
+              "CalDiagField grew: extend _calSendDiag to fill it");
+
 // Write a candidate blob to flash and, only if that succeeds, make it the live calibration.
 // Returns false if the storage layer refused.
 //
@@ -443,11 +539,13 @@ bool _calPersist(const OpenSkyhawk::CalBlob& candidate) {
 
     // Recovery, in order, and it runs whether or not the write succeeded — the erase may
     // have started regardless. The overrun is self-inflicted and expected, not a link
-    // fault, so do not "fix" this RSR clear away.
+    // fault, so do not "fix" this RSR clear away — it also keeps the erase out of the
+    // GET_DIAG overrun counter.
     while (_uart && _uart->available()) (void)_uart->read();
     uart0_hw->rsr = 0;
     _state    = ParserState::IDLE;
     _framePos = 0;
+    _lineReset();   // the line in progress lost bytes to the overrun
 #else
     const bool ok = true;   // test builds never touch flash
 #endif
@@ -469,11 +567,9 @@ bool _calPersist(const OpenSkyhawk::CalBlob& candidate) {
 // the device currently *holds* — there is no pending state, so it does not preview the endpoints
 // being captured.
 //
-// **Droppable by design.** _writeCdc() blocks when the host stops reading, and a stalled write
-// here would stall the UART drain and overrun the RX FIFO — corrupting the DCS-BIOS stream to
-// protect a preview sample. So the whole frame is skipped when the CDC buffer is short. Checked
-// once, before the first byte: a per-byte check would emit truncated frames, which is worse than
-// emitting nothing.
+// **Droppable by design**, like every host-bound frame: _calSend() writes it whole or drops it
+// when the CDC buffer is short. RAW is the type that actually gets dropped in practice, because
+// it is the only one sent unasked.
 //
 // The sequence counter advances for every sample that *would* have been sent, including dropped
 // ones. That gap is the only way a client can distinguish lost samples from an axis that stopped
@@ -482,11 +578,6 @@ void _calEmitRaw(uint8_t axisIndex, uint16_t raw) {
     if (!_calSession || axisIndex != _calStreamAxis) return;
 
     const uint8_t seq = _calRawSeq++;
-
-    constexpr uint16_t RAW_FRAME_BYTES = CAL_ENVELOPE_BYTES + 5;
-#ifndef SIMGATEWAY_TEST
-    if ((uint16_t)Serial.availableForWrite() < RAW_FRAME_BYTES) return;   // drop, never truncate
-#endif
 
     const uint16_t cal = (axisIndex < OpenSkyhawk::AXIS_CAL_SLOTS)
                        ? axisCalApply(_calBlob.axes[axisIndex], raw)
@@ -551,7 +642,7 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
 
     _calLastRxMs = millis();
 
-    // Session gating. HELLO / GET_CAL / KEEPALIVE are answered at any time — that is what
+    // Session gating. HELLO / GET_CAL / GET_DIAG / KEEPALIVE are answered at any time — that is what
     // lets the client show badges without opening a dialog.
     switch (type) {
         case OpenSkyhawk::CAL_T_COMMIT:
@@ -572,6 +663,10 @@ void _calHandleFrame(const uint8_t* f, uint16_t n) {
 
         case OpenSkyhawk::CAL_T_GET_CAL:
             _calSendCalData(seq);
+            break;
+
+        case OpenSkyhawk::CAL_T_GET_DIAG:
+            _calSendDiag(seq);
             break;
 
         case OpenSkyhawk::CAL_T_SESSION_OPEN: {
@@ -700,7 +795,7 @@ bool _processByte(uint8_t b) {
             if (b == 0xAA) {
                 _state = ParserState::GOT_AA;
             } else {
-                _writeCdc(b); // DCS-BIOS byte → CDC
+                _relayByte(b); // DCS-BIOS byte → host-bound line
             }
             return false;
 
@@ -709,9 +804,10 @@ bool _processByte(uint8_t b) {
                 _framePos = 0;
                 _state    = ParserState::IN_FRAME;
             } else {
-                // Resync: 0xAA was not magic; forward both bytes and resume.
-                _writeCdc(0xAA);
-                _writeCdc(b);
+                // Resync: 0xAA was not magic; both bytes go to the line and resume. 0xAA is not
+                // ASCII, so the line they land in is dropped as corrupt rather than relayed.
+                _relayByte(0xAA);
+                _relayByte(b);
                 _state = ParserState::IDLE;
             }
             return false;
@@ -788,6 +884,8 @@ constexpr uint8_t  PIN_LED_RED       = 3;    // GP3
 constexpr uint32_t STREAM_WINDOW_MS  = 500;  // CDC-RX recency → STREAMING
 constexpr uint32_t INIT_WINDOW_MS    = 2000; // boot grace before NO_HOST if never mounted
 constexpr uint32_t FAULT_MIN_HOLD_MS = 2000; // FAULT visibility floor (~8 fast flashes)
+constexpr uint32_t FAULT_RESTART_MS  = 3000; // latched this long → restart the UART, clear FAULT
+constexpr uint32_t FAULT_RECENT_MS   = 30000; // a UART error this recent makes "suspended" unhealthy
 constexpr uint32_t SLOW_PERIOD_MS    = 1000; // 1 Hz
 constexpr uint32_t FAST_PERIOD_MS    = 250;  // 4 Hz
 constexpr uint32_t ALT_PERIOD_MS     = 500;  // reserved
@@ -819,6 +917,7 @@ bool     _faultLatched  = false;
 bool     _faultEverSeen = false;
 uint32_t _lastFaultMs   = 0;
 uint32_t _lastUartRxMs  = 0;
+uint32_t _faultSinceMs  = 0;   // when the current latch was set
 
 // Pure: pick the active state from sampled inputs (priority high → low).
 LedState _selectState(const StatusInputs& in) {
@@ -874,6 +973,7 @@ LedOutput _resolveStatus(const StatusInputs& in) {
 // holds FAULT until clean data resumes. Returns the resolved faultActive flag.
 bool _updateFaultLatch(uint32_t now, bool rsrError, bool uartRxMoved) {
     if (rsrError) {
+        if (!_faultLatched) _faultSinceMs = now;
         _faultEverSeen = true;
         _faultLatched  = true;
         _lastFaultMs   = now;
@@ -887,6 +987,129 @@ bool _updateFaultLatch(uint32_t now, bool rsrError, bool uartRxMoved) {
     }
     return _faultLatched;
 }
+
+// FAULT self-clear (#355). Every observed FAULT came with the host link lost for good, and a
+// silent bus would otherwise hold the latch forever — PanelBridge sends almost nothing with no
+// DCS running, so "clean data resumes" may never happen. After FAULT_RESTART_MS the caller
+// restarts the UART and the latch is cleared; errors that persist re-latch on the next tick,
+// so a genuinely bad link keeps showing FAULT, restarting every FAULT_RESTART_MS. The event
+// itself is never lost: GatewayDiag keeps the counts and times.
+bool _faultRestartCheck(uint32_t now) {
+    if (!_faultLatched || (uint32_t)(now - _faultSinceMs) < FAULT_RESTART_MS) return false;
+    _faultLatched = false;
+    _bump(_diag.uartRestarts);
+    return true;
+}
+
+// Fold one tick's PL011 error bits into the counters. Separate bits, not one flag: overrun
+// (the UART IRQ was held off) and framing/break (electrical) point at different causes.
+void _recordUartErrors(uint32_t now, bool oe, bool fe, bool be, bool pe) {
+    if (!(oe || fe || be || pe)) return;
+    if (oe) _bump(_diag.uartOverrun);
+    if (fe) _bump(_diag.uartFraming);
+    if (be) _bump(_diag.uartBreak);
+    if (pe) _bump(_diag.uartParity);
+    const uint32_t t = now ? now : 1;   // 0 is reserved for "never"
+    if (_diag.firstUartErrMs == 0) _diag.firstUartErrMs = t;
+    _diag.lastUartErrMs = t;
+}
+
+// Restart the PanelBridge UART: drops the queue, clears the sticky error flags, and starts the
+// parser and the host-bound line from scratch.
+void _uartRestart() {
+#ifndef SIMGATEWAY_TEST
+    if (_uart) {
+        _uart->end();
+        _uart->begin(UART_BAUD);   // the RX queue size set in setup() persists across end()
+    }
+    uart0_hw->rsr = 0;
+#endif
+    _state    = ParserState::IDLE;
+    _framePos = 0;
+    _lineReset();
+}
+
+// ── USB recovery ladder (#355) ────────────────────────────────────────────────
+//
+// The decision logic is pure and lives in LinkRecovery.cpp. This part samples the inputs,
+// records the forensics, and applies the action.
+//
+// "Healthy" is mounted, and not suspended while a UART fault is recent. Mounted alone is the
+// main signal — a host that sleeps keeps the device mounted. Suspend counts only alongside a
+// fault because a sleeping host also suspends the bus, and that must not trigger a re-attach.
+
+OpenSkyhawk::LinkRecovery _link = {};
+bool _linkWasHealthy = false;   // false at boot, so enumeration is not a "loss"
+#ifndef SIMGATEWAY_TEST
+bool _wdtArmed = false;
+#endif
+
+OpenSkyhawk::LinkAction _linkUpdate(uint32_t now, bool mounted, bool suspended) {
+    const bool faultRecent = _diag.lastUartErrMs != 0 &&
+                             (uint32_t)(now - _diag.lastUartErrMs) < FAULT_RECENT_MS;
+    const bool healthy = mounted && !(suspended && faultRecent);
+
+    if (_linkWasHealthy && !healthy) {
+        const uint32_t t = now ? now : 1;
+        if (_diag.firstUsbLossMs == 0) _diag.firstUsbLossMs = t;
+        _diag.lastUsbLossMs = t;
+    }
+    _linkWasHealthy = healthy;
+
+    const OpenSkyhawk::LinkAction a = OpenSkyhawk::linkRecoveryStep(_link, now, healthy);
+    if (a == OpenSkyhawk::LinkAction::DETACH) _bump(_diag.usbReattaches);
+    return a;
+}
+
+// Boot forensics live in watchdog scratch registers 0–3, which the SDK leaves to the
+// application (it uses 4–7 for its own reboot handshake). They survive a watchdog reboot and
+// are cleared by power-on, so the magic word tells a warm boot from a cold one.
+constexpr uint32_t SCRATCH_MAGIC    = 0x53474457;   // "SGDW"
+constexpr uint32_t PENDING_RECOVERY = 0x52454356;   // "RECV" — set just before a ladder reboot
+enum : uint8_t { SCR_MAGIC = 0, SCR_RECOVERY_REBOOTS = 1, SCR_WATCHDOG_RESETS = 2, SCR_PENDING = 3 };
+
+void _bootRecord() {
+    bool afterRecovery = false;
+#ifndef SIMGATEWAY_TEST
+    io_rw_32* const sc = watchdog_hw->scratch;
+    if (sc[SCR_MAGIC] != SCRATCH_MAGIC) {
+        sc[SCR_MAGIC]            = SCRATCH_MAGIC;
+        sc[SCR_RECOVERY_REBOOTS] = 0;
+        sc[SCR_WATCHDOG_RESETS]  = 0;
+        sc[SCR_PENDING]          = 0;
+    }
+    afterRecovery     = (sc[SCR_PENDING] == PENDING_RECOVERY);
+    sc[SCR_PENDING]   = 0;
+    if (afterRecovery) {
+        _diag.resetReason = OpenSkyhawk::CAL_DIAG_RESET_RECOVERY;
+    } else if (watchdog_enable_caused_reboot()) {
+        _diag.resetReason = OpenSkyhawk::CAL_DIAG_RESET_WATCHDOG;
+        if (sc[SCR_WATCHDOG_RESETS] < 0xFF) sc[SCR_WATCHDOG_RESETS] = sc[SCR_WATCHDOG_RESETS] + 1;
+    } else {
+        _diag.resetReason = OpenSkyhawk::CAL_DIAG_RESET_POWER_ON;
+    }
+    _diag.recoveryReboots = (uint8_t)sc[SCR_RECOVERY_REBOOTS];
+    _diag.watchdogResets  = (uint8_t)sc[SCR_WATCHDOG_RESETS];
+#endif
+    OpenSkyhawk::linkRecoveryBegin(_link, afterRecovery);
+}
+
+#ifndef SIMGATEWAY_TEST
+void _linkTick(uint32_t now) {
+    switch (_linkUpdate(now, TinyUSBDevice.mounted(), TinyUSBDevice.suspended())) {
+        case OpenSkyhawk::LinkAction::DETACH: TinyUSBDevice.detach(); break;
+        case OpenSkyhawk::LinkAction::ATTACH: TinyUSBDevice.attach(); break;
+        case OpenSkyhawk::LinkAction::REBOOT: {
+            io_rw_32* const sc = watchdog_hw->scratch;
+            if (sc[SCR_RECOVERY_REBOOTS] < 0xFF) sc[SCR_RECOVERY_REBOOTS] = sc[SCR_RECOVERY_REBOOTS] + 1;
+            sc[SCR_PENDING] = PENDING_RECOVERY;
+            rp2040.reboot();   // does not return
+            break;
+        }
+        default: break;
+    }
+}
+#endif
 
 #ifdef SIMGATEWAY_TEST
 bool      _sgtest_redLevel   = false;
@@ -915,6 +1138,7 @@ namespace SimGateway {
 
 void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
     _uart = &uart;
+    _bootRecord();   // first: reads the reboot reason before anything can overwrite it
 
 #ifndef SIMGATEWAY_TEST
     // USB identity must be set before TinyUSB begins enumerating.
@@ -931,7 +1155,8 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
 
     _uart->setTX(txPin);
     _uart->setRX(rxPin);
-    _uart->begin(250000);
+    _uart->setFIFOSize(UART_RX_QUEUE_BYTES);   // before begin(): the core allocates it there
+    _uart->begin(UART_BAUD);
 
     _calLoad(); // RAM-only in SIMGATEWAY_TEST builds — tests never touch flash
 
@@ -940,26 +1165,47 @@ void setup(SerialUART& uart, uint8_t txPin, uint8_t rxPin) {
     statusLedBegin(); // configure GP2/GP3 status LEDs (both off)
 
 #ifndef SIMGATEWAY_TEST
-    Serial.println(F("=============================="));
-    Serial.println(F("  SimGateway"));
-    Serial.println(F("=============================="));
+    // Whole or not at all, like everything else host-bound — usually no host has the port
+    // open yet, and then it goes nowhere either way.
+    static const char banner[] =
+        "==============================\r\n"
+        "  SimGateway\r\n"
+        "==============================\r\n";
+    (void)_writeCdcWhole(reinterpret_cast<const uint8_t*>(banner), sizeof(banner) - 1);
 #endif
 }
+
+const GatewayDiag& diagnostics() { return _diag; }
 
 const OpenSkyhawk::CalBlob& calibration() { return _calBlob; }
 
 void loop() {
+#ifndef SIMGATEWAY_TEST
+    // 0. Hardware watchdog. Armed here rather than in setup() so a sketch may still block in
+    //    its own setup() (test sketches wait for the host) without being reset for it.
+    if (_wdtArmed) {
+        rp2040.wdt_reset();
+    } else {
+        rp2040.wdt_begin(WATCHDOG_MS);
+        _wdtArmed = true;
+    }
+#endif
+
     // 1. Forward CDC → UART (PC DCS-BIOS stream to PanelBridge).
     //    Bytes moving here is the "host is talking" signal that drives STREAMING.
     //    Every byte passes the calibration parser first. It consumes only complete, valid
     //    frames; anything else reaches PanelBridge untouched, including the bytes of a
     //    rejected candidate. Cost is a comparison per byte against a UART that is three
     //    orders of magnitude slower.
+    //    Capped per call: the UART write blocks once its FIFO is full, and an uncapped drain of
+    //    an export burst would keep step 2 from running for tens of milliseconds.
     bool cdcMoved = false;
-    while (Serial.available()) {
+    uint16_t budget = CDC_TO_UART_BUDGET;
+    while (budget && Serial.available()) {
         const uint8_t b = (uint8_t)Serial.read();
         if (!_calInboundByte(b)) _writeUart(b);
         cdcMoved = true;
+        --budget;
     }
     //    Calibration bytes still count as "the host is talking" — a session is host traffic
     //    even though none of it is forwarded.
@@ -984,8 +1230,13 @@ void loop() {
     }
 
     // 4. Advance the status-LED state machine (non-blocking). Reads the uart0 RSR
-    //    after the drain so this tick's UART errors are visible.
+    //    after the drain so this tick's UART errors are visible, and counts them.
     statusTick();
+
+    // 5. USB recovery ladder. After statusTick so it sees this tick's UART errors.
+#ifndef SIMGATEWAY_TEST
+    _linkTick(millis());
+#endif
 }
 
 void statusLedBegin() {
@@ -1010,8 +1261,15 @@ void statusTick() {
     auto* const        STATUS_UART_HW = uart0_hw;
     constexpr uint32_t RSR_ERR = UART_UARTRSR_OE_BITS | UART_UARTRSR_BE_BITS |
                                  UART_UARTRSR_PE_BITS | UART_UARTRSR_FE_BITS;
-    bool rsrError = (STATUS_UART_HW->rsr & RSR_ERR) != 0;
+    const uint32_t rsr = STATUS_UART_HW->rsr & RSR_ERR;
+    bool rsrError = rsr != 0;
     if (rsrError) STATUS_UART_HW->rsr = 0;
+    _recordUartErrors(now, rsr & UART_UARTRSR_OE_BITS, rsr & UART_UARTRSR_FE_BITS,
+                           rsr & UART_UARTRSR_BE_BITS, rsr & UART_UARTRSR_PE_BITS);
+
+    // The core's UART IRQ moves bytes into a software queue; when loop() falls behind, that
+    // queue overflows and drops bytes without touching RSR. overflow() reads and clears it.
+    if (_uart && _uart->overflow()) _bump(_diag.uartRxOverflow);
 #else
     bool mounted  = false; // test builds drive the state machine via the hooks below
     bool rsrError = false;
@@ -1020,6 +1278,10 @@ void statusTick() {
     if (mounted) _everMounted = true;
     bool faultActive   = _updateFaultLatch(now, rsrError, _uartMovedThisTick);
     _uartMovedThisTick = false;
+    if (_faultRestartCheck(now)) {
+        _uartRestart();
+        faultActive = false;
+    }
 
     StatusInputs in{ now, mounted, _lastCdcRxMs, _everMounted, faultActive };
     _applyLed(_resolveStatus(in));
@@ -1027,7 +1289,19 @@ void statusTick() {
 
 #ifdef SIMGATEWAY_TEST
 bool feedByte(uint8_t b)  { return _processByte(b); }
-void resetParser()         { _state = ParserState::IDLE; _framePos = 0; }
+void resetParser()         { _state = ParserState::IDLE; _framePos = 0; _lineReset(); }
+void cdcSetRoomForTest(int32_t room) { _sgtest_cdcRoom = room; }
+void diagResetForTest()    { _diag = GatewayDiag{}; }
+void diagUartErrorsForTest(uint32_t now, bool oe, bool fe, bool be, bool pe) {
+    _recordUartErrors(now, oe, fe, be, pe);
+}
+OpenSkyhawk::LinkAction linkStepForTest(uint32_t now, bool mounted, bool suspended) {
+    return _linkUpdate(now, mounted, suspended);
+}
+void linkResetForTest(bool afterRecoveryReboot) {
+    OpenSkyhawk::linkRecoveryBegin(_link, afterRecoveryReboot);
+    _linkWasHealthy = false;
+}
 void resetCdcCapture()     { _sgtest_cdcCount = 0; _sgtest_cdcOverflow = false; }
 size_t cdcCaptureCount()   { return _sgtest_cdcCount; }
 uint8_t cdcCaptureByte(size_t index) {
@@ -1074,6 +1348,8 @@ bool statusFaultStep(uint32_t now, bool rsrError, bool uartRxMoved) {
     return _updateFaultLatch(now, rsrError, uartRxMoved);
 }
 
+bool statusFaultRestartCheck(uint32_t now) { return _faultRestartCheck(now); }
+
 LedState statusState()      { return _sgtest_out.state; }
 Anim     statusAnim()       { return _sgtest_out.anim; }
 bool     statusRedLevel()   { return _sgtest_redLevel; }
@@ -1085,6 +1361,7 @@ void statusResetForTest() {
     _faultEverSeen     = false;
     _lastFaultMs       = 0;
     _lastUartRxMs      = 0;
+    _faultSinceMs      = 0;
     _lastCdcRxMs       = 0;
     _uartMovedThisTick = false;
     _sgtest_redLevel   = false;

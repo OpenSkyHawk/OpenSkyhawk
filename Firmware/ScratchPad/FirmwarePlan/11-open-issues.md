@@ -31,7 +31,7 @@ accident during later review passes.
 | Stale `DCSInput` references | Cleanup task during implementation: scan headers and remove stale names. | `10-implementation-plan.md` |
 | Accel encoder value encoding | **Superseded (#147, D16):** acceleration is a larger `±step` on the REL frame — no arg strings, no bridge change. Thresholds follow DCS-BIOS: 175 ms fast, 500 ms momentum reset. | `04-dcs-bios-integration.md`, `05-panelgroup-api.md` |
 | SimGateway boot sequence | TinyUSB silently drops HID before enumeration; no special handling required. | `07-simgateway-api.md`, `09-startup-resync-diagnostics.md` |
-| DIAG destination | DiagSerial only on each STM32 board; no SimGateway diagnostic multiplexing. | `09-startup-resync-diagnostics.md` |
+| DIAG destination | DiagSerial only on each STM32 board; no SimGateway diagnostic multiplexing. SimGateway's own link-health record is a request/response on the calibration channel (`GET_DIAG`, #355), not a DIAG frame. | `09-startup-resync-diagnostics.md` |
 | AngleSensorInput range | Inherited from `AnalogInput` (D16): 0–65535 on both routes; HID-routed axes are calibrated and converted to the signed joystick range in SimGateway. | `05-panelgroup-api.md`, `07-simgateway-api.md` |
 
 ---
