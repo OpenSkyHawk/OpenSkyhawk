@@ -65,7 +65,8 @@ bool calLenValidForType(uint8_t type, uint16_t len) {
         case CAL_T_HELLO:
         case CAL_T_GET_CAL:
         case CAL_T_SESSION_CLOSE:
-        case CAL_T_KEEPALIVE:        return len == 0;
+        case CAL_T_KEEPALIVE:
+        case CAL_T_GET_DIAG:         return len == 0;
 
         case CAL_T_SESSION_OPEN:
         case CAL_T_STREAM_SELECT:
@@ -78,6 +79,7 @@ bool calLenValidForType(uint8_t type, uint16_t len) {
         case CAL_T_HELLO_ACK:        return len == 6;
         case CAL_T_COMMIT:           return len == 9;   // exactly one axis, never a batch
         case CAL_T_CAL_DATA:         return len == 82;
+        case CAL_T_DIAG:             return len == CAL_DIAG_BYTES;
 
         default:                     return false;   // unknown type is an error, not a skip
     }

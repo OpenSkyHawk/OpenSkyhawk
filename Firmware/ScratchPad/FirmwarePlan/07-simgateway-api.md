@@ -211,12 +211,32 @@ raw 0..65535 ──calibration──▶ 0..65535 ──(v − 32768)──▶ in
 
 ## Relay Contract
 
-`SimGateway::loop()` must not buffer, parse, or delay DCS-BIOS bytes. Every byte from
-USB CDC is forwarded to UART immediately. Every byte from UART that is not part of a HID
-frame is forwarded to USB CDC immediately.
+**Host → PanelBridge** (the DCS-BIOS export stream): `SimGateway::loop()` does not buffer,
+parse, or delay these bytes. Every byte from USB CDC is forwarded to UART in the same call, up to
+`CDC_TO_UART_BUDGET` (64) bytes per call. The cap exists because the UART write blocks once its
+32-byte hardware FIFO is full, and an uncapped drain of an export burst would hold `loop()` — and
+with it the PanelBridge→host drain — for tens of milliseconds. Throughput is still the UART's.
 
 This means `DcsBios::loop()` on PanelBridge receives the byte stream with USB CDC latency
 only — no additional SimGateway processing latency.
+
+**PanelBridge → host is line-granular and never blocks (#355).** Everything PanelBridge sends the
+host is a newline-framed DCS-BIOS message (`name arg\n`: commands, `_NODE_STATUS`,
+`_NODE_TELEM`), so SimGateway assembles each line and writes it **whole** when the CDC FIFO has
+room for all of it. Otherwise the line is dropped and counted — never truncated, because half a
+command is a different command. The reason: Adafruit TinyUSB's `write()` loops for as long as the
+host holds DTR but stops reading, and a `loop()` stalled there stops the UART drain, the HID path
+and the status LEDs.
+
+| Line | Fate | Counter (`DIAG`) |
+|---|---|---|
+| printable ASCII (`0x20`–`0x7E`) + `\n`, ≤ `RELAY_LINE_MAX` (128) bytes, CDC room | written whole | — |
+| as above, no CDC room | dropped whole | `LINES_DROPPED` |
+| contains any other byte (incl. `\r`, or an `0xAA` that began no HID frame) | dropped | `LINES_CORRUPT` |
+| longer than `RELAY_LINE_MAX` | dropped | `LINES_OVERLONG` |
+
+The longest real line is a `_NODE_STATUS` row at about 42 bytes. A healthy link never drops a
+line; the counters exist to tell a host that stopped reading from line noise.
 
 **One exception, inbound only: calibration frames are consumed** (see
 `03-uart-usb-hid-protocol.md#calibration-protocol-usb-cdc`). The parser runs on every inbound
@@ -229,8 +249,10 @@ valid calibration frame.
 The cost is one comparison per byte against a UART that is roughly three orders of magnitude
 slower per byte, so the relay contract's latency claim is unaffected.
 
-The outbound direction is **not** touched: `_NODE_STATUS` and DCS-BIOS text keep flowing during
-a calibration session, with calibration frames injected alongside them.
+The outbound direction is **not** taken over: `_NODE_STATUS` and DCS-BIOS text keep flowing during
+a calibration session, with calibration frames injected alongside them. Because lines are
+buffered, a frame always goes out between two lines, never inside one. Frames follow the same
+whole-or-drop rule as lines (`FRAMES_DROPPED`).
 
 ---
 
@@ -249,7 +271,7 @@ States, highest priority first (the topmost active state wins):
 
 | Pri | State | Trigger | LED |
 |---|---|---|---|
-| 1 | `FAULT` | uart0 RX hardware error — RSR overrun/framing/parity/break | RED fast (4 Hz) |
+| 1 | `FAULT` | uart0 RX hardware error — RSR overrun/framing/parity/break (self-clears, see below) | RED fast (4 Hz) |
 | 2 | `NO_HOST` | USB not enumerated (`TinyUSBDevice.mounted()` false), or unplugged after a mount | RED solid |
 | 3 | `STREAMING` | inbound host bytes seen within the last 500 ms — forwarded **or consumed** | GREEN solid |
 | 4 | `USB_IDLE` | USB mounted, no recent DCS data | GREEN slow (1 Hz) |
@@ -270,16 +292,26 @@ Non-blocking — `millis()`, never `delay()`.
   init window expired with no mount).
 - **FAULT** — read directly from the `uart0` PL011 error register (`uart_get_hw(uart0)->rsr`,
   bits OE/BE/PE/FE), cleared on every read (write-to-clear). The arduino-pico `SerialUART` RX IRQ
-  drops framing/parity bytes and ignores overrun without ever touching RSR, so RSR is the only
-  reliable error source. `Serial1 == uart0` on this board; a board wiring the link to uart1 must
-  change the hardware pointer.
+  drops framing/parity bytes without ever touching RSR, so RSR is the only reliable error source.
+  `Serial1 == uart0` on this board; a board wiring the link to uart1 must change the hardware
+  pointer. Each bit is also counted separately for `DIAG` — see *Link Health* below.
+- **Not FAULT: a starved `loop()`.** The RX IRQ empties the PL011 into a software queue
+  (`UART_RX_QUEUE_BYTES` = 1024, ~40 ms at 250 000 baud; the core default is 32). If `loop()`
+  falls behind, that queue overflows and bytes are lost **without** any RSR bit. It is counted
+  (`UART_RX_OVERFLOW`) but does not light FAULT. RSR OE means the IRQ itself was held off.
 
 ### FAULT latch / recovery
 
-FAULT is latched, not momentary. On any error bit it latches and re-stamps; it clears only when
+FAULT is latched, not momentary. On any error bit it latches and re-stamps; it clears when
 **both** (a) ≥ 2 s have elapsed since the last error (a visibility floor, ~8 fast flashes) **and**
-(b) an error-free byte has arrived on uart0 RX *after* the fault. A silent bus therefore holds
-FAULT until clean PanelBridge data resumes — recovery is proven by traffic, not elapsed time.
+(b) an error-free byte has arrived on uart0 RX *after* the fault.
+
+**Self-clear (#355).** PanelBridge sends almost nothing with no DCS running, so (b) may never
+happen, and every FAULT seen in the field came with the host link lost for good. So once FAULT has
+been latched for `FAULT_RESTART_MS` (3 s, measured from the latch, not the latest error), the UART
+is restarted (`end()`/`begin()`, RSR cleared, HID parser and host-bound line reset) and the latch
+cleared. Errors that persist re-latch on the next tick, so a genuinely bad link keeps showing
+FAULT and restarts every 3 s. Counted as `UART_RESTARTS`; the event itself stays in `DIAG`.
 
 ### Public API (additions)
 
@@ -291,9 +323,66 @@ enum class SimGateway::Anim     : uint8_t { OFF, SOLID, SLOW, FAST, ALT, PULSE }
 ```
 
 `SIMGATEWAY_TEST` builds add injection/readback hooks (`statusInject`, `statusResolve`,
-`statusFaultStep`, `statusState`, `statusAnim`, `statusRedLevel`, `statusGreenLevel`,
-`statusResetForTest`) that exercise the pure state/animation/latch logic with no GPIO, TinyUSB,
-or register access. See `Firmware/Tests/SimGateway/tests/led_state/`.
+`statusFaultStep`, `statusFaultRestartCheck`, `statusState`, `statusAnim`, `statusRedLevel`,
+`statusGreenLevel`, `statusResetForTest`) that exercise the pure state/animation/latch logic with
+no GPIO, TinyUSB, or register access. See `Firmware/Tests/SimGateway/tests/led_state/` and
+`link_health/`.
+
+---
+
+## Link Health and Self-Recovery
+
+Issue #355. The Gateway's RP2040 has twice dropped off the USB bus while its core kept running
+(FAULT flashing, port gone, only a replug — which is a power cycle — recovered it). The trigger was
+never reproduced. The firmware therefore recovers on its own, whatever the trigger, and records
+enough to tell causes apart next time.
+
+### Recovery ladder
+
+Pure logic in `LinkRecovery.h` / `.cpp`; `SimGateway::loop()` samples the inputs and applies the
+action.
+
+**Healthy** = `TinyUSBDevice.mounted()` **and not** (`TinyUSBDevice.suspended()` with a UART
+error in the last 30 s) **and not** a CDC stall. The RP2040 is powered only from USB, so
+running-but-unmounted is abnormal. Suspend alone is a sleeping host and is left alone.
+
+A **CDC stall** is the configured-but-dead case `mounted()` cannot see: the host holds DTR, bytes
+are pending in the CDC TX FIFO, and nothing has drained for `CDC_STALL_MS` (1 s). "Drained" means
+free space now plus what the relay wrote since the last sample exceeds the free space then, so a
+link draining exactly as fast as it is refilled still counts as progress. The host OS keeps polling
+an open port into its own buffer (≈57 KB on macOS) even when the application is not reading, so a
+FIFO that stays full means the host's USB stack stopped polling, not that an app is slow. Without
+this, every line would be dropped while `loop()` and the watchdog ran on, and the ladder would never
+start. Idle (nothing pending) and no host (DTR low) are never a stall. Onsets are counted
+(`CDC_STALLS`).
+
+| Step | Condition | Action |
+|---|---|---|
+| 1 | unhealthy for `LINK_BAD_MS` (5 s) | `TinyUSBDevice.detach()`, then `attach()` `LINK_REATTACH_GAP_MS` (100 ms) later — the host sees a fresh plug-in |
+| 2 | still unhealthy `LINK_REBOOT_AFTER_MS` (5 s) after the re-attach | reboot — resets the USB controller like a replug, calibration is in flash |
+| 3 | booted by step 2 and still unhealthy | re-attach every `LINK_BACKOFF_MS` (60 s); never reboot again until the link has been healthy once |
+
+Step 3 keeps a Gateway on a charger, or back-fed with no host, from reboot-looping. A detach is
+always followed by its attach. Health at any point resets the ladder.
+
+### Hardware watchdog
+
+`WATCHDOG_MS` (3 s), armed by the first `SimGateway::loop()` call — not in `setup()`, so a sketch
+may block in its own `setup()` — and fed by every call. Production builds only. A watchdog reset
+is recorded and survives the reboot.
+
+### Diagnostics (`GET_DIAG` / `DIAG`)
+
+`SimGateway::diagnostics()` returns a `GatewayDiag`; the host reads the same data with the
+calibration protocol's `GET_DIAG` request (`03-uart-usb-hid-protocol.md#payloads`), answered at
+any time. Counts: each RSR bit separately (OE / FE / BE / PE), software RX-queue overflow, the
+three line-drop reasons, dropped calibration frames, UART restarts, USB re-attaches, CDC stalls. Times: first
+and latest UART error, first and latest healthy→unhealthy USB edge — comparing the two answers
+"which came first". Recovery reboots, watchdog resets and this boot's reason live in watchdog
+scratch registers 0–3, so they survive a warm reboot and reset on power-on.
+
+**Wire contract:** `DIAG` is host-visible. SkyHawkClient takes the layout from `AxisCal.h` via
+`npm run sync`, never hand-copied. Bench reader: `tools/simgw_bench/simgw_bench.py`.
 
 ---
 
@@ -332,6 +421,11 @@ normalisation belongs to PanelGroup/AnalogInput tests, not SimGateway tests.
 observable and the capture globals record the *pre-transform* value read off the wire. The
 transform is therefore a free function taking its inputs as arguments — the same shape as the
 status-LED state machine, and for the same reason.
+
+**Link health is tested as decision logic.** `cdc_relay` injects the CDC FIFO's free space
+(`cdcSetRoomForTest`) to reach the drop path; `link_health` drives the recovery ladder, FAULT
+self-clear and counters with injected time (`linkStepForTest`, `diagUartErrorsForTest`). No test
+detaches USB, restarts the UART, or reboots. Those are bench checks.
 
 **`SIMGATEWAY_TEST` builds must never write flash.** The EEPROM path is stubbed out to a RAM
 clear, so tests start from a known uncalibrated state and no test run erases a sector.

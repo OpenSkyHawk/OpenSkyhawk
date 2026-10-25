@@ -50,8 +50,8 @@ not over a second USB link.
 load. The failure in [D1](#d1-simgateway-exists-because-stm32-usb-cant-take-the-load) was
 specifically the STM32's USB peripheral, not its serial throughput. A UART is simple,
 deterministic, has no enumeration or driver surface, and lets SimGateway stay a dumb byte
-relay: any byte ≤ 0x7F is forwarded straight to USB CDC; HID frames are tagged with
-high-bit magic bytes so they're structurally impossible to confuse with DCS-BIOS ASCII.
+relay: DCS-BIOS text is forwarded straight to USB CDC, one whole line at a time; HID frames are
+tagged with high-bit magic bytes so they're structurally impossible to confuse with DCS-BIOS ASCII.
 
 ---
 

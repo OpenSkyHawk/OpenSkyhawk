@@ -22,6 +22,7 @@
 #include <HIDControls.h>
 
 #include "AxisCal.h"
+#include "LinkRecovery.h"
 
 namespace OpenSkyhawk {
 
@@ -163,10 +164,12 @@ static constexpr uint8_t DEFAULT_UART_RX_PIN = 1; ///< RP2040 UART0 RX from Pane
  *   - Product:      "A-4E Skyhawk"
  *   - VID/PID:      0x2E8A / 0x4134
  *   - CDC port:     "A-4E Skyhawk DCS-BIOS" (iInterface — names the serial port)
- * Configures the UART pins and calls uart.begin(250000), then loads the stored axis
- * calibration and initialises the HID descriptor, then enumerates.
+ * Configures the UART pins, enlarges the UART's software RX queue to UART_RX_QUEUE_BYTES and
+ * calls uart.begin(250000), then loads the stored axis calibration and initialises the HID
+ * descriptor, then enumerates. Also records why this boot happened (see diagnostics()).
  *
  * @param uart   Hardware UART connected to PanelBridge (Serial1 / UART0 on standard board).
+ *               Must not have been begun already — the RX queue size can only be set before.
  * @param txPin  RP2040 UART TX pin. Defaults to GP0, wired to STM32 PA3.
  * @param rxPin  RP2040 UART RX pin. Defaults to GP1, wired to STM32 PA2.
  *
@@ -181,16 +184,52 @@ void setup(SerialUART& uart,
            uint8_t txPin = DEFAULT_UART_TX_PIN,
            uint8_t rxPin = DEFAULT_UART_RX_PIN);
 
+/// Bytes the UART's software RX queue holds (core default 32). At 250000 baud that is ~40 ms
+/// of loop() latency before bytes are lost, instead of ~1.3 ms.
+static constexpr size_t UART_RX_QUEUE_BYTES = 1024;
+
+/// Host-bound bytes per line the relay buffers. The longest real line is a `_NODE_STATUS`
+/// row at ~42 bytes; anything longer is not a line PanelBridge sends, and is dropped.
+static constexpr uint16_t RELAY_LINE_MAX = 128;
+
+/// Host→PanelBridge bytes forwarded per loop() call. The UART write blocks once its 32-byte
+/// hardware FIFO is full (~40 µs per byte), so an uncapped drain of a DCS export burst would
+/// hold loop() for tens of ms. 64 bytes bounds it at ~2.6 ms.
+static constexpr uint16_t CDC_TO_UART_BUDGET = 64;
+
+/// The CDC IN endpoint counts as stalled after this long with DTR held, bytes pending and
+/// nothing drained. The host OS keeps polling an open port into its own buffer even when the
+/// application is not reading, so a FIFO that stays full this long means the host's USB stack
+/// stopped polling — a configured-but-dead link that `mounted()` alone cannot see.
+static constexpr uint32_t CDC_STALL_MS = 1000;
+
+/// Hardware watchdog timeout. Armed by the first loop() call, fed by every call.
+static constexpr uint32_t WATCHDOG_MS = 3000;
+
 /**
  * @brief Relay bytes and dispatch HID frames. Call once per loop() iteration.
  *
  * Per call:
- *   1. Forward all USB CDC bytes (Serial) to UART — DCS-BIOS stream to PanelBridge.
+ *   1. Forward up to CDC_TO_UART_BUDGET USB CDC bytes (Serial) to UART — DCS-BIOS stream to
+ *      PanelBridge.
  *   2. Drain all UART bytes:
- *        byte ≤ 0x7F             → forward to USB CDC (DCS-BIOS from PanelBridge)
  *        0xAA 0x55 + 4 bytes     → parse controlId + value LE; dispatch to HID lists
- *        0xAA + non-0x55         → forward 0xAA + byte to USB CDC; resume IDLE
+ *        any other byte          → append to the host-bound line; on `\n` the whole line is
+ *                                  written to USB CDC, or dropped and counted (see below)
+ *        0xAA + non-0x55         → both bytes go to the line, which makes it corrupt; resume IDLE
  *   3. If any HID setter fired, send the HID report exactly once.
+ *   4. Status LEDs, UART error counters, FAULT self-clear.
+ *   5. USB recovery ladder (LinkRecovery.h).
+ *
+ * **Never blocks on the host.** A line is written only if the CDC FIFO has room for all of
+ * it; otherwise it is dropped whole — never truncated — and counted in
+ * GatewayDiag::linesDropped. A line holding anything but printable ASCII (0x20–0x7E) and its
+ * `\n` is dropped as corrupt, and one longer than RELAY_LINE_MAX as overlong. Everything
+ * PanelBridge sends the host is a newline-framed DCS-BIOS message, so neither happens on a
+ * healthy link. Calibration frames are written whole or not at all in the same way.
+ *
+ * @note The first call arms a WATCHDOG_MS hardware watchdog; after that, loop() must be called
+ *       at least that often or the chip resets (production builds only).
  *
  * @note Node-status reporting (#86) needs no handling here: PanelBridge's `_NODE_STATUS` DCS-BIOS
  *       messages are ASCII (≤ 0x7F) forwarded by step 2, and the host's roster request is a
@@ -199,6 +238,37 @@ void setup(SerialUART& uart,
  * @note Parser state persists across calls — frames split across iterations assemble correctly.
  */
 void loop();
+
+/**
+ * @brief Link-health counters and event times (#355). Reported to the host as `DIAG`.
+ *
+ * Times are millis() since this boot, 0 = never. Counters saturate at 0xFFFF. The field
+ * meanings are the `CAL_DIAG_*` offsets in AxisCal.h, which define the wire layout.
+ */
+struct GatewayDiag {
+    uint32_t firstUartErrMs;   ///< First PL011 error this boot.
+    uint32_t lastUartErrMs;    ///< Latest PL011 error.
+    uint32_t firstUsbLossMs;   ///< First healthy → unhealthy host-link edge.
+    uint32_t lastUsbLossMs;    ///< Latest such edge.
+    uint16_t uartOverrun;      ///< Status ticks with RSR OE set.
+    uint16_t uartFraming;      ///< Status ticks with RSR FE set.
+    uint16_t uartBreak;        ///< Status ticks with RSR BE set.
+    uint16_t uartParity;       ///< Status ticks with RSR PE set.
+    uint16_t uartRxOverflow;   ///< Status ticks on which the software RX queue had overflowed.
+    uint16_t linesDropped;     ///< Lines dropped for lack of CDC room.
+    uint16_t linesCorrupt;     ///< Lines dropped for a non-ASCII byte.
+    uint16_t linesOverlong;    ///< Lines dropped for exceeding RELAY_LINE_MAX.
+    uint16_t framesDropped;    ///< Calibration frames dropped for lack of CDC room.
+    uint16_t uartRestarts;     ///< FAULT self-clears (UART restarted).
+    uint16_t usbReattaches;    ///< Recovery-ladder detach/attach cycles.
+    uint16_t cdcStalls;        ///< CDC stall onsets: DTR held, bytes pending, no drain for CDC_STALL_MS.
+    uint8_t  recoveryReboots;  ///< Recovery-ladder reboots. Survives a warm reboot.
+    uint8_t  watchdogResets;   ///< Hardware watchdog resets. Survives a warm reboot.
+    uint8_t  resetReason;      ///< OpenSkyhawk::CalDiagResetReason for this boot.
+};
+
+/** @brief The live link-health counters. Safe to call at any time. */
+const GatewayDiag& diagnostics();
 
 /**
  * @brief The calibration currently applied to dispatched axis values.
@@ -224,7 +294,7 @@ const OpenSkyhawk::CalBlob& calibration();
  * Resolved each tick; the highest-priority active state wins.
  */
 enum class LedState : uint8_t {
-    FAULT,     ///< uart0 hardware error (RSR) — RED FAST. Latched until clean data resumes (≥2 s hold).
+    FAULT,     ///< uart0 hardware error (RSR) — RED FAST. ≥2 s hold; clears on clean data, or after 3 s by restarting the UART.
     NO_HOST,   ///< USB not enumerated, or unplugged after a mount — RED SOLID.
     STREAMING, ///< DCS-BIOS bytes from the PC within the last 500 ms — GREEN SOLID.
     USB_IDLE,  ///< USB mounted, no recent DCS data — GREEN SLOW (1 Hz).
@@ -265,8 +335,54 @@ void statusTick();
  */
 bool feedByte(uint8_t b);
 
-/** @brief Reset parser to IDLE state (test builds only). Call between test cases. */
+/** @brief Reset parser to IDLE and discard any part-assembled host-bound line (test builds only). */
 void resetParser();
+
+/**
+ * @brief Pretend the CDC FIFO has `room` bytes free (test builds only).
+ * @param room  Free bytes reported to the relay; negative = unlimited (the default).
+ * @note The capture records only what the relay actually wrote, so a dropped line or frame
+ *       leaves it untouched.
+ */
+void cdcSetRoomForTest(int32_t room);
+
+/** @brief Zero diagnostics() (test builds only). */
+void diagResetForTest();
+
+/**
+ * @brief Run the PL011 error accounting for one status tick (test builds only).
+ * @param now  Fake millis() timestamp.
+ * @param oe, fe, be, pe  Which RSR bits were set this tick.
+ */
+void diagUartErrorsForTest(uint32_t now, bool oe, bool fe, bool be, bool pe);
+
+/**
+ * @brief Run one tick of the USB recovery ladder with injected inputs (test builds only).
+ * @param now        Fake millis() timestamp.
+ * @param mounted    Fake TinyUSBDevice.mounted().
+ * @param suspended  Fake TinyUSBDevice.suspended().
+ * @return The action production would apply. Also updates the USB-loss times and the
+ *         re-attach counter in diagnostics(), exactly as production does.
+ * @note "Recent UART fault" comes from diagnostics().lastUartErrMs — drive it with
+ *       diagUartErrorsForTest().
+ */
+OpenSkyhawk::LinkAction linkStepForTest(uint32_t now, bool mounted, bool suspended,
+                                        bool cdcStalled = false);
+
+/**
+ * @brief Run the CDC stall detector one tick (test builds only).
+ * @param now       Fake millis() timestamp.
+ * @param dtr       Fake Serial.dtr() — the host has the port open.
+ * @param room      Fake Serial.availableForWrite().
+ * @param capacity  CDC TX FIFO size (room == capacity means nothing pending).
+ * @param written   Bytes the relay wrote since the previous tick.
+ * @return true when the endpoint counts as stalled (feeds linkStepForTest's `cdcStalled`).
+ *         Counts diagnostics().cdcStalls on each onset.
+ */
+bool cdcStallStepForTest(uint32_t now, bool dtr, uint16_t room, uint16_t capacity, uint16_t written);
+
+/** @brief Reset the recovery ladder and the CDC stall detector, as at boot (test builds only). */
+void linkResetForTest(bool afterRecoveryReboot);
 
 /** @brief Clear captured parser-forwarded USB CDC bytes (test builds only). */
 void resetCdcCapture();
@@ -372,6 +488,14 @@ void statusResolve();
  * @param uartRxMoved  ≥1 error-free byte was read from the UART this tick.
  */
 bool statusFaultStep(uint32_t now, bool rsrError, bool uartRxMoved);
+
+/**
+ * @brief Run the FAULT self-clear check one tick (test builds). Pairs with statusFaultStep().
+ * @param now  Fake millis() timestamp.
+ * @return true if FAULT had been latched for FAULT_RESTART_MS: the latch is cleared and
+ *         production would restart the UART.
+ */
+bool statusFaultRestartCheck(uint32_t now);
 
 /** @brief Last resolved LedState from statusResolve() (test builds). */
 LedState statusState();

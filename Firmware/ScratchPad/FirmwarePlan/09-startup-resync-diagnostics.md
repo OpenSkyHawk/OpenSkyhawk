@@ -104,11 +104,15 @@ In all timelines, PanelBridge eventually receives all current input states.
 
 ## SimGateway Boot Sequence
 
-1. Set USB identity (VID/PID, product strings) — see `03-uart-usb-hid-protocol.md`.
-2. Initialise the TinyUSB HID descriptor and enumerate; load axis calibration from flash.
-3. Init UART @ 250000 to PanelBridge.
-4. `SimGateway::setup(Serial1)` — enters relay mode: raw DCS-BIOS bytes forwarded
-   USB CDC ↔ UART; HID frame demultiplexer armed on UART RX.
+1. Record why this boot happened (power-on / watchdog / recovery reboot) from the watchdog
+   scratch registers, for `DIAG` (#355).
+2. Set USB identity (VID/PID, product strings) — see `03-uart-usb-hid-protocol.md`.
+3. Init UART @ 250000 to PanelBridge, with a 1 KB software RX queue.
+4. Load axis calibration from flash; initialise the TinyUSB HID descriptor and enumerate.
+5. `SimGateway::setup(Serial1)` returns — relay mode: DCS-BIOS export bytes forwarded
+   USB CDC → UART, whole lines UART → USB CDC; HID frame demultiplexer armed on UART RX.
+6. The first `SimGateway::loop()` call arms the 3 s hardware watchdog and starts the USB recovery
+   ladder (`07-simgateway-api.md#link-health-and-self-recovery`).
 
 SimGateway has no boot handshake — it is stateless with respect to the CAN cluster.
 
