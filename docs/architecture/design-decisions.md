@@ -282,8 +282,9 @@ can be merged by accident.
   wire format, so a mixed set has no meaning. Every `Firmware/Libraries/*/library.json` carries
   the same version.
 - Commits that touch only `Firmware/ScratchPad/` (the spec) don't count toward a release.
-- **Before 1.0, a breaking change bumps the minor** version; 1.0 freezes the sketch API and the
-  wire format.
+- **A breaking change bumps the major version**, as Conventional Commits defines it (`!` or a
+  `BREAKING CHANGE:` footer). The breaking changes from the v1.0 freeze review (#295) made the
+  next release 1.0, which freezes the sketch API and the wire format.
 - Third-party libraries stay declared as version ranges; each release records the versions it
   resolved to as a `dependencies.txt` release asset, rather than pinning them.
 - **Each release carries prebuilt firmware**, built by CI from the release tag, for the boards
