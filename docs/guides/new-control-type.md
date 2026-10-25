@@ -4,8 +4,9 @@ The [control types](../firmware/control-types.md) cover the switches, selectors,
 lamps, gauges and displays of the A-4E cockpit. If your panel needs something none of them does,
 you can write your own class — in your own sketch, or added to the library for everyone.
 
-The interface a control class is written against is part of the firmware's compatibility
-promise: a class you write against v1 keeps compiling and working on every 1.x release.
+The interface a control class is written against is part of the firmware's
+[compatibility promise](../firmware/compatibility.md): a class you write against v1 keeps compiling
+and working on every 1.x release.
 
 !!! note "Check the family first"
     Before writing a new class, check whether yours only changes an existing class's *source*
